@@ -132,7 +132,7 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -160,7 +160,7 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -189,7 +189,7 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -219,7 +219,7 @@ describe('search-results-page acceptance', () => {
                 total: 4,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -250,7 +250,7 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -276,7 +276,7 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(5, 10),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -307,7 +307,7 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               })),
-              findReviewsForArticleDoi: () => T.of([]),
+              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             }),
           );
@@ -393,7 +393,7 @@ describe('search-results-page acceptance', () => {
                   total: 1,
                   nextCursor: O.none,
                 }),
-                findReviewsForArticleDoi: () => T.of([]),
+                findReviewsForArticleDoi: () => TE.right([]),
                 findVersionsForArticleDoi: () => TO.none,
               }),
             );

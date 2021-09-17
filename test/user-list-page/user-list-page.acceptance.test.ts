@@ -43,7 +43,7 @@ const defaultPorts = {
     authors: [],
   }),
   getUserId: () => TE.right(arbitraryUserId()),
-  findReviewsForArticleDoi: () => T.of([]),
+  findReviewsForArticleDoi: () => TE.right([]),
   findVersionsForArticleDoi: () => TO.none,
 };
 
@@ -94,7 +94,7 @@ describe('user-list-page', () => {
           title: arbitrarySanitisedHtmlFragment(),
           authors: [],
         }),
-        findReviewsForArticleDoi: () => T.of([]),
+        findReviewsForArticleDoi: () => TE.right([]),
         findVersionsForArticleDoi: () => TO.none,
         getUserId: () => TE.right(userId),
       };
@@ -163,7 +163,7 @@ describe('user-list-page', () => {
                 authors: [],
               })
           ),
-          findReviewsForArticleDoi: () => T.of([]),
+          findReviewsForArticleDoi: () => TE.right([]),
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(userId),
         };
@@ -200,7 +200,7 @@ describe('user-list-page', () => {
             title: arbitrarySanitisedHtmlFragment(),
             authors: [],
           }),
-          findReviewsForArticleDoi: () => T.of([]),
+          findReviewsForArticleDoi: () => TE.right([]),
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(owningUserId),
         };
@@ -238,7 +238,7 @@ describe('user-list-page', () => {
             title: arbitrarySanitisedHtmlFragment(),
             authors: [],
           }),
-          findReviewsForArticleDoi: () => T.of([]),
+          findReviewsForArticleDoi: () => TE.right([]),
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(owningUserId),
         };

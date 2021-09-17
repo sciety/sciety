@@ -14,7 +14,7 @@ import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
 // TODO: Find reviewsForArticleDoi should return a TaskEither
-type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   groupId: GroupId,
   occurredAt: Date,
 }>>;
@@ -39,7 +39,7 @@ const populateArticleViewModel = (
 ) => (item: ArticleItem) => pipe(
   item.doi,
   findReviewsForArticleDoi,
-  T.chain(flow(
+  TE.chainTaskK(flow(
     (reviews) => ({
       latestVersionDate: getLatestArticleVersionDate(item.doi, item.server),
       latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
@@ -47,13 +47,12 @@ const populateArticleViewModel = (
     }),
     sequenceS(T.ApplyPar),
   )),
-  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
+  TE.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
     latestVersionDate,
     latestActivityDate,
     evaluationCount,
   })),
-  TE.rightTask,
 );
 
 const fetchItemDetails = (

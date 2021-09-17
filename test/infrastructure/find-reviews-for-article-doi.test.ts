@@ -1,10 +1,12 @@
 import { performance } from 'perf_hooks';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../src/domain-events';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { arbitraryDate } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -32,7 +34,8 @@ describe('find-reviews-for-article-doi', () => {
       const actualReviews = await pipe(
         articleDoi,
         findReviewsForArticleDoi(getAllEvents),
-        T.map(RA.map((reviewReference) => reviewReference.reviewId)),
+        TE.map(RA.map((reviewReference) => reviewReference.reviewId)),
+        TE.getOrElse(shouldNotBeCalled),
       )();
 
       expect(actualReviews).toStrictEqual(expectedReviews);

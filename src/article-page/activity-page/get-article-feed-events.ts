@@ -2,7 +2,6 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
@@ -23,7 +22,7 @@ import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 import { UserId } from '../../types/user-id';
 
-export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
+export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
@@ -63,8 +62,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   [
     pipe(
       deps.findReviewsForArticleDoi(doi),
-      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
-      TE.rightTask,
+      TE.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
     pipe(
       deps.findVersionsForArticleDoi(doi, server),

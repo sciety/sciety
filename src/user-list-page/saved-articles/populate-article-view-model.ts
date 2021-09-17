@@ -18,7 +18,7 @@ type ArticleItem = {
   authors: ReadonlyArray<string>,
 };
 
-export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   occurredAt: Date,
 }>>;
 
@@ -41,7 +41,7 @@ export const populateArticleViewModel = (
 ) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
   item.doi,
   ports.findReviewsForArticleDoi,
-  T.chain(flow(
+  TE.chainTaskK(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
       latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
@@ -49,11 +49,10 @@ export const populateArticleViewModel = (
     }),
     sequenceS(T.ApplyPar),
   )),
-  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
+  TE.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
     latestVersionDate,
     latestActivityDate,
     evaluationCount,
   })),
-  TE.rightTask,
 );

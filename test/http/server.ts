@@ -66,7 +66,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     getGroup: groups.lookup,
     getGroupBySlug: groups.lookupBySlug,
     getAllGroups: groups.all,
-    findReviewsForArticleDoi: () => T.of([]),
+    findReviewsForArticleDoi: () => TE.right([]),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,

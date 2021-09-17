@@ -16,7 +16,7 @@ describe('populate-article-view-model', () => {
     const latestVersionDate = new Date();
     const latestActivityDate = new Date('2021-01-02');
     const ports = {
-      findReviewsForArticleDoi: () => T.of([
+      findReviewsForArticleDoi: () => TE.right([
         {
           reviewId: arbitraryReviewId(),
           groupId: arbitraryGroupId(),

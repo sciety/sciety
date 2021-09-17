@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
@@ -24,7 +23,7 @@ const review = (groupId: GroupId, date: Date) => ({
 
 const defaultPorts = {
   fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
-  findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
+  findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
   findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
     {
       source: new URL(arbitraryUri()),
@@ -53,7 +52,7 @@ describe('docmap', () => {
   it('includes the article id', async () => {
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
+      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     };
     const result = await docmap(ports, indexedGroupId)(articleId)();
 
@@ -68,7 +67,7 @@ describe('docmap', () => {
     const name = arbitraryString();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
+      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
       getGroup: () => TO.some({
         ...arbitraryGroup(),
         id: indexedGroupId,
@@ -97,7 +96,7 @@ describe('docmap', () => {
     const evaluationDate = arbitraryDate();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, evaluationDate)]),
+      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, evaluationDate)]),
     };
 
     const result = await docmap(ports, indexedGroupId)(articleId)();
@@ -112,7 +111,7 @@ describe('docmap', () => {
     const laterDate = new Date('2000');
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of(
+      findReviewsForArticleDoi: () => TE.right(
         [
           review(indexedGroupId, earlierDate),
           review(indexedGroupId, laterDate),
@@ -154,7 +153,7 @@ describe('docmap', () => {
       const laterDate = new Date('2000');
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => T.of(
+        findReviewsForArticleDoi: () => TE.right(
           [
             review(indexedGroupId, earlierDate),
             review(indexedGroupId, laterDate),
@@ -173,7 +172,7 @@ describe('docmap', () => {
     it('returns not-found', async () => {
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => T.of([]),
+        findReviewsForArticleDoi: () => TE.right([]),
       };
       const result = await docmap(ports, indexedGroupId)(articleId)();
 
@@ -187,7 +186,7 @@ describe('docmap', () => {
       const laterDate = new Date('2000');
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => T.of(
+        findReviewsForArticleDoi: () => TE.right(
           [
             review(arbitraryGroupId(), earlierDate),
             review(indexedGroupId, laterDate),
@@ -295,7 +294,7 @@ describe('docmap', () => {
             const evaluationDate = arbitraryDate();
             const ports = {
               ...defaultPorts,
-              findReviewsForArticleDoi: () => T.of([review(indexedGroupId, evaluationDate)]),
+              findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, evaluationDate)]),
             };
 
             const result = await docmap(ports, indexedGroupId)(articleId)();
@@ -310,7 +309,7 @@ describe('docmap', () => {
             const sourceUrl = arbitraryUri();
             const ports = {
               ...defaultPorts,
-              findReviewsForArticleDoi: () => T.of(
+              findReviewsForArticleDoi: () => TE.right(
                 [
                   {
                     reviewId: evaluationId,
@@ -335,7 +334,7 @@ describe('docmap', () => {
             const evaluationId = arbitraryReviewId();
             const ports = {
               ...defaultPorts,
-              findReviewsForArticleDoi: () => T.of(
+              findReviewsForArticleDoi: () => TE.right(
                 [
                   {
                     reviewId: evaluationId,

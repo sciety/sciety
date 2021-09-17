@@ -4,7 +4,6 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
@@ -26,7 +25,7 @@ export type FindVersionsForArticleDoi = (
   version: number,
 }>>;
 
-type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
@@ -53,7 +52,7 @@ export const docmap: Docmap = (ports, indexedGroupId) => (articleId) => pipe(
     evaluations: pipe(
       articleId,
       ports.findReviewsForArticleDoi,
-      T.map((reviews) => pipe(
+      TE.chainEitherKW((reviews) => pipe(
         {
           firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
           lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
