@@ -87,7 +87,7 @@ const contentRenderers = (
 
 const tabList = (groupSlug: string): [Tab, Tab, Tab] => [
   {
-    label: toHtmlFragment('Lists'),
+    label: toHtmlFragment('Lists (1)'),
     url: `/groups/${groupSlug}/lists`,
   },
   {
