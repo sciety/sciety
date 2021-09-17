@@ -6,7 +6,7 @@ import { Doi, eqDoi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleDoi = (getAllEvents: GetAllEvents) => (articleDoi: Doi) => T.Task<ReadonlyArray<{
+export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
@@ -14,7 +14,7 @@ type FindReviewsForArticleDoi = (getAllEvents: GetAllEvents) => (articleDoi: Doi
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (getAllEvents) => (articleDoi) => pipe(
+export const findReviewsForArticleDoi = (getAllEvents: GetAllEvents): FindReviewsForArticleDoi => (articleDoi) => pipe(
   getAllEvents,
   T.map(flow(
     RA.filter(isGroupEvaluatedArticleEvent),

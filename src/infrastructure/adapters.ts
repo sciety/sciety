@@ -6,6 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
+import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { GetTwitterUserId } from './get-twitter-user-id';
@@ -17,14 +18,7 @@ import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
-
-type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId,
-  groupId: GroupId,
-  occurredAt: Date,
-}>>;
 
 type FindVersionsForArticleDoi = (
   doi: Doi,
