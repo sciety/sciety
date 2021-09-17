@@ -334,6 +334,38 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    `/groups/:slug(${slugRegex})/about`,
+    pageHandler(flow(
+      groupPageParamsSlug.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain((params) => pipe(
+        params.slug,
+        adapters.getGroupBySlug,
+        TE.fromTaskOption(toNotFound),
+        TE.map((group) => ({ ...params, id: group.id })),
+      )),
+      TE.chain(groupPage(adapters)(groupPageTabs.about)),
+    )),
+  );
+
+  router.get(
+    `/groups/:slug(${slugRegex})/followers`,
+    pageHandler(flow(
+      groupPageParamsSlug.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain((params) => pipe(
+        params.slug,
+        adapters.getGroupBySlug,
+        TE.fromTaskOption(toNotFound),
+        TE.map((group) => ({ ...params, id: group.id })),
+      )),
+      TE.chain(groupPage(adapters)(groupPageTabs.followers)),
+    )),
+  );
+
+  router.get(
     `/groups/:id(${uuidRegex})/lists`,
     pageHandler(flow(
       groupPageParams.decode,
