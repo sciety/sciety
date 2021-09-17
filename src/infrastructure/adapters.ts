@@ -32,6 +32,7 @@ type FindVersionsForArticleDoi = (
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+type GetGroupBySlug = (slug: string) => TO.TaskOption<Group>;
 
 type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -57,6 +58,7 @@ export type Adapters = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
   getGroup: GetGroup,
+  getGroupBySlug: GetGroupBySlug,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,

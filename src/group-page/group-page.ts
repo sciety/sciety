@@ -52,6 +52,14 @@ export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
+export const paramsSlugCodec = t.type({
+  slug: t.string,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+  page: tt.withFallback(tt.NumberFromString, 1),
+});
+
 type Params = t.TypeOf<typeof paramsCodec>;
 
 const notFoundResponse = () => ({

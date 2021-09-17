@@ -30,7 +30,9 @@ import { generateDocmap, hardcodedReviewCommonsDocmap } from '../docmaps/docmap'
 import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/docmap-index';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
-import { groupPage, paramsCodec as groupPageParams, groupPageTabs } from '../group-page/group-page';
+import {
+  groupPage, paramsCodec as groupPageParams, paramsSlugCodec as groupPageParamsSlug, groupPageTabs,
+} from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
@@ -313,6 +315,23 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+  const slugRegex = '[A-Za-z0-9-]{0,30}';
+
+  router.get(
+    `/groups/:slug(${slugRegex})/lists`,
+    pageHandler(flow(
+      groupPageParamsSlug.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain((params) => pipe(
+        params.slug,
+        adapters.getGroupBySlug,
+        TE.fromTaskOption(toNotFound),
+        TE.map((group) => ({ ...params, id: group.id })),
+      )),
+      TE.chain(groupPage(adapters)(groupPageTabs.lists)),
+    )),
+  );
 
   router.get(
     `/groups/:id(${uuidRegex})/lists`,
