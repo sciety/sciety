@@ -27,7 +27,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { allEventsCodec, allEventsPage } from '../all-events-page/all-events-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { generateDocmap, hardcodedReviewCommonsDocmap } from '../docmaps/docmap';
+import { generateDocmap } from '../docmaps/docmap';
 import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/docmap-index';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
@@ -516,14 +516,6 @@ export const createRouter = (adapters: Adapters): Router => {
     )();
 
     Object.assign(context.response, response);
-    await next();
-  });
-
-  router.get('/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json', async (context, next) => {
-    context.response.body = [
-      await hardcodedReviewCommonsDocmap(adapters)('10.1101/2021.04.25.441302', new Date().toISOString())(),
-    ];
-
     await next();
   });
 
