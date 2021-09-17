@@ -30,12 +30,12 @@ const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
   ),
 );
 
-type FindGroups = (
-  fetchStaticFile: FetchStaticFile,
-  groups: RNEA.ReadonlyNonEmptyArray<Group>
-) => (query: string) => T.Task<ReadonlyArray<GroupId>>;
+export type FindGroups = (query: string) => T.Task<ReadonlyArray<GroupId>>;
 
-export const findGroups: FindGroups = (fetchStaticFile, groups) => (query) => pipe(
+export const findGroups = (
+  fetchStaticFile: FetchStaticFile,
+  groups: RNEA.ReadonlyNonEmptyArray<Group>,
+): FindGroups => (query) => pipe(
   groups,
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,

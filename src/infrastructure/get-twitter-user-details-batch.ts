@@ -19,11 +19,8 @@ type UserDetails = {
   handle: string,
 };
 
-type GetTwitterUserDetailsBatch = (
-  getTwitterResponse: GetTwitterResponse,
-  logger: Logger,
-) => (
-  userIds: ReadonlyArray<UserId>
+export type GetUserDetailsBatch = (
+  userIds: ReadonlyArray<UserId>,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;
 
 const twitterUserCodec = t.type({
@@ -77,10 +74,10 @@ const translateToUserDetails = RA.map((item: TwitterUser) => ({
   handle: item.username,
 }));
 
-export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
-  getTwitterResponse,
-  logger,
-) => RA.match(
+export const getTwitterUserDetailsBatch = (
+  getTwitterResponse: GetTwitterResponse,
+  logger: Logger,
+): GetUserDetailsBatch => RA.match(
   constant(TE.right([])),
   (userIds) => pipe(
     userIds,

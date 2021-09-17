@@ -3,51 +3,38 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
+import { FetchStaticFile } from './fetch-static-file';
+import { FindGroups } from './find-groups';
 import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { Follows } from './follows';
-import { ArticleVersion } from './get-article-version-events-from-biorxiv';
+import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
+import { GetUserDetailsBatch } from './get-twitter-user-details-batch';
 import { GetTwitterUserId } from './get-twitter-user-id';
 import { Logger } from './logger';
 import { SearchResults } from './search-europe-pmc';
-import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
-import { ArticleServer } from '../types/article-server';
+import { DomainEvent } from '../domain-events';
 import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
-
-type FindVersionsForArticleDoi = (
-  doi: Doi,
-  server: ArticleServer,
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 type GetGroupBySlug = (slug: string) => TO.TaskOption<Group>;
 
 type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 
-type UserDetails = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
-  userId: UserId,
-};
-
-type GetUserDetailsBatch = (userId: ReadonlyArray<UserId>) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;
-
 export type Adapters = {
-  commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
+  commitEvents: CommitEvents,
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
-  fetchStaticFile: (filename: string) => TE.TaskEither<DE.DataError, string>,
-  findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
+  fetchStaticFile: FetchStaticFile,
+  findGroups: FindGroups,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   follows: Follows,
   getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

@@ -13,9 +13,9 @@ type Dependencies = {
 };
 
 // TODO: should return a TaskEither
-type CommitEvents = (dependencies: Dependencies) => (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
+export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
-export const commitEvents: CommitEvents = ({ inMemoryEvents, pool, logger }) => (events) => pipe(
+export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,
   T.traverseArray(flow(
     T.of,

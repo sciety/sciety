@@ -6,9 +6,9 @@ import { flow, pipe } from 'fp-ts/function';
 import * as L from './logger';
 import * as DE from '../types/data-error';
 
-type FetchStaticFile = (logger: L.LoggerIO) => (filename: string) => TE.TaskEither<DE.DataError, string>;
+export type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
-export const fetchStaticFile: FetchStaticFile = (logger) => (filename) => pipe(
+export const fetchStaticFile = (logger: L.LoggerIO): FetchStaticFile => (filename) => pipe(
   path.resolve(__dirname, '..', '..', 'static', filename),
   TE.taskify(fs.readFile),
   TE.swap,

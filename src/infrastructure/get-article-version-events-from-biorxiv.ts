@@ -26,7 +26,7 @@ type ArticleVersion = {
   version: number,
 };
 
-type GetArticleVersionEventsFromBiorxiv = (dependencies: Dependencies) => (
+export type GetArticleVersionEventsFromBiorxiv = (
   doi: Doi,
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
@@ -58,7 +58,9 @@ const mapResponse = (doi: Doi, server: ArticleServer) => flow(
   })),
 );
 
-const getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv = (deps) => (doi, server) => pipe(
+const getArticleVersionEventsFromBiorxiv = (
+  deps: Dependencies,
+): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
   makeRequest(doi, server)(deps),
   TE.map(mapResponse(doi, server)),
   T.map(O.fromEither),
