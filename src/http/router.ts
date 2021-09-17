@@ -316,10 +316,10 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
-  const slugRegex = '[A-Za-z0-9-]{0,30}';
+  const groupSlugRegex = '[A-Za-z0-9-]{0,30}';
 
   router.get(
-    `/groups/:slug(${slugRegex})/lists`,
+    `/groups/:slug(${groupSlugRegex})/lists`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
@@ -329,7 +329,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    `/groups/:slug(${slugRegex})/about`,
+    `/groups/:slug(${groupSlugRegex})/about`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
@@ -339,7 +339,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    `/groups/:slug(${slugRegex})/followers`,
+    `/groups/:slug(${groupSlugRegex})/followers`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
