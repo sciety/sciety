@@ -1,9 +1,10 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe, tupled } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
@@ -36,11 +37,16 @@ const populateArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 ) => (item: ArticleItem) => pipe(
-  T.Do,
-  T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
-  T.apS('latestVersionDate', pipe([item.doi, item.server], tupled(getLatestArticleVersionDate))),
-  T.bind('latestActivityDate', ({ reviews }) => pipe(reviews, getLatestActivityDate, T.of)),
-  T.bind('evaluationCount', ({ reviews }) => pipe(reviews.length, T.of)),
+  item.doi,
+  findReviewsForArticleDoi,
+  T.chain(flow(
+    (reviews) => ({
+      latestVersionDate: getLatestArticleVersionDate(item.doi, item.server),
+      latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
+      evaluationCount: T.of(reviews.length),
+    }),
+    sequenceS(T.ApplyPar),
+  )),
   T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
     latestVersionDate,
