@@ -29,7 +29,7 @@ describe('paginate', () => {
       expect(result.items).toStrictEqual(['b']);
     });
 
-    it.skip.each([
+    it.each([
       [9, 1, O.none],
       [11, 1, O.some(2)],
       [20, 1, O.some(2)],
@@ -39,7 +39,7 @@ describe('paginate', () => {
     ])('given %d items and a request for page %d, returns the next page', (itemCount, page, nextPage) => {
       const result = pipe(
         generateItems(itemCount),
-        paginate(page, 10),
+        paginate(10, page),
       );
 
       expect(result.nextPage).toStrictEqual(nextPage);
