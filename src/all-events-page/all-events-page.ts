@@ -97,7 +97,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
     TE.map((cards) => ({ cards, nextPage })),
   )),
   TE.bimap(
-    () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
+    (e) => ({ type: e, message: toHtmlFragment('We couldn\'t find that information.') }),
     (viewModel) => ({
       title: 'All events',
       content: renderContent(viewModel),
