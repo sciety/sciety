@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -15,6 +16,7 @@ import { evaluatedArticleCard, FetchArticle } from './evaluated-article-card';
 import { multipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
+import { paginationControls } from '../shared-components/pagination-controls';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -24,6 +26,7 @@ import { RenderPageError } from '../types/render-page-error';
 
 type ViewModel = {
   cards: ReadonlyArray<HtmlFragment>,
+  nextPage: O.Option<number>,
 };
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
@@ -31,6 +34,13 @@ const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   <ol class="all-events-list">
     ${templateListItems(viewModel.cards, 'all-events-list__item')}
   </ol>
+  ${pipe(
+    viewModel.nextPage,
+    O.fold(
+      () => '',
+      (page) => paginationControls(`/all-events?page=${page}`),
+    ),
+  )}
 `);
 
 export const allEventsCodec = t.type({
@@ -88,7 +98,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   T.chain(({ items }) => pipe(
     items,
     TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
-    TE.map((cards) => ({ cards })),
+    TE.map((cards) => ({ cards, nextPage: O.none })),
   )),
   TE.bimap(
     () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
