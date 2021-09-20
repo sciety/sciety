@@ -18,7 +18,6 @@ const generateFollowers = (followerCount: number) => pipe(
   })),
 );
 
-/* eslint-disable jest/no-commented-out-tests */
 describe('paginate', () => {
   describe('when the group has multiple followers', () => {
     it('limits the number of followers to the requested page size', () => {
