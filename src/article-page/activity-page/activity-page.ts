@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -71,55 +72,59 @@ const toErrorPage = (error: DE.DataError) => ({
 });
 
 export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
-  params,
-  TE.right,
-  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-  TE.bindW('feedItemsByDateDescending', ({ articleDetails, doi, userId }) => pipe(
-    articleDetails.server,
-    (server) => getArticleFeedEventsByDateDescending({
-      ...ports,
-      getGroup: flow(
-        ports.getGroup,
-        TO.getOrElse(() => { throw new Error('No such group'); }),
+  {
+    doi: params.doi,
+    userId: pipe(params.user, O.map((u) => u.id)),
+    tweetThis: pipe(
+      params.doi,
+      renderTweetThis,
+    ),
+  },
+  ({ doi, userId, tweetThis }) => pipe(
+    {
+      articleDetails: ports.fetchArticle(doi),
+      hasUserSavedArticle: pipe(
+        userId,
+        O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
+        TE.rightTask,
       ),
-      countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
-      getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
-    })(doi, server, userId),
-  )),
-  TE.bindW('feed', ({ feedItemsByDateDescending }) => pipe(
-    feedItemsByDateDescending,
-    renderFeed(
-      (feedItem) => {
-        switch (feedItem.type) {
-          case 'article-version':
-            return renderArticleVersionFeedItem(feedItem);
-          case 'article-version-error':
-            return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
-          case 'review':
-            return renderReviewFeedItem(850)(feedItem);
-        }
-      },
-    ),
-    TE.right,
-  )),
-  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
-    userId,
-    O.fold(
-      constant(T.of(false)),
-      (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents),
-    ),
-    TE.rightTask,
-  )),
-  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
-    renderSaveArticle(doi, userId, hasUserSavedArticle),
-    TE.right,
-  )),
-  TE.bindW('tweetThis', ({ doi }) => pipe(
-    doi,
-    renderTweetThis,
-    TE.right,
-  )),
+    },
+    sequenceS(TE.ApplyPar),
+    TE.chain(({ articleDetails, hasUserSavedArticle }) => pipe(
+      articleDetails.server,
+      (server) => getArticleFeedEventsByDateDescending({
+        ...ports,
+        getGroup: flow(
+          ports.getGroup,
+          TO.getOrElse(() => { throw new Error('No such group'); }),
+        ),
+        countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
+        getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
+      })(doi, server, userId),
+      TE.map((feedItemsByDateDescending) => ({
+        doi,
+        tweetThis,
+        articleDetails,
+        feedItemsByDateDescending,
+        saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+        feed: pipe(
+          feedItemsByDateDescending,
+          renderFeed(
+            (feedItem) => {
+              switch (feedItem.type) {
+                case 'article-version':
+                  return renderArticleVersionFeedItem(feedItem);
+                case 'article-version-error':
+                  return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+                case 'review':
+                  return renderReviewFeedItem(850)(feedItem);
+              }
+            },
+          ),
+        ),
+      })),
+    )),
+  ),
   TE.bimap(
     toErrorPage,
     (components) => ({
