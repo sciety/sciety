@@ -91,7 +91,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map(paginate(params.pageSize, params.page)),
-  T.chain(({ items, nextPage }) => pipe(
+  TE.chain(({ items, nextPage }) => pipe(
     items,
     TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
     TE.map((cards) => ({ cards, nextPage })),

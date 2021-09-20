@@ -1,7 +1,9 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { paginate } from '../../src/all-events-page/paginate';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
   Array(eventCount).keys(),
@@ -15,6 +17,7 @@ describe('paginate', () => {
       const result = pipe(
         ['a', 'b', 'c'],
         paginate(2, 1),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       expect(result.items).toHaveLength(2);
@@ -24,6 +27,7 @@ describe('paginate', () => {
       const result = pipe(
         ['a', 'b', 'c'],
         paginate(1, 2),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       expect(result.items).toStrictEqual(['b']);
@@ -40,6 +44,7 @@ describe('paginate', () => {
       const result = pipe(
         generateItems(itemCount),
         paginate(10, page),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       expect(result.nextPage).toStrictEqual(nextPage);
