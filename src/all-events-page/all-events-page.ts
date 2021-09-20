@@ -94,11 +94,12 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
       (params.page - 1) * params.pageSize,
       params.page * params.pageSize,
     ),
+    nextPage: O.none,
   })),
-  T.chain(({ items }) => pipe(
+  T.chain(({ items, nextPage }) => pipe(
     items,
     TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
-    TE.map((cards) => ({ cards, nextPage: O.none })),
+    TE.map((cards) => ({ cards, nextPage })),
   )),
   TE.bimap(
     () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
