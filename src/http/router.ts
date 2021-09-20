@@ -28,7 +28,9 @@ import { aboutPage } from '../about-page';
 import { allEventsCodec, allEventsPage } from '../all-events-page/all-events-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap } from '../docmaps/docmap';
-import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/docmap-index';
+import { paramsCodec as docmapIndexParamsCodec } from '../docmaps/docmap-index';
+import { generateDocmapDois } from '../docmaps/docmap-index/generate-docmap-index';
+import { docmap } from '../docmaps/docmap/docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
@@ -52,6 +54,7 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
+import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
@@ -480,14 +483,18 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
+    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     context.response.body = await pipe(
       context.query,
       docmapIndexParamsCodec.decode,
-      E.fold(
+      TE.fromEither,
+      TE.chainW(generateDocmapDois(adapters)),
+      TE.chainW(TE.traverseArray(docmap(adapters, ncrcGroupId))),
+      TE.fold(
         () => T.of({
           articles: [],
         }),
-        generateDocmapIndex(adapters),
+        (foo) => T.of({ articles: foo }),
       ),
     )();
     await next();

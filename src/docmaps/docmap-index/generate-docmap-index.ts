@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -41,12 +42,25 @@ const filterByGroup = (
   ),
 );
 
-export const generateDocmapIndex = (ports: Ports) => (params: Params): T.Task<DocmapIndex> => pipe(
+const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
   ports.getAllEvents,
   T.map(flow(
     allDocmapDois(ncrcGroupId),
     RA.map((doi) => ({ doi, groupId: ncrcGroupId })),
     filterByGroup(params.group),
+  )),
+);
+
+export const generateDocmapDois = (ports: Ports) => (params: Params) => pipe(
+  params,
+  articlesEvaluatedByGroup(ports),
+  T.map(RA.map(({ doi }) => doi)),
+  T.map(E.right),
+);
+
+export const generateDocmapIndex = (ports: Ports) => (params: Params): T.Task<DocmapIndex> => pipe(
+  articlesEvaluatedByGroup(ports)(params),
+  T.map(flow(
     RA.map(({ doi }) => ({
       doi: doi.value,
       docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,

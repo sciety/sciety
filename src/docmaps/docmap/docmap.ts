@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { context } from './context';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -77,13 +77,14 @@ export const docmap: Docmap = (ports, indexedGroupId) => (articleId) => pipe(
   },
   (domain) => ({
     ...domain,
-    sourceUrl: pipe(
-      domain.evaluations,
-      TE.chain(flow(
-        ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
-        TE.map(({ url }) => url),
-      )),
-    ),
+    sourceUrl: TE.right(new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`)),
+    // pipe(
+    //  domain.evaluations,
+    //  TE.chain(flow(
+    //    ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
+    //    TE.map(({ url }) => url),
+    //  )),
+    // ),
   }),
   sequenceS(TE.ApplyPar),
   TE.map(({
