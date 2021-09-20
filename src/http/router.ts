@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -489,7 +490,12 @@ export const createRouter = (adapters: Adapters): Router => {
       docmapIndexParamsCodec.decode,
       TE.fromEither,
       TE.chainW(generateDocmapDois(adapters)),
-      TE.chainW(TE.traverseArray(docmap(adapters, ncrcGroupId))),
+      TE.chainW(TE.traverseArray(docmap({
+        ...adapters,
+        fetchReview: () => TE.right({
+          url: new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`),
+        }),
+      }, ncrcGroupId))),
       TE.fold(
         () => T.of({
           articles: [],
