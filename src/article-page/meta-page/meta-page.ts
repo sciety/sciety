@@ -66,16 +66,12 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
     },
     sequenceS(TE.ApplyPar),
     TE.map(({ articleDetails, hasUserSavedArticle }) => ({
-      doi, userId, tweetThis, articleDetails, hasUserSavedArticle,
+      doi,
+      tweetThis,
+      articleDetails,
+      saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
     })),
   ),
-  TE.map(({
-    doi, userId, hasUserSavedArticle, ...rest
-  }) => ({
-    saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-    doi,
-    ...rest,
-  })),
   TE.bimap(
     toErrorPage,
     (components) => ({
