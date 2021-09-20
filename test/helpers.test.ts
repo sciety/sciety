@@ -12,6 +12,10 @@ describe('arbitraryWord', () => {
   it('always begins with a letter', () => {
     expect(t.arbitraryWord(8)).toMatch(/^[a-zA-Z]/);
   });
+
+  it('is suitable for use in and XML document', () => {
+    expect(t.arbitraryWord(8)).not.toMatch(/0x/);
+  });
 });
 
 describe('arbitraryString', () => {
