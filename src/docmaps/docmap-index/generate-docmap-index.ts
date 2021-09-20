@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -51,7 +52,9 @@ const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
   )),
 );
 
-export const generateDocmapDois = (ports: Ports) => (params: Params) => pipe(
+export const generateDocmapDois = (
+  ports: Ports,
+) => (params: Params): TE.TaskEither<never, ReadonlyArray<Doi.Doi>> => pipe(
   params,
   articlesEvaluatedByGroup(ports),
   T.map(RA.map(({ doi }) => doi)),
