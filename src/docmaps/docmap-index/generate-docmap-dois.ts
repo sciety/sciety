@@ -20,10 +20,6 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-type DocmapIndex = {
-  articles: ReadonlyArray<{ doi: string, docmap: string }>,
-};
-
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
@@ -59,17 +55,4 @@ export const generateDocmapDois = (
   articlesEvaluatedByGroup(ports),
   T.map(RA.map(({ doi }) => doi)),
   T.map(E.right),
-);
-
-export const generateDocmapIndex = (ports: Ports) => (params: Params): T.Task<DocmapIndex> => pipe(
-  articlesEvaluatedByGroup(ports)(params),
-  T.map(flow(
-    RA.map(({ doi }) => ({
-      doi: doi.value,
-      docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
-    })),
-    (articles) => ({
-      articles,
-    }),
-  )),
 );
