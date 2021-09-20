@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { paginate } from '../../src/all-events-page/paginate';
+import * as DE from '../../src/types/data-error';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
@@ -50,6 +51,13 @@ describe('paginate', () => {
       expect(result.nextPage).toStrictEqual(nextPage);
     });
 
-    it.todo('returns not-found when asked for a page that does not exist');
+    it('returns not-found when asked for a page that does not exist', () => {
+      const result = pipe(
+        ['a', 'b', 'c'],
+        paginate(1, 7),
+      );
+
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
   });
 });
