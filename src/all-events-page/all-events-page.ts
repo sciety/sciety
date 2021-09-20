@@ -14,6 +14,7 @@ import {
 } from './collapse-close-events';
 import { evaluatedArticleCard, FetchArticle } from './evaluated-article-card';
 import { multipleArticlesCard } from './multiple-articles-card';
+import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
@@ -89,13 +90,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   ports.getAllEvents,
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
-  T.map((events) => ({
-    items: events.slice(
-      (params.page - 1) * params.pageSize,
-      params.page * params.pageSize,
-    ),
-    nextPage: O.none,
-  })),
+  T.map(paginate(params.pageSize, params.page)),
   T.chain(({ items, nextPage }) => pipe(
     items,
     TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
