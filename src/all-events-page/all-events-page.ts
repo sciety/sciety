@@ -23,13 +23,13 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 type ViewModel = {
-  items: ReadonlyArray<HtmlFragment>,
+  cards: ReadonlyArray<HtmlFragment>,
 };
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   <h1>All events</h1>
   <ol class="all-events-list">
-    ${templateListItems(viewModel.items, 'all-events-list__item')}
+    ${templateListItems(viewModel.cards, 'all-events-list__item')}
   </ol>
 `);
 
@@ -79,12 +79,17 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   ports.getAllEvents,
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
-  T.map((events) => events.slice(
-    (params.page - 1) * params.pageSize,
-    params.page * params.pageSize,
+  T.map((events) => ({
+    items: events.slice(
+      (params.page - 1) * params.pageSize,
+      params.page * params.pageSize,
+    ),
+  })),
+  T.chain(({ items }) => pipe(
+    items,
+    TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
+    TE.map((cards) => ({ cards })),
   )),
-  T.chain(TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle))),
-  TE.map((items) => ({ items })),
   TE.bimap(
     () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
     (viewModel) => ({
