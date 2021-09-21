@@ -31,7 +31,6 @@ a.all-events-list__item_link:visited {
 .all-events-card__event_title {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .all-events-card__event_date {
@@ -48,4 +47,8 @@ a.all-events-list__item_link:visited {
   @include typography.heading-base();
   font-size: functions.px-to-rem(18px);
   margin-bottom: 0;
+}
+
+.all-events-card__article_details {
+  margin-top: 2rem;
 }

@@ -69,7 +69,7 @@ export const evaluatedArticleCard = (
           <h2 class="all-events-card__event_title_text">${group.name} evaluated an article</h3>
           ${templateDate(event.date, 'all-events-card__event_date')}
         </div>
-        <div>
+        <div class="all-events-card__article_details">
           <h3>${article.title}</h4>
           ${authors}
         </div>

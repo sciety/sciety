@@ -27,11 +27,11 @@ export const multipleArticlesCard = (
   TO.map((group) => `
     <a href="/groups/${group.slug}" class="all-events-list__item_link">
       <article class="all-events-card">
-        <img src="${group.avatarPath}" alt="" width="36" height="36">
-        <div>
-          <h2>${group.name} evaluated ${card.articleCount} articles</h3>
+        <div class="all-events-card__event_title">
+          <img class="all-events-card__avatar" src="${group.avatarPath}" alt="" width="36" height="36">
+          <h2 class="all-events-card__event_title_text">${group.name} evaluated ${card.articleCount} articles</h3>
+          ${templateDate(card.date, 'all-events-card__event_date')}
         </div>
-        ${templateDate(card.date)}
       </article>
     </a>
   `),
