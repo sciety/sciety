@@ -65,8 +65,8 @@ export const evaluatedArticleCard = (
     <a href="/articles/${article.doi.value}" class="all-events-list__item_link">
       <article class="all-events-card">
         <div class="all-events-card__event_title">
-          <img src="${group.avatarPath}" alt="" width="36" height="36">
-          <h2>${group.name} evaluated an article</h3>
+          <img class="all-events-card__avatar" src="${group.avatarPath}" alt="">
+          <h2 class="all-events-card__event_title_text">${group.name} evaluated an article</h3>
           ${templateDate(event.date, 'all-events-card__event_date')}
         </div>
         <div>

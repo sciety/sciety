@@ -2,6 +2,8 @@
 @use '../sass/list';
 @use '../sass/settings';
 @use '../sass/baseline';
+@use '../sass/functions';
+@use '../sass/typography';
 
 .all-events-list {
   @include card.list();
@@ -28,8 +30,22 @@ a.all-events-list__item_link:visited {
 
 .all-events-card__event_title {
   display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
 .all-events-card__event_date {
   margin-left: auto;
+  padding-left: 1rem;
+}
+
+.all-events-card__avatar {
+  @include card.avatar();
+  margin-right: 1rem;
+}
+
+.all-events-card__event_title_text {
+  @include typography.heading-base();
+  font-size: functions.px-to-rem(18px);
+  margin-bottom: 0;
 }
