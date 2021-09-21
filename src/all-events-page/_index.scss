@@ -24,5 +24,12 @@ a.all-events-list__item_link:visited {
 
 .all-events-card {
   @include card.basics();
+}
+
+.all-events-card__event_title {
   display: flex;
+}
+
+.all-events-card__event_date {
+  margin-left: auto;
 }
