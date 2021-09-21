@@ -66,8 +66,8 @@ export const evaluatedArticleCard = (
       <article class="all-events-card">
         <img src="${group.avatarPath}" alt="" width="36" height="36">
         <div>
-          <h3>${group.name} evaluated an article</h3>
-          <h4>${article.title}</h4>
+          <h2>${group.name} evaluated an article</h3>
+          <h3>${article.title}</h4>
           ${authors}
         </div>
         ${templateDate(event.date)}
