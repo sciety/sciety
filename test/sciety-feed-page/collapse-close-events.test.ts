@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { collapseCloseEvents } from '../../src/all-events-page/collapse-close-events';
 import { groupEvaluatedArticle } from '../../src/domain-events';
+import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';

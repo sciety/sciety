@@ -33,23 +33,23 @@ type ViewModel = {
 };
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
-  <h1>All events</h1>
-  <p class="all-events-page-numbers">
+  <h1>Sciety Feed</h1>
+  <p class="sciety-feed-page-numbers">
     Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
   </p>
-  <ol class="all-events-list">
-    ${templateListItems(viewModel.cards, 'all-events-list__item')}
+  <ol class="sciety-feed-list">
+    ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
   </ol>
   ${pipe(
     viewModel.nextPage,
     O.fold(
       () => '',
-      (page) => paginationControls(`/all-events?page=${page}`),
+      (page) => paginationControls(`/sciety-feed?page=${page}`),
     ),
   )}
 `);
 
-export const allEventsCodec = t.type({
+export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
@@ -61,12 +61,12 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-type Params = t.TypeOf<typeof allEventsCodec> & {
+type Params = t.TypeOf<typeof scietyFeedCodec> & {
   pageSize: number,
 };
 
 const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
-  <article class="all-events-card">
+  <article class="sciety-feed-card">
     ${JSON.stringify(event, null, 2)}
   </article>
 `);
@@ -91,7 +91,7 @@ const eventCard = (
   return TE.right(renderGenericEvent(event));
 };
 
-export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+export const scietyFeedPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.filter(isGroupEvaluatedArticleEvent)),
   T.map(RA.reverse),
@@ -105,7 +105,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   TE.bimap(
     (e) => ({ type: e, message: toHtmlFragment('We couldn\'t find that information.') }),
     (viewModel) => ({
-      title: 'All events',
+      title: 'Sciety Feed',
       content: renderContent(viewModel),
     }),
   ),

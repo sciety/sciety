@@ -26,7 +26,6 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { allEventsCodec, allEventsPage } from '../all-events-page/all-events-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap } from '../docmaps/docmap';
 import { paramsCodec as docmapIndexParamsCodec, generateDocmapDois } from '../docmaps/docmap-index';
@@ -48,6 +47,7 @@ import { saveRespondCommand } from '../respond/save-respond-command';
 import { unsaveArticle } from '../save-article/execute-unsave-article-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -137,9 +137,9 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/all-events',
+    '/sciety-feed',
     pageHandler(flow(
-      allEventsCodec.decode,
+      scietyFeedCodec.decode,
       E.bimap(
         toNotFound,
         (params) => ({
@@ -148,7 +148,7 @@ export const createRouter = (adapters: Adapters): Router => {
         }),
       ),
       TE.fromEither,
-      TE.chain(allEventsPage(adapters)),
+      TE.chain(scietyFeedPage(adapters)),
     )),
   );
 

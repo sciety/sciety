@@ -62,14 +62,14 @@ export const evaluatedArticleCard = (
     ),
   })),
   TE.map(({ group, article, authors }) => `
-    <a href="/articles/${article.doi.value}" class="all-events-list__item_link">
-      <article class="all-events-card">
-        <div class="all-events-card__event_title">
-          <img class="all-events-card__avatar" src="${group.avatarPath}" alt="">
-          <h2 class="all-events-card__event_title_text">${group.name} evaluated an article</h3>
-          ${templateDate(event.date, 'all-events-card__event_date')}
+    <a href="/articles/${article.doi.value}" class="sciety-feed-list__item_link">
+      <article class="sciety-feed-card">
+        <div class="sciety-feed-card__event_title">
+          <img class="sciety-feed-card__avatar" src="${group.avatarPath}" alt="">
+          <h2 class="sciety-feed-card__event_title_text">${group.name} evaluated an article</h3>
+          ${templateDate(event.date, 'sciety-feed-card__event_date')}
         </div>
-        <div class="all-events-card__article_details">
+        <div class="sciety-feed-card__article_details">
           <h3>${article.title}</h4>
           ${authors}
         </div>

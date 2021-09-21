@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { allEventsPage } from '../../src/all-events-page/all-events-page';
 import {
   groupEvaluatedArticle,
   userFollowedEditorialCommunity,
@@ -16,6 +15,7 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
+import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
 import { arbitraryHtmlFragment } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -24,7 +24,7 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-describe('all-events-page', () => {
+describe('sciety-feed-page', () => {
   it('renders collapsed single article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
     const articleId = arbitraryDoi();
@@ -42,7 +42,7 @@ describe('all-events-page', () => {
       ]),
     };
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -66,7 +66,7 @@ describe('all-events-page', () => {
       ]),
     };
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -89,7 +89,7 @@ describe('all-events-page', () => {
       ]),
     };
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -114,12 +114,12 @@ describe('all-events-page', () => {
     };
     const pageSize = events.length - 1;
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1, pageSize }),
+      scietyFeedPage(ports)({ page: 1, pageSize }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
     const html = JSDOM.fragment(renderedPage);
-    const itemCount = Array.from(html.querySelectorAll('.all-events-card')).length;
+    const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
 
     expect(itemCount).toStrictEqual(pageSize);
   });
@@ -145,12 +145,12 @@ describe('all-events-page', () => {
       ]),
     };
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1, pageSize: 10 }),
+      scietyFeedPage(ports)({ page: 1, pageSize: 10 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
     const html = JSDOM.fragment(renderedPage);
-    const itemCount = Array.from(html.querySelectorAll('.all-events-card')).length;
+    const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
 
     expect(itemCount).toStrictEqual(1);
   });

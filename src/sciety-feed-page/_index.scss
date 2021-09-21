@@ -6,24 +6,24 @@
 @use '../sass/layout';
 @use '../sass/typography';
 
-.all-events-page-numbers {
+.sciety-feed-page-numbers {
   @include typography.details();
   @include layout.basic-horizontal-spacing();
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.all-events-list {
+.sciety-feed-list {
   @include card.list();
   margin-bottom: 1.5rem;
 }
 
-.all-events-list__item {
+.sciety-feed-list__item {
   @include card.list-item();
 }
 
-a.all-events-list__item_link:link,
-a.all-events-list__item_link:visited {
+a.sciety-feed-list__item_link:link,
+a.sciety-feed-list__item_link:visited {
   color: settings.$colour-text-primary;
 
   &:hover,
@@ -32,31 +32,31 @@ a.all-events-list__item_link:visited {
   }
 }
 
-.all-events-card {
+.sciety-feed-card {
   @include card.basics();
 }
 
-.all-events-card__event_title {
+.sciety-feed-card__event_title {
   display: flex;
   align-items: center;
 }
 
-.all-events-card__event_date {
+.sciety-feed-card__event_date {
   margin-left: auto;
   padding-left: 1rem;
 }
 
-.all-events-card__avatar {
+.sciety-feed-card__avatar {
   @include card.avatar();
   margin-right: 1rem;
 }
 
-.all-events-card__event_title_text {
+.sciety-feed-card__event_title_text {
   @include typography.heading-base();
   font-size: functions.px-to-rem(18px);
   margin-bottom: 0;
 }
 
-.all-events-card__article_details {
+.sciety-feed-card__article_details {
   margin-top: 2rem;
 }
