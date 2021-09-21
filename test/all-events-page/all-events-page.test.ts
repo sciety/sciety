@@ -124,11 +124,16 @@ describe('all-events-page', () => {
     expect(itemCount).toStrictEqual(pageSize);
   });
 
-  it.skip('does not render non-evaluation events', async () => {
+  it('does not render non-evaluation events', async () => {
     const ports = {
-      fetchArticle: shouldNotBeCalled,
-      getGroup: shouldNotBeCalled,
+      fetchArticle: () => TE.right({
+        doi: arbitraryDoi(),
+        title: arbitraryHtmlFragment(),
+        authors: [],
+      }),
+      getGroup: () => TO.some(arbitraryGroup()),
       getAllEvents: T.of([
+        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         userSavedArticle(arbitraryUserId(), arbitraryDoi()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
         userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
@@ -147,6 +152,6 @@ describe('all-events-page', () => {
     const html = JSDOM.fragment(renderedPage);
     const itemCount = Array.from(html.querySelectorAll('.all-events-card')).length;
 
-    expect(itemCount).toStrictEqual(0);
+    expect(itemCount).toStrictEqual(1);
   });
 });

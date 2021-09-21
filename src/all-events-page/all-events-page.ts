@@ -91,6 +91,7 @@ const eventCard = (
 
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
+  T.map(RA.filter(isGroupEvaluatedArticleEvent)),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map(paginate(params.pageSize, params.page)),
