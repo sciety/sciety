@@ -34,6 +34,17 @@ describe('paginate', () => {
       expect(result.items).toStrictEqual(['b']);
     });
 
+    it('returns the current and total pages', () => {
+      const result = pipe(
+        ['a', 'b', 'c'],
+        paginate(1, 2),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      expect(result.pageNumber).toStrictEqual(2);
+      expect(result.numberOfPages).toStrictEqual(3);
+    });
+
     it.each([
       [9, 1, O.none],
       [11, 1, O.some(2)],
