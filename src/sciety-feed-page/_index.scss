@@ -5,6 +5,7 @@
 @use '../sass/functions';
 @use '../sass/layout';
 @use '../sass/typography';
+@use '../sass/breakpoints';
 
 .sciety-feed-page-numbers {
   @include typography.details();
@@ -59,4 +60,10 @@ a.sciety-feed-list__item_link:visited {
 
 .sciety-feed-card__article_details {
   margin-top: 2rem;
+}
+
+.supplementary-info--sciety-feed {
+  @include breakpoints.not-narrow() {
+    padding-top: functions.px-to-rem(30px);
+  }
 }

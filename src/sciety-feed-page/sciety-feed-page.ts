@@ -33,7 +33,7 @@ type ViewModel = {
 };
 
 const supplementaryInfo = `
-  <aside class="supplementary-info">
+  <aside class="supplementary-info supplementary-info--sciety-feed">
     <ul class="supplementary-list" role="list">
       <li class="supplementary-list__item">
         <article class="supplementary-card">
