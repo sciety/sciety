@@ -48,7 +48,9 @@ const supplementaryInfo = `
 `;
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
-  <h1>Sciety Feed</h1>
+  <header class="page-header">
+    <h1>Sciety Feed</h1>
+  </header>
   <section>
     <p class="sciety-feed-page-numbers">
       Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
