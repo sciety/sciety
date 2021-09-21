@@ -60,6 +60,10 @@ $_link-min-height: baseline.increments(5);
   background-image: url('/static/images/home.svg');
 }
 
+.site-menu__link--sciety-feed {
+  background-image: url('/static/images/sciety-icon.svg');
+}
+
 .site-menu__link--groups {
   background-image: url('/static/images/groups.svg');
 }
