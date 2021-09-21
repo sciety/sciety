@@ -53,8 +53,7 @@ a.sciety-feed-list__item_link:visited {
 }
 
 .sciety-feed-card__event_title_text {
-  @include typography.heading-base();
-  font-size: functions.px-to-rem(18px);
+  @include card.title();
   margin-bottom: 0;
 }
 
