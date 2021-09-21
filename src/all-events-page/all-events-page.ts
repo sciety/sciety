@@ -34,7 +34,9 @@ type ViewModel = {
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   <h1>All events</h1>
-  <p class="evaluated-articles__page_count">Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span></p>
+  <p class="all-events-page-numbers">
+    Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
+  </p>
   <ol class="all-events-list">
     ${templateListItems(viewModel.cards, 'all-events-list__item')}
   </ol>

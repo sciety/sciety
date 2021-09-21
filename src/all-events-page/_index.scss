@@ -3,7 +3,15 @@
 @use '../sass/settings';
 @use '../sass/baseline';
 @use '../sass/functions';
+@use '../sass/layout';
 @use '../sass/typography';
+
+.all-events-page-numbers {
+  @include typography.details();
+  @include layout.basic-horizontal-spacing();
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 
 .all-events-list {
   @include card.list();
