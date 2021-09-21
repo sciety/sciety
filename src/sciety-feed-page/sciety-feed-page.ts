@@ -32,21 +32,39 @@ type ViewModel = {
   pageNumber: number,
 };
 
+const supplementaryInfo = `
+  <aside class="supplementary-info">
+    <ul class="supplementary-list" role="list">
+      <li class="supplementary-list__item">
+        <article class="supplementary-card">
+          <h2 class="supplementary-card__title">What is the Sciety feed?</h2>
+          <p>
+            A feed of events that have happened across the Sciety network. Click on a card to find out more. You can build <a href="/my-feed">your own feed</a> of events relevant to you by following specific groups.
+          </p>
+        </article>
+      </li>
+    </ul>
+  </aside>
+`;
+
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   <h1>Sciety Feed</h1>
-  <p class="sciety-feed-page-numbers">
-    Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
-  </p>
-  <ol class="sciety-feed-list">
-    ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
-  </ol>
-  ${pipe(
+  <section>
+    <p class="sciety-feed-page-numbers">
+      Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
+    </p>
+    <ol class="sciety-feed-list">
+      ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
+    </ol>
+    ${pipe(
     viewModel.nextPage,
     O.fold(
       () => '',
       (page) => paginationControls(`/sciety-feed?page=${page}`),
     ),
   )}
+  </section>
+  ${supplementaryInfo}
 `);
 
 export const scietyFeedCodec = t.type({
