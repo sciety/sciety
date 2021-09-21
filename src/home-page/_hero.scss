@@ -5,6 +5,7 @@
 
 @use '../sass/baseline';
 @use '../sass/typography';
+@use '../sass/breakpoints';
 
 @use '../sass/button';
 @use '../sass/list';
@@ -108,4 +109,15 @@ $_search-button-width: functions.px-to-rem(70px);
 .home-page-hero__statistic_title {
   color: settings.$colour-text-primary;
   margin-right: 1rem;
+}
+
+.home-page-hero__sciety_feed_link {
+  @include common.primary-button();
+  width: unset;
+  margin-left: 0;
+  margin-bottom: 1.5rem;
+
+  @media screen and (min-width: 30.25em) {
+    margin-bottom: 1.5rem;
+  }
 }

@@ -31,6 +31,10 @@ const renderStatistics = (listCount: number) => toHtmlFragment(`
   </ul>
 `);
 
+const renderScietyFeedCTA = (): HtmlFragment => toHtmlFragment(
+  '<a class="home-page-hero__sciety_feed_link" href="/sciety-feed">What\'s happening on Sciety?<a/>',
+);
+
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
@@ -61,6 +65,7 @@ export const hero: Hero = (ports) => pipe(
         </p>
         <p class="home-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
         ${renderStatistics(listCount)}
+        ${renderScietyFeedCTA()}
         <form class="home-page-hero__search_form" action="/search" method="get">
           <input type="hidden" name="category" value="articles">
           <label for="searchText" class="visually-hidden">Search term</label>
