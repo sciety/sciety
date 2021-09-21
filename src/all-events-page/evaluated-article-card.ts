@@ -62,7 +62,7 @@ export const evaluatedArticleCard = (
     ),
   })),
   TE.map(({ group, article, authors }) => `
-    <a href="/articles/${article.doi.value}">
+    <a href="/articles/${article.doi.value}" class="all-events-list__item_link">
       <article class="all-events-card">
         <img src="${group.avatarPath}" alt="" width="36" height="36">
         <div>

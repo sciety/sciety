@@ -12,6 +12,16 @@
   @include card.list-item();
 }
 
+a.all-events-list__item_link:link,
+a.all-events-list__item_link:visited {
+  color: settings.$colour-text-primary;
+
+  &:hover,
+  &:active {
+    color: settings.$colour-text-primary;
+  }
+}
+
 .all-events-card {
   @include card.basics();
   display: flex;
