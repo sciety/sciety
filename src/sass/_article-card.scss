@@ -19,14 +19,6 @@
   @include card.link();
 }
 
-.article-card__authors {
-  @include card.authors();
-}
-
-.article-card__author {
-  @include card.author();
-}
-
 .article-card__footer {
   display: flex;
   justify-content: space-between;

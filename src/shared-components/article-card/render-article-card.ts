@@ -1,11 +1,10 @@
-import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
+import { renderAuthors } from '../render-card-authors';
 
 export type ArticleViewModel = {
   doi: Doi,
@@ -22,26 +21,6 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   evaluationCount === 1,
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
-);
-
-type RenderAuthors = (authors: ReadonlyArray<string>, authorListId: string) => HtmlFragment;
-
-const renderAuthors: RenderAuthors = (authors, authorListId) => pipe(
-  authors,
-  RNEA.fromReadonlyArray,
-  O.fold(
-    constant(''),
-    flow(
-      RNEA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
-      (authorListItems) => `
-      <div class="hidden" id="${authorListId}">This article's authors</div>
-      <ol class="article-card__authors" role="list" aria-describedby="${authorListId}">
-        ${authorListItems.join('')}
-      </ol>
-    `,
-    ),
-  ),
-  toHtmlFragment,
 );
 
 const renderArticleVersionDate = O.fold(

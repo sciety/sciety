@@ -1,0 +1,10 @@
+@use '../sass/card';
+
+.card-authors {
+  @include card.authors();
+}
+
+.card-authors__author {
+  @include card.author();
+}
+
