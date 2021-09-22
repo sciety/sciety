@@ -25,15 +25,15 @@ export const multipleArticlesCard = (
   card.groupId,
   getGroup,
   TO.map((group) => `
-    <a href="/groups/${group.slug}" class="sciety-feed-list__item_link">
-      <article class="sciety-feed-card">
+    <article class="sciety-feed-card">
+      <a href="/groups/${group.slug}" class="sciety-feed-card__link">
         <div class="sciety-feed-card__event_title">
           <img class="sciety-feed-card__avatar" src="${group.avatarPath}" alt="" width="36" height="36">
           <h2 class="sciety-feed-card__event_title_text">${group.name} evaluated ${card.articleCount} articles</h3>
           ${templateDate(card.date, 'sciety-feed-card__event_date')}
         </div>
-      </article>
-    </a>
+      </a>
+    </article>
   `),
   TO.map(toHtmlFragment),
   T.map(E.fromOption(() => DE.unavailable)),

@@ -62,8 +62,8 @@ export const evaluatedArticleCard = (
     ),
   })),
   TE.map(({ group, article, authors }) => `
-    <a href="/articles/${article.doi.value}" class="sciety-feed-list__item_link">
-      <article class="sciety-feed-card">
+    <article class="sciety-feed-card">
+      <a href="/articles/${article.doi.value}" class="sciety-feed-card__link">
         <div class="sciety-feed-card__event_title">
           <img class="sciety-feed-card__avatar" src="${group.avatarPath}" alt="">
           <h2 class="sciety-feed-card__event_title_text">${group.name} evaluated an article</h3>
@@ -73,8 +73,8 @@ export const evaluatedArticleCard = (
           <h3>${article.title}</h4>
           ${authors}
         </div>
-      </article>
-    </a>
+      </a>
+    </article>
   `),
   TE.map(toHtmlFragment),
 );

@@ -23,18 +23,24 @@
   @include card.list-item();
 }
 
-a.sciety-feed-list__item_link:link,
-a.sciety-feed-list__item_link:visited {
+.sciety-feed-card {
+  @include card.basics();
+  padding: 0;
+}
+
+.sciety-feed-card__link {
+  display: block;
+  padding: 1rem;
+}
+
+a.sciety-feed-card__link:link,
+a.sciety-feed-card__link:visited {
   color: settings.$colour-text-primary;
 
   &:hover,
   &:active {
     color: settings.$colour-text-primary;
   }
-}
-
-.sciety-feed-card {
-  @include card.basics();
 }
 
 .sciety-feed-card__event_title {
