@@ -82,12 +82,6 @@ type Params = t.TypeOf<typeof scietyFeedCodec> & {
   pageSize: number,
 };
 
-const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
-  <article class="sciety-feed-card">
-    ${JSON.stringify(event, null, 2)}
-  </article>
-`);
-
 const eventCard = (
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
@@ -105,7 +99,7 @@ const eventCard = (
     return evaluatedArticleCard(getGroup, fetchArticle)(event);
   }
 
-  return TE.right(renderGenericEvent(event));
+  return TE.left(DE.unavailable);
 };
 
 export const scietyFeedPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
