@@ -109,8 +109,8 @@ describe('render-article-card', () => {
   });
 
   describe('authors', () => {
-    const authorListSelector = '.article-card__authors';
-    const authorListItemSelector = 'li.article-card__author';
+    const authorListSelector = '.card-authors';
+    const authorListItemSelector = 'li.card-authors__author';
 
     describe('when the authors list is not empty', () => {
       const articleViewModel = generateArticleViewModel({
