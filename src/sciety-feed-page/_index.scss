@@ -67,6 +67,10 @@ a.sciety-feed-card__link:visited {
   margin-top: 2rem;
 }
 
+.sciety-feed-card__article_title {
+  margin-bottom: 0.25rem;
+}
+
 .supplementary-info--sciety-feed {
   @include breakpoints.not-narrow() {
     padding-top: functions.px-to-rem(30px);
