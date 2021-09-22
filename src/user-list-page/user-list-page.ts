@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
+import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -32,13 +33,13 @@ type Ports = SavedArticlePorts & {
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const supplementaryItems = [
-  toHtmlFragment(`
-    <article class="supplementary-card">
-      <h2 class="supplementary-card__title">What is a list?</h2>
-      <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
+  supplementaryCard(
+    'What is a list?',
+    toHtmlFragment(`
+      <p>A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
       <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
-    </article>
-  `),
+    `),
+  ),
 ];
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`

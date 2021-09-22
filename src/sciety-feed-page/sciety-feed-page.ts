@@ -18,6 +18,7 @@ import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
+import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -34,14 +35,14 @@ type ViewModel = {
 };
 
 const supplementaryItems = [
-  toHtmlFragment(`
-    <article class="supplementary-card">
-      <h2 class="supplementary-card__title">What is the Sciety feed?</h2>
+  supplementaryCard(
+    'What is the Sciety feed?',
+    toHtmlFragment(`
       <p>
         A feed of events that have happened across the Sciety network. Click on a card to find out more. You can build <a href="/my-feed">your own feed</a> of events relevant to you by following specific groups.
       </p>
-    </article>
-  `),
+    `),
+  ),
 ];
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
