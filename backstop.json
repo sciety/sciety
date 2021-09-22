@@ -29,6 +29,10 @@
       "url": "http://sciety_app/my-feed"
     },
     {
+      "label": "Sciety feed",
+      "url": "http://sciety_app/sciety-feed"
+    },
+    {
       "label": "Menu page",
       "url": "http://sciety_app/menu"
     },
