@@ -97,6 +97,8 @@ describe('sciety-feed-page', () => {
     expect(renderedPage).toContain(`${group.name} evaluated an article`);
   });
 
+  it.todo('renders a single saved article as a card');
+
   it('renders at most a page of cards at a time', async () => {
     const events = [
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
@@ -124,7 +126,7 @@ describe('sciety-feed-page', () => {
     expect(itemCount).toStrictEqual(pageSize);
   });
 
-  it('does not render non-evaluation events', async () => {
+  it('does not render non-feed events', async () => {
     const ports = {
       fetchArticle: () => TE.right({
         doi: arbitraryDoi(),
