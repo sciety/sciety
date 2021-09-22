@@ -7,11 +7,13 @@
 @use '../sass/button';
 
 $home-page-breakpoint: 60.25em + (math.div(settings.$drawer-width, settings.$base-font-measure) * 1em);
+$button-stacking-breakpoint: 30.25em;
 
 $section-top-padding: baseline.increments(5);
 
 $_page-gutter--small: 1rem;
 $_page-gutter--large: 3rem;
+
 
 @mixin container-horizontal-spacing() {
   padding-left: $_page-gutter--small;
@@ -32,7 +34,7 @@ $_page-gutter--large: 3rem;
   padding-bottom: baseline.increments(1.625);
   margin: 0 0.75rem baseline.increments(3);
 
-  @media screen and (min-width: 30.25em) {
+  @media screen and (min-width: $button-stacking-breakpoint) {
     margin-bottom: 0;
   }
 }
