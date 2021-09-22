@@ -18,6 +18,7 @@ import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
+import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -32,20 +33,16 @@ type ViewModel = {
   pageNumber: number,
 };
 
-const supplementaryInfo = `
-  <aside class="supplementary-info supplementary-info--sciety-feed">
-    <ul class="supplementary-list" role="list">
-      <li class="supplementary-list__item">
-        <article class="supplementary-card">
-          <h2 class="supplementary-card__title">What is the Sciety feed?</h2>
-          <p>
-            A feed of events that have happened across the Sciety network. Click on a card to find out more. You can build <a href="/my-feed">your own feed</a> of events relevant to you by following specific groups.
-          </p>
-        </article>
-      </li>
-    </ul>
-  </aside>
-`;
+const supplementaryItems = [
+  toHtmlFragment(`
+    <article class="supplementary-card">
+      <h2 class="supplementary-card__title">What is the Sciety feed?</h2>
+      <p>
+        A feed of events that have happened across the Sciety network. Click on a card to find out more. You can build <a href="/my-feed">your own feed</a> of events relevant to you by following specific groups.
+      </p>
+    </article>
+  `),
+];
 
 const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   <header class="page-header">
@@ -66,7 +63,7 @@ const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
     ),
   )}
   </section>
-  ${supplementaryInfo}
+  ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
 `);
 
 export const scietyFeedCodec = t.type({

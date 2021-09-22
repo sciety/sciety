@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
+import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -30,19 +31,15 @@ type Ports = SavedArticlePorts & {
 
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-const supplementaryInfo = `
-  <aside class="supplementary-info">
-    <ul class="supplementary-list" role="list">
-      <li class="supplementary-list__item">
-        <article class="supplementary-card">
-          <h2 class="supplementary-card__title">What is a list?</h2>
-          <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
-          <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
-        </article>
-      </li>
-    </ul>
-  </aside>
-`;
+const supplementaryItems = [
+  toHtmlFragment(`
+    <article class="supplementary-card">
+      <h2 class="supplementary-card__title">What is a list?</h2>
+      <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
+      <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
+    </article>
+  `),
+];
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
@@ -58,7 +55,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
     ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
   </header>
   ${savedArticlesList}
-  ${supplementaryInfo}
+  ${supplementaryInfo(supplementaryItems)}
 `);
 
 export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
