@@ -1,13 +1,12 @@
-import { htmlEscape } from 'escape-goat';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
 import { GroupEvaluatedArticleEvent } from '../domain-events';
 import { templateDate } from '../shared-components/date';
+import { renderAuthors } from '../shared-components/render-card-authors';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
@@ -47,21 +46,7 @@ export const evaluatedArticleCard = (
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ group, article }) => ({
-    group,
-    article,
-    authors: pipe(
-      article.authors,
-      RA.map((author) => `<li class="sciety-feed-card__author">${htmlEscape(author)}</li>`),
-      (authorListItems) => `
-        <ol class="sciety-feed-card__authors" role="list">
-          ${authorListItems.join('')}
-        </ol>
-      `,
-      toHtmlFragment,
-    ),
-  })),
-  TE.map(({ group, article, authors }) => `
+  TE.map(({ group, article }) => `
     <article class="sciety-feed-card">
       <a href="/articles/${article.doi.value}" class="sciety-feed-card__link">
         <div class="sciety-feed-card__event_title">
@@ -71,7 +56,7 @@ export const evaluatedArticleCard = (
         </div>
         <div class="sciety-feed-card__article_details">
           <h3>${article.title}</h4>
-          ${authors}
+          ${renderAuthors(article.authors, `sciety-feed-card-author-list-${group.id}-${article.doi.value}`)}
         </div>
       </a>
     </article>

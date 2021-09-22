@@ -1,10 +1,12 @@
-@use '../sass/card';
+@use '../sass/baseline';
+@use '../sass/list';
 
 .card-authors {
-  @include card.authors();
+  @include list.basics();
+  margin-bottom: baseline.increments(1);
 }
 
 .card-authors__author {
-  @include card.author();
+  @include list.author-separator-terminator();
+  display: inline;
 }
-

@@ -66,14 +66,3 @@
   height: avatar.$size--small;
   flex: 0 0 avatar.$size--small;
 }
-
-
-@mixin authors() {
-  @include list.basics();
-  margin-bottom: baseline.increments(1);
-}
-
-@mixin author() {
-  @include list.author-separator-terminator();
-  display: inline;
-}

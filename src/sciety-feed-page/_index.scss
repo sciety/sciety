@@ -67,14 +67,6 @@ a.sciety-feed-card__link:visited {
   margin-top: 2rem;
 }
 
-.sciety-feed-card__authors {
-  @include card.authors();
-}
-
-.sciety-feed-card__author {
-  @include card.author();
-}
-
 .supplementary-info--sciety-feed {
   @include breakpoints.not-narrow() {
     padding-top: functions.px-to-rem(30px);
