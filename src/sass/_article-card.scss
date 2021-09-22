@@ -20,13 +20,11 @@
 }
 
 .article-card__authors {
-  @include list.basics();
-  margin-bottom: baseline.increments(1);
+  @include card.authors();
 }
 
 .article-card__author {
-  @include list.author-separator-terminator();
-  display: inline;
+  @include card.author();
 }
 
 .article-card__footer {

@@ -52,9 +52,9 @@ export const evaluatedArticleCard = (
     article,
     authors: pipe(
       article.authors,
-      RA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
+      RA.map((author) => `<li class="sciety-feed-card__author">${htmlEscape(author)}</li>`),
       (authorListItems) => `
-        <ol class="article-card__authors" role="list">
+        <ol class="sciety-feed-card__authors" role="list">
           ${authorListItems.join('')}
         </ol>
       `,
