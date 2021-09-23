@@ -9,8 +9,9 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-saved-article-to-a-list-card', () => {
   const avatarUrl = arbitraryUri();
+  const handle = 'handle';
   const getUserDetails = () => TE.right({
-    handle: 'handle',
+    handle,
     avatarUrl,
   });
   const date = new Date('2021-09-15');
@@ -23,7 +24,7 @@ describe('user-saved-article-to-a-list-card', () => {
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
-    expect(result).toContain('handle');
+    expect(result).toContain(handle);
   });
 
   it('includes the user\'s avatar', async () => {
@@ -46,7 +47,15 @@ describe('user-saved-article-to-a-list-card', () => {
     expect(result).toContain('Sep 15, 2021');
   });
 
-  it.todo('includes the link to the list page');
+  it('includes the link to the list page', async () => {
+    const result = await pipe(
+      event,
+      userSavedArticleToAListCard(getUserDetails),
+      TE.getOrElseW(shouldNotBeCalled),
+    )();
+
+    expect(result).toContain(`href="/users/${handle}/lists/saved-articles"`);
+  });
 
   it.todo('includes title and description of the list');
 });

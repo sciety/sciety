@@ -20,9 +20,11 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
   event.userId,
   getUserDetails,
   TE.map(({ handle, avatarUrl }) => `
-    ${handle}
-    ${templateDate(event.date)}
-    <img src="${avatarUrl}" alt="">
+    <a href="/users/${handle}/lists/saved-articles">
+      ${handle}
+      ${templateDate(event.date)}
+      <img src="${avatarUrl}" alt="">
+    </a>    
   `),
   TE.map(toHtmlFragment),
 );
