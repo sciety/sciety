@@ -61,9 +61,9 @@ describe('user-saved-article-to-a-list-card', () => {
   it.todo('includes title and description of the list');
 
   describe('when user details are unavailable', () => {
-    it.skip('returns a card', async () => {
-      const failingGetUserDetails = () => TE.left(DE.unavailable);
+    const failingGetUserDetails = () => TE.left(DE.unavailable);
 
+    it.skip('returns a card', async () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
@@ -73,9 +73,25 @@ describe('user-saved-article-to-a-list-card', () => {
       expect(result).toContain('sciety-feed-card');
     });
 
-    it.todo('replaces handle with "a user"');
+    it.skip('replaces handle with "a user"', async () => {
+      const result = await pipe(
+        event,
+        userSavedArticleToAListCard(failingGetUserDetails),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
 
-    it.todo('replaces avatar with a default image');
+      expect(result).toContain('A user saved an article');
+    });
+
+    it.skip('replaces avatar with a default image', async () => {
+      const result = await pipe(
+        event,
+        userSavedArticleToAListCard(failingGetUserDetails),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+
+      expect(result).toContain('src="/static/images/sciety-logo.jpg"');
+    });
 
     it.todo('links to the correct place');
   });
