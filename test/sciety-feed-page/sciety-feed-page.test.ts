@@ -97,7 +97,22 @@ describe('sciety-feed-page', () => {
     expect(renderedPage).toContain(`${group.name} evaluated an article`);
   });
 
-  it.todo('renders a single saved article as a card');
+  it.skip('renders a single saved article as a card', async () => {
+    const ports = {
+      fetchArticle: shouldNotBeCalled,
+      getGroup: shouldNotBeCalled,
+      getAllEvents: T.of([
+        userSavedArticle(arbitraryUserId(), arbitraryDoi()),
+      ]),
+    };
+    const renderedPage = await pipe(
+      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+
+    expect(renderedPage).toContain('saved an article to a list');
+  });
 
   it('renders at most a page of cards at a time', async () => {
     const events = [
