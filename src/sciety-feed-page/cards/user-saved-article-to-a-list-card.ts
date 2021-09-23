@@ -20,11 +20,15 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
   event.userId,
   getUserDetails,
   TE.map(({ handle, avatarUrl }) => `
-    <a href="/users/${handle}/lists/saved-articles">
-      ${handle}
-      ${templateDate(event.date)}
-      <img src="${avatarUrl}" alt="">
-    </a>    
+    <article class="sciety-feed-card">
+      <a href="/users/${handle}/lists/saved-articles" class="sciety-feed-card__link">
+        <div class="sciety-feed-card__event_title">
+          <img class="sciety-feed-card__avatar" src="${avatarUrl}" alt="">
+          <h2 class="sciety-feed-card__event_title_text">${handle} saved an article to a list</h2>
+          ${templateDate(event.date, 'sciety-feed-card__event_date')}
+        </div>
+      </a>
+    </article>
   `),
   TE.map(toHtmlFragment),
 );
