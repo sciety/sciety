@@ -26,6 +26,10 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
           <h2 class="sciety-feed-card__event_title_text">${handle} saved an article to a list</h2>
           ${templateDate(event.date, 'sciety-feed-card__event_date')}
         </div>
+        <div class="sciety-feed-card__article_details">
+          <h3 class="list-card__title">Saved articles</h3>
+          <p>Articles that have been saved by @${handle}, most recently saved first.</p>
+        </div>
       </a>
     </article>
   `),
