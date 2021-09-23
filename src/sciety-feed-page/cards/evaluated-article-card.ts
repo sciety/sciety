@@ -51,11 +51,11 @@ export const evaluatedArticleCard = (
       <a href="/articles/${article.doi.value}" class="sciety-feed-card__link">
         <div class="sciety-feed-card__event_title">
           <img class="sciety-feed-card__avatar" src="${group.avatarPath}" alt="">
-          <h2 class="sciety-feed-card__event_title_text">${group.name} evaluated an article</h3>
+          <h2 class="sciety-feed-card__event_title_text">${group.name} evaluated an article</h2>
           ${templateDate(event.date, 'sciety-feed-card__event_date')}
         </div>
         <div class="sciety-feed-card__article_details">
-          <h3 class="sciety-feed-card__article_title">${article.title}</h4>
+          <h3 class="sciety-feed-card__article_title">${article.title}</h3>
           ${renderAuthors(article.authors, `sciety-feed-card-author-list-${group.id}-${article.doi.value}`)}
         </div>
       </a>
