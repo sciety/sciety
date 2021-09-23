@@ -58,4 +58,14 @@ describe('user-saved-article-to-a-list-card', () => {
   });
 
   it.todo('includes title and description of the list');
+
+  describe('when user details are unavailable', () => {
+    it.todo('returns a valid card');
+
+    it.todo('replaces handle with "a user"');
+
+    it.todo('replaces avatar with a default image');
+
+    it.todo('links to the correct place');
+  });
 });
