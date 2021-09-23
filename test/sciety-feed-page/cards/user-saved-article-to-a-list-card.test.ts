@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle } from '../../../src/domain-events';
 import { userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -60,7 +61,17 @@ describe('user-saved-article-to-a-list-card', () => {
   it.todo('includes title and description of the list');
 
   describe('when user details are unavailable', () => {
-    it.todo('returns a valid card');
+    it.skip('returns a card', async () => {
+      const failingGetUserDetails = () => TE.left(DE.unavailable);
+
+      const result = await pipe(
+        event,
+        userSavedArticleToAListCard(failingGetUserDetails),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+
+      expect(result).toContain('sciety-feed-card');
+    });
 
     it.todo('replaces handle with "a user"');
 
