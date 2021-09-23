@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { EvaluatedArticleCard } from './evaluated-article-card';
-import { MultipleArticlesCard } from './multiple-articles-card';
+import { EvaluatedArticleCard, MultipleArticlesCard } from './cards';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 
 type CollapsedGroupEvaluatedArticle = EvaluatedArticleCard & {

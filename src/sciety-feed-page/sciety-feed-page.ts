@@ -6,14 +6,13 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { evaluatedArticleCard, FetchArticle, multipleArticlesCard } from './cards';
 import {
   collapseCloseEvents,
   CollapsedEvent,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
-import { evaluatedArticleCard, FetchArticle } from './evaluated-article-card';
-import { multipleArticlesCard } from './multiple-articles-card';
 import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
