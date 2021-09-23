@@ -6,7 +6,13 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { evaluatedArticleCard, FetchArticle, multipleArticlesCard } from './cards';
+import {
+  evaluatedArticleCard,
+  FetchArticle,
+  GetUserDetails,
+  multipleArticlesCard,
+  userSavedArticleToAListCard,
+} from './cards';
 import {
   collapseCloseEvents,
   CollapsedEvent,
@@ -14,7 +20,7 @@ import {
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
 import { paginate } from './paginate';
-import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
+import { DomainEvent, isGroupEvaluatedArticleEvent, isUserSavedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
@@ -76,6 +82,7 @@ type Ports = {
   fetchArticle: FetchArticle,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,
+  getUserDetails: GetUserDetails,
 };
 
 type Params = t.TypeOf<typeof scietyFeedCodec> & {
@@ -85,6 +92,7 @@ type Params = t.TypeOf<typeof scietyFeedCodec> & {
 const eventCard = (
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
+  getUserDetails: GetUserDetails,
 ) => (
   event: DomainEvent | CollapsedEvent,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
@@ -99,18 +107,23 @@ const eventCard = (
     return evaluatedArticleCard(getGroup, fetchArticle)(event);
   }
 
+  if (isUserSavedArticleEvent(event)) {
+    return userSavedArticleToAListCard(getUserDetails)(event);
+  }
   return TE.left(DE.unavailable);
 };
 
 export const scietyFeedPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
-  T.map(RA.filter(isGroupEvaluatedArticleEvent)),
+  T.map(RA.filter(
+    (event) => isGroupEvaluatedArticleEvent(event) || isUserSavedArticleEvent(event),
+  )),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map(paginate(params.pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,
-    TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle)),
+    TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle, ports.getUserDetails)),
     TE.map((cards) => ({ cards, ...rest })),
   )),
   TE.bimap(

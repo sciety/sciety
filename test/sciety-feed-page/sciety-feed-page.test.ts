@@ -16,7 +16,7 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
-import { arbitraryHtmlFragment } from '../helpers';
+import { arbitraryHtmlFragment, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -25,6 +25,11 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('sciety-feed-page', () => {
+  const getUserDetails = () => TE.right({
+    handle: arbitraryWord(),
+    avatarUrl: arbitraryUri(),
+  });
+
   it('renders collapsed single article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
     const articleId = arbitraryDoi();
@@ -40,6 +45,7 @@ describe('sciety-feed-page', () => {
         groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
         groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
       ]),
+      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
@@ -64,6 +70,7 @@ describe('sciety-feed-page', () => {
         groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
       ]),
+      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
@@ -87,6 +94,7 @@ describe('sciety-feed-page', () => {
       getAllEvents: T.of([
         groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
       ]),
+      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
@@ -97,13 +105,14 @@ describe('sciety-feed-page', () => {
     expect(renderedPage).toContain(`${group.name} evaluated an article`);
   });
 
-  it.skip('renders a single saved article as a card', async () => {
+  it('renders a single saved article as a card', async () => {
     const ports = {
       fetchArticle: shouldNotBeCalled,
       getGroup: shouldNotBeCalled,
       getAllEvents: T.of([
         userSavedArticle(arbitraryUserId(), arbitraryDoi()),
       ]),
+      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
@@ -128,6 +137,7 @@ describe('sciety-feed-page', () => {
       }),
       getGroup: () => TO.some(arbitraryGroup()),
       getAllEvents: T.of(events),
+      getUserDetails,
     };
     const pageSize = events.length - 1;
     const renderedPage = await pipe(
@@ -151,7 +161,6 @@ describe('sciety-feed-page', () => {
       getGroup: () => TO.some(arbitraryGroup()),
       getAllEvents: T.of([
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-        userSavedArticle(arbitraryUserId(), arbitraryDoi()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
         userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
@@ -160,6 +169,7 @@ describe('sciety-feed-page', () => {
         userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
       ]),
+      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)({ page: 1, pageSize: 10 }),
