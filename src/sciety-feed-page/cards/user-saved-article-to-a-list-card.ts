@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { scietyFeedCard } from './sciety-feed-card';
@@ -18,8 +20,18 @@ type UserSavedArticleToAListCard = (
 export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUserDetails) => (event) => pipe(
   event.userId,
   getUserDetails,
-  TE.map(({ handle, avatarUrl }) => pipe(
-    {
+  TE.match(
+    () => ({
+      titleText: 'A user saved an article to a list',
+      linkUrl: `/users/${event.userId}/lists`,
+      avatarUrl: '/static/images/sciety-logo.jpg',
+      date: event.date,
+      details: {
+        title: toHtmlFragment('Saved articles'),
+        content: toHtmlFragment('<p>Articles that have been saved by this user, most recently saved first.</p>'),
+      },
+    }),
+    ({ handle, avatarUrl }) => ({
       titleText: `${handle} saved an article to a list`,
       linkUrl: `/users/${handle}/lists/saved-articles`,
       avatarUrl,
@@ -28,7 +40,8 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
         title: toHtmlFragment('Saved articles'),
         content: toHtmlFragment(`<p>Articles that have been saved by @${handle}, most recently saved first.</p>`),
       },
-    },
-    scietyFeedCard,
-  )),
+    }),
+  ),
+  T.map(scietyFeedCard),
+  T.map(E.right),
 );

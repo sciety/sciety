@@ -63,7 +63,7 @@ describe('user-saved-article-to-a-list-card', () => {
   describe('when user details are unavailable', () => {
     const failingGetUserDetails = () => TE.left(DE.unavailable);
 
-    it.skip('returns a card', async () => {
+    it('returns a card', async () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
@@ -73,7 +73,7 @@ describe('user-saved-article-to-a-list-card', () => {
       expect(result).toContain('sciety-feed-card');
     });
 
-    it.skip('replaces handle with "a user"', async () => {
+    it('replaces handle with "a user"', async () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
@@ -83,7 +83,7 @@ describe('user-saved-article-to-a-list-card', () => {
       expect(result).toContain('A user saved an article');
     });
 
-    it.skip('replaces avatar with a default image', async () => {
+    it('replaces avatar with a default image', async () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
