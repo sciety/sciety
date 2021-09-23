@@ -7,9 +7,11 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-saved-article-to-a-list-card', () => {
+  const getUserDetails = () => TE.right({ handle: 'handle' });
+  const date = new Date('2021-09-15');
+  const event = userSavedArticle(arbitraryUserId(), arbitraryDoi(), date);
+
   it('includes the user\'s handle', async () => {
-    const getUserDetails = () => TE.right({ handle: 'handle' });
-    const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
     const result = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
@@ -21,7 +23,15 @@ describe('user-saved-article-to-a-list-card', () => {
 
   it.todo('includes the user\'s avatar');
 
-  it.todo('includes the event date');
+  it('includes the event date', async () => {
+    const result = await pipe(
+      event,
+      userSavedArticleToAListCard(getUserDetails),
+      TE.getOrElseW(shouldNotBeCalled),
+    )();
+
+    expect(result).toContain('Sep 15, 2021');
+  });
 
   it.todo('includes the link to the list page');
 
