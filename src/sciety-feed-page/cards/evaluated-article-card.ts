@@ -40,22 +40,27 @@ export const evaluatedArticleCard = (
       getGroup,
       T.map(E.fromOption(constant(DE.unavailable))),
     ),
-    article: pipe(
+    details: pipe(
       event.articleId,
       fetchArticle,
+      TE.match(
+        () => undefined,
+        (article) => ({
+          title: article.title,
+          content: renderAuthors(article.authors, `sciety-feed-card-author-list-${event.groupId}-${article.doi.value}`),
+        }),
+      ),
+      TE.rightTask,
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ group, article }) => pipe(
+  TE.map(({ group, details }) => pipe(
     {
       titleText: `${group.name} evaluated an article`,
-      linkUrl: `/articles/${article.doi.value}`,
+      linkUrl: `/articles/${event.articleId.value}`,
       avatarUrl: group.avatarPath,
       date: event.date,
-      details: {
-        title: article.title,
-        content: renderAuthors(article.authors, `sciety-feed-card-author-list-${group.id}-${article.doi.value}`),
-      },
+      details,
     },
     scietyFeedCard,
   )),

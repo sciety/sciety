@@ -12,7 +12,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('evaluated-article-card', () => {
   describe('when the article details cannot be fetched', () => {
-    it.skip('returns a valid card', async () => {
+    it('returns a valid card', async () => {
       const card = await pipe(
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         evaluatedArticleCard(
@@ -25,7 +25,7 @@ describe('evaluated-article-card', () => {
       expect(card).toContain('evaluated an article');
     });
 
-    it.skip('contains no article details', async () => {
+    it('contains no article details', async () => {
       const card = await pipe(
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         evaluatedArticleCard(
