@@ -55,7 +55,7 @@ export const evaluatedArticleCard = (
           ${templateDate(event.date, 'sciety-feed-card__event_date')}
         </div>
         <div class="sciety-feed-card__details">
-          <h3 class="sciety-feed-card__article_title">${article.title}</h3>
+          <h3 class="sciety-feed-card__details_title">${article.title}</h3>
           ${renderAuthors(article.authors, `sciety-feed-card-author-list-${group.id}-${article.doi.value}`)}
         </div>
       </a>
