@@ -6,7 +6,10 @@ import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
-type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, { handle: string }>;
+type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
+  handle: string,
+  avatarUrl: string,
+}>;
 
 type UserSavedArticleToAListCard = (
   getUserDetails: GetUserDetails
@@ -16,6 +19,10 @@ type UserSavedArticleToAListCard = (
 export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUserDetails) => (event) => pipe(
   event.userId,
   getUserDetails,
-  TE.map(({ handle }) => `${handle} ${templateDate(event.date)}`),
+  TE.map(({ handle, avatarUrl }) => `
+    ${handle}
+    ${templateDate(event.date)}
+    <img src="${avatarUrl}" alt="">
+  `),
   TE.map(toHtmlFragment),
 );
