@@ -1,0 +1,54 @@
+@use '../../sass/settings';
+@use '../../sass/card';
+
+.sciety-feed-card {
+  @include card.basics();
+  padding: 0;
+}
+
+.sciety-feed-card__link {
+  display: block;
+  padding: 1rem;
+}
+
+a.sciety-feed-card__link:link,
+a.sciety-feed-card__link:visited {
+  color: settings.$colour-text-primary;
+
+  &:hover,
+  &:active {
+    color: settings.$colour-text-primary;
+  }
+}
+
+.sciety-feed-card__event_title {
+  display: flex;
+  align-items: center;
+}
+
+.sciety-feed-card__event_date {
+  margin-left: auto;
+  padding-left: 1rem;
+}
+
+.sciety-feed-card__avatar {
+  @include card.avatar();
+  margin-right: 1rem;
+}
+
+.sciety-feed-card__event_title_text {
+  @include card.title();
+  margin-bottom: 0;
+}
+
+.sciety-feed-card__details {
+  margin-top: 2rem;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sciety-feed-card__details_title {
+  margin-bottom: 0.25rem;
+}
