@@ -17,6 +17,8 @@ import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 
+const pageSize = arbitraryNumber(5, 10);
+
 const dummyAdapters = {
   findGroups: () => T.of([]),
   searchEuropePmc: () => () => TE.right({
@@ -45,7 +47,6 @@ describe('search-results-page acceptance', () => {
     const query = arbitraryString();
     const params = {
       query,
-      pageSize: arbitraryNumber(5, 10),
       category: O.none,
       cursor: O.none,
       page: O.none,
@@ -54,7 +55,7 @@ describe('search-results-page acceptance', () => {
     it('displays the query inside the search form', async () => {
       const page = pipe(
         params,
-        searchResultsPage(dummyAdapters),
+        searchResultsPage(dummyAdapters)(pageSize),
       );
       const rendered = await contentOf(page)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
@@ -65,7 +66,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching articles', async () => {
       const page = pipe(
         params,
-        searchResultsPage(dummyAdapters),
+        searchResultsPage(dummyAdapters)(pageSize),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
@@ -76,7 +77,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching groups', async () => {
       const page = pipe(
         params,
-        searchResultsPage(dummyAdapters),
+        searchResultsPage(dummyAdapters)(pageSize),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
@@ -89,12 +90,11 @@ describe('search-results-page acceptance', () => {
         const page = pipe(
           {
             query: arbitraryString(),
-            pageSize: arbitraryNumber(5, 10),
             category: O.none,
             cursor: O.none,
             page: O.none,
           },
-          searchResultsPage(dummyAdapters),
+          searchResultsPage(dummyAdapters)(pageSize),
         );
         const rendered = await contentOf(page)();
         const tabHeading = rendered.querySelector('.tab--active')?.innerHTML;
@@ -117,7 +117,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: n,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -134,7 +133,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(n),
           );
           const rendered = await contentOf(page)();
           const articleCards = rendered.querySelectorAll('.article-card');
@@ -146,7 +145,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 1,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -162,7 +160,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(1),
           );
           const rendered = await contentOf(page)();
           const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
@@ -175,7 +173,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 1,
               category: O.some('articles' as const),
               cursor: O.some(arbitraryString()),
               page: O.some(pageNumber),
@@ -191,7 +188,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(1),
           );
           const rendered = await contentOf(page)();
           const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
@@ -203,7 +200,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 3,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -221,7 +217,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(3),
           );
           const rendered = await contentOf(page)();
           const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
@@ -234,7 +230,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: n,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -252,7 +247,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(n),
           );
           const rendered = await contentOf(page)();
           const nextLink = rendered.querySelector('.pagination-controls__next_link');
@@ -264,7 +259,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 1,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -278,7 +272,7 @@ describe('search-results-page acceptance', () => {
               }),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(1),
           );
           const rendered = await contentOf(page)();
           const nextLinkHref = rendered.querySelector('.pagination-controls__next_link')?.getAttribute('href');
@@ -293,7 +287,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query,
-              pageSize: n,
               category: O.some('articles' as const),
               cursor,
               page: O.none,
@@ -309,7 +302,7 @@ describe('search-results-page acceptance', () => {
               })),
               findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
-            }),
+            })(n),
           );
           await contentOf(page)();
 
@@ -320,7 +313,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -328,7 +320,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-            }),
+            })(pageSize),
           );
           const rendered = await contentOf(page)();
           const groupCards = rendered.querySelectorAll('.group-card');
@@ -340,7 +332,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -348,7 +339,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-            }),
+            })(pageSize),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
@@ -360,7 +351,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -368,7 +358,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-            }),
+            })(pageSize),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
@@ -381,7 +371,6 @@ describe('search-results-page acceptance', () => {
             const page = pipe(
               {
                 query: arbitraryString(),
-                pageSize: arbitraryNumber(5, 10),
                 category: O.some('articles' as const),
                 cursor: O.none,
                 page: O.none,
@@ -395,7 +384,7 @@ describe('search-results-page acceptance', () => {
                 }),
                 findReviewsForArticleDoi: () => TE.right([]),
                 findVersionsForArticleDoi: () => TO.none,
-              }),
+              })(pageSize),
             );
             const rendered = await contentOf(page)();
             const articleCard = rendered.querySelectorAll('.article-card')[0];
@@ -409,7 +398,6 @@ describe('search-results-page acceptance', () => {
             const page = await pipe(
               {
                 query: arbitraryString(),
-                pageSize: arbitraryNumber(5, 10),
                 category: O.some('articles' as const),
                 cursor: O.none,
                 page: O.none,
@@ -417,7 +405,7 @@ describe('search-results-page acceptance', () => {
               searchResultsPage({
                 ...dummyAdapters,
                 searchEuropePmc: () => () => TE.left(DE.unavailable),
-              }),
+              })(pageSize),
             )();
 
             expect(page).toStrictEqual(E.left(expect.objectContaining({
@@ -442,7 +430,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: n,
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
@@ -452,7 +439,7 @@ describe('search-results-page acceptance', () => {
               findGroups: () => T.of(matchedGroups),
               getGroup: () => TO.some(arbitraryGroup()),
               getAllEvents: T.of([]),
-            }),
+            })(n),
           );
           const rendered = await contentOf(page)();
           const groupCards = rendered.querySelectorAll('.group-card');
@@ -464,7 +451,6 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 1,
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
@@ -474,7 +460,7 @@ describe('search-results-page acceptance', () => {
               findGroups: () => T.of([arbitraryGroupId()]),
               getGroup: () => TO.some(arbitraryGroup()),
               getAllEvents: T.of([]),
-            }),
+            })(1),
           );
           const rendered = await contentOf(page)();
           const pageCount = rendered.querySelector('.search-results__page_count');
@@ -486,12 +472,11 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
-            searchResultsPage(dummyAdapters),
+            searchResultsPage(dummyAdapters)(pageSize),
           );
           const rendered = await contentOf(page)();
           const articleCards = rendered.querySelectorAll('.article-card');
@@ -503,12 +488,11 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
-            searchResultsPage(dummyAdapters),
+            searchResultsPage(dummyAdapters)(pageSize),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
@@ -520,12 +504,11 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
-            searchResultsPage(dummyAdapters),
+            searchResultsPage(dummyAdapters)(pageSize),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
@@ -541,12 +524,11 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
-            searchResultsPage(dummyAdapters),
+            searchResultsPage(dummyAdapters)(pageSize),
           );
           const rendered = await contentOf(page)();
           const articleCards = rendered.querySelectorAll('.article-card');
@@ -560,12 +542,11 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
-            searchResultsPage(dummyAdapters),
+            searchResultsPage(dummyAdapters)(pageSize),
           );
           const rendered = await contentOf(page)();
           const groupCards = rendered.querySelectorAll('.group-card');

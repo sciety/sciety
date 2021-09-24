@@ -34,19 +34,21 @@ export const paramsCodec = t.type({
   page: tt.optionFromNullable(tt.NumberFromString),
 });
 
-export type Params = t.TypeOf<typeof paramsCodec> & {
-  pageSize: number,
-};
+export type Params = t.TypeOf<typeof paramsCodec>;
 
-export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<DE.DataError, Matches> => pipe(
+type PerformAllSearches = (
+  ports: Ports,
+) => (pageSize: number) => (params: Params) => TE.TaskEither<DE.DataError, Matches>;
+
+export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (params) => pipe(
   {
     query: TE.right(params.query),
-    pageSize: TE.right(params.pageSize),
+    pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
       [params.query, params.cursor],
-      tupled(ports.searchEuropePmc(params.pageSize)),
+      tupled(ports.searchEuropePmc(pageSize)),
     ),
     groups: pipe(
       params.query,

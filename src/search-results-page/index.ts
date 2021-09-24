@@ -27,10 +27,11 @@ type Ports = PerformAllSearchesPorts & {
 
 export { paramsCodec } from './perform-all-searches';
 
-type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
+type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;
 
-export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
-  performAllSearches(ports),
+export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (params) => pipe(
+  params,
+  performAllSearches(ports)(pageSize),
   TE.map(selectSubsetToDisplay),
   TE.chainTaskK(fetchExtraDetails({
     ...ports,
