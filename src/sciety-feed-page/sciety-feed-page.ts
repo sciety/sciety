@@ -85,9 +85,7 @@ type Ports = {
   getUserDetails: GetUserDetails,
 };
 
-type Params = t.TypeOf<typeof scietyFeedCodec> & {
-  pageSize: number,
-};
+type Params = t.TypeOf<typeof scietyFeedCodec>;
 
 const eventCard = (
   getGroup: GetGroup,
@@ -113,14 +111,16 @@ const eventCard = (
   return TE.left(DE.unavailable);
 };
 
-export const scietyFeedPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+export const scietyFeedPage = (
+  ports: Ports,
+) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.filter(
     (event) => isGroupEvaluatedArticleEvent(event) || isUserSavedArticleEvent(event),
   )),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
-  T.map(paginate(params.pageSize, params.page)),
+  T.map(paginate(pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,
     TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle, ports.getUserDetails)),

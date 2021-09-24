@@ -143,15 +143,9 @@ export const createRouter = (adapters: Adapters): Router => {
     '/sciety-feed',
     pageHandler(flow(
       scietyFeedCodec.decode,
-      E.bimap(
-        toNotFound,
-        (params) => ({
-          ...params,
-          pageSize: 20,
-        }),
-      ),
+      E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(scietyFeedPage(adapters)),
+      TE.chain(scietyFeedPage(adapters)(20)),
     )),
   );
 

@@ -48,7 +48,7 @@ describe('sciety-feed-page', () => {
       getUserDetails,
     };
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)(20)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -73,7 +73,7 @@ describe('sciety-feed-page', () => {
       getUserDetails,
     };
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)(20)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -97,7 +97,7 @@ describe('sciety-feed-page', () => {
       getUserDetails,
     };
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)(20)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -115,7 +115,7 @@ describe('sciety-feed-page', () => {
       getUserDetails,
     };
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize: 20 }),
+      scietyFeedPage(ports)(20)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -141,7 +141,7 @@ describe('sciety-feed-page', () => {
     };
     const pageSize = events.length - 1;
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize }),
+      scietyFeedPage(ports)(pageSize)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -172,7 +172,7 @@ describe('sciety-feed-page', () => {
       getUserDetails,
     };
     const renderedPage = await pipe(
-      scietyFeedPage(ports)({ page: 1, pageSize: 10 }),
+      scietyFeedPage(ports)(10)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
