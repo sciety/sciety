@@ -19,7 +19,7 @@ describe('user-followed-a-group-card', () => {
 
   it.todo('displays the user\'s avatar');
 
-  it.skip('displays the user\'s handle', async () => {
+  it('displays the user\'s handle', async () => {
     const result = await pipe(
       event,
       userFollowedAGroupCard(getUserDetails),

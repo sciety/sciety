@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { UserFollowedEditorialCommunityEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -15,8 +15,11 @@ type UserFollowedAGroupCard = (
 ) => (event: UserFollowedEditorialCommunityEvent) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 // ts-unused-exports:disable-next-line
-export const userFollowedAGroupCard: UserFollowedAGroupCard = () => () => pipe(
-  '',
-  toHtmlFragment,
-  TE.right,
+export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails) => (event) => pipe(
+  event.userId,
+  getUserDetails,
+  TE.map(flow(
+    ({ handle }) => `${handle} followed a group`,
+    toHtmlFragment,
+  )),
 );
