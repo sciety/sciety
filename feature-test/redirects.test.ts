@@ -29,4 +29,10 @@ describe('legacy redirects', () => {
       expect(isSavedArticlesTab).toBe(true);
     });
   });
+
+  describe('user list page', () => {
+    describe('when the user ID is not found', () => {
+      it.todo('displays a formatted error page');
+    });
+  });
 });
