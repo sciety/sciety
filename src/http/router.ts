@@ -4,7 +4,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -53,15 +53,12 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
-import * as Doi from '../types/doi';
 import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
-
-const biorxivPrefix = '10.1101';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -75,12 +72,6 @@ const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: Gen
   E.mapLeft(toNotFound),
   TE.fromEither,
   TE.chain(generatePage),
-);
-
-// TODO move into the codecs
-const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
-  params,
-  E.fromPredicate(({ doi }) => pipe(doi, Doi.hasPrefix(biorxivPrefix)), constant('Not a bioRxiv DOI')),
 );
 
 const articlePageParams = t.type({
@@ -280,7 +271,6 @@ export const createRouter = (adapters: Adapters): Router => {
     '/articles/meta/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
-      E.chainW(ensureBiorxivDoiParam),
       E.mapLeft(toNotFound),
       TE.fromEither,
       TE.chain(articleMetaPage(adapters)),
@@ -291,7 +281,6 @@ export const createRouter = (adapters: Adapters): Router => {
     '/articles/activity/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
-      E.chainW(ensureBiorxivDoiParam),
       E.mapLeft(toNotFound),
       TE.fromEither,
       TE.chain(articleActivityPage(adapters)),

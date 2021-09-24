@@ -16,17 +16,4 @@ describe('page-handler', () => {
       expect(ogDescription).toBe('Article abstract.');
     });
   });
-
-  describe('article-page errors', () => {
-    it('renders the description of an error', async () => {
-      const { server } = await createTestServer();
-      const response: Response = await request(server).get('/articles/activity/10.14234321/not-on-biorxiv');
-      const html = response.text;
-      const rendered = JSDOM.fragment(html);
-
-      const errorMessage = rendered.querySelector('main p')?.textContent;
-
-      expect(errorMessage).toStrictEqual(expect.stringContaining('Page not found'));
-    });
-  });
 });

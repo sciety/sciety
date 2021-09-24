@@ -66,7 +66,7 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
 
       if (O.isNone(server)) {
         logger('warn', 'Unable to find server', { doi, response });
-        return E.left(DE.unavailable);
+        return E.left(DE.notFound);
       }
 
       return E.right({
