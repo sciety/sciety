@@ -91,12 +91,6 @@ const userPageParams = t.type({
 export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
 
-  const toParams = <A>(codec: t.Decoder<unknown, A>) => flow(
-    codec.decode,
-    E.mapLeft(toNotFound),
-    TE.fromEither,
-  );
-
   const toSuccessResponse = (body: string) => ({
     body,
     status: StatusCodes.OK,
@@ -109,7 +103,9 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       const response = await pipe(
         context.state,
-        toParams(homePageParams),
+        homePageParams.decode,
+        E.mapLeft(toNotFound),
+        TE.fromEither,
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
           user,
