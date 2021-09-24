@@ -69,8 +69,9 @@ export const pageHandler = (
       T.map(toWebPage(O.fromNullable(context.state.user))),
     )();
 
+    context.response.status = response.status;
     context.response.type = 'html';
-    Object.assign(context.response, response);
+    context.response.body = response.body;
 
     await next();
   }

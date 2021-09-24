@@ -120,8 +120,9 @@ export const createRouter = (adapters: Adapters): Router => {
         ),
       )();
 
+      context.response.status = response.status;
       context.response.type = 'html';
-      Object.assign(context.response, response);
+      context.response.body = response.body;
       await next();
     },
   );
@@ -155,6 +156,8 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/menu',
     async (context, next) => {
+      context.response.status = StatusCodes.OK;
+      context.response.type = 'html';
       context.response.body = menuPageLayout(
         O.fromNullable(context.state.user),
         O.fromNullable(context.request.header.referer),
@@ -532,7 +535,8 @@ export const createRouter = (adapters: Adapters): Router => {
       ),
     )();
 
-    Object.assign(context.response, response);
+    context.response.status = response.status;
+    context.response.body = response.body;
     await next();
   });
 

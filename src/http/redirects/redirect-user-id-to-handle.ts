@@ -23,8 +23,9 @@ export const redirectUserIdToHandle = (ports: Ports, path: string): Middleware =
           type: DE.notFound,
           message: toHtmlFragment('Sorry, we can\'t find this user.'),
         });
+        context.response.status = response.status;
         context.response.type = 'html';
-        Object.assign(context.response, response);
+        context.response.body = response.body;
       },
       ({ handle }) => {
         context.status = StatusCodes.PERMANENT_REDIRECT;
