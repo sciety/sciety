@@ -68,6 +68,15 @@ const toNotFound = () => ({
   message: toHtmlFragment('Page not found'),
 });
 
+type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
+
+const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
+  codec.decode,
+  E.mapLeft(toNotFound),
+  TE.fromEither,
+  TE.chain(generatePage),
+);
+
 // TODO move into the codecs
 const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
   params,
@@ -127,21 +136,17 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/my-feed',
-    pageHandler(flow(
-      myFeedParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chainW(myFeedPage(adapters)),
+    pageHandler(createPageFromParams(
+      myFeedParams,
+      myFeedPage(adapters),
     )),
   );
 
   router.get(
     '/sciety-feed',
-    pageHandler(flow(
-      scietyFeedCodec.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(scietyFeedPage(adapters)(20)),
+    pageHandler(createPageFromParams(
+      scietyFeedCodec,
+      scietyFeedPage(adapters)(20),
     )),
   );
 
@@ -199,11 +204,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/lists`,
-    pageHandler(flow(
-      userPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(userPage(adapters)('lists')),
+    pageHandler(createPageFromParams(
+      userPageParams,
+      userPage(adapters)('lists'),
     )),
   );
 
@@ -214,11 +217,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/following`,
-    pageHandler(flow(
-      userPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(userPage(adapters)('followed-groups')),
+    pageHandler(createPageFromParams(
+      userPageParams,
+      userPage(adapters)('followed-groups'),
     )),
   );
 
@@ -229,11 +230,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
-    pageHandler(flow(
-      userPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(userListPage(adapters)),
+    pageHandler(createPageFromParams(
+      userPageParams,
+      userListPage(adapters),
     )),
   );
 
@@ -317,15 +316,6 @@ export const createRouter = (adapters: Adapters): Router => {
   const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
   const groupSlugRegex = '[A-Za-z0-9-]{0,30}';
 
-  type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
-
-  const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
-    codec.decode,
-    E.mapLeft(toNotFound),
-    TE.fromEither,
-    TE.chain(generatePage),
-  );
-
   router.get(
     `/groups/:slug(${groupSlugRegex})/lists`,
     pageHandler(createPageFromParams(
@@ -352,11 +342,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
-    pageHandler(flow(
-      groupEvaluationsPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupEvaluationsPage(adapters)),
+    pageHandler(createPageFromParams(
+      groupEvaluationsPageParams,
+      groupEvaluationsPage(adapters),
     )),
   );
 
