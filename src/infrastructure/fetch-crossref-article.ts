@@ -57,10 +57,15 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, logger);
+      const server = getServer(doc);
 
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
+        return E.left(DE.unavailable);
+      }
 
+      if (O.isNone(server)) {
+        logger('warn', 'Unable to find server', { doi, response });
         return E.left(DE.unavailable);
       }
 
@@ -69,7 +74,7 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
         authors: authors.value,
         doi,
         title: getTitle(doc, doi, logger),
-        server: getServer(doc),
+        server: server.value,
       });
     } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });

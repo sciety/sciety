@@ -200,11 +200,11 @@ describe('parse-crossref-article', () => {
         const doc = parser.parseFromString(response, 'text/xml');
         const server = getServer(doc);
 
-        expect(server).toBe('medrxiv');
+        expect(server).toStrictEqual(O.some('medrxiv'));
       });
     });
 
-    describe('when the resource is not medrxiv', () => {
+    describe('when the resource is biorxiv', () => {
       it('returns biorxiv', () => {
         const response = crossrefResponseWith(`
           <doi_data>
@@ -214,7 +214,7 @@ describe('parse-crossref-article', () => {
         const doc = parser.parseFromString(response, 'text/xml');
         const server = getServer(doc);
 
-        expect(server).toBe('biorxiv');
+        expect(server).toStrictEqual(O.some('biorxiv'));
       });
     });
   });

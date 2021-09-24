@@ -102,6 +102,7 @@ export const getServer = flow(
     constant('biorxiv' as const),
     constant('medrxiv' as const),
   ),
+  O.some,
 );
 
 const personAuthor = (person: Element) => {
