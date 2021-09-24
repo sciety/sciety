@@ -33,7 +33,7 @@ import { docmap } from '../docmaps/docmap/docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
-  groupPage, paramsCodec as groupPageParams, groupPageTabs,
+  groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
@@ -56,6 +56,8 @@ import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
+import { RenderPageError } from '../types/render-page-error';
 import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
@@ -329,33 +331,36 @@ export const createRouter = (adapters: Adapters): Router => {
   const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
   const groupSlugRegex = '[A-Za-z0-9-]{0,30}';
 
+  type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
+
+  const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
+    codec.decode,
+    E.mapLeft(toNotFound),
+    TE.fromEither,
+    TE.chain(generatePage),
+  );
+
   router.get(
     `/groups/:slug(${groupSlugRegex})/lists`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.lists)),
+    pageHandler(createPageFromParams(
+      groupPageParamsCodec,
+      groupPage(adapters)(groupPageTabs.lists),
     )),
   );
 
   router.get(
     `/groups/:slug(${groupSlugRegex})/about`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.about)),
+    pageHandler(createPageFromParams(
+      groupPageParamsCodec,
+      groupPage(adapters)(groupPageTabs.about),
     )),
   );
 
   router.get(
     `/groups/:slug(${groupSlugRegex})/followers`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.followers)),
+    pageHandler(createPageFromParams(
+      groupPageParamsCodec,
+      groupPage(adapters)(groupPageTabs.followers),
     )),
   );
 
