@@ -243,6 +243,11 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/users/:id([0-9]+)/lists/saved-articles',
+    redirectUserIdToHandle(adapters, 'lists/saved-articles'),
+  );
+
+  router.get(
     '/articles',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
