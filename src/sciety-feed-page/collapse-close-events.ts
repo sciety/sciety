@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { EvaluatedArticleCard, MultipleArticlesCard } from './cards';
+import { GroupEvaluatedArticleCard, GroupEvaluatedMultipleArticlesCard } from './cards';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 
-type CollapsedGroupEvaluatedArticle = EvaluatedArticleCard & {
+type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 
@@ -17,7 +17,7 @@ const collapsedGroupEvaluatedArticle = (
   evaluationCount,
 });
 
-type CollapsedGroupEvaluatedMultipleArticles = MultipleArticlesCard & {
+type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   articleIds: Set<string>,
 };

@@ -7,10 +7,10 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
-  evaluatedArticleCard,
   FetchArticle,
   GetUserDetails,
-  multipleArticlesCard,
+  groupEvaluatedArticleCard,
+  groupEvaluatedMultipleArticlesCard,
   userSavedArticleToAListCard,
 } from './cards';
 import {
@@ -99,12 +99,12 @@ const eventCard = (
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(
       event,
-      multipleArticlesCard(getGroup),
+      groupEvaluatedMultipleArticlesCard(getGroup),
     );
   }
 
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
-    return evaluatedArticleCard(getGroup, fetchArticle)(event);
+    return groupEvaluatedArticleCard(getGroup, fetchArticle)(event);
   }
 
   if (isUserSavedArticleEvent(event)) {

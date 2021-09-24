@@ -11,16 +11,16 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
-export type MultipleArticlesCard = {
+export type GroupEvaluatedMultipleArticlesCard = {
   groupId: GroupId,
   articleCount: number,
   date: Date,
 };
 
-export const multipleArticlesCard = (
+export const groupEvaluatedMultipleArticlesCard = (
   getGroup: GetGroup,
 ) => (
-  card: MultipleArticlesCard,
+  card: GroupEvaluatedMultipleArticlesCard,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   card.groupId,
   getGroup,

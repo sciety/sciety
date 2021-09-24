@@ -21,18 +21,18 @@ export type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ReadonlyArray<string>,
 }>;
 
-export type EvaluatedArticleCard = {
+export type GroupEvaluatedArticleCard = {
   groupId: GroupId,
   articleId: Doi,
   evaluationCount: number,
   date: Date,
 };
 
-export const evaluatedArticleCard = (
+export const groupEvaluatedArticleCard = (
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
 ) => (
-  event: EvaluatedArticleCard | GroupEvaluatedArticleEvent,
+  event: GroupEvaluatedArticleCard | GroupEvaluatedArticleEvent,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
     group: pipe(
