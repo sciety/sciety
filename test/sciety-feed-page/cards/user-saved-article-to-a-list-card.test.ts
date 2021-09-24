@@ -94,7 +94,7 @@ describe('user-saved-article-to-a-list-card', () => {
       expect(result).toContain('src="/static/images/sciety-logo.jpg"');
     });
 
-    it.skip('links to the list page', async () => {
+    it('links to the list page', async () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),

@@ -23,7 +23,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
   TE.match(
     () => ({
       titleText: 'A user saved an article to a list',
-      linkUrl: `/users/${event.userId}/lists`,
+      linkUrl: `/users/${event.userId}/lists/saved-articles`,
       avatarUrl: '/static/images/sciety-logo.jpg',
       date: event.date,
       details: {
