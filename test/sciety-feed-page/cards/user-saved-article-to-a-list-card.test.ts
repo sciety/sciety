@@ -9,6 +9,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-saved-article-to-a-list-card', () => {
+  const userId = arbitraryUserId();
   const avatarUrl = arbitraryUri();
   const handle = 'handle';
   const getUserDetails = () => TE.right({
@@ -16,7 +17,7 @@ describe('user-saved-article-to-a-list-card', () => {
     avatarUrl,
   });
   const date = new Date('2021-09-15');
-  const event = userSavedArticle(arbitraryUserId(), arbitraryDoi(), date);
+  const event = userSavedArticle(userId, arbitraryDoi(), date);
 
   it('includes the user\'s handle', async () => {
     const result = await pipe(
@@ -93,6 +94,14 @@ describe('user-saved-article-to-a-list-card', () => {
       expect(result).toContain('src="/static/images/sciety-logo.jpg"');
     });
 
-    it.todo('links to the correct place');
+    it.skip('links to the list page', async () => {
+      const result = await pipe(
+        event,
+        userSavedArticleToAListCard(failingGetUserDetails),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+
+      expect(result).toContain(`href="/users/${userId}/lists/saved-articles"`);
+    });
   });
 });
