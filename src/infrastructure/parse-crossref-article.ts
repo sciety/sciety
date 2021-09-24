@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
@@ -97,12 +97,16 @@ export const getServer = flow(
     return resourceElement?.textContent;
   },
   O.fromNullable,
-  O.filter((resource) => resource.includes('://medrxiv.org')),
-  O.fold(
-    constant('biorxiv' as const),
-    constant('medrxiv' as const),
-  ),
-  O.some,
+  O.chain((resource) => {
+    if (resource.includes('://medrxiv.org')) {
+      return O.some('medrxiv' as const);
+    }
+    if (resource.includes('://biorxiv.org')) {
+      return O.some('biorxiv' as const);
+    }
+
+    return O.none;
+  }),
 );
 
 const personAuthor = (person: Element) => {

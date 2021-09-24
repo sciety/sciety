@@ -4,6 +4,7 @@ import {
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryUri } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
@@ -215,6 +216,20 @@ describe('parse-crossref-article', () => {
         const server = getServer(doc);
 
         expect(server).toStrictEqual(O.some('biorxiv'));
+      });
+    });
+
+    describe('when the resource is neither biorxiv nor medrxiv', () => {
+      it('returns O.none', () => {
+        const response = crossrefResponseWith(`
+          <doi_data>
+            <resource>${arbitraryUri()}</resource>
+          </doi_data>
+        `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const server = getServer(doc);
+
+        expect(server).toStrictEqual(O.none);
       });
     });
   });
