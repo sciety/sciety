@@ -4,7 +4,7 @@ import { Middleware } from 'koa';
 import { renderErrorPage } from './render-error-page';
 import { finishFollowCommand } from '../follow';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
-import { Adapters } from '../infrastructure/adapters';
+import { Adapters } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 

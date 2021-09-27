@@ -8,7 +8,7 @@ import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
-import { Logger } from '../infrastructure/logger';
+import { Logger } from '../infrastructure';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 
