@@ -7,6 +7,7 @@ import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 
 describe('user-saved-article-to-a-list-card', () => {
   const userId = arbitraryUserId();
@@ -21,43 +22,29 @@ describe('user-saved-article-to-a-list-card', () => {
       avatarUrl,
     });
 
-    it('includes the user\'s handle in the title text', async () => {
-      const viewModel = await pipe(
+    let viewModel: ScietyFeedCard;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
         event,
         userSavedArticleToAListCard(getUserDetails),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('includes the user\'s handle in the title text', async () => {
       expect(viewModel.titleText).toContain(handle);
     });
 
     it('includes the user\'s avatar', async () => {
-      const viewModel = await pipe(
-        event,
-        userSavedArticleToAListCard(getUserDetails),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
       expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
     });
 
     it('includes the event date', async () => {
-      const viewModel = await pipe(
-        event,
-        userSavedArticleToAListCard(getUserDetails),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
       expect(viewModel.date).toStrictEqual(date);
     });
 
     it('includes the link to the list page', async () => {
-      const viewModel = await pipe(
-        event,
-        userSavedArticleToAListCard(getUserDetails),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
       expect(viewModel.linkUrl).toStrictEqual(`/users/${handle}/lists/saved-articles`);
     });
 
