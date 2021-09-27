@@ -14,31 +14,27 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('group-evaluated-article-card', () => {
   describe('when the article details cannot be fetched', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
+    const createCard = pipe(
+      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      groupEvaluatedArticleCard(
+        () => TO.some(arbitraryGroup()),
+        fetchArticle,
+      ),
+    );
 
     it('returns a Right', async () => {
-      const viewModel = await pipe(
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticleCard(
-          () => TO.some(arbitraryGroup()),
-          fetchArticle,
-        ),
-      )();
+      const viewModel = await createCard();
 
       expect(E.isRight(viewModel)).toBe(true);
     });
 
     it('contains no card details', async () => {
-      const viewModel = await pipe(
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticleCard(
-          () => TO.some(arbitraryGroup()),
-          fetchArticle,
-        ),
-      )();
+      const viewModel = pipe(
+        await createCard(),
+        E.getOrElseW(shouldNotBeCalled),
+      );
 
-      const result = E.getOrElseW(shouldNotBeCalled)(viewModel);
-
-      expect(result.details).toBeUndefined();
+      expect(viewModel.details).toBeUndefined();
     });
   });
 });
