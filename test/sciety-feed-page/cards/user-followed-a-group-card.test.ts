@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -53,11 +54,31 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the user details cannot be obtained', () => {
-    it.todo('replaces handle with "a user"');
+    const getUserDetails = () => TE.left(DE.unavailable);
+    const group = arbitraryGroup();
+    const getGroup = () => TO.some(group);
 
-    it.todo('replaces avatar with a default image');
+    let viewModel: ScietyFeedCard;
 
-    it.todo('links to the group page about tab');
+    beforeEach(async () => {
+      viewModel = await pipe(
+        event,
+        userFollowedAGroupCard(getUserDetails, getGroup),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.skip('replaces handle with "a user"', async () => {
+      expect(viewModel.titleText).toMatch(/^A user/);
+    });
+
+    it.skip('replaces avatar with a default image', async () => {
+      expect(viewModel.avatarUrl).toStrictEqual('/static/images/sciety-logo.jpg');
+    });
+
+    it.skip('links to the group page about tab', async () => {
+      expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
+    });
   });
 
   describe('when the group cannot be found', () => {
