@@ -1,5 +1,5 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as A from 'fp-ts/Array';
-import * as I from 'fp-ts/Identity';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -50,14 +50,15 @@ type Dependencies = {
 };
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
-  I.Do,
-  I.apS('logger', pipe(
-    dependencies.prettyLog,
-    jsonSerializer,
-    (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
-    rTracerLogger,
-  )),
-  I.apS('pool', new Pool()),
+  {
+    logger: pipe(
+      dependencies.prettyLog,
+      jsonSerializer,
+      (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
+      rTracerLogger,
+    ),
+    pool: new Pool(),
+  },
   TE.right,
   TE.chainFirst(({ pool }) => TE.tryCatch(
     async () => pool.query(`
@@ -71,16 +72,26 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     `),
     identity,
   )),
-  TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, loggerIO(logger))),
-  TE.apSW('eventsFromDataFiles', pipe(
-    bootstrapGroups,
-    RNEA.map(({ id }) => id),
-    getEventsFromDataFiles,
-  )),
-  TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
-    eventsFromDataFiles.concat(eventsFromDatabase),
-    A.sort(DomainEvent.byDate),
-    TE.right,
+  TE.chain(({ pool, logger }) => pipe(
+    {
+      eventsFromDatabase: getEventsFromDatabase(pool, loggerIO(logger)),
+      eventsFromDataFiles: pipe(
+        bootstrapGroups,
+        RNEA.map(({ id }) => id),
+        getEventsFromDataFiles,
+      ),
+    },
+    sequenceS(TE.ApplyPar),
+    TE.map(({ eventsFromDataFiles, eventsFromDatabase }) => (
+      {
+        events: pipe(
+          eventsFromDataFiles.concat(eventsFromDatabase),
+          A.sort(DomainEvent.byDate),
+        ),
+        pool,
+        logger,
+      }
+    )),
   )),
   TE.chain((adapters) => TE.tryCatch(
     async () => {
