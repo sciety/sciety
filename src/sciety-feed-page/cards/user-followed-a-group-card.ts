@@ -27,19 +27,20 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails, g
   event.editorialCommunityId,
   getGroup,
   TE.fromTaskOption(() => DE.notFound),
-  TE.chainTaskK(() => pipe(
+  TE.map((group) => `/groups/${group.slug}/about`),
+  TE.chainTaskK((linkUrl) => pipe(
     event.userId,
     getUserDetails,
     TE.match(
       () => ({
         titleText: 'A user followed a group',
-        linkUrl: '',
+        linkUrl,
         avatarUrl: '/static/images/sciety-logo.jpg',
         date: event.date,
       }),
       ({ handle, avatarUrl }) => ({
         titleText: `${handle} followed a group`,
-        linkUrl: '',
+        linkUrl,
         avatarUrl,
         date: event.date,
       }),

@@ -49,7 +49,7 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.date).toStrictEqual(date);
     });
 
-    it.skip('links to the group page about tab', async () => {
+    it('links to the group page about tab', async () => {
       expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
     });
   });
@@ -77,7 +77,7 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.avatarUrl).toStrictEqual('/static/images/sciety-logo.jpg');
     });
 
-    it.skip('links to the group page about tab', async () => {
+    it('links to the group page about tab', async () => {
       expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
     });
   });
