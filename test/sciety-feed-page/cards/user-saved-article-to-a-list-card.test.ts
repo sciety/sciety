@@ -19,15 +19,14 @@ describe('user-saved-article-to-a-list-card', () => {
   const date = new Date('2021-09-15');
   const event = userSavedArticle(userId, arbitraryDoi(), date);
 
-  it('includes the user\'s handle', async () => {
-    const result = await pipe(
+  it('includes the user\'s handle in the title text', async () => {
+    const viewModel = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
-      TE.map(scietyFeedCard),
-      TE.getOrElseW(shouldNotBeCalled),
+      TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(result).toContain(handle);
+    expect(viewModel.titleText).toContain(handle);
   });
 
   it('includes the user\'s avatar', async () => {
