@@ -99,6 +99,7 @@ const eventCard = (
     return pipe(
       event,
       groupEvaluatedMultipleArticlesCard(getGroup),
+      TE.map(scietyFeedCard),
     );
   }
 
