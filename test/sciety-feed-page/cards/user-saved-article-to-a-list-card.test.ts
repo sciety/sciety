@@ -30,36 +30,33 @@ describe('user-saved-article-to-a-list-card', () => {
   });
 
   it('includes the user\'s avatar', async () => {
-    const result = await pipe(
+    const viewModel = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
-      TE.map(scietyFeedCard),
-      TE.getOrElseW(shouldNotBeCalled),
+      TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(result).toContain(avatarUrl);
+    expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
   });
 
   it('includes the event date', async () => {
-    const result = await pipe(
+    const viewModel = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
-      TE.map(scietyFeedCard),
-      TE.getOrElseW(shouldNotBeCalled),
+      TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(result).toContain('Sep 15, 2021');
+    expect(viewModel.date).toStrictEqual(date);
   });
 
   it('includes the link to the list page', async () => {
-    const result = await pipe(
+    const viewModel = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
-      TE.map(scietyFeedCard),
-      TE.getOrElseW(shouldNotBeCalled),
+      TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(result).toContain(`href="/users/${handle}/lists/saved-articles"`);
+    expect(viewModel.linkUrl).toStrictEqual(`/users/${handle}/lists/saved-articles`);
   });
 
   it.todo('includes title and description of the list');
