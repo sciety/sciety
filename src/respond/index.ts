@@ -1,4 +1,5 @@
 import { Middleware } from '@koa/router';
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -16,9 +17,11 @@ export const respondHandler = (ports: Ports): Middleware => async (context, next
 
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
-    O.Do,
-    O.apS('reviewId', pipe(context.request.body.reviewid, RI.deserialize)),
-    O.apS('command', pipe(context.request.body.command, toCommand)),
+    {
+      reviewId: pipe(context.request.body.reviewid, RI.deserialize),
+      command: pipe(context.request.body.command, toCommand),
+    },
+    sequenceS(O.Apply),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       commandHandler(ports.commitEvents, ports.getAllEvents, user.id),
