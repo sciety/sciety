@@ -2,12 +2,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle } from '../../../src/domain-events';
 import { scietyFeedCard, userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
+import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 
 describe('user-saved-article-to-a-list-card', () => {
   const userId = arbitraryUserId();
