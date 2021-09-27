@@ -98,7 +98,7 @@ describe('user-followed-a-group-card', () => {
       )();
     });
 
-    it.skip('fails the card', async () => {
+    it('fails the card', async () => {
       expect(E.isLeft(viewModel)).toBe(true);
     });
   });

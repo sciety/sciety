@@ -23,22 +23,26 @@ type UserFollowedAGroupCard = (
 ) => (event: UserFollowedEditorialCommunityEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 // ts-unused-exports:disable-next-line
-export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails) => (event) => pipe(
-  event.userId,
-  getUserDetails,
-  TE.match(
-    () => ({
-      titleText: 'A user followed a group',
-      linkUrl: '',
-      avatarUrl: '/static/images/sciety-logo.jpg',
-      date: event.date,
-    }),
-    ({ handle, avatarUrl }) => ({
-      titleText: `${handle} followed a group`,
-      linkUrl: '',
-      avatarUrl,
-      date: event.date,
-    }),
-  ),
-  T.map(E.right),
+export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails, getGroup) => (event) => pipe(
+  event.editorialCommunityId,
+  getGroup,
+  TE.fromTaskOption(() => DE.notFound),
+  TE.chainTaskK(() => pipe(
+    event.userId,
+    getUserDetails,
+    TE.match(
+      () => ({
+        titleText: 'A user followed a group',
+        linkUrl: '',
+        avatarUrl: '/static/images/sciety-logo.jpg',
+        date: event.date,
+      }),
+      ({ handle, avatarUrl }) => ({
+        titleText: `${handle} followed a group`,
+        linkUrl: '',
+        avatarUrl,
+        date: event.date,
+      }),
+    ),
+  )),
 );
