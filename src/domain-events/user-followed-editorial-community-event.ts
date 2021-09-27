@@ -13,10 +13,11 @@ export type UserFollowedEditorialCommunityEvent = Readonly<{
 export const userFollowedEditorialCommunity = (
   userId: UserId,
   editorialCommunityId: GroupId,
+  date: Date = new Date(),
 ): UserFollowedEditorialCommunityEvent => ({
   id: generate(),
   type: 'UserFollowedEditorialCommunity',
-  date: new Date(),
+  date,
   userId,
   editorialCommunityId,
 });

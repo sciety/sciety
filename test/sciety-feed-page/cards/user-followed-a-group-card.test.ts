@@ -15,7 +15,7 @@ describe('user-followed-a-group-card', () => {
     handle,
     avatarUrl,
   });
-  const event = userFollowedEditorialCommunity(userId, arbitraryGroupId());
+  const event = userFollowedEditorialCommunity(userId, arbitraryGroupId(), new Date('2021-08-12'));
 
   it('displays the user\'s avatar', async () => {
     const result = await pipe(
@@ -37,7 +37,15 @@ describe('user-followed-a-group-card', () => {
     expect(result).toContain(handle);
   });
 
-  it.todo('displays the date of the event');
+  it('displays the date of the event', async () => {
+    const result = await pipe(
+      event,
+      userFollowedAGroupCard(getUserDetails),
+      TE.getOrElseW(shouldNotBeCalled),
+    )();
+
+    expect(result).toContain('Aug 12, 2021');
+  });
 
   it.todo('links to the group page about tab');
 });
