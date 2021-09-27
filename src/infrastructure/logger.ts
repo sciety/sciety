@@ -1,4 +1,5 @@
 import rTracer from 'cls-rtracer';
+import { sequenceS } from 'fp-ts/Apply';
 import * as D from 'fp-ts/Date';
 import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
@@ -84,11 +85,13 @@ export const loggerIO = (logger: Logger): LoggerIO => (
 );
 
 const logEntry = (level: LevelName) => (message: string) => (payload?: Payload): IO.IO<LogEntry> => pipe(
-  IO.Do,
-  IO.apS('timestamp', D.create),
-  IO.apS('level', pipe(level, IO.of)),
-  IO.apS('message', pipe(message, IO.of)),
-  IO.apS('payload', pipe(payload, IO.of)),
+  {
+    timestamp: D.create,
+    level: pipe(level, IO.of),
+    message: pipe(message, IO.of),
+    payload: pipe(payload, IO.of),
+  },
+  sequenceS(IO.Apply),
 );
 
 export const error = logEntry('error');
