@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle } from '../../../src/domain-events';
-import { scietyFeedCard, userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
+import { userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryUri } from '../../helpers';
@@ -47,55 +47,31 @@ describe('user-saved-article-to-a-list-card', () => {
     it('includes the link to the list page', async () => {
       expect(viewModel.linkUrl).toStrictEqual(`/users/${handle}/lists/saved-articles`);
     });
-
-    it.todo('includes title and description of the list');
   });
 
   describe('when user details are unavailable', () => {
     const failingGetUserDetails = () => TE.left(DE.unavailable);
 
-    it('returns a card', async () => {
-      const result = await pipe(
+    let viewModel: ScietyFeedCard;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
-        TE.map(scietyFeedCard),
-        TE.getOrElseW(shouldNotBeCalled),
+        TE.getOrElse(shouldNotBeCalled),
       )();
-
-      expect(result).toContain('sciety-feed-card');
     });
 
     it('replaces handle with "a user"', async () => {
-      const result = await pipe(
-        event,
-        userSavedArticleToAListCard(failingGetUserDetails),
-        TE.map(scietyFeedCard),
-        TE.getOrElseW(shouldNotBeCalled),
-      )();
-
-      expect(result).toContain('A user saved an article');
+      expect(viewModel.titleText).toMatch(/^A user/);
     });
 
     it('replaces avatar with a default image', async () => {
-      const result = await pipe(
-        event,
-        userSavedArticleToAListCard(failingGetUserDetails),
-        TE.map(scietyFeedCard),
-        TE.getOrElseW(shouldNotBeCalled),
-      )();
-
-      expect(result).toContain('src="/static/images/sciety-logo.jpg"');
+      expect(viewModel.avatarUrl).toStrictEqual('/static/images/sciety-logo.jpg');
     });
 
     it('links to the list page', async () => {
-      const result = await pipe(
-        event,
-        userSavedArticleToAListCard(failingGetUserDetails),
-        TE.map(scietyFeedCard),
-        TE.getOrElseW(shouldNotBeCalled),
-      )();
-
-      expect(result).toContain(`href="/users/${userId}/lists/saved-articles"`);
+      expect(viewModel.linkUrl).toStrictEqual(`/users/${userId}/lists/saved-articles`);
     });
   });
 });
