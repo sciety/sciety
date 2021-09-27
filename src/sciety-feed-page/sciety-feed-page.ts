@@ -111,7 +111,11 @@ const eventCard = (
   }
 
   if (isUserSavedArticleEvent(event)) {
-    return userSavedArticleToAListCard(getUserDetails)(event);
+    return pipe(
+      event,
+      userSavedArticleToAListCard(getUserDetails),
+      TE.map(scietyFeedCard),
+    );
   }
   return TE.left(DE.unavailable);
 };

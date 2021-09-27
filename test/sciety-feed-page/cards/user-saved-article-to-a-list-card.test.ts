@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle } from '../../../src/domain-events';
-import { userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
+import { scietyFeedCard, userSavedArticleToAListCard } from '../../../src/sciety-feed-page/cards';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -23,6 +23,7 @@ describe('user-saved-article-to-a-list-card', () => {
     const result = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
+      TE.map(scietyFeedCard),
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
@@ -33,6 +34,7 @@ describe('user-saved-article-to-a-list-card', () => {
     const result = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
+      TE.map(scietyFeedCard),
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
@@ -43,6 +45,7 @@ describe('user-saved-article-to-a-list-card', () => {
     const result = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
+      TE.map(scietyFeedCard),
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
@@ -53,6 +56,7 @@ describe('user-saved-article-to-a-list-card', () => {
     const result = await pipe(
       event,
       userSavedArticleToAListCard(getUserDetails),
+      TE.map(scietyFeedCard),
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
@@ -68,6 +72,7 @@ describe('user-saved-article-to-a-list-card', () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
+        TE.map(scietyFeedCard),
         TE.getOrElseW(shouldNotBeCalled),
       )();
 
@@ -78,6 +83,7 @@ describe('user-saved-article-to-a-list-card', () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
+        TE.map(scietyFeedCard),
         TE.getOrElseW(shouldNotBeCalled),
       )();
 
@@ -88,6 +94,7 @@ describe('user-saved-article-to-a-list-card', () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
+        TE.map(scietyFeedCard),
         TE.getOrElseW(shouldNotBeCalled),
       )();
 
@@ -98,6 +105,7 @@ describe('user-saved-article-to-a-list-card', () => {
       const result = await pipe(
         event,
         userSavedArticleToAListCard(failingGetUserDetails),
+        TE.map(scietyFeedCard),
         TE.getOrElseW(shouldNotBeCalled),
       )();
 
