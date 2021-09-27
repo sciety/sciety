@@ -72,7 +72,7 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.titleText).toMatch(/^A user/);
     });
 
-    it.skip('replaces avatar with a default image', async () => {
+    it('replaces avatar with a default image', async () => {
       expect(viewModel.avatarUrl).toStrictEqual('/static/images/sciety-logo.jpg');
     });
 

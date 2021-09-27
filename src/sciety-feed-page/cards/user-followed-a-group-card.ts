@@ -30,7 +30,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails) =
     () => ({
       titleText: 'A user followed a group',
       linkUrl: '',
-      avatarUrl: '',
+      avatarUrl: '/static/images/sciety-logo.jpg',
       date: event.date,
     }),
     ({ handle, avatarUrl }) => ({
