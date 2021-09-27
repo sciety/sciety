@@ -68,7 +68,7 @@ describe('user-followed-a-group-card', () => {
       )();
     });
 
-    it.skip('replaces handle with "a user"', async () => {
+    it('replaces handle with "a user"', async () => {
       expect(viewModel.titleText).toMatch(/^A user/);
     });
 

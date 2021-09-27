@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -24,10 +26,19 @@ type UserFollowedAGroupCard = (
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails) => (event) => pipe(
   event.userId,
   getUserDetails,
-  TE.map(({ handle, avatarUrl }) => ({
-    titleText: `${handle} followed a group`,
-    linkUrl: '',
-    avatarUrl,
-    date: event.date,
-  })),
+  TE.match(
+    () => ({
+      titleText: 'A user followed a group',
+      linkUrl: '',
+      avatarUrl: '',
+      date: event.date,
+    }),
+    ({ handle, avatarUrl }) => ({
+      titleText: `${handle} followed a group`,
+      linkUrl: '',
+      avatarUrl,
+      date: event.date,
+    }),
+  ),
+  T.map(E.right),
 );
