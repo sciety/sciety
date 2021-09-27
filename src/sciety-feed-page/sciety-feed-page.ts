@@ -12,6 +12,7 @@ import {
   groupEvaluatedArticleCard,
   groupEvaluatedMultipleArticlesCard,
   scietyFeedCard,
+  userFollowedAGroupCard,
   userSavedArticleToAListCard,
 } from './cards';
 import {
@@ -22,6 +23,7 @@ import {
 } from './collapse-close-events';
 import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent, isUserSavedArticleEvent } from '../domain-events';
+import { isUserFollowedEditorialCommunityEvent } from '../domain-events/type-guards';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
@@ -118,6 +120,15 @@ const eventCard = (
       TE.map(scietyFeedCard),
     );
   }
+
+  if (isUserFollowedEditorialCommunityEvent(event)) {
+    return pipe(
+      event,
+      userFollowedAGroupCard(getUserDetails, getGroup),
+      TE.map(scietyFeedCard),
+    );
+  }
+
   return TE.left(DE.unavailable);
 };
 
@@ -126,7 +137,9 @@ export const scietyFeedPage = (
 ) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.filter(
-    (event) => isGroupEvaluatedArticleEvent(event) || isUserSavedArticleEvent(event),
+    (event) => isGroupEvaluatedArticleEvent(event)
+      || isUserSavedArticleEvent(event)
+      || isUserFollowedEditorialCommunityEvent(event),
   )),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
