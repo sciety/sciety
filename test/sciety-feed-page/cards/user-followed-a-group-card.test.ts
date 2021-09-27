@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -5,7 +6,7 @@ import { userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
-import { arbitraryDate, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -18,7 +19,7 @@ describe('user-followed-a-group-card', () => {
 
   describe('happy path', () => {
     const avatarUrl = arbitraryUri();
-    const handle = 'handle';
+    const handle = arbitraryWord();
     const getUserDetails = () => TE.right({
       handle,
       avatarUrl,
@@ -82,6 +83,23 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the group cannot be found', () => {
-    it.todo('fails the card');
+    const getUserDetails = () => TE.right({
+      handle: arbitraryWord(),
+      avatarUrl: arbitraryUri(),
+    });
+    const getGroup = () => TO.none;
+
+    let viewModel: E.Either<DE.DataError, ScietyFeedCard>;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
+        event,
+        userFollowedAGroupCard(getUserDetails, getGroup),
+      )();
+    });
+
+    it.skip('fails the card', async () => {
+      expect(E.isLeft(viewModel)).toBe(true);
+    });
   });
 });
