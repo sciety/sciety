@@ -17,7 +17,15 @@ describe('user-followed-a-group-card', () => {
   });
   const event = userFollowedEditorialCommunity(userId, arbitraryGroupId());
 
-  it.todo('displays the user\'s avatar');
+  it('displays the user\'s avatar', async () => {
+    const result = await pipe(
+      event,
+      userFollowedAGroupCard(getUserDetails),
+      TE.getOrElseW(shouldNotBeCalled),
+    )();
+
+    expect(result).toContain(avatarUrl);
+  });
 
   it('displays the user\'s handle', async () => {
     const result = await pipe(

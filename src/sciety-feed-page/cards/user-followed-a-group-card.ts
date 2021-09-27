@@ -19,7 +19,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails) =
   event.userId,
   getUserDetails,
   TE.map(flow(
-    ({ handle }) => `${handle} followed a group`,
+    ({ handle, avatarUrl }) => `<img src="${avatarUrl}" alt=""> ${handle} followed a group`,
     toHtmlFragment,
   )),
 );
