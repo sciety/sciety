@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
-import { scietyFeedCard } from './sciety-feed-card';
+import { ScietyFeedCard } from './sciety-feed-card';
 import { GroupEvaluatedArticleEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
 import * as DE from '../../types/data-error';
@@ -33,7 +33,7 @@ export const groupEvaluatedArticleCard = (
   fetchArticle: FetchArticle,
 ) => (
   event: GroupEvaluatedArticleCard | GroupEvaluatedArticleEvent,
-): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   {
     group: pipe(
       event.groupId,
@@ -62,6 +62,5 @@ export const groupEvaluatedArticleCard = (
       date: event.date,
       details,
     },
-    scietyFeedCard,
   )),
 );

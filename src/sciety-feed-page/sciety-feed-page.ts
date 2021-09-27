@@ -11,6 +11,7 @@ import {
   GetUserDetails,
   groupEvaluatedArticleCard,
   groupEvaluatedMultipleArticlesCard,
+  scietyFeedCard,
   userSavedArticleToAListCard,
 } from './cards';
 import {
@@ -102,7 +103,11 @@ const eventCard = (
   }
 
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
-    return groupEvaluatedArticleCard(getGroup, fetchArticle)(event);
+    return pipe(
+      event,
+      groupEvaluatedArticleCard(getGroup, fetchArticle),
+      TE.map(scietyFeedCard),
+    );
   }
 
   if (isUserSavedArticleEvent(event)) {

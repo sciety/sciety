@@ -3,3 +3,4 @@ export { groupEvaluatedArticleCard, GroupEvaluatedArticleCard, FetchArticle } fr
 export { GetUserDetails, userSavedArticleToAListCard } from './user-saved-article-to-a-list-card';
 // ts-unused-exports:disable-next-line
 export { userFollowedAGroupCard } from './user-followed-a-group-card';
+export { scietyFeedCard } from './sciety-feed-card';

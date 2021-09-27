@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -12,30 +13,32 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('group-evaluated-article-card', () => {
   describe('when the article details cannot be fetched', () => {
-    it('returns a valid card', async () => {
-      const card = await pipe(
+    const fetchArticle = () => TE.left(DE.unavailable);
+
+    it('returns a Right', async () => {
+      const viewModel = await pipe(
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticleCard(
           () => TO.some(arbitraryGroup()),
-          () => TE.left(DE.unavailable),
+          fetchArticle,
         ),
-        TE.getOrElseW(shouldNotBeCalled),
       )();
 
-      expect(card).toContain('evaluated an article');
+      expect(E.isRight(viewModel)).toBe(true);
     });
 
-    it('contains no article details', async () => {
-      const card = await pipe(
+    it('contains no card details', async () => {
+      const viewModel = await pipe(
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticleCard(
           () => TO.some(arbitraryGroup()),
-          () => TE.left(DE.unavailable),
+          fetchArticle,
         ),
-        TE.getOrElseW(shouldNotBeCalled),
       )();
 
-      expect(card).not.toContain('sciety-feed-card__details');
+      const result = E.getOrElseW(shouldNotBeCalled)(viewModel);
+
+      expect(result.details).toBeUndefined();
     });
   });
 });

@@ -7,15 +7,15 @@ type ScietyFeedCardDetails = {
   content: HtmlFragment,
 };
 
-type ScietyFeedCard = (viewModel: {
+export type ScietyFeedCard = {
   titleText: string,
   linkUrl: string,
   avatarUrl: string,
   date: Date,
   details?: ScietyFeedCardDetails,
-}) => HtmlFragment;
+};
 
-export const scietyFeedCard: ScietyFeedCard = (viewModel) => pipe(
+export const scietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
   viewModel.details,
   (details) => (details
     ? `
