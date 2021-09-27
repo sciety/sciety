@@ -51,4 +51,16 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
     });
   });
+
+  describe('when the user details cannot be obtained', () => {
+    it.todo('replaces handle with "a user"');
+
+    it.todo('replaces avatar with a default image');
+
+    it.todo('links to the group page about tab');
+  });
+
+  describe('when the group cannot be found', () => {
+    it.todo('fails the card');
+  });
 });
