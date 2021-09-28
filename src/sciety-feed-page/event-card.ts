@@ -1,14 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import {
-  FetchArticle,
-  GetUserDetails,
-  groupEvaluatedArticleCard,
-  groupEvaluatedMultipleArticlesCard,
+  groupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
+  groupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
   scietyFeedCard,
-  userFollowedAGroupCard,
-  userSavedArticleToAListCard,
+  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
+  userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
 } from './cards';
 import {
   CollapsedEvent,
@@ -18,17 +15,13 @@ import {
 import { DomainEvent, isGroupEvaluatedArticleEvent, isUserSavedArticleEvent } from '../domain-events';
 import { isUserFollowedEditorialCommunityEvent } from '../domain-events/type-guards';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
 import { HtmlFragment } from '../types/html-fragment';
 
-export type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
-
-type Ports = {
-  getGroup: GetGroup,
-  fetchArticle: FetchArticle,
-  getUserDetails: GetUserDetails,
-};
+export type Ports =
+  UserSavedArticleToAListCardPorts
+  & GroupEvaluatedArticleCardPorts
+  & GroupEvaluatedMultipleArticlesCardPorts
+  & UserFollowedAGroupCardPorts;
 
 export const eventCard = (
   ports: Ports,

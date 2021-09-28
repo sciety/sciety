@@ -15,7 +15,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
-export type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
   title: HtmlFragment,
   authors: ReadonlyArray<string>,
@@ -28,7 +28,7 @@ export type GroupEvaluatedArticleCard = {
   date: Date,
 };
 
-type Ports = {
+export type Ports = {
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
 };

@@ -6,13 +6,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
-  FetchArticle,
-  GetUserDetails,
-} from './cards';
-import {
   collapseCloseEvents,
 } from './collapse-close-events';
-import { eventCard, GetGroup } from './event-card';
+import { eventCard, Ports as EventCardPorts } from './event-card';
 import { paginate } from './paginate';
 import { DomainEvent, isGroupEvaluatedArticleEvent, isUserSavedArticleEvent } from '../domain-events';
 import { isUserFollowedEditorialCommunityEvent } from '../domain-events/type-guards';
@@ -68,11 +64,8 @@ export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
-type Ports = {
-  fetchArticle: FetchArticle,
+type Ports = EventCardPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getGroup: GetGroup,
-  getUserDetails: GetUserDetails,
 };
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;

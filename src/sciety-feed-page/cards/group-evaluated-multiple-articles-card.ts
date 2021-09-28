@@ -16,7 +16,7 @@ export type GroupEvaluatedMultipleArticlesCard = {
   date: Date,
 };
 
-type Ports = { getGroup: GetGroup };
+export type Ports = { getGroup: GetGroup };
 
 export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
   card: GroupEvaluatedMultipleArticlesCard,

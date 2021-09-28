@@ -8,12 +8,12 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
-export type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
+type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   handle: string,
   avatarUrl: string,
 }>;
 
-type Ports = {
+export type Ports = {
   getUserDetails: GetUserDetails,
 };
 

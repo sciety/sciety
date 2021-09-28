@@ -17,7 +17,7 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   avatarUrl: string,
 }>;
 
-type Ports = {
+export type Ports = {
   getUserDetails: GetUserDetails,
   getGroup: GetGroup,
 };
