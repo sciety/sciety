@@ -13,6 +13,8 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('generate-docmap-dois', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
+  it.todo('does not return duplicate dois for multiple evaluations of an article');
+
   describe('when no group identifier is supplied', () => {
     it('includes dois for each NCRC docmap', async () => {
       const doi = arbitraryDoi();
@@ -66,20 +68,26 @@ describe('generate-docmap-dois', () => {
   });
 
   describe('when passed an "updated after" parameter', () => {
-    it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
-      const includedDoi = arbitraryDoi();
-      const result = await pipe(
-        { updatedAfter: O.some(new Date('1970')), group: O.none },
-        generateDocmapDois({
-          getAllEvents: T.of([
-            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
-            groupEvaluatedArticle(arbitraryGroupId(), includedDoi, arbitraryReviewId(), new Date('2000')),
-          ]),
-        }),
-        T.map(E.getOrElseW(shouldNotBeCalled)),
-      )();
+    describe('when there are evaluations after the specified date', () => {
+      it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
+        const includedDoi = arbitraryDoi();
+        const result = await pipe(
+          { updatedAfter: O.some(new Date('1970')), group: O.none },
+          generateDocmapDois({
+            getAllEvents: T.of([
+              groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
+              groupEvaluatedArticle(arbitraryGroupId(), includedDoi, arbitraryReviewId(), new Date('2000')),
+            ]),
+          }),
+          T.map(E.getOrElseW(shouldNotBeCalled)),
+        )();
 
-      expect(result).toStrictEqual([includedDoi]);
+        expect(result).toStrictEqual([includedDoi]);
+      });
+    });
+
+    describe('when there are no evaluations after the specified date', () => {
+      it.todo('returns an empty array');
     });
   });
 });
