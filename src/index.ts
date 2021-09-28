@@ -5,8 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import { createInfrastructure } from './infrastructure';
-import { Logger, replaceError } from './infrastructure/logger';
+import { createInfrastructure, Logger, replaceError } from './infrastructure';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

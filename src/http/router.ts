@@ -37,7 +37,7 @@ import {
 } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
-import { Adapters } from '../infrastructure/adapters';
+import { Adapters } from '../infrastructure';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';

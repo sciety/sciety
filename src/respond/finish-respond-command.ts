@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -16,9 +17,11 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
   const userId = context.state.user.id;
   await pipe(
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
-    O.Do,
-    O.apS('reviewId', pipe(context.session.reviewId, reviewIdCodec.decode, O.fromEither)),
-    O.apS('command', pipe(context.session.command, toCommand)),
+    {
+      reviewId: pipe(context.session.reviewId, reviewIdCodec.decode, O.fromEither),
+      command: pipe(context.session.command, toCommand),
+    },
+    sequenceS(O.Apply),
     O.fold(
       () => T.of(undefined),
       flow(

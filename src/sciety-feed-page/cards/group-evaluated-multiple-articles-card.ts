@@ -3,11 +3,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { scietyFeedCard } from './sciety-feed-card';
+import { ScietyFeedCard } from './sciety-feed-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
@@ -21,7 +20,7 @@ export const groupEvaluatedMultipleArticlesCard = (
   getGroup: GetGroup,
 ) => (
   card: GroupEvaluatedMultipleArticlesCard,
-): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   card.groupId,
   getGroup,
   TO.map((group) => pipe(
@@ -31,7 +30,6 @@ export const groupEvaluatedMultipleArticlesCard = (
       avatarUrl: group.avatarPath,
       date: card.date,
     },
-    scietyFeedCard,
   )),
   T.map(E.fromOption(() => DE.unavailable)),
 );

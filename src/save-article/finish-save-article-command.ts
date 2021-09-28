@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -23,9 +24,11 @@ export const finishSaveArticleCommand = (
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
-    O.Do,
-    O.apS('articleId', pipe(context.session.articleId, Doi.fromString)),
-    O.apS('command', pipe(context.session.command, O.fromNullable, O.filter(isCommand))),
+    {
+      articleId: pipe(context.session.articleId, Doi.fromString),
+      command: pipe(context.session.command, O.fromNullable, O.filter(isCommand)),
+    },
+    sequenceS(O.Apply),
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(

@@ -2,10 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { scietyFeedCard } from './sciety-feed-card';
+import { ScietyFeedCard } from './sciety-feed-card';
 import { UserSavedArticleEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
 export type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
@@ -15,7 +15,7 @@ export type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
 
 type UserSavedArticleToAListCard = (
   getUserDetails: GetUserDetails
-) => (event: UserSavedArticleEvent) => TE.TaskEither<DE.DataError, HtmlFragment>;
+) => (event: UserSavedArticleEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUserDetails) => (event) => pipe(
   event.userId,
@@ -42,6 +42,5 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUser
       },
     }),
   ),
-  T.map(scietyFeedCard),
   T.map(E.right),
 );

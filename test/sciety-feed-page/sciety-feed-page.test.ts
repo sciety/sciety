@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
   groupEvaluatedArticle,
-  userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -162,7 +161,6 @@ describe('sciety-feed-page', () => {
       getAllEvents: T.of([
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
-        userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userFoundReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
