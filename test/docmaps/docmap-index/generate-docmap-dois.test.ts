@@ -64,4 +64,22 @@ describe('generate-docmap-dois', () => {
       expect(result).toStrictEqual([]);
     });
   });
+
+  describe('when passed an "updated after" parameter', () => {
+    it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
+      const includedDoi = arbitraryDoi();
+      const result = await pipe(
+        { updatedAfter: O.some(new Date('1970')), group: O.none },
+        generateDocmapDois({
+          getAllEvents: T.of([
+            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
+            groupEvaluatedArticle(arbitraryGroupId(), includedDoi, arbitraryReviewId(), new Date('2000')),
+          ]),
+        }),
+        T.map(E.getOrElseW(shouldNotBeCalled)),
+      )();
+
+      expect(result).toStrictEqual([includedDoi]);
+    });
+  });
 });
