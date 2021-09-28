@@ -16,7 +16,7 @@ describe('group-evaluated-multiple-articles-card', () => {
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
-      const createCard = pipe(
+      viewModel = await pipe(
         {
           groupId: arbitraryGroupId(),
           articleCount: arbitraryNumber(2, 10),
@@ -26,8 +26,7 @@ describe('group-evaluated-multiple-articles-card', () => {
           getGroup: () => TO.some(group),
         }),
         TE.getOrElse(shouldNotBeCalled),
-      );
-      viewModel = await createCard();
+      )();
     });
 
     it('adds the group name to the titleText', async () => {
@@ -39,7 +38,7 @@ describe('group-evaluated-multiple-articles-card', () => {
     let result: E.Either<DE.DataError, ScietyFeedCard>;
 
     beforeEach(async () => {
-      const createCard = pipe(
+      result = await pipe(
         {
           groupId: arbitraryGroupId(),
           articleCount: arbitraryNumber(2, 10),
@@ -48,8 +47,7 @@ describe('group-evaluated-multiple-articles-card', () => {
         groupEvaluatedMultipleArticlesCard({
           getGroup: () => TO.none,
         }),
-      );
-      result = await createCard();
+      )();
     });
 
     it('returns unavailable', async () => {
