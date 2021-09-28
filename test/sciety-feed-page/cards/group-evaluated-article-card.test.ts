@@ -4,6 +4,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { groupEvaluatedArticleCard } from '../../../src/sciety-feed-page/cards';
+import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -19,23 +20,29 @@ describe('group-evaluated-article-card', () => {
       title: arbitraryHtmlFragment(),
       authors: [],
     };
-    const fetchArticle = () => TE.right(article);
-    const createCard = pipe(
-      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      groupEvaluatedArticleCard({
-        getGroup: () => TO.some(arbitraryGroup()),
-        fetchArticle,
-      }),
-      TE.getOrElse(shouldNotBeCalled),
-    );
+    const group = arbitraryGroup();
+    let viewModel: ScietyFeedCard;
 
-    it('adds the article title to the card details', async () => {
-      const viewModel = await createCard();
-
-      expect(viewModel.details?.title).toStrictEqual(article.title);
+    beforeEach(async () => {
+      const fetchArticle = () => TE.right(article);
+      const createCard = pipe(
+        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticleCard({
+          getGroup: () => TO.some(group),
+          fetchArticle,
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      );
+      viewModel = await createCard();
     });
 
-    it.todo('adds the group name to the titleText');
+    it('adds the group name to the titleText', async () => {
+      expect(viewModel.titleText).toContain(group.name);
+    });
+
+    it('adds the article title to the card details', async () => {
+      expect(viewModel.details?.title).toStrictEqual(article.title);
+    });
   });
 
   describe('when the article cannot be fetched', () => {
