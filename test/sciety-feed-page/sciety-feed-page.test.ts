@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
-  groupEvaluatedArticle,
+  groupEvaluatedArticle, userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -120,6 +120,24 @@ describe('sciety-feed-page', () => {
     )();
 
     expect(renderedPage).toContain('saved an article to a list');
+  });
+
+  it('renders a single user followed editorial community as a card', async () => {
+    const ports = {
+      fetchArticle: shouldNotBeCalled,
+      getGroup: () => TO.some(arbitraryGroup()),
+      getAllEvents: T.of([
+        userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+      ]),
+      getUserDetails,
+    };
+    const renderedPage = await pipe(
+      scietyFeedPage(ports)(20)({ page: 1 }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+
+    expect(renderedPage).toContain('followed a group');
   });
 
   it('renders at most a page of cards at a time', async () => {
