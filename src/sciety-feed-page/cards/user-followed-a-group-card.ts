@@ -26,7 +26,6 @@ type UserFollowedAGroupCard = (
   ports: Ports
 ) => (event: UserFollowedEditorialCommunityEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
-// ts-unused-exports:disable-next-line
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {
     group: pipe(
