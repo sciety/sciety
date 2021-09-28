@@ -29,8 +29,12 @@ describe('group-evaluated-multiple-articles-card', () => {
       )();
     });
 
-    it('adds the group name to the titleText', async () => {
+    it('adds the group name to the titleText', () => {
       expect(viewModel.titleText).toContain(group.name);
+    });
+
+    it('links to the groups evaluated articles list page', () => {
+      expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/evaluated-articles`);
     });
   });
 
@@ -50,7 +54,7 @@ describe('group-evaluated-multiple-articles-card', () => {
       )();
     });
 
-    it('returns unavailable', async () => {
+    it('returns unavailable', () => {
       expect(result).toStrictEqual(E.left(DE.unavailable));
     });
   });

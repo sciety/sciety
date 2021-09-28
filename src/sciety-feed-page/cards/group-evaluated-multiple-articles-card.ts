@@ -26,7 +26,7 @@ export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
   TO.map((group) => pipe(
     {
       titleText: `${group.name} evaluated ${card.articleCount} articles`,
-      linkUrl: `/groups/${group.slug}`,
+      linkUrl: `/groups/${group.slug}/evaluated-articles`,
       avatarUrl: group.avatarPath,
       date: card.date,
     },
