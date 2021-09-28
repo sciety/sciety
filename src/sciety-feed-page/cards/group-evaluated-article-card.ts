@@ -28,21 +28,23 @@ export type GroupEvaluatedArticleCard = {
   date: Date,
 };
 
-export const groupEvaluatedArticleCard = (
+type Ports = {
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
-) => (
+};
+
+export const groupEvaluatedArticleCard = (ports: Ports) => (
   event: GroupEvaluatedArticleCard | GroupEvaluatedArticleEvent,
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   {
     group: pipe(
       event.groupId,
-      getGroup,
+      ports.getGroup,
       T.map(E.fromOption(constant(DE.unavailable))),
     ),
     details: pipe(
       event.articleId,
-      fetchArticle,
+      ports.fetchArticle,
       TE.match(
         () => undefined,
         (article) => ({

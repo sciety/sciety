@@ -13,13 +13,17 @@ export type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   avatarUrl: string,
 }>;
 
+type Ports = {
+  getUserDetails: GetUserDetails,
+};
+
 type UserSavedArticleToAListCard = (
-  getUserDetails: GetUserDetails
+  ports: Ports,
 ) => (event: UserSavedArticleEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
-export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (getUserDetails) => (event) => pipe(
+export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) => (event) => pipe(
   event.userId,
-  getUserDetails,
+  ports.getUserDetails,
   TE.match(
     () => ({
       titleText: 'A user saved an article to a list',

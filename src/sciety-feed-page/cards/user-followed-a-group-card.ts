@@ -17,22 +17,26 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   avatarUrl: string,
 }>;
 
-type UserFollowedAGroupCard = (
+type Ports = {
   getUserDetails: GetUserDetails,
   getGroup: GetGroup,
+};
+
+type UserFollowedAGroupCard = (
+  ports: Ports
 ) => (event: UserFollowedEditorialCommunityEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 // ts-unused-exports:disable-next-line
-export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails, getGroup) => (event) => pipe(
+export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {
     group: pipe(
       event.editorialCommunityId,
-      getGroup,
+      ports.getGroup,
       TE.fromTaskOption(() => DE.notFound),
     ),
     userDetails: pipe(
       event.userId,
-      getUserDetails,
+      ports.getUserDetails,
       TE.orElse(() => TE.right({
         handle: 'A user',
         avatarUrl: '/static/images/sciety-logo.jpg',

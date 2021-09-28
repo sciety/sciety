@@ -100,7 +100,7 @@ const eventCard = (
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(
       event,
-      groupEvaluatedMultipleArticlesCard(getGroup),
+      groupEvaluatedMultipleArticlesCard({ getGroup }),
       TE.map(scietyFeedCard),
     );
   }
@@ -108,7 +108,7 @@ const eventCard = (
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
     return pipe(
       event,
-      groupEvaluatedArticleCard(getGroup, fetchArticle),
+      groupEvaluatedArticleCard({ getGroup, fetchArticle }),
       TE.map(scietyFeedCard),
     );
   }
@@ -116,7 +116,7 @@ const eventCard = (
   if (isUserSavedArticleEvent(event)) {
     return pipe(
       event,
-      userSavedArticleToAListCard(getUserDetails),
+      userSavedArticleToAListCard({ getUserDetails }),
       TE.map(scietyFeedCard),
     );
   }
@@ -124,7 +124,7 @@ const eventCard = (
   if (isUserFollowedEditorialCommunityEvent(event)) {
     return pipe(
       event,
-      userFollowedAGroupCard(getUserDetails, getGroup),
+      userFollowedAGroupCard({ getUserDetails, getGroup }),
       TE.map(scietyFeedCard),
     );
   }

@@ -16,13 +16,13 @@ export type GroupEvaluatedMultipleArticlesCard = {
   date: Date,
 };
 
-export const groupEvaluatedMultipleArticlesCard = (
-  getGroup: GetGroup,
-) => (
+type Ports = { getGroup: GetGroup };
+
+export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
   card: GroupEvaluatedMultipleArticlesCard,
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   card.groupId,
-  getGroup,
+  ports.getGroup,
   TO.map((group) => pipe(
     {
       titleText: `${group.name} evaluated ${card.articleCount} articles`,

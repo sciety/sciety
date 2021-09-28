@@ -16,10 +16,10 @@ describe('group-evaluated-article-card', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      groupEvaluatedArticleCard(
-        () => TO.some(arbitraryGroup()),
+      groupEvaluatedArticleCard({
+        getGroup: () => TO.some(arbitraryGroup()),
         fetchArticle,
-      ),
+      }),
     );
 
     it('returns a Right', async () => {

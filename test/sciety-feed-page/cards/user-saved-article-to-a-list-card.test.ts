@@ -17,17 +17,19 @@ describe('user-saved-article-to-a-list-card', () => {
   describe('when user details are available', () => {
     const avatarUrl = arbitraryUri();
     const handle = 'handle';
-    const getUserDetails = () => TE.right({
-      handle,
-      avatarUrl,
-    });
+    const ports = {
+      getUserDetails: () => TE.right({
+        handle,
+        avatarUrl,
+      }),
+    };
 
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
       viewModel = await pipe(
         event,
-        userSavedArticleToAListCard(getUserDetails),
+        userSavedArticleToAListCard(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -57,7 +59,7 @@ describe('user-saved-article-to-a-list-card', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         event,
-        userSavedArticleToAListCard(failingGetUserDetails),
+        userSavedArticleToAListCard({ getUserDetails: failingGetUserDetails }),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

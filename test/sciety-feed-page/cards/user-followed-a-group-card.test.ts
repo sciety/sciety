@@ -20,19 +20,18 @@ describe('user-followed-a-group-card', () => {
   describe('happy path', () => {
     const avatarUrl = arbitraryUri();
     const handle = arbitraryWord();
-    const getUserDetails = () => TE.right({
-      handle,
-      avatarUrl,
-    });
     const group = arbitraryGroup();
-    const getGroup = () => TO.some(group);
+    const ports = {
+      getGroup: () => TO.some(group),
+      getUserDetails: () => TE.right({ handle, avatarUrl }),
+    };
 
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
       viewModel = await pipe(
         event,
-        userFollowedAGroupCard(getUserDetails, getGroup),
+        userFollowedAGroupCard(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -63,16 +62,18 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the user details cannot be obtained', () => {
-    const getUserDetails = () => TE.left(DE.unavailable);
     const group = arbitraryGroup();
-    const getGroup = () => TO.some(group);
+    const ports = {
+      getUserDetails: () => TE.left(DE.unavailable),
+      getGroup: () => TO.some(group),
+    };
 
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
       viewModel = await pipe(
         event,
-        userFollowedAGroupCard(getUserDetails, getGroup),
+        userFollowedAGroupCard(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -99,18 +100,20 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the group cannot be found', () => {
-    const getUserDetails = () => TE.right({
-      handle: arbitraryWord(),
-      avatarUrl: arbitraryUri(),
-    });
-    const getGroup = () => TO.none;
+    const ports = {
+      getGroup: () => TO.none,
+      getUserDetails: () => TE.right({
+        handle: arbitraryWord(),
+        avatarUrl: arbitraryUri(),
+      }),
+    };
 
     let viewModel: E.Either<DE.DataError, ScietyFeedCard>;
 
     beforeEach(async () => {
       viewModel = await pipe(
         event,
-        userFollowedAGroupCard(getUserDetails, getGroup),
+        userFollowedAGroupCard(ports),
       )();
     });
 
