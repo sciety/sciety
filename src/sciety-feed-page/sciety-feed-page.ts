@@ -10,8 +10,9 @@ import {
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import { paginate } from './paginate';
-import { DomainEvent, isGroupEvaluatedArticleEvent, isUserSavedArticleEvent } from '../domain-events';
-import { isUserFollowedEditorialCommunityEvent } from '../domain-events/type-guards';
+import {
+  DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+} from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
