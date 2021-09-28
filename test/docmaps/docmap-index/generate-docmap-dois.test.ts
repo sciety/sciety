@@ -87,7 +87,20 @@ describe('generate-docmap-dois', () => {
     });
 
     describe('when there are no evaluations after the specified date', () => {
-      it.todo('returns an empty array');
+      it.skip('returns an empty array', async () => {
+        const result = await pipe(
+          { updatedAfter: O.some(new Date('2020')), group: O.none },
+          generateDocmapDois({
+            getAllEvents: T.of([
+              groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
+              groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('2000')),
+            ]),
+          }),
+          T.map(E.getOrElseW(shouldNotBeCalled)),
+        )();
+
+        expect(result).toStrictEqual([]);
+      });
     });
   });
 });
