@@ -71,15 +71,17 @@ type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
+const isFeedRelevantEvent = (event: DomainEvent) => (
+  isGroupEvaluatedArticleEvent(event)
+    || isUserSavedArticleEvent(event)
+    || isUserFollowedEditorialCommunityEvent(event)
+);
+
 export const scietyFeedPage = (
   ports: Ports,
 ) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
-  T.map(RA.filter(
-    (event) => isGroupEvaluatedArticleEvent(event)
-      || isUserSavedArticleEvent(event)
-      || isUserFollowedEditorialCommunityEvent(event),
-  )),
+  T.map(RA.filter(isFeedRelevantEvent)),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map(paginate(pageSize, params.page)),
