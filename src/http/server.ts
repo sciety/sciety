@@ -136,7 +136,10 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
   const server = createServer(app.callback());
 
   server.on('clientError', (error, socket) => {
-    if (error.code === 'ECONNRESET' || !socket.writable) {
+    if (!socket.writable) {
+      logger('info', 'Non writable socket, no response sent', {
+        error,
+      });
       return;
     }
 
