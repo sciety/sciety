@@ -15,7 +15,9 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
-import { arbitraryHtmlFragment, arbitraryUri, arbitraryWord } from '../helpers';
+import {
+  arbitraryHtmlFragment, arbitraryUri, arbitraryWord,
+} from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -29,22 +31,25 @@ describe('sciety-feed-page', () => {
     avatarUrl: arbitraryUri(),
   });
 
+  const defaultPorts = {
+    getUserDetails,
+    getGroup: () => TO.some(arbitraryGroup()),
+    fetchArticle: () => TE.right({
+      doi: arbitraryDoi(),
+      title: arbitraryHtmlFragment(),
+      authors: [],
+    }),
+  };
+
   it('renders collapsed single article evaluated events as a single card', async () => {
-    const group = arbitraryGroup();
+    const groupId = arbitraryGroupId();
     const articleId = arbitraryDoi();
-    const articleTitle = arbitraryHtmlFragment();
     const ports = {
-      fetchArticle: () => TE.right({
-        doi: arbitraryDoi(),
-        title: articleTitle,
-        authors: [],
-      }),
-      getGroup: () => TO.some(group),
+      ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
@@ -52,24 +57,17 @@ describe('sciety-feed-page', () => {
       T.map((page) => page.content),
     )();
 
-    expect(renderedPage).toContain(`${group.name} evaluated an article`);
-    expect(renderedPage).toContain(articleTitle);
+    expect(renderedPage).toContain('evaluated an article');
   });
 
   it('renders collapsed multiple article evaluated events as a single card', async () => {
-    const group = arbitraryGroup();
+    const groupId = arbitraryGroupId();
     const ports = {
-      fetchArticle: () => TE.right({
-        doi: arbitraryDoi(),
-        title: arbitraryHtmlFragment(),
-        authors: [],
-      }),
-      getGroup: () => TO.some(group),
+      ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
@@ -77,23 +75,15 @@ describe('sciety-feed-page', () => {
       T.map((page) => page.content),
     )();
 
-    expect(renderedPage).toContain(`${group.name} evaluated 2 articles`);
+    expect(renderedPage).toContain('evaluated 2 articles');
   });
 
   it('renders a single evaluation as a card', async () => {
-    const group = arbitraryGroup();
-    const articleId = arbitraryDoi();
     const ports = {
-      fetchArticle: () => TE.right({
-        doi: arbitraryDoi(),
-        title: arbitraryHtmlFragment(),
-        authors: [],
-      }),
-      getGroup: () => TO.some(group),
+      ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
@@ -101,17 +91,15 @@ describe('sciety-feed-page', () => {
       T.map((page) => page.content),
     )();
 
-    expect(renderedPage).toContain(`${group.name} evaluated an article`);
+    expect(renderedPage).toContain('evaluated an article');
   });
 
   it('renders a single saved article as a card', async () => {
     const ports = {
-      fetchArticle: shouldNotBeCalled,
-      getGroup: shouldNotBeCalled,
+      ...defaultPorts,
       getAllEvents: T.of([
         userSavedArticle(arbitraryUserId(), arbitraryDoi()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
@@ -124,12 +112,10 @@ describe('sciety-feed-page', () => {
 
   it('renders a single user followed editorial community as a card', async () => {
     const ports = {
-      fetchArticle: shouldNotBeCalled,
-      getGroup: () => TO.some(arbitraryGroup()),
+      ...defaultPorts,
       getAllEvents: T.of([
         userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
@@ -147,14 +133,8 @@ describe('sciety-feed-page', () => {
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
     ];
     const ports = {
-      fetchArticle: () => TE.right({
-        doi: arbitraryDoi(),
-        title: arbitraryHtmlFragment(),
-        authors: [],
-      }),
-      getGroup: () => TO.some(arbitraryGroup()),
+      ...defaultPorts,
       getAllEvents: T.of(events),
-      getUserDetails,
     };
     const pageSize = events.length - 1;
     const renderedPage = await pipe(
@@ -170,12 +150,7 @@ describe('sciety-feed-page', () => {
 
   it('does not render non-feed events', async () => {
     const ports = {
-      fetchArticle: () => TE.right({
-        doi: arbitraryDoi(),
-        title: arbitraryHtmlFragment(),
-        authors: [],
-      }),
-      getGroup: () => TO.some(arbitraryGroup()),
+      ...defaultPorts,
       getAllEvents: T.of([
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
@@ -185,7 +160,6 @@ describe('sciety-feed-page', () => {
         userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
       ]),
-      getUserDetails,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(10)({ page: 1 }),

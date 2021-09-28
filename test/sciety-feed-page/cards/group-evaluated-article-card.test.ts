@@ -12,7 +12,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('group-evaluated-article-card', () => {
-  describe('when the article details cannot be fetched', () => {
+  describe('when the article cannot be fetched', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
@@ -36,5 +36,11 @@ describe('group-evaluated-article-card', () => {
 
       expect(viewModel.details).toBeUndefined();
     });
+  });
+
+  describe('when the article can be fetched', () => {
+    it.todo('adds the article title to the card details');
+
+    it.todo('adds the group name to the titleText');
   });
 });
