@@ -6,6 +6,7 @@ import { UserFollowedEditorialCommunityEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
@@ -25,22 +26,29 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails, g
   event.editorialCommunityId,
   getGroup,
   TE.fromTaskOption(() => DE.notFound),
-  TE.map((group) => `/groups/${group.slug}/about`),
-  TE.chainTaskK((linkUrl) => pipe(
+  TE.chainTaskK((group) => pipe(
     event.userId,
     getUserDetails,
     TE.match(
       () => ({
         titleText: 'A user followed a group',
-        linkUrl,
+        linkUrl: `/groups/${group.slug}/about`,
         avatarUrl: '/static/images/sciety-logo.jpg',
         date: event.date,
+        details: {
+          title: toHtmlFragment(group.name),
+          content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
+        },
       }),
       ({ handle, avatarUrl }) => ({
         titleText: `${handle} followed a group`,
-        linkUrl,
+        linkUrl: `/groups/${group.slug}/about`,
         avatarUrl,
         date: event.date,
+        details: {
+          title: toHtmlFragment(group.name),
+          content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
+        },
       }),
     ),
   )),

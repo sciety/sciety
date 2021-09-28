@@ -53,11 +53,11 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
     });
 
-    it.skip('includes the group\'s name in the details title', () => {
+    it('includes the group\'s name in the details title', () => {
       expect(viewModel.details?.title).toContain(group.name);
     });
 
-    it.skip('includes the group\'s short description in the details content', () => {
+    it('includes the group\'s short description in the details content', () => {
       expect(viewModel.details?.content).toContain(group.shortDescription);
     });
   });
@@ -87,6 +87,14 @@ describe('user-followed-a-group-card', () => {
 
     it('links to the group page about tab', async () => {
       expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
+    });
+
+    it('includes the group\'s name in the details title', () => {
+      expect(viewModel.details?.title).toContain(group.name);
+    });
+
+    it('includes the group\'s short description in the details content', () => {
+      expect(viewModel.details?.content).toContain(group.shortDescription);
     });
   });
 
