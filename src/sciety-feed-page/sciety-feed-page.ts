@@ -91,7 +91,7 @@ export const scietyFeedPage = (
   T.map(paginate(pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,
-    TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle, ports.getUserDetails)),
+    TE.traverseArray(eventCard(ports)),
     TE.map((cards) => ({ cards, ...rest })),
   )),
   TE.bimap(

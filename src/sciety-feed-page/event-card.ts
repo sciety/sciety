@@ -24,17 +24,21 @@ import { HtmlFragment } from '../types/html-fragment';
 
 export type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
-export const eventCard = (
+type Ports = {
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
   getUserDetails: GetUserDetails,
+};
+
+export const eventCard = (
+  ports: Ports,
 ) => (
   event: DomainEvent | CollapsedEvent,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(
       event,
-      groupEvaluatedMultipleArticlesCard({ getGroup }),
+      groupEvaluatedMultipleArticlesCard(ports),
       TE.map(scietyFeedCard),
     );
   }
@@ -42,7 +46,7 @@ export const eventCard = (
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
     return pipe(
       event,
-      groupEvaluatedArticleCard({ getGroup, fetchArticle }),
+      groupEvaluatedArticleCard(ports),
       TE.map(scietyFeedCard),
     );
   }
@@ -50,7 +54,7 @@ export const eventCard = (
   if (isUserSavedArticleEvent(event)) {
     return pipe(
       event,
-      userSavedArticleToAListCard({ getUserDetails }),
+      userSavedArticleToAListCard(ports),
       TE.map(scietyFeedCard),
     );
   }
@@ -58,7 +62,7 @@ export const eventCard = (
   if (isUserFollowedEditorialCommunityEvent(event)) {
     return pipe(
       event,
-      userFollowedAGroupCard({ getUserDetails, getGroup }),
+      userFollowedAGroupCard(ports),
       TE.map(scietyFeedCard),
     );
   }
