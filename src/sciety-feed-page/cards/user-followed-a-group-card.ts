@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -23,33 +24,30 @@ type UserFollowedAGroupCard = (
 
 // ts-unused-exports:disable-next-line
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (getUserDetails, getGroup) => (event) => pipe(
-  event.editorialCommunityId,
-  getGroup,
-  TE.fromTaskOption(() => DE.notFound),
-  TE.chainTaskK((group) => pipe(
-    event.userId,
-    getUserDetails,
-    TE.match(
-      () => ({
-        titleText: 'A user followed a group',
-        linkUrl: `/groups/${group.slug}/about`,
-        avatarUrl: '/static/images/sciety-logo.jpg',
-        date: event.date,
-        details: {
-          title: toHtmlFragment(group.name),
-          content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
-        },
-      }),
-      ({ handle, avatarUrl }) => ({
-        titleText: `${handle} followed a group`,
-        linkUrl: `/groups/${group.slug}/about`,
-        avatarUrl,
-        date: event.date,
-        details: {
-          title: toHtmlFragment(group.name),
-          content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
-        },
-      }),
+  {
+    group: pipe(
+      event.editorialCommunityId,
+      getGroup,
+      TE.fromTaskOption(() => DE.notFound),
     ),
-  )),
+    userDetails: pipe(
+      event.userId,
+      getUserDetails,
+      TE.orElse(() => TE.right({
+        handle: 'A user',
+        avatarUrl: '/static/images/sciety-logo.jpg',
+      })),
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(({ group, userDetails }) => ({
+    linkUrl: `/groups/${group.slug}/about`,
+    avatarUrl: userDetails.avatarUrl,
+    titleText: `${userDetails.handle} followed a group`,
+    date: event.date,
+    details: {
+      title: toHtmlFragment(group.name),
+      content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
+    },
+  })),
 );
