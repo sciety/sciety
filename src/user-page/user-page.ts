@@ -22,8 +22,7 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetail
 
 type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 
-// ts-unused-exports:disable-next-line
-export type Ports = FollowListPorts & {
+type Ports = FollowListPorts & {
   getUserDetails: GetUserDetails,
   getUserId: GetUserId,
 };
