@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
@@ -35,11 +35,9 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   flow(ports.fetchArticle, T.map(O.fromEither)),
 );
 
-const noEvaluatedArticles = pipe(
-  '<p class="evaluated-articles__empty">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
-  toHtmlFragment,
-  constant,
-);
+const noEvaluatedArticles = toHtmlFragment('<p class="evaluated-articles__empty">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>');
+
+const articleDetailsUnavailable = toHtmlFragment('<p class="static-message">This information can not be found.</p>');
 
 const addArticleDetails = (ports: Ports) => <A extends { doi: Doi }>(evaluatedArticle: A) => pipe(
   evaluatedArticle.doi,
@@ -66,13 +64,13 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
   TE.fromEither,
   TE.chainTaskK(({ content, nextPageNumber }) => pipe(
     content,
-    E.fromPredicate(RA.isNonEmpty, noEvaluatedArticles),
+    E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
     TE.fromEither,
     TE.chainW(TE.traverseArray(addArticleDetails(ports))),
     TE.match(
       (left) => (left === 'unavailable'
-        ? toHtmlFragment('<p class="static-message">This information can not be found.</p>')
-        : left),
+        ? articleDetailsUnavailable
+        : noEvaluatedArticles),
       flow(
         RA.map((articleViewModel) => ({
           ...articleViewModel,
