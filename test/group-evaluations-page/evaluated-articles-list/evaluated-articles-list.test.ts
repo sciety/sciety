@@ -14,9 +14,7 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when none of the article details can be retrieved', () => {
-    it.skip('returns "this information can\'t be found" message', async () => {
-      const pageNumber = 2;
-      const pageSize = 1;
+    it('returns "this information can\'t be found" message', async () => {
       const result = await pipe(
         evaluatedArticlesList({
           fetchArticle: () => TE.left(DE.unavailable),
@@ -28,13 +26,13 @@ describe('evaluated-articles-list', () => {
             latestActivityDate: arbitraryDate(),
           }],
           arbitraryGroup(),
-          pageNumber,
-          pageSize,
+          1,
+          1,
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(result).toContain('This information can\'t be found');
+      expect(result).toContain('This information can not be found');
     });
   });
 

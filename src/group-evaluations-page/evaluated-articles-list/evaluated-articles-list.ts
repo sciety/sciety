@@ -66,7 +66,7 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
   TE.chainW(({ content, nextPageNumber }) => pipe(
     content,
     TO.traverseArray(addArticleDetails(ports)),
-    T.map(E.fromOption(() => DE.unavailable)),
+    T.map(E.fromOption(() => toHtmlFragment('<p class="static-message">This information can not be found.</p>'))),
     TE.map(RNEA.fromReadonlyArray),
     TE.map(O.fold(
       noEvaluatedArticles,
@@ -82,5 +82,7 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
         )),
       ),
     )),
+    TE.toUnion,
+    TE.rightTask,
   )),
 );
