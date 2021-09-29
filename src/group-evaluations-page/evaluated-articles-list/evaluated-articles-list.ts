@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -48,6 +47,7 @@ const addArticleDetails = (ports: Ports) => <A extends { doi: Doi }>(evaluatedAr
     ...evaluatedArticle,
     ...articleDetails,
   })),
+  TE.fromTaskOption(() => DE.unavailable),
 );
 
 type EvaluatedArticlesList = (
@@ -63,26 +63,22 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
   articles,
   paginate(pageNumber, pageSize),
   TE.fromEither,
-  TE.chainW(({ content, nextPageNumber }) => pipe(
+  TE.chainTaskK(({ content, nextPageNumber }) => pipe(
     content,
-    TO.traverseArray(addArticleDetails(ports)),
-    T.map(E.fromOption(() => toHtmlFragment('<p class="static-message">This information can not be found.</p>'))),
-    TE.map(RNEA.fromReadonlyArray),
-    TE.map(O.fold(
-      noEvaluatedArticles,
+    TE.traverseArray(addArticleDetails(ports)),
+    TE.match(
+      () => toHtmlFragment('<p class="static-message">This information can not be found.</p>'),
       flow(
-        RNEA.map((articleViewModel) => ({
+        RNEA.fromReadonlyArray,
+        O.fold(noEvaluatedArticles, flow(RNEA.map((articleViewModel) => ({
           ...articleViewModel,
           latestVersionDate: articleViewModel.latestVersionDate,
           latestActivityDate: O.some(articleViewModel.latestActivityDate),
-        })),
-        renderEvaluatedArticlesList(pipe(
+        })), renderEvaluatedArticlesList(pipe(
           nextPageNumber,
           O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
-        )),
+        )))),
       ),
-    )),
-    TE.toUnion,
-    TE.rightTask,
+    ),
   )),
 );
