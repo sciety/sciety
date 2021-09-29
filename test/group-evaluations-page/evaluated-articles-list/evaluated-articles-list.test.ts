@@ -21,7 +21,7 @@ const generateArticles = (count: number) => (
 
 describe('evaluated-articles-list', () => {
   describe('when some of the article details can\'t be retrieved', () => {
-    it.skip('returns the successful article cards', async () => {
+    it('returns the successful article cards', async () => {
       const articles = generateArticles(4);
       const fetchArticle = jest.fn().mockImplementation(
         (doi) => {
@@ -39,7 +39,7 @@ describe('evaluated-articles-list', () => {
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi: () => TO.some([{ occurredAt: arbitraryDate() }]),
-        })(articles, arbitraryGroup(), 1, 1),
+        })(articles, arbitraryGroup(), 1, 20),
         TE.map(JSDOM.fragment),
         TE.getOrElse(shouldNotBeCalled),
       )();

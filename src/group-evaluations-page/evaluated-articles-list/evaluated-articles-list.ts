@@ -66,7 +66,11 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
     content,
     E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
     TE.fromEither,
-    TE.chainW(TE.traverseArray(addArticleDetails(ports))),
+    TE.chainW(flow(
+      T.traverseArray(addArticleDetails(ports)),
+      T.map(RA.rights),
+      T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
+    )),
     TE.match(
       (left) => (left === 'unavailable'
         ? articleDetailsUnavailable
