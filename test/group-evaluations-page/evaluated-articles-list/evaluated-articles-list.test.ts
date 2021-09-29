@@ -1,4 +1,6 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { evaluatedArticlesList } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryDate, arbitraryNumber } from '../../helpers';
@@ -12,7 +14,28 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when none of the article details can be retrieved', () => {
-    it.todo('returns "this information can\'t be found" message');
+    it.skip('returns "this information can\'t be found" message', async () => {
+      const pageNumber = 2;
+      const pageSize = 1;
+      const result = await pipe(
+        evaluatedArticlesList({
+          fetchArticle: () => TE.left(DE.unavailable),
+          findVersionsForArticleDoi: shouldNotBeCalled,
+        })(
+          [{
+            doi: arbitraryDoi(),
+            evaluationCount: arbitraryNumber(1, 5),
+            latestActivityDate: arbitraryDate(),
+          }],
+          arbitraryGroup(),
+          pageNumber,
+          pageSize,
+        ),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(result).toContain('This information can\'t be found');
+    });
   });
 
   describe('when the requested page is out of bounds', () => {
