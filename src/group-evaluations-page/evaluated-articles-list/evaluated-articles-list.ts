@@ -70,14 +70,20 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
       () => toHtmlFragment('<p class="static-message">This information can not be found.</p>'),
       flow(
         RNEA.fromReadonlyArray,
-        O.fold(noEvaluatedArticles, flow(RNEA.map((articleViewModel) => ({
-          ...articleViewModel,
-          latestVersionDate: articleViewModel.latestVersionDate,
-          latestActivityDate: O.some(articleViewModel.latestActivityDate),
-        })), renderEvaluatedArticlesList(pipe(
-          nextPageNumber,
-          O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
-        )))),
+        O.fold(
+          noEvaluatedArticles,
+          flow(
+            RNEA.map((articleViewModel) => ({
+              ...articleViewModel,
+              latestVersionDate: articleViewModel.latestVersionDate,
+              latestActivityDate: O.some(articleViewModel.latestActivityDate),
+            })),
+            renderEvaluatedArticlesList(pipe(
+              nextPageNumber,
+              O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
+            )),
+          ),
+        ),
       ),
     ),
   )),
