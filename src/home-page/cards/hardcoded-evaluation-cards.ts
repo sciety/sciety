@@ -1,26 +1,26 @@
 export const card1 = {
-  articleId: '10.1101/2021.07.05.451181',
-  articleTitle: 'Single-molecule imaging with cell-derived nanovesicles reveals early binding dynamics at a cyclic nucleotide-gated ion channel',
-  date: new Date('2021-09-08'),
-  groupSlug: 'biophysics-colab',
-  groupName: 'Biophysics Colab',
-  avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+  articleId: '10.1101/2021.08.14.21262020',
+  articleTitle: 'Delta variant and mRNA Covid-19 vaccines effectiveness: higher odds of vaccine infection breakthroughs',
+  date: new Date('2021-09-27'),
+  groupSlug: 'rapid-reviews-covid-19',
+  groupName: 'Rapid Reviews COVID-19',
+  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
 };
 
 export const card2 = {
-  articleId: '10.1101/2021.08.10.455713',
-  articleTitle: 'Laterally transferred macrophage mitochondria act as a signaling source promoting cancer cell proliferation',
-  date: new Date('2021-09-07'),
-  groupSlug: 'asapbio-crowd-review',
-  groupName: 'ASAPbio crowd review',
-  avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
+  articleId: '10.1101/2021.09.09.459577',
+  articleTitle: 'A virus-encoded microRNA contributes to evade innate immune response during SARS-CoV-2 infection',
+  date: new Date('2021-09-17'),
+  groupSlug: 'prereview',
+  groupName: 'PREreview',
+  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
 };
 
 export const card3 = {
-  articleId: '10.1101/2021.07.31.454562',
-  articleTitle: 'Ageing-associated myelin dysfunction drives amyloid deposition in mouse models of Alzheimer’s disease',
-  date: new Date('2021-08-19'),
-  groupSlug: 'prelights',
-  groupName: 'preLights',
-  avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
+  articleId: '10.1101/2021.07.13.21260393',
+  articleTitle: 'Vaccination with BNT162b2 reduces transmission of SARS-CoV-2 to household contacts in Israel',
+  date: new Date('2021-08-17'),
+  groupSlug: 'ncrc',
+  groupName: 'NCRC',
+  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
 };
