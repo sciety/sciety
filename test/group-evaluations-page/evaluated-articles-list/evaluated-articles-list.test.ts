@@ -24,13 +24,14 @@ const findVersionsForArticleDoi: Ports['findVersionsForArticleDoi'] = () => TO.s
 
 describe('evaluated-articles-list', () => {
   describe('when article details for the page can be fetched', () => {
+    const fetchArticle = () => TE.right({
+      title: arbitrarySanitisedHtmlFragment(),
+      server: arbitraryArticleServer(),
+      authors: [],
+    });
+
     it('returns article cards for each article', async () => {
       const articles = generateArticles(2);
-      const fetchArticle = () => TE.right({
-        title: arbitrarySanitisedHtmlFragment(),
-        server: arbitraryArticleServer(),
-        authors: [],
-      });
       const html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
@@ -87,11 +88,7 @@ describe('evaluated-articles-list', () => {
           fetchArticle: () => TE.left(DE.unavailable),
           findVersionsForArticleDoi,
         })(
-          [{
-            doi: arbitraryDoi(),
-            evaluationCount: arbitraryNumber(1, 5),
-            latestActivityDate: arbitraryDate(),
-          }],
+          generateArticles(1),
           arbitraryGroup(),
           1,
           1,
@@ -111,11 +108,7 @@ describe('evaluated-articles-list', () => {
         fetchArticle: shouldNotBeCalled,
         findVersionsForArticleDoi,
       })(
-        [{
-          doi: arbitraryDoi(),
-          evaluationCount: arbitraryNumber(1, 5),
-          latestActivityDate: arbitraryDate(),
-        }],
+        generateArticles(1),
         arbitraryGroup(),
         pageNumber,
         pageSize,
