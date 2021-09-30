@@ -48,7 +48,17 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when there are no evaluated articles', () => {
-    it.todo('displays a static message');
+    it('displays a static message', async () => {
+      const html = await pipe(
+        evaluatedArticlesList({
+          fetchArticle: shouldNotBeCalled,
+          findVersionsForArticleDoi: shouldNotBeCalled,
+        })([], arbitraryGroup(), 1, 20),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(html).toContain('hasn’t evaluated any articles');
+    });
   });
 
   describe('when there is more than one page', () => {
