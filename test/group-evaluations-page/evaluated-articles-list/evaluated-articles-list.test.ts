@@ -45,6 +45,8 @@ describe('evaluated-articles-list', () => {
 
       expect(cardCount(html)).toBe(2);
     });
+
+    it.todo('shows "page x of y"');
   });
 
   describe('when there are no evaluated articles', () => {
@@ -59,6 +61,8 @@ describe('evaluated-articles-list', () => {
 
       expect(html).toContain('hasn’t evaluated any articles');
     });
+
+    it.todo('doesn\'t show "page x of y"');
   });
 
   describe('when there is more than one page', () => {
@@ -83,6 +87,8 @@ describe('evaluated-articles-list', () => {
 
       expect(html).toContain(link);
     });
+
+    it.todo('shows "page x of y"');
   });
 
   describe('when some of the article details can\'t be retrieved', () => {
@@ -108,6 +114,8 @@ describe('evaluated-articles-list', () => {
 
       expect(cardCount(html)).toBe(2);
     });
+
+    it.todo('shows "page x of y"');
   });
 
   describe('when none of the article details can be retrieved', () => {
@@ -127,6 +135,8 @@ describe('evaluated-articles-list', () => {
 
       expect(result).toContain('This information can not be found');
     });
+
+    it.todo('doesn\'t show "page x of y"');
   });
 
   describe('when the requested page is out of bounds', () => {
