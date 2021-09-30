@@ -9,6 +9,7 @@ import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
+import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -58,6 +59,22 @@ type EvaluatedArticlesList = (
   pageSize: number
 ) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
+const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
+  (pageOfContent: HtmlFragment) => `
+    <div>
+      ${pageOfContent}
+      ${(pipe(
+    nextPageNumber,
+    O.fold(
+      () => '',
+      (p) => paginationControls(`/groups/${group.slug}/evaluated-articles?page=${p}`),
+    ),
+  ))}
+    </div>
+  `,
+  toHtmlFragment,
+);
+
 const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
   pageOfArticles.content,
   E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
@@ -77,10 +94,8 @@ const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) 
         latestVersionDate: articleViewModel.latestVersionDate,
         latestActivityDate: O.some(articleViewModel.latestActivityDate),
       })),
-      renderEvaluatedArticlesList(pipe(
-        pageOfArticles.nextPageNumber,
-        O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
-      )),
+      renderEvaluatedArticlesList,
+      addPaginationControls(pageOfArticles.nextPageNumber, group),
     ),
   ),
 );
