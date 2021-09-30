@@ -62,7 +62,27 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when there is more than one page', () => {
-    it.todo('links to the next page');
+    const fetchArticle = () => TE.right({
+      title: arbitrarySanitisedHtmlFragment(),
+      server: arbitraryArticleServer(),
+      authors: [],
+    });
+
+    it('links to the next page', async () => {
+      const group = arbitraryGroup();
+      const articleCount = 20;
+      const articles = generateArticles(articleCount);
+      const html = await pipe(
+        evaluatedArticlesList({
+          fetchArticle,
+          findVersionsForArticleDoi,
+        })(articles, group, 1, arbitraryNumber(2, articleCount - 1)),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+      const link = `/groups/${group.slug}/evaluated-articles?page=2`;
+
+      expect(html).toContain(link);
+    });
   });
 
   describe('when some of the article details can\'t be retrieved', () => {
