@@ -6,6 +6,7 @@ import { JSDOM } from 'jsdom';
 import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
+import { Group } from '../../../src/types/group';
 import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -33,20 +34,26 @@ describe('evaluated-articles-list', () => {
       authors: [],
     });
 
-    it('returns article cards for each article', async () => {
+    let html: HtmlFragment;
+
+    beforeEach(async () => {
       const articles = generateArticles(2);
-      const html = await pipe(
+      html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('returns article cards for each article', async () => {
       expect(cardCount(html)).toBe(2);
     });
 
-    it.todo('shows "page x of y"');
+    it.skip('shows "page x of y"', () => {
+      expect(html).toContain('page 1 of 1');
+    });
   });
 
   describe('when there are no evaluated articles', () => {
@@ -72,27 +79,34 @@ describe('evaluated-articles-list', () => {
       authors: [],
     });
 
-    it('links to the next page', async () => {
-      const group = arbitraryGroup();
-      const articleCount = 20;
-      const articles = generateArticles(articleCount);
-      const html = await pipe(
+    let html: HtmlFragment;
+    let group: Group;
+
+    beforeEach(async () => {
+      const articles = generateArticles(20);
+      group = arbitraryGroup();
+      html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
-        })(articles, group, 1, arbitraryNumber(2, articleCount - 1)),
+        })(articles, group, 1, 7),
         TE.getOrElse(shouldNotBeCalled),
       )();
-      const link = `/groups/${group.slug}/evaluated-articles?page=2`;
-
-      expect(html).toContain(link);
     });
 
-    it.todo('shows "page x of y"');
+    it('links to the next page', async () => {
+      expect(html).toContain(`/groups/${group.slug}/evaluated-articles?page=2`);
+    });
+
+    it.skip('shows "page x of y"', () => {
+      expect(html).toContain('page 1 of 3');
+    });
   });
 
   describe('when some of the article details can\'t be retrieved', () => {
-    it('returns the successful article cards', async () => {
+    let html: HtmlFragment;
+
+    beforeEach(async () => {
       const articles = generateArticles(4);
       const fetchArticle = (doi: Doi) => {
         if (doi.value === articles[0].doi.value || doi.value === articles[1].doi.value) {
@@ -104,18 +118,22 @@ describe('evaluated-articles-list', () => {
           authors: [],
         });
       };
-      const html = await pipe(
+      html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('returns the successful article cards', async () => {
       expect(cardCount(html)).toBe(2);
     });
 
-    it.todo('shows "page x of y"');
+    it.skip('shows "page x of y"', () => {
+      expect(html).toContain('page 1 of 1');
+    });
   });
 
   describe('when none of the article details can be retrieved', () => {
