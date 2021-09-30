@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { paginate } from './paginate';
+import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
@@ -58,34 +58,36 @@ type EvaluatedArticlesList = (
   pageSize: number
 ) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
+const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
+  pageOfArticles.content,
+  E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
+  TE.fromEither,
+  TE.chainW(flow(
+    T.traverseArray(addArticleDetails(ports)),
+    T.map(RA.rights),
+    T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
+  )),
+  TE.match(
+    (left) => (left === 'unavailable'
+      ? articleDetailsUnavailable
+      : noEvaluatedArticles),
+    flow(
+      RA.map((articleViewModel) => ({
+        ...articleViewModel,
+        latestVersionDate: articleViewModel.latestVersionDate,
+        latestActivityDate: O.some(articleViewModel.latestActivityDate),
+      })),
+      renderEvaluatedArticlesList(pipe(
+        pageOfArticles.nextPageNumber,
+        O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
+      )),
+    ),
+  ),
+);
+
 export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
   articles,
   paginate(pageNumber, pageSize),
   TE.fromEither,
-  TE.chainTaskK(({ content, nextPageNumber }) => pipe(
-    content,
-    E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
-    TE.fromEither,
-    TE.chainW(flow(
-      T.traverseArray(addArticleDetails(ports)),
-      T.map(RA.rights),
-      T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
-    )),
-    TE.match(
-      (left) => (left === 'unavailable'
-        ? articleDetailsUnavailable
-        : noEvaluatedArticles),
-      flow(
-        RA.map((articleViewModel) => ({
-          ...articleViewModel,
-          latestVersionDate: articleViewModel.latestVersionDate,
-          latestActivityDate: O.some(articleViewModel.latestActivityDate),
-        })),
-        renderEvaluatedArticlesList(pipe(
-          nextPageNumber,
-          O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
-        )),
-      ),
-    ),
-  )),
+  TE.chainTaskK(toHtml(ports, group)),
 );
