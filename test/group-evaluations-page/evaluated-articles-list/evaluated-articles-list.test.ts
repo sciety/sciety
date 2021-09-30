@@ -143,8 +143,10 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when none of the article details can be retrieved', () => {
-    it('returns "this information can\'t be found" message', async () => {
-      const result = await pipe(
+    let html: HtmlFragment;
+
+    beforeEach(async () => {
+      html = await pipe(
         evaluatedArticlesList({
           fetchArticle: () => TE.left(DE.unavailable),
           findVersionsForArticleDoi,
@@ -156,11 +158,15 @@ describe('evaluated-articles-list', () => {
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
-
-      expect(result).toContain('This information can not be found');
     });
 
-    it.todo('doesn\'t show "page x of y"');
+    it('returns "this information can\'t be found" message', async () => {
+      expect(html).toContain('This information can not be found');
+    });
+
+    it('doesn\'t show "page x of y"', async () => {
+      expect(html).not.toMatch(/page \d+ of \d+/);
+    });
   });
 
   describe('when the requested page is out of bounds', () => {
