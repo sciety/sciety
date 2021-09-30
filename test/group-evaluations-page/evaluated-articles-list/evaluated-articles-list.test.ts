@@ -51,7 +51,7 @@ describe('evaluated-articles-list', () => {
       expect(cardCount(html)).toBe(2);
     });
 
-    it.skip('shows "page x of y"', () => {
+    it('shows "page x of y"', () => {
       expect(html).toContain('page 1 of 1');
     });
   });
@@ -98,7 +98,7 @@ describe('evaluated-articles-list', () => {
       expect(html).toContain(`/groups/${group.slug}/evaluated-articles?page=2`);
     });
 
-    it.skip('shows "page x of y"', () => {
+    it('shows "page x of y"', () => {
       expect(html).toContain('page 1 of 3');
     });
   });
@@ -131,7 +131,7 @@ describe('evaluated-articles-list', () => {
       expect(cardCount(html)).toBe(2);
     });
 
-    it.skip('shows "page x of y"', () => {
+    it('shows "page x of y"', () => {
       expect(html).toContain('page 1 of 1');
     });
   });

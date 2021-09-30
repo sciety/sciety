@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
@@ -75,6 +75,21 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) =
   toHtmlFragment,
 );
 
+const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
+  articleCount,
+  O.fromPredicate(() => articleCount > 0),
+  O.fold(
+    constant(''),
+    (count) => pipe(
+      {
+        currentPage: pipe(page, O.getOrElse(() => 1)),
+        totalPages: Math.ceil(count / pageSize),
+      },
+      ({ currentPage, totalPages }) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
+    ),
+  ),
+);
+
 const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
   pageOfArticles.content,
   E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
@@ -96,6 +111,8 @@ const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) 
       })),
       renderEvaluatedArticlesList,
       addPaginationControls(pageOfArticles.nextPageNumber, group),
+      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
+      toHtmlFragment,
     ),
   ),
 );

@@ -7,14 +7,12 @@ import { RenderPageError } from '../types/render-page-error';
 
 type Components = {
   header: HtmlFragment,
-  pageNumbers: HtmlFragment,
   evaluatedArticlesList: HtmlFragment,
 };
 
 const render = (components: Components) => `
   ${components.header}
   <section class="evaluated-articles">
-    ${components.pageNumbers}
     ${components.evaluatedArticlesList}
   </section>
 `;
