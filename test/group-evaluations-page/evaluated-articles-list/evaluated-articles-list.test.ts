@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { evaluatedArticlesList } from '../../../src/group-evaluations-page/evaluated-articles-list';
+import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
 import { arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
@@ -20,6 +20,8 @@ const generateArticles = (count: number) => (
   }))
 );
 
+const findVersionsForArticleDoi: Ports['findVersionsForArticleDoi'] = () => TO.some([{ occurredAt: arbitraryDate() }]);
+
 describe('evaluated-articles-list', () => {
   describe('when article details for the page can be fetched', () => {
     it('returns article cards for each article', async () => {
@@ -32,7 +34,7 @@ describe('evaluated-articles-list', () => {
       const html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
-          findVersionsForArticleDoi: () => TO.some([{ occurredAt: arbitraryDate() }]),
+          findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
         TE.map(JSDOM.fragment),
         TE.getOrElse(shouldNotBeCalled),
@@ -67,7 +69,7 @@ describe('evaluated-articles-list', () => {
       const html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
-          findVersionsForArticleDoi: () => TO.some([{ occurredAt: arbitraryDate() }]),
+          findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
         TE.map(JSDOM.fragment),
         TE.getOrElse(shouldNotBeCalled),
@@ -83,7 +85,7 @@ describe('evaluated-articles-list', () => {
       const result = await pipe(
         evaluatedArticlesList({
           fetchArticle: () => TE.left(DE.unavailable),
-          findVersionsForArticleDoi: shouldNotBeCalled,
+          findVersionsForArticleDoi,
         })(
           [{
             doi: arbitraryDoi(),
@@ -107,7 +109,7 @@ describe('evaluated-articles-list', () => {
       const pageSize = 1;
       const result = await evaluatedArticlesList({
         fetchArticle: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi,
       })(
         [{
           doi: arbitraryDoi(),
