@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { evaluatedArticlesList } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import * as DE from '../../../src/types/data-error';
+import { Doi } from '../../../src/types/doi';
 import { arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
@@ -21,7 +22,25 @@ const generateArticles = (count: number) => (
 
 describe('evaluated-articles-list', () => {
   describe('when article details for the page can be fetched', () => {
-    it.todo('returns article cards for each article');
+    it('returns article cards for each article', async () => {
+      const articles = generateArticles(2);
+      const fetchArticle = () => TE.right({
+        title: arbitrarySanitisedHtmlFragment(),
+        server: arbitraryArticleServer(),
+        authors: [],
+      });
+      const html = await pipe(
+        evaluatedArticlesList({
+          fetchArticle,
+          findVersionsForArticleDoi: () => TO.some([{ occurredAt: arbitraryDate() }]),
+        })(articles, arbitraryGroup(), 1, 20),
+        TE.map(JSDOM.fragment),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+      const cardCount = Array.from(html.querySelectorAll('.article-card')).length;
+
+      expect(cardCount).toBe(2);
+    });
   });
 
   describe('when there are no evaluated articles', () => {
@@ -35,18 +54,16 @@ describe('evaluated-articles-list', () => {
   describe('when some of the article details can\'t be retrieved', () => {
     it('returns the successful article cards', async () => {
       const articles = generateArticles(4);
-      const fetchArticle = jest.fn().mockImplementation(
-        (doi) => {
-          if (doi.value === articles[0].doi.value || doi.value === articles[1].doi.value) {
-            return TE.left(DE.unavailable);
-          }
-          return TE.right({
-            title: arbitrarySanitisedHtmlFragment(),
-            server: arbitraryArticleServer(),
-            authors: [],
-          });
-        },
-      );
+      const fetchArticle = (doi: Doi) => {
+        if (doi.value === articles[0].doi.value || doi.value === articles[1].doi.value) {
+          return TE.left(DE.unavailable);
+        }
+        return TE.right({
+          title: arbitrarySanitisedHtmlFragment(),
+          server: arbitraryArticleServer(),
+          authors: [],
+        });
+      };
       const html = await pipe(
         evaluatedArticlesList({
           fetchArticle,
