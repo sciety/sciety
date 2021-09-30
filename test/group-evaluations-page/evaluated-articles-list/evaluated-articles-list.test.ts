@@ -20,6 +20,18 @@ const generateArticles = (count: number) => (
 );
 
 describe('evaluated-articles-list', () => {
+  describe('when article details for the page can be fetched', () => {
+    it.todo('returns article cards for each article');
+  });
+
+  describe('when there are no evaluated articles', () => {
+    it.todo('displays a static message');
+  });
+
+  describe('when there is more than one page', () => {
+    it.todo('links to the next page');
+  });
+
   describe('when some of the article details can\'t be retrieved', () => {
     it('returns the successful article cards', async () => {
       const articles = generateArticles(4);
