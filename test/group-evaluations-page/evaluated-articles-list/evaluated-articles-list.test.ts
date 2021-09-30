@@ -57,19 +57,25 @@ describe('evaluated-articles-list', () => {
   });
 
   describe('when there are no evaluated articles', () => {
-    it('displays a static message', async () => {
-      const html = await pipe(
+    let html: HtmlFragment;
+
+    beforeEach(async () => {
+      html = await pipe(
         evaluatedArticlesList({
           fetchArticle: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
         })([], arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('displays a static message', () => {
       expect(html).toContain('hasn’t evaluated any articles');
     });
 
-    it.todo('doesn\'t show "page x of y"');
+    it('doesn\'t show "page x of y"', async () => {
+      expect(html).not.toMatch(/page \d+ of \d+/);
+    });
   });
 
   describe('when there is more than one page', () => {
