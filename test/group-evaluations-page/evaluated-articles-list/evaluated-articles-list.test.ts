@@ -6,6 +6,7 @@ import { JSDOM } from 'jsdom';
 import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
+import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
@@ -22,6 +23,8 @@ const generateArticles = (count: number) => (
 
 const findVersionsForArticleDoi: Ports['findVersionsForArticleDoi'] = () => TO.some([{ occurredAt: arbitraryDate() }]);
 
+const cardCount = (html: HtmlFragment) => Array.from(JSDOM.fragment(html).querySelectorAll('.article-card')).length;
+
 describe('evaluated-articles-list', () => {
   describe('when article details for the page can be fetched', () => {
     const fetchArticle = () => TE.right({
@@ -37,12 +40,10 @@ describe('evaluated-articles-list', () => {
           fetchArticle,
           findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
-        TE.map(JSDOM.fragment),
         TE.getOrElse(shouldNotBeCalled),
       )();
-      const cardCount = Array.from(html.querySelectorAll('.article-card')).length;
 
-      expect(cardCount).toBe(2);
+      expect(cardCount(html)).toBe(2);
     });
   });
 
@@ -72,12 +73,10 @@ describe('evaluated-articles-list', () => {
           fetchArticle,
           findVersionsForArticleDoi,
         })(articles, arbitraryGroup(), 1, 20),
-        TE.map(JSDOM.fragment),
         TE.getOrElse(shouldNotBeCalled),
       )();
-      const cardCount = Array.from(html.querySelectorAll('.article-card')).length;
 
-      expect(cardCount).toBe(2);
+      expect(cardCount(html)).toBe(2);
     });
   });
 
