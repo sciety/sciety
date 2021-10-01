@@ -31,7 +31,7 @@ unused-sass: node_modules
 	rm -f .purgecss/{full,purged}.css
 	npx sass-unused 'src/**/*.scss'
 	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
-	npx purgecss --css .purgecss/full.css --content 'src/**/*.ts' --output .purgecss/purged.css
+	npx purgecss --css .purgecss/full.css --content 'src/**/*.ts' --content 'static/behaviour.js' --output .purgecss/purged.css
 	diff .purgecss/full.css .purgecss/purged.css > .purgecss/unused.css || true
 	diff .purgecss/approved-unused.css .purgecss/unused.css
 
