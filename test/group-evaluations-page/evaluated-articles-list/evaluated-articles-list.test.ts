@@ -5,8 +5,8 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
 import {
-  articleDetailsUnavailable,
-  noEvaluatedArticles,
+  noArticlesCanBeFetchedMessage,
+  noEvaluatedArticlesMessage,
 } from '../../../src/group-evaluations-page/evaluated-articles-list/static-messages';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
@@ -74,7 +74,7 @@ describe('evaluated-articles-list', () => {
     });
 
     it('displays a static message', () => {
-      expect(html).toContain(noEvaluatedArticles);
+      expect(html).toContain(noEvaluatedArticlesMessage);
     });
 
     it('doesn\'t show "page x of y"', async () => {
@@ -165,7 +165,7 @@ describe('evaluated-articles-list', () => {
     });
 
     it('returns "this information can\'t be found" message', async () => {
-      expect(html).toContain(articleDetailsUnavailable);
+      expect(html).toContain(noArticlesCanBeFetchedMessage);
     });
 
     it('doesn\'t show "page x of y"', async () => {

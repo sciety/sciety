@@ -7,7 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
-import { articleDetailsUnavailable, noEvaluatedArticles } from './static-messages';
+import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { paginationControls } from '../../shared-components/pagination-controls';
@@ -37,7 +37,7 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   flow(ports.fetchArticle, T.map(O.fromEither)),
 );
 
-const addArticleDetails = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
+const toArticleCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
   evaluatedArticle.doi,
   getArticleDetails(ports),
   TO.map((articleDetails) => ({
@@ -89,14 +89,14 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSiz
   ),
 );
 
-const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
+const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
   pageOfArticles.content,
-  E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticles),
+  E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
-  TE.chainTaskK(T.traverseArray(addArticleDetails(ports))),
+  TE.chainTaskK(T.traverseArray(toArticleCardViewModel(ports))),
   TE.map(RA.rights),
   TE.map(RA.match(
-    () => articleDetailsUnavailable,
+    () => noArticlesCanBeFetchedMessage,
     flow(
       renderEvaluatedArticlesList,
       addPaginationControls(pageOfArticles.nextPageNumber, group),
@@ -111,5 +111,5 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
   articles,
   paginate(pageNumber, pageSize),
   TE.fromEither,
-  TE.chainTaskK(toHtml(ports, group)),
+  TE.chainTaskK(toPageOfCards(ports, group)),
 );
