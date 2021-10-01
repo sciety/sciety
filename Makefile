@@ -27,13 +27,14 @@ prod: .env build
 .gcp-ncrc-key.json:
 	gcloud iam service-accounts keys create ./.gcp-ncrc-key.json --iam-account ncrc-sheet@sciety.iam.gserviceaccount.com
 
-unused-sass: node_modules
+unused-sass: node_modules find-unused-sass-declarations
 	rm -f .purgecss/{full,purged}.css
-	npx sass-unused 'src/**/*.scss'
 	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
-	npx purgecss --css .purgecss/full.css --content 'src/**/*.ts' --content 'static/behaviour.js' --output .purgecss/purged.css
-	diff .purgecss/full.css .purgecss/purged.css > .purgecss/unused.css || true
-	diff .purgecss/approved-unused.css .purgecss/unused.css
+	npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
+	diff .purgecss/full.css .purgecss/purged.css
+
+find-unused-sass-declarations: node_modules
+	npx sass-unused 'src/**/*.scss'
 
 lint: export TARGET = dev
 lint: build
