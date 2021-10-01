@@ -34,22 +34,12 @@
 }
 
 .page-header--group {
-  .page-header__identity {
-    display: flex;
-    align-items: center;
-    margin-bottom: baseline.increments(3);
-  }
-
   .page-header__avatar {
     @include avatar.border();
     width: avatar.$size--large;
     height: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
     margin-right: 1rem;
-  }
-
-  h1 {
-    margin-bottom: 0;
   }
 }
 

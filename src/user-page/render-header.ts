@@ -3,7 +3,7 @@ import { UserDetails } from './user-details';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderHeader = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
-  <header class="page-header page-header--user">
+  <header class="page-header page-header--user page-header__identity">
     <img src="${ud.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
       <span class="visually-hidden">Sciety user </span>${htmlEscape(ud.displayName)}

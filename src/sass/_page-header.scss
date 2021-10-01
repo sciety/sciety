@@ -13,3 +13,13 @@
 .page-header__title {
   @include typography.title-1();
 }
+
+.page-header__identity {
+  display: flex;
+  align-items: center;
+  margin-bottom: baseline.increments(3);
+
+  h1 {
+    margin-bottom: 0;
+  }
+}
