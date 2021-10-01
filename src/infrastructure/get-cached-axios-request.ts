@@ -12,6 +12,7 @@ const api = axios.create({
 export const getCachedAxiosRequest = (
   logger: Logger,
 ) => async <U>(url: string, headers: Record<string, string>): Promise<U> => {
+  const startTime = new Date();
   const response = await api.get<U>(url, { headers });
   if (response.request.fromCache) {
     logger('debug', 'Axios cache hit', {
@@ -21,6 +22,8 @@ export const getCachedAxiosRequest = (
     logger('debug', 'Axios cache miss', {
       url,
     });
+    const durationInMs = new Date().getTime() - startTime.getTime();
+    logger('debug', 'Response time', { url, durationInMs });
   }
   return response.data;
 };
