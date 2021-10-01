@@ -9,7 +9,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { Adapters } from './adapters'
+import { Adapters } from './adapters';
 import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchCrossrefArticle } from './fetch-crossref-article';

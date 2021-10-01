@@ -58,12 +58,10 @@ const mapResponse = (doi: Doi, server: ArticleServer) => flow(
   })),
 );
 
-const getArticleVersionEventsFromBiorxiv = (
+export const getArticleVersionEventsFromBiorxiv = (
   deps: Dependencies,
 ): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
   makeRequest(doi, server)(deps),
   TE.map(mapResponse(doi, server)),
   T.map(O.fromEither),
 );
-
-export { getArticleVersionEventsFromBiorxiv, ArticleVersion };
