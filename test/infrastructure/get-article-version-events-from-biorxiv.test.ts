@@ -31,7 +31,10 @@ describe('get-article-version-events-from-biorxiv', () => {
           T.map(O.getOrElseW(() => [])),
         )();
 
-        expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
+        expect(getJson).toHaveBeenCalledWith(
+          'https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911',
+          expect.any(Object),
+        );
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
           source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
@@ -67,7 +70,10 @@ describe('get-article-version-events-from-biorxiv', () => {
           T.map(O.getOrElseW(() => [])),
         )();
 
-        expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
+        expect(getJson).toHaveBeenCalledWith(
+          'https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911',
+          expect.any(Object),
+        );
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
           source: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v2'),

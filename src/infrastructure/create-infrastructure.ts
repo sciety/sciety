@@ -101,14 +101,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
-      const getCachedJson = async (url: string) => {
-        const headers = {
-          'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-        };
-        const getCachedRequest = getCachedAxiosRequest(logger);
-        return getCachedRequest<Json>(url, headers);
-      };
-
       const groups = inMemoryGroupRepository(bootstrapGroups);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
@@ -151,7 +143,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         follows: follows(getAllEvents),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedJson,
+          getJson: getCachedAxiosRequest(logger),
           logger,
         }),
         ...adapters,

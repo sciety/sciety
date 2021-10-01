@@ -12,7 +12,7 @@ import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 
-type GetJson = (url: string) => Promise<Json>;
+type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 
 type Dependencies = {
   getJson: GetJson,
@@ -30,9 +30,16 @@ export type GetArticleVersionEventsFromBiorxiv = (
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
+const headers = {
+  'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+};
+
 const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: Dependencies) => pipe(
   TE.tryCatch(
-    async () => getJson(`https://api.biorxiv.org/details/${server}/${doi.value}`),
+    async () => getJson(
+      `https://api.biorxiv.org/details/${server}/${doi.value}`,
+      headers,
+    ),
     E.toError,
   ),
   TE.chainEitherK(flow(
