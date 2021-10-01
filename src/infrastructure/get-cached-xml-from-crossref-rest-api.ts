@@ -37,8 +37,5 @@ export const getCachedXmlFromCrossrefRestApi = (
       url,
     });
   }
-  if (response.data.length === 0) {
-    throw new Error('Empty response from Crossref');
-  }
   return response.data;
 };

@@ -38,6 +38,9 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
     let response: string;
     try {
       response = await getXml(doi, 'application/vnd.crossref.unixref+xml');
+      if (response.length === 0) {
+        throw new Error('Empty response from Crossref');
+      }
     } catch (error: unknown) {
       const payload: Record<string, unknown> = {
         doi,
