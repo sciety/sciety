@@ -7,6 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
+import { articleDetailsUnavailable, noEvaluatedArticles } from './static-messages';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { paginationControls } from '../../shared-components/pagination-controls';
@@ -35,10 +36,6 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
   flow(ports.fetchArticle, T.map(O.fromEither)),
 );
-
-const noEvaluatedArticles = toHtmlFragment('<p class="evaluated-articles__empty">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>');
-
-const articleDetailsUnavailable = toHtmlFragment('<p class="static-message">This information can not be found.</p>');
 
 const addArticleDetails = (ports: Ports) => <A extends { doi: Doi }>(evaluatedArticle: A) => pipe(
   evaluatedArticle.doi,

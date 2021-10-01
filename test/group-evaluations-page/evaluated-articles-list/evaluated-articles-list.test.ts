@@ -4,6 +4,10 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
+import {
+  articleDetailsUnavailable,
+  noEvaluatedArticles,
+} from '../../../src/group-evaluations-page/evaluated-articles-list/static-messages';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
 import { Group } from '../../../src/types/group';
@@ -70,7 +74,7 @@ describe('evaluated-articles-list', () => {
     });
 
     it('displays a static message', () => {
-      expect(html).toContain('hasn’t evaluated any articles');
+      expect(html).toContain(noEvaluatedArticles);
     });
 
     it('doesn\'t show "page x of y"', async () => {
@@ -161,7 +165,7 @@ describe('evaluated-articles-list', () => {
     });
 
     it('returns "this information can\'t be found" message', async () => {
-      expect(html).toContain('This information can not be found');
+      expect(html).toContain(articleDetailsUnavailable);
     });
 
     it('doesn\'t show "page x of y"', async () => {
