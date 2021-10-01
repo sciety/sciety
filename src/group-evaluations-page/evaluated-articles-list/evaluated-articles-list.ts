@@ -37,12 +37,14 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   flow(ports.fetchArticle, T.map(O.fromEither)),
 );
 
-const addArticleDetails = (ports: Ports) => <A extends { doi: Doi }>(evaluatedArticle: A) => pipe(
+const addArticleDetails = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
   evaluatedArticle.doi,
   getArticleDetails(ports),
   TO.map((articleDetails) => ({
     ...evaluatedArticle,
     ...articleDetails,
+    latestVersionDate: articleDetails.latestVersionDate,
+    latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
   })),
   TE.fromTaskOption(() => DE.unavailable),
 );
@@ -91,21 +93,16 @@ const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) 
   pageOfArticles.content,
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticles),
   TE.fromEither,
-  TE.chainW(flow(
-    T.traverseArray(addArticleDetails(ports)),
-    T.map(RA.rights),
-    T.map(E.fromPredicate(RA.isNonEmpty, () => articleDetailsUnavailable)),
-  )),
-  TE.map(flow(
-    RA.map((articleViewModel) => ({
-      ...articleViewModel,
-      latestVersionDate: articleViewModel.latestVersionDate,
-      latestActivityDate: O.some(articleViewModel.latestActivityDate),
-    })),
-    renderEvaluatedArticlesList,
-    addPaginationControls(pageOfArticles.nextPageNumber, group),
-    (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
-    toHtmlFragment,
+  TE.chainTaskK(T.traverseArray(addArticleDetails(ports))),
+  TE.map(RA.rights),
+  TE.map(RA.match(
+    () => articleDetailsUnavailable,
+    flow(
+      renderEvaluatedArticlesList,
+      addPaginationControls(pageOfArticles.nextPageNumber, group),
+      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
+      toHtmlFragment,
+    ),
   )),
   TE.toUnion,
 );
