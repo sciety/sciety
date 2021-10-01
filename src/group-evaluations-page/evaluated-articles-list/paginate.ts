@@ -9,13 +9,17 @@ import * as DE from '../../types/data-error';
 export type PageOfArticles = {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
+  currentPageNumber: number,
   articleCount: number,
+  pageSize: number,
 };
 
-const emptyPage = E.right({
+const emptyPage = (page: number, pageSize: number) => E.right({
   content: [],
   nextPageNumber: O.none,
+  currentPageNumber: page,
   articleCount: 0,
+  pageSize,
 });
 
 type SelectedPage = (
@@ -37,6 +41,8 @@ const selectedPage: SelectedPage = (allEvaluatedArticles, page, pageSize) => pip
       O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
     ),
     articleCount: allEvaluatedArticles.length,
+    currentPageNumber: page,
+    pageSize,
   })),
 );
 
@@ -49,6 +55,6 @@ type Paginate = (
 
 export const paginate: Paginate = (page, pageSize) => (allEvaluatedArticles) => (
   (allEvaluatedArticles.length === 0)
-    ? emptyPage
+    ? emptyPage(page, pageSize)
     : selectedPage(allEvaluatedArticles, page, pageSize)
 );

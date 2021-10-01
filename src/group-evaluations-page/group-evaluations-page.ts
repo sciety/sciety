@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
@@ -50,21 +50,6 @@ const renderLastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
-  articleCount,
-  O.fromPredicate(() => articleCount > 0),
-  O.fold(
-    constant(''),
-    (count) => pipe(
-      {
-        currentPage: pipe(page, O.getOrElse(() => 1)),
-        totalPages: Math.ceil(count / pageSize),
-      },
-      ({ currentPage, totalPages }) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
-    ),
-  ),
-);
-
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
   T.map(E.fromOption(notFoundResponse)),
@@ -93,11 +78,6 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
           <p class="page-header__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
           <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
         </header>`,
-        toHtmlFragment,
-        TE.right,
-      ),
-      pageNumbers: pipe(
-        renderPageNumbers(page, articleCount, pageSize),
         toHtmlFragment,
         TE.right,
       ),

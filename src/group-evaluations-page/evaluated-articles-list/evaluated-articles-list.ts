@@ -4,11 +4,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
-import { paginate } from './paginate';
+import { constant, flow, pipe } from 'fp-ts/function';
+import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
+import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -58,34 +59,67 @@ type EvaluatedArticlesList = (
   pageSize: number
 ) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
+const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
+  (pageOfContent: HtmlFragment) => `
+    <div>
+      ${pageOfContent}
+      ${(pipe(
+    nextPageNumber,
+    O.fold(
+      () => '',
+      (p) => paginationControls(`/groups/${group.slug}/evaluated-articles?page=${p}`),
+    ),
+  ))}
+    </div>
+  `,
+  toHtmlFragment,
+);
+
+const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
+  articleCount,
+  O.fromPredicate(() => articleCount > 0),
+  O.fold(
+    constant(''),
+    (count) => pipe(
+      {
+        currentPage: pipe(page, O.getOrElse(() => 1)),
+        totalPages: Math.ceil(count / pageSize),
+      },
+      ({ currentPage, totalPages }) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
+    ),
+  ),
+);
+
+const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
+  pageOfArticles.content,
+  E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
+  TE.fromEither,
+  TE.chainW(flow(
+    T.traverseArray(addArticleDetails(ports)),
+    T.map(RA.rights),
+    T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
+  )),
+  TE.match(
+    (left) => (left === 'unavailable'
+      ? articleDetailsUnavailable
+      : noEvaluatedArticles),
+    flow(
+      RA.map((articleViewModel) => ({
+        ...articleViewModel,
+        latestVersionDate: articleViewModel.latestVersionDate,
+        latestActivityDate: O.some(articleViewModel.latestActivityDate),
+      })),
+      renderEvaluatedArticlesList,
+      addPaginationControls(pageOfArticles.nextPageNumber, group),
+      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
+      toHtmlFragment,
+    ),
+  ),
+);
+
 export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
   articles,
   paginate(pageNumber, pageSize),
   TE.fromEither,
-  TE.chainTaskK(({ content, nextPageNumber }) => pipe(
-    content,
-    E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
-    TE.fromEither,
-    TE.chainW(flow(
-      T.traverseArray(addArticleDetails(ports)),
-      T.map(RA.rights),
-      T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
-    )),
-    TE.match(
-      (left) => (left === 'unavailable'
-        ? articleDetailsUnavailable
-        : noEvaluatedArticles),
-      flow(
-        RA.map((articleViewModel) => ({
-          ...articleViewModel,
-          latestVersionDate: articleViewModel.latestVersionDate,
-          latestActivityDate: O.some(articleViewModel.latestActivityDate),
-        })),
-        renderEvaluatedArticlesList(pipe(
-          nextPageNumber,
-          O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
-        )),
-      ),
-    ),
-  )),
+  TE.chainTaskK(toHtml(ports, group)),
 );
