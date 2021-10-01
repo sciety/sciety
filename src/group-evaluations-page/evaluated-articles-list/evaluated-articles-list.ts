@@ -89,29 +89,25 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSiz
 
 const toHtml = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
   pageOfArticles.content,
-  E.fromPredicate(RA.isNonEmpty, () => 'no-evaluated-articles' as const),
+  E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticles),
   TE.fromEither,
   TE.chainW(flow(
     T.traverseArray(addArticleDetails(ports)),
     T.map(RA.rights),
-    T.map(E.fromPredicate(RA.isNonEmpty, () => DE.unavailable)),
+    T.map(E.fromPredicate(RA.isNonEmpty, () => articleDetailsUnavailable)),
   )),
-  TE.match(
-    (left) => (left === 'unavailable'
-      ? articleDetailsUnavailable
-      : noEvaluatedArticles),
-    flow(
-      RA.map((articleViewModel) => ({
-        ...articleViewModel,
-        latestVersionDate: articleViewModel.latestVersionDate,
-        latestActivityDate: O.some(articleViewModel.latestActivityDate),
-      })),
-      renderEvaluatedArticlesList,
-      addPaginationControls(pageOfArticles.nextPageNumber, group),
-      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
-      toHtmlFragment,
-    ),
-  ),
+  TE.map(flow(
+    RA.map((articleViewModel) => ({
+      ...articleViewModel,
+      latestVersionDate: articleViewModel.latestVersionDate,
+      latestActivityDate: O.some(articleViewModel.latestActivityDate),
+    })),
+    renderEvaluatedArticlesList,
+    addPaginationControls(pageOfArticles.nextPageNumber, group),
+    (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
+    toHtmlFragment,
+  )),
+  TE.toUnion,
 );
 
 export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
