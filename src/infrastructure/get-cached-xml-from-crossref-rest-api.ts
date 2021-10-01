@@ -1,12 +1,20 @@
 import { URL } from 'url';
+import axios from 'axios';
+import { setupCache } from 'axios-cache-adapter';
 import * as O from 'fp-ts/Option';
-import { fetchData } from './fetchers';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 
 type GetXmlFromCrossrefRestApi = (doi: Doi, acceptHeader: string) => Promise<string>;
 
-export const getXmlFromCrossrefRestApi = (
+const cache = setupCache({
+  maxAge: 24 * 60 * 60 * 1000,
+});
+const api = axios.create({
+  adapter: cache.adapter,
+});
+
+export const getCachedXmlFromCrossrefRestApi = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
 ): GetXmlFromCrossrefRestApi => async (doi, acceptHeader) => {
@@ -19,7 +27,16 @@ export const getXmlFromCrossrefRestApi = (
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  const response = await fetchData(logger)<string>(url.toString(), headers);
+  const response = await api.get<string>(url.toString(), { headers });
+  if (response.request.fromCache) {
+    logger('debug', 'Axios XML cache hit', {
+      url,
+    });
+  } else {
+    logger('debug', 'Axios XML cache miss', {
+      url,
+    });
+  }
   if (response.data.length === 0) {
     throw new Error('Empty response from Crossref');
   }

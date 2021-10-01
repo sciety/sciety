@@ -26,6 +26,7 @@ import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
+import { getCachedXmlFromCrossrefRestApi } from './get-cached-xml-from-crossref-rest-api';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
@@ -33,12 +34,10 @@ import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getTwitterUserDetailsBatch } from './get-twitter-user-details-batch';
 import { getTwitterUserId } from './get-twitter-user-id';
-import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
-import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
@@ -140,10 +139,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       return {
-        fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(
+        fetchArticle: fetchCrossrefArticle(getCachedXmlFromCrossrefRestApi(
           logger,
           dependencies.crossrefApiBearerToken,
-        ), logger), logger),
+        ), logger),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
