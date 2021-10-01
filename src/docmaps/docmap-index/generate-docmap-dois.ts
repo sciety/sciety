@@ -42,6 +42,13 @@ const filterByGroup = (
 const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
   ports.getAllEvents,
   T.map(flow(
+    pipe(
+      params.updatedAfter,
+      O.fold(
+        () => (events) => events,
+        (updatedAfter) => RA.filter(({ date }) => date > updatedAfter),
+      ),
+    ),
     allDocmapDois(ncrcGroupId),
     RA.map((doi) => ({ doi, groupId: ncrcGroupId })),
     filterByGroup(params.group),

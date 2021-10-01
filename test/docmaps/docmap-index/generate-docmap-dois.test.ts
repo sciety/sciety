@@ -69,14 +69,14 @@ describe('generate-docmap-dois', () => {
 
   describe('when passed an "updated after" parameter', () => {
     describe('when there are evaluations after the specified date', () => {
-      it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
+      it('only includes docmaps whose latest evaluation is after the specified date', async () => {
         const includedDoi = arbitraryDoi();
         const result = await pipe(
           { updatedAfter: O.some(new Date('1970')), group: O.none },
           generateDocmapDois({
             getAllEvents: T.of([
-              groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
-              groupEvaluatedArticle(arbitraryGroupId(), includedDoi, arbitraryReviewId(), new Date('2000')),
+              groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId(), new Date('1900')),
+              groupEvaluatedArticle(ncrcGroupId, includedDoi, arbitraryReviewId(), new Date('2000')),
             ]),
           }),
           T.map(E.getOrElseW(shouldNotBeCalled)),
@@ -87,7 +87,7 @@ describe('generate-docmap-dois', () => {
     });
 
     describe('when there are no evaluations after the specified date', () => {
-      it.skip('returns an empty array', async () => {
+      it('returns an empty array', async () => {
         const result = await pipe(
           { updatedAfter: O.some(new Date('2020')), group: O.none },
           generateDocmapDois({
