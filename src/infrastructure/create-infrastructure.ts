@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { setupCache } from 'axios-cache-adapter';
 import { sequenceS } from 'fp-ts/Apply';
 import * as A from 'fp-ts/Array';
 import { Json } from 'fp-ts/Json';
@@ -26,6 +24,7 @@ import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
+import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getCachedXmlFromCrossrefRestApi } from './get-cached-xml-from-crossref-rest-api';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
@@ -102,28 +101,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
-      const cache = setupCache({
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-      const api = axios.create({
-        adapter: cache.adapter,
-      });
-
       const getCachedJson = async (url: string) => {
         const headers = {
           'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
         };
-        const response = await api.get<Json>(url, { headers });
-        if (response.request.fromCache) {
-          logger('debug', 'Axios cache hit', {
-            url,
-          });
-        } else {
-          logger('debug', 'Axios cache miss', {
-            url,
-          });
-        }
-        return response.data;
+        const getCachedRequest = getCachedAxiosRequest(logger);
+        return getCachedRequest<Json>(url, headers);
       };
 
       const groups = inMemoryGroupRepository(bootstrapGroups);
