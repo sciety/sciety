@@ -6,7 +6,7 @@ export const searchPage: Page = {
   title: 'Search',
   content: toHtmlFragment(`
     <header class="page-header page-header--search-results">
-      <h1 class="page-heading--search">Search Sciety</h1>
+      <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm('')}
   `),

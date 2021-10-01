@@ -102,7 +102,11 @@
 
 @mixin heading-1 () {
   @include heading-base();
-  font-size: functions.px-to-rem(34px);
+  font-size: functions.px-to-rem(20px);
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(26px);
+  }
 }
 
 @mixin heading-2 () {

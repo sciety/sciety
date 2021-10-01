@@ -12,7 +12,7 @@ const render = (group: Group) => `
   <header class="page-header page-header--group">
     <div class="page-header__identity">
       <img src="${group.avatarPath}" alt="" class="page-header__avatar">
-      <h1 class="page-header__title">
+      <h1>
         ${htmlEscape(group.name)}
       </h1>
     </div>
