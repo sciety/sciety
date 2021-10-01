@@ -19,9 +19,13 @@ export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
+type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
-export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
+export const fetchCrossrefArticle = (
+  getXml: GetXml,
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+): FetchCrossrefArticle => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -37,7 +41,15 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
     // )
     let response: string;
     try {
-      response = await getXml(doi, 'application/vnd.crossref.unixref+xml');
+      const url = `https://api.crossref.org/works/${doi.value}/transform`;
+      const headers: Record<string, string> = {
+        Accept: 'application/vnd.crossref.unixref+xml',
+        'User-Agent': 'Sciety (https://sciety.org; mailto:team@sciety.org)',
+      };
+      if (O.isSome(crossrefApiBearerToken)) {
+        headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
+      }
+      response = await getXml(url, headers);
       if (response.length === 0) {
         throw new Error('Empty response from Crossref');
       }

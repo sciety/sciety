@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
@@ -10,11 +11,16 @@ import { arbitraryDoi } from '../types/doi.helper';
 describe('fetch-crossref-article', () => {
   const doi = arbitraryDoi();
 
-  it('uses the correct accept header', async () => {
+  it('uses the correct url and accept header', async () => {
     const getXml = jest.fn();
-    await fetchCrossrefArticle(getXml, dummyLogger)(doi)();
+    await fetchCrossrefArticle(getXml, dummyLogger, O.none)(doi)();
 
-    expect(getXml).toHaveBeenCalledWith(doi, 'application/vnd.crossref.unixref+xml');
+    expect(getXml).toHaveBeenCalledWith(
+      `https://api.crossref.org/works/${doi.value}/transform`,
+      expect.objectContaining({
+        Accept: 'application/vnd.crossref.unixref+xml',
+      }),
+    );
   });
 
   describe('the request fails', () => {
@@ -24,7 +30,7 @@ describe('fetch-crossref-article', () => {
       };
       const result = await pipe(
         doi,
-        fetchCrossrefArticle(getXml, dummyLogger),
+        fetchCrossrefArticle(getXml, dummyLogger, O.none),
         T.map(flow(
           E.matchW(
             identity,
@@ -43,7 +49,7 @@ describe('fetch-crossref-article', () => {
       const getXml = async (): Promise<string> => '';
       const result = await pipe(
         doi,
-        fetchCrossrefArticle(getXml, dummyLogger),
+        fetchCrossrefArticle(getXml, dummyLogger, O.none),
         T.map(flow(
           E.matchW(
             identity,

@@ -25,7 +25,6 @@ import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
-import { getCachedXmlFromCrossrefRestApi } from './get-cached-xml-from-crossref-rest-api';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
@@ -114,10 +113,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       return {
-        fetchArticle: fetchCrossrefArticle(getCachedXmlFromCrossrefRestApi(
+        fetchArticle: fetchCrossrefArticle(
+          getCachedAxiosRequest(logger),
           logger,
           dependencies.crossrefApiBearerToken,
-        ), logger),
+        ),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
