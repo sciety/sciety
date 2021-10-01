@@ -42,13 +42,3 @@
     margin-right: 1rem;
   }
 }
-
-.group-page-lists-heading {
-  margin-left: 1rem;
-  margin-right: 1rem;
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}

@@ -18,18 +18,6 @@ $_clear-button-inline-size: 48px;
   margin-bottom: 0;
 }
 
-.page-heading--search {
-  @include typography.page-label();
-  margin-bottom: baseline.increments(1.5);
-
-  @include breakpoints.not-narrow {
-    margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
-    @supports(display: grid) {
-      margin-left: unset;
-    }
-  }
-}
-
 .search-form {
   margin-left: functions.px-to-rem($_inline-margin);
   margin-right: functions.px-to-rem($_inline-margin);

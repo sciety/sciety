@@ -10,10 +10,6 @@
   margin-bottom: #{baseline.increments(6)};
 }
 
-.page-header__title {
-  @include typography.title-1();
-}
-
 .page-header__identity {
   display: flex;
   align-items: center;

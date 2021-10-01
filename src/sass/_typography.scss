@@ -40,16 +40,18 @@
   font-weight: bold;
 }
 
-@mixin title-1 () {
-  font-family: settings.$font-family;
-  font-size: functions.px-to-rem(20px);
-  line-height: 1.2;
-  font-weight: bold;
-
-  @include breakpoints.not-narrow() {
-    font-size: functions.px-to-rem(26px);
-  }
-}
+// Unused
+//
+// @mixin title-1 () {
+//   font-family: settings.$font-family;
+//   font-size: functions.px-to-rem(20px);
+//   line-height: 1.2;
+//   font-weight: bold;
+//
+//   @include breakpoints.not-narrow() {
+//     font-size: functions.px-to-rem(26px);
+//   }
+// }
 
 @mixin title-2 () {
   font-family: settings.$font-family;
