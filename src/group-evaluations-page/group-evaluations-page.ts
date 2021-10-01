@@ -50,6 +50,21 @@ const renderLastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
+const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<Date>) => pipe(
+  `<header class="page-header page-header--group-evaluations">
+    <h1>
+      Evaluated Articles
+    </h1>
+    <p class="page-header__subheading">
+      <img src="${group.avatarPath}" alt="" class="page-header__avatar">
+      <span>A list by <a href="/groups/${group.slug}">${group.name}</a></span>
+    </p>
+    <p class="page-header__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+    <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
+  </header>`,
+  toHtmlFragment,
+);
+
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
   T.map(E.fromOption(notFoundResponse)),
@@ -67,18 +82,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
   }) => pipe(
     {
       header: pipe(
-        `<header class="page-header page-header--group-evaluations">
-          <h1>
-            Evaluated Articles
-          </h1>
-          <p class="page-header__subheading">
-            <img src="${group.avatarPath}" alt="" class="page-header__avatar">
-            <span>A list by <a href="/groups/${group.slug}">${group.name}</a></span>
-          </p>
-          <p class="page-header__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
-        </header>`,
-        toHtmlFragment,
+        renderHeader(group, articleCount, lastUpdated),
         TE.right,
       ),
       evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page), pageSize),
