@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { getArticleVersionEventsFromBiorxiv } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
-import { dummyLoggerIO } from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryDoi } from '../types/doi.helper';
 
 describe('get-article-version-events-from-biorxiv', () => {
@@ -27,7 +27,7 @@ describe('get-article-version-events-from-biorxiv', () => {
         }));
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(doi, 'biorxiv'),
+          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(doi, 'biorxiv'),
           T.map(O.getOrElseW(() => [])),
         )();
 
@@ -63,7 +63,7 @@ describe('get-article-version-events-from-biorxiv', () => {
         }));
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(doi, 'medrxiv'),
+          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(doi, 'medrxiv'),
           T.map(O.getOrElseW(() => [])),
         )();
 
@@ -89,7 +89,7 @@ describe('get-article-version-events-from-biorxiv', () => {
         throw new Error('HTTP timeout');
       };
 
-      const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+      const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
       expect(events).toStrictEqual(O.none);
     });
@@ -100,7 +100,7 @@ describe('get-article-version-events-from-biorxiv', () => {
       it('returns a none', async () => {
         const getJson = async (): Promise<Json> => ({});
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });
@@ -117,7 +117,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(arbitraryDoi(), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(arbitraryDoi(), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });
@@ -134,7 +134,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLoggerIO })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });

@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as IO from 'fp-ts/IO';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -9,7 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './codecs/BiorxivArticleDetails';
-import * as L from './logger';
+import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 
@@ -17,7 +16,7 @@ type GetJson = (url: string) => Promise<Json>;
 
 type Dependencies = {
   getJson: GetJson,
-  logger: L.LoggerIO,
+  logger: Logger,
 };
 
 type ArticleVersion = {
@@ -40,13 +39,12 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
     biorxivArticleDetails.decode,
     E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
-  TE.swap,
-  TE.chainFirstIOK(flow(
-    (error) => ({ doi, message: error.message }),
-    L.warn('Failed to retrieve article versions'),
-    IO.chain(logger),
-  )),
-  TE.swap,
+  TE.mapLeft(
+    (error) => {
+      logger('warn', 'Failed to retrieve article versions', { doi, error });
+      return error;
+    },
+  ),
 );
 
 const mapResponse = (doi: Doi, server: ArticleServer) => flow(

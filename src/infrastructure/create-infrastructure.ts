@@ -169,7 +169,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         follows: follows(getAllEvents),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
           getJson: getCachedJson,
-          logger: loggerIO(logger),
+          logger,
         }),
         ...adapters,
       };
