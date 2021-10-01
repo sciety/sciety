@@ -27,7 +27,11 @@
   }
 
   .page-header__handle {
-    @include typography.page-label();
+    font-size: functions.px-to-rem(16px);
+
+    @include breakpoints.not-narrow() {
+      font-size: functions.px-to-rem(20px);
+    }
   }
 }
 
