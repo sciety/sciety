@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { setupCache } from 'axios-cache-adapter';
 import { sequenceS } from 'fp-ts/Apply';
 import * as A from 'fp-ts/Array';
 import { Json } from 'fp-ts/Json';
@@ -7,8 +9,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { Adapters } from './adapters';
-import { biorxivCache } from './biorxiv-cache';
+import { Adapters } from './adapters'
 import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchCrossrefArticle } from './fetch-crossref-article';
@@ -102,6 +103,30 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
+      const cache = setupCache({
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      const api = axios.create({
+        adapter: cache.adapter,
+      });
+
+      const getCachedJson = async (url: string) => {
+        const headers = {
+          'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+        };
+        const response = await api.get<Json>(url, { headers });
+        if (response.request.fromCache) {
+          logger('debug', 'Axios cache hit', {
+            url,
+          });
+        } else {
+          logger('debug', 'Axios cache miss', {
+            url,
+          });
+        }
+        return response.data;
+      };
+
       const groups = inMemoryGroupRepository(bootstrapGroups);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
@@ -143,10 +168,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         ),
         follows: follows(getAllEvents),
-        findVersionsForArticleDoi: biorxivCache(
-          getArticleVersionEventsFromBiorxiv({ getJson, logger: loggerIO(logger) }),
-          logger,
-        ),
+        findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
+          getJson: getCachedJson,
+          logger: loggerIO(logger),
+        }),
         ...adapters,
       };
     },
