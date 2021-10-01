@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import { ArticleActivity } from '../../types/article-activity';
 import * as DE from '../../types/data-error';
 
-// ts-unused-exports:disable-next-line
 export type PageOfArticles = {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
