@@ -1,16 +1,16 @@
-import { allDocmapDois } from '../../src/docmaps/all-docmap-dois';
-import { groupEvaluatedArticle } from '../../src/domain-events';
-import * as GID from '../../src/types/group-id';
-import { arbitraryDate } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { docmapIndexEntryModels } from '../../../src/docmaps/docmap-index/docmap-index-entry-models';
+import { groupEvaluatedArticle } from '../../../src/domain-events';
+import * as GID from '../../../src/types/group-id';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
-describe('all-docmap-dois', () => {
+describe('docmap-index-entry-models', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
   describe('when there are evaluated events by NCRC', () => {
-    it('returns a list of all the evaluated article ids', () => {
+    it('returns a list of all the evaluated index entry models', () => {
       const articleId1 = arbitraryDoi();
       const articleId2 = arbitraryDoi();
       const date1 = arbitraryDate();
@@ -20,7 +20,7 @@ describe('all-docmap-dois', () => {
         groupEvaluatedArticle(ncrcGroupId, articleId2, arbitraryReviewId(), date2),
       ];
 
-      const dois = allDocmapDois(events);
+      const dois = docmapIndexEntryModels(events);
 
       expect(dois).toStrictEqual([
         {
@@ -38,14 +38,14 @@ describe('all-docmap-dois', () => {
   });
 
   describe('when there are evaluated events by NCRC and another group', () => {
-    it('returns a list of article ids evaluated by NCRC', () => {
+    it('excludes articles evaluated by the other group', () => {
       const articleId1 = arbitraryDoi();
       const events = [
         groupEvaluatedArticle(ncrcGroupId, articleId1, arbitraryReviewId()),
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ];
 
-      const dois = allDocmapDois(events);
+      const dois = docmapIndexEntryModels(events);
 
       expect(dois).toStrictEqual([
         expect.objectContaining({

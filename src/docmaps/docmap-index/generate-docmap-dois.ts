@@ -6,12 +6,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { docmapIndexEntryModels } from './docmap-index-entry-models';
 import { DomainEvent } from '../../domain-events';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
-import { allDocmapDois } from '../all-docmap-dois';
 
 export const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
@@ -53,7 +53,7 @@ const filterByUpdatedAfter = (
 const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
   ports.getAllEvents,
   T.map(flow(
-    allDocmapDois,
+    docmapIndexEntryModels,
     filterByGroup(params.group),
     filterByUpdatedAfter(params.updatedAfter),
   )),
