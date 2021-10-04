@@ -78,16 +78,15 @@ const toVisitorsReport = (logFile: LF.LogFile) => pipe(
   logFile.logEntries,
   toVisitors,
   (visitors) => ({
-    logEntriesCount: logFile.logEntriesCount,
-    logStartTime: logFile.logStartTime,
-    logEndTime: logFile.logEndTime,
     visitorsCount: pipe(visitors, RM.size),
     sessions: pipe(visitors, toSessions),
   }),
-  (partial) => ({
-    ...partial,
-    countOfSessions: partial.sessions.length,
-    countOfSessionsInitiatingBreadcrumbs: countBreadcrumbInitiation(partial.sessions),
+  ({ visitorsCount, sessions }) => ({
+    visitorsCount,
+    countOfSessions: sessions.length,
+    countOfSessionsInitiatingBreadcrumbs: countBreadcrumbInitiation(sessions),
+    periodStart: sessions[0].pageViews[0].time_local,
+    periodEnd: sessions[-1].pageViews[-1].time_local,
   }),
   (report) => JSON.stringify(report, null, 2),
 );
