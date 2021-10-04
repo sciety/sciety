@@ -7,6 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { isAllowedRequest } from './is-allowed-request';
+import { isFirstTimeVisitor } from './is-first-time-visitor';
 import * as LF from './log-file';
 import { PageView } from './page-view';
 import * as Sess from './session';
@@ -98,6 +99,11 @@ const analyseVisitors = (sessions: ReadonlyArray<Sess.Session>) => pipe(
     uniqueVisitors: pipe(
       visitorIds,
       RA.uniq(S.Eq),
+      RA.size,
+    ),
+    firstTimeVisitors: pipe(
+      visitorIds,
+      RA.reduce([], isFirstTimeVisitor),
       RA.size,
     ),
   }),
