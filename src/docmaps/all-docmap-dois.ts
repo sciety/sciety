@@ -9,14 +9,16 @@ const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6
 type AllDocmapDois = (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<{
   articleId: Doi.Doi,
   groupId: GID.GroupId,
+  updated: Date,
 }>;
 
 export const allDocmapDois: AllDocmapDois = (events) => pipe(
   events,
   RA.filter(isGroupEvaluatedArticleEvent),
   RA.filter(({ groupId }) => ncrcGroupId === groupId),
-  RA.map(({ articleId, groupId }) => ({
+  RA.map(({ articleId, groupId, date }) => ({
     articleId,
     groupId,
+    updated: date,
   })),
 );

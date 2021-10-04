@@ -1,6 +1,7 @@
 import { allDocmapDois } from '../../src/docmaps/all-docmap-dois';
 import { groupEvaluatedArticle } from '../../src/domain-events';
 import * as GID from '../../src/types/group-id';
+import { arbitraryDate } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -12,9 +13,11 @@ describe('all-docmap-dois', () => {
     it('returns a list of all the evaluated article ids', () => {
       const articleId1 = arbitraryDoi();
       const articleId2 = arbitraryDoi();
+      const date1 = arbitraryDate();
+      const date2 = arbitraryDate();
       const events = [
-        groupEvaluatedArticle(ncrcGroupId, articleId1, arbitraryReviewId()),
-        groupEvaluatedArticle(ncrcGroupId, articleId2, arbitraryReviewId()),
+        groupEvaluatedArticle(ncrcGroupId, articleId1, arbitraryReviewId(), date1),
+        groupEvaluatedArticle(ncrcGroupId, articleId2, arbitraryReviewId(), date2),
       ];
 
       const dois = allDocmapDois(events);
@@ -23,10 +26,12 @@ describe('all-docmap-dois', () => {
         {
           articleId: articleId1,
           groupId: ncrcGroupId,
+          updated: date1,
         },
         {
           articleId: articleId2,
           groupId: ncrcGroupId,
+          updated: date2,
         },
       ]);
     });
@@ -43,10 +48,9 @@ describe('all-docmap-dois', () => {
       const dois = allDocmapDois(events);
 
       expect(dois).toStrictEqual([
-        {
+        expect.objectContaining({
           articleId: articleId1,
-          groupId: ncrcGroupId,
-        },
+        }),
       ]);
     });
   });
