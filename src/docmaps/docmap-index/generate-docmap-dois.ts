@@ -26,7 +26,7 @@ type Ports = {
 
 const filterByGroup = (
   selectedGroup: O.Option<GID.GroupId>,
-) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, groupId: GroupId }>) => pipe(
+) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, groupId: GroupId, updated: Date }>) => pipe(
   selectedGroup,
   O.fold(
     () => docmaps,
@@ -37,18 +37,25 @@ const filterByGroup = (
   ),
 );
 
+const filterByUpdatedAfter = (
+  updatedAfter: O.Option<Date>,
+) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, updated: Date }>) => pipe(
+  updatedAfter,
+  O.fold(
+    () => docmaps,
+    (updated) => pipe(
+      docmaps,
+      RA.filter((docmap) => docmap.updated > updated),
+    ),
+  ),
+);
+
 const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
   ports.getAllEvents,
   T.map(flow(
-    pipe(
-      params.updatedAfter,
-      O.fold(
-        () => (events) => events,
-        (updatedAfter) => RA.filter(({ date }) => date > updatedAfter),
-      ),
-    ),
     allDocmapDois,
     filterByGroup(params.group),
+    filterByUpdatedAfter(params.updatedAfter),
   )),
 );
 
