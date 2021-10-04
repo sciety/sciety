@@ -28,7 +28,7 @@ const collectPageViewsForVisitor = (accum: Visits, pageView: ObfuscatedPageView)
 
 const isNotCrawler = (pageViews: ReadonlyArray<PageView>) => pipe(
   pageViews,
-  RA.every((v) => !v.request.match(/\/robots.txt$|php|\.env/)),
+  RA.every((v) => !v.request.match(/config|\/robots.txt$|php|\.env|\.git|security.txt|manager|wp/)),
 );
 
 const byDate: Ord.Ord<PageView> = pipe(
@@ -46,8 +46,10 @@ const toVisitors = (logs: LF.Logs) => pipe(
   RA.filter((log) => log.http_user_agent.length > 0),
   RA.filter((log) => !log.http_user_agent.match(/bot|spider|crawler|ubermetrics|dataminr|ltx71|cloud mapping|python-requests|twingly|dark|expanse/i)),
   RA.filter((log) => !log.request.match(/^HEAD /)),
+  RA.filter((log) => !log.request.match(/^GET [^/]/)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
   RA.filter((log) => !log.request.match(/^GET \/favicon.ico/)),
+  RA.filter((log) => !log.request.match(/^GET .*\.(txt|png)/)),
   RA.filter(({ request }) => isAllowedRequest(request)),
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
