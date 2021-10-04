@@ -1,1 +1,1 @@
-export { generateDocmapDois, paramsCodec } from './generate-docmap-dois';
+export { docmapIndex } from './docmap-index';

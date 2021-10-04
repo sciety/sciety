@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { generateDocmapDois } from '../../../src/docmaps/docmap-index';
+import { generateDocmapDois } from '../../../src/docmaps/docmap-index/generate-docmap-dois';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';

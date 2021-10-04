@@ -27,7 +27,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap } from '../docmaps/docmap';
-import { docmapIndex } from '../docmaps/docmap-index/docmap-index';
+import { docmapIndex } from '../docmaps/docmap-index';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
