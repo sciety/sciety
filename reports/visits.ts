@@ -32,7 +32,12 @@ const isNotCrawler = (pageViews: ReadonlyArray<PageView>) => pipe(
 
 const byDate: Ord.Ord<PageView> = pipe(
   D.Ord,
-  Ord.contramap((event) => event.time_local),
+  Ord.contramap((pageView) => pageView.time_local),
+);
+
+const byFirstPageView: Ord.Ord<Sess.Session> = pipe(
+  D.Ord,
+  Ord.contramap((session) => session.pageViews[0].time_local),
 );
 
 const toVisitors = (logs: LF.Logs) => pipe(
@@ -63,6 +68,7 @@ const toSessions = (visitors: ReadonlyMap<string, ReadonlyArray<PageView>>): Rea
     pageViews,
   })),
   RA.chain(Sess.split),
+  RA.sort(byFirstPageView),
 );
 
 const initiatedBreadcrumb = (pageView: PageView) => (
@@ -94,6 +100,7 @@ const toVisitorsReport = (logFile: LF.LogFile) => pipe(
   }),
   ({ visitorsCount, sessions }) => ({
     periodStart: sessions[0].pageViews[0].time_local,
+    periodEnd: sessions.slice(-1)[0].pageViews.slice(-1)[0].time_local,
     uniqueVisitors: visitorsCount,
     sessions: sessions.length,
     sessionsInitiatingBreadcrumbs: countSessionsInitiatingBreadcrumbs(sessions),
