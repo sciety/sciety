@@ -24,7 +24,9 @@ describe('docmap-index', () => {
         expect(response.body).toStrictEqual({ articles: [] });
       });
 
-      it.todo('return a 200 status code');
+      it('return a 200 status code', () => {
+        expect(response.status).toStrictEqual(StatusCodes.OK);
+      });
     });
 
     describe('when there are docmaps', () => {
