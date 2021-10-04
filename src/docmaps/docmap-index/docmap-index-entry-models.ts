@@ -6,7 +6,7 @@ import * as GID from '../../types/group-id';
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
-type DocmapIndexEntryModel = {
+export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
   groupId: GID.GroupId,
   updated: Date,

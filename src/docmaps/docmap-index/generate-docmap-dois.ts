@@ -6,12 +6,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { docmapIndexEntryModels } from './docmap-index-entry-models';
+import { DocmapIndexEntryModel, docmapIndexEntryModels } from './docmap-index-entry-models';
 import { DomainEvent } from '../../domain-events';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
-import { GroupId } from '../../types/group-id';
 
 export const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
@@ -26,7 +25,7 @@ type Ports = {
 
 const filterByGroup = (
   selectedGroup: O.Option<GID.GroupId>,
-) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, groupId: GroupId, updated: Date }>) => pipe(
+) => (docmaps: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
   selectedGroup,
   O.fold(
     () => docmaps,
@@ -39,7 +38,7 @@ const filterByGroup = (
 
 const filterByUpdatedAfter = (
   updatedAfter: O.Option<Date>,
-) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, updated: Date }>) => pipe(
+) => (docmaps: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
   updatedAfter,
   O.fold(
     () => docmaps,
