@@ -14,41 +14,14 @@ const logEntryFromIngressLog = t.type({
   time_local: dateFromIngressLogString,
 });
 
-type LogEntry = t.TypeOf<typeof logEntryFromIngressLog>;
-
 const logsFromJson = t.array(logEntryFromIngressLog);
 
 export type Logs = t.TypeOf<typeof logsFromJson>;
 
-const earlierDate = (accum: Date, logEntry: LogEntry) => (
-  accum < logEntry.time_local ? accum : logEntry.time_local
-);
-
-const laterDate = (accum: Date, logEntry: LogEntry) => (
-  accum < logEntry.time_local ? logEntry.time_local : accum
-);
-
-const toReport = (logs: Logs) => ({
-  logEntriesCount: logs.length,
-  logStartTime: RA.reduce(new Date('2970-01-01'), earlierDate)(logs),
-  logEndTime: RA.reduce(new Date('1970-01-01'), laterDate)(logs),
-  logEntries: logs,
-});
-
-export type LogFile = {
-  logEntriesCount: number,
-  logStartTime: Date,
-  logEndTime: Date,
-  logEntries: Logs,
-};
-
 const parseFile = flow(
   Json.parse,
   E.chainW(logsFromJson.decode),
-  E.bimap(
-    (e) => e as Error,
-    toReport,
-  ),
+  E.mapLeft((e) => e as Error),
 );
 
 const convertToValidJson = flow(
@@ -58,7 +31,7 @@ const convertToValidJson = flow(
   (entries) => `[${entries}]`,
 );
 
-export const read = (filename: string): TE.TaskEither<string, LogFile> => pipe(
+export const read = (filename: string): TE.TaskEither<string, Logs> => pipe(
   filename,
   TE.taskify(fs.readFile),
   TE.map((buffer) => buffer.toString()),
