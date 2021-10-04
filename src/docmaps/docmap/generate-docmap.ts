@@ -9,14 +9,13 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import * as GID from '../../types/group-id';
-import { GroupId } from '../../types/group-id';
 import { allDocmapDois } from '../all-docmap-dois';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const isInIndex = (getAllEvents: GetAllEvents, indexedGroupId: GroupId) => (doi: Doi) => pipe(
+const isInIndex = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   getAllEvents,
-  T.map(allDocmapDois(indexedGroupId)),
+  T.map(allDocmapDois),
   T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
   TE.fromTaskOption(() => DE.notFound),
 );
@@ -36,7 +35,7 @@ export const generateDocmap = (
     DoiFromString.decode,
     E.mapLeft(() => DE.notFound),
     TE.fromEither,
-    TE.chain(isInIndex(ports.getAllEvents, ncrcGroupId)),
+    TE.chain(isInIndex(ports.getAllEvents)),
     TE.chain(docmap(ports, ncrcGroupId)),
   );
 };

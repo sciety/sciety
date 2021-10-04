@@ -49,7 +49,7 @@ const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
         (updatedAfter) => RA.filter(({ date }) => date > updatedAfter),
       ),
     ),
-    allDocmapDois(ncrcGroupId),
+    allDocmapDois,
     RA.map((doi) => ({ doi, groupId: ncrcGroupId })),
     filterByGroup(params.group),
   )),
