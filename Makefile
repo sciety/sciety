@@ -186,8 +186,8 @@ get-ingress-logs:
 	@export $$(cat .env | grep LOKI | xargs) && \
 	logcli query -q -o raw --limit 600000 --batch 5000 \
 	--timezone=UTC \
-	--from="2021-08-30T00:00:00Z" \
-	--to="2021-09-06T00:00:00Z" \
+	--from="2021-09-27T00:00:00Z" \
+	--to="2021-10-04T00:00:00Z" \
 	'{app_kubernetes_io_name="ingress-nginx"}' > reports/ingress-logs.jsonl
 
 get-error-logs:

@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { docmap, Ports as DocmapPorts } from './docmap';
 import { DomainEvent } from '../../domain-events';
@@ -16,7 +17,8 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 const isInIndex = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   getAllEvents,
   T.map(allDocmapDois),
-  T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
+  T.map(RA.findFirst(({ articleId }) => articleId.value === doi.value)),
+  TO.map(({ articleId }) => articleId),
   TE.fromTaskOption(() => DE.notFound),
 );
 

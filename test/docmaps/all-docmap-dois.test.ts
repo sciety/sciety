@@ -8,7 +8,7 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 describe('all-docmap-dois', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
-  describe('when there are evaluated events by the specified group', () => {
+  describe('when there are evaluated events by NCRC', () => {
     it('returns a list of all the evaluated article ids', () => {
       const articleId1 = arbitraryDoi();
       const articleId2 = arbitraryDoi();
@@ -20,14 +20,20 @@ describe('all-docmap-dois', () => {
       const dois = allDocmapDois(events);
 
       expect(dois).toStrictEqual([
-        articleId1,
-        articleId2,
+        {
+          articleId: articleId1,
+          groupId: ncrcGroupId,
+        },
+        {
+          articleId: articleId2,
+          groupId: ncrcGroupId,
+        },
       ]);
     });
   });
 
-  describe('when there are evaluated events by the specified group and others', () => {
-    it('returns a list of article ids evaluated by the specified group', () => {
+  describe('when there are evaluated events by NCRC and another group', () => {
+    it('returns a list of article ids evaluated by NCRC', () => {
       const articleId1 = arbitraryDoi();
       const events = [
         groupEvaluatedArticle(ncrcGroupId, articleId1, arbitraryReviewId()),
@@ -37,7 +43,10 @@ describe('all-docmap-dois', () => {
       const dois = allDocmapDois(events);
 
       expect(dois).toStrictEqual([
-        articleId1,
+        {
+          articleId: articleId1,
+          groupId: ncrcGroupId,
+        },
       ]);
     });
   });

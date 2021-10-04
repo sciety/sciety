@@ -24,11 +24,9 @@ type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-
 const filterByGroup = (
   selectedGroup: O.Option<GID.GroupId>,
-) => (docmaps: ReadonlyArray<{ doi: Doi.Doi, groupId: GroupId }>) => pipe(
+) => (docmaps: ReadonlyArray<{ articleId: Doi.Doi, groupId: GroupId }>) => pipe(
   selectedGroup,
   O.fold(
     () => docmaps,
@@ -50,7 +48,6 @@ const articlesEvaluatedByGroup = (ports: Ports) => (params: Params) => pipe(
       ),
     ),
     allDocmapDois,
-    RA.map((doi) => ({ doi, groupId: ncrcGroupId })),
     filterByGroup(params.group),
   )),
 );
@@ -60,6 +57,6 @@ export const generateDocmapDois = (
 ) => (params: Params): TE.TaskEither<never, ReadonlyArray<Doi.Doi>> => pipe(
   params,
   articlesEvaluatedByGroup(ports),
-  T.map(RA.map(({ doi }) => doi)),
+  T.map(RA.map(({ articleId }) => articleId)),
   T.map(E.right),
 );
