@@ -109,8 +109,8 @@ const analyseVisitors = (sessions: ReadonlyArray<Sess.Session>) => pipe(
   }),
 );
 
-const toVisitorsReport = (logFile: LF.LogFile) => pipe(
-  logFile.logEntries,
+const toVisitorsReport = (logs: LF.Logs) => pipe(
+  logs,
   toVisitors,
   toSessions,
   (sessions) => ({
