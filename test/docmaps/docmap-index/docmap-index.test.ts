@@ -1,12 +1,23 @@
+import { URL } from 'url';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
+import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { groupEvaluatedArticle } from '../../../src/domain-events/group-evaluated-article-event';
+import * as GID from '../../../src/types/group-id';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleServer } from '../../types/article-server.helper';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('docmap-index', () => {
   describe('when all ports work', () => {
     describe('and there are no docmaps', () => {
-      let response: { body: unknown, status: StatusCodes };
+      let response: { body: { articles: ReadonlyArray<unknown> }, status: StatusCodes };
 
       beforeEach(async () => {
         const ports = {
@@ -30,9 +41,44 @@ describe('docmap-index', () => {
     });
 
     describe('when there are docmaps', () => {
-      it.todo('return them as a list in the articles field');
+      let response: { body: { articles: ReadonlyArray<unknown> }, status: StatusCodes };
 
-      it.todo('return a 200 status code');
+      beforeEach(async () => {
+        const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+        const review = (groupId: GID.GroupId, date: Date) => ({
+          reviewId: arbitraryReviewId(),
+          groupId,
+          occurredAt: date,
+        });
+        const ports = {
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+          ]),
+          fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
+          findReviewsForArticleDoi: () => TE.right([review(ncrcGroupId, arbitraryDate())]),
+          findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+            {
+              source: new URL(arbitraryUri()),
+              occurredAt: arbitraryDate(),
+              version: 1,
+            },
+          ]),
+          getGroup: () => TO.some({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
+          fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
+        };
+        response = await docmapIndex(ports)({})();
+      });
+
+      it('return them as a list in the articles field', () => {
+        expect(response.body.articles).toHaveLength(1);
+      });
+
+      it('return a 200 status code', () => {
+        expect(response.status).toStrictEqual(StatusCodes.OK);
+      });
     });
   });
 

@@ -11,7 +11,12 @@ type Ports = DocmapPorts & GenerateDocmapDoisPorts;
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
-type DocmapIndex = (ports: Ports) => (query: unknown) => T.Task<{ body: unknown, status: StatusCodes }>;
+type DocmapIndex = (ports: Ports) => (query: unknown) => T.Task<{
+  body: {
+    articles: ReadonlyArray<unknown>,
+  },
+  status: StatusCodes,
+}>;
 
 export const docmapIndex: DocmapIndex = (ports) => flow(
   paramsCodec.decode,
