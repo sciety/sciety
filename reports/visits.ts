@@ -65,11 +65,15 @@ const toSessions = (visitors: ReadonlyMap<string, ReadonlyArray<PageView>>): Rea
   RA.chain(Sess.split),
 );
 
+const initiatedBreadcrumb = (pageView: PageView) => (
+  pageView.request.startsWith('POST ')
+);
+
 const countSessionsInitiatingBreadcrumbs = (sessions: ReadonlyArray<Sess.Session>) => pipe(
   sessions,
   RA.filter((session) => pipe(
     session.pageViews,
-    RA.some((pageView) => pageView.request.startsWith('POST ')),
+    RA.some(initiatedBreadcrumb),
   )),
   RA.size,
 );
@@ -77,7 +81,7 @@ const countSessionsInitiatingBreadcrumbs = (sessions: ReadonlyArray<Sess.Session
 const countBreadcrumbsInitiated = (sessions: ReadonlyArray<Sess.Session>) => pipe(
   sessions,
   RA.chain((session) => session.pageViews),
-  RA.filter((pageView) => pageView.request.startsWith('POST ')),
+  RA.filter(initiatedBreadcrumb),
   RA.size,
 );
 
@@ -89,11 +93,11 @@ const toVisitorsReport = (logFile: LF.LogFile) => pipe(
     sessions: pipe(visitors, toSessions),
   }),
   ({ visitorsCount, sessions }) => ({
-    uniqueVisitors: visitorsCount,
-    countOfSessions: sessions.length,
-    countOfSessionsInitiatingBreadcrumbs: countSessionsInitiatingBreadcrumbs(sessions),
-    breadcrumbsInitiated: countBreadcrumbsInitiated(sessions),
     periodStart: sessions[0].pageViews[0].time_local,
+    uniqueVisitors: visitorsCount,
+    sessions: sessions.length,
+    sessionsInitiatingBreadcrumbs: countSessionsInitiatingBreadcrumbs(sessions),
+    breadcrumbsInitiated: countBreadcrumbsInitiated(sessions),
   }),
   (report) => JSON.stringify(report, null, 2),
 );
