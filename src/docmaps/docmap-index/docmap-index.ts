@@ -28,14 +28,14 @@ export const docmapIndex: DocmapIndex = (ports) => flow(
       url: new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`),
     }),
   }, ncrcGroupId))),
-  TE.fold(
-    () => T.of({
-      articles: [],
+  TE.matchW(
+    () => ({
+      body: { articles: [] },
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
     }),
-    (foo) => T.of({ articles: foo }),
+    (docmaps) => ({
+      body: { articles: docmaps },
+      status: StatusCodes.OK,
+    }),
   ),
-  T.map((body) => ({
-    body,
-    status: StatusCodes.OK,
-  })),
 );

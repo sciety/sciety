@@ -103,7 +103,7 @@ describe('docmap-index', () => {
 
     it.todo('returns a body containing an error object');
 
-    it.skip('returns a 500 status code', () => {
+    it('returns a 500 status code', () => {
       expect(response.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     });
   });
