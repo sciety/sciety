@@ -456,7 +456,10 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    context.response.body = await docmapIndex(adapters)(context.query)();
+    const response = await docmapIndex(adapters)(context.query)();
+
+    context.response.status = response.status;
+    context.response.body = response.body;
 
     await next();
   });
