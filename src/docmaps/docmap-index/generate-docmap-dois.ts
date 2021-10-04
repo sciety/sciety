@@ -19,7 +19,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-type Ports = {
+export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
