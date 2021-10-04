@@ -101,7 +101,11 @@ describe('docmap-index', () => {
       response = await docmapIndex(ports)({})();
     });
 
-    it.todo('returns a body containing an error object');
+    it('returns a body containing an error object', () => {
+      expect(response.body).toStrictEqual({
+        error: 'Internal server error while generating Docmaps',
+      });
+    });
 
     it('returns a 500 status code', () => {
       expect(response.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
