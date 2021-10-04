@@ -24,6 +24,10 @@ prod: export TARGET = prod
 prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
+dev-redis-cache-list-keys: export TARGET = dev
+dev-redis-cache-list-keys:
+	${DOCKER_COMPOSE} exec cache redis-cli HKEYS axios-cache
+
 .env:
 	cp .env.example .env
 
