@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as PR from 'io-ts/PathReporter';
 import { dateFromIngressLogString } from './date-from-ingress-log-string';
 
 const logEntryFromIngressLog = t.type({
@@ -20,8 +21,11 @@ export type Logs = t.TypeOf<typeof logsFromJson>;
 
 const parseFile = flow(
   Json.parse,
-  E.chainW(logsFromJson.decode),
-  E.mapLeft((e) => e as Error),
+  E.mapLeft((e) => e as string),
+  E.chain(flow(
+    logsFromJson.decode,
+    E.mapLeft((e) => PR.failure(e).join(', ')),
+  )),
 );
 
 const convertToValidJson = flow(
