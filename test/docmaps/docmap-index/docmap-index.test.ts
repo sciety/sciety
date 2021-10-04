@@ -1,7 +1,28 @@
+import * as T from 'fp-ts/Task';
+import { StatusCodes } from 'http-status-codes';
+import { docmapIndex } from '../../../src/docmaps/docmap-index';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+
 describe('docmap-index', () => {
   describe('when all ports work', () => {
     describe('and there are no docmaps', () => {
-      it.todo('return an empty list in the articles field');
+      let response: { body: unknown, status: StatusCodes };
+
+      beforeEach(async () => {
+        const ports = {
+          getAllEvents: T.of([]),
+          fetchReview: shouldNotBeCalled,
+          findReviewsForArticleDoi: shouldNotBeCalled,
+          findVersionsForArticleDoi: shouldNotBeCalled,
+          fetchArticle: shouldNotBeCalled,
+          getGroup: shouldNotBeCalled,
+        };
+        response = await docmapIndex(ports)({})();
+      });
+
+      it('return an empty list in the articles field', async () => {
+        expect(response.body).toStrictEqual({ articles: [] });
+      });
 
       it.todo('return a 200 status code');
     });
