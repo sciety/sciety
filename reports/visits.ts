@@ -91,20 +91,29 @@ const countBreadcrumbsInitiated = (sessions: ReadonlyArray<Sess.Session>) => pip
   RA.size,
 );
 
+const analyseVisitors = (sessions: ReadonlyArray<Sess.Session>) => pipe(
+  sessions,
+  RA.map((session) => session.visitorId),
+  (visitorIds) => ({
+    uniqueVisitors: pipe(
+      visitorIds,
+      RA.uniq(S.Eq),
+      RA.size,
+    ),
+  }),
+);
+
 const toVisitorsReport = (logFile: LF.LogFile) => pipe(
   logFile.logEntries,
   toVisitors,
-  (visitors) => ({
-    visitorsCount: pipe(visitors, RM.size),
-    sessions: pipe(visitors, toSessions),
-  }),
-  ({ visitorsCount, sessions }) => ({
+  toSessions,
+  (sessions) => ({
     periodStart: sessions[0].pageViews[0].time_local,
     periodEnd: sessions.slice(-1)[0].pageViews.slice(-1)[0].time_local,
-    uniqueVisitors: visitorsCount,
     sessions: sessions.length,
     sessionsInitiatingBreadcrumbs: countSessionsInitiatingBreadcrumbs(sessions),
     breadcrumbsInitiated: countBreadcrumbsInitiated(sessions),
+    ...analyseVisitors(sessions),
   }),
   (report) => JSON.stringify(report, null, 2),
 );
