@@ -124,8 +124,10 @@ const toVisitorsReport = (logs: LF.Logs) => pipe(
   (report) => JSON.stringify(report, null, 2),
 );
 
+const LOGFILE = process.env.RAW_LOGS ?? './reports/ingress-logs.jsonl';
+
 void (async (): Promise<string> => pipe(
-  './reports/ingress-logs.jsonl',
+  LOGFILE,
   LF.read,
   TE.map(toVisitorsReport),
   TE.match(
