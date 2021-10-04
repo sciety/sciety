@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -28,8 +27,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap } from '../docmaps/docmap';
-import { paramsCodec as docmapIndexParamsCodec, generateDocmapDois } from '../docmaps/docmap-index';
-import { docmap } from '../docmaps/docmap/docmap';
+import { docmapIndex } from '../docmaps/docmap-index/docmap-index';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
@@ -53,7 +51,6 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
-import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -459,25 +456,8 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-    context.response.body = await pipe(
-      context.query,
-      docmapIndexParamsCodec.decode,
-      TE.fromEither,
-      TE.chainW(generateDocmapDois(adapters)),
-      TE.chainW(TE.traverseArray(docmap({
-        ...adapters,
-        fetchReview: () => TE.right({
-          url: new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`),
-        }),
-      }, ncrcGroupId))),
-      TE.fold(
-        () => T.of({
-          articles: [],
-        }),
-        (foo) => T.of({ articles: foo }),
-      ),
-    )();
+    context.response.body = await docmapIndex(adapters)(context.query)();
+
     await next();
   });
 
