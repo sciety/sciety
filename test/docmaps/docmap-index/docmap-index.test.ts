@@ -17,10 +17,14 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+  type DocmapIndexBody = {
+    articles?: ReadonlyArray<unknown>,
+    error?: string,
+  };
 
   describe('when all ports work', () => {
     describe('and there are no docmaps', () => {
-      let response: { body: { articles: ReadonlyArray<unknown> }, status: StatusCodes };
+      let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
         const ports = {
@@ -44,7 +48,7 @@ describe('docmap-index', () => {
     });
 
     describe('when there are docmaps', () => {
-      let response: { body: { articles: ReadonlyArray<unknown> }, status: StatusCodes };
+      let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
         const review = (groupId: GID.GroupId, date: Date) => ({
@@ -85,7 +89,7 @@ describe('docmap-index', () => {
   });
 
   describe('when any docmap fails to generate', () => {
-    let response: { body: { articles: ReadonlyArray<unknown> }, status: StatusCodes };
+    let response: { body: DocmapIndexBody, status: StatusCodes };
 
     beforeEach(async () => {
       const ports = {

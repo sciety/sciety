@@ -11,10 +11,13 @@ type Ports = DocmapPorts & GenerateDocmapDoisPorts;
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
+type DocmapIndexBody = {
+  articles?: ReadonlyArray<unknown>,
+  error?: string,
+};
+
 type DocmapIndex = (ports: Ports) => (query: unknown) => T.Task<{
-  body: {
-    articles: ReadonlyArray<unknown>,
-  },
+  body: DocmapIndexBody,
   status: StatusCodes,
 }>;
 
@@ -30,7 +33,7 @@ export const docmapIndex: DocmapIndex = (ports) => flow(
   }, ncrcGroupId))),
   TE.matchW(
     () => ({
-      body: { articles: [] },
+      body: { error: 'Internal server error while generating Docmaps' },
       status: StatusCodes.INTERNAL_SERVER_ERROR,
     }),
     (docmaps) => ({
