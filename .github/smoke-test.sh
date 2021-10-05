@@ -15,7 +15,7 @@ export IMAGE_TAG="${IMAGE_TAG:-local}"
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 container=sciety_app
 
-timeout --foreground 10 bash << EOT
+timeout --foreground 20 bash << EOT
   while true; do
     current=\$(docker inspect "${container}" | jq -r '.[0].State.Health.Status')
     echo "${container} is in state: \${current}"
