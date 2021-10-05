@@ -174,7 +174,17 @@ describe('docmap', () => {
       expect(Object.keys(result.steps)).toHaveLength(1);
     });
 
-    it.todo('with a single anonymous person actor as the participants');
+    it.todo('with a single action');
+
+    it('with a single anonymous person actor as the participants', () => {
+      expect(result.steps['_:b0'].actions[0].participants).toStrictEqual([{
+        actor: {
+          name: 'anonymous',
+          type: 'person',
+        },
+        role: 'peer-reviewer',
+      }]);
+    });
 
     it.todo('with one output per evaluation');
 

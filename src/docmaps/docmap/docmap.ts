@@ -40,6 +40,16 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
+type Action = {
+  participants: ReadonlyArray<unknown>,
+};
+
+type Step = {
+  assertions: [],
+  inputs: ReadonlyArray<unknown>,
+  actions: ReadonlyArray<Action>,
+};
+
 export type Docmap = {
   '@context': Record<string, unknown>,
   id: string,
@@ -48,7 +58,7 @@ export type Docmap = {
   updated: string,
   publisher: Record<string, unknown>,
   'first-step': '_:b0',
-  steps: Record<string, unknown>,
+  steps: Record<string, Step>,
 };
 
 type CreateDocmap = (
