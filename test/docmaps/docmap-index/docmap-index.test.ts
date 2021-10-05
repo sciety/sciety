@@ -117,8 +117,26 @@ describe('docmap-index', () => {
   });
 
   describe('when the query parameters are invalid', () => {
+    let response: { body: DocmapIndexBody, status: StatusCodes };
+
+    beforeEach(async () => {
+      const ports = {
+        getAllEvents: shouldNotBeCalled,
+        fetchReview: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
+        getGroup: shouldNotBeCalled,
+        fetchArticle: shouldNotBeCalled,
+      };
+      response = await docmapIndex(ports)({
+        updatedAfter: 'not-a-date',
+      })();
+    });
+
     it.todo('returns a body containing an error object');
 
-    it.todo('returns a 400 status code');
+    it.skip('returns a 400 status code', () => {
+      expect(response.status).toStrictEqual(StatusCodes.BAD_REQUEST);
+    });
   });
 });
