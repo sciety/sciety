@@ -135,7 +135,7 @@ describe('docmap-index', () => {
 
     it.todo('returns a body containing an error object');
 
-    it.skip('returns a 400 status code', () => {
+    it('returns a 400 status code', () => {
       expect(response.status).toStrictEqual(StatusCodes.BAD_REQUEST);
     });
   });
