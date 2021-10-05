@@ -171,7 +171,7 @@ describe('docmap', () => {
     });
 
     it('returns a single step', () => {
-      expect(Object.keys(result.steps as Record<string, unknown>)).toHaveLength(1);
+      expect(Object.keys(result.steps)).toHaveLength(1);
     });
 
     it.todo('with a single anonymous person actor as the participants');

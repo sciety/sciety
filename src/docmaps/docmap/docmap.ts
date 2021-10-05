@@ -40,7 +40,16 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
-export type Docmap = Record<string, unknown>;
+export type Docmap = {
+  '@context': Record<string, unknown>,
+  id: string,
+  type: 'docmap',
+  created: string,
+  updated: string,
+  publisher: Record<string, unknown>,
+  'first-step': '_:b0',
+  steps: Record<string, unknown>,
+};
 
 type CreateDocmap = (
   ports: Ports,
