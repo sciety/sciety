@@ -1,9 +1,7 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
@@ -25,11 +23,14 @@ export type FindVersionsForArticleDoi = (
   version: number,
 }>>;
 
-type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
+type ReviewForArticle = {
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
-}>>;
+};
+
+type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<ReviewForArticle>>;
+
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 export type Ports = {
@@ -98,6 +99,15 @@ type CreateDocmap = (
   articleId: Doi,
 ) => TE.TaskEither<DE.DataError, Docmap>;
 
+const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
+  review.reviewId,
+  ports.fetchReview,
+  TE.map((fetchedReview) => ({
+    ...review,
+    sourceUrl: fetchedReview.url,
+  })),
+);
+
 export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pipe(
   {
     evaluations: pipe(
@@ -106,16 +116,14 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
       TE.map(RA.filter((ev) => ev.groupId === indexedGroupId)),
       TE.chainW((reviews) => pipe(
         {
-          firstEvaluation: pipe(reviews, RA.head, T.of),
-          lastEvaluation: pipe(reviews, RA.last, T.of),
+          firstEvaluation: pipe(reviews, RA.head, TE.fromOption(() => DE.notFound)),
+          lastEvaluation: pipe(reviews, RA.last, TE.fromOption(() => DE.notFound)),
           allEvaluations: pipe(
             reviews,
-            O.some,
-            T.of,
+            TE.traverseArray(extendWithSourceUrl(ports)),
           ),
         },
-        sequenceS(TO.ApplyPar),
-        TE.fromTaskOption(() => DE.notFound),
+        sequenceS(TE.ApplyPar),
       )),
     ),
     articleVersions: pipe(
@@ -136,10 +144,12 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
     ...domain,
     sourceUrl: pipe(
       domain.evaluations,
-      TE.chain(flow(
-        ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
-        TE.map(({ url }) => url),
-      )),
+      TE.chain(
+        flow(
+          ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
+          TE.map(({ url }) => url),
+        ),
+      ),
     ),
   }),
   sequenceS(TE.ApplyPar),
