@@ -197,7 +197,7 @@ describe('docmap', () => {
 
     it.todo('each output links to the evaluation on sciety');
 
-    it.skip('each output links to the original source of the evaluation', () => {
+    it('each output links to the original source of the evaluation', () => {
       const contentValues = pipe(
         result.steps['_:b0'].actions[0].outputs,
         RA.map((output) => output.content),

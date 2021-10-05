@@ -76,6 +76,7 @@ const createReviewArticleOutput = (
   evaluation: {
     occurredAt: Date,
     reviewId: string,
+    sourceUrl: URL,
   },
 ) => ({
   type: 'review-article' as const,
@@ -83,7 +84,7 @@ const createReviewArticleOutput = (
   content: [
     {
       type: 'web-page',
-      url: sourceUrl.toString(),
+      url: evaluation.sourceUrl.toString(),
     },
     {
       type: 'web-page',
