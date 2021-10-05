@@ -45,11 +45,9 @@ export const docmapIndex: DocmapIndex = (ports) => flow(
       }),
     ),
   )),
-  TE.matchW(
-    identity,
-    (docmaps) => ({
-      body: { articles: docmaps },
-      status: StatusCodes.OK,
-    }),
-  ),
+  TE.map((docmaps) => ({
+    body: { articles: docmaps },
+    status: StatusCodes.OK,
+  })),
+  TE.toUnion,
 );
