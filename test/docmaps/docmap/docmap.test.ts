@@ -198,7 +198,12 @@ describe('docmap', () => {
 
     it.todo('each output links to the original source of the evaluation');
 
-    it.todo('each output has published date of corresponding evaluation');
+    it('each output has published date of corresponding evaluation', () => {
+      expect(pipe(
+        result.steps['_:b0'].actions[0].outputs,
+        RA.map((output) => output.published),
+      )).toStrictEqual([earlierDate, laterDate]);
+    });
 
     it('output content is always `review-article`', () => {
       expect(pipe(
