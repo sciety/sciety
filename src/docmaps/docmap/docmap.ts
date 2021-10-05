@@ -63,12 +63,13 @@ export type Docmap = {
 };
 
 const createReviewArticleOutput = (
+  sourceUrl: URL,
+  articleId: Doi,
+) => (
   evaluation: {
     occurredAt: Date,
     reviewId: string,
   },
-  sourceUrl: URL,
-  articleId: Doi,
 ) => ({
   type: 'review-article',
   published: evaluation.occurredAt,
@@ -100,6 +101,7 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
         {
           firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
           lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
+          allEvaluations: O.some(pipe(reviews, RA.filter((ev) => ev.groupId === indexedGroupId))),
         },
         sequenceS(O.Apply),
         E.fromOption(() => DE.notFound),
@@ -162,9 +164,10 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
             participants: [
               { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
             ],
-            outputs: [
-              createReviewArticleOutput(evaluations.firstEvaluation, sourceUrl, articleId),
-            ],
+            outputs: pipe(
+              evaluations.allEvaluations,
+              RA.map(createReviewArticleOutput(sourceUrl, articleId)),
+            ),
           },
         ],
       },

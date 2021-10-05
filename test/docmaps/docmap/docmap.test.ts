@@ -188,7 +188,7 @@ describe('docmap', () => {
       }]);
     });
 
-    it.skip('with one output per evaluation', () => {
+    it('with one output per evaluation', () => {
       expect(result.steps['_:b0'].actions[0].outputs).toHaveLength(reviews.length);
     });
 
