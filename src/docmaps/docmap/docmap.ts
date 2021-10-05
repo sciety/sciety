@@ -114,13 +114,14 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
       articleId,
       ports.findReviewsForArticleDoi,
       TE.map(RA.filter((ev) => ev.groupId === indexedGroupId)),
+      TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainW((reviews) => pipe(
         {
           firstEvaluation: pipe(reviews, RA.head, TE.fromOption(() => DE.notFound)),
           lastEvaluation: pipe(reviews, RA.last, TE.fromOption(() => DE.notFound)),
           allEvaluations: pipe(
             reviews,
-            TE.traverseArray(extendWithSourceUrl(ports)),
+            TE.right,
           ),
         },
         sequenceS(TE.ApplyPar),
