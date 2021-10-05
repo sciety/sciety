@@ -166,6 +166,20 @@ describe('docmap', () => {
         published: earlierDate,
       }));
     });
+
+    it.todo('returns a single step');
+
+    it.todo('with a single anonymous person actor as the participants');
+
+    it.todo('with one output per evaluation');
+
+    it.todo('each output links to the evaluation on sciety');
+
+    it.todo('each output links to the original source of the evaluation');
+
+    it.todo('each output has published date of corresponding evaluation');
+
+    it.todo('output content is always `review-article`');
   });
 
   describe('when there are no evaluations by the selected group', () => {
