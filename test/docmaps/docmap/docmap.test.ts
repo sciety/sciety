@@ -2,10 +2,12 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
 import { docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -148,7 +150,9 @@ describe('docmap', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
-    it('only uses the earliest evaluation', async () => {
+    let result: Record<string, unknown>;
+
+    beforeEach(async () => {
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
       const ports = {
@@ -160,14 +164,15 @@ describe('docmap', () => {
           ],
         ),
       };
-      const result = await docmap(ports, indexedGroupId)(articleId)();
-
-      expect(result).toStrictEqual(expectOutputs({
-        published: earlierDate,
-      }));
+      result = await pipe(
+        docmap(ports, indexedGroupId)(articleId),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
-    it.todo('returns a single step');
+    it('returns a single step', () => {
+      expect(Object.keys(result.steps as Record<string, unknown>)).toHaveLength(1);
+    });
 
     it.todo('with a single anonymous person actor as the participants');
 
