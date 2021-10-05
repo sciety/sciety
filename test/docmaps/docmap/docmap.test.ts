@@ -195,7 +195,25 @@ describe('docmap', () => {
       expect(result.steps['_:b0'].actions[0].outputs).toHaveLength(reviews.length);
     });
 
-    it.todo('each output links to the evaluation on sciety');
+    it('each output links to the evaluation on sciety', () => {
+      const contentValues = pipe(
+        result.steps['_:b0'].actions[0].outputs,
+        RA.map((output) => output.content),
+      );
+
+      expect(contentValues[0]).toStrictEqual(
+        expect.arrayContaining([{
+          type: 'web-page',
+          url: `https://sciety.org/articles/activity/${articleId.value}#${reviews[0].reviewId}`,
+        }]),
+      );
+      expect(contentValues[1]).toStrictEqual(
+        expect.arrayContaining([{
+          type: 'web-page',
+          url: `https://sciety.org/articles/activity/${articleId.value}#${reviews[1].reviewId}`,
+        }]),
+      );
+    });
 
     it('each output links to the original source of the evaluation', () => {
       const contentValues = pipe(
