@@ -103,11 +103,12 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
     evaluations: pipe(
       articleId,
       ports.findReviewsForArticleDoi,
+      TE.map(RA.filter((ev) => ev.groupId === indexedGroupId)),
       TE.chainEitherKW((reviews) => pipe(
         {
-          firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
-          lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
-          allEvaluations: O.some(pipe(reviews, RA.filter((ev) => ev.groupId === indexedGroupId))),
+          firstEvaluation: pipe(reviews, RA.head),
+          lastEvaluation: pipe(reviews, RA.last),
+          allEvaluations: O.some(reviews),
         },
         sequenceS(O.Apply),
         E.fromOption(() => DE.notFound),
