@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { context } from './context';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -70,7 +70,6 @@ export type Docmap = {
 };
 
 const createReviewArticleOutput = (
-  sourceUrl: URL,
   articleId: Doi,
 ) => (
   evaluation: {
@@ -141,21 +140,9 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
       TE.fromTaskOption(() => DE.notFound),
     ),
   },
-  (domain) => ({
-    ...domain,
-    sourceUrl: pipe(
-      domain.evaluations,
-      TE.chain(
-        flow(
-          ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
-          TE.map(({ url }) => url),
-        ),
-      ),
-    ),
-  }),
   sequenceS(TE.ApplyPar),
   TE.map(({
-    indexedGroup, articleVersions, evaluations, sourceUrl,
+    indexedGroup, articleVersions, evaluations,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
@@ -188,7 +175,7 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
             ],
             outputs: pipe(
               evaluations.allEvaluations,
-              RA.map(createReviewArticleOutput(sourceUrl, articleId)),
+              RA.map(createReviewArticleOutput(articleId)),
             ),
           },
         ],
