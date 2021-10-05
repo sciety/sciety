@@ -150,19 +150,19 @@ describe('docmap', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
+    const earlierDate = new Date('1900');
+    const laterDate = new Date('2000');
+    const reviews = [
+      review(indexedGroupId, earlierDate),
+      review(indexedGroupId, laterDate),
+    ];
+
     let result: Docmap;
 
     beforeEach(async () => {
-      const earlierDate = new Date('1900');
-      const laterDate = new Date('2000');
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right(
-          [
-            review(indexedGroupId, earlierDate),
-            review(indexedGroupId, laterDate),
-          ],
-        ),
+        findReviewsForArticleDoi: () => TE.right(reviews),
       };
       result = await pipe(
         docmap(ports, indexedGroupId)(articleId),
@@ -188,7 +188,9 @@ describe('docmap', () => {
       }]);
     });
 
-    it.todo('with one output per evaluation');
+    it.skip('with one output per evaluation', () => {
+      expect(result.steps['_:b0'].actions[0].outputs).toHaveLength(reviews.length);
+    });
 
     it.todo('each output links to the evaluation on sciety');
 

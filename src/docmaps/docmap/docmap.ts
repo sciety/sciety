@@ -42,6 +42,7 @@ export type Ports = {
 
 type Action = {
   participants: ReadonlyArray<unknown>,
+  outputs: ReadonlyArray<unknown>,
 };
 
 type Step = {
