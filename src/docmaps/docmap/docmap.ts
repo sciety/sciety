@@ -120,11 +120,6 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
       )),
-      TE.map((reviews) => ({
-        firstEvaluation: pipe(reviews, RNEA.head),
-        lastEvaluation: pipe(reviews, RNEA.last),
-        allEvaluations: reviews,
-      })),
     ),
     articleVersions: pipe(
       articleId,
@@ -147,8 +142,8 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
     type: 'docmap',
-    created: evaluations.firstEvaluation.occurredAt.toISOString(),
-    updated: evaluations.lastEvaluation.occurredAt.toISOString(),
+    created: RNEA.head(evaluations).occurredAt.toISOString(),
+    updated: RNEA.last(evaluations).occurredAt.toISOString(),
     publisher: {
       id: indexedGroup.homepage,
       name: indexedGroup.name,
@@ -174,7 +169,7 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
               { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
             ],
             outputs: pipe(
-              evaluations.allEvaluations,
+              evaluations,
               RA.map(createReviewArticleOutput(articleId)),
             ),
           },
