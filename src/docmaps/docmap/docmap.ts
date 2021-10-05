@@ -40,9 +40,15 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
+type Output = {
+  type: 'review-article',
+  published: Date,
+  content: ReadonlyArray<unknown>,
+};
+
 type Action = {
   participants: ReadonlyArray<unknown>,
-  outputs: ReadonlyArray<unknown>,
+  outputs: ReadonlyArray<Output>,
 };
 
 type Step = {
@@ -71,7 +77,7 @@ const createReviewArticleOutput = (
     reviewId: string,
   },
 ) => ({
-  type: 'review-article',
+  type: 'review-article' as const,
   published: evaluation.occurredAt,
   content: [
     {

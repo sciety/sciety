@@ -1,8 +1,10 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
@@ -198,7 +200,13 @@ describe('docmap', () => {
 
     it.todo('each output has published date of corresponding evaluation');
 
-    it.todo('output content is always `review-article`');
+    it('output content is always `review-article`', () => {
+      expect(pipe(
+        result.steps['_:b0'].actions[0].outputs,
+        RA.map((output) => output.type),
+        RA.uniq(S.Eq),
+      )).toStrictEqual(['review-article']);
+    });
   });
 
   describe('when there are no evaluations by the selected group', () => {
