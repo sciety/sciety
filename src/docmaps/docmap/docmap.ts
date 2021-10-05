@@ -62,6 +62,28 @@ export type Docmap = {
   steps: Record<string, Step>,
 };
 
+const createReviewArticleOutput = (
+  evaluation: {
+    occurredAt: Date,
+    reviewId: string,
+  },
+  sourceUrl: URL,
+  articleId: Doi,
+) => ({
+  type: 'review-article',
+  published: evaluation.occurredAt,
+  content: [
+    {
+      type: 'web-page',
+      url: sourceUrl.toString(),
+    },
+    {
+      type: 'web-page',
+      url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
+    },
+  ],
+});
+
 type CreateDocmap = (
   ports: Ports,
   indexedGroupId: GroupId,
@@ -141,20 +163,7 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
               { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
             ],
             outputs: [
-              {
-                type: 'review-article',
-                published: evaluations.firstEvaluation.occurredAt,
-                content: [
-                  {
-                    type: 'web-page',
-                    url: sourceUrl.toString(),
-                  },
-                  {
-                    type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleId.value}#${evaluations.firstEvaluation.reviewId}`,
-                  },
-                ],
-              },
+              createReviewArticleOutput(evaluations.firstEvaluation, sourceUrl, articleId),
             ],
           },
         ],
