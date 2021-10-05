@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
@@ -104,14 +104,18 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
       articleId,
       ports.findReviewsForArticleDoi,
       TE.map(RA.filter((ev) => ev.groupId === indexedGroupId)),
-      TE.chainEitherKW((reviews) => pipe(
+      TE.chainW((reviews) => pipe(
         {
-          firstEvaluation: pipe(reviews, RA.head),
-          lastEvaluation: pipe(reviews, RA.last),
-          allEvaluations: O.some(reviews),
+          firstEvaluation: pipe(reviews, RA.head, T.of),
+          lastEvaluation: pipe(reviews, RA.last, T.of),
+          allEvaluations: pipe(
+            reviews,
+            O.some,
+            T.of,
+          ),
         },
-        sequenceS(O.Apply),
-        E.fromOption(() => DE.notFound),
+        sequenceS(TO.ApplyPar),
+        TE.fromTaskOption(() => DE.notFound),
       )),
     ),
     articleVersions: pipe(
