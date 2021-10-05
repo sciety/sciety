@@ -174,7 +174,9 @@ describe('docmap', () => {
       expect(Object.keys(result.steps)).toHaveLength(1);
     });
 
-    it.todo('with a single action');
+    it('with a single action', () => {
+      expect(result.steps['_:b0'].actions).toHaveLength(1);
+    });
 
     it('with a single anonymous person actor as the participants', () => {
       expect(result.steps['_:b0'].actions[0].participants).toStrictEqual([{
