@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
@@ -150,7 +150,7 @@ describe('docmap', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
-    let result: Record<string, unknown>;
+    let result: Docmap;
 
     beforeEach(async () => {
       const earlierDate = new Date('1900');

@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { docmap, Ports as DocmapPorts } from './docmap';
+import { Docmap, docmap, Ports as DocmapPorts } from './docmap';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
@@ -34,7 +34,7 @@ export const generateDocmap = (
   ports: Ports,
 ) => (
   input: unknown,
-): TE.TaskEither<DE.DataError, Record<string, unknown>> => pipe(
+): TE.TaskEither<DE.DataError, Docmap> => pipe(
   input,
   DoiFromString.decode,
   E.mapLeft(() => DE.notFound),

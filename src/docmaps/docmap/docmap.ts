@@ -40,14 +40,16 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
-type Docmap = (
+export type Docmap = Record<string, unknown>;
+
+type CreateDocmap = (
   ports: Ports,
   indexedGroupId: GroupId,
 ) => (
   articleId: Doi,
-) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
+) => TE.TaskEither<DE.DataError, Docmap>;
 
-export const docmap: Docmap = (ports, indexedGroupId) => (articleId) => pipe(
+export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pipe(
   {
     evaluations: pipe(
       articleId,
