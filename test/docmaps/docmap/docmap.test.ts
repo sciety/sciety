@@ -8,6 +8,7 @@ import * as S from 'fp-ts/string';
 import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
+import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
@@ -26,7 +27,7 @@ const review = (groupId: GroupId, date: Date) => ({
 });
 
 const defaultPorts = {
-  fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
+  fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
   findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
   findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
     {
@@ -196,7 +197,25 @@ describe('docmap', () => {
 
     it.todo('each output links to the evaluation on sciety');
 
-    it.todo('each output links to the original source of the evaluation');
+    it.skip('each output links to the original source of the evaluation', () => {
+      const contentValues = pipe(
+        result.steps['_:b0'].actions[0].outputs,
+        RA.map((output) => output.content),
+      );
+
+      expect(contentValues[0]).toStrictEqual(
+        expect.arrayContaining([{
+          type: 'web-page',
+          url: `https://reviews.example.com/${reviews[0].reviewId}`,
+        }]),
+      );
+      expect(contentValues[1]).toStrictEqual(
+        expect.arrayContaining([{
+          type: 'web-page',
+          url: `https://reviews.example.com/${reviews[1].reviewId}`,
+        }]),
+      );
+    });
 
     it('each output has published date of corresponding evaluation', () => {
       expect(pipe(
