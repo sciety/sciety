@@ -1,8 +1,9 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import * as PR from 'io-ts/PathReporter';
 import { generateDocmapDois, Ports as GenerateDocmapDoisPorts, paramsCodec } from './generate-docmap-dois';
 import * as GID from '../../types/group-id';
 import { docmap, Ports as DocmapPorts } from '../docmap/docmap';
@@ -25,8 +26,8 @@ export const docmapIndex: DocmapIndex = (ports) => flow(
   paramsCodec.decode,
   TE.fromEither,
   TE.mapLeft(
-    () => ({
-      body: { error: 'bad request' },
+    (errors) => ({
+      body: { error: PR.failure(errors).join('\n') },
       status: StatusCodes.BAD_REQUEST,
     }),
   ),

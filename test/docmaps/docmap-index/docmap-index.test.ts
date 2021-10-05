@@ -133,7 +133,9 @@ describe('docmap-index', () => {
       })();
     });
 
-    it.todo('returns a body containing an error object');
+    it('returns a body containing an error object', () => {
+      expect(response.body.error).toMatch(/^Invalid value "not-a-date"/);
+    });
 
     it('returns a 400 status code', () => {
       expect(response.status).toStrictEqual(StatusCodes.BAD_REQUEST);
