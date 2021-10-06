@@ -41,11 +41,14 @@ export const generateDocmaps = (
   E.mapLeft(() => DE.notFound),
   TE.fromEither,
   TE.chain(isEvaluatedByNcrc(ports.getAllEvents)),
-  TE.chain(docmap(ports, ncrcGroupId)),
+  TE.chainW(flow(
+    docmap(ports, ncrcGroupId),
+    TE.mapLeft(() => DE.unavailable),
+  )),
   TE.mapLeft(flow(
     DE.fold({
       notFound: () => StatusCodes.NOT_FOUND,
-      unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+      unavailable: () => StatusCodes.INTERNAL_SERVER_ERROR,
     }),
     (status) => ({ status }),
   )),

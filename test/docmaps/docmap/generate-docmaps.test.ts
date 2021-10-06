@@ -87,7 +87,7 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns a 500 http status code', async () => {
+    it('returns a 500 http status code', async () => {
       expect(response).toStrictEqual(E.left({ status: StatusCodes.INTERNAL_SERVER_ERROR }));
     });
 
