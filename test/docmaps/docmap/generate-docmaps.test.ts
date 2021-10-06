@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
-import { groupEvaluatedArticle } from '../../../src/domain-events/group-evaluated-article-event';
+import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
@@ -109,7 +109,7 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns a 400 http status code', () => {
+    it('returns a 400 http status code', () => {
       expect(response).toStrictEqual(E.left({ status: StatusCodes.BAD_REQUEST }));
     });
   });

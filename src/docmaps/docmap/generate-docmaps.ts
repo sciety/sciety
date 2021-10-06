@@ -42,22 +42,14 @@ export const generateDocmaps = (
 ): TE.TaskEither<{ status: StatusCodes }, ReadonlyArray<Docmap>> => pipe(
   candidateDoi,
   DoiFromString.decode,
-  E.mapLeft(() => DE.notFound),
+  E.mapLeft(() => StatusCodes.BAD_REQUEST),
   TE.fromEither,
   TE.chainW((articleId) => pipe(
     articleId,
     getEvaluatingGroupIds(ports.getAllEvents),
     TE.rightTask,
     TE.chain(TE.traverseArray((groupId) => docmap(ports, groupId)(articleId))),
-    TE.mapLeft(() => DE.unavailable),
+    TE.mapLeft(() => StatusCodes.INTERNAL_SERVER_ERROR),
   )),
-  TE.mapLeft(
-    flow(
-      DE.fold({
-        notFound: () => StatusCodes.NOT_FOUND,
-        unavailable: () => StatusCodes.INTERNAL_SERVER_ERROR,
-      }),
-      (status) => ({ status }),
-    ),
-  ),
+  TE.mapLeft((status) => ({ status })),
 );
