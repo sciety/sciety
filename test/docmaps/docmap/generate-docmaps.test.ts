@@ -54,7 +54,7 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       expect(docmaps).toStrictEqual([]);
     });
   });
