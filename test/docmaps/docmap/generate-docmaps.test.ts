@@ -67,6 +67,10 @@ describe('generate-docmaps', () => {
     it.todo('returns an array containing one docmap');
   });
 
+  describe('when the article has been reviewed by one supported group and one unsupported group', () => {
+    it.todo('returns an array containing one docmap from the supported group');
+  });
+
   describe('when the article has been reviewed by two supported groups', () => {
     it.todo('returns an array containing a docmap for each group');
   });
