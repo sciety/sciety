@@ -16,7 +16,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
-const isEvaluatedByNcrc = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
+const getEvaluatingGroupIds = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   getAllEvents,
   T.map(flow(
     RA.filter(isGroupEvaluatedArticleEvent),
@@ -25,6 +25,10 @@ const isEvaluatedByNcrc = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   T.map(RA.findFirst(({ articleId }) => articleId.value === doi.value)),
   TO.map(({ articleId }) => articleId),
   TE.fromTaskOption(() => DE.notFound),
+  TE.match(
+    () => [],
+    () => [ncrcGroupId],
+  ),
 );
 
 type Ports = {
@@ -40,12 +44,14 @@ export const generateDocmaps = (
   DoiFromString.decode,
   E.mapLeft(() => DE.notFound),
   TE.fromEither,
-  TE.chain(isEvaluatedByNcrc(ports.getAllEvents)),
-  TE.chainW(flow(
-    docmap(ports, ncrcGroupId),
+  TE.chainW((articleId) => pipe(
+    articleId,
+    getEvaluatingGroupIds(ports.getAllEvents),
+    TE.rightTask,
+    TE.chain(TE.traverseArray((groupId) => docmap(ports, groupId)(articleId))),
     TE.mapLeft(() => DE.unavailable),
   )),
-  TE.bimap(
+  TE.mapLeft(
     flow(
       DE.fold({
         notFound: () => StatusCodes.NOT_FOUND,
@@ -53,6 +59,5 @@ export const generateDocmaps = (
       }),
       (status) => ({ status }),
     ),
-    (item) => [item],
   ),
 );
