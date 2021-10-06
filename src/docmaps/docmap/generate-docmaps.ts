@@ -33,9 +33,9 @@ type Ports = {
 export const generateDocmaps = (
   ports: Ports,
 ) => (
-  input: unknown,
+  candidateDoi: string,
 ): TE.TaskEither<DE.DataError, Docmap> => pipe(
-  input,
+  candidateDoi,
   DoiFromString.decode,
   E.mapLeft(() => DE.notFound),
   TE.fromEither,
