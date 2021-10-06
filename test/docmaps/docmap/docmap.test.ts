@@ -159,6 +159,7 @@ describe('docmap', () => {
       review(indexedGroupId, earlierDate),
       review(indexedGroupId, laterDate),
     ];
+    const firstStep = '_:b0';
 
     let result: Docmap;
 
@@ -178,11 +179,11 @@ describe('docmap', () => {
     });
 
     it('with a single action', () => {
-      expect(result.steps['_:b0'].actions).toHaveLength(1);
+      expect(result.steps[firstStep].actions).toHaveLength(1);
     });
 
     it('with a single anonymous person actor as the participants', () => {
-      expect(result.steps['_:b0'].actions[0].participants).toStrictEqual([{
+      expect(result.steps[firstStep].actions[0].participants).toStrictEqual([{
         actor: {
           name: 'anonymous',
           type: 'person',
@@ -192,12 +193,12 @@ describe('docmap', () => {
     });
 
     it('with one output per evaluation', () => {
-      expect(result.steps['_:b0'].actions[0].outputs).toHaveLength(reviews.length);
+      expect(result.steps[firstStep].actions[0].outputs).toHaveLength(reviews.length);
     });
 
     it('each output links to the evaluation on sciety', () => {
       const contentValues = pipe(
-        result.steps['_:b0'].actions[0].outputs,
+        result.steps[firstStep].actions[0].outputs,
         RA.map((output) => output.content),
       );
 
@@ -217,7 +218,7 @@ describe('docmap', () => {
 
     it('each output links to the original source of the evaluation', () => {
       const contentValues = pipe(
-        result.steps['_:b0'].actions[0].outputs,
+        result.steps[firstStep].actions[0].outputs,
         RA.map((output) => output.content),
       );
 
@@ -237,14 +238,14 @@ describe('docmap', () => {
 
     it('each output has published date of corresponding evaluation', () => {
       expect(pipe(
-        result.steps['_:b0'].actions[0].outputs,
+        result.steps[firstStep].actions[0].outputs,
         RA.map((output) => output.published),
       )).toStrictEqual([earlierDate, laterDate]);
     });
 
     it('output content is always `review-article`', () => {
       expect(pipe(
-        result.steps['_:b0'].actions[0].outputs,
+        result.steps[firstStep].actions[0].outputs,
         RA.map((output) => output.type),
         RA.uniq(S.Eq),
       )).toStrictEqual(['review-article']);
