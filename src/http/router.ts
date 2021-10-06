@@ -474,7 +474,7 @@ export const createRouter = (adapters: Adapters): Router => {
           status: error.status,
         }),
         (body) => T.of({
-          body: [body],
+          body,
           status: StatusCodes.OK,
         }),
       ),

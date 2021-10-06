@@ -35,7 +35,7 @@ export const generateDocmaps = (
   ports: Ports,
 ) => (
   candidateDoi: string,
-): TE.TaskEither<{ status: StatusCodes }, Docmap> => pipe(
+): TE.TaskEither<{ status: StatusCodes }, ReadonlyArray<Docmap>> => pipe(
   candidateDoi,
   DoiFromString.decode,
   E.mapLeft(() => DE.notFound),
@@ -45,11 +45,14 @@ export const generateDocmaps = (
     docmap(ports, ncrcGroupId),
     TE.mapLeft(() => DE.unavailable),
   )),
-  TE.mapLeft(flow(
-    DE.fold({
-      notFound: () => StatusCodes.NOT_FOUND,
-      unavailable: () => StatusCodes.INTERNAL_SERVER_ERROR,
-    }),
-    (status) => ({ status }),
-  )),
+  TE.bimap(
+    flow(
+      DE.fold({
+        notFound: () => StatusCodes.NOT_FOUND,
+        unavailable: () => StatusCodes.INTERNAL_SERVER_ERROR,
+      }),
+      (status) => ({ status }),
+    ),
+    (item) => [item],
+  ),
 );

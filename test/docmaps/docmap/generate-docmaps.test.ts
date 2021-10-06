@@ -45,7 +45,7 @@ describe('generate-docmaps', () => {
   };
 
   describe('when the article hasn\'t been reviewed', () => {
-    let docmaps: Docmap;
+    let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
       docmaps = await pipe(
@@ -72,7 +72,7 @@ describe('generate-docmaps', () => {
   });
 
   describe('when both docmaps fail', () => {
-    let response: E.Either<{ status: StatusCodes }, Docmap>;
+    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
       const articleId = arbitraryDoi();
