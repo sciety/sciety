@@ -30,7 +30,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
 } & DocmapPorts;
 
-export const generateDocmap = (
+export const generateDocmaps = (
   ports: Ports,
 ) => (
   input: unknown,

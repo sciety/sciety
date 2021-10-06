@@ -26,7 +26,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { generateDocmap } from '../docmaps/docmap';
+import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
@@ -467,7 +467,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const response = await pipe(
       context.params.doi,
-      generateDocmap(adapters),
+      generateDocmaps(adapters),
       TE.fold(
         (error) => T.of({
           body: {},
