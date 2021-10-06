@@ -1,6 +1,58 @@
+import { URL } from 'url';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
+import { generateDocmaps } from '../../../src/docmaps/docmap';
+import { Docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { GroupId } from '../../../src/types/group-id';
+import { ReviewId } from '../../../src/types/review-id';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleServer } from '../../types/article-server.helper';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
+
 describe('generate-docmaps', () => {
+  const indexedGroupId = arbitraryGroupId();
+  const review = (groupId: GroupId, date: Date) => ({
+    reviewId: arbitraryReviewId(),
+    groupId,
+    occurredAt: date,
+  });
+  const defaultPorts = {
+    fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
+    findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
+    findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+      {
+        source: new URL(arbitraryUri()),
+        occurredAt: arbitraryDate(),
+        version: 1,
+      },
+    ]),
+    getGroup: () => TO.some({
+      ...arbitraryGroup(),
+      id: indexedGroupId,
+    }),
+    fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
+    getAllEvents: T.of([]),
+  };
+
   describe('when the article hasn\'t been reviewed', () => {
-    it.todo('returns an empty array');
+    let docmaps: Docmap;
+
+    beforeEach(async () => {
+      docmaps = await pipe(
+        generateDocmaps(defaultPorts)(arbitraryDoi().value),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.skip('returns an empty array', () => {
+      expect(docmaps).toStrictEqual([]);
+    });
   });
 
   describe('when the article has been reviewed only by unsupported groups', () => {
