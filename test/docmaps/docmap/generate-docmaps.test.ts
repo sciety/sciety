@@ -99,4 +99,18 @@ describe('generate-docmaps', () => {
 
     it.todo('returns a message containing the group whose docmap failed');
   });
+
+  describe('when the doi can\'t be decoded', () => {
+    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+
+    beforeEach(async () => {
+      response = await pipe(
+        generateDocmaps(defaultPorts)('not-a-doi'),
+      )();
+    });
+
+    it.skip('returns a 400 http status code', () => {
+      expect(response).toStrictEqual(E.left({ status: StatusCodes.BAD_REQUEST }));
+    });
+  });
 });
