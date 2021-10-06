@@ -471,13 +471,7 @@ export const createRouter = (adapters: Adapters): Router => {
       TE.fold(
         (error) => T.of({
           body: {},
-          status: pipe(
-            error,
-            DE.fold({
-              notFound: () => StatusCodes.NOT_FOUND,
-              unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
-            }),
-          ),
+          status: error.status,
         }),
         (body) => T.of({
           body: [body],

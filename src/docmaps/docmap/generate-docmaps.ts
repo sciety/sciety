@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { Docmap, docmap, Ports as DocmapPorts } from './docmap';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
@@ -34,11 +35,18 @@ export const generateDocmaps = (
   ports: Ports,
 ) => (
   candidateDoi: string,
-): TE.TaskEither<DE.DataError, Docmap> => pipe(
+): TE.TaskEither<{ status: StatusCodes }, Docmap> => pipe(
   candidateDoi,
   DoiFromString.decode,
   E.mapLeft(() => DE.notFound),
   TE.fromEither,
   TE.chain(isEvaluatedByNcrc(ports.getAllEvents)),
   TE.chain(docmap(ports, ncrcGroupId)),
+  TE.mapLeft(flow(
+    DE.fold({
+      notFound: () => StatusCodes.NOT_FOUND,
+      unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+    }),
+    (status) => ({ status }),
+  )),
 );

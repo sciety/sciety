@@ -1,22 +1,26 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { groupEvaluatedArticle } from '../../../src/domain-events/group-evaluated-article-event';
 import { GroupId } from '../../../src/types/group-id';
+import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmaps', () => {
-  const indexedGroupId = arbitraryGroupId();
+  const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+  const indexedGroupId = ncrcGroupId;
   const review = (groupId: GroupId, date: Date) => ({
     reviewId: arbitraryReviewId(),
     groupId,
@@ -68,7 +72,24 @@ describe('generate-docmaps', () => {
   });
 
   describe('when both docmaps fail', () => {
-    it.todo('returns a 500 http status code');
+    let response: E.Either<{ status: StatusCodes }, Docmap>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      response = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          findVersionsForArticleDoi: () => TO.none,
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+      )();
+    });
+
+    it.skip('returns a 500 http status code', async () => {
+      expect(response).toStrictEqual(E.left({ status: StatusCodes.INTERNAL_SERVER_ERROR }));
+    });
 
     it.todo('returns a message containing all the groups whose docmaps failed');
   });
