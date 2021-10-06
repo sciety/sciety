@@ -15,6 +15,7 @@ import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
@@ -60,7 +61,25 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed only by unsupported groups', () => {
-    it.todo('returns an empty array');
+    let docmaps: ReadonlyArray<Docmap>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      docmaps = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns an empty array', () => {
+      expect(docmaps).toStrictEqual([]);
+    });
   });
 
   describe('when the article has been reviewed by one supported group', () => {
