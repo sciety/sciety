@@ -24,6 +24,7 @@ const getEvaluatingGroupIds = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe
     RA.filter(({ articleId }) => articleId.value === doi.value),
     RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
     RA.map(({ groupId }) => groupId),
+    (groupIds) => [...new Set(groupIds)],
   )),
 );
 
