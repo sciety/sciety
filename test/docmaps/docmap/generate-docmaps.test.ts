@@ -176,7 +176,7 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns an array containing a single docmap for that group', () => {
+    it('returns an array containing a single docmap for that group', () => {
       expect(docmaps).toHaveLength(1);
     });
   });
