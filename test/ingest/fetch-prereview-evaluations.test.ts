@@ -69,7 +69,7 @@ describe('fetch-prereview-evaluations', () => {
     });
   });
 
-  describe('when the response includes a biorxiv preprint with a non-DOI review', () => {
+  describe('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
     const articleId = arbitraryDoi();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
@@ -147,6 +147,33 @@ describe('fetch-prereview-evaluations', () => {
           {
             item: articleId.toString(),
             reason: 'not a biorxiv DOI',
+          },
+        ],
+      })));
+    });
+  });
+
+  describe('when the response includes an unpublished review', () => {
+    const articleId = arbitraryDoi('10.1234');
+    const response = [
+      {
+        handle: articleId.value,
+        fullReviews: [
+          { createdAt: arbitraryDate().toString(), isPublished: false },
+        ],
+      },
+    ];
+    const result = fetchPrereviewEvaluations()({
+      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+      fetchGoogleSheet: shouldNotBeCalled,
+    });
+
+    it('returns a skipped item', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: [
+          {
+            item: articleId.toString(),
+            reason: 'is not published',
           },
         ],
       })));
