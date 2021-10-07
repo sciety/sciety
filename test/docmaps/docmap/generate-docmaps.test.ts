@@ -8,6 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
+import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
@@ -129,7 +130,7 @@ describe('generate-docmaps', () => {
     it.todo('returns an array containing a docmap for each group');
   });
 
-  describe('when both docmaps fail', () => {
+  describe('when all docmaps fail', () => {
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
@@ -152,8 +153,29 @@ describe('generate-docmaps', () => {
     it.todo('returns a message containing all the groups whose docmaps failed');
   });
 
-  describe('when one docmap fails', () => {
-    it.todo('returns a 500 http status code');
+  describe('when any docmap fails', () => {
+    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      const passingReviewId = arbitraryReviewId();
+      response = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          fetchReview: (id: ReviewId) => (id === passingReviewId
+            ? TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+            : TE.left(DE.notFound)),
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, articleId, passingReviewId),
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+      )();
+    });
+
+    it('returns a 500 http status code', () => {
+      expect(response).toStrictEqual(E.left({ status: StatusCodes.INTERNAL_SERVER_ERROR }));
+    });
 
     it.todo('returns a message containing the group whose docmap failed');
   });
