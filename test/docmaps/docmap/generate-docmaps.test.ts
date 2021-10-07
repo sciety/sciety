@@ -48,14 +48,18 @@ describe('generate-docmaps', () => {
     getAllEvents: T.of([]),
   };
 
+  const generateDocmapsTestHelper = async (overridePorts: Record<string, unknown>) => pipe(
+    generateDocmaps({ ...defaultPorts, ...overridePorts })(articleId.value),
+    TE.getOrElse(shouldNotBeCalled),
+  )();
+
   describe('when the article hasn\'t been reviewed', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps(defaultPorts)(arbitraryDoi().value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        getAllEvents: T.of([]),
+      });
     });
 
     it('returns an empty array', () => {
@@ -67,16 +71,12 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
-            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        getAllEvents: T.of([
+          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ]),
+      });
     });
 
     it('returns an empty array', () => {
@@ -88,15 +88,11 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        getAllEvents: T.of([
+          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+        ]),
+      });
     });
 
     it('returns an array containing one docmap', () => {
@@ -108,16 +104,12 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        getAllEvents: T.of([
+          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ]),
+      });
     });
 
     it('returns an array containing one docmap from the supported group', () => {
@@ -129,20 +121,16 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          findReviewsForArticleDoi: () => TE.right([
-            review(ncrcGroupId, arbitraryDate()),
-            review(rapidReviewsGroupId, arbitraryDate()),
-          ]),
-          getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-            groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        findReviewsForArticleDoi: () => TE.right([
+          review(ncrcGroupId, arbitraryDate()),
+          review(rapidReviewsGroupId, arbitraryDate()),
+        ]),
+        getAllEvents: T.of([
+          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
+        ]),
+      });
     });
 
     it('returns an array containing a docmap for each group', () => {
@@ -156,20 +144,16 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          findReviewsForArticleDoi: () => TE.right([
-            review(ncrcGroupId, arbitraryDate()),
-            review(ncrcGroupId, arbitraryDate()),
-          ]),
-          getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmaps = await generateDocmapsTestHelper({
+        findReviewsForArticleDoi: () => TE.right([
+          review(ncrcGroupId, arbitraryDate()),
+          review(ncrcGroupId, arbitraryDate()),
+        ]),
+        getAllEvents: T.of([
+          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+        ]),
+      });
     });
 
     it('returns an array containing a single docmap for that group', () => {
