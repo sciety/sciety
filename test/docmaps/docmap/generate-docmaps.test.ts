@@ -22,6 +22,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmaps', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+  const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   const indexedGroupId = ncrcGroupId;
   const review = (groupId: GroupId, date: Date) => ({
     reviewId: arbitraryReviewId(),
@@ -127,7 +128,6 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed by two supported groups', () => {
-    const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
@@ -181,31 +181,8 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when all docmaps fail', () => {
-    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
-
-    beforeEach(async () => {
-      const articleId = arbitraryDoi();
-      response = await pipe(
-        generateDocmaps({
-          ...defaultPorts,
-          findVersionsForArticleDoi: () => TO.none,
-          getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          ]),
-        })(articleId.value),
-      )();
-    });
-
-    it('returns a 500 http status code', async () => {
-      expect(response).toStrictEqual(E.left({ status: StatusCodes.INTERNAL_SERVER_ERROR }));
-    });
-
-    it.todo('returns a message containing all the groups whose docmaps failed');
-  });
-
   describe('when any docmap fails', () => {
-    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+    let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
       const articleId = arbitraryDoi();
@@ -225,10 +202,12 @@ describe('generate-docmaps', () => {
     });
 
     it('returns a 500 http status code', () => {
-      expect(response).toStrictEqual(E.left({ status: StatusCodes.INTERNAL_SERVER_ERROR }));
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.INTERNAL_SERVER_ERROR })));
     });
 
-    it.todo('returns a message containing the group whose docmap failed');
+    it('returns an error message', () => {
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'Failed to generate docmaps' })));
+    });
   });
 
   describe('when the doi can\'t be decoded', () => {
@@ -241,7 +220,9 @@ describe('generate-docmaps', () => {
     });
 
     it('returns a 400 http status code', () => {
-      expect(response).toStrictEqual(E.left({ status: StatusCodes.BAD_REQUEST }));
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.BAD_REQUEST })));
     });
+
+    it.todo('returns an error message');
   });
 });

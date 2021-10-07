@@ -36,7 +36,7 @@ export const generateDocmaps = (
   ports: Ports,
 ) => (
   candidateDoi: string,
-): TE.TaskEither<{ status: StatusCodes }, ReadonlyArray<Docmap>> => pipe(
+): TE.TaskEither<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>> => pipe(
   candidateDoi,
   DoiFromString.decode,
   E.mapLeft(() => StatusCodes.BAD_REQUEST),
@@ -48,5 +48,5 @@ export const generateDocmaps = (
     TE.chain(TE.traverseArray((groupId) => docmap(ports, groupId)(articleId))),
     TE.mapLeft(() => StatusCodes.INTERNAL_SERVER_ERROR),
   )),
-  TE.mapLeft((status) => ({ status })),
+  TE.mapLeft((status) => ({ status, message: 'Failed to generate docmaps' })),
 );
