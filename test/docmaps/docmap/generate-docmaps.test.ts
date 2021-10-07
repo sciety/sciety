@@ -155,6 +155,10 @@ describe('generate-docmaps', () => {
     });
   });
 
+  describe('when the article has been reviewed multiple times by the same group', () => {
+    it.todo('returns an array containing a single docmap for that group');
+  });
+
   describe('when all docmaps fail', () => {
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
