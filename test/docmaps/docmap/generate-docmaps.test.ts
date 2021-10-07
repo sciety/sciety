@@ -156,7 +156,29 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed multiple times by the same group', () => {
-    it.todo('returns an array containing a single docmap for that group');
+    let docmaps: ReadonlyArray<Docmap>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      docmaps = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          findReviewsForArticleDoi: () => TE.right([
+            review(ncrcGroupId, arbitraryDate()),
+            review(ncrcGroupId, arbitraryDate()),
+          ]),
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.skip('returns an array containing a single docmap for that group', () => {
+      expect(docmaps).toHaveLength(1);
+    });
   });
 
   describe('when all docmaps fail', () => {
