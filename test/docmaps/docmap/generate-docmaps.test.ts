@@ -223,6 +223,8 @@ describe('generate-docmaps', () => {
       expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.BAD_REQUEST })));
     });
 
-    it.todo('returns an error message');
+    it('returns an error message', () => {
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'Invalid DOI requested' })));
+    });
   });
 });
