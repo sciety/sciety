@@ -38,9 +38,9 @@ describe('generate-docmaps', () => {
         version: 1,
       },
     ]),
-    getGroup: () => TO.some({
+    getGroup: (groupId: GroupId) => TO.some({
       ...arbitraryGroup(),
-      id: indexedGroupId,
+      id: groupId,
     }),
     fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
     getAllEvents: T.of([]),
@@ -135,6 +135,10 @@ describe('generate-docmaps', () => {
       docmaps = await pipe(
         generateDocmaps({
           ...defaultPorts,
+          findReviewsForArticleDoi: () => TE.right([
+            review(ncrcGroupId, arbitraryDate()),
+            review(rapidReviewsGroupId, arbitraryDate()),
+          ]),
           getAllEvents: T.of([
             groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
             groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
@@ -144,7 +148,7 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns an array containing a docmap for each group', () => {
+    it('returns an array containing a docmap for each group', () => {
       expect(docmaps).toHaveLength(2);
       expect(docmaps[0].publisher.account.id).toContain(ncrcGroupId);
       expect(docmaps[1].publisher.account.id).toContain(rapidReviewsGroupId);

@@ -15,20 +15,18 @@ import * as GID from '../../types/group-id';
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
+
+const supportedGroups = [ncrcGroupId, rapidReviewsGroupId];
 
 const getEvaluatingGroupIds = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   getAllEvents,
   T.map(flow(
     RA.filter(isGroupEvaluatedArticleEvent),
-    RA.filter(({ groupId }) => ncrcGroupId === groupId),
+    RA.filter(({ articleId }) => articleId.value === doi.value),
+    RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
+    RA.map(({ groupId }) => groupId),
   )),
-  T.map(RA.findFirst(({ articleId }) => articleId.value === doi.value)),
-  TO.map(({ articleId }) => articleId),
-  TE.fromTaskOption(() => DE.notFound),
-  TE.match(
-    () => [],
-    () => [ncrcGroupId],
-  ),
 );
 
 type Ports = {
