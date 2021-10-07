@@ -104,7 +104,25 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed by one supported group and one unsupported group', () => {
-    it.todo('returns an array containing one docmap from the supported group');
+    let docmaps: ReadonlyArray<Docmap>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      docmaps = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns an array containing one docmap from the supported group', () => {
+      expect(docmaps).toHaveLength(1);
+    });
   });
 
   describe('when the article has been reviewed by two supported groups', () => {
