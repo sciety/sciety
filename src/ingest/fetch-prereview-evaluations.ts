@@ -20,6 +20,7 @@ const preReviewPreprint = t.type({
   fullReviews: t.readonlyArray(t.type({
     createdAt: tt.DateFromISOString,
     doi: tt.optionFromNullable(DoiFromString),
+    isPublished: t.boolean,
   })),
 });
 
@@ -35,11 +36,16 @@ type Review = {
   date: Date,
   handle: string | Doi,
   reviewDoi: O.Option<Doi>,
+  isPublished: boolean,
 };
 
 const toEvaluationOrSkip = (preprint: Review) => pipe(
   preprint,
   E.right,
+  E.filterOrElse(
+    (p) => p.isPublished,
+    () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
+  ),
   E.filterOrElse(
     (p): p is Review & { handle: Doi } => isDoi(p.handle),
     () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
@@ -65,6 +71,7 @@ const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
     date: review.createdAt,
     handle: preprint.handle,
     reviewDoi: review.doi,
+    isPublished: review.isPublished,
   })),
 );
 
