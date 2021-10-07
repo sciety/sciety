@@ -59,13 +59,24 @@ type Step = {
   actions: ReadonlyArray<Action>,
 };
 
+type Publisher = {
+  id: string,
+  name: string,
+  logo: string,
+  homepage: string,
+  account: {
+    id: string,
+    service: 'https://sciety.org',
+  },
+};
+
 export type Docmap = {
   '@context': Record<string, unknown>,
   id: string,
   type: 'docmap',
   created: string,
   updated: string,
-  publisher: Record<string, unknown>,
+  publisher: Publisher,
   'first-step': '_:b0',
   steps: Record<string, Step>,
 };

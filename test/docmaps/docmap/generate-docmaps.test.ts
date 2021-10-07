@@ -127,7 +127,28 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed by two supported groups', () => {
-    it.todo('returns an array containing a docmap for each group');
+    const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
+    let docmaps: ReadonlyArray<Docmap>;
+
+    beforeEach(async () => {
+      const articleId = arbitraryDoi();
+      docmaps = await pipe(
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
+          ]),
+        })(articleId.value),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.skip('returns an array containing a docmap for each group', () => {
+      expect(docmaps).toHaveLength(2);
+      expect(docmaps[0].publisher.account.id).toContain(ncrcGroupId);
+      expect(docmaps[1].publisher.account.id).toContain(rapidReviewsGroupId);
+    });
   });
 
   describe('when all docmaps fail', () => {
