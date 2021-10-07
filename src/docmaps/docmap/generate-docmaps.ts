@@ -2,13 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Docmap, docmap, Ports as DocmapPorts } from './docmap';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import * as GID from '../../types/group-id';
 
