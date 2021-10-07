@@ -35,8 +35,8 @@ describe('fetch-prereview-evaluations', () => {
       {
         handle: articleId.value,
         fullReviews: [
-          { createdAt: date1.toString(), doi: reviewDoi1.value },
-          { createdAt: date2.toString(), doi: reviewDoi2.value },
+          { createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true },
+          { createdAt: date2.toString(), doi: reviewDoi2.value, isPublished: true },
         ],
       },
     ];
@@ -78,8 +78,8 @@ describe('fetch-prereview-evaluations', () => {
       {
         handle: articleId.value,
         fullReviews: [
-          { createdAt: date1.toString(), doi: reviewDoi1.value },
-          { createdAt: date2.toString() },
+          { createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true },
+          { createdAt: date2.toString(), isPublished: true },
         ],
       },
     ];
@@ -121,8 +121,8 @@ describe('fetch-prereview-evaluations', () => {
       {
         handle: articleId.value,
         fullReviews: [
-          { createdAt: date1.toString(), doi: reviewDoi1.value },
-          { createdAt: date2.toString(), doi: reviewDoi2.value },
+          { createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true },
+          { createdAt: date2.toString(), doi: reviewDoi2.value, isPublished: true },
         ],
       },
     ];
