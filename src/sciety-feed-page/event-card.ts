@@ -1,19 +1,19 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import {
-  groupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
-  groupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
-  scietyFeedCard,
-  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
+  groupEvaluatedArticleCard,
+  GroupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
+  groupEvaluatedMultipleArticlesCard,
+  GroupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
+  scietyFeedCard, userFollowedAGroupCard, UserFollowedAGroupCardPorts,
   userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
 } from './cards';
+
 import {
-  CollapsedEvent,
-  isCollapsedGroupEvaluatedArticle,
-  isCollapsedGroupEvaluatedMultipleArticles,
-} from './collapse-close-events';
-import {
-  DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  GroupEvaluatedArticleEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
@@ -24,42 +24,33 @@ export type Ports =
   & GroupEvaluatedMultipleArticlesCardPorts
   & UserFollowedAGroupCardPorts;
 
+type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
+  type: 'CollapsedGroupEvaluatedArticle',
+};
+
+type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
+  type: 'CollapsedGroupEvaluatedMultipleArticles',
+};
+
+export type EventCardModel = (
+  UserSavedArticleEvent
+  | UserFollowedEditorialCommunityEvent
+  | GroupEvaluatedArticleEvent
+  | CollapsedGroupEvaluatedArticle
+  | CollapsedGroupEvaluatedMultipleArticles
+);
+
 export const eventCard = (
   ports: Ports,
 ) => (
-  event: DomainEvent | CollapsedEvent,
+  event: EventCardModel,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  event,
-  (evnt) => {
-    if (isCollapsedGroupEvaluatedMultipleArticles(evnt)) {
-      return pipe(
-        evnt,
-        groupEvaluatedMultipleArticlesCard(ports),
-      );
-    }
-
-    if (isCollapsedGroupEvaluatedArticle(evnt) || isGroupEvaluatedArticleEvent(evnt)) {
-      return pipe(
-        evnt,
-        groupEvaluatedArticleCard(ports),
-      );
-    }
-
-    if (isUserSavedArticleEvent(evnt)) {
-      return pipe(
-        evnt,
-        userSavedArticleToAListCard(ports),
-      );
-    }
-
-    if (isUserFollowedEditorialCommunityEvent(evnt)) {
-      return pipe(
-        evnt,
-        userFollowedAGroupCard(ports),
-      );
-    }
-
-    return TE.left(DE.unavailable);
-  },
+  match(event)
+    .with({ type: 'UserSavedArticle' }, userSavedArticleToAListCard(ports))
+    .with({ type: 'UserFollowedEditorialCommunity' }, userFollowedAGroupCard(ports))
+    .with({ type: 'GroupEvaluatedArticle' }, groupEvaluatedArticleCard(ports))
+    .with({ type: 'CollapsedGroupEvaluatedArticle' }, groupEvaluatedArticleCard(ports))
+    .with({ type: 'CollapsedGroupEvaluatedMultipleArticles' }, groupEvaluatedMultipleArticlesCard(ports))
+    .otherwise(() => TE.left(DE.unavailable)),
   TE.map(scietyFeedCard),
 );

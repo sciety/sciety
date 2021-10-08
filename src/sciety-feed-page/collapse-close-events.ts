@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { GroupEvaluatedArticleCard, GroupEvaluatedMultipleArticlesCard } from './cards';
-import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
+import { EventCardModel } from './event-card';
+import { GroupEvaluatedArticleEvent, UserFollowedEditorialCommunityEvent, UserSavedArticleEvent } from '../domain-events';
 
 type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
   type: 'CollapsedGroupEvaluatedArticle',
@@ -24,7 +25,7 @@ type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCar
 
 export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
-type StateEntry = DomainEvent | CollapsedEvent;
+type StateEntry = FeedRelevantEvent | CollapsedEvent;
 
 const collapsedGroupEvaluatedMultipleArticles = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
@@ -90,7 +91,7 @@ const replaceWithCollapseEvent = (
 };
 
 const processEvent = (
-  state: Array<StateEntry>, event: DomainEvent,
+  state: Array<StateEntry>, event: FeedRelevantEvent,
 ) => {
   if (isGroupEvaluatedArticleEvent(event)
     && collapsesIntoPreviousEvent(state, event)) {
@@ -101,6 +102,9 @@ const processEvent = (
   return state;
 };
 
+export type FeedRelevantEvent =
+  UserSavedArticleEvent | UserFollowedEditorialCommunityEvent | GroupEvaluatedArticleEvent;
+
 export const collapseCloseEvents = (
-  events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
+  events: ReadonlyArray<FeedRelevantEvent>,
+): ReadonlyArray<EventCardModel> => events.reduce(processEvent, []);

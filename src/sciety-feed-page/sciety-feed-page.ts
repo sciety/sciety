@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
-  collapseCloseEvents,
+  collapseCloseEvents, FeedRelevantEvent,
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import { paginate } from './paginate';
@@ -71,7 +71,7 @@ type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
-const isFeedRelevantEvent = (event: DomainEvent) => (
+const isFeedRelevantEvent = (event: DomainEvent): event is FeedRelevantEvent => (
   isGroupEvaluatedArticleEvent(event)
     || isUserSavedArticleEvent(event)
     || isUserFollowedEditorialCommunityEvent(event)
