@@ -1,4 +1,7 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import { CollapsedGroupEvaluatedArticle, CollapsedGroupEvaluatedMultipleArticles, EventCardModel } from './event-card';
 import { GroupEvaluatedArticleEvent, UserFollowedEditorialCommunityEvent, UserSavedArticleEvent } from '../domain-events';
 
@@ -46,18 +49,17 @@ const isGroupEvaluatedArticleEvent = (event: StateEntry):
 
 const collapsesIntoPreviousEvent = (
   state: ReadonlyArray<StateEntry>, event: GroupEvaluatedArticleEvent,
-) => state.length && pipe(
-  state[state.length - 1],
-  (entry) => {
-    if (
-      isGroupEvaluatedArticleEvent(entry)
-      || isCollapsedGroupEvaluatedArticle(entry)
-      || isCollapsedGroupEvaluatedMultipleArticlesState(entry)
-    ) {
-      return entry.groupId === event.groupId;
-    }
-    return false;
-  },
+) => pipe(
+  state,
+  RA.last,
+  O.fold(
+    () => false,
+    (previousEvent) => match(previousEvent)
+      .with({ type: 'GroupEvaluatedArticle', groupId: event.groupId }, () => true)
+      .with({ type: 'CollapsedGroupEvaluatedArticle', groupId: event.groupId }, () => true)
+      .with({ type: 'CollapsedGroupEvaluatedMultipleArticles', groupId: event.groupId }, () => true)
+      .otherwise(() => false),
+  ),
 );
 
 const replaceWithCollapseEvent = (
