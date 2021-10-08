@@ -13,6 +13,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
+import { defaultUserListDescription } from '../user-page/static-messages';
 
 type Params = {
   handle: string,
@@ -51,7 +52,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
       <img src="${avatarUrl}" alt="" class="page-header__avatar">
       <span>A list by <a href="/users/${handle}">${handle}</a></span>
     </p>
-    <p class="page-header__description">Articles that have been saved by @${handle}.</p>
+    <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}.</p>
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
     ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
   </header>

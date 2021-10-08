@@ -7,3 +7,7 @@ export const informationUnavailable = toHtmlFragment(
 export const followingNothing = toHtmlFragment(
   '<p class="static-message">This user is currently not following any groups.</p>',
 );
+
+export const defaultUserListDescription = (userName: string): string => (
+  `Articles that have been saved by ${userName}.`
+);

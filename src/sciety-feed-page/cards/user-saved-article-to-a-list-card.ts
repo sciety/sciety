@@ -7,6 +7,7 @@ import { UserSavedArticleEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
+import { defaultUserListDescription } from '../../user-page/static-messages';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   handle: string,
@@ -32,7 +33,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) 
       date: event.date,
       details: {
         title: toHtmlFragment('Saved articles'),
-        content: toHtmlFragment('<p>Articles that have been saved by this user.</p>'),
+        content: toHtmlFragment(`<p>${defaultUserListDescription('this user')}</p>`),
       },
     }),
     ({ handle, avatarUrl }) => ({
@@ -42,7 +43,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) 
       date: event.date,
       details: {
         title: toHtmlFragment('Saved articles'),
-        content: toHtmlFragment(`<p>Articles that have been saved by @${handle}.</p>`),
+        content: toHtmlFragment(`<p>${defaultUserListDescription(`@${handle}`)}.</p>`),
       },
     }),
   ),
