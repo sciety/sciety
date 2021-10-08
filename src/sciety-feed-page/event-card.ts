@@ -28,38 +28,38 @@ export const eventCard = (
   ports: Ports,
 ) => (
   event: DomainEvent | CollapsedEvent,
-): TE.TaskEither<DE.DataError, HtmlFragment> => {
-  if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
-    return pipe(
-      event,
-      groupEvaluatedMultipleArticlesCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
+): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+  event,
+  (evnt) => {
+    if (isCollapsedGroupEvaluatedMultipleArticles(evnt)) {
+      return pipe(
+        evnt,
+        groupEvaluatedMultipleArticlesCard(ports),
+      );
+    }
 
-  if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
-    return pipe(
-      event,
-      groupEvaluatedArticleCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
+    if (isCollapsedGroupEvaluatedArticle(evnt) || isGroupEvaluatedArticleEvent(evnt)) {
+      return pipe(
+        evnt,
+        groupEvaluatedArticleCard(ports),
+      );
+    }
 
-  if (isUserSavedArticleEvent(event)) {
-    return pipe(
-      event,
-      userSavedArticleToAListCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
+    if (isUserSavedArticleEvent(evnt)) {
+      return pipe(
+        evnt,
+        userSavedArticleToAListCard(ports),
+      );
+    }
 
-  if (isUserFollowedEditorialCommunityEvent(event)) {
-    return pipe(
-      event,
-      userFollowedAGroupCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
+    if (isUserFollowedEditorialCommunityEvent(evnt)) {
+      return pipe(
+        evnt,
+        userFollowedAGroupCard(ports),
+      );
+    }
 
-  return TE.left(DE.unavailable);
-};
+    return TE.left(DE.unavailable);
+  },
+  TE.map(scietyFeedCard),
+);
