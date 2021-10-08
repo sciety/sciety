@@ -19,7 +19,7 @@ describe('next-link', () => {
     expect(linkHref).toStrictEqual(expectedHref);
   });
 
-  it.skip('encodes the query for http', () => {
+  it('encodes the query for http', () => {
     const nextLinkAnchor = nextLink({
       pageNumber: 2,
       category: 'articles',
