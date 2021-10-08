@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
 
-type PageOfItems<I> = {
+export type PageOfItems<I> = {
   items: ReadonlyArray<I>,
   nextPage: O.Option<number>,
   pageNumber: number,

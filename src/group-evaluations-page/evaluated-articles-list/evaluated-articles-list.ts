@@ -88,7 +88,7 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number, numberO
 );
 
 const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
-  pageOfArticles.content,
+  pageOfArticles.items,
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
   TE.chainTaskK(T.traverseArray(toArticleCardViewModel(ports))),
@@ -97,8 +97,8 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArt
     () => noArticlesCanBeFetchedMessage,
     flow(
       renderEvaluatedArticlesList,
-      addPaginationControls(pageOfArticles.nextPageNumber, group),
-      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.numberOfPages)}${content}`,
+      addPaginationControls(pageOfArticles.nextPage, group),
+      (content) => `${renderPageNumbers(O.some(pageOfArticles.pageNumber), pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}${content}`,
       toHtmlFragment,
     ),
   )),
