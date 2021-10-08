@@ -32,7 +32,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) 
       date: event.date,
       details: {
         title: toHtmlFragment('Saved articles'),
-        content: toHtmlFragment('<p>Articles that have been saved by this user, most recently saved first.</p>'),
+        content: toHtmlFragment('<p>Articles that have been saved by this user.</p>'),
       },
     }),
     ({ handle, avatarUrl }) => ({
@@ -42,7 +42,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) 
       date: event.date,
       details: {
         title: toHtmlFragment('Saved articles'),
-        content: toHtmlFragment(`<p>Articles that have been saved by @${handle}, most recently saved first.</p>`),
+        content: toHtmlFragment(`<p>Articles that have been saved by @${handle}.</p>`),
       },
     }),
   ),
