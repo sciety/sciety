@@ -4,13 +4,18 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
 
-type Paginate = <I>(pageSize: number, page: number) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, {
+type PageOfItems<I> = {
   items: ReadonlyArray<I>,
   nextPage: O.Option<number>,
   pageNumber: number,
   numberOfPages: number,
   numberOfOriginalItems: number,
-}>;
+};
+
+type Paginate = <I>(
+  pageSize: number,
+  page: number,
+) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, PageOfItems<I>>;
 
 export const paginate: Paginate = (pageSize, page) => (items) => pipe(
   items,
