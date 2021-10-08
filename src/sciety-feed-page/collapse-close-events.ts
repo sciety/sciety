@@ -23,7 +23,7 @@ type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCar
   articleIds: Set<string>,
 };
 
-export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
+type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 type StateEntry = FeedRelevantEvent | CollapsedEvent;
 
@@ -38,11 +38,11 @@ const collapsedGroupEvaluatedMultipleArticles = (
   date: last.date,
 });
 
-export const isCollapsedGroupEvaluatedArticle = (
+const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 
-export const isCollapsedGroupEvaluatedMultipleArticles = (
+const isCollapsedGroupEvaluatedMultipleArticles = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
