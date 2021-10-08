@@ -38,6 +38,17 @@ describe('paginate', () => {
     });
   });
 
+  describe('when there are no items', () => {
+    const result = pipe(
+      [],
+      paginate(1, 1),
+    );
+
+    it('returns not found', () => {
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
+  });
+
   describe('next page', () => {
     it.each([
       [9, 1, O.none],
