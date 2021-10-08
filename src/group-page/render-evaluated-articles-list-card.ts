@@ -22,7 +22,7 @@ export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragm
         <a href="/groups/${viewModel.group.slug}/evaluated-articles" class="list-card__link">Evaluated articles</a>
       </h3>
       <p>
-        Articles that have been evaluated by ${viewModel.group.name}, most recently evaluated first.
+        Articles that have been evaluated by ${viewModel.group.name}.
       </p>
       <div class="list-card__meta">
         <span class="visually-hidden">This group has evaluated </span><span>${viewModel.articleCount} articles</span>${lastUpdated(viewModel.lastUpdated)}

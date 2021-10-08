@@ -59,7 +59,7 @@ const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<
       <img src="${group.avatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="/groups/${group.slug}">${group.name}</a></span>
     </p>
-    <p class="page-header__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+    <p class="page-header__description">Articles that have been evaluated by ${group.name}.</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
   </header>`,
   toHtmlFragment,
