@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
@@ -74,17 +74,12 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) =
   toHtmlFragment,
 );
 
-const renderPageNumbers = (page: O.Option<number>, articleCount: number, numberOfPages: number) => pipe(
-  articleCount,
-  O.fromPredicate(() => articleCount > 0),
-  O.fold(
-    constant(''),
-    () => pipe(
-      page,
-      O.getOrElse(() => 1),
-      (currentPage) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span></p>`,
-    ),
-  ),
+const renderPageNumbers = (page: number, articleCount: number, numberOfPages: number) => (
+  articleCount > 0
+    ? `<p class="evaluated-articles__page_count">
+        Showing page ${page} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span>
+      </p>`
+    : ''
 );
 
 const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
@@ -98,7 +93,10 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArt
     flow(
       renderEvaluatedArticlesList,
       addPaginationControls(pageOfArticles.nextPage, group),
-      (content) => `${renderPageNumbers(O.some(pageOfArticles.pageNumber), pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}${content}`,
+      (content) => `
+        ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
+        ${content}
+      `,
       toHtmlFragment,
     ),
   )),
