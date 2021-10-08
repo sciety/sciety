@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { paginate as selectedPage } from '../../sciety-feed-page/paginate';
 import { ArticleActivity } from '../../types/article-activity';
 import * as DE from '../../types/data-error';
 
@@ -21,30 +21,6 @@ const emptyPage = (page: number, pageSize: number) => E.right({
   pageSize,
 });
 
-type SelectedPage = (
-  allEvaluatedArticles: ReadonlyArray<ArticleActivity>,
-  page: number,
-  pageSize: number,
-) => E.Either<DE.DataError, PageOfArticles>;
-
-const selectedPage: SelectedPage = (allEvaluatedArticles, page, pageSize) => pipe(
-  allEvaluatedArticles,
-  RA.chunksOf(pageSize),
-  RA.lookup(page - 1),
-  E.fromOption(() => DE.notFound),
-  E.map((content) => ({
-    content,
-    nextPageNumber: pipe(
-      page + 1,
-      O.some,
-      O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
-    ),
-    articleCount: allEvaluatedArticles.length,
-    currentPageNumber: page,
-    pageSize,
-  })),
-);
-
 type Paginate = (
   page: number,
   pageSize: number,
@@ -55,5 +31,15 @@ type Paginate = (
 export const paginate: Paginate = (page, pageSize) => (allEvaluatedArticles) => (
   (allEvaluatedArticles.length === 0)
     ? emptyPage(page, pageSize)
-    : selectedPage(allEvaluatedArticles, page, pageSize)
+    : pipe(
+      allEvaluatedArticles,
+      selectedPage(pageSize, page),
+      E.map((foo) => ({
+        content: foo.items,
+        nextPageNumber: foo.nextPage,
+        currentPageNumber: foo.pageNumber,
+        articleCount: foo.numberOfOriginalItems,
+        pageSize,
+      })),
+    )
 );
