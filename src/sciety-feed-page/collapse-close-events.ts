@@ -35,19 +35,6 @@ const collapsedGroupEvaluatedMultipleArticles = (
   date: last.date,
 });
 
-const isCollapsedGroupEvaluatedArticle = (
-  entry: StateEntry,
-): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
-
-const isCollapsedGroupEvaluatedMultipleArticlesState = (
-  entry: StateEntry,
-): entry is CollapsedGroupEvaluatedMultipleArticlesState => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
-
-const isGroupEvaluatedArticleEvent = (event: StateEntry):
-  event is GroupEvaluatedArticleEvent => (
-  event.type === 'GroupEvaluatedArticle'
-);
-
 type Collapsable =
 GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticlesState;
 
@@ -56,27 +43,6 @@ const isCollapsable = (entry: StateEntry): entry is Collapsable => match(entry)
   .with({ type: 'CollapsedGroupEvaluatedArticle' }, () => true)
   .with({ type: 'CollapsedGroupEvaluatedMultipleArticles' }, () => true)
   .otherwise(() => false);
-
-const collapse = (
-  last: Collapsable,
-  event: GroupEvaluatedArticleEvent,
-) => {
-  if (isGroupEvaluatedArticleEvent(last)) {
-    if (event.articleId.value === last.articleId.value) {
-      return (collapsedGroupEvaluatedArticle(last, 2));
-    }
-    return (collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
-  } if (isCollapsedGroupEvaluatedArticle(last)) {
-    if (event.articleId.value === last.articleId.value) {
-      return (collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
-    }
-    return (collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
-  } if (isCollapsedGroupEvaluatedMultipleArticlesState(last)) {
-    return (collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
-  }
-
-  throw new Error('should not happen');
-};
 
 const processEvent = (
   state: Array<StateEntry>, event: FeedRelevantEvent,
@@ -93,8 +59,39 @@ const processEvent = (
     ),
   },
   sequenceS(O.Apply),
-  O.filter((pair) => pair.candidate.groupId === pair.prevEntry.groupId),
-  O.map(({ prevEntry, candidate }) => collapse(prevEntry, candidate)),
+  O.filter(({ prevEntry, candidate }) => prevEntry.groupId === candidate.groupId),
+  O.map((collapsablePair) => match(collapsablePair)
+    .with(
+      { prevEntry: { type: 'GroupEvaluatedArticle' } },
+      (pair) => pair.prevEntry.articleId.value === pair.candidate.articleId.value,
+      (pair) => collapsedGroupEvaluatedArticle(pair.prevEntry, 2),
+    )
+    .with(
+      { prevEntry: { type: 'GroupEvaluatedArticle' } },
+      (pair) => pair.prevEntry.articleId.value !== pair.candidate.articleId.value,
+      (pair) => collapsedGroupEvaluatedMultipleArticles(
+        pair.prevEntry, new Set([pair.prevEntry.articleId.value, pair.candidate.articleId.value]),
+      ),
+    )
+    .with(
+      { prevEntry: { type: 'CollapsedGroupEvaluatedArticle' } },
+      (pair) => pair.prevEntry.articleId.value === pair.candidate.articleId.value,
+      (pair) => collapsedGroupEvaluatedArticle(pair.prevEntry, pair.prevEntry.evaluationCount + 1),
+    )
+    .with(
+      { prevEntry: { type: 'CollapsedGroupEvaluatedArticle' } },
+      (pair) => pair.prevEntry.articleId.value !== pair.candidate.articleId.value,
+      (pair) => collapsedGroupEvaluatedMultipleArticles(
+        pair.prevEntry, new Set([pair.prevEntry.articleId.value, pair.candidate.articleId.value]),
+      ),
+    )
+    .with(
+      { prevEntry: { type: 'CollapsedGroupEvaluatedMultipleArticles' } },
+      (pair) => collapsedGroupEvaluatedMultipleArticles(
+        pair.prevEntry, pair.prevEntry.articleIds.add(pair.candidate.articleId.value),
+      ),
+    )
+    .otherwise(() => event)),
   O.fold(
     () => { state.push(event); return state; },
     (collapsed) => { state.splice(-1, 1, collapsed); return state; },
