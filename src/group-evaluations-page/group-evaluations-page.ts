@@ -12,6 +12,7 @@ import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles'
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import { getEvaluatedArticlesListDetails } from '../group-page/get-evaluated-articles-list-details';
+import { defaultGroupListDescription } from '../group-page/messages';
 import { templateDate } from '../shared-components/date';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -59,7 +60,7 @@ const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<
       <img src="${group.avatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="/groups/${group.slug}">${group.name}</a></span>
     </p>
-    <p class="page-header__description">Articles that have been evaluated by ${group.name}.</p>
+    <p class="page-header__description">${defaultGroupListDescription(group.name)}.</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
   </header>`,
   toHtmlFragment,
