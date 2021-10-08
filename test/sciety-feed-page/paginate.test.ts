@@ -32,6 +32,10 @@ describe('paginate', () => {
       expect(result.pageNumber).toStrictEqual(2);
       expect(result.numberOfPages).toStrictEqual(3);
     });
+
+    it('returns the count of original items', () => {
+      expect(result.numberOfOriginalItems).toStrictEqual(3);
+    });
   });
 
   describe('next page', () => {

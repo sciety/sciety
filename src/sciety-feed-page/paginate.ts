@@ -9,6 +9,7 @@ type Paginate = <I>(pageSize: number, page: number) => (items: ReadonlyArray<I>)
   nextPage: O.Option<number>,
   pageNumber: number,
   numberOfPages: number,
+  numberOfOriginalItems: number,
 }>;
 
 export const paginate: Paginate = (pageSize, page) => (items) => pipe(
@@ -22,6 +23,7 @@ export const paginate: Paginate = (pageSize, page) => (items) => pipe(
       items: pageOfItems,
       pageNumber: page,
       numberOfPages: chunks.length,
+      numberOfOriginalItems: items.length,
       nextPage: pipe(
         page + 1,
         O.some,
