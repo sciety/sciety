@@ -9,11 +9,11 @@ import {
   collapseCloseEvents,
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
-import { paginate } from './paginate';
 import {
   DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
+import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
