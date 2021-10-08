@@ -14,37 +14,27 @@ const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
 
 describe('paginate', () => {
   describe('when there are multiple items', () => {
-    it('limits the number of items to the requested page size', () => {
-      const result = pipe(
-        ['a', 'b', 'c'],
-        paginate(2, 1),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+    const result = pipe(
+      ['a', 'b', 'c'],
+      paginate(1, 2),
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
-      expect(result.items).toHaveLength(2);
+    it('limits the number of items to the requested page size', () => {
+      expect(result.items).toHaveLength(1);
     });
 
     it('returns the specified page of the items', () => {
-      const result = pipe(
-        ['a', 'b', 'c'],
-        paginate(1, 2),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
       expect(result.items).toStrictEqual(['b']);
     });
 
     it('returns the current and total pages', () => {
-      const result = pipe(
-        ['a', 'b', 'c'],
-        paginate(1, 2),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
       expect(result.pageNumber).toStrictEqual(2);
       expect(result.numberOfPages).toStrictEqual(3);
     });
+  });
 
+  describe('next page', () => {
     it.each([
       [9, 1, O.none],
       [11, 1, O.some(2)],
@@ -61,8 +51,10 @@ describe('paginate', () => {
 
       expect(result.nextPage).toStrictEqual(nextPage);
     });
+  });
 
-    it('returns not-found when asked for a page that does not exist', () => {
+  describe('when asked for a page that does not exist', () => {
+    it('returns not-found', () => {
       const result = pipe(
         ['a', 'b', 'c'],
         paginate(1, 7),
