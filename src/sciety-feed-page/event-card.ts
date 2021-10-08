@@ -24,11 +24,11 @@ export type Ports =
   & GroupEvaluatedMultipleArticlesCardPorts
   & UserFollowedAGroupCardPorts;
 
-type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
+export type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 
-type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
+export type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
 };
 

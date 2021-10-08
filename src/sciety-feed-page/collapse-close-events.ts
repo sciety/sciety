@@ -1,11 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { GroupEvaluatedArticleCard, GroupEvaluatedMultipleArticlesCard } from './cards';
-import { EventCardModel } from './event-card';
+import { CollapsedGroupEvaluatedArticle, CollapsedGroupEvaluatedMultipleArticles, EventCardModel } from './event-card';
 import { GroupEvaluatedArticleEvent, UserFollowedEditorialCommunityEvent, UserSavedArticleEvent } from '../domain-events';
-
-type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
-  type: 'CollapsedGroupEvaluatedArticle',
-};
 
 const collapsedGroupEvaluatedArticle = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
@@ -18,19 +13,17 @@ const collapsedGroupEvaluatedArticle = (
   evaluationCount,
 });
 
-type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
-  articleIds: Set<string>,
-};
+type CollapsedGroupEvaluatedMultipleArticlesState = (
+  CollapsedGroupEvaluatedMultipleArticles
+  & { articleIds: Set<string> }
+);
 
-type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
-
-type StateEntry = FeedRelevantEvent | CollapsedEvent;
+type StateEntry = FeedRelevantEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticlesState;
 
 const collapsedGroupEvaluatedMultipleArticles = (
-  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
+  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticlesState,
   articleIds: Set<string>,
-): CollapsedGroupEvaluatedMultipleArticles => ({
+): CollapsedGroupEvaluatedMultipleArticlesState => ({
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: last.groupId,
   articleIds,
@@ -42,9 +35,9 @@ const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 
-const isCollapsedGroupEvaluatedMultipleArticles = (
+const isCollapsedGroupEvaluatedMultipleArticlesState = (
   entry: StateEntry,
-): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
+): entry is CollapsedGroupEvaluatedMultipleArticlesState => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
 const isGroupEvaluatedArticleEvent = (event: StateEntry):
   event is GroupEvaluatedArticleEvent => (
@@ -59,7 +52,7 @@ const collapsesIntoPreviousEvent = (
     if (
       isGroupEvaluatedArticleEvent(entry)
       || isCollapsedGroupEvaluatedArticle(entry)
-      || isCollapsedGroupEvaluatedMultipleArticles(entry)
+      || isCollapsedGroupEvaluatedMultipleArticlesState(entry)
     ) {
       return entry.groupId === event.groupId;
     }
@@ -85,7 +78,7 @@ const replaceWithCollapseEvent = (
     } else {
       state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
-  } else if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
+  } else if (isCollapsedGroupEvaluatedMultipleArticlesState(last)) {
     state.push(collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
   }
 };
