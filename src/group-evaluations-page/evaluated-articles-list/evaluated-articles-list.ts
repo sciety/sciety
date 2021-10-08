@@ -103,10 +103,10 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
   TE.toUnion,
 );
 
-const emptyPage = (page: number) => E.right({
+const emptyPage = (pageNumber: number) => E.right({
   items: [],
   nextPage: O.none,
-  pageNumber: page,
+  pageNumber,
   numberOfOriginalItems: 0,
   numberOfPages: 0,
 });
