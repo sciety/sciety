@@ -11,6 +11,7 @@ export type PageOfArticles = {
   currentPageNumber: number,
   articleCount: number,
   pageSize: number,
+  numberOfPages: number,
 };
 
 const emptyPage = (page: number, pageSize: number) => E.right({
@@ -19,6 +20,7 @@ const emptyPage = (page: number, pageSize: number) => E.right({
   currentPageNumber: page,
   articleCount: 0,
   pageSize,
+  numberOfPages: 0,
 });
 
 type Paginate = (
@@ -40,6 +42,7 @@ export const paginate: Paginate = (page, pageSize) => (allEvaluatedArticles) => 
         currentPageNumber: foo.pageNumber,
         articleCount: foo.numberOfOriginalItems,
         pageSize,
+        numberOfPages: foo.numberOfPages,
       })),
     )
 );

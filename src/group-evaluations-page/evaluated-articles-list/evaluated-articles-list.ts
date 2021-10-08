@@ -74,17 +74,15 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) =
   toHtmlFragment,
 );
 
-const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
+const renderPageNumbers = (page: O.Option<number>, articleCount: number, numberOfPages: number) => pipe(
   articleCount,
   O.fromPredicate(() => articleCount > 0),
   O.fold(
     constant(''),
-    (count) => pipe(
-      {
-        currentPage: pipe(page, O.getOrElse(() => 1)),
-        totalPages: Math.ceil(count / pageSize),
-      },
-      ({ currentPage, totalPages }) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
+    () => pipe(
+      page,
+      O.getOrElse(() => 1),
+      (currentPage) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span></p>`,
     ),
   ),
 );
@@ -100,7 +98,7 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArt
     flow(
       renderEvaluatedArticlesList,
       addPaginationControls(pageOfArticles.nextPageNumber, group),
-      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.pageSize)}${content}`,
+      (content) => `${renderPageNumbers(O.some(pageOfArticles.currentPageNumber), pageOfArticles.articleCount, pageOfArticles.numberOfPages)}${content}`,
       toHtmlFragment,
     ),
   )),
