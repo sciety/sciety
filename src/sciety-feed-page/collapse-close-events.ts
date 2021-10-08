@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -47,55 +48,58 @@ const isGroupEvaluatedArticleEvent = (event: StateEntry):
   event.type === 'GroupEvaluatedArticle'
 );
 
-const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<StateEntry>, event: GroupEvaluatedArticleEvent,
-) => pipe(
-  state,
-  RA.last,
-  O.fold(
-    () => false,
-    (previousEvent) => match(previousEvent)
-      .with({ type: 'GroupEvaluatedArticle', groupId: event.groupId }, () => true)
-      .with({ type: 'CollapsedGroupEvaluatedArticle', groupId: event.groupId }, () => true)
-      .with({ type: 'CollapsedGroupEvaluatedMultipleArticles', groupId: event.groupId }, () => true)
-      .otherwise(() => false),
-  ),
-);
+type Collapsable =
+GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticlesState;
 
-const replaceWithCollapseEvent = (
-  state: Array<StateEntry>,
+const isCollapsable = (entry: StateEntry): entry is Collapsable => match(entry)
+  .with({ type: 'GroupEvaluatedArticle' }, () => true)
+  .with({ type: 'CollapsedGroupEvaluatedArticle' }, () => true)
+  .with({ type: 'CollapsedGroupEvaluatedMultipleArticles' }, () => true)
+  .otherwise(() => false);
+
+const collapse = (
+  last: Collapsable,
   event: GroupEvaluatedArticleEvent,
 ) => {
-  const last = state.pop();
-  if (!last) { return; }
   if (isGroupEvaluatedArticleEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last, 2));
-    } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+      return (collapsedGroupEvaluatedArticle(last, 2));
     }
-  } else if (isCollapsedGroupEvaluatedArticle(last)) {
+    return (collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+  } if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
-    } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+      return (collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
     }
-  } else if (isCollapsedGroupEvaluatedMultipleArticlesState(last)) {
-    state.push(collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
+    return (collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+  } if (isCollapsedGroupEvaluatedMultipleArticlesState(last)) {
+    return (collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
   }
+
+  throw new Error('should not happen');
 };
 
 const processEvent = (
   state: Array<StateEntry>, event: FeedRelevantEvent,
-) => {
-  if (isGroupEvaluatedArticleEvent(event)
-    && collapsesIntoPreviousEvent(state, event)) {
-    replaceWithCollapseEvent(state, event);
-  } else {
-    state.push(event);
-  }
-  return state;
-};
+) => pipe(
+  {
+    prevEntry: pipe(
+      state,
+      RA.last,
+      O.filter(isCollapsable),
+    ),
+    candidate: pipe(
+      event,
+      O.fromPredicate((e): e is GroupEvaluatedArticleEvent => e.type === 'GroupEvaluatedArticle'),
+    ),
+  },
+  sequenceS(O.Apply),
+  O.filter((pair) => pair.candidate.groupId === pair.prevEntry.groupId),
+  O.map(({ prevEntry, candidate }) => collapse(prevEntry, candidate)),
+  O.fold(
+    () => { state.push(event); return state; },
+    (collapsed) => { state.splice(-1, 1, collapsed); return state; },
+  ),
+);
 
 export type FeedRelevantEvent =
   UserSavedArticleEvent | UserFollowedEditorialCommunityEvent | GroupEvaluatedArticleEvent;
