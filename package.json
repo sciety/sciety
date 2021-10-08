@@ -49,6 +49,7 @@
     "striptags": "^3.2.0",
     "text-clipper": "^2.1.0",
     "ts-command-line-args": "2.1.0",
+    "ts-pattern": "^3.3.3",
     "uuid": "^8.3.2",
     "xmldom": "^0.6.0"
   },
