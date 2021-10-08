@@ -5,9 +5,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { PageOfArticles, paginate } from './paginate';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
+import { PageOfItems, paginate } from '../../sciety-feed-page/paginate';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { paginationControls } from '../../shared-components/pagination-controls';
@@ -82,7 +82,7 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArticles) => pipe(
+const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfItems<ArticleActivity>) => pipe(
   pageOfArticles.items,
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
@@ -103,9 +103,20 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfArt
   TE.toUnion,
 );
 
+const emptyPage = (page: number) => E.right({
+  items: [],
+  nextPage: O.none,
+  pageNumber: page,
+  numberOfOriginalItems: 0,
+  numberOfPages: 0,
+});
+
 export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
   articles,
-  paginate(pageNumber, pageSize),
+  RA.match(
+    () => emptyPage(pageNumber),
+    paginate(pageSize, pageNumber),
+  ),
   TE.fromEither,
   TE.chainTaskK(toPageOfCards(ports, group)),
 );
