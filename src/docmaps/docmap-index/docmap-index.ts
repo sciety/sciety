@@ -5,12 +5,9 @@ import { flow } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as PR from 'io-ts/PathReporter';
 import { generateDocmapDois, Ports as GenerateDocmapDoisPorts, paramsCodec } from './generate-docmap-dois';
-import * as GID from '../../types/group-id';
 import { docmap, Ports as DocmapPorts } from '../docmap/docmap';
 
 type Ports = DocmapPorts & GenerateDocmapDoisPorts;
-
-const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,
@@ -38,7 +35,7 @@ export const docmapIndex: DocmapIndex = (ports) => flow(
       fetchReview: () => TE.right({
         url: new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`),
       }),
-    }, ncrcGroupId)),
+    })),
     TE.mapLeft(
       () => ({
         body: { error: 'Internal server error while generating Docmaps' },

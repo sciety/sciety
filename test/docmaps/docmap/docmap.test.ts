@@ -59,7 +59,7 @@ describe('docmap', () => {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     };
-    const result = await docmap(ports, indexedGroupId)(articleId)();
+    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       id: expect.stringContaining(articleId.value),
@@ -81,7 +81,7 @@ describe('docmap', () => {
         name,
       }),
     };
-    const result = await docmap(ports, indexedGroupId)(articleId)();
+    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       publisher: {
@@ -104,7 +104,7 @@ describe('docmap', () => {
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, evaluationDate)]),
     };
 
-    const result = await docmap(ports, indexedGroupId)(articleId)();
+    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       created: evaluationDate.toISOString(),
@@ -124,7 +124,7 @@ describe('docmap', () => {
       ),
     };
 
-    const result = await docmap(ports, indexedGroupId)(articleId)();
+    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       updated: laterDate.toISOString(),
@@ -147,7 +147,7 @@ describe('docmap', () => {
       findVersionsForArticleDoi,
       fetchArticle: () => TE.right({ server }),
     };
-    await docmap(ports, indexedGroupId)(articleId)();
+    await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
   });
@@ -169,7 +169,7 @@ describe('docmap', () => {
         findReviewsForArticleDoi: () => TE.right(reviews),
       };
       result = await pipe(
-        docmap(ports, indexedGroupId)(articleId),
+        docmap(ports)({ articleId, groupId: indexedGroupId }),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -258,7 +258,7 @@ describe('docmap', () => {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right([]),
       };
-      const result = await docmap(ports, indexedGroupId)(articleId)();
+      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
@@ -278,7 +278,7 @@ describe('docmap', () => {
         ),
       };
 
-      const result = await docmap(ports, indexedGroupId)(articleId)();
+      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(expectOutputs({
         published: laterDate,
@@ -289,7 +289,7 @@ describe('docmap', () => {
   describe('when there is a single evaluation by the selected group', () => {
     describe('in the first step', () => {
       it('assertions are always empty', async () => {
-        const result = await docmap(defaultPorts, indexedGroupId)(articleId)();
+        const result = await docmap(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
         expect(result).toStrictEqual(E.right(expect.objectContaining({
           steps: expect.objectContaining({
@@ -302,7 +302,7 @@ describe('docmap', () => {
 
       describe('the inputs', () => {
         it('include the uri and doi', async () => {
-          const result = await docmap(defaultPorts, indexedGroupId)(articleId)();
+          const result = await docmap(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
           expect(result).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -330,7 +330,7 @@ describe('docmap', () => {
               },
             ]),
           };
-          const result = await docmap(ports, indexedGroupId)(articleId)();
+          const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
           expect(result).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -349,7 +349,7 @@ describe('docmap', () => {
       describe('the only action', () => {
         describe('the only participant', () => {
           it('is anonymous', async () => {
-            const result = await docmap(defaultPorts, indexedGroupId)(articleId)();
+            const result = await docmap(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
             expect(result).toStrictEqual(E.right(expect.objectContaining({
               steps: expect.objectContaining({
@@ -367,7 +367,7 @@ describe('docmap', () => {
 
         describe('the only output', () => {
           it('is always of type review-article', async () => {
-            const result = await docmap(defaultPorts, indexedGroupId)(articleId)();
+            const result = await docmap(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
             expect(result).toStrictEqual(expectOutputs({
               type: 'review-article',
@@ -381,7 +381,7 @@ describe('docmap', () => {
               findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, evaluationDate)]),
             };
 
-            const result = await docmap(ports, indexedGroupId)(articleId)();
+            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
             expect(result).toStrictEqual(expectOutputs({
               published: evaluationDate,
@@ -404,7 +404,7 @@ describe('docmap', () => {
               ),
               fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
             };
-            const result = await docmap(ports, indexedGroupId)(articleId)();
+            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
             expect(result).toStrictEqual(expectOutputs({
               content: expect.arrayContaining([{
@@ -428,7 +428,7 @@ describe('docmap', () => {
                 ],
               ),
             };
-            const result = await docmap(ports, indexedGroupId)(articleId)();
+            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
             expect(result).toStrictEqual(expectOutputs({
               content: expect.arrayContaining([{
@@ -452,7 +452,7 @@ describe('docmap', () => {
         ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
       };
-      const result = await docmap(ports, indexedGroupId)(articleId)();
+      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
     });

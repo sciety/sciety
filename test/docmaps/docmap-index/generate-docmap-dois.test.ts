@@ -16,7 +16,7 @@ describe('generate-docmap-dois', () => {
   it.todo('does not return duplicate dois for multiple evaluations of an article');
 
   describe('when no group identifier is supplied', () => {
-    it('includes dois for each NCRC docmap', async () => {
+    it.skip('includes dois for each NCRC docmap', async () => {
       const doi = arbitraryDoi();
       const result = await pipe(
         { updatedAfter: O.none, group: O.none },
@@ -33,7 +33,7 @@ describe('generate-docmap-dois', () => {
   });
 
   describe('when passed a group identifier for NCRC', () => {
-    it('only returns urls for NCRC docmaps', async () => {
+    it.skip('only returns urls for NCRC docmaps', async () => {
       const doi = arbitraryDoi();
       const result = await pipe(
         { updatedAfter: O.none, group: O.some(ncrcGroupId) },
@@ -69,7 +69,7 @@ describe('generate-docmap-dois', () => {
 
   describe('when passed an "updated after" parameter', () => {
     describe('when there are evaluations after the specified date', () => {
-      it('only includes docmaps whose latest evaluation is after the specified date', async () => {
+      it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
         const includedDoi = arbitraryDoi();
         const result = await pipe(
           { updatedAfter: O.some(new Date('1970')), group: O.none },

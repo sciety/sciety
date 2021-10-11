@@ -106,9 +106,11 @@ const createReviewArticleOutput = (
 
 type CreateDocmap = (
   ports: Ports,
-  indexedGroupId: GroupId,
 ) => (
-  articleId: Doi,
+  foo: {
+    articleId: Doi,
+    groupId: GroupId,
+  }
 ) => TE.TaskEither<DE.DataError, Docmap>;
 
 const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
@@ -120,12 +122,12 @@ const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe
   })),
 );
 
-export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pipe(
+export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
   {
     evaluations: pipe(
       articleId,
       ports.findReviewsForArticleDoi,
-      TE.map(RA.filter((ev) => ev.groupId === indexedGroupId)),
+      TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
@@ -141,7 +143,7 @@ export const docmap: CreateDocmap = (ports, indexedGroupId) => (articleId) => pi
       )),
     ),
     indexedGroup: pipe(
-      indexedGroupId,
+      groupId,
       ports.getGroup,
       TE.fromTaskOption(() => DE.notFound),
     ),

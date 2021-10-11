@@ -9,7 +9,6 @@ import * as tt from 'io-ts-types';
 import { DocmapIndexEntryModel, docmapIndexEntryModels } from './docmap-index-entry-models';
 import { DomainEvent } from '../../domain-events';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 
 export const paramsCodec = t.type({
@@ -51,13 +50,12 @@ const filterByUpdatedAfter = (
 
 export const generateDocmapDois = (
   ports: Ports,
-) => (params: Params): TE.TaskEither<never, ReadonlyArray<Doi.Doi>> => pipe(
+) => (params: Params): TE.TaskEither<never, ReadonlyArray<DocmapIndexEntryModel>> => pipe(
   ports.getAllEvents,
   T.map(flow(
     docmapIndexEntryModels,
     filterByGroup(params.group),
     filterByUpdatedAfter(params.updatedAfter),
-    RA.map(({ articleId }) => articleId),
     E.right,
   )),
 );

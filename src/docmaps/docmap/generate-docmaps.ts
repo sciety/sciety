@@ -45,7 +45,7 @@ export const generateDocmaps = (
     articleId,
     getEvaluatingGroupIds(ports.getAllEvents),
     TE.rightTask,
-    TE.chain(TE.traverseArray((groupId) => docmap(ports, groupId)(articleId))),
+    TE.chain(TE.traverseArray((groupId) => docmap(ports)({ articleId, groupId }))),
     TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
   )),
 );
