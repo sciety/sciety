@@ -17,10 +17,12 @@ describe('generate-docmap-dois', () => {
   describe('when NCRC has evaluated an article multiple times', () => {
     let indexEntries: ReadonlyArray<DocmapIndexEntryModel>;
     const articleId = arbitraryDoi();
+    const latestUpdatedDate = new Date('2021');
     const ports = {
       getAllEvents: T.of([
-        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId(), new Date('1996')),
+        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId(), latestUpdatedDate),
+        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId(), new Date('2000')),
       ]),
     };
 
@@ -37,6 +39,10 @@ describe('generate-docmap-dois', () => {
 
     it.skip('returns a single docmap index entry model', () => {
       expect(indexEntries).toHaveLength(1);
+    });
+
+    it.skip('returns the latest updated date', () => {
+      expect(indexEntries[0].updated).toStrictEqual(latestUpdatedDate);
     });
   });
 
