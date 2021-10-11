@@ -50,12 +50,14 @@ const filterByUpdatedAfter = (
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
+const supportedGroups = [ncrcGroupId];
+
 export const generateDocmapDois = (
   ports: Ports,
 ) => (params: Params): TE.TaskEither<never, ReadonlyArray<DocmapIndexEntryModel>> => pipe(
   ports.getAllEvents,
   T.map(flow(
-    docmapIndexEntryModels(ncrcGroupId),
+    docmapIndexEntryModels(supportedGroups),
     filterByGroup(params.group),
     filterByUpdatedAfter(params.updatedAfter),
     E.right,

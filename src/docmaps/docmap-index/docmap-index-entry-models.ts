@@ -12,13 +12,13 @@ export type DocmapIndexEntryModel = {
 };
 
 type DocmapIndexEntryModels = (
-  supportedGroupId: GroupId
+  supportedGroups: ReadonlyArray<GroupId>
 ) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DocmapIndexEntryModel>;
 
-export const docmapIndexEntryModels: DocmapIndexEntryModels = (supportedGroupId) => (events) => pipe(
+export const docmapIndexEntryModels: DocmapIndexEntryModels = (supportedGroups) => (events) => pipe(
   events,
   RA.filter(isGroupEvaluatedArticleEvent),
-  RA.filter(({ groupId }) => supportedGroupId === groupId),
+  RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
   RA.map(({ articleId, groupId, date }) => ({
     articleId,
     groupId,
