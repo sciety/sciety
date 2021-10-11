@@ -51,7 +51,7 @@ describe('generate-docmap-dois', () => {
     });
   });
 
-  describe('when passed anything else as the group argument', () => {
+  describe('when the group param is set to anything other than NCRC', () => {
     it('returns an empty index', async () => {
       const result = await pipe(
         { updatedAfter: O.none, group: O.some(GID.fromValidatedString('foo')) },
