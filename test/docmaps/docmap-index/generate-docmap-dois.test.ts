@@ -15,38 +15,39 @@ describe('generate-docmap-dois', () => {
 
   it.todo('does not return duplicate dois for multiple evaluations of an article');
 
-  describe('when no group identifier is supplied', () => {
-    it.skip('includes dois for each NCRC docmap', async () => {
-      const doi = arbitraryDoi();
+  describe('when no params are given', () => {
+    it('does not filter by group or date', async () => {
       const result = await pipe(
         { updatedAfter: O.none, group: O.none },
         generateDocmapDois({
           getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         }),
         T.map(E.getOrElseW(shouldNotBeCalled)),
       )();
 
-      expect(result).toStrictEqual(expect.arrayContaining([doi]));
+      expect(result).toHaveLength(2);
     });
   });
 
-  describe('when passed a group identifier for NCRC', () => {
-    it.skip('only returns urls for NCRC docmaps', async () => {
-      const doi = arbitraryDoi();
+  describe('when the group param is set to NCRC', () => {
+    it('only returns entries for that group', async () => {
       const result = await pipe(
         { updatedAfter: O.none, group: O.some(ncrcGroupId) },
         generateDocmapDois({
           getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
             groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
           ]),
         }),
         T.map(E.getOrElseW(shouldNotBeCalled)),
       )();
 
-      expect(result).toStrictEqual([doi]);
+      expect(result).toStrictEqual([
+        expect.objectContaining({ groupId: ncrcGroupId }),
+      ]);
     });
   });
 
@@ -69,7 +70,7 @@ describe('generate-docmap-dois', () => {
 
   describe('when passed an "updated after" parameter', () => {
     describe('when there are evaluations after the specified date', () => {
-      it.skip('only includes docmaps whose latest evaluation is after the specified date', async () => {
+      it('only includes docmaps whose latest evaluation is after the specified date', async () => {
         const includedDoi = arbitraryDoi();
         const result = await pipe(
           { updatedAfter: O.some(new Date('1970')), group: O.none },
@@ -82,7 +83,11 @@ describe('generate-docmap-dois', () => {
           T.map(E.getOrElseW(shouldNotBeCalled)),
         )();
 
-        expect(result).toStrictEqual([includedDoi]);
+        expect(result).toStrictEqual([
+          expect.objectContaining({
+            articleId: includedDoi,
+          }),
+        ]);
       });
     });
 
