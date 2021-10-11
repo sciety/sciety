@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { DocmapIndexEntryModel } from '../../../src/docmaps/docmap-index/docmap-index-entry-models';
 import { generateDocmapDois } from '../../../src/docmaps/docmap-index/generate-docmap-dois';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
@@ -13,7 +14,31 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('generate-docmap-dois', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 
-  it.todo('does not return duplicate dois for multiple evaluations of an article');
+  describe('when NCRC has evaluated an article multiple times', () => {
+    let indexEntries: ReadonlyArray<DocmapIndexEntryModel>;
+    const articleId = arbitraryDoi();
+    const ports = {
+      getAllEvents: T.of([
+        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+      ]),
+    };
+
+    beforeEach(async () => {
+      indexEntries = await pipe(
+        {
+          updatedAfter: O.none,
+          group: O.none,
+        },
+        generateDocmapDois(ports),
+        T.map(E.getOrElseW(shouldNotBeCalled)),
+      )();
+    });
+
+    it.skip('returns a single docmap index entry model', () => {
+      expect(indexEntries).toHaveLength(1);
+    });
+  });
 
   describe('when no params are given', () => {
     it('does not filter by group or date', async () => {
