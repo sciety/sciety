@@ -37,11 +37,11 @@ describe('generate-docmap-dois', () => {
       )();
     });
 
-    it.skip('returns a single docmap index entry model', () => {
+    it('returns a single docmap index entry model', () => {
       expect(indexEntries).toHaveLength(1);
     });
 
-    it.skip('returns the latest updated date', () => {
+    it('returns the latest updated date', () => {
       expect(indexEntries[0].updated).toStrictEqual(latestUpdatedDate);
     });
   });
