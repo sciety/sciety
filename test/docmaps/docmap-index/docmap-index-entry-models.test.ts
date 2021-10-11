@@ -6,7 +6,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('docmap-index-entry-models', () => {
-  const supportedGroupIds = [arbitraryGroupId()];
+  const supportedGroupIds = [arbitraryGroupId(), arbitraryGroupId()];
 
   describe('when there are evaluated events by a supported group', () => {
     it('returns a list of all the evaluated index entry models', () => {
@@ -39,8 +39,10 @@ describe('docmap-index-entry-models', () => {
   describe('when there are evaluated events by both supported and unsupported groups', () => {
     it('excludes articles evaluated by the unsupported group', () => {
       const articleId1 = arbitraryDoi();
+      const articleId2 = arbitraryDoi();
       const events = [
         groupEvaluatedArticle(supportedGroupIds[0], articleId1, arbitraryReviewId()),
+        groupEvaluatedArticle(supportedGroupIds[1], articleId2, arbitraryReviewId()),
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ];
 
@@ -48,7 +50,12 @@ describe('docmap-index-entry-models', () => {
 
       expect(dois).toStrictEqual([
         expect.objectContaining({
+          groupId: supportedGroupIds[0],
           articleId: articleId1,
+        }),
+        expect.objectContaining({
+          groupId: supportedGroupIds[1],
+          articleId: articleId2,
         }),
       ]);
     });
