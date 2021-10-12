@@ -2,9 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { DOMParser } from 'xmldom';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
+import { DoiFromString } from '../types/codecs/DoiFromString';
 
 type Candidate = {
   date: string,
@@ -38,13 +40,25 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
   const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
   const [, articleDoi] = bioAndmedrxivDoiRegex.exec(candidate.articleId) ?? [];
   if (articleDoi) {
-    const reviewDoi = candidate.reviewId.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
-    return E.right({
-      date: new Date(candidate.date),
-      articleDoi,
-      evaluationLocator: `doi:${reviewDoi}`,
-    });
+    return pipe(
+      candidate.reviewId,
+      S.replace('https://doi.org/', ''),
+      S.replace('http://dx.doi.org/', ''),
+      DoiFromString.decode,
+      E.bimap(
+        () => ({
+          item: candidate.reviewId,
+          reason: 'malformed evaluation doi',
+        }),
+        (validatedEvaluationDoi) => ({
+          date: new Date(candidate.date),
+          articleDoi,
+          evaluationLocator: validatedEvaluationDoi.toString(),
+        }),
+      ),
+    );
   }
+
   return E.left({
     item: candidate.articleId,
     reason: 'not a biorxiv|medrxiv DOI',

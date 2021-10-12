@@ -90,17 +90,17 @@ describe('fetch-pci-evaluations', () => {
   });
 
   describe('when the doi is malformed', () => {
-    it.skip('returns 0 evaluations and 1 skipped item', async () => {
-      const articleId = arbitraryDoi().value;
+    it('returns 0 evaluations and 1 skipped item', async () => {
+      const evaluationId = 'https: //doi.org/10.24072/pci.evolbiol.100133';
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
           <link providerId="PCIArchaeology">
             <resource>
-              <doi>https: //doi.org/10.24072/pci.evolbiol.100133</doi>
+              <doi>${evaluationId}</doi>
               <date>15 Aug 2021</date>
             </resource>
-            <doi>${articleId}</doi>
+            <doi>${arbitraryDoi().value}</doi>
           </link>
         </links>
       `;
@@ -114,7 +114,7 @@ describe('fetch-pci-evaluations', () => {
         evaluations: [],
         skippedItems: [
           {
-            item: articleId,
+            item: evaluationId,
             reason: 'malformed evaluation doi',
           },
         ],
