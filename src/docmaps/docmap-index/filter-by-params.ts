@@ -56,7 +56,6 @@ const filterByUpdatedAfter = (
   ),
 );
 
-// ts-unused-exports:disable-next-line
 export const filterByParams: FilterByParams = (query) => (entries) => pipe(
   query,
   paramsCodec.decode,
