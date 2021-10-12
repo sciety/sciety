@@ -43,12 +43,29 @@ const filterByGroup = (
   ),
 );
 
+const filterByUpdatedAfter = (
+  updatedAfter: O.Option<Date>,
+) => (docmaps: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
+  updatedAfter,
+  O.fold(
+    () => docmaps,
+    (updated) => pipe(
+      docmaps,
+      RA.filter((docmap) => docmap.updated > updated),
+    ),
+  ),
+);
+
 // ts-unused-exports:disable-next-line
 export const filterByParams: FilterByParams = (query) => (entries) => pipe(
   query,
   paramsCodec.decode,
   E.bimap(
     toBadRequestResponse,
-    ({ group }) => filterByGroup(group)(entries),
+    ({ group, updatedAfter }) => pipe(
+      entries,
+      filterByUpdatedAfter(updatedAfter),
+      filterByGroup(group),
+    ),
   ),
 );

@@ -96,7 +96,7 @@ describe('filter-by-params', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      it.skip('only returns entries whose latest evaluation is after the specified date', () => {
+      it('only returns entries whose latest evaluation is after the specified date', () => {
         expect(result).toStrictEqual([
           expect.objectContaining({
             updated: afterSpecifiedDate,
@@ -121,7 +121,7 @@ describe('filter-by-params', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      it.skip('returns an empty array', () => {
+      it('returns an empty array', () => {
         expect(result).toStrictEqual([]);
       });
     });
