@@ -31,22 +31,27 @@ describe('filter-by-params', () => {
   });
 
   describe('when passed a group ID', () => {
-    it.skip('only returns entries by that group', () => {
-      const requestedGroupId = arbitraryGroupId();
-      const input = [
-        {
-          articleId: arbitraryDoi(),
-          groupId: requestedGroupId,
-          updated: arbitraryDate(),
-        },
-        {
-          articleId: arbitraryDoi(),
-          groupId: arbitraryGroupId(),
-          updated: arbitraryDate(),
-        },
-      ];
-      const result = filterByParams(`group=${requestedGroupId}`)(input);
+    const requestedGroupId = arbitraryGroupId();
+    const input = [
+      {
+        articleId: arbitraryDoi(),
+        groupId: requestedGroupId,
+        updated: arbitraryDate(),
+      },
+      {
+        articleId: arbitraryDoi(),
+        groupId: arbitraryGroupId(),
+        updated: arbitraryDate(),
+      },
+    ];
 
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(() => {
+      result = filterByParams('')(input);
+    });
+
+    it.skip('only returns entries by that group', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           groupId: requestedGroupId,
