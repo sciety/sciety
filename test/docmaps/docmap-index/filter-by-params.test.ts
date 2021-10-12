@@ -64,7 +64,7 @@ describe('filter-by-params', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.skip('only returns entries by that group', () => {
+    it('only returns entries by that group', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           groupId: requestedGroupId,
