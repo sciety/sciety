@@ -25,7 +25,28 @@ describe('filter-by-params', () => {
   });
 
   describe('when passed a group ID', () => {
-    it.todo('only returns entries by that group');
+    it.skip('only returns entries by that group', () => {
+      const requestedGroupId = arbitraryGroupId();
+      const input = [
+        {
+          articleId: arbitraryDoi(),
+          groupId: requestedGroupId,
+          updated: arbitraryDate(),
+        },
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: arbitraryDate(),
+        },
+      ];
+      const result = filterByParams(`group=${requestedGroupId}`)(input);
+
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          groupId: requestedGroupId,
+        }),
+      ]);
+    });
   });
 
   describe('when passed an "updated after" parameter', () => {
