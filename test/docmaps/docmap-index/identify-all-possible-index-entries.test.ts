@@ -36,9 +36,29 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group has evaluated an article multiple times', () => {
-    it.todo('returns a single index entry model');
+    const earlierDate = new Date('1990');
+    const middleDate = new Date('2012');
+    const latestDate = new Date('2021');
+    const articleId = arbitraryDoi();
+    const events = [
+      groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), earlierDate),
+      groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), latestDate),
+      groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), middleDate),
+    ];
 
-    it.todo('returns the lates updated date');
+    const result = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
+
+    it('returns a single index entry model', () => {
+      expect(result).toHaveLength(1);
+    });
+
+    it('returns the latest updated date', () => {
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          updated: latestDate,
+        }),
+      ]);
+    });
   });
 
   describe('when there are evaluated events by both supported and unsupported groups', () => {
