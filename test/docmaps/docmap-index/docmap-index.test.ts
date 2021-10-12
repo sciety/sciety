@@ -121,7 +121,7 @@ describe('docmap-index', () => {
 
     beforeEach(async () => {
       const ports = {
-        getAllEvents: shouldNotBeCalled,
+        getAllEvents: T.of([]),
         fetchReview: shouldNotBeCalled,
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,

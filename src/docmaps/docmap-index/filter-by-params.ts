@@ -17,7 +17,7 @@ type ErrorResponse = {
 };
 
 type FilterByParams = (
-  query: Record<string, string>
+  query: Record<string, unknown>
 ) => (entries: ReadonlyArray<DocmapIndexEntryModel>) => E.Either<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 const paramsCodec = t.type({

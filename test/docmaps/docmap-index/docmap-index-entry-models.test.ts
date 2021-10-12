@@ -35,6 +35,12 @@ describe('docmap-index-entry-models', () => {
     });
   });
 
+  describe('when a supported group has evaluated an article multiple times', () => {
+    it.todo('returns a single index entry model');
+
+    it.todo('returns the lates updated date');
+  });
+
   describe('when there are evaluated events by both supported and unsupported groups', () => {
     it('excludes articles evaluated by the unsupported group', () => {
       const articleId1 = arbitraryDoi();
