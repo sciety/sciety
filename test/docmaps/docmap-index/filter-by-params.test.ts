@@ -24,7 +24,7 @@ describe('filter-by-params', () => {
 
     const result = pipe(
       input,
-      filterByParams(''),
+      filterByParams({}),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -34,9 +34,9 @@ describe('filter-by-params', () => {
   });
 
   describe('when invalid params are given', () => {
-    const result = filterByParams('foo=bar')([]);
+    const result = filterByParams({ updatedAfter: 'bar' })([]);
 
-    it.skip('returns a "bad request"', () => {
+    it('returns a "bad request"', () => {
       expect(result).toStrictEqual(E.left(expect.objectContaining({
         status: StatusCodes.BAD_REQUEST,
       })));
@@ -60,7 +60,7 @@ describe('filter-by-params', () => {
 
     const result = pipe(
       input,
-      filterByParams(`group=${requestedGroupId}`),
+      filterByParams({ group: requestedGroupId }),
       E.getOrElseW(shouldNotBeCalled),
     );
 
