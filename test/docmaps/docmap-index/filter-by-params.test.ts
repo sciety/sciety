@@ -18,7 +18,7 @@ describe('filter-by-params', () => {
           updated: arbitraryDate(),
         },
       ];
-      const result = filterByParams(null)(input);
+      const result = filterByParams('')(input);
 
       expect(result).toStrictEqual(input);
     });
