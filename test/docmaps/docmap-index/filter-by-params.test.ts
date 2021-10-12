@@ -1,6 +1,9 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { DocmapIndexEntryModel } from '../../../src/docmaps/docmap-index/docmap-index-entry-models';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
 import { arbitraryDate } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
@@ -22,7 +25,11 @@ describe('filter-by-params', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(() => {
-      result = filterByParams('')(input);
+      result = pipe(
+        input,
+        filterByParams(''),
+        E.getOrElseW(shouldNotBeCalled),
+      );
     });
 
     it('returns unmodified input', () => {
@@ -48,7 +55,11 @@ describe('filter-by-params', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(() => {
-      result = filterByParams('')(input);
+      result = pipe(
+        input,
+        filterByParams(`group=${requestedGroupId}`),
+        E.getOrElseW(shouldNotBeCalled),
+      );
     });
 
     it.skip('only returns entries by that group', () => {
