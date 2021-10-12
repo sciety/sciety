@@ -75,7 +75,34 @@ describe('filter-by-params', () => {
 
   describe('when passed an "updated after" parameter', () => {
     describe('when there are evaluations after the specified date', () => {
-      it.todo('only returns entries whose latest evaluation is after the specified date');
+      const beforeSpecifiedDate = new Date('1990');
+      const specifiedDate = new Date('1999');
+      const afterSpecifiedDate = new Date('2020');
+      const input = [
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: beforeSpecifiedDate,
+        },
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: afterSpecifiedDate,
+        },
+      ];
+      const result = pipe(
+        input,
+        filterByParams({ updatedAfter: specifiedDate.toISOString() }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      it.skip('only returns entries whose latest evaluation is after the specified date', () => {
+        expect(result).toStrictEqual([
+          expect.objectContaining({
+            updated: afterSpecifiedDate,
+          }),
+        ]);
+      });
     });
 
     describe('when there are no evaluations after the specified date', () => {
