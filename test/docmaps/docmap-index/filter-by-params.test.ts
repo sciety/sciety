@@ -6,6 +6,7 @@ import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { StatusCodes } from "http-status-codes";
 
 describe('filter-by-params', () => {
   describe('when no params are given', () => {
@@ -34,6 +35,16 @@ describe('filter-by-params', () => {
 
     it('returns unmodified input', () => {
       expect(result).toStrictEqual(input);
+    });
+  });
+
+  describe('when invalid params are given', () => {
+    const result = filterByParams('foo=bar')([]);
+
+    it.skip('returns a "bad request"', () => {
+      expect(result).toStrictEqual(E.left(expect.objectContaining({
+        status: StatusCodes.BAD_REQUEST,
+      })));
     });
   });
 
