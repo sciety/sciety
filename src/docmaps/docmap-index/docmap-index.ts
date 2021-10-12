@@ -37,6 +37,20 @@ const toInternalServerErrorResponse = () => ({
   status: StatusCodes.INTERNAL_SERVER_ERROR,
 });
 
+//
+// ports.getAllEvents                                           --> events
+// T.map(identifyAllPossibleIndexEntriesBy(supportedGroups))    --> index entries
+// T.map(filterBy(query))                                       --> index entries OR ErrorResponse
+// TE.chain(collectDocmapDataUsing(ports))                      --> docmap viewmodels OR ErrorResponse
+// TE.map(renderAsDocmaps)                                      --> docmaps
+// TE.map(render as response)
+//
+// - keep indentation to 0 or 1
+// - adjustments vs inputs
+// - cohesion
+// - faithful to the user's mental model
+// - test the steps thoroughly, test the composition lightly (rely on step types)
+//
 export const docmapIndex: DocmapIndex = (ports) => flow(
   paramsCodec.decode,
   TE.fromEither,
