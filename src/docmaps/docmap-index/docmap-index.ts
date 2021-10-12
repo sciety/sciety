@@ -3,8 +3,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { docmapIndexEntryModels } from './docmap-index-entry-models';
 import { filterByParams } from './filter-by-params';
+import { identifyAllPossibleIndexEntries } from './identify-all-possible-index-entries';
 import { DomainEvent } from '../../domain-events';
 import * as GID from '../../types/group-id';
 import { docmap, Ports as DocmapPorts } from '../docmap/docmap';
@@ -57,7 +57,7 @@ const supportedGroups = [ncrcGroupId, rapidReviewsGroupId];
 //
 export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   ports.getAllEvents,
-  T.map(docmapIndexEntryModels(supportedGroups)),
+  T.map(identifyAllPossibleIndexEntries(supportedGroups)),
   T.map(filterByParams(query)),
   TE.chainW(flow(
     TE.traverseArray(docmap(avoidRateLimitingWithDummyValues(ports))),

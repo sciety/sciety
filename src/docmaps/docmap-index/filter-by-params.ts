@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import { Errors } from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { DocmapIndexEntryModel } from './docmap-index-entry-models';
+import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as GID from '../../types/group-id';
 

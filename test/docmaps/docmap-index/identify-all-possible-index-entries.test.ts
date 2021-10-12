@@ -1,10 +1,10 @@
-import { docmapIndexEntryModels } from '../../../src/docmaps/docmap-index/docmap-index-entry-models';
+import { identifyAllPossibleIndexEntries } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-describe('docmap-index-entry-models', () => {
+describe('identify-all-possible-index-entries', () => {
   const supportedGroupIds = [arbitraryGroupId(), arbitraryGroupId()];
 
   describe('when there are evaluated events by a supported group', () => {
@@ -18,7 +18,7 @@ describe('docmap-index-entry-models', () => {
         groupEvaluatedArticle(supportedGroupIds[0], articleId2, arbitraryReviewId(), laterDate),
       ];
 
-      const dois = docmapIndexEntryModels(supportedGroupIds)(events);
+      const dois = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
 
       expect(dois).toStrictEqual([
         {
@@ -51,7 +51,7 @@ describe('docmap-index-entry-models', () => {
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ];
 
-      const dois = docmapIndexEntryModels(supportedGroupIds)(events);
+      const dois = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
 
       expect(dois).toHaveLength(2);
       expect(dois).toStrictEqual(expect.arrayContaining([

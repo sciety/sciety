@@ -26,11 +26,11 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
   groupId: S.Eq,
 });
 
-type DocmapIndexEntryModels = (
+type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>
 ) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DocmapIndexEntryModel>;
 
-export const docmapIndexEntryModels: DocmapIndexEntryModels = (supportedGroups) => (events) => pipe(
+export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (supportedGroups) => (events) => pipe(
   events,
   RA.filter(isGroupEvaluatedArticleEvent),
   RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
