@@ -106,7 +106,24 @@ describe('filter-by-params', () => {
     });
 
     describe('when there are no evaluations after the specified date', () => {
-      it.todo('returns an empty array');
+      const beforeSpecifiedDate = new Date('1990');
+      const specifiedDate = new Date('1999');
+      const input = [
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: beforeSpecifiedDate,
+        },
+      ];
+      const result = pipe(
+        input,
+        filterByParams({ updatedAfter: specifiedDate.toISOString() }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      it.skip('returns an empty array', () => {
+        expect(result).toStrictEqual([]);
+      });
     });
   });
 });
