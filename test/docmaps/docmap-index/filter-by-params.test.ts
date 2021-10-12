@@ -1,3 +1,4 @@
+import { DocmapIndexEntryModel } from '../../../src/docmaps/docmap-index/docmap-index-entry-models';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -5,21 +6,26 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('filter-by-params', () => {
   describe('when no params are given', () => {
-    it('returns unmodified input', () => {
-      const input = [
-        {
-          articleId: arbitraryDoi(),
-          groupId: arbitraryGroupId(),
-          updated: arbitraryDate(),
-        },
-        {
-          articleId: arbitraryDoi(),
-          groupId: arbitraryGroupId(),
-          updated: arbitraryDate(),
-        },
-      ];
-      const result = filterByParams('')(input);
+    const input = [
+      {
+        articleId: arbitraryDoi(),
+        groupId: arbitraryGroupId(),
+        updated: arbitraryDate(),
+      },
+      {
+        articleId: arbitraryDoi(),
+        groupId: arbitraryGroupId(),
+        updated: arbitraryDate(),
+      },
+    ];
 
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(() => {
+      result = filterByParams('')(input);
+    });
+
+    it('returns unmodified input', () => {
       expect(result).toStrictEqual(input);
     });
   });
