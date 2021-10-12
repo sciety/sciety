@@ -88,4 +88,37 @@ describe('fetch-pci-evaluations', () => {
       }));
     });
   });
+
+  describe('when the doi is malformed', () => {
+    it.skip('returns 0 evaluations and 1 skipped item', async () => {
+      const articleId = arbitraryDoi().value;
+      const pciXmlResponse = `
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <links>
+          <link providerId="PCIArchaeology">
+            <resource>
+              <doi>https: //doi.org/10.24072/pci.evolbiol.100133</doi>
+              <date>15 Aug 2021</date>
+            </resource>
+            <doi>${articleId}</doi>
+          </link>
+        </links>
+      `;
+
+      const result = await pipe(
+        ingest(pciXmlResponse),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(result).toStrictEqual({
+        evaluations: [],
+        skippedItems: [
+          {
+            item: articleId,
+            reason: 'malformed evaluation doi',
+          },
+        ],
+      });
+    });
+  });
 });
