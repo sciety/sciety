@@ -46,6 +46,7 @@ const toInternalServerErrorResponse = () => ({
 // TE.map(render as response)
 //
 // - keep indentation to 0 or 1
+// - steps are (usually) verbs
 // - adjustments vs inputs
 // - cohesion
 // - faithful to the user's mental model
