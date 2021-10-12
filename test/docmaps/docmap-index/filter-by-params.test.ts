@@ -1,6 +1,27 @@
+import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+
 describe('filter-by-params', () => {
   describe('when no params are given', () => {
-    it.todo('does not filter by group or date');
+    it('returns unmodified input', () => {
+      const input = [
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: arbitraryDate(),
+        },
+        {
+          articleId: arbitraryDoi(),
+          groupId: arbitraryGroupId(),
+          updated: arbitraryDate(),
+        },
+      ];
+      const result = filterByParams(null)(input);
+
+      expect(result).toStrictEqual(input);
+    });
   });
 
   describe('when passed a group ID', () => {
