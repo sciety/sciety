@@ -47,7 +47,8 @@ describe('docmap-index-entry-models', () => {
 
       const dois = docmapIndexEntryModels(supportedGroupIds)(events);
 
-      expect(dois).toStrictEqual([
+      expect(dois).toHaveLength(2);
+      expect(dois).toStrictEqual(expect.arrayContaining([
         expect.objectContaining({
           groupId: supportedGroupIds[0],
           articleId: articleId1,
@@ -56,7 +57,7 @@ describe('docmap-index-entry-models', () => {
           groupId: supportedGroupIds[1],
           articleId: articleId2,
         }),
-      ]);
+      ]));
     });
   });
 });
