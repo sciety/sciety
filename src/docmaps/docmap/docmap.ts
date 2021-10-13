@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
@@ -135,12 +135,18 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
         E.fromOption(() => DE.notFound),
       )),
     ),
-    articleVersions: pipe(
+    inputPublishedDate: pipe(
       articleId,
       ports.fetchArticle,
       TE.chainW(({ server }) => pipe(
         ports.findVersionsForArticleDoi(articleId, server),
-        TO.getOrElseW(() => T.of([])),
+        TO.map(
+          (versions) => pipe(
+            versions,
+            RNEA.last,
+            (version) => version.occurredAt,
+          ),
+        ),
         TE.rightTask,
       )),
     ),
@@ -152,7 +158,7 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
   },
   sequenceS(TE.ApplyPar),
   TE.map(({
-    group, articleVersions, evaluations,
+    group, inputPublishedDate, evaluations,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
@@ -173,16 +179,20 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
     steps: {
       '_:b0': {
         assertions: [],
-        inputs: articleVersions.length > 0
-          ? [{
-            doi: articleId.value,
-            url: `https://doi.org/${articleId.value}`,
-            published: articleVersions[articleVersions.length - 1].occurredAt,
-          }]
-          : [{
-            doi: articleId.value,
-            url: `https://doi.org/${articleId.value}`,
-          }],
+        inputs: pipe(
+          inputPublishedDate,
+          O.fold(
+            () => [{
+              doi: articleId.value,
+              url: `https://doi.org/${articleId.value}`,
+            }],
+            (date) => [{
+              doi: articleId.value,
+              url: `https://doi.org/${articleId.value}`,
+              published: date,
+            }],
+          ),
+        ),
         actions: [
           {
             participants: [
