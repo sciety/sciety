@@ -318,31 +318,55 @@ describe('docmap', () => {
           })));
         });
 
-        it('include the article publication date', async () => {
-          const articleDate = arbitraryDate();
-          const ports = {
-            ...defaultPorts,
-            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-              {
-                source: new URL(arbitraryUri()),
-                occurredAt: articleDate,
-                version: 1,
-              },
-            ]),
-          };
-          const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+        describe('when there are versions', () => {
+          it('include the article publication date if there are versions', async () => {
+            const articleDate = arbitraryDate();
+            const ports = {
+              ...defaultPorts,
+              findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+                {
+                  source: new URL(arbitraryUri()),
+                  occurredAt: articleDate,
+                  version: 1,
+                },
+              ]),
+            };
+            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
 
-          expect(result).toStrictEqual(E.right(expect.objectContaining({
-            steps: expect.objectContaining({
-              '_:b0': expect.objectContaining({
-                inputs: [expect.objectContaining(
-                  {
-                    published: articleDate,
-                  },
-                )],
+            expect(result).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  inputs: [expect.objectContaining(
+                    {
+                      published: articleDate,
+                    },
+                  )],
+                }),
               }),
-            }),
-          })));
+            })));
+          });
+        });
+
+        describe('when there are no versions', () => {
+          it.skip('doesn\'t include the article publication date', async () => {
+            const ports = {
+              ...defaultPorts,
+              findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
+            };
+            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+
+            expect(result).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  inputs: [expect.not.objectContaining(
+                    {
+                      published: expect.anything,
+                    },
+                  )],
+                }),
+              }),
+            })));
+          });
         });
       });
 
