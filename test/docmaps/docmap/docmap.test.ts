@@ -318,42 +318,42 @@ describe('docmap', () => {
         });
 
         describe('when there are versions', () => {
-          it('include the article publication date if there are versions', async () => {
-            const articleDate = arbitraryDate();
-            const ports = {
-              ...defaultPorts,
-              findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-                {
-                  source: new URL(arbitraryUri()),
-                  occurredAt: articleDate,
-                  version: 1,
-                },
-              ]),
-            };
-            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+          let result: Docmap;
+          const articleDate = arbitraryDate();
+          const ports = {
+            ...defaultPorts,
+            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+              {
+                source: new URL(arbitraryUri()),
+                occurredAt: articleDate,
+                version: 1,
+              },
+            ]),
+          };
 
-            expect(result).toStrictEqual(E.right(expect.objectContaining({
-              steps: expect.objectContaining({
-                '_:b0': expect.objectContaining({
-                  inputs: [expect.objectContaining(
-                    {
-                      published: articleDate,
-                    },
-                  )],
-                }),
-              }),
-            })));
+          beforeEach(async () => {
+            result = await pipe(
+              { articleId, groupId: indexedGroupId },
+              docmap(ports),
+              TE.getOrElse(shouldNotBeCalled),
+            )();
+          });
+
+          it('include the article publication date if there are versions', async () => {
+            expect(result.steps['_:b0'].inputs).toStrictEqual([
+              expect.objectContaining({ published: articleDate }),
+            ]);
           });
         });
 
         describe('when there are no versions', () => {
           let result: Docmap;
+          const ports = {
+            ...defaultPorts,
+            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
+          };
 
           beforeEach(async () => {
-            const ports = {
-              ...defaultPorts,
-              findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
-            };
             result = await pipe(
               { articleId, groupId: indexedGroupId },
               docmap(ports),
