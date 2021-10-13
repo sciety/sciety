@@ -144,7 +144,7 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
         TE.rightTask,
       )),
     ),
-    indexedGroup: pipe(
+    group: pipe(
       groupId,
       ports.getGroup,
       TE.fromTaskOption(() => DE.notFound),
@@ -152,7 +152,7 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
   },
   sequenceS(TE.ApplyPar),
   TE.map(({
-    indexedGroup, articleVersions, evaluations,
+    group, articleVersions, evaluations,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
@@ -160,12 +160,12 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
     created: RNEA.head(evaluations).occurredAt.toISOString(),
     updated: RNEA.last(evaluations).occurredAt.toISOString(),
     publisher: {
-      id: indexedGroup.homepage,
-      name: indexedGroup.name,
-      logo: `https://sciety.org${indexedGroup.avatarPath}`,
-      homepage: indexedGroup.homepage,
+      id: group.homepage,
+      name: group.name,
+      logo: `https://sciety.org${group.avatarPath}`,
+      homepage: group.homepage,
       account: {
-        id: `https://sciety.org/groups/${indexedGroup.id}`,
+        id: `https://sciety.org/groups/${group.id}`,
         service: 'https://sciety.org',
       },
     },
