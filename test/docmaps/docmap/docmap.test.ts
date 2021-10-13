@@ -6,7 +6,6 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
-import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
@@ -468,17 +467,5 @@ describe('docmap', () => {
 
   describe('when the returns not-found group cant be retrieved', () => {
     it.todo('returns 500');
-  });
-
-  describe('when the versions cant be retrieved from preprint server', () => {
-    it('returns unavailable', async () => {
-      const ports = {
-        ...defaultPorts,
-        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
-      };
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-      expect(result).toStrictEqual(E.left(DE.unavailable));
-    });
   });
 });

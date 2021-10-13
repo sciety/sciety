@@ -3,6 +3,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
@@ -139,7 +140,8 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
       ports.fetchArticle,
       TE.chainW(({ server }) => pipe(
         ports.findVersionsForArticleDoi(articleId, server),
-        TE.fromTaskOption(() => DE.unavailable),
+        TO.getOrElseW(() => T.of([])),
+        TE.rightTask,
       )),
     ),
     indexedGroup: pipe(
@@ -171,11 +173,16 @@ export const docmap: CreateDocmap = (ports) => ({ articleId, groupId }) => pipe(
     steps: {
       '_:b0': {
         assertions: [],
-        inputs: [{
-          doi: articleId.value,
-          url: `https://doi.org/${articleId.value}`,
-          published: articleVersions[articleVersions.length - 1].occurredAt,
-        }],
+        inputs: articleVersions.length > 0
+          ? [{
+            doi: articleId.value,
+            url: `https://doi.org/${articleId.value}`,
+            published: articleVersions[articleVersions.length - 1].occurredAt,
+          }]
+          : [{
+            doi: articleId.value,
+            url: `https://doi.org/${articleId.value}`,
+          }],
         actions: [
           {
             participants: [
