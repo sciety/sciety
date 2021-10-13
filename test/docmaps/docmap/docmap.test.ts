@@ -6,6 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
@@ -347,13 +348,17 @@ describe('docmap', () => {
         });
 
         describe('when there are no versions', () => {
-          it('doesn\'t include the article publication date', async () => {
+          let result: E.Either<DE.DataError, Docmap>;
+
+          beforeEach(async () => {
             const ports = {
               ...defaultPorts,
               findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
             };
-            const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+            result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+          });
 
+          it('doesn\'t include the article publication date', async () => {
             expect(result).toStrictEqual(E.right(expect.objectContaining({
               steps: expect.objectContaining({
                 '_:b0': expect.objectContaining({
