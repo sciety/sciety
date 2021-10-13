@@ -347,7 +347,7 @@ describe('docmap', () => {
         });
 
         describe('when there are no versions', () => {
-          it.skip('doesn\'t include the article publication date', async () => {
+          it('doesn\'t include the article publication date', async () => {
             const ports = {
               ...defaultPorts,
               findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
