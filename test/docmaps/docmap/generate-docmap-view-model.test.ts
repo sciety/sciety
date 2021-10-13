@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { generateDocmapViewModel } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
@@ -56,11 +57,13 @@ describe('generate-docmap-view-model', () => {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     };
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+    const result = await pipe(
+      { articleId, groupId: indexedGroupId, updated: arbitraryDate() },
+      generateDocmapViewModel(ports),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
 
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      id: expect.stringContaining(articleId.value),
-    })));
+    expect(result).toStrictEqual(expect.objectContaining({ articleId }));
   });
 
   it.skip('includes the group', async () => {
