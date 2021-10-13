@@ -7,7 +7,7 @@ import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/
 import { generateDocmapViewModel } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -67,34 +67,19 @@ describe('generate-docmap-view-model', () => {
   });
 
   it.skip('includes the group', async () => {
-    const homepage = arbitraryUri();
-    const avatarPath = arbitraryString();
-    const name = arbitraryString();
+    const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
-      getGroup: () => TO.some({
-        ...arbitraryGroup(),
-        id: indexedGroupId,
-        homepage,
-        avatarPath,
-        name,
-      }),
+      findReviewsForArticleDoi: () => TE.right([review(group.id, arbitraryDate())]),
+      getGroup: () => TO.some(group),
     };
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+    const result = await pipe(
+      { articleId, groupId: group.id, updated: arbitraryDate() },
+      generateDocmapViewModel(ports),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
 
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      publisher: {
-        id: homepage,
-        name,
-        logo: expect.stringContaining(avatarPath),
-        homepage,
-        account: {
-          id: expect.stringContaining(indexedGroupId),
-          service: 'https://sciety.org',
-        },
-      },
-    })));
+    expect(result).toStrictEqual(expect.objectContaining({ group }));
   });
 
   it.skip('handles all article servers', async () => {
