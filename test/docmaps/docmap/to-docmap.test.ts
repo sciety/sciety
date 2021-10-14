@@ -12,7 +12,7 @@ import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/generate-
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -73,34 +73,29 @@ describe('to-docmap', () => {
   });
 
   it('includes the publisher properties', async () => {
-    const homepage = arbitraryUri();
-    const avatarPath = arbitraryString();
-    const name = arbitraryString();
-    const ports = {
-      ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
-      getGroup: () => TO.some({
-        ...arbitraryGroup(),
-        id: indexedGroupId,
-        homepage,
-        avatarPath,
-        name,
-      }),
-    };
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+    const group = arbitraryGroup();
 
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      publisher: {
-        id: homepage,
-        name,
-        logo: expect.stringContaining(avatarPath),
-        homepage,
-        account: {
-          id: expect.stringContaining(indexedGroupId),
-          service: 'https://sciety.org',
-        },
+    const result = toDocmap({
+      articleId,
+      group,
+      inputPublishedDate: O.none,
+      evaluations: [{
+        sourceUrl: new URL(arbitraryUri()),
+        reviewId: arbitraryReviewId(),
+        occurredAt: arbitraryDate(),
+      }],
+    });
+
+    expect(result.publisher).toStrictEqual(expect.objectContaining({
+      id: group.homepage,
+      name: group.name,
+      logo: expect.stringContaining(group.avatarPath),
+      homepage: group.homepage,
+      account: {
+        id: expect.stringContaining(group.id),
+        service: 'https://sciety.org',
       },
-    })));
+    }));
   });
 
   it('sets created to the date of the first evaluation', async () => {
