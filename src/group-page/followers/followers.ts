@@ -19,7 +19,7 @@ export type Ports = AugmentWithUserDetailsPorts & {
 
 const augmentFollowersWithUserDetails = (
   ports: Ports,
-) => (partialViewModel: PartialViewModel & { nextPage: O.Option<number> }) => pipe(
+) => (partialViewModel: PartialViewModel) => pipe(
   {
     followerCount: TE.right(partialViewModel.followerCount),
     nextPage: TE.right(partialViewModel.nextPage),

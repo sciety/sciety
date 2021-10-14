@@ -7,6 +7,7 @@ import * as DE from '../../types/data-error';
 export type PartialViewModel = {
   followerCount: number,
   followers: ReadonlyArray<Follower>,
+  nextPage: O.Option<number>,
 };
 
 const numberOfPages = (followerCount: number, pageSize: number) => (
@@ -20,7 +21,7 @@ export const paginate = (
   pageSize: number,
 ) => (
   followers: ReadonlyArray<Follower>,
-): E.Either<DE.DataError, PartialViewModel & { nextPage: O.Option<number> }> => pipe(
+): E.Either<DE.DataError, PartialViewModel> => pipe(
   followers,
   E.fromPredicate(
     (fs) => pageNumber <= numberOfPages(fs.length, pageSize),
