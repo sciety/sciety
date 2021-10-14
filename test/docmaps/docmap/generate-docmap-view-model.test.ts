@@ -146,7 +146,7 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there are evaluations by other groups', () => {
-    it.skip('only uses the evaluation by the selected group', async () => {
+    it('only uses the evaluation by the selected group', async () => {
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
       const reviewByThisGroup = review(indexedGroupId, laterDate);
