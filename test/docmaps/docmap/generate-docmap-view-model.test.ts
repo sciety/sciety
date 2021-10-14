@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -175,7 +176,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there is a single evaluation by the selected group', () => {
     describe('when there are article versions', () => {
-      let result: Docmap;
+      let result: DocmapModel;
       const articleDate = arbitraryDate();
       const ports = {
         ...defaultPorts,
@@ -191,15 +192,13 @@ describe('generate-docmap-view-model', () => {
       beforeEach(async () => {
         result = await pipe(
           { articleId, groupId: indexedGroupId },
-          docmap(ports),
+          generateDocmapViewModel(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it.skip('include the article publication date', async () => {
-        expect(result.steps['_:b0'].inputs).toStrictEqual([
-          expect.objectContaining({ published: articleDate }),
-        ]);
+      it('includes the date of the last published article version', async () => {
+        expect(result.inputPublishedDate).toStrictEqual(O.some(articleDate));
       });
     });
 
