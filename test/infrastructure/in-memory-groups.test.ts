@@ -29,14 +29,33 @@ describe('in-memory-editorial-communities', () => {
   });
 
   describe('lookup', () => {
-    it('returns nothing when the group does not exist', async () => {
-      expect((await repository.lookup(arbitraryGroupId())())).toStrictEqual(O.none);
+    let result: O.Option<Group>;
+
+    describe('when the group exists', () => {
+      beforeEach(async () => {
+        result = await pipe(
+          id,
+          groupIdFromString,
+          repository.lookup,
+        )();
+      });
+
+      it('returns the group when it does exist', () => {
+        expect(result).toStrictEqual(O.some(group));
+      });
     });
 
-    it('returns the group when it does exist', async () => {
-      const actual = await repository.lookup(groupIdFromString(id))();
+    describe('when the group does not exist', () => {
+      beforeEach(async () => {
+        result = await pipe(
+          arbitraryGroupId(),
+          repository.lookup,
+        )();
+      });
 
-      expect(actual).toStrictEqual(O.some(group));
+      it('returns nothing', () => {
+        expect(result).toStrictEqual(O.none);
+      });
     });
   });
 
