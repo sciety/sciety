@@ -13,7 +13,6 @@ export const arbitrary = (): ReviewFeedItem => ({
   id: arbitraryReviewId(),
   source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
-  groupSlug: arbitraryWord(),
   groupHref: arbitraryWord(),
   groupName: 'group 1',
   groupAvatar: '/avatar',

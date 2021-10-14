@@ -16,7 +16,6 @@ export type ReviewFeedItem = {
   id: RI.ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
-  groupSlug: string,
   groupName: string,
   groupHref: string,
   groupAvatar: string,
