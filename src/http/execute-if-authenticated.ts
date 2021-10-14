@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TO from 'fp-ts/TaskOption';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
@@ -10,13 +10,14 @@ import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { CommitEvents, followCommand, GetFollowList } from '../follow/follow-command';
 import { groupProperty } from '../follow/follow-handler';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
+import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
-type ToExistingGroup = (groupId: GroupId.GroupId) => TO.TaskOption<Group>;
+type ToExistingGroup = (groupId: GroupId.GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type Ports = {
   logger: Logger,
@@ -32,9 +33,9 @@ type Params = {
 const validate = (toExistingGroup: ToExistingGroup) => (requestBody: Params) => pipe(
   requestBody[groupProperty],
   GroupId.fromNullable,
-  TO.fromOption,
-  TO.chain(toExistingGroup),
-  TO.map((group) => ({
+  TE.fromOption(() => DE.notFound),
+  TE.chain(toExistingGroup),
+  TE.map((group) => ({
     groupId: group.id,
   })),
 );
@@ -47,7 +48,7 @@ export const executeIfAuthenticated = ({
 }: Ports): Middleware => async (context, next) => {
   await pipe(
     validate(toExistingGroup)(context.request.body),
-    TO.fold(
+    TE.fold(
       () => {
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 

@@ -1,14 +1,11 @@
-import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
-type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 export type GroupEvaluatedMultipleArticlesCard = {
   groupId: GroupId,
@@ -23,7 +20,7 @@ export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   card.groupId,
   ports.getGroup,
-  TO.map((group) => pipe(
+  TE.map((group) => pipe(
     {
       titleText: `${group.name} evaluated ${card.articleCount} articles`,
       linkUrl: `/groups/${group.slug}/evaluated-articles`,
@@ -31,5 +28,4 @@ export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
       date: card.date,
     },
   )),
-  T.map(E.fromOption(() => DE.unavailable)),
 );

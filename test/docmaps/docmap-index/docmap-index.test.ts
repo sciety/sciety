@@ -69,7 +69,7 @@ describe('docmap-index', () => {
               version: 1,
             },
           ]),
-          getGroup: () => TO.some({
+          getGroup: () => TE.right({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
@@ -99,7 +99,7 @@ describe('docmap-index', () => {
         fetchReview: () => TE.left(DE.unavailable),
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
-        getGroup: () => TO.none,
+        getGroup: () => TE.left(DE.notFound),
         fetchArticle: () => TE.left(DE.unavailable),
       };
       response = await docmapIndex(ports)({})();

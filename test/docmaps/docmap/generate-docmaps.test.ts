@@ -41,7 +41,7 @@ describe('generate-docmaps', () => {
         version: 1,
       },
     ]),
-    getGroup: (groupId: GroupId) => TO.some({
+    getGroup: (groupId: GroupId) => TE.right({
       ...arbitraryGroup(),
       id: groupId,
     }),

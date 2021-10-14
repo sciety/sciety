@@ -2,7 +2,6 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
@@ -38,7 +37,7 @@ describe('get-feed-events-content', () => {
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
-      const getGroup = () => TO.some(arbitraryGroup());
+      const getGroup = () => TE.right(arbitraryGroup());
       const countReviewResponses: CountReviewResponses = () => T.of({
         helpfulCount: 0,
         notHelpfulCount: 0,

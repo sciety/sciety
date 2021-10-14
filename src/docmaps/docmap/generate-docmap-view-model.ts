@@ -55,7 +55,7 @@ type ReviewForArticle = {
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<ReviewForArticle>>;
 
-type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 export type Ports = {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
@@ -105,7 +105,6 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
     group: pipe(
       groupId,
       ports.getGroup,
-      TE.fromTaskOption(() => DE.notFound),
     ),
   },
   sequenceS(TE.ApplyPar),

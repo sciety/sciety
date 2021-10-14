@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import * as DE from '../../src/types/data-error';
@@ -29,7 +28,7 @@ describe('in-memory-editorial-communities', () => {
   });
 
   describe('lookup', () => {
-    let result: O.Option<Group>;
+    let result: E.Either<DE.DataError, Group>;
 
     describe('when the group exists', () => {
       beforeEach(async () => {
@@ -40,8 +39,8 @@ describe('in-memory-editorial-communities', () => {
         )();
       });
 
-      it('returns the group when it does exist', () => {
-        expect(result).toStrictEqual(O.some(group));
+      it('returns the group', () => {
+        expect(result).toStrictEqual(E.right(group));
       });
     });
 
@@ -54,7 +53,7 @@ describe('in-memory-editorial-communities', () => {
       });
 
       it('returns nothing', () => {
-        expect(result).toStrictEqual(O.none);
+        expect(result).toStrictEqual(E.left(DE.notFound));
       });
     });
   });

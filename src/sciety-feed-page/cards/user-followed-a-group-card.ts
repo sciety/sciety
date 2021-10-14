@@ -1,6 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { UserFollowedEditorialCommunityEvent } from '../../domain-events';
@@ -10,7 +9,7 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
-type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   handle: string,
@@ -31,7 +30,6 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event)
     group: pipe(
       event.editorialCommunityId,
       ports.getGroup,
-      TE.fromTaskOption(() => DE.notFound),
     ),
     userDetails: pipe(
       event.userId,

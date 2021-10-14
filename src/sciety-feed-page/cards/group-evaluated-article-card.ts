@@ -1,9 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
-import { constant, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { GroupEvaluatedArticleEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
@@ -13,7 +10,7 @@ import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 
-type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
@@ -40,7 +37,6 @@ export const groupEvaluatedArticleCard = (ports: Ports) => (
     group: pipe(
       event.groupId,
       ports.getGroup,
-      T.map(E.fromOption(constant(DE.unavailable))),
     ),
     details: pipe(
       event.articleId,

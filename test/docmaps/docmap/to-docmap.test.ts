@@ -39,7 +39,7 @@ const defaultPorts = {
       version: 1,
     },
   ]),
-  getGroup: () => TO.some({
+  getGroup: () => TE.right({
     ...arbitraryGroup(),
     id: indexedGroupId,
   }),

@@ -39,7 +39,7 @@ const defaultPorts = {
       version: 1,
     },
   ]),
-  getGroup: () => TO.some({
+  getGroup: () => TE.right({
     ...arbitraryGroup(),
     id: indexedGroupId,
   }),
@@ -66,7 +66,7 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(group.id, arbitraryDate())]),
-      getGroup: () => TO.some(group),
+      getGroup: () => TE.right(group),
     };
     const result = await pipe(
       { articleId, groupId: group.id },
@@ -227,7 +227,7 @@ describe('generate-docmap-view-model', () => {
     let result: E.Either<DE.DataError, DocmapModel>;
     const ports = {
       ...defaultPorts,
-      getGroup: () => TO.none,
+      getGroup: () => TE.left(DE.notFound),
     };
 
     beforeEach(async () => {

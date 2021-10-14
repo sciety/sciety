@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
@@ -22,7 +21,7 @@ import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
-type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 type GetGroupBySlug = (slug: string) => TE.TaskEither<DE.DataError, Group>;
 
 type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;

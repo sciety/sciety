@@ -2,7 +2,6 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
@@ -48,7 +47,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,

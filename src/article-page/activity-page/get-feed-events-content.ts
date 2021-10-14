@@ -7,6 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -40,7 +41,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
-export type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
+export type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
@@ -61,7 +62,7 @@ const reviewToFeedItem = (
     groupDetails: pipe(
       feedEvent.groupId,
       getGroup,
-      TO.match(
+      TE.match(
         () => ({
           groupName: 'A group',
           groupHref: `/groups/${feedEvent.groupId}`,
