@@ -99,39 +99,51 @@ describe('to-docmap', () => {
   });
 
   it('sets created to the date of the first evaluation', async () => {
-    const evaluationDate = arbitraryDate();
+    const earlierDate = new Date('1900');
+    const laterDate = new Date('2000');
     const result = toDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.none,
-      evaluations: [{
-        sourceUrl: new URL(arbitraryUri()),
-        reviewId: arbitraryReviewId(),
-        occurredAt: evaluationDate,
-      }],
+      evaluations: [
+        {
+          sourceUrl: new URL(arbitraryUri()),
+          reviewId: arbitraryReviewId(),
+          occurredAt: earlierDate,
+        },
+        {
+          sourceUrl: new URL(arbitraryUri()),
+          reviewId: arbitraryReviewId(),
+          occurredAt: laterDate,
+        },
+      ],
     });
 
-    expect(result.created).toStrictEqual(evaluationDate.toISOString());
+    expect(result.created).toStrictEqual(earlierDate.toISOString());
   });
 
   it('sets updated to the date of the last evaluation', async () => {
     const earlierDate = new Date('1900');
     const laterDate = new Date('2000');
-    const ports = {
-      ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right(
-        [
-          review(indexedGroupId, earlierDate),
-          review(indexedGroupId, laterDate),
-        ],
-      ),
-    };
+    const result = toDocmap({
+      articleId,
+      group: arbitraryGroup(),
+      inputPublishedDate: O.none,
+      evaluations: [
+        {
+          sourceUrl: new URL(arbitraryUri()),
+          reviewId: arbitraryReviewId(),
+          occurredAt: earlierDate,
+        },
+        {
+          sourceUrl: new URL(arbitraryUri()),
+          reviewId: arbitraryReviewId(),
+          occurredAt: laterDate,
+        },
+      ],
+    });
 
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      updated: laterDate.toISOString(),
-    })));
+    expect(result.updated).toStrictEqual(laterDate.toISOString());
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
