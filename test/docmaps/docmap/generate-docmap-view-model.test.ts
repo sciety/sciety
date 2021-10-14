@@ -144,12 +144,12 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there are no evaluations by the selected group', () => {
-    it.skip('returns not-found', async () => {
+    it('returns an E.left of not-found', async () => {
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right([]),
       };
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+      const result = await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
