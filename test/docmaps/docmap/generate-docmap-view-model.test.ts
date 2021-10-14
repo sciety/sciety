@@ -45,16 +45,6 @@ const defaultPorts = {
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
 
-const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectContaining({
-  steps: expect.objectContaining({
-    '_:b0': expect.objectContaining({
-      actions: [expect.objectContaining({
-        outputs: [expect.objectContaining(ex)],
-      })],
-    }),
-  }),
-}));
-
 describe('generate-docmap-view-model', () => {
   it('includes the article id', async () => {
     const ports = {
@@ -159,21 +149,27 @@ describe('generate-docmap-view-model', () => {
     it.skip('only uses the evaluation by the selected group', async () => {
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
+      const reviewByThisGroup = review(indexedGroupId, laterDate);
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right(
           [
             review(arbitraryGroupId(), earlierDate),
-            review(indexedGroupId, laterDate),
+            reviewByThisGroup,
           ],
         ),
       };
 
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+      const result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
 
-      expect(result).toStrictEqual(expectOutputs({
-        published: laterDate,
-      }));
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          reviewId: reviewByThisGroup.reviewId,
+        }),
+      ]);
     });
   });
 
