@@ -23,6 +23,7 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
+import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
@@ -47,11 +48,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetGroup = (groupId: GroupId) => TO.TaskOption<{
-  name: string,
-  avatarPath: string,
-  slug: string,
-}>;
+type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,

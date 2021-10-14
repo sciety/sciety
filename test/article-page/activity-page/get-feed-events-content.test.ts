@@ -12,6 +12,7 @@ import {
 } from '../../../src/article-page/activity-page/get-feed-events-content';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('get-feed-events-content', () => {
@@ -36,11 +37,7 @@ describe('get-feed-events-content', () => {
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
-      const getGroup = () => T.of({
-        name: 'A Group',
-        avatarPath: 'https://example.com/avatar',
-        slug: 'a-group',
-      });
+      const getGroup = () => T.of(arbitraryGroup());
       const countReviewResponses: CountReviewResponses = () => T.of({
         helpfulCount: 0,
         notHelpfulCount: 0,

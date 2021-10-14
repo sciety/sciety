@@ -7,6 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../../types/article-server';
+import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ReviewId } from '../../types/review-id';
@@ -39,11 +40,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
-export type GetGroup = (id: GroupId) => T.Task<{
-  name: string,
-  avatarPath: string,
-  slug: string,
-}>;
+export type GetGroup = (id: GroupId) => T.Task<Group>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
