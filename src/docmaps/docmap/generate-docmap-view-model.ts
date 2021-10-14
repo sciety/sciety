@@ -15,6 +15,7 @@ import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
 export type DocmapModel = {
+  articleId: Doi,
   group: Group,
   inputPublishedDate: O.Option<Date>,
   evaluations: RNEA.ReadonlyNonEmptyArray<{
@@ -74,6 +75,7 @@ const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe
 
 export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ articleId, groupId }) => pipe(
   {
+    articleId: TE.right(articleId),
     evaluations: pipe(
       articleId,
       ports.findReviewsForArticleDoi,

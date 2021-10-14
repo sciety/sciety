@@ -52,13 +52,13 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
 }));
 
 describe('generate-docmap-view-model', () => {
-  it.skip('includes the article id', async () => {
+  it('includes the article id', async () => {
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     };
     const result = await pipe(
-      { articleId, groupId: indexedGroupId, updated: arbitraryDate() },
+      { articleId, groupId: indexedGroupId },
       generateDocmapViewModel(ports),
       TE.getOrElse(shouldNotBeCalled),
     )();
@@ -66,7 +66,7 @@ describe('generate-docmap-view-model', () => {
     expect(result).toStrictEqual(expect.objectContaining({ articleId }));
   });
 
-  it.skip('includes the group', async () => {
+  it('includes the group', async () => {
     const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
@@ -74,7 +74,7 @@ describe('generate-docmap-view-model', () => {
       getGroup: () => TO.some(group),
     };
     const result = await pipe(
-      { articleId, groupId: group.id, updated: arbitraryDate() },
+      { articleId, groupId: group.id },
       generateDocmapViewModel(ports),
       TE.getOrElse(shouldNotBeCalled),
     )();
