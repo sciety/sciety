@@ -437,7 +437,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of(matchedGroups),
-              getGroup: () => TO.some(arbitraryGroup()),
+              getGroup: () => TE.right(arbitraryGroup()),
               getAllEvents: T.of([]),
             })(n),
           );
@@ -458,7 +458,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              getGroup: () => TO.some(arbitraryGroup()),
+              getGroup: () => TE.right(arbitraryGroup()),
               getAllEvents: T.of([]),
             })(1),
           );

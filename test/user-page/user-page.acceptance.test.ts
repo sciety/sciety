@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity } from '../../src/domain-events';
+import * as DE from '../../src/types/data-error';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
@@ -32,7 +32,7 @@ const arbitraryUserDetails = {
 };
 
 const defaultPorts = {
-  getGroup: () => TO.some(arbitraryGroup()),
+  getGroup: () => TE.right(arbitraryGroup()),
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
@@ -215,7 +215,7 @@ describe('user-page', () => {
           const userId = arbitraryUserId();
           const ports = {
             ...defaultPorts,
-            getGroup: () => TO.none,
+            getGroup: () => TE.left(DE.notFound),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),

@@ -7,6 +7,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
+import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ReviewId } from '../../types/review-id';
@@ -39,11 +41,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
-export type GetGroup = (id: GroupId) => T.Task<{
-  name: string,
-  avatarPath: string,
-  slug: string,
-}>;
+export type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
@@ -61,7 +59,22 @@ const reviewToFeedItem = (
   userId: O.Option<UserId>,
 ) => pipe(
   {
-    group: getGroup(feedEvent.groupId),
+    groupDetails: pipe(
+      feedEvent.groupId,
+      getGroup,
+      TE.match(
+        () => ({
+          groupName: 'A group',
+          groupHref: `/groups/${feedEvent.groupId}`,
+          groupAvatar: '/static/images/sciety-logo.jpg',
+        }),
+        (group) => ({
+          groupName: group.name,
+          groupHref: `/groups/${group.slug}`,
+          groupAvatar: group.avatarPath,
+        }),
+      ),
+    ),
     review: pipe(
       feedEvent.reviewId,
       getReview,
@@ -82,15 +95,13 @@ const reviewToFeedItem = (
   },
   sequenceS(T.ApplyPar),
   T.map(({
-    group, review, reviewResponses, userReviewResponse,
+    groupDetails, review, reviewResponses, userReviewResponse,
   }) => ({
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,
-    groupSlug: group.slug,
-    groupName: group.name,
-    groupAvatar: group.avatarPath,
+    ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
     counts: reviewResponses,
     current: userReviewResponse,

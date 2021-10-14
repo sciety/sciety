@@ -1,11 +1,7 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import * as RFI from './review-feed-item.helper';
 import { handleArticleVersionErrors } from '../../../src/article-page/activity-page/handle-article-version-errors';
 import { FeedItem } from '../../../src/article-page/activity-page/render-feed';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
@@ -29,36 +25,8 @@ describe('handle-article-version-errors', () => {
   describe('there are no article version events', () => {
     it('appends an error feed item', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
-        {
-          type: 'review',
-          id: arbitraryReviewId(),
-          occurredAt: new Date(),
-          source: O.some(new URL('https://example.com')),
-          groupSlug: 'our-group',
-          groupName: 'OUR GROUP',
-          groupAvatar: '/images/us.png',
-          fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
-          counts: {
-            helpfulCount: 0,
-            notHelpfulCount: 0,
-          },
-          current: O.none,
-        },
-        {
-          type: 'review',
-          id: arbitraryReviewId(),
-          occurredAt: new Date(),
-          source: O.some(new URL('https://example.com')),
-          groupSlug: 'our-group',
-          groupName: 'OUR GROUP',
-          groupAvatar: '/images/us.png',
-          fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
-          counts: {
-            helpfulCount: 0,
-            notHelpfulCount: 0,
-          },
-          current: O.none,
-        },
+        RFI.arbitrary(),
+        RFI.arbitrary(),
       ];
 
       const feedItems = handleArticleVersionErrors(inputItems, 'biorxiv');

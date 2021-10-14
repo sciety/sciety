@@ -1,9 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -28,7 +26,7 @@ import { UserId } from '../types/user-id';
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = AboutPorts & FollowersPorts & {
-  getGroupBySlug: (slug: string) => TO.TaskOption<Group>,
+  getGroupBySlug: (slug: string) => TE.TaskEither<DE.DataError, Group>,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
@@ -110,7 +108,7 @@ type GroupPage = (
 
 export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user, page: pageNumber }) => pipe(
   ports.getGroupBySlug(slug),
-  T.map(E.fromOption(notFoundResponse)),
+  TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
     {
       header: pipe(

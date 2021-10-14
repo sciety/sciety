@@ -16,8 +16,8 @@ export type ReviewFeedItem = {
   id: RI.ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
-  groupSlug: string,
   groupName: string,
+  groupHref: string,
   groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
   counts: { helpfulCount: number, notHelpfulCount: number },
@@ -31,7 +31,7 @@ const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      <a href="/groups/${review.groupSlug}">
+      <a href="${review.groupHref}">
         ${htmlEscape(review.groupName)}
       </a>
     </div>

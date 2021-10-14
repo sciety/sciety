@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedMultipleArticlesCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
@@ -23,7 +22,7 @@ describe('group-evaluated-multiple-articles-card', () => {
           date: arbitraryDate(),
         },
         groupEvaluatedMultipleArticlesCard({
-          getGroup: () => TO.some(group),
+          getGroup: () => TE.right(group),
         }),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -49,13 +48,13 @@ describe('group-evaluated-multiple-articles-card', () => {
           date: arbitraryDate(),
         },
         groupEvaluatedMultipleArticlesCard({
-          getGroup: () => TO.none,
+          getGroup: () => TE.left(DE.notFound),
         }),
       )();
     });
 
     it('returns unavailable', () => {
-      expect(result).toStrictEqual(E.left(DE.unavailable));
+      expect(result).toStrictEqual(E.left(DE.notFound));
     });
   });
 });

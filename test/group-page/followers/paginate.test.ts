@@ -27,7 +27,7 @@ describe('paginate', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      expect(result.followers).toHaveLength(2);
+      expect(result.items).toHaveLength(2);
     });
 
     it('returns the specified page of the followers', () => {
@@ -47,7 +47,7 @@ describe('paginate', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      expect(result.followers).toStrictEqual([
+      expect(result.items).toStrictEqual([
         expect.objectContaining({
           userId,
         }),
@@ -79,14 +79,23 @@ describe('paginate', () => {
 
       expect(result).toStrictEqual(E.left(DE.notFound));
     });
+  });
 
-    it('returns an empty page 1 when there are no followers', () => {
-      const result = pipe(
-        [],
-        paginate(1, arbitraryNumber(1, 10)),
-      );
+  describe('when there are no followers', () => {
+    const pageOfFollowers = pipe(
+      [],
+      paginate(1, arbitraryNumber(1, 10)),
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
-      expect(result).toStrictEqual(E.right(expect.objectContaining({ followers: [] })));
+    it('returns an empty page 1', () => {
+      expect(pageOfFollowers).toStrictEqual({
+        items: [],
+        pageNumber: 1,
+        numberOfPages: 0,
+        nextPage: O.none,
+        numberOfOriginalItems: 0,
+      });
     });
   });
 });

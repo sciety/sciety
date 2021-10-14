@@ -3,11 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
+import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts, Follower } from './augment-with-user-details';
 import { findFollowers } from './find-followers';
-import { paginate, PartialViewModel } from './paginate';
+import { paginate } from './paginate';
 import { renderFollowers } from './render-followers';
 import { DomainEvent } from '../../domain-events';
+import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
@@ -19,12 +20,12 @@ export type Ports = AugmentWithUserDetailsPorts & {
 
 const augmentFollowersWithUserDetails = (
   ports: Ports,
-) => (partialViewModel: PartialViewModel & { nextPage: O.Option<number> }) => pipe(
+) => (pageOfFollowers: PageOfItems<Follower>) => pipe(
   {
-    followerCount: TE.right(partialViewModel.followerCount),
-    nextPage: TE.right(partialViewModel.nextPage),
+    followerCount: TE.right(pageOfFollowers.numberOfOriginalItems),
+    nextPage: TE.right(pageOfFollowers.nextPage),
     followers: pipe(
-      partialViewModel.followers,
+      pageOfFollowers.items,
       augmentWithUserDetails(ports),
     ),
   },

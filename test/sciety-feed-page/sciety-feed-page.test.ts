@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
@@ -33,7 +32,7 @@ describe('sciety-feed-page', () => {
 
   const defaultPorts = {
     getUserDetails,
-    getGroup: () => TO.some(arbitraryGroup()),
+    getGroup: () => TE.right(arbitraryGroup()),
     fetchArticle: () => TE.right({
       doi: arbitraryDoi(),
       title: arbitraryHtmlFragment(),

@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { groupEvaluatedArticleCard } from '../../../src/sciety-feed-page/cards';
@@ -28,7 +27,7 @@ describe('group-evaluated-article-card', () => {
       const createCard = pipe(
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticleCard({
-          getGroup: () => TO.some(group),
+          getGroup: () => TE.right(group),
           fetchArticle,
         }),
         TE.getOrElse(shouldNotBeCalled),
@@ -50,7 +49,7 @@ describe('group-evaluated-article-card', () => {
     const createCard = pipe(
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       groupEvaluatedArticleCard({
-        getGroup: () => TO.some(arbitraryGroup()),
+        getGroup: () => TE.right(arbitraryGroup()),
         fetchArticle,
       }),
     );

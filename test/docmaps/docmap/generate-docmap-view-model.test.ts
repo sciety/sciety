@@ -1,10 +1,15 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { Docmap, docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
-import { generateDocmapViewModel } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import {
+  DocmapModel,
+  FindVersionsForArticleDoi,
+  generateDocmapViewModel,
+} from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -34,31 +39,21 @@ const defaultPorts = {
       version: 1,
     },
   ]),
-  getGroup: () => TO.some({
+  getGroup: () => TE.right({
     ...arbitraryGroup(),
     id: indexedGroupId,
   }),
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
 
-const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectContaining({
-  steps: expect.objectContaining({
-    '_:b0': expect.objectContaining({
-      actions: [expect.objectContaining({
-        outputs: [expect.objectContaining(ex)],
-      })],
-    }),
-  }),
-}));
-
 describe('generate-docmap-view-model', () => {
-  it.skip('includes the article id', async () => {
+  it('includes the article id', async () => {
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     };
     const result = await pipe(
-      { articleId, groupId: indexedGroupId, updated: arbitraryDate() },
+      { articleId, groupId: indexedGroupId },
       generateDocmapViewModel(ports),
       TE.getOrElse(shouldNotBeCalled),
     )();
@@ -66,15 +61,15 @@ describe('generate-docmap-view-model', () => {
     expect(result).toStrictEqual(expect.objectContaining({ articleId }));
   });
 
-  it.skip('includes the group', async () => {
+  it('includes the group', async () => {
     const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(group.id, arbitraryDate())]),
-      getGroup: () => TO.some(group),
+      getGroup: () => TE.right(group),
     };
     const result = await pipe(
-      { articleId, groupId: group.id, updated: arbitraryDate() },
+      { articleId, groupId: group.id },
       generateDocmapViewModel(ports),
       TE.getOrElse(shouldNotBeCalled),
     )();
@@ -82,7 +77,7 @@ describe('generate-docmap-view-model', () => {
     expect(result).toStrictEqual(expect.objectContaining({ group }));
   });
 
-  it.skip('handles all article servers', async () => {
+  it('handles all article servers', async () => {
     const findVersionsForArticleDoi = jest.fn().mockImplementation(
       (): ReturnType<FindVersionsForArticleDoi> => TO.some([
         {
@@ -98,7 +93,7 @@ describe('generate-docmap-view-model', () => {
       findVersionsForArticleDoi,
       fetchArticle: () => TE.right({ server }),
     };
-    await docmap(ports)({ articleId, groupId: indexedGroupId })();
+    await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
   });
@@ -110,58 +105,78 @@ describe('generate-docmap-view-model', () => {
       review(indexedGroupId, earlierDate),
       review(indexedGroupId, laterDate),
     ];
+    let result: DocmapModel;
 
     beforeEach(async () => {
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right(reviews),
       };
-      await pipe(
-        docmap(ports)({ articleId, groupId: indexedGroupId }),
+      result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it.todo('returns all evaluations, checking all values that the type dictates');
+    it('returns all evaluations, checking all values that the type dictates', () => {
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          occurredAt: earlierDate,
+          reviewId: reviews[0].reviewId,
+          sourceUrl: new URL(`https://reviews.example.com/${reviews[0].reviewId}`),
+        }),
+        expect.objectContaining({
+          occurredAt: laterDate,
+          reviewId: reviews[1].reviewId,
+          sourceUrl: new URL(`https://reviews.example.com/${reviews[1].reviewId}`),
+        }),
+      ]);
+    });
   });
 
   describe('when there are no evaluations by the selected group', () => {
-    it.skip('returns not-found', async () => {
+    it('returns an E.left of not-found', async () => {
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right([]),
       };
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+      const result = await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
   });
 
   describe('when there are evaluations by other groups', () => {
-    it.skip('only uses the evaluation by the selected group', async () => {
+    it('only uses the evaluation by the selected group', async () => {
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
+      const reviewByThisGroup = review(indexedGroupId, laterDate);
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right(
           [
             review(arbitraryGroupId(), earlierDate),
-            review(indexedGroupId, laterDate),
+            reviewByThisGroup,
           ],
         ),
       };
 
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+      const result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
 
-      expect(result).toStrictEqual(expectOutputs({
-        published: laterDate,
-      }));
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          reviewId: reviewByThisGroup.reviewId,
+        }),
+      ]);
     });
   });
 
   describe('when there is a single evaluation by the selected group', () => {
     describe('when there are article versions', () => {
-      let result: Docmap;
+      let result: DocmapModel;
       const articleDate = arbitraryDate();
       const ports = {
         ...defaultPorts,
@@ -177,20 +192,18 @@ describe('generate-docmap-view-model', () => {
       beforeEach(async () => {
         result = await pipe(
           { articleId, groupId: indexedGroupId },
-          docmap(ports),
+          generateDocmapViewModel(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it.skip('include the article publication date', async () => {
-        expect(result.steps['_:b0'].inputs).toStrictEqual([
-          expect.objectContaining({ published: articleDate }),
-        ]);
+      it('returns the last version published date as the input published date', async () => {
+        expect(result.inputPublishedDate).toStrictEqual(O.some(articleDate));
       });
     });
 
     describe('when there are no article versions', () => {
-      let result: Docmap;
+      let result: DocmapModel;
       const ports = {
         ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
@@ -199,20 +212,33 @@ describe('generate-docmap-view-model', () => {
       beforeEach(async () => {
         result = await pipe(
           { articleId, groupId: indexedGroupId },
-          docmap(ports),
+          generateDocmapViewModel(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it.skip('doesn\'t include the article publication date', async () => {
-        expect(result.steps['_:b0'].inputs).toStrictEqual([
-          expect.not.objectContaining({ published: expect.anything }),
-        ]);
+      it('returns O.none for the input published date', async () => {
+        expect(result.inputPublishedDate).toStrictEqual(O.none);
       });
     });
   });
 
   describe('when the group cant be retrieved', () => {
-    it.todo('returns not-found');
+    let result: E.Either<DE.DataError, DocmapModel>;
+    const ports = {
+      ...defaultPorts,
+      getGroup: () => TE.left(DE.notFound),
+    };
+
+    beforeEach(async () => {
+      result = await pipe(
+        { articleId, groupId: indexedGroupId },
+        generateDocmapViewModel(ports),
+      )();
+    });
+
+    it('returns not-found', async () => {
+      expect(result).toStrictEqual(E.left('not-found'));
+    });
   });
 });

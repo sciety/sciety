@@ -2,8 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
@@ -23,6 +22,7 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
+import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
@@ -47,11 +47,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetGroup = (groupId: GroupId) => TO.TaskOption<{
-  name: string,
-  avatarPath: string,
-  slug: string,
-}>;
+type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,
@@ -94,10 +90,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       articleDetails.server,
       (server) => getArticleFeedEventsByDateDescending({
         ...ports,
-        getGroup: flow(
-          ports.getGroup,
-          TO.getOrElse(() => { throw new Error('No such group'); }),
-        ),
         countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
         getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
       })(doi, server, userId),

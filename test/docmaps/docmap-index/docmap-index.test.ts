@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
-import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { groupEvaluatedArticle } from '../../../src/domain-events/group-evaluated-article-event';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
@@ -69,7 +69,7 @@ describe('docmap-index', () => {
               version: 1,
             },
           ]),
-          getGroup: () => TO.some({
+          getGroup: () => TE.right({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
@@ -99,7 +99,7 @@ describe('docmap-index', () => {
         fetchReview: () => TE.left(DE.unavailable),
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
-        getGroup: () => TO.none,
+        getGroup: () => TE.left(DE.notFound),
         fetchArticle: () => TE.left(DE.unavailable),
       };
       response = await docmapIndex(ports)({})();

@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
@@ -22,7 +21,7 @@ describe('user-followed-a-group-card', () => {
     const handle = arbitraryWord();
     const group = arbitraryGroup();
     const ports = {
-      getGroup: () => TO.some(group),
+      getGroup: () => TE.right(group),
       getUserDetails: () => TE.right({ handle, avatarUrl }),
     };
 
@@ -65,7 +64,7 @@ describe('user-followed-a-group-card', () => {
     const group = arbitraryGroup();
     const ports = {
       getUserDetails: () => TE.left(DE.unavailable),
-      getGroup: () => TO.some(group),
+      getGroup: () => TE.right(group),
     };
 
     let viewModel: ScietyFeedCard;
@@ -101,7 +100,7 @@ describe('user-followed-a-group-card', () => {
 
   describe('when the group cannot be found', () => {
     const ports = {
-      getGroup: () => TO.none,
+      getGroup: () => TE.left(DE.notFound),
       getUserDetails: () => TE.right({
         handle: arbitraryWord(),
         avatarUrl: arbitraryUri(),

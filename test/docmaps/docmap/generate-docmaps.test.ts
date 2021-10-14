@@ -6,7 +6,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
-import { Docmap, FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
+import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
@@ -40,7 +41,7 @@ describe('generate-docmaps', () => {
         version: 1,
       },
     ]),
-    getGroup: (groupId: GroupId) => TO.some({
+    getGroup: (groupId: GroupId) => TE.right({
       ...arbitraryGroup(),
       id: groupId,
     }),

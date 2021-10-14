@@ -1,39 +1,26 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
+import { PageOfItems, paginate as sharedPaginate } from '../../shared-components/paginate';
 import * as DE from '../../types/data-error';
-
-export type PartialViewModel = {
-  followerCount: number,
-  followers: ReadonlyArray<Follower>,
-};
-
-const numberOfPages = (followerCount: number, pageSize: number) => (
-  followerCount === 0
-    ? 1
-    : Math.ceil(followerCount / pageSize)
-);
 
 export const paginate = (
   pageNumber: number,
   pageSize: number,
 ) => (
   followers: ReadonlyArray<Follower>,
-): E.Either<DE.DataError, PartialViewModel & { nextPage: O.Option<number> }> => pipe(
+): E.Either<DE.DataError, PageOfItems<Follower>> => pipe(
   followers,
-  E.fromPredicate(
-    (fs) => pageNumber <= numberOfPages(fs.length, pageSize),
-    () => DE.notFound,
+  RA.matchW(
+    () => E.right({
+      items: [] as ReadonlyArray<Follower>,
+      nextPage: O.none,
+      pageNumber: 1,
+      numberOfPages: 0,
+      numberOfOriginalItems: 0,
+    }),
+    sharedPaginate(pageSize, pageNumber),
   ),
-  E.map(() => ({
-    followers: followers.slice(
-      pageSize * (pageNumber - 1),
-      pageSize * pageNumber,
-    ),
-    followerCount: followers.length,
-    nextPage: followers.length - pageSize * pageNumber > 0
-      ? O.some(pageNumber + 1)
-      : O.none,
-  })),
 );
