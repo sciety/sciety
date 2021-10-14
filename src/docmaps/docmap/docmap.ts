@@ -5,48 +5,10 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { context } from './context';
+import { Docmap } from './docmap-type';
 import { DocmapIdentifier, generateDocmapViewModel, Ports } from './generate-docmap-view-model';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
-
-type Output = {
-  type: 'review-article',
-  published: Date,
-  content: ReadonlyArray<unknown>,
-};
-
-type Action = {
-  participants: ReadonlyArray<unknown>,
-  outputs: ReadonlyArray<Output>,
-};
-
-type Step = {
-  assertions: [],
-  inputs: ReadonlyArray<unknown>,
-  actions: ReadonlyArray<Action>,
-};
-
-type Publisher = {
-  id: string,
-  name: string,
-  logo: string,
-  homepage: string,
-  account: {
-    id: string,
-    service: 'https://sciety.org',
-  },
-};
-
-export type Docmap = {
-  '@context': Record<string, unknown>,
-  id: string,
-  type: 'docmap',
-  created: string,
-  updated: string,
-  publisher: Publisher,
-  'first-step': '_:b0',
-  steps: Record<string, Step>,
-};
 
 const createReviewArticleOutput = (
   articleId: Doi,
