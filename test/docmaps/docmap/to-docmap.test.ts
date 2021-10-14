@@ -100,16 +100,18 @@ describe('to-docmap', () => {
 
   it('sets created to the date of the first evaluation', async () => {
     const evaluationDate = arbitraryDate();
-    const ports = {
-      ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, evaluationDate)]),
-    };
+    const result = toDocmap({
+      articleId,
+      group: arbitraryGroup(),
+      inputPublishedDate: O.none,
+      evaluations: [{
+        sourceUrl: new URL(arbitraryUri()),
+        reviewId: arbitraryReviewId(),
+        occurredAt: evaluationDate,
+      }],
+    });
 
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      created: evaluationDate.toISOString(),
-    })));
+    expect(result.created).toStrictEqual(evaluationDate.toISOString());
   });
 
   it('sets updated to the date of the last evaluation', async () => {
