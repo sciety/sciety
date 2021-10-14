@@ -68,7 +68,8 @@ const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<
 
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
-  T.map(E.fromOption(notFoundResponse)),
+  T.map(E.fromOption(() => DE.notFound)),
+  TE.mapLeft(notFoundResponse),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
     T.map((events) => ({
