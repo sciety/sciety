@@ -9,6 +9,7 @@ import {
   FindVersionsForArticleDoi,
   generateDocmapViewModel,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -223,6 +224,21 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when the group cant be retrieved', () => {
-    it.todo('returns not-found');
+    let result: E.Either<DE.DataError, DocmapModel>;
+    const ports = {
+      ...defaultPorts,
+      getGroup: () => TO.none,
+    };
+
+    beforeEach(async () => {
+      result = await pipe(
+        { articleId, groupId: indexedGroupId },
+        generateDocmapViewModel(ports),
+      )();
+    });
+
+    it('returns not-found', async () => {
+      expect(result).toStrictEqual(E.left('not-found'));
+    });
   });
 });
