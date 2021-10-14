@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -8,6 +9,7 @@ import * as S from 'fp-ts/string';
 import { docmap } from '../../../src/docmaps/docmap/docmap';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
@@ -55,16 +57,19 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
 }));
 
 describe('to-docmap', () => {
-  it('includes the article id in the url used as the docmap id', async () => {
-    const ports = {
-      ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
-    };
-    const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
+  it('includes the article id in the url used as the docmap id', () => {
+    const result = toDocmap({
+      articleId,
+      group: arbitraryGroup(),
+      inputPublishedDate: O.none,
+      evaluations: [{
+        sourceUrl: new URL(arbitraryUri()),
+        reviewId: arbitraryReviewId(),
+        occurredAt: arbitraryDate(),
+      }],
+    });
 
-    expect(result).toStrictEqual(E.right(expect.objectContaining({
-      id: expect.stringContaining(articleId.value),
-    })));
+    expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
   });
 
   it('includes the publisher properties', async () => {
