@@ -79,14 +79,21 @@ describe('paginate', () => {
 
       expect(result).toStrictEqual(E.left(DE.notFound));
     });
+  });
 
-    it('returns an empty page 1 when there are no followers', () => {
-      const result = pipe(
-        [],
-        paginate(1, arbitraryNumber(1, 10)),
-      );
+  describe('when there are no followers', () => {
+    const pageOfFollowers = pipe(
+      [],
+      paginate(1, arbitraryNumber(1, 10)),
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
-      expect(result).toStrictEqual(E.right(expect.objectContaining({ items: [] })));
+    it('returns an empty page 1', () => {
+      expect(pageOfFollowers).toStrictEqual({
+        items: [],
+        nextPage: O.none,
+        numberOfOriginalItems: 0,
+      });
     });
   });
 });
