@@ -5,9 +5,9 @@ import { Follower } from './augment-with-user-details';
 import * as DE from '../../types/data-error';
 
 export type PartialViewModel = {
-  followerCount: number,
-  followers: ReadonlyArray<Follower>,
+  items: ReadonlyArray<Follower>,
   nextPage: O.Option<number>,
+  numberOfOriginalItems: number,
 };
 
 const numberOfPages = (followerCount: number, pageSize: number) => (
@@ -28,11 +28,11 @@ export const paginate = (
     () => DE.notFound,
   ),
   E.map(() => ({
-    followers: followers.slice(
+    items: followers.slice(
       pageSize * (pageNumber - 1),
       pageSize * pageNumber,
     ),
-    followerCount: followers.length,
+    numberOfOriginalItems: followers.length,
     nextPage: followers.length - pageSize * pageNumber > 0
       ? O.some(pageNumber + 1)
       : O.none,

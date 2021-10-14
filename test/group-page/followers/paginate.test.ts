@@ -27,7 +27,7 @@ describe('paginate', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      expect(result.followers).toHaveLength(2);
+      expect(result.items).toHaveLength(2);
     });
 
     it('returns the specified page of the followers', () => {
@@ -47,7 +47,7 @@ describe('paginate', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      expect(result.followers).toStrictEqual([
+      expect(result.items).toStrictEqual([
         expect.objectContaining({
           userId,
         }),
@@ -86,7 +86,7 @@ describe('paginate', () => {
         paginate(1, arbitraryNumber(1, 10)),
       );
 
-      expect(result).toStrictEqual(E.right(expect.objectContaining({ followers: [] })));
+      expect(result).toStrictEqual(E.right(expect.objectContaining({ items: [] })));
     });
   });
 });
