@@ -1,5 +1,7 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
+import { Group } from '../../src/types/group';
 import { GroupRepository } from '../../src/types/group-repository';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
@@ -37,14 +39,32 @@ describe('in-memory-editorial-communities', () => {
   });
 
   describe('lookup by slug', () => {
-    it('returns nothing when the group does not exist', async () => {
-      expect((await repository.lookupBySlug(arbitraryWord())())).toStrictEqual(O.none);
+    let result: O.Option<Group>;
+
+    describe('when the group exists', () => {
+      beforeEach(async () => {
+        result = await pipe(
+          groupSlug,
+          repository.lookupBySlug,
+        )();
+      });
+
+      it('returns the group', () => {
+        expect(result).toStrictEqual(O.some(group));
+      });
     });
 
-    it('returns the group when it does exist', async () => {
-      const actual = await repository.lookupBySlug(groupSlug)();
+    describe('when the group does not exist', () => {
+      beforeEach(async () => {
+        result = await pipe(
+          arbitraryWord(),
+          repository.lookupBySlug,
+        )();
+      });
 
-      expect(actual).toStrictEqual(O.some(group));
+      it('returns nothing', () => {
+        expect(result).toStrictEqual(O.none);
+      });
     });
   });
 });
