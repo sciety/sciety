@@ -128,18 +128,17 @@ describe('to-docmap', () => {
   });
 
   describe('when there is no input published date', () => {
-    let result: Docmap;
-    const ports = {
-      ...defaultPorts,
-      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
-    };
-
-    beforeEach(async () => {
-      result = await pipe(
-        { articleId, groupId: indexedGroupId },
-        docmap(ports),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+    const result = toDocmap({
+      articleId,
+      group: arbitraryGroup(),
+      inputPublishedDate: O.none,
+      evaluations: [
+        {
+          sourceUrl: new URL(arbitraryUri()),
+          reviewId: arbitraryReviewId(),
+          occurredAt: arbitraryDate(),
+        },
+      ],
     });
 
     it('there is no published date', async () => {
