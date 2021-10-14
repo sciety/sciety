@@ -82,7 +82,7 @@ describe('generate-docmap-view-model', () => {
     expect(result).toStrictEqual(expect.objectContaining({ group }));
   });
 
-  it.skip('handles all article servers', async () => {
+  it('handles all article servers', async () => {
     const findVersionsForArticleDoi = jest.fn().mockImplementation(
       (): ReturnType<FindVersionsForArticleDoi> => TO.some([
         {
@@ -98,7 +98,7 @@ describe('generate-docmap-view-model', () => {
       findVersionsForArticleDoi,
       fetchArticle: () => TE.right({ server }),
     };
-    await docmap(ports)({ articleId, groupId: indexedGroupId })();
+    await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
 
     expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
   });
