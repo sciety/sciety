@@ -108,23 +108,25 @@ describe('to-docmap', () => {
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierDate = new Date('1900');
     const laterDate = new Date('2000');
-    const reviews = [
-      review(indexedGroupId, earlierDate),
-      review(indexedGroupId, laterDate),
-    ];
+    const earlierReviewId = arbitraryReviewId();
+    const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
-
-    let result: Docmap;
-
-    beforeEach(async () => {
-      const ports = {
-        ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right(reviews),
-      };
-      result = await pipe(
-        docmap(ports)({ articleId, groupId: indexedGroupId }),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+    const result = toDocmap({
+      articleId,
+      group: arbitraryGroup(),
+      inputPublishedDate: O.none,
+      evaluations: [
+        {
+          sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
+          reviewId: earlierReviewId,
+          occurredAt: earlierDate,
+        },
+        {
+          sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
+          reviewId: laterReviewId,
+          occurredAt: laterDate,
+        },
+      ],
     });
 
     it('returns a single step', () => {
@@ -146,7 +148,7 @@ describe('to-docmap', () => {
     });
 
     it('with one output per evaluation', () => {
-      expect(result.steps[firstStep].actions[0].outputs).toHaveLength(reviews.length);
+      expect(result.steps[firstStep].actions[0].outputs).toHaveLength(2);
     });
 
     it('each output links to the evaluation on sciety', () => {
@@ -158,13 +160,13 @@ describe('to-docmap', () => {
       expect(contentValues[0]).toStrictEqual(
         expect.arrayContaining([{
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${reviews[0].reviewId}`,
+          url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
         }]),
       );
       expect(contentValues[1]).toStrictEqual(
         expect.arrayContaining([{
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${reviews[1].reviewId}`,
+          url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
         }]),
       );
     });
@@ -178,13 +180,13 @@ describe('to-docmap', () => {
       expect(contentValues[0]).toStrictEqual(
         expect.arrayContaining([{
           type: 'web-page',
-          url: `https://reviews.example.com/${reviews[0].reviewId}`,
+          url: `https://reviews.example.com/${earlierReviewId}`,
         }]),
       );
       expect(contentValues[1]).toStrictEqual(
         expect.arrayContaining([{
           type: 'web-page',
-          url: `https://reviews.example.com/${reviews[1].reviewId}`,
+          url: `https://reviews.example.com/${laterReviewId}`,
         }]),
       );
     });
