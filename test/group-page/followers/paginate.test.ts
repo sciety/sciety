@@ -91,6 +91,8 @@ describe('paginate', () => {
     it('returns an empty page 1', () => {
       expect(pageOfFollowers).toStrictEqual({
         items: [],
+        pageNumber: 1,
+        numberOfPages: 0,
         nextPage: O.none,
         numberOfOriginalItems: 0,
       });
