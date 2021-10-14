@@ -14,6 +14,7 @@ export const arbitrary = (): ReviewFeedItem => ({
   source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
   groupSlug: arbitraryWord(),
+  groupHref: arbitraryWord(),
   groupName: 'group 1',
   groupAvatar: '/avatar',
   fullText: pipe(t.arbitraryString(), toHtmlFragment, sanitise, O.some),

@@ -86,6 +86,7 @@ const reviewToFeedItem = (
     source: review.url,
     occurredAt: feedEvent.occurredAt,
     groupSlug: group.slug,
+    groupHref: `/groups/${group.slug}`,
     groupName: group.name,
     groupAvatar: group.avatarPath,
     fullText: O.map(sanitise)(review.fullText),
