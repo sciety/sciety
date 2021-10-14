@@ -21,12 +21,8 @@ const generateFollowers = (followerCount: number) => pipe(
 describe('paginate', () => {
   describe('when the group has multiple followers', () => {
     it('limits the number of followers to the requested page size', () => {
-      const partialViewModel = {
-        followerCount: 3,
-        followers: generateFollowers(3),
-      };
       const result = pipe(
-        partialViewModel,
+        generateFollowers(3),
         paginate(1, 2),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -37,9 +33,8 @@ describe('paginate', () => {
     it('returns the specified page of the followers', () => {
       const userId = arbitraryUserId();
       const [follower1, follower2] = generateFollowers(2);
-      const partialViewModel = {
-        followerCount: 3,
-        followers: [
+      const result = pipe(
+        [
           follower1,
           {
             userId,
@@ -48,9 +43,6 @@ describe('paginate', () => {
           },
           follower2,
         ],
-      };
-      const result = pipe(
-        partialViewModel,
         paginate(2, 1),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -70,12 +62,8 @@ describe('paginate', () => {
       [21, 2, O.some(3)],
       [21, 3, O.none],
     ])('given %d followers and a request for page %d, returns the next page', (followerCount, page, nextPage) => {
-      const partialViewModel = {
-        followerCount,
-        followers: generateFollowers(followerCount),
-      };
       const result = pipe(
-        partialViewModel,
+        generateFollowers(followerCount),
         paginate(page, 10),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -85,10 +73,7 @@ describe('paginate', () => {
 
     it('returns not-found when asked for a page that does not exist', () => {
       const result = pipe(
-        {
-          followerCount: 3,
-          followers: generateFollowers(3),
-        },
+        generateFollowers(3),
         paginate(3, 3),
       );
 
@@ -97,10 +82,7 @@ describe('paginate', () => {
 
     it('returns an empty page 1 when there are no followers', () => {
       const result = pipe(
-        {
-          followerCount: 0,
-          followers: [],
-        },
+        [],
         paginate(1, arbitraryNumber(1, 10)),
       );
 

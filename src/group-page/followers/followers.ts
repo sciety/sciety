@@ -50,10 +50,6 @@ export const followers = (
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(findFollowers(group.id)),
-  T.map((partial) => ({
-    followers: partial,
-    followerCount: partial.length,
-  })),
   T.map(paginate(pageNumber, pageSize)),
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({

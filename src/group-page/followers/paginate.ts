@@ -19,20 +19,20 @@ export const paginate = (
   pageNumber: number,
   pageSize: number,
 ) => (
-  partialViewModel: PartialViewModel,
+  followers: ReadonlyArray<Follower>,
 ): E.Either<DE.DataError, PartialViewModel & { nextPage: O.Option<number> }> => pipe(
-  partialViewModel,
+  followers,
   E.fromPredicate(
-    ({ followerCount }) => pageNumber <= numberOfPages(followerCount, pageSize),
+    (fs) => pageNumber <= numberOfPages(fs.length, pageSize),
     () => DE.notFound,
   ),
   E.map(() => ({
-    followers: partialViewModel.followers.slice(
+    followers: followers.slice(
       pageSize * (pageNumber - 1),
       pageSize * pageNumber,
     ),
-    followerCount: partialViewModel.followerCount,
-    nextPage: partialViewModel.followerCount - pageSize * pageNumber > 0
+    followerCount: followers.length,
+    nextPage: followers.length - pageSize * pageNumber > 0
       ? O.some(pageNumber + 1)
       : O.none,
   })),
