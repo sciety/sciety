@@ -7,7 +7,8 @@ import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries } from './identify-all-possible-index-entries';
 import { DomainEvent } from '../../domain-events';
 import * as GID from '../../types/group-id';
-import { docmap, Ports as DocmapPorts } from '../docmap/docmap';
+import { docmap } from '../docmap/docmap';
+import { Ports as DocmapPorts } from '../docmap/generate-docmap-view-model';
 
 type Ports = DocmapPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

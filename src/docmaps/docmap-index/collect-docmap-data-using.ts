@@ -1,8 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { StatusCodes } from 'http-status-codes';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-import { Ports } from '../docmap/docmap';
-import { DocmapModel } from '../docmap/generate-docmap-view-model';
+import { DocmapModel, Ports } from '../docmap/generate-docmap-view-model';
 
 type ErrorResponse = {
   body: { error: string },

@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
-import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/docmap';
+import { FindVersionsForArticleDoi } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { groupEvaluatedArticle } from '../../../src/domain-events/group-evaluated-article-event';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
