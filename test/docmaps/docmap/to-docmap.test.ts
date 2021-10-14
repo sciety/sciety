@@ -54,8 +54,8 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
   }),
 }));
 
-describe('docmap', () => {
-  it('includes the article id', async () => {
+describe('to-docmap', () => {
+  it('includes the article id in the url used as the docmap id', async () => {
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
@@ -130,27 +130,6 @@ describe('docmap', () => {
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       updated: laterDate.toISOString(),
     })));
-  });
-
-  it('handles all article servers', async () => {
-    const findVersionsForArticleDoi = jest.fn().mockImplementation(
-      (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
-    );
-    const server = arbitraryArticleServer();
-    const ports = {
-      ...defaultPorts,
-      findVersionsForArticleDoi,
-      fetchArticle: () => TE.right({ server }),
-    };
-    await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-    expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
@@ -253,43 +232,9 @@ describe('docmap', () => {
     });
   });
 
-  describe('when there are no evaluations by the selected group', () => {
-    it('returns not-found', async () => {
-      const ports = {
-        ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right([]),
-      };
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-      expect(result).toStrictEqual(E.left('not-found'));
-    });
-  });
-
-  describe('when there are evaluations by other groups', () => {
-    it('only uses the evaluation by the selected group', async () => {
-      const earlierDate = new Date('1900');
-      const laterDate = new Date('2000');
-      const ports = {
-        ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right(
-          [
-            review(arbitraryGroupId(), earlierDate),
-            review(indexedGroupId, laterDate),
-          ],
-        ),
-      };
-
-      const result = await docmap(ports)({ articleId, groupId: indexedGroupId })();
-
-      expect(result).toStrictEqual(expectOutputs({
-        published: laterDate,
-      }));
-    });
-  });
-
   describe('when there is a single evaluation by the selected group', () => {
     describe('in the first step', () => {
-      it('assertions are always empty', async () => {
+      it('assertions are empty', async () => {
         const result = await docmap(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
         expect(result).toStrictEqual(E.right(expect.objectContaining({
@@ -319,7 +264,7 @@ describe('docmap', () => {
           })));
         });
 
-        describe('when there are versions', () => {
+        describe('when there is an input published date', () => {
           let result: Docmap;
           const articleDate = arbitraryDate();
           const ports = {
@@ -341,14 +286,14 @@ describe('docmap', () => {
             )();
           });
 
-          it('include the article publication date if there are versions', async () => {
+          it('is included as the published date', async () => {
             expect(result.steps['_:b0'].inputs).toStrictEqual([
               expect.objectContaining({ published: articleDate }),
             ]);
           });
         });
 
-        describe('when there are no versions', () => {
+        describe('when there is no input published date', () => {
           let result: Docmap;
           const ports = {
             ...defaultPorts,
@@ -363,7 +308,7 @@ describe('docmap', () => {
             )();
           });
 
-          it('doesn\'t include the article publication date', async () => {
+          it('there is no published date', async () => {
             expect(result.steps['_:b0'].inputs).toStrictEqual([
               expect.not.objectContaining({ published: expect.anything }),
             ]);
@@ -465,9 +410,5 @@ describe('docmap', () => {
         });
       });
     });
-  });
-
-  describe('when the returns not-found group cant be retrieved', () => {
-    it.todo('returns 500');
   });
 });
