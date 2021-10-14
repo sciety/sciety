@@ -14,6 +14,7 @@ import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
+// ts-unused-exports:disable-next-line
 export type DocmapModel = {
   articleId: Doi,
   group: Group,

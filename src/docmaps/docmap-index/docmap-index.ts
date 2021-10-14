@@ -41,21 +41,6 @@ const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-734
 
 const supportedGroups = [ncrcGroupId, rapidReviewsGroupId];
 
-//
-// ports.getAllEvents                                           --> events
-// T.map(identifyAllPossibleIndexEntriesBy(supportedGroups))    --> index entries
-// T.map(filterBy(query))                                       --> index entries OR ErrorResponse
-// TE.chain(collectDocmapDataUsing(ports))                      --> docmap viewmodels OR ErrorResponse
-// TE.map(renderAsDocmaps)                                      --> docmaps
-// TE.map(render as response)
-//
-// - keep indentation to 0 or 1
-// - steps are (usually) verbs
-// - adjustments vs inputs
-// - cohesion
-// - faithful to the user's mental model
-// - test the steps thoroughly, test the composition lightly (rely on step types)
-//
 export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   ports.getAllEvents,
   T.map(identifyAllPossibleIndexEntries(supportedGroups)),
