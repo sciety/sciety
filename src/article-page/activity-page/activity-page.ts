@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
@@ -91,10 +91,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       articleDetails.server,
       (server) => getArticleFeedEventsByDateDescending({
         ...ports,
-        getGroup: flow(
-          ports.getGroup,
-          TO.getOrElse(() => { throw new Error('No such group'); }),
-        ),
         countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
         getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
       })(doi, server, userId),

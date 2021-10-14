@@ -40,7 +40,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
-export type GetGroup = (id: GroupId) => T.Task<Group>;
+export type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
@@ -58,7 +58,22 @@ const reviewToFeedItem = (
   userId: O.Option<UserId>,
 ) => pipe(
   {
-    group: getGroup(feedEvent.groupId),
+    groupDetails: pipe(
+      feedEvent.groupId,
+      getGroup,
+      TO.match(
+        () => ({
+          groupName: 'A group',
+          groupHref: `/groups/${feedEvent.groupId}`,
+          groupAvatar: '/static/images/sciety-logo.jpg',
+        }),
+        (group) => ({
+          groupName: group.name,
+          groupHref: `/groups/${group.slug}`,
+          groupAvatar: group.avatarPath,
+        }),
+      ),
+    ),
     review: pipe(
       feedEvent.reviewId,
       getReview,
@@ -79,15 +94,13 @@ const reviewToFeedItem = (
   },
   sequenceS(T.ApplyPar),
   T.map(({
-    group, review, reviewResponses, userReviewResponse,
+    groupDetails, review, reviewResponses, userReviewResponse,
   }) => ({
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,
-    groupName: group.name,
-    groupHref: `/groups/${group.slug}`,
-    groupAvatar: group.avatarPath,
+    ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
     counts: reviewResponses,
     current: userReviewResponse,
