@@ -1,9 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -24,7 +22,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = EvaluatedArticlesListPorts & {
   getAllEvents: GetAllEvents,
-  getGroupBySlug: (groupSlug: string) => TO.TaskOption<Group>,
+  getGroupBySlug: (groupSlug: string) => TE.TaskEither<DE.DataError, Group>,
 };
 
 export const paramsCodec = t.type({
@@ -68,7 +66,6 @@ const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<
 
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
-  T.map(E.fromOption(() => DE.notFound)),
   TE.mapLeft(notFoundResponse),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,

@@ -1,6 +1,8 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
+import * as DE from '../../src/types/data-error';
 import { Group } from '../../src/types/group';
 import { GroupRepository } from '../../src/types/group-repository';
 import { arbitraryUri, arbitraryWord } from '../helpers';
@@ -39,7 +41,7 @@ describe('in-memory-editorial-communities', () => {
   });
 
   describe('lookup by slug', () => {
-    let result: O.Option<Group>;
+    let result: E.Either<DE.DataError, Group>;
 
     describe('when the group exists', () => {
       beforeEach(async () => {
@@ -50,7 +52,7 @@ describe('in-memory-editorial-communities', () => {
       });
 
       it('returns the group', () => {
-        expect(result).toStrictEqual(O.some(group));
+        expect(result).toStrictEqual(E.right(group));
       });
     });
 
@@ -63,7 +65,7 @@ describe('in-memory-editorial-communities', () => {
       });
 
       it('returns nothing', () => {
-        expect(result).toStrictEqual(O.none);
+        expect(result).toStrictEqual(E.left(DE.notFound));
       });
     });
   });

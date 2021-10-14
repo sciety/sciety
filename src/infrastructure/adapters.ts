@@ -23,7 +23,7 @@ import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
-type GetGroupBySlug = (slug: string) => TO.TaskOption<Group>;
+type GetGroupBySlug = (slug: string) => TE.TaskEither<DE.DataError, Group>;
 
 type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 

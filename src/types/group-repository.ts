@@ -8,5 +8,5 @@ import { GroupId } from './group-id';
 export type GroupRepository = {
   all: TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>,
   lookup(id: GroupId): TO.TaskOption<Group>,
-  lookupBySlug(slug: string): TO.TaskOption<Group>,
+  lookupBySlug(slug: string): TE.TaskEither<DE.DataError, Group>,
 };
