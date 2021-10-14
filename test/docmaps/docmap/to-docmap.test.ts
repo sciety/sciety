@@ -105,6 +105,57 @@ describe('to-docmap', () => {
     });
   });
 
+  describe('when there is an input published date', () => {
+    let result: Docmap;
+    const articleDate = arbitraryDate();
+    const ports = {
+      ...defaultPorts,
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: articleDate,
+          version: 1,
+        },
+      ]),
+    };
+
+    beforeEach(async () => {
+      result = await pipe(
+        { articleId, groupId: indexedGroupId },
+        docmap(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('is included as the published date', async () => {
+      expect(result.steps['_:b0'].inputs).toStrictEqual([
+        expect.objectContaining({ published: articleDate }),
+      ]);
+    });
+  });
+
+  describe('when there is no input published date', () => {
+    let result: Docmap;
+    const ports = {
+      ...defaultPorts,
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
+    };
+
+    beforeEach(async () => {
+      result = await pipe(
+        { articleId, groupId: indexedGroupId },
+        docmap(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('there is no published date', async () => {
+      expect(result.steps['_:b0'].inputs).toStrictEqual([
+        expect.not.objectContaining({ published: expect.anything }),
+      ]);
+    });
+  });
+
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierDate = new Date('1900');
     const laterDate = new Date('2000');
@@ -237,57 +288,6 @@ describe('to-docmap', () => {
               }),
             }),
           })));
-        });
-
-        describe('when there is an input published date', () => {
-          let result: Docmap;
-          const articleDate = arbitraryDate();
-          const ports = {
-            ...defaultPorts,
-            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-              {
-                source: new URL(arbitraryUri()),
-                occurredAt: articleDate,
-                version: 1,
-              },
-            ]),
-          };
-
-          beforeEach(async () => {
-            result = await pipe(
-              { articleId, groupId: indexedGroupId },
-              docmap(ports),
-              TE.getOrElse(shouldNotBeCalled),
-            )();
-          });
-
-          it('is included as the published date', async () => {
-            expect(result.steps['_:b0'].inputs).toStrictEqual([
-              expect.objectContaining({ published: articleDate }),
-            ]);
-          });
-        });
-
-        describe('when there is no input published date', () => {
-          let result: Docmap;
-          const ports = {
-            ...defaultPorts,
-            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
-          };
-
-          beforeEach(async () => {
-            result = await pipe(
-              { articleId, groupId: indexedGroupId },
-              docmap(ports),
-              TE.getOrElse(shouldNotBeCalled),
-            )();
-          });
-
-          it('there is no published date', async () => {
-            expect(result.steps['_:b0'].inputs).toStrictEqual([
-              expect.not.objectContaining({ published: expect.anything }),
-            ]);
-          });
         });
       });
 
