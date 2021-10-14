@@ -57,54 +57,14 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
 }));
 
 describe('to-docmap', () => {
-  it('includes the article id in the url used as the docmap id', () => {
-    const result = toDocmap({
-      articleId,
-      group: arbitraryGroup(),
-      inputPublishedDate: O.none,
-      evaluations: [{
-        sourceUrl: new URL(arbitraryUri()),
-        reviewId: arbitraryReviewId(),
-        occurredAt: arbitraryDate(),
-      }],
-    });
-
-    expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
-  });
-
-  it('includes the publisher properties', async () => {
+  describe('docmap meta data', () => {
+    const earlierDate = new Date('1900');
+    const laterDate = new Date('2000');
     const group = arbitraryGroup();
-
     const result = toDocmap({
       articleId,
       group,
       inputPublishedDate: O.none,
-      evaluations: [{
-        sourceUrl: new URL(arbitraryUri()),
-        reviewId: arbitraryReviewId(),
-        occurredAt: arbitraryDate(),
-      }],
-    });
-
-    expect(result.publisher).toStrictEqual(expect.objectContaining({
-      id: group.homepage,
-      name: group.name,
-      logo: expect.stringContaining(group.avatarPath),
-      homepage: group.homepage,
-      account: {
-        id: expect.stringContaining(group.id),
-        service: 'https://sciety.org',
-      },
-    }));
-  });
-
-  it('sets created to the date of the first evaluation', async () => {
-    const earlierDate = new Date('1900');
-    const laterDate = new Date('2000');
-    const result = toDocmap({
-      articleId,
-      group: arbitraryGroup(),
-      inputPublishedDate: O.none,
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
@@ -119,31 +79,30 @@ describe('to-docmap', () => {
       ],
     });
 
-    expect(result.created).toStrictEqual(earlierDate.toISOString());
-  });
-
-  it('sets updated to the date of the last evaluation', async () => {
-    const earlierDate = new Date('1900');
-    const laterDate = new Date('2000');
-    const result = toDocmap({
-      articleId,
-      group: arbitraryGroup(),
-      inputPublishedDate: O.none,
-      evaluations: [
-        {
-          sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
-          occurredAt: earlierDate,
-        },
-        {
-          sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
-          occurredAt: laterDate,
-        },
-      ],
+    it('includes the article id in the url used as the docmap id', () => {
+      expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
     });
 
-    expect(result.updated).toStrictEqual(laterDate.toISOString());
+    it('includes the publisher properties', async () => {
+      expect(result.publisher).toStrictEqual(expect.objectContaining({
+        id: group.homepage,
+        name: group.name,
+        logo: expect.stringContaining(group.avatarPath),
+        homepage: group.homepage,
+        account: {
+          id: expect.stringContaining(group.id),
+          service: 'https://sciety.org',
+        },
+      }));
+    });
+
+    it('sets created to the date of the first evaluation', async () => {
+      expect(result.created).toStrictEqual(earlierDate.toISOString());
+    });
+
+    it('sets updated to the date of the last evaluation', async () => {
+      expect(result.updated).toStrictEqual(laterDate.toISOString());
+    });
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
