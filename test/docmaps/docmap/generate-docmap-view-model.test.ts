@@ -4,7 +4,6 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { Docmap, docmap } from '../../../src/docmaps/docmap/docmap';
 import {
   DocmapModel,
   FindVersionsForArticleDoi,
@@ -197,13 +196,13 @@ describe('generate-docmap-view-model', () => {
         )();
       });
 
-      it('includes the date of the last published article version', async () => {
+      it('returns the last version published date as the input published date', async () => {
         expect(result.inputPublishedDate).toStrictEqual(O.some(articleDate));
       });
     });
 
     describe('when there are no article versions', () => {
-      let result: Docmap;
+      let result: DocmapModel;
       const ports = {
         ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
@@ -212,15 +211,13 @@ describe('generate-docmap-view-model', () => {
       beforeEach(async () => {
         result = await pipe(
           { articleId, groupId: indexedGroupId },
-          docmap(ports),
+          generateDocmapViewModel(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it.skip('doesn\'t include the article publication date', async () => {
-        expect(result.steps['_:b0'].inputs).toStrictEqual([
-          expect.not.objectContaining({ published: expect.anything }),
-        ]);
+      it('returns O.none for the input published date', async () => {
+        expect(result.inputPublishedDate).toStrictEqual(O.none);
       });
     });
   });
