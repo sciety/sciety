@@ -4,7 +4,11 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Docmap, docmap } from '../../../src/docmaps/docmap/docmap';
-import { FindVersionsForArticleDoi, generateDocmapViewModel } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import {
+  DocmapModel,
+  FindVersionsForArticleDoi,
+  generateDocmapViewModel,
+} from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { GroupId } from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -110,19 +114,33 @@ describe('generate-docmap-view-model', () => {
       review(indexedGroupId, earlierDate),
       review(indexedGroupId, laterDate),
     ];
+    let result: DocmapModel;
 
     beforeEach(async () => {
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => TE.right(reviews),
       };
-      await pipe(
-        docmap(ports)({ articleId, groupId: indexedGroupId }),
+      result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it.todo('returns all evaluations, checking all values that the type dictates');
+    it('returns all evaluations, checking all values that the type dictates', () => {
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          occurredAt: earlierDate,
+          reviewId: reviews[0].reviewId,
+          sourceUrl: new URL(`https://reviews.example.com/${reviews[0].reviewId}`),
+        }),
+        expect.objectContaining({
+          occurredAt: laterDate,
+          reviewId: reviews[1].reviewId,
+          sourceUrl: new URL(`https://reviews.example.com/${reviews[1].reviewId}`),
+        }),
+      ]);
+    });
   });
 
   describe('when there are no evaluations by the selected group', () => {
