@@ -5,7 +5,7 @@
 @use '../sass/layout';
 
 .my-feed-page-cta {
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
 }
 
 .my-feed-page-feed-container h2 {

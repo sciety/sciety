@@ -43,11 +43,11 @@
 
 .evaluated-articles__page_count {
   @include typography.details();
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
 .evaluated-articles__static_message {
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
 }
