@@ -6,8 +6,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import {
   DocmapModel,
-  FindVersionsForArticleDoi,
   generateDocmapViewModel,
+  Ports,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
@@ -29,10 +29,10 @@ const review = (groupId: GroupId, date: Date) => ({
   occurredAt: date,
 });
 
-const defaultPorts = {
+const defaultPorts: Ports = {
   fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
   findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
-  findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+  findVersionsForArticleDoi: () => TO.some([
     {
       source: new URL(arbitraryUri()),
       occurredAt: arbitraryDate(),
@@ -79,7 +79,7 @@ describe('generate-docmap-view-model', () => {
 
   it('handles all article servers', async () => {
     const findVersionsForArticleDoi = jest.fn().mockImplementation(
-      (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+      () => TO.some([
         {
           source: new URL(arbitraryUri()),
           occurredAt: arbitraryDate(),
@@ -178,9 +178,9 @@ describe('generate-docmap-view-model', () => {
     describe('when there are article versions', () => {
       let result: DocmapModel;
       const articleDate = arbitraryDate();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        findVersionsForArticleDoi: () => TO.some([
           {
             source: new URL(arbitraryUri()),
             occurredAt: articleDate,
@@ -206,7 +206,7 @@ describe('generate-docmap-view-model', () => {
       let result: DocmapModel;
       const ports = {
         ...defaultPorts,
-        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
+        findVersionsForArticleDoi: () => TO.none,
       };
 
       beforeEach(async () => {

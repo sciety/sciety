@@ -14,7 +14,6 @@ import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
-// ts-unused-exports:disable-next-line
 export type DocmapModel = {
   articleId: Doi,
   group: Group,
@@ -37,8 +36,7 @@ type GenerateDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
 
-// ts-unused-exports:disable-next-line
-export type FindVersionsForArticleDoi = (
+type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
