@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { defaultGroupListDescription } from './messages';
-import { templateDate } from '../shared-components/date';
-import { Group } from '../types/group';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { templateDate } from '../../shared-components/date';
+import { Group } from '../../types/group';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { defaultGroupListDescription } from '../messages';
 
 type ViewModel = {
   group: Group,
