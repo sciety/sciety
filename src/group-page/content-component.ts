@@ -1,7 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
+import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { Tab, tabs } from '../shared-components/tabs';
@@ -13,7 +16,7 @@ export type Ports = AboutPorts & FollowersPorts & ListsPorts;
 
 export type TabIndex = 0 | 1 | 2;
 
-const tabList = (groupSlug: string): [Tab, Tab, Tab] => [
+const tabList = (groupSlug: string, followerCount: number): [Tab, Tab, Tab] => [
   {
     label: toHtmlFragment('Lists (1)'),
     url: `/groups/${groupSlug}/lists`,
@@ -23,7 +26,7 @@ const tabList = (groupSlug: string): [Tab, Tab, Tab] => [
     url: `/groups/${groupSlug}/about`,
   },
   {
-    label: toHtmlFragment('Followers'),
+    label: toHtmlFragment(`Followers (${followerCount})`),
     url: `/groups/${groupSlug}/followers`,
   },
 ];
@@ -54,10 +57,16 @@ export const contentComponent: ContentComponent = (
 ) => pipe(
   {
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
+    followerCount: pipe(
+      ports.getAllEvents,
+      T.map(findFollowers(group.id)),
+      T.map(RA.size),
+      TE.rightTask,
+    ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ content }) => tabs({
-    tabList: tabList(group.slug),
+  TE.map(({ content, followerCount }) => tabs({
+    tabList: tabList(group.slug, followerCount),
     activeTabIndex,
   })(content)),
 );
