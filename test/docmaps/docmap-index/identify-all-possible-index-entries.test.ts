@@ -1,5 +1,7 @@
+import * as TE from 'fp-ts/TaskEither';
 import { identifyAllPossibleIndexEntries } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -8,6 +10,9 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
+  const defaultPorts = {
+    getGroup: () => TE.left(DE.notFound),
+  };
 
   describe('when there are evaluated events by a supported group', () => {
     const articleId1 = arbitraryDoi();
@@ -19,7 +24,7 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId2, arbitraryReviewId(), laterDate),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
+    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
 
     it.skip('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
@@ -50,7 +55,7 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), middleDate),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
+    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
 
     it('returns a single index entry model', () => {
       expect(result).toHaveLength(1);
@@ -74,7 +79,7 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds)(events);
+    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
 
     it.skip('excludes articles evaluated by the unsupported group', () => {
       expect(result).toHaveLength(2);

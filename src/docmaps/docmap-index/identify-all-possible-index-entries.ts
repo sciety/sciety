@@ -2,10 +2,13 @@ import * as D from 'fp-ts/Date';
 import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
+import { Group } from '../../types/group';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 
@@ -27,8 +30,13 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
   groupId: S.Eq,
 });
 
+export type Ports = {
+  getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>,
+};
+
 type IdentifyAllPossibleIndexEntries = (
-  supportedGroups: ReadonlyArray<GroupId>
+  supportedGroups: ReadonlyArray<GroupId>,
+  ports: Ports,
 ) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DocmapIndexEntryModel>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (supportedGroups) => (events) => pipe(
