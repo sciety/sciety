@@ -92,4 +92,8 @@ describe('identify-all-possible-index-entries', () => {
       ]));
     });
   });
+
+  describe('when a supported group cannot be fetched', () => {
+    it.todo('has no entries in the docmap index');
+  });
 });
