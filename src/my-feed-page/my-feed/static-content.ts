@@ -16,3 +16,5 @@ export const troubleFetchingTryAgain = `
     We're having trouble accessing this content right now. Please try again later.
   </p>
 `;
+
+export const feedTitle = 'Recently evaluated by groups you follow';

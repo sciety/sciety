@@ -8,10 +8,11 @@ import { followedGroups } from './followed-groups';
 import { followedGroupsActivities } from './followed-groups-activities';
 import { GetArticle, populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
+  feedTitle,
   followSomething,
   noEvaluationsYet,
   troubleFetchingTryAgain,
-} from './static-messages';
+} from './static-content';
 import { DomainEvent } from '../../domain-events';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
@@ -30,9 +31,6 @@ export type Ports = {
   getAllEvents: GetAllEvents,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
-
-// ts-unused-exports:disable-next-line
-export const feedTitle = 'Recently evaluated by groups you follow';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
