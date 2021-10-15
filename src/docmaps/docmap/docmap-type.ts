@@ -9,9 +9,15 @@ type Action = {
   outputs: ReadonlyArray<Output>,
 };
 
+type Input = {
+  doi: string,
+  url: string,
+  published?: string,
+};
+
 type Step = {
   assertions: [],
-  inputs: ReadonlyArray<unknown>,
+  inputs: ReadonlyArray<Input>,
   actions: ReadonlyArray<Action>,
 };
 
