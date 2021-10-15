@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
@@ -51,9 +52,12 @@ export const contentComponent: ContentComponent = (
 ) => (
   group, pageNumber, activeTabIndex,
 ) => pipe(
-  contentRenderers(ports)(group, pageNumber)[activeTabIndex],
-  TE.map(tabs({
+  {
+    content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(({ content }) => tabs({
     tabList: tabList(group.slug),
     activeTabIndex,
-  })),
+  })(content)),
 );
