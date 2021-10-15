@@ -4,10 +4,11 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import { groupEvaluatedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
-import { feedTitle, myFeed } from '../../../src/my-feed-page/my-feed/my-feed';
+import { myFeed } from '../../../src/my-feed-page/my-feed/my-feed';
 import {
+  feedTitle,
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
-} from '../../../src/my-feed-page/my-feed/static-messages';
+} from '../../../src/my-feed-page/my-feed/static-content';
 import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';

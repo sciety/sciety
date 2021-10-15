@@ -31,14 +31,14 @@ const toBadRequestResponse = (errors: Errors) => ({
 });
 
 const filterByGroup = (
-  selectedGroup: O.Option<GID.GroupId>,
-) => (docmaps: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
-  selectedGroup,
+  requestedGroupId: O.Option<GID.GroupId>,
+) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
+  requestedGroupId,
   O.fold(
-    () => docmaps,
+    () => indexEntries,
     (groupId) => pipe(
-      docmaps,
-      RA.filter((docmap) => docmap.groupId === groupId),
+      indexEntries,
+      RA.filter((indexEntry) => indexEntry.groupId === groupId),
     ),
   ),
 );

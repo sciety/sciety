@@ -7,7 +7,7 @@
 
 .sciety-feed-page-numbers {
   @include typography.details();
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
   font-weight: bold;
   margin-bottom: 1rem;
 }

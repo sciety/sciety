@@ -1,4 +1,5 @@
 import { Middleware, ParameterizedContext } from 'koa';
+import { annotateWithTwitterSuccess } from './annotate-with-twitter-success';
 import { User } from '../types/user';
 
 type State = {
@@ -22,16 +23,6 @@ export const requireAuthentication: Middleware<State> = async (context, next) =>
   }
 
   await next();
-};
-
-// ts-unused-exports:disable-next-line
-export const annotateWithTwitterSuccess = (url: string): string => {
-  const param = 'login_success=twitter';
-  if (url.includes(param)) {
-    return url;
-  }
-  const joinChar = url.indexOf('?') > -1 ? '&' : '?';
-  return `${url}${joinChar}${param}`;
 };
 
 export const redirectAfterAuthenticating = (): Middleware => (

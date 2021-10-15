@@ -9,7 +9,7 @@ import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './ev
 import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
-import { getEvaluatedArticlesListDetails } from '../group-page/get-evaluated-articles-list-details';
+import { getEvaluatedArticlesListDetails } from '../group-page/lists/get-evaluated-articles-list-details';
 import { defaultGroupListDescription } from '../group-page/messages';
 import { templateDate } from '../shared-components/date';
 import * as DE from '../types/data-error';

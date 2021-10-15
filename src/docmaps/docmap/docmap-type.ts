@@ -1,6 +1,6 @@
 type Output = {
   type: 'review-article',
-  published: Date,
+  published: string,
   content: ReadonlyArray<unknown>,
 };
 
@@ -9,9 +9,15 @@ type Action = {
   outputs: ReadonlyArray<Output>,
 };
 
+type Input = {
+  doi: string,
+  url: string,
+  published?: string,
+};
+
 type Step = {
   assertions: [],
-  inputs: ReadonlyArray<unknown>,
+  inputs: ReadonlyArray<Input>,
   actions: ReadonlyArray<Action>,
 };
 
@@ -27,7 +33,7 @@ type Publisher = {
 };
 
 export type Docmap = {
-  '@context': Record<string, unknown>,
+  '@context': string,
   id: string,
   type: 'docmap',
   created: string,

@@ -15,7 +15,7 @@
 }
 
 .group-page-follow-toggle {
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
   margin-bottom: baseline.increments(6);
 }
 

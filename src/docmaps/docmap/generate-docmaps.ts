@@ -4,9 +4,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { docmap } from './docmap';
 import { Docmap } from './docmap-type';
-import { Ports as DocmapPorts } from './generate-docmap-view-model';
+import { Ports as DocmapPorts, generateDocmapViewModel } from './generate-docmap-view-model';
+import { toDocmap } from './to-docmap';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Doi } from '../../types/doi';
@@ -47,7 +47,10 @@ export const generateDocmaps = (
     articleId,
     getEvaluatingGroupIds(ports.getAllEvents),
     TE.rightTask,
-    TE.chain(TE.traverseArray((groupId) => docmap(ports)({ articleId, groupId }))),
-    TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
+    TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(ports)({ articleId, groupId }))),
+    TE.bimap(
+      () => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' }),
+      RA.map(toDocmap),
+    ),
   )),
 );

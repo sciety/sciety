@@ -1,5 +1,5 @@
 @use '../sass/layout';
 
 .about-page-content {
-  @include layout.basic-horizontal-spacing();
+  @include layout.page-content-horizontal-margins();
 }

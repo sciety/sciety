@@ -2,10 +2,11 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
 
 describe('filter-by-params', () => {
   describe('when no params are given', () => {
@@ -14,11 +15,13 @@ describe('filter-by-params', () => {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
       {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
     ];
 
@@ -43,31 +46,33 @@ describe('filter-by-params', () => {
     });
   });
 
-  describe('when passed a group ID', () => {
-    const requestedGroupId = arbitraryGroupId();
-    const input = [
+  describe('when passed a publisher account ID', () => {
+    const requestedGroup = arbitraryGroup();
+    const allIndexEntries = [
       {
         articleId: arbitraryDoi(),
-        groupId: requestedGroupId,
+        groupId: requestedGroup.id,
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
       {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
     ];
 
     const result = pipe(
-      input,
-      filterByParams({ group: requestedGroupId }),
+      allIndexEntries,
+      filterByParams({ group: `https://sciety.org/groups/${requestedGroup.slug}` }),
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it('only returns entries by that group', () => {
+    it.skip('only returns entries by the corresponding group', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
-          groupId: requestedGroupId,
+          groupId: requestedGroup.id,
         }),
       ]);
     });
@@ -83,11 +88,13 @@ describe('filter-by-params', () => {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
         {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: afterSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
       ];
       const result = pipe(
@@ -113,6 +120,7 @@ describe('filter-by-params', () => {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
       ];
       const result = pipe(

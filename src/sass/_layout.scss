@@ -17,7 +17,7 @@ $_column-gap: functions.px-to-rem(20px);
   user-select: none;
 }
 
-@mixin basic-horizontal-spacing() {
+@mixin page-content-horizontal-margins() {
   margin-left: 1rem;
   margin-right: 1rem;
 
