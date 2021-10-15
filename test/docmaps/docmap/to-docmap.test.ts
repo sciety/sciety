@@ -75,9 +75,9 @@ describe('to-docmap', () => {
       ],
     });
 
-    it('is included as the published date', () => {
+    it('is included as the published date as an ISO string', () => {
       expect(result.steps['_:b0'].inputs).toStrictEqual([
-        expect.objectContaining({ published: articleDate }),
+        expect.objectContaining({ published: articleDate.toISOString() }),
       ]);
     });
   });

@@ -63,7 +63,7 @@ export const toDocmap = ({
           (date) => [{
             doi: articleId.value,
             url: `https://doi.org/${articleId.value}`,
-            published: date,
+            published: date.toISOString(),
           }],
         ),
       ),
