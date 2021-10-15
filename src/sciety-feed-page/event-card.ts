@@ -3,20 +3,24 @@ import { pipe } from 'fp-ts/function';
 import { match } from 'ts-pattern';
 import {
   groupEvaluatedArticleCard,
-  GroupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
+  GroupEvaluatedArticleCard,
+  GroupEvaluatedArticleCardPorts,
   groupEvaluatedMultipleArticlesCard,
-  GroupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
-  scietyFeedCard, userFollowedAGroupCard, UserFollowedAGroupCardPorts,
-  userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
+  GroupEvaluatedMultipleArticlesCard,
+  GroupEvaluatedMultipleArticlesCardPorts,
+  userFollowedAGroupCard,
+  UserFollowedAGroupCardPorts,
+  userSavedArticleToAListCard,
+  UserSavedArticleToAListCardPorts,
 } from './cards';
 
+import { ScietyFeedCard } from './cards/sciety-feed-card';
 import {
   GroupEvaluatedArticleEvent,
   UserFollowedEditorialCommunityEvent,
   UserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
-import { HtmlFragment } from '../types/html-fragment';
 
 export type Ports =
   UserSavedArticleToAListCardPorts
@@ -44,7 +48,7 @@ export const eventCard = (
   ports: Ports,
 ) => (
   event: EventCardModel,
-): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   match(event)
     .with({ type: 'UserSavedArticle' }, userSavedArticleToAListCard(ports))
     .with({ type: 'UserFollowedEditorialCommunity' }, userFollowedAGroupCard(ports))
@@ -52,5 +56,4 @@ export const eventCard = (
     .with({ type: 'CollapsedGroupEvaluatedArticle' }, groupEvaluatedArticleCard(ports))
     .with({ type: 'CollapsedGroupEvaluatedMultipleArticles' }, groupEvaluatedMultipleArticlesCard(ports))
     .otherwise(() => TE.left(DE.unavailable)),
-  TE.map(scietyFeedCard),
 );

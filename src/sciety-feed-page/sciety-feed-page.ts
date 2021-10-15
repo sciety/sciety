@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { scietyFeedCard } from './cards';
 import {
   collapseCloseEvents, FeedRelevantEvent,
 } from './collapse-close-events';
@@ -88,6 +89,7 @@ export const scietyFeedPage = (
   TE.chain(({ items, ...rest }) => pipe(
     items,
     TE.traverseArray(eventCard(ports)),
+    TE.map(RA.map(scietyFeedCard)),
     TE.map((cards) => ({ cards, ...rest })),
   )),
   TE.bimap(
