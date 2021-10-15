@@ -8,8 +8,6 @@ module.exports = {
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
-    'plugin:jest/all',
-    'plugin:jest-formatting/strict',
     'plugin:fp-ts/all',
   ],
   parser: '@typescript-eslint/parser',
@@ -18,8 +16,6 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    'jest',
-    'jest-formatting',
     'node',
     'no-loops',
     'unused-imports',
@@ -73,12 +69,6 @@ module.exports = {
       ],
     }],
     'import/prefer-default-export': 'off',
-    'jest/no-disabled-tests': 'off',
-    'jest/no-hooks': 'off',
-    'jest/prefer-expect-assertions': 'off',
-    'jest/prefer-to-be': 'off',
-    'jest/prefer-expect-resolves': 'off',
-    'jest/unbound-method': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
       ignoreRegExpLiterals: true,
@@ -112,10 +102,24 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/**/*.ts'],
+      files: ['**/*.test.ts'],
+      extends: [
+        'plugin:jest/all',
+        'plugin:jest-formatting/strict',
+      ],
+      plugins: [
+        'jest',
+        'jest-formatting',
+      ],
       rules: {
-        'jest/require-hook': 'off',
+        'jest/no-disabled-tests': 'off',
+        'jest/no-hooks': 'off',
+        'jest/prefer-expect-assertions': 'off',
+        'jest/prefer-to-be': 'off',
+        'jest/prefer-expect-resolves': 'off',
+        'jest/unbound-method': 'off',
       },
+
     },
   ],
   settings: {
