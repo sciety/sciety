@@ -1,4 +1,4 @@
-/* eslint-disable jest/lowercase-name */
+/* eslint-disable jest/prefer-lowercase-title */
 import { DomainEvent, userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
 import { articleSaveState } from '../../src/save-article/article-save-state';
 import { arbitraryDoi } from '../types/doi.helper';
