@@ -2,16 +2,22 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { userFollowedEditorialCommunity } from '../../src/domain-events';
 import { contentComponent } from '../../src/group-page/content-component';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
-describe.skip('content-component', () => {
+describe('content-component', () => {
   const group = arbitraryGroup();
+  const events = [
+    userFollowedEditorialCommunity(arbitraryUserId(), group.id),
+    userFollowedEditorialCommunity(arbitraryUserId(), group.id),
+  ];
   const ports = {
     fetchStaticFile: () => TE.right(''),
     getUserDetailsBatch: () => TE.right([]),
-    getAllEvents: T.of([]),
+    getAllEvents: T.of(events),
   };
 
   it.each([
@@ -24,8 +30,8 @@ describe.skip('content-component', () => {
       TE.getOrElse(shouldNotBeCalled),
       T.map(JSDOM.fragment),
     )();
-    const followersTabLabel = content.querySelector('.tab:nth-child(3)');
+    const followersTabLabel = content.querySelector('.tab:nth-child(3)')?.textContent;
 
-    expect(followersTabLabel).toMatch(/\(0\)/);
+    expect(followersTabLabel).toContain(`(${events.length})`);
   });
 });
