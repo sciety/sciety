@@ -48,11 +48,9 @@ export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   T.map(filterByParams(query)),
   TE.chainW(flow(
     TE.traverseArray(generateDocmapViewModel(avoidRateLimitingWithDummyValues(ports))),
-    TE.bimap(
-      toInternalServerErrorResponse,
-      RA.map(toDocmap),
-    ),
+    TE.mapLeft(toInternalServerErrorResponse),
   )),
+  TE.map(RA.map(toDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },
     status: StatusCodes.OK,
