@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -7,8 +8,8 @@ import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries } from './identify-all-possible-index-entries';
 import { DomainEvent } from '../../domain-events';
 import * as GID from '../../types/group-id';
-import { docmap } from '../docmap/docmap';
-import { Ports as DocmapPorts } from '../docmap/generate-docmap-view-model';
+import { Ports as DocmapPorts, generateDocmapViewModel } from '../docmap/generate-docmap-view-model';
+import { toDocmap } from '../docmap/to-docmap';
 
 type Ports = DocmapPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -46,8 +47,11 @@ export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   T.map(identifyAllPossibleIndexEntries(supportedGroups)),
   T.map(filterByParams(query)),
   TE.chainW(flow(
-    TE.traverseArray(docmap(avoidRateLimitingWithDummyValues(ports))),
-    TE.mapLeft(toInternalServerErrorResponse),
+    TE.traverseArray(generateDocmapViewModel(avoidRateLimitingWithDummyValues(ports))),
+    TE.bimap(
+      toInternalServerErrorResponse,
+      RA.map(toDocmap),
+    ),
   )),
   TE.map((docmaps) => ({
     body: { articles: docmaps },

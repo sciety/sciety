@@ -26,7 +26,7 @@ export type DocmapModel = {
   }>,
 };
 
-export type DocmapIdentifier = {
+type DocmapIdentifier = {
   articleId: Doi,
   groupId: GroupId,
 };
