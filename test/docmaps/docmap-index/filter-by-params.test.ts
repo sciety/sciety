@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -15,11 +15,13 @@ describe('filter-by-params', () => {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
       {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
     ];
 
@@ -51,11 +53,13 @@ describe('filter-by-params', () => {
         articleId: arbitraryDoi(),
         groupId: requestedGroup.id,
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
       {
         articleId: arbitraryDoi(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
+        publisherAccountId: arbitraryUri(),
       },
     ];
 
@@ -84,11 +88,13 @@ describe('filter-by-params', () => {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
         {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: afterSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
       ];
       const result = pipe(
@@ -114,6 +120,7 @@ describe('filter-by-params', () => {
           articleId: arbitraryDoi(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
+          publisherAccountId: arbitraryUri(),
         },
       ];
       const result = pipe(

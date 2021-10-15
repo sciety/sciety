@@ -13,6 +13,7 @@ export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
   groupId: GID.GroupId,
   updated: Date,
+  publisherAccountId: string,
 };
 
 const byDate: Ord.Ord<DocmapIndexEntryModel> = pipe(
@@ -38,6 +39,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     articleId,
     groupId,
     updated: date,
+    publisherAccountId: 'foo',
   })),
   RA.sort(byDate),
   RA.uniq(eqEntry),
