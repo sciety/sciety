@@ -2,5 +2,6 @@
 @use '../sass/settings';
 
 .error-page {
+  @include layout.basic-horizontal-spacing();
   @include layout.page-header-top-space();
 }
