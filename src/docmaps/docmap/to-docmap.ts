@@ -18,7 +18,7 @@ const createReviewArticleOutput = (
   },
 ) => ({
   type: 'review-article' as const,
-  published: evaluation.occurredAt,
+  published: evaluation.occurredAt.toISOString(),
   content: [
     {
       type: 'web-page',

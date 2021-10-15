@@ -1,6 +1,6 @@
 type Output = {
   type: 'review-article',
-  published: Date,
+  published: string,
   content: ReadonlyArray<unknown>,
 };
 

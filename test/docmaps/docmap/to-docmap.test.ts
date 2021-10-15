@@ -193,7 +193,7 @@ describe('to-docmap', () => {
       expect(pipe(
         result.steps[firstStep].actions[0].outputs,
         RA.map((output) => output.published),
-      )).toStrictEqual([earlierDate, laterDate]);
+      )).toStrictEqual([earlierDate.toISOString(), laterDate.toISOString()]);
     });
 
     it('output content is always `review-article`', () => {
@@ -251,27 +251,29 @@ describe('to-docmap', () => {
         });
 
         describe('the only output', () => {
+          const output = result.steps[firstStep].actions[0].outputs[0];
+
           it('is always of type review-article', async () => {
-            expect(result.steps[firstStep].actions[0].outputs[0].type).toStrictEqual('review-article');
+            expect(output.type).toStrictEqual('review-article');
           });
 
           it('includes the published date of the evaluation', async () => {
-            expect(result.steps[firstStep].actions[0].outputs[0].published).toStrictEqual(occurredAt);
+            expect(output.published).toStrictEqual(occurredAt.toISOString());
           });
 
           it('includes the url to the original evaluation source', async () => {
-            expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(expect.arrayContaining([{
+            expect(output.content).toStrictEqual(expect.arrayContaining([{
               type: 'web-page',
               url: sourceUrl.toString(),
             }]));
           });
-        });
 
-        it('includes the url to the evaluation on sciety', async () => {
-          expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(expect.arrayContaining([{
-            type: 'web-page',
-            url: `https://sciety.org/articles/activity/${articleId.value}#${reviewId}`,
-          }]));
+          it('includes the url to the evaluation on sciety', async () => {
+            expect(output.content).toStrictEqual(expect.arrayContaining([{
+              type: 'web-page',
+              url: `https://sciety.org/articles/activity/${articleId.value}#${reviewId}`,
+            }]));
+          });
         });
       });
     });
