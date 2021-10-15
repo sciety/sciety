@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { context } from './context';
 import { Docmap } from './docmap-type';
 import { DocmapModel } from './generate-docmap-view-model';
 import { Doi } from '../../types/doi';
@@ -34,7 +33,7 @@ const createReviewArticleOutput = (
 export const toDocmap = ({
   group, inputPublishedDate, evaluations, articleId,
 }: DocmapModel): Docmap => ({
-  '@context': context,
+  '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
   type: 'docmap',
   created: RNEA.head(evaluations).occurredAt.toISOString(),

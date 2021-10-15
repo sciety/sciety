@@ -33,7 +33,7 @@ type Publisher = {
 };
 
 export type Docmap = {
-  '@context': Record<string, unknown>,
+  '@context': string,
   id: string,
   type: 'docmap',
   created: string,
