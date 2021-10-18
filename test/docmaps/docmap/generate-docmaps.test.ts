@@ -136,8 +136,9 @@ describe('generate-docmaps', () => {
 
     it('returns an array containing a docmap for each group', () => {
       expect(docmaps).toHaveLength(2);
-      expect(docmaps[0].publisher.account.id).toContain(ncrcGroupId);
-      expect(docmaps[1].publisher.account.id).toContain(rapidReviewsGroupId);
+      expect(docmaps[0].publisher.account.id).not.toBe(
+        docmaps[1].publisher.account.id,
+      );
     });
   });
 
