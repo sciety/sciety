@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -53,7 +54,7 @@ describe('filter-by-params', () => {
         articleId: arbitraryDoi(),
         groupId: requestedGroup.id,
         updated: arbitraryDate(),
-        publisherAccountId: `https://sciety.org/groups/${requestedGroup.slug}`,
+        publisherAccountId: publisherAccountId(requestedGroup),
       },
       {
         articleId: arbitraryDoi(),
@@ -65,7 +66,9 @@ describe('filter-by-params', () => {
 
     const result = pipe(
       allIndexEntries,
-      filterByParams({ publisheraccount: `https://sciety.org/groups/${requestedGroup.slug}` }),
+      filterByParams({
+        publisheraccount: publisherAccountId(requestedGroup),
+      }),
       E.getOrElseW(shouldNotBeCalled),
     );
 

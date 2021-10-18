@@ -8,6 +8,7 @@ import {
   DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
@@ -56,13 +57,13 @@ describe('identify-all-possible-index-entries', () => {
           articleId: articleId2,
           groupId: supportedGroupIds[0],
           updated: laterDate,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
         {
           articleId: articleId1,
           groupId: supportedGroupIds[0],
           updated: earlierDate,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
       ]);
     });
@@ -127,12 +128,12 @@ describe('identify-all-possible-index-entries', () => {
         expect.objectContaining({
           groupId: supportedGroupIds[0],
           articleId: articleId1,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         }),
         expect.objectContaining({
           groupId: supportedGroupIds[1],
           articleId: articleId2,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[1].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[1]),
         }),
       ]));
     });

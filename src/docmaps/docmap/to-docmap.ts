@@ -5,6 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { Docmap } from './docmap-type';
 import { DocmapModel } from './generate-docmap-view-model';
+import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
 
 const createReviewArticleOutput = (
@@ -44,7 +45,7 @@ export const toDocmap = ({
     logo: `https://sciety.org${group.avatarPath}`,
     homepage: group.homepage,
     account: {
-      id: `https://sciety.org/groups/${group.slug}`,
+      id: publisherAccountId(group),
       service: 'https://sciety.org',
     },
   },

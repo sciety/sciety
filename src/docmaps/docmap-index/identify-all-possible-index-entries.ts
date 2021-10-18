@@ -12,6 +12,7 @@ import * as Doi from '../../types/doi';
 import { Group } from '../../types/group';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
+import { publisherAccountId } from '../docmap/publisher-account-id';
 
 export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
@@ -64,7 +65,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     ports.getGroup,
     TE.map((group) => ({
       ...incompleteEntry,
-      publisherAccountId: `https://sciety.org/groups/${group.slug}`,
+      publisherAccountId: publisherAccountId(group),
     })),
   )),
   TE.bimap(
