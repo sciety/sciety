@@ -20,7 +20,7 @@ type FilterByParams = (
 
 const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
-  group: tt.optionFromNullable(t.string),
+  publisheraccount: tt.optionFromNullable(t.string),
 });
 
 const toBadRequestResponse = (errors: Errors) => ({
@@ -28,7 +28,7 @@ const toBadRequestResponse = (errors: Errors) => ({
   status: StatusCodes.BAD_REQUEST,
 });
 
-const filterByGroup = (
+const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,
 ) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
   requestedPublisherAccountId,
@@ -59,10 +59,10 @@ export const filterByParams: FilterByParams = (query) => (entries) => pipe(
   paramsCodec.decode,
   E.bimap(
     toBadRequestResponse,
-    ({ group, updatedAfter }) => pipe(
+    ({ publisheraccount, updatedAfter }) => pipe(
       entries,
       filterByUpdatedAfter(updatedAfter),
-      filterByGroup(group),
+      filterByPublisherAccount(publisheraccount),
     ),
   ),
 );

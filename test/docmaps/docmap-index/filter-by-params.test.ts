@@ -65,7 +65,7 @@ describe('filter-by-params', () => {
 
     const result = pipe(
       allIndexEntries,
-      filterByParams({ group: `https://sciety.org/groups/${requestedGroup.slug}` }),
+      filterByParams({ publisheraccount: `https://sciety.org/groups/${requestedGroup.slug}` }),
       E.getOrElseW(shouldNotBeCalled),
     );
 
