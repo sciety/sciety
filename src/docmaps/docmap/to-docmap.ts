@@ -44,7 +44,7 @@ export const toDocmap = ({
     logo: `https://sciety.org${group.avatarPath}`,
     homepage: group.homepage,
     account: {
-      id: `https://sciety.org/groups/${group.id}`,
+      id: `https://sciety.org/groups/${group.slug}`,
       service: 'https://sciety.org',
     },
   },

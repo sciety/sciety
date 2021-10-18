@@ -45,7 +45,7 @@ describe('to-docmap', () => {
         logo: expect.stringContaining(group.avatarPath),
         homepage: group.homepage,
         account: {
-          id: expect.stringContaining(group.id),
+          id: expect.stringContaining(group.slug),
           service: 'https://sciety.org',
         },
       }));
