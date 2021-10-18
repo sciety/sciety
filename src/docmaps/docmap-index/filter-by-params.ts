@@ -7,12 +7,8 @@ import * as t from 'io-ts';
 import { Errors } from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { ErrorResponse } from './error-response';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-
-type ErrorResponse = {
-  body: { error: string },
-  status: StatusCodes,
-};
 
 type FilterByParams = (
   query: Record<string, unknown>

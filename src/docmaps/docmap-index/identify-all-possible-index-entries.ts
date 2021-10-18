@@ -6,6 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
+import { ErrorResponse } from './error-response';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
@@ -34,11 +35,6 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 
 export type Ports = {
   getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>,
-};
-
-type ErrorResponse = {
-  body: { error: string },
-  status: StatusCodes,
 };
 
 type IdentifyAllPossibleIndexEntries = (
