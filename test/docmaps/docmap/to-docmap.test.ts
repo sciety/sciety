@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -45,7 +46,7 @@ describe('to-docmap', () => {
         logo: expect.stringContaining(group.avatarPath),
         homepage: group.homepage,
         account: {
-          id: expect.stringContaining(group.slug),
+          id: publisherAccountId(group),
           service: 'https://sciety.org',
         },
       }));
