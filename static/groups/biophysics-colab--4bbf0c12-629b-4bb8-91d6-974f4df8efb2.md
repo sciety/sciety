@@ -1,8 +1,8 @@
 ## Summary
 
-Biophysics Colab is a collaboration of biophysicists whose goal is to improve the way in which original research is evaluated and disseminated. 
+Biophysics Colab is a collaboration of biophysicists whose goal is to improve the way in which original research is evaluated and disseminated.
 
-By combining the knowledge and expertise of the biophysics community with the principles of open science, Biophysics Colab provide an equitable, inclusive, and transparent environment for peer review. Their free service delivers constructive feedback on publicly available preprints so that researchers can form the best possible interpretation of their data. In the future, Biophysics Colab will launch a journal to endorse rigorous and robust studies in the form of articles. 
+By combining the knowledge and expertise of the biophysics community with the principles of open science, Biophysics Colab provide an equitable, inclusive, and transparent environment for peer review. Their free service delivers constructive feedback on publicly available preprints so that researchers can form the best possible interpretation of their data. In the future, Biophysics Colab will launch a journal to endorse rigorous and robust studies in the form of articles.
 
 Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add value and credibility to the scientific literature in a way that supports and benefits the scientific community. Their vision is of a publishing ecosystem in which research is judged by its intrinsic significance and not the venue in which it’s published.
 
@@ -15,20 +15,24 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 
 ## People
 
-- Kenton J Swartz
+- Kenton J Swartz (Curator-in-Chief)
 - Richard Aldrich
 - Sudha Chakrapani
 - Baron Chanda
+- Alexander T Chesler
+- Lucie Delemotte
 - José Faraldo-Gómez
 - Rachelle Gaudet
 - Teresa Giraldez
 - Sharona E Gordon
 - Inga Hänelt
 - Merritt Maduke
+- Medha M Pathak
 - Stephan A Pless
 - Janice L Robertson
 - Gary Rudnick
 - Renae M Ryan
+- Sotiria Tavoulari
 - William N Zagotta
 
 ## Content license
