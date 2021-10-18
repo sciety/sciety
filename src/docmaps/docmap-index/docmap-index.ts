@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import * as ER from './error-response';
 import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesPorts } from './identify-all-possible-index-entries';
 import { DomainEvent } from '../../domain-events';
@@ -32,11 +33,6 @@ const avoidRateLimitingWithDummyValues = (ports: Ports): Ports => ({
   }),
 });
 
-const toInternalServerErrorResponse = () => ({
-  body: { error: 'Internal server error while generating Docmaps' },
-  status: StatusCodes.INTERNAL_SERVER_ERROR,
-});
-
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
 
@@ -49,7 +45,7 @@ export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   TE.chainEitherK(filterByParams(query)),
   TE.chainW(flow(
     TE.traverseArray(generateDocmapViewModel(avoidRateLimitingWithDummyValues(ports))),
-    TE.mapLeft(toInternalServerErrorResponse),
+    TE.mapLeft(() => ER.internalServerError),
   )),
   TE.map(RA.map(toDocmap)),
   TE.map((docmaps) => ({

@@ -5,8 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { StatusCodes } from 'http-status-codes';
-import { ErrorResponse } from './error-response';
+import * as ER from './error-response';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
@@ -40,7 +39,7 @@ export type Ports = {
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
   ports: Ports,
-) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
+) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (
   supportedGroups,
@@ -65,10 +64,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     })),
   )),
   TE.bimap(
-    () => ({
-      body: { error: 'Internal server error while generating Docmaps' },
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-    }),
+    () => ER.internalServerError,
     flow(
       RA.sort(byDate),
       RA.uniq(eqEntry),
