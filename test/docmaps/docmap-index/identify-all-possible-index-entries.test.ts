@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
@@ -6,6 +8,7 @@ import {
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
+import { GroupId } from '../../../src/types/group-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -16,7 +19,14 @@ describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
   const defaultPorts = {
-    getGroup: () => TE.left(DE.notFound),
+    getGroup: (groupId: GroupId) => pipe(
+      supportedGroupIds,
+      RA.findIndex((eachGroupId) => eachGroupId === groupId),
+      O.fold(
+        () => TE.left(DE.notFound),
+        (groupIndex) => TE.right(supportedGroups[groupIndex]),
+      ),
+    ),
   };
 
   describe('when there are evaluated events by a supported group', () => {
@@ -38,7 +48,7 @@ describe('identify-all-possible-index-entries', () => {
       )();
     });
 
-    it.skip('returns a list of all the evaluated index entry models', () => {
+    it('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
         {
           articleId: articleId2,
@@ -109,7 +119,7 @@ describe('identify-all-possible-index-entries', () => {
       )();
     });
 
-    it.skip('excludes articles evaluated by the unsupported group', () => {
+    it('excludes articles evaluated by the unsupported group', () => {
       expect(result).toHaveLength(2);
       expect(result).toStrictEqual(expect.arrayContaining([
         expect.objectContaining({
