@@ -53,7 +53,7 @@ describe('filter-by-params', () => {
         articleId: arbitraryDoi(),
         groupId: requestedGroup.id,
         updated: arbitraryDate(),
-        publisherAccountId: arbitraryUri(),
+        publisherAccountId: `https://sciety.org/groups/${requestedGroup.slug}`,
       },
       {
         articleId: arbitraryDoi(),
@@ -69,7 +69,7 @@ describe('filter-by-params', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.skip('only returns entries by the corresponding group', () => {
+    it('only returns entries by the corresponding group', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           groupId: requestedGroup.id,

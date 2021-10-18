@@ -8,8 +8,6 @@ import { Errors } from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import * as GID from '../../types/group-id';
 
 type ErrorResponse = {
   body: { error: string },
@@ -22,7 +20,7 @@ type FilterByParams = (
 
 const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
-  group: tt.optionFromNullable(GroupIdFromString),
+  group: tt.optionFromNullable(t.string),
 });
 
 const toBadRequestResponse = (errors: Errors) => ({
@@ -31,14 +29,14 @@ const toBadRequestResponse = (errors: Errors) => ({
 });
 
 const filterByGroup = (
-  requestedGroupId: O.Option<GID.GroupId>,
+  requestedPublisherAccountId: O.Option<string>,
 ) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
-  requestedGroupId,
+  requestedPublisherAccountId,
   O.fold(
     () => indexEntries,
-    (groupId) => pipe(
+    (publisherAccountId) => pipe(
       indexEntries,
-      RA.filter((indexEntry) => indexEntry.groupId === groupId),
+      RA.filter((indexEntry) => indexEntry.publisherAccountId === publisherAccountId),
     ),
   ),
 );
