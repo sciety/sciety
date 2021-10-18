@@ -3,7 +3,7 @@ import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
@@ -58,10 +58,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     articleId,
     groupId,
     updated: date,
-    publisherAccountId: 'foo',
   })),
-  RA.sort(byDate),
-  RA.uniq(eqEntry),
   TE.traverseArray((incompleteEntry) => pipe(
     incompleteEntry.groupId,
     ports.getGroup,
@@ -70,8 +67,14 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
       publisherAccountId: `https://sciety.org/groups/${group.slug}`,
     })),
   )),
-  TE.mapLeft(() => ({
-    body: { error: 'Internal server error while generating Docmaps' },
-    status: StatusCodes.INTERNAL_SERVER_ERROR,
-  })),
+  TE.bimap(
+    () => ({
+      body: { error: 'Internal server error while generating Docmaps' },
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    }),
+    flow(
+      RA.sort(byDate),
+      RA.uniq(eqEntry),
+    ),
+  ),
 );
