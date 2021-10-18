@@ -7,11 +7,11 @@ import { StatusCodes } from 'http-status-codes';
 import {
   DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
+  Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
-import { GroupId } from '../../../src/types/group-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -21,8 +21,8 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
-  const defaultPorts = {
-    getGroup: (groupId: GroupId) => pipe(
+  const defaultPorts: Ports = {
+    getGroup: (groupId) => pipe(
       supportedGroupIds,
       RA.findIndex((eachGroupId) => eachGroupId === groupId),
       O.fold(
