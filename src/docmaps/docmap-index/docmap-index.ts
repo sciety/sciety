@@ -44,8 +44,9 @@ const supportedGroups = [ncrcGroupId, rapidReviewsGroupId];
 
 export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   ports.getAllEvents,
-  T.map(identifyAllPossibleIndexEntries(supportedGroups, ports)),
-  T.map(filterByParams(query)),
+  TE.rightTask,
+  TE.chain(identifyAllPossibleIndexEntries(supportedGroups, ports)),
+  TE.chainEitherK(filterByParams(query)),
   TE.chainW(flow(
     TE.traverseArray(generateDocmapViewModel(avoidRateLimitingWithDummyValues(ports))),
     TE.mapLeft(toInternalServerErrorResponse),

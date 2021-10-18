@@ -37,7 +37,7 @@ export type Ports = {
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
   ports: Ports,
-) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DocmapIndexEntryModel>;
+) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<never, ReadonlyArray<DocmapIndexEntryModel>>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (supportedGroups) => (events) => pipe(
   events,
@@ -51,4 +51,5 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   })),
   RA.sort(byDate),
   RA.uniq(eqEntry),
+  TE.right,
 );

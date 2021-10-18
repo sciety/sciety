@@ -1,7 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
-import { identifyAllPossibleIndexEntries } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
+import { pipe } from 'fp-ts/function';
+import {
+  DocmapIndexEntryModel,
+  identifyAllPossibleIndexEntries,
+} from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -23,8 +28,15 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId1, arbitraryReviewId(), earlierDate),
       groupEvaluatedArticle(supportedGroupIds[0], articleId2, arbitraryReviewId(), laterDate),
     ];
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it.skip('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
@@ -55,7 +67,15 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), middleDate),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it('returns a single index entry model', () => {
       expect(result).toHaveLength(1);
@@ -79,7 +99,15 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it.skip('excludes articles evaluated by the unsupported group', () => {
       expect(result).toHaveLength(2);
