@@ -1,7 +1,9 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import {
   DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
@@ -137,6 +139,28 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group cannot be fetched', () => {
-    it.todo('has no entries in the docmap index');
+    const events = [
+      groupEvaluatedArticle(supportedGroupIds[0], arbitraryDoi(), arbitraryReviewId()),
+    ];
+    let result: unknown;
+
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(
+          supportedGroupIds,
+          {
+            ...defaultPorts,
+            getGroup: () => TE.left(DE.notFound),
+          },
+        ),
+      )();
+    });
+
+    it('fails with an internal server error', () => {
+      expect(result).toStrictEqual(E.left(expect.objectContaining({
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+      })));
+    });
   });
 });
