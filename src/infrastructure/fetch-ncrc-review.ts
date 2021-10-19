@@ -59,6 +59,32 @@ const rowType = t.tuple([tuple([
   t.unknown, // W Subtopic_Tag
 ])]);
 
+const sheetType = t.array(tuple([
+  t.string, // A uuid
+  t.unknown, // B title_journal
+  t.string, // C Title
+  t.unknown, // D Topic
+  t.unknown, // E First Author
+  t.unknown, // F Date Published
+  t.unknown, // G link
+  t.string, // H Our Take
+  t.string, // I value_added
+  t.string, // J study_population_setting
+  t.string, // K main_findings
+  t.string, // L study_strength
+  t.string, // M limitations
+  t.unknown, // N (hidden)
+  t.unknown, // O journal
+  t.unknown, // P cross_post
+  t.unknown, // Q edit_finished
+  t.unknown, // R reviewer
+  t.unknown, // S edit_date
+  t.unknown, // T final_take_wordcount
+  t.unknown, // U compendium_feature
+  t.string, // V Study_Design
+  t.unknown, // W Subtopic_Tag
+]));
+
 const querySheet = (logger: Logger) => <A>(
   params: Params$Resource$Spreadsheets$Values$Get,
   decoder: t.Decoder<unknown, A>,
@@ -132,8 +158,29 @@ const getNcrcReview = (logger: Logger) => flow(
   )),
 );
 
-export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => flow(
-  getRowNumber(logger),
+const getSheet = (logger: Logger) => flow(
+  () => querySheet(logger)({
+    spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+    range: 'Sheet1!A:AF',
+  }, sheetType),
+  TE.map(
+    RA.map((row) => ({
+      uuid: row[0],
+      title: row[2],
+      ourTake: row[7],
+      studyDesign: row[21],
+      studyPopulationSetting: row[9],
+      mainFindings: row[10],
+      studyStrength: row[11],
+      limitations: row[12],
+      valueAdded: row[8],
+    })),
+  ),
+);
+
+export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
+  getSheet(logger)(),
+  TE.chain(() => getRowNumber(logger)(evaluationUuid)),
   TE.chainW(getNcrcReview(logger)),
   TE.map(constructNcrcReview),
 );
