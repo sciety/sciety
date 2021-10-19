@@ -77,27 +77,6 @@ describe('generate-docmap-view-model', () => {
     expect(result).toStrictEqual(expect.objectContaining({ group }));
   });
 
-  it('handles all article servers', async () => {
-    const findVersionsForArticleDoi = jest.fn().mockImplementation(
-      () => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
-    );
-    const server = arbitraryArticleServer();
-    const ports = {
-      ...defaultPorts,
-      findVersionsForArticleDoi,
-      fetchArticle: () => TE.right({ server }),
-    };
-    await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
-
-    expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
-  });
-
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierDate = new Date('1900');
     const laterDate = new Date('2000');
@@ -175,55 +154,26 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there is a single evaluation by the selected group', () => {
-    describe('when there are article versions', () => {
-      let result: DocmapModel;
-      const articleDate = arbitraryDate();
-      const ports: Ports = {
-        ...defaultPorts,
-        findVersionsForArticleDoi: () => TO.some([
-          {
-            source: new URL(arbitraryUri()),
-            occurredAt: articleDate,
-            version: 1,
-          },
-        ]),
-      };
+    let result: DocmapModel;
+    const ports = {
+      ...defaultPorts,
+      findVersionsForArticleDoi: () => TO.none,
+    };
 
-      beforeEach(async () => {
-        result = await pipe(
-          { articleId, groupId: indexedGroupId },
-          generateDocmapViewModel(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('returns the last version published date as the input published date', async () => {
-        expect(result.inputPublishedDate).toStrictEqual(O.some(articleDate));
-      });
+    beforeEach(async () => {
+      result = await pipe(
+        { articleId, groupId: indexedGroupId },
+        generateDocmapViewModel(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
-    describe('when there are no article versions', () => {
-      let result: DocmapModel;
-      const ports = {
-        ...defaultPorts,
-        findVersionsForArticleDoi: () => TO.none,
-      };
-
-      beforeEach(async () => {
-        result = await pipe(
-          { articleId, groupId: indexedGroupId },
-          generateDocmapViewModel(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('returns O.none for the input published date', async () => {
-        expect(result.inputPublishedDate).toStrictEqual(O.none);
-      });
+    it('returns O.none for the input published date', async () => {
+      expect(result.inputPublishedDate).toStrictEqual(O.none);
     });
   });
 
-  describe('when the group cant be retrieved', () => {
+  describe('when the group cannot be retrieved', () => {
     let result: E.Either<DE.DataError, DocmapModel>;
     const ports = {
       ...defaultPorts,

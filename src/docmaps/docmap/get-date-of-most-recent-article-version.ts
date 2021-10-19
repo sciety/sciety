@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -22,20 +21,6 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
-export const getDateOfMostRecentArticleVersion = (
-  ports: Ports, articleId: Doi,
-): TE.TaskEither<DE.DataError, O.Option<Date>> => pipe(
-  articleId,
-  ports.fetchArticle,
-  TE.chainW(({ server }) => pipe(
-    ports.findVersionsForArticleDoi(articleId, server),
-    TO.map(
-      (versions) => pipe(
-        versions,
-        RNEA.last,
-        (version) => version.occurredAt,
-      ),
-    ),
-    TE.rightTask,
-  )),
-);
+type GetDateOfMostRecentArticleVersion = (ports: Ports, articleId: Doi) => TE.TaskEither<DE.DataError, O.Option<Date>>;
+
+export const getDateOfMostRecentArticleVersion: GetDateOfMostRecentArticleVersion = () => TE.right(O.none);
