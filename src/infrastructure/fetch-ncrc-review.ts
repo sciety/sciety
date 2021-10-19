@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
-import { constructNcrcReview } from './construct-ncrc-review';
+import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import * as DE from '../types/data-error';
@@ -107,8 +107,19 @@ const getSheet = (logger: Logger) => flow(
   ),
 );
 
+type ExtendedNcrcReview = NcrcReview & { uuid: string };
+
+let cachedNcrcSheet: E.Either<DE.DataError, ReadonlyArray<ExtendedNcrcReview>>;
+
+const cachedGetSheet = (logger: Logger) => async () => {
+  if (!cachedNcrcSheet) {
+    cachedNcrcSheet = await getSheet(logger)()();
+  }
+  return cachedNcrcSheet;
+};
+
 export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
-  getSheet(logger)(),
+  cachedGetSheet(logger),
   TE.chainEitherKW(flow(
     RA.findFirst((row) => row.uuid === evaluationUuid),
     E.fromOption(() => DE.notFound),
