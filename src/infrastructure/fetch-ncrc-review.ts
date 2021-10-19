@@ -112,7 +112,7 @@ type ExtendedNcrcReview = NcrcReview & { uuid: string };
 let cachedNcrcSheet: E.Either<DE.DataError, ReadonlyArray<ExtendedNcrcReview>>;
 
 const cachedGetSheet = (logger: Logger) => async () => {
-  if (!cachedNcrcSheet) {
+  if (!cachedNcrcSheet || E.isLeft(cachedNcrcSheet)) {
     cachedNcrcSheet = await getSheet(logger)()();
   }
   return cachedNcrcSheet;
