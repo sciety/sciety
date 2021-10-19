@@ -5,9 +5,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleServer } from '../../types/article-server';
+import { getDateOfMostRecentArticleVersion, Ports as GetDateOfMostRecentArticleVersionPorts } from './get-date-of-most-recent-article-version';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -36,15 +35,6 @@ type GenerateDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
 
-type FindVersionsForArticleDoi = (
-  doi: Doi,
-  server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
-  source: URL,
-  occurredAt: Date,
-  version: number,
-}>>;
-
 type ReviewForArticle = {
   reviewId: ReviewId,
   groupId: GroupId,
@@ -55,12 +45,10 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError,
 
 type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
-export type Ports = {
+export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getGroup: GetGroup,
-  fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
 const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
@@ -85,21 +73,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
         E.fromOption(() => DE.notFound),
       )),
     ),
-    inputPublishedDate: pipe(
-      articleId,
-      ports.fetchArticle,
-      TE.chainW(({ server }) => pipe(
-        ports.findVersionsForArticleDoi(articleId, server),
-        TO.map(
-          (versions) => pipe(
-            versions,
-            RNEA.last,
-            (version) => version.occurredAt,
-          ),
-        ),
-        TE.rightTask,
-      )),
-    ),
+    inputPublishedDate: getDateOfMostRecentArticleVersion(ports, articleId),
     group: pipe(
       groupId,
       ports.getGroup,
