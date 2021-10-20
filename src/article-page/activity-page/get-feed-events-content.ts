@@ -80,7 +80,7 @@ const reviewToFeedItem = (
       getReview,
       TE.match(
         () => ({
-          url: RI.inferredUrl(feedEvent.reviewId),
+          url: RI.inferredSourceUrl(feedEvent.reviewId),
           fullText: O.none,
         }),
         (review) => ({

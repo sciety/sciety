@@ -11,7 +11,7 @@ import {
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
-import { inferredUrl, ReviewId } from '../../../src/types/review-id';
+import { inferredSourceUrl, ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
@@ -121,7 +121,7 @@ describe('generate-docmap-view-model', () => {
       },
     ];
     const sourceUrl = pipe(
-      inferredUrl(reviewIdWithInferrableSourceUrl),
+      inferredSourceUrl(reviewIdWithInferrableSourceUrl),
       O.getOrElseW(shouldNotBeCalled),
     );
     let result: DocmapModel;
