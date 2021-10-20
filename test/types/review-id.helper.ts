@@ -10,7 +10,7 @@ const arbitraryHypothesisAnnotationId = (): ReviewId => (
   `hypothesis:${arbitraryWord(20)}` as ReviewId
 );
 
-const arbitraryNcrcId = (): ReviewId => (
+export const arbitraryNcrcId = (): ReviewId => (
   `ncrc:${v4()}` as ReviewId
 );
 

@@ -18,7 +18,7 @@ import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryDoi();
@@ -118,7 +118,36 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when we cannot infer a source URL for the reviews', () => {
-    it.todo('obtains the source URL by calling the port');
+    const reviewIdWithUninferrableSourceUrl = arbitraryNcrcId();
+    const reviews = [
+      {
+        reviewId: reviewIdWithUninferrableSourceUrl,
+        groupId: indexedGroupId,
+        occurredAt: arbitraryDate(),
+      },
+    ];
+    const sourceUrl = new URL(arbitraryUri());
+    let result: DocmapModel;
+
+    beforeEach(async () => {
+      const ports = {
+        ...defaultPorts,
+        fetchReview: () => TE.right({ url: sourceUrl }),
+        findReviewsForArticleDoi: () => TE.right(reviews),
+      };
+      result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('obtains the source URL by calling the port', () => {
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          sourceUrl,
+        }),
+      ]);
+    });
   });
 
   describe('when there are no evaluations by the selected group', () => {
