@@ -167,18 +167,20 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      const passingReviewId = arbitraryNcrcId();
+      const failingReviewId = arbitraryNcrcId();
       const reviews = [
-        review(indexedGroupId, arbitraryDate(), passingReviewId),
-        review(indexedGroupId, arbitraryDate(), arbitraryNcrcId()),
+        review(indexedGroupId, arbitraryDate(), arbitraryReviewId()),
+        review(indexedGroupId, arbitraryDate(), failingReviewId),
       ];
       response = await pipe(
         generateDocmaps({
           ...defaultPorts,
           findReviewsForArticleDoi: () => TE.right(reviews),
-          fetchReview: (id: ReviewId) => (id === passingReviewId
-            ? TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
-            : TE.left(DE.notFound)),
+          fetchReview: (id: ReviewId) => (
+            id === failingReviewId
+            ? TE.left(DE.notFound)
+            : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+          ),
           getAllEvents: T.of([
             groupEvaluatedArticle(ncrcGroupId, articleId, reviews[0].reviewId),
             groupEvaluatedArticle(ncrcGroupId, articleId, reviews[1].reviewId),
