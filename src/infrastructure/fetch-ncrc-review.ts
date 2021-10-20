@@ -107,15 +107,15 @@ const getSheet = (logger: Logger) => flow(
   ),
 );
 
-type ExtendedNcrcReview = NcrcReview & { uuid: string };
+type FindableNcrcReview = NcrcReview & { uuid: string };
 
-let cachedNcrcSheet: Promise<E.Either<DE.DataError, ReadonlyArray<ExtendedNcrcReview>>>;
+let cache: Promise<E.Either<DE.DataError, ReadonlyArray<FindableNcrcReview>>>;
 
-const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<ExtendedNcrcReview>> => async () => {
-  if (cachedNcrcSheet === undefined || E.isLeft(await cachedNcrcSheet)) {
-    cachedNcrcSheet = getSheet(logger)()();
+const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
+  if (cache === undefined || E.isLeft(await cache)) {
+    cache = getSheet(logger)()();
   }
-  return cachedNcrcSheet;
+  return cache;
 };
 
 export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
