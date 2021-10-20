@@ -178,8 +178,8 @@ describe('generate-docmaps', () => {
           findReviewsForArticleDoi: () => TE.right(reviews),
           fetchReview: (id: ReviewId) => (
             id === failingReviewId
-            ? TE.left(DE.notFound)
-            : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+              ? TE.left(DE.notFound)
+              : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
           ),
           getAllEvents: T.of([
             groupEvaluatedArticle(ncrcGroupId, articleId, reviews[0].reviewId),
