@@ -113,6 +113,14 @@ describe('generate-docmap-view-model', () => {
     });
   });
 
+  describe('when we can infer a source URL for the reviews', () => {
+    it.todo('returns the inferred source URL rather than calling the port');
+  });
+
+  describe('when we cannot infer a source URL for the reviews', () => {
+    it.todo('obtains the source URL by calling the port');
+  });
+
   describe('when there are no evaluations by the selected group', () => {
     it('returns an E.left of not-found', async () => {
       const ports = {
