@@ -11,14 +11,14 @@ import {
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
-import { ReviewId } from '../../../src/types/review-id';
+import { inferredUrl, ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryNcrcId, arbitraryReviewDoi, arbitraryReviewId } from '../../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryDoi();
@@ -111,8 +111,40 @@ describe('generate-docmap-view-model', () => {
     });
   });
 
-  describe('when we can infer a source URL for the reviews', () => {
-    it.todo('returns the inferred source URL rather than calling the port');
+  describe.skip('when we can infer a source URL for the reviews', () => {
+    const reviewIdWithInferrableSourceUrl = arbitraryReviewDoi();
+    const reviews = [
+      {
+        reviewId: reviewIdWithInferrableSourceUrl,
+        groupId: indexedGroupId,
+        occurredAt: arbitraryDate(),
+      },
+    ];
+    const sourceUrl = pipe(
+      inferredUrl(reviewIdWithInferrableSourceUrl),
+      O.getOrElseW(shouldNotBeCalled),
+    );
+    let result: DocmapModel;
+
+    beforeEach(async () => {
+      const ports = {
+        ...defaultPorts,
+        fetchReview: shouldNotBeCalled,
+        findReviewsForArticleDoi: () => TE.right(reviews),
+      };
+      result = await pipe(
+        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns the inferred source URL rather than calling the port', () => {
+      expect(result.evaluations).toStrictEqual([
+        expect.objectContaining({
+          sourceUrl,
+        }),
+      ]);
+    });
   });
 
   describe('when we cannot infer a source URL for the reviews', () => {
