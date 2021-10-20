@@ -97,17 +97,15 @@ describe('generate-docmap-view-model', () => {
       )();
     });
 
-    it('returns all evaluations, checking all values that the type dictates', () => {
+    it('returns all evaluations', () => {
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
           occurredAt: earlierDate,
           reviewId: reviews[0].reviewId,
-          sourceUrl: new URL(`https://reviews.example.com/${reviews[0].reviewId}`),
         }),
         expect.objectContaining({
           occurredAt: laterDate,
           reviewId: reviews[1].reviewId,
-          sourceUrl: new URL(`https://reviews.example.com/${reviews[1].reviewId}`),
         }),
       ]);
     });
