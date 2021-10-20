@@ -109,11 +109,11 @@ const getSheet = (logger: Logger) => flow(
 
 type ExtendedNcrcReview = NcrcReview & { uuid: string };
 
-let cachedNcrcSheet: E.Either<DE.DataError, ReadonlyArray<ExtendedNcrcReview>>;
+let cachedNcrcSheet: Promise<E.Either<DE.DataError, ReadonlyArray<ExtendedNcrcReview>>>;
 
-const cachedGetSheet = (logger: Logger) => async () => {
-  if (!cachedNcrcSheet || E.isLeft(cachedNcrcSheet)) {
-    cachedNcrcSheet = await getSheet(logger)()();
+const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<ExtendedNcrcReview>> => async () => {
+  if (cachedNcrcSheet === undefined || E.isLeft(await cachedNcrcSheet)) {
+    cachedNcrcSheet = getSheet(logger)()();
   }
   return cachedNcrcSheet;
 };
