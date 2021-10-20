@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -26,13 +25,6 @@ type DocmapIndex = (ports: Ports) => (query: Record<string, unknown>) => T.Task<
   status: StatusCodes,
 }>;
 
-const avoidRateLimitingWithDummyValues = (ports: Ports): Ports => ({
-  ...ports,
-  fetchReview: () => TE.right({
-    url: new URL(`https://example.com/source-url-of-evaluation-${Math.random()}`),
-  }),
-});
-
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
 const peerJGroupId = GID.fromValidatedString('53ed5364-a016-11ea-bb37-0242ac130002');
 const preLightsGroupId = GID.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2');
@@ -53,7 +45,7 @@ export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   TE.chain(identifyAllPossibleIndexEntries(supportedGroups, ports)),
   TE.chainEitherK(filterByParams(query)),
   TE.chainW(flow(
-    TE.traverseArray(generateDocmapViewModel(avoidRateLimitingWithDummyValues(ports))),
+    TE.traverseArray(generateDocmapViewModel(ports)),
     TE.mapLeft(() => ER.internalServerError),
   )),
   TE.map(RA.map(toDocmap)),
