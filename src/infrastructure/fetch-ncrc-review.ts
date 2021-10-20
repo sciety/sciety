@@ -92,7 +92,7 @@ type FindableNcrcReview = NcrcReview & { uuid: string };
 const getSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-    range: 'Sheet1!A:AF',
+    range: 'Sheet1!A:X',
   }, ncrcSheet),
   TE.map(
     RA.map((row) => ({
