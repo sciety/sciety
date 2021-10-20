@@ -11,7 +11,7 @@ import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
-import { ReviewId } from '../../types/review-id';
+import { inferredUrl, ReviewId } from '../../types/review-id';
 
 export type DocmapModel = {
   articleId: Doi,
@@ -53,11 +53,21 @@ export type Ports = GetDateOfMostRecentArticleVersionPorts & {
 
 const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
   review.reviewId,
-  ports.fetchReview,
-  TE.map((fetchedReview) => ({
-    ...review,
-    sourceUrl: fetchedReview.url,
-  })),
+  inferredUrl,
+  O.fold(
+    () => pipe(
+      review.reviewId,
+      ports.fetchReview,
+      TE.map((fetchedReview) => ({
+        ...review,
+        sourceUrl: fetchedReview.url,
+      })),
+    ),
+    (sourceUrl) => TE.right({
+      ...review,
+      sourceUrl,
+    }),
+  ),
 );
 
 export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ articleId, groupId }) => pipe(

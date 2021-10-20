@@ -19,7 +19,7 @@ import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryDoi();
@@ -167,7 +167,7 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      const passingReviewId = arbitraryReviewId();
+      const passingReviewId = arbitraryNcrcId();
       response = await pipe(
         generateDocmaps({
           ...defaultPorts,
@@ -176,7 +176,7 @@ describe('generate-docmaps', () => {
             : TE.left(DE.notFound)),
           getAllEvents: T.of([
             groupEvaluatedArticle(ncrcGroupId, articleId, passingReviewId),
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryNcrcId()),
           ]),
         })(articleId.value),
       )();

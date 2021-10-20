@@ -111,7 +111,7 @@ describe('generate-docmap-view-model', () => {
     });
   });
 
-  describe.skip('when we can infer a source URL for the reviews', () => {
+  describe('when we can infer a source URL for the reviews', () => {
     const reviewIdWithInferrableSourceUrl = arbitraryReviewDoi();
     const reviews = [
       {
