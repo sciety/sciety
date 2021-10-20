@@ -87,8 +87,10 @@ const querySheet = (logger: Logger) => <A>(
   );
 };
 
-const getSheet = (logger: Logger) => flow(
-  () => querySheet(logger)({
+type FindableNcrcReview = NcrcReview & { uuid: string };
+
+const getSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => pipe(
+  querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: 'Sheet1!A:AF',
   }, ncrcSheet),
@@ -107,13 +109,11 @@ const getSheet = (logger: Logger) => flow(
   ),
 );
 
-type FindableNcrcReview = NcrcReview & { uuid: string };
-
 let cache: Promise<E.Either<DE.DataError, ReadonlyArray<FindableNcrcReview>>>;
 
 const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
   if (cache === undefined || E.isLeft(await cache)) {
-    cache = getSheet(logger)()();
+    cache = getSheet(logger)();
   }
   return cache;
 };
