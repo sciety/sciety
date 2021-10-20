@@ -94,6 +94,10 @@ const getSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<Fin
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: 'Sheet1!A2:X',
   }, ncrcSheet),
+  TE.map((rows) => {
+    logger('debug', 'Fetched NCRC Google Sheet', { rowNumber: rows.length });
+    return rows;
+  }),
   TE.map(
     RA.map((row) => ({
       uuid: row[0],
