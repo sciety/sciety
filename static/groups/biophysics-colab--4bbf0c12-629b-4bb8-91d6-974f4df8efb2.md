@@ -16,7 +16,7 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 ## People
 
 - Kenton J Swartz (Curator-in-Chief)
-- Richard Aldrich
+- Richard W Aldrich
 - Sudha Chakrapani
 - Baron Chanda
 - Alexander T Chesler
