@@ -190,10 +190,11 @@ describe('to-docmap', () => {
       describe('each action', () => {
         it.skip('contains a single anonymous person actor as the participants', () => {
           expect(result.steps[firstStep].actions[0].participants).toStrictEqual([{
-            actor: {
-              name: 'anonymous',
-              type: 'person',
-            },
+            actor: { name: 'anonymous', type: 'person' },
+            role: 'peer-reviewer',
+          }]);
+          expect(result.steps[firstStep].actions[1].participants).toStrictEqual([{
+            actor: { name: 'anonymous', type: 'person' },
             role: 'peer-reviewer',
           }]);
         });
