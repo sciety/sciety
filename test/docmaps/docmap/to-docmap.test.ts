@@ -221,18 +221,13 @@ describe('to-docmap', () => {
           });
 
           it('links to the original source of the evaluation', () => {
-            const contentValues = pipe(
-              result.steps[firstStep].actions[0].outputs,
-              RA.map((output) => output.content),
-            );
-
-            expect(contentValues[0]).toStrictEqual(
+            expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://reviews.example.com/${earlierReviewId}`,
               }]),
             );
-            expect(contentValues[1]).toStrictEqual(
+            expect(result.steps[firstStep].actions[1].outputs[0].content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://reviews.example.com/${laterReviewId}`,
