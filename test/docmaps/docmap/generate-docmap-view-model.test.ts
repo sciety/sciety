@@ -27,6 +27,7 @@ const review = (groupId: GroupId, date: Date) => ({
   reviewId: arbitraryReviewId(),
   groupId,
   occurredAt: date,
+  authors: [],
 });
 
 const defaultPorts: Ports = {
@@ -118,6 +119,7 @@ describe('generate-docmap-view-model', () => {
         reviewId: reviewIdWithInferrableSourceUrl,
         groupId: indexedGroupId,
         occurredAt: arbitraryDate(),
+        authors: [],
       },
     ];
     const sourceUrl = pipe(
@@ -154,6 +156,7 @@ describe('generate-docmap-view-model', () => {
         reviewId: reviewIdWithUninferrableSourceUrl,
         groupId: indexedGroupId,
         occurredAt: arbitraryDate(),
+        authors: [],
       },
     ];
     const sourceUrl = new URL(arbitraryUri());

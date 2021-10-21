@@ -55,6 +55,7 @@ describe('docmap-index', () => {
           reviewId: arbitraryReviewId(),
           groupId,
           occurredAt: date,
+          authors: [],
         });
         const ports = {
           getAllEvents: T.of([

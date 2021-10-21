@@ -36,6 +36,7 @@ type ReviewForArticle = {
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
+  authors: ReadonlyArray<string>,
 };
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<ReviewForArticle>>;
@@ -48,7 +49,7 @@ export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   getGroup: GetGroup,
 };
 
-const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle & { authors: ReadonlyArray<string> }) => pipe(
+const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
   review.reviewId,
   inferredSourceUrl,
   O.fold(

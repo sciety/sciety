@@ -30,6 +30,7 @@ describe('generate-docmaps', () => {
     reviewId,
     groupId,
     occurredAt: date,
+    authors: [],
   });
   const defaultPorts = {
     fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
