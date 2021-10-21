@@ -1,9 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { ReviewId } from '../../../src/types/review-id';
@@ -205,14 +202,17 @@ describe('to-docmap', () => {
         });
 
         describe.skip('the output', () => {
+          const outputOfAction0 = result.steps[firstStep].actions[0].outputs[0];
+          const outputOfAction1 = result.steps[firstStep].actions[1]?.outputs[0];
+
           it('links to the evaluation on sciety', () => {
-            expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(
+            expect(outputOfAction0.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
               }]),
             );
-            expect(result.steps[firstStep].actions[1].outputs[0].content).toStrictEqual(
+            expect(outputOfAction1.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
@@ -221,13 +221,13 @@ describe('to-docmap', () => {
           });
 
           it('links to the original source of the evaluation', () => {
-            expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(
+            expect(outputOfAction0.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://reviews.example.com/${earlierReviewId}`,
               }]),
             );
-            expect(result.steps[firstStep].actions[1].outputs[0].content).toStrictEqual(
+            expect(outputOfAction1.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://reviews.example.com/${laterReviewId}`,
@@ -236,18 +236,13 @@ describe('to-docmap', () => {
           });
 
           it('has published date of corresponding evaluation', () => {
-            expect(pipe(
-              result.steps[firstStep].actions[0].outputs,
-              RA.map((output) => output.published),
-            )).toStrictEqual([earlierDate.toISOString(), laterDate.toISOString()]);
+            expect(outputOfAction0.published).toStrictEqual(earlierDate.toISOString());
+            expect(outputOfAction1.published).toStrictEqual(laterDate.toISOString());
           });
 
           it('has a fixed content field that always has the value `review-article`', () => {
-            expect(pipe(
-              result.steps[firstStep].actions[0].outputs,
-              RA.map((output) => output.type),
-              RA.uniq(S.Eq),
-            )).toStrictEqual(['review-article']);
+            expect(outputOfAction0.type).toStrictEqual('review-article');
+            expect(outputOfAction1.type).toStrictEqual('review-article');
           });
         });
       });
