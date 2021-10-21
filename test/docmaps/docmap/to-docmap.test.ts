@@ -5,7 +5,7 @@ import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
-import { arbitraryDate, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -142,6 +142,7 @@ describe('to-docmap', () => {
     const earlierReviewId = arbitraryReviewId();
     const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
+    const authorName = arbitraryString();
     const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
       {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
@@ -153,7 +154,7 @@ describe('to-docmap', () => {
         sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
         reviewId: laterReviewId,
         occurredAt: laterDate,
-        authors: [],
+        authors: [authorName],
       },
     ];
     const result = toDocmap({
@@ -194,9 +195,9 @@ describe('to-docmap', () => {
         const action0 = theStep.actions[0];
         const action1 = theStep.actions[1];
 
-        it('contains a single anonymous person actor as the participants', () => {
+        it('contains a single person actor as the participants', () => {
           expect(action0.participants[0].actor.name).toStrictEqual(anonymous);
-          expect(action1.participants[0].actor.name).toStrictEqual(anonymous);
+          expect(action1.participants[0].actor.name).toStrictEqual(authorName);
         });
 
         it('has a single output', () => {

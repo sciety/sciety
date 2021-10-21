@@ -11,9 +11,13 @@ import { Doi } from '../../types/doi';
 import * as RI from '../../types/review-id';
 
 const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
-  participants: [
-    peerReviewer(anonymous),
-  ],
+  participants: pipe(
+    evaluation.authors,
+    RA.match(
+      () => [peerReviewer(anonymous)],
+      RA.map(peerReviewer),
+    ),
+  ),
   outputs: [
     {
       type: 'review-article' as const,
