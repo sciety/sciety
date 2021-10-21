@@ -199,7 +199,10 @@ describe('to-docmap', () => {
           }]);
         });
 
-        it.todo('has a single output');
+        it.skip('has a single output', () => {
+          expect(result.steps[firstStep].actions[0].outputs).toHaveLength(1);
+          expect(result.steps[firstStep].actions[1].outputs).toHaveLength(1);
+        });
 
         describe.skip('the output', () => {
           it('links to the evaluation on sciety', () => {
