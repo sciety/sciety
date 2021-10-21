@@ -164,13 +164,15 @@ describe('to-docmap', () => {
     });
 
     describe('the step', () => {
+      const theStep = result.steps[firstStep];
+
       it('has empty assertions', async () => {
-        expect(result.steps[firstStep].assertions).toStrictEqual([]);
+        expect(theStep.assertions).toStrictEqual([]);
       });
 
       describe('the inputs', () => {
         it('include the uri and doi', async () => {
-          expect(result.steps[firstStep].inputs).toStrictEqual([
+          expect(theStep.inputs).toStrictEqual([
             expect.objectContaining(
               {
                 doi: articleId.value,
@@ -181,29 +183,32 @@ describe('to-docmap', () => {
       });
 
       it('has one action per evaluation', () => {
-        expect(result.steps[firstStep].actions).toHaveLength(evaluations.length);
+        expect(theStep.actions).toHaveLength(evaluations.length);
       });
 
       describe('each action', () => {
+        const action0 = theStep.actions[0];
+        const action1 = theStep.actions[1];
+
         it('contains a single anonymous person actor as the participants', () => {
-          expect(result.steps[firstStep].actions[0].participants).toStrictEqual([{
+          expect(action0.participants).toStrictEqual([{
             actor: { name: 'anonymous', type: 'person' },
             role: 'peer-reviewer',
           }]);
-          expect(result.steps[firstStep].actions[1].participants).toStrictEqual([{
+          expect(action1.participants).toStrictEqual([{
             actor: { name: 'anonymous', type: 'person' },
             role: 'peer-reviewer',
           }]);
         });
 
         it('has a single output', () => {
-          expect(result.steps[firstStep].actions[0].outputs).toHaveLength(1);
-          expect(result.steps[firstStep].actions[1].outputs).toHaveLength(1);
+          expect(action0.outputs).toHaveLength(1);
+          expect(action1.outputs).toHaveLength(1);
         });
 
         describe('the output', () => {
-          const outputOfAction0 = result.steps[firstStep].actions[0].outputs[0];
-          const outputOfAction1 = result.steps[firstStep].actions[1].outputs[0];
+          const outputOfAction0 = action0.outputs[0];
+          const outputOfAction1 = action1.outputs[0];
 
           it('links to the evaluation on sciety', () => {
             expect(outputOfAction0.content).toStrictEqual(
