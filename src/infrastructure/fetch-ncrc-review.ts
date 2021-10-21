@@ -28,6 +28,7 @@ type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
 }>;
 const tuple: TupleFn = t.tuple as never;
 
+// row array can be shorter if end column(s) are empty, so response will be shorter: a tuple is wrong in this case
 const ncrcSheet = t.array(tuple([
   t.string, // A uuid
   t.unknown, // B title_journal
@@ -77,6 +78,7 @@ const querySheet = (logger: Logger) => <A>(
     ),
     TE.chainEitherKW((res) => pipe(
       res?.data?.values,
+      // implication: if any of the rows don't match the codec we fail the whole sheet
       decoder.decode,
       E.mapLeft(PR.failure),
       E.mapLeft((errors) => {
