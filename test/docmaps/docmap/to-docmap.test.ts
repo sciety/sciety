@@ -36,6 +36,19 @@ describe('to-docmap', () => {
     });
 
     describe('the docmap id', () => {
+      const anotherDocmap = toDocmap({
+        articleId,
+        group,
+        inputPublishedDate: O.none,
+        evaluations: [
+          {
+            sourceUrl: new URL(arbitraryUri()),
+            reviewId: arbitraryReviewId(),
+            occurredAt: arbitraryDate(),
+          },
+        ],
+      });
+
       it('is a valid URL', () => {
         expect(new URL(result.id).hostname).toBe('sciety.org');
       });
@@ -48,7 +61,9 @@ describe('to-docmap', () => {
         expect(result.id).toContain(group.slug);
       });
 
-      it.todo('is the same for all docmaps generated with a given article id and group');
+      it('is the same for all docmaps generated with a given article id and group', () => {
+        expect(anotherDocmap.id).toStrictEqual(result.id);
+      });
     });
 
     it('includes the publisher properties', async () => {
