@@ -36,7 +36,9 @@ describe('to-docmap', () => {
     });
 
     describe('the docmap id', () => {
-      it.todo('is a valid URL');
+      it('is a valid URL', () => {
+        expect(new URL(result.id).hostname).toBe('sciety.org');
+      });
 
       it('includes the article id', () => {
         expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
