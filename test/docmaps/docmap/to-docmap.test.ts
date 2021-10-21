@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { anonymous } from '../../../src/docmaps/docmap/anonymous-reviewer';
+import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';

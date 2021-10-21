@@ -1,12 +1,11 @@
 import { Participant } from './docmap-type';
 
-// ts-unused-exports:disable-next-line
 export const anonymous = 'anonymous';
 
-export const anonymousReviewer: Participant = {
+export const peerReviewer = (name: string): Participant => ({
   actor: {
-    name: anonymous,
+    name,
     type: 'person',
   },
   role: 'peer-reviewer',
-};
+});
