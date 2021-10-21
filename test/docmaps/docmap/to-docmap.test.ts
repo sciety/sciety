@@ -35,8 +35,16 @@ describe('to-docmap', () => {
       ],
     });
 
-    it('includes the article id in the url used as the docmap id', () => {
-      expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
+    describe('the docmap id', () => {
+      it.todo('is a valid URL');
+
+      it('includes the article id', () => {
+        expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
+      });
+
+      it.todo('includes the group slug');
+
+      it.todo('is the same for all docmaps generated with a given article id and group');
     });
 
     it('includes the publisher properties', async () => {
