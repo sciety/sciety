@@ -206,18 +206,13 @@ describe('to-docmap', () => {
 
         describe.skip('the output', () => {
           it('links to the evaluation on sciety', () => {
-            const contentValues = pipe(
-              result.steps[firstStep].actions[0].outputs,
-              RA.map((output) => output.content),
-            );
-
-            expect(contentValues[0]).toStrictEqual(
+            expect(result.steps[firstStep].actions[0].outputs[0].content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
               }]),
             );
-            expect(contentValues[1]).toStrictEqual(
+            expect(result.steps[firstStep].actions[1].outputs[0].content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
