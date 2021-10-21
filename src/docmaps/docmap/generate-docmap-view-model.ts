@@ -48,7 +48,7 @@ export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   getGroup: GetGroup,
 };
 
-const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
+const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle & { authors: ReadonlyArray<string> }) => pipe(
   review.reviewId,
   inferredSourceUrl,
   O.fold(
@@ -74,6 +74,10 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
       articleId,
       ports.findReviewsForArticleDoi,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
+      TE.map(RA.map((ev) => ({
+        ...ev,
+        authors: [],
+      }))),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,

@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
+import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -26,11 +26,13 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: earlierDate,
+          authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: laterDate,
+          authors: [],
         },
       ],
     });
@@ -45,6 +47,7 @@ describe('to-docmap', () => {
             sourceUrl: new URL(arbitraryUri()),
             reviewId: arbitraryReviewId(),
             occurredAt: arbitraryDate(),
+            authors: [],
           },
         ],
       });
@@ -99,6 +102,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: arbitraryDate(),
+          authors: [],
         },
       ],
     });
@@ -120,6 +124,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: arbitraryDate(),
+          authors: [],
         },
       ],
     });
@@ -142,11 +147,13 @@ describe('to-docmap', () => {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
         reviewId: earlierReviewId,
         occurredAt: earlierDate,
+        authors: [],
       },
       {
         sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
         reviewId: laterReviewId,
         occurredAt: laterDate,
+        authors: [],
       },
     ];
     const result = toDocmap({
