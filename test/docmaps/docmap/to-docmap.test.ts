@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { anonymousReviewer } from '../../../src/docmaps/docmap/anonymous-reviewer';
+import { anonymous } from '../../../src/docmaps/docmap/anonymous-reviewer';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
@@ -188,8 +188,8 @@ describe('to-docmap', () => {
         const action1 = theStep.actions[1];
 
         it('contains a single anonymous person actor as the participants', () => {
-          expect(action0.participants).toStrictEqual([anonymousReviewer]);
-          expect(action1.participants).toStrictEqual([anonymousReviewer]);
+          expect(action0.participants[0].actor.name).toStrictEqual(anonymous);
+          expect(action1.participants[0].actor.name).toStrictEqual(anonymous);
         });
 
         it('has a single output', () => {

@@ -10,11 +10,7 @@ import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
 import * as RI from '../../types/review-id';
 
-const createAction = (
-  articleId: Doi,
-) => (
-  evaluation: Evaluation,
-) => ({
+const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
   participants: [
     anonymousReviewer,
   ],
