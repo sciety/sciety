@@ -8,13 +8,14 @@ import { Docmap } from './docmap-type';
 import { DocmapModel } from './generate-docmap-view-model';
 import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
+import * as RI from '../../types/review-id';
 
 const createAction = (
   articleId: Doi,
 ) => (
   evaluation: {
     occurredAt: Date,
-    reviewId: string,
+    reviewId: RI.ReviewId,
     sourceUrl: URL,
   },
 ) => ({
@@ -32,7 +33,7 @@ const createAction = (
         },
         {
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
+          url: `https://sciety.org/articles/activity/${articleId.value}#${RI.serialize(evaluation.reviewId)}`,
         },
       ],
     },
