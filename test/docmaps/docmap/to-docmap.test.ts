@@ -1,10 +1,12 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
+import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -137,22 +139,27 @@ describe('to-docmap', () => {
     const earlierReviewId = arbitraryReviewId();
     const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
+    const evaluations: RNEA.ReadonlyNonEmptyArray<{
+      occurredAt: Date,
+      reviewId: ReviewId,
+      sourceUrl: URL,
+    }> = [
+      {
+        sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
+        reviewId: earlierReviewId,
+        occurredAt: earlierDate,
+      },
+      {
+        sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
+        reviewId: laterReviewId,
+        occurredAt: laterDate,
+      },
+    ];
     const result = toDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.none,
-      evaluations: [
-        {
-          sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
-          reviewId: earlierReviewId,
-          occurredAt: earlierDate,
-        },
-        {
-          sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
-          reviewId: laterReviewId,
-          occurredAt: laterDate,
-        },
-      ],
+      evaluations,
     });
 
     it('returns a single step', () => {
@@ -176,7 +183,9 @@ describe('to-docmap', () => {
         });
       });
 
-      it.todo('has one action per evaluation');
+      it.skip('has one action per evaluation', () => {
+        expect(result.steps[firstStep].actions).toHaveLength(evaluations.length);
+      });
 
       describe('each action', () => {
         it.skip('contains a single anonymous person actor as the participants', () => {
