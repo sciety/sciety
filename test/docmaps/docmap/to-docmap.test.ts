@@ -2,9 +2,9 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { anonymousReviewer } from '../../../src/docmaps/docmap/anonymous-reviewer';
+import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
-import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -137,11 +137,7 @@ describe('to-docmap', () => {
     const earlierReviewId = arbitraryReviewId();
     const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
-    const evaluations: RNEA.ReadonlyNonEmptyArray<{
-      occurredAt: Date,
-      reviewId: ReviewId,
-      sourceUrl: URL,
-    }> = [
+    const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
       {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
         reviewId: earlierReviewId,

@@ -1,10 +1,10 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { anonymousReviewer } from './anonymous-reviewer';
 import { Docmap } from './docmap-type';
+import { Evaluation } from './evaluation';
 import { DocmapModel } from './generate-docmap-view-model';
 import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
@@ -13,11 +13,7 @@ import * as RI from '../../types/review-id';
 const createAction = (
   articleId: Doi,
 ) => (
-  evaluation: {
-    occurredAt: Date,
-    reviewId: RI.ReviewId,
-    sourceUrl: URL,
-  },
+  evaluation: Evaluation,
 ) => ({
   participants: [
     anonymousReviewer,

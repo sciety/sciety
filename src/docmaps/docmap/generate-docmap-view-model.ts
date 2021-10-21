@@ -6,6 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { Evaluation } from './evaluation';
 import { getDateOfMostRecentArticleVersion, Ports as GetDateOfMostRecentArticleVersionPorts } from './get-date-of-most-recent-article-version';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -17,11 +18,7 @@ export type DocmapModel = {
   articleId: Doi,
   group: Group,
   inputPublishedDate: O.Option<Date>,
-  evaluations: RNEA.ReadonlyNonEmptyArray<{
-    sourceUrl: URL,
-    reviewId: ReviewId,
-    occurredAt: Date,
-  }>,
+  evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation>,
 };
 
 type DocmapIdentifier = {
