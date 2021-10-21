@@ -8,7 +8,7 @@ import { DocmapModel } from './generate-docmap-view-model';
 import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
 
-const createReviewArticleOutput = (
+const createAction = (
   articleId: Doi,
 ) => (
   evaluation: {
@@ -17,16 +17,23 @@ const createReviewArticleOutput = (
     sourceUrl: URL,
   },
 ) => ({
-  type: 'review-article' as const,
-  published: evaluation.occurredAt.toISOString(),
-  content: [
+  participants: [
+    { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
+  ],
+  outputs: [
     {
-      type: 'web-page',
-      url: evaluation.sourceUrl.toString(),
-    },
-    {
-      type: 'web-page',
-      url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
+      type: 'review-article' as const,
+      published: evaluation.occurredAt.toISOString(),
+      content: [
+        {
+          type: 'web-page',
+          url: evaluation.sourceUrl.toString(),
+        },
+        {
+          type: 'web-page',
+          url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
+        },
+      ],
     },
   ],
 });
@@ -67,17 +74,10 @@ export const toDocmap = ({
           }],
         ),
       ),
-      actions: [
-        {
-          participants: [
-            { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
-          ],
-          outputs: pipe(
-            evaluations,
-            RA.map(createReviewArticleOutput(articleId)),
-          ),
-        },
-      ],
+      actions: pipe(
+        evaluations,
+        RA.map(createAction(articleId)),
+      ),
     },
   },
 });

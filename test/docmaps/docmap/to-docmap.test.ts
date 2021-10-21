@@ -180,12 +180,12 @@ describe('to-docmap', () => {
         });
       });
 
-      it.skip('has one action per evaluation', () => {
+      it('has one action per evaluation', () => {
         expect(result.steps[firstStep].actions).toHaveLength(evaluations.length);
       });
 
       describe('each action', () => {
-        it.skip('contains a single anonymous person actor as the participants', () => {
+        it('contains a single anonymous person actor as the participants', () => {
           expect(result.steps[firstStep].actions[0].participants).toStrictEqual([{
             actor: { name: 'anonymous', type: 'person' },
             role: 'peer-reviewer',
@@ -196,14 +196,14 @@ describe('to-docmap', () => {
           }]);
         });
 
-        it.skip('has a single output', () => {
+        it('has a single output', () => {
           expect(result.steps[firstStep].actions[0].outputs).toHaveLength(1);
           expect(result.steps[firstStep].actions[1].outputs).toHaveLength(1);
         });
 
-        describe.skip('the output', () => {
+        describe('the output', () => {
           const outputOfAction0 = result.steps[firstStep].actions[0].outputs[0];
-          const outputOfAction1 = result.steps[firstStep].actions[1]?.outputs[0];
+          const outputOfAction1 = result.steps[firstStep].actions[1].outputs[0];
 
           it('links to the evaluation on sciety', () => {
             expect(outputOfAction0.content).toStrictEqual(
