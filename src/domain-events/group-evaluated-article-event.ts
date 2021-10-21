@@ -8,6 +8,7 @@ export type GroupEvaluatedArticleEvent = Readonly<{
   groupId: GroupId,
   articleId: Doi,
   reviewId: ReviewId,
+  authors: ReadonlyArray<string>,
 }>;
 
 export const groupEvaluatedArticle = (
@@ -21,4 +22,5 @@ export const groupEvaluatedArticle = (
   groupId,
   articleId: doi,
   reviewId,
+  authors: [],
 });

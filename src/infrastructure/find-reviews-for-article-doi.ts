@@ -26,7 +26,7 @@ export const findReviewsForArticleDoi = (getAllEvents: GetAllEvents): FindReview
       reviewId: event.reviewId,
       groupId: event.groupId,
       occurredAt: event.date,
-      authors: [],
+      authors: event.authors,
     })),
   )),
   TE.rightTask,
