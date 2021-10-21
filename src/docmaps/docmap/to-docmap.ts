@@ -35,7 +35,7 @@ export const toDocmap = ({
   group, inputPublishedDate, evaluations, articleId,
 }: DocmapModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
-  id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
+  id: `https://sciety.org/docmaps/v1/articles/${articleId.value}/${group.slug}.docmap.json`,
   type: 'docmap',
   created: RNEA.head(evaluations).occurredAt.toISOString(),
   updated: RNEA.last(evaluations).occurredAt.toISOString(),

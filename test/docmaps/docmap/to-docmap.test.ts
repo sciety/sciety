@@ -41,10 +41,12 @@ describe('to-docmap', () => {
       });
 
       it('includes the article id', () => {
-        expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
+        expect(result.id).toContain(articleId.value);
       });
 
-      it.todo('includes the group slug');
+      it('includes the group slug', () => {
+        expect(result.id).toContain(group.slug);
+      });
 
       it.todo('is the same for all docmaps generated with a given article id and group');
     });
