@@ -39,8 +39,6 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
   url: URL,
 }>;
 
-export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
-
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
 export type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
