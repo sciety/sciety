@@ -54,9 +54,10 @@ export const fetchCrossrefArticle = (
         throw new Error('Empty response from Crossref');
       }
     } catch (error: unknown) {
-      const payload: Record<string, unknown> = {
+      const payload = {
         doi,
         error,
+        message: '',
       };
       let errorType: DE.DataError = DE.notFound;
       if (error instanceof Error) {
@@ -65,7 +66,7 @@ export const fetchCrossrefArticle = (
           errorType = DE.unavailable;
         }
       }
-      logger('error', 'Failed to fetch article', payload);
+      logger('error', `Failed to fetch article from Crossref: doi="${doi.value}", message="${payload.message}"`, payload);
       return E.left(errorType);
     }
 
