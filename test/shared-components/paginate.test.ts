@@ -29,12 +29,12 @@ describe('paginate', () => {
     });
 
     it('returns the current and total pages', () => {
-      expect(result.pageNumber).toStrictEqual(2);
-      expect(result.numberOfPages).toStrictEqual(3);
+      expect(result.pageNumber).toBe(2);
+      expect(result.numberOfPages).toBe(3);
     });
 
     it('returns the count of original items', () => {
-      expect(result.numberOfOriginalItems).toStrictEqual(3);
+      expect(result.numberOfOriginalItems).toBe(3);
     });
   });
 

@@ -82,7 +82,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('replaces avatar with a default image', async () => {
-      expect(viewModel.avatarUrl).toStrictEqual('/static/images/sciety-logo.jpg');
+      expect(viewModel.avatarUrl).toBe('/static/images/sciety-logo.jpg');
     });
 
     it('links to the group page about tab', async () => {

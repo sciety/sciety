@@ -35,7 +35,7 @@ describe('meta page acceptance criteria', () => {
     const doiLinkTarget = doiLink?.getAttribute('target');
     const readFullArticleLinkTarget = readFullArticleLink?.getAttribute('target');
 
-    expect(doiLinkTarget).toStrictEqual('_blank');
-    expect(readFullArticleLinkTarget).toStrictEqual('_blank');
+    expect(doiLinkTarget).toBe('_blank');
+    expect(readFullArticleLinkTarget).toBe('_blank');
   });
 });

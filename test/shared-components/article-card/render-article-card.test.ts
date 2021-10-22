@@ -40,8 +40,8 @@ describe('render-article-card', () => {
     const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
     const link = rendered.querySelector('a');
 
-    expect(link?.getAttribute('href')).toStrictEqual('/articles/activity/10.1101/1234');
-    expect(link?.textContent).toStrictEqual('The article title');
+    expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
+    expect(link?.textContent).toBe('The article title');
   });
 
   describe('latest version', () => {
@@ -57,7 +57,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isLatestVersionSpan),
         );
 
-        expect(versionSpan?.textContent).toStrictEqual('Latest version Jan 1, 1971');
+        expect(versionSpan?.textContent).toBe('Latest version Jan 1, 1971');
       });
     });
 
@@ -89,7 +89,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isLatestActivitySpan),
         );
 
-        expect(latestActivitySpan?.textContent).toStrictEqual('Latest activity Jan 1, 1971');
+        expect(latestActivitySpan?.textContent).toBe('Latest activity Jan 1, 1971');
       });
     });
 
@@ -121,7 +121,7 @@ describe('render-article-card', () => {
         const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
         const authors = rendered.querySelector(authorListSelector);
 
-        expect(authors?.tagName).toStrictEqual('OL');
+        expect(authors?.tagName).toBe('OL');
       });
 
       it('displays the authors as a list', () => {
@@ -161,7 +161,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
         );
 
-        expect(evaluationsSpan?.textContent).toStrictEqual('42 evaluations');
+        expect(evaluationsSpan?.textContent).toBe('42 evaluations');
       });
     });
 
@@ -175,7 +175,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
         );
 
-        expect(evaluationsSpan?.textContent).toStrictEqual('1 evaluation');
+        expect(evaluationsSpan?.textContent).toBe('1 evaluation');
       });
     });
 
@@ -189,7 +189,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
         );
 
-        expect(evaluationsSpan?.textContent).toStrictEqual('0 evaluations');
+        expect(evaluationsSpan?.textContent).toBe('0 evaluations');
       });
     });
   });

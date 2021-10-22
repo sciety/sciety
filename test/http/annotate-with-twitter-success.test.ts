@@ -5,7 +5,7 @@ describe('annotate-with-twitter-success', () => {
     it('adds the twitter login parameter', () => {
       const result = annotateWithTwitterSuccess('/foo');
 
-      expect(result).toStrictEqual('/foo?login_success=twitter');
+      expect(result).toBe('/foo?login_success=twitter');
     });
   });
 
@@ -13,7 +13,7 @@ describe('annotate-with-twitter-success', () => {
     it('adds the twitter login parameter', () => {
       const result = annotateWithTwitterSuccess('/foo?q=37');
 
-      expect(result).toStrictEqual('/foo?q=37&login_success=twitter');
+      expect(result).toBe('/foo?q=37&login_success=twitter');
     });
   });
 
@@ -21,7 +21,7 @@ describe('annotate-with-twitter-success', () => {
     it('adds the twitter login parameter only once', () => {
       const result = annotateWithTwitterSuccess('/foo?q=37&login_success=twitter');
 
-      expect(result).toStrictEqual('/foo?q=37&login_success=twitter');
+      expect(result).toBe('/foo?q=37&login_success=twitter');
     });
   });
 });

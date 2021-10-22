@@ -9,7 +9,7 @@ describe('doi', () => {
     expect(pipe(
       new Doi(doiSyntaxExample),
       (doi) => doi.value,
-    )).toStrictEqual('10.5281/zenodo.3678326');
+    )).toBe('10.5281/zenodo.3678326');
   });
 
   it('has a prefix', () => {

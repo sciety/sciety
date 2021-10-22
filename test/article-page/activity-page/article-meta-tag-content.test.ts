@@ -20,7 +20,7 @@ describe('article-meta-tag-content', () => {
       RFI.arbitrary(),
     ]);
 
-    expect(result.evaluationCount).toStrictEqual(2);
+    expect(result.evaluationCount).toBe(2);
   });
 
   it('ignores non-evaluation feed items', () => {
@@ -28,7 +28,7 @@ describe('article-meta-tag-content', () => {
       arbitraryArticleVersionFeedItem(),
     ]);
 
-    expect(result.evaluationCount).toStrictEqual(0);
+    expect(result.evaluationCount).toBe(0);
   });
 
   it('returns a latest version', () => {

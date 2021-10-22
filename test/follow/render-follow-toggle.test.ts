@@ -19,7 +19,7 @@ describe('render-follow-toggle', () => {
     it('announces the action', async () => {
       const ariaLabel = button?.getAttribute('aria-label');
 
-      expect(ariaLabel).toStrictEqual('Unfollow My Group');
+      expect(ariaLabel).toBe('Unfollow My Group');
     });
   });
 
@@ -37,7 +37,7 @@ describe('render-follow-toggle', () => {
     it('announces the action', async () => {
       const ariaLabel = button?.getAttribute('aria-label');
 
-      expect(ariaLabel).toStrictEqual('Follow My Group');
+      expect(ariaLabel).toBe('Follow My Group');
     });
   });
 });

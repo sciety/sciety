@@ -14,7 +14,7 @@ describe('get-user-list-details', () => {
     );
 
     it('returns a count of 0', () => {
-      expect(details.articleCount).toStrictEqual(0);
+      expect(details.articleCount).toBe(0);
     });
 
     it('returns no last updated date', () => {
@@ -35,7 +35,7 @@ describe('get-user-list-details', () => {
     );
 
     it('returns a count of the articles', () => {
-      expect(details.articleCount).toStrictEqual(2);
+      expect(details.articleCount).toBe(2);
     });
 
     it('returns the last updated date', () => {
@@ -58,7 +58,7 @@ describe('get-user-list-details', () => {
     );
 
     it('returns a count of the remaining articles', () => {
-      expect(details.articleCount).toStrictEqual(1);
+      expect(details.articleCount).toBe(1);
     });
 
     it('returns the date of the last activity', () => {
@@ -77,7 +77,7 @@ describe('get-user-list-details', () => {
     );
 
     it('returns a count of 0', () => {
-      expect(details.articleCount).toStrictEqual(0);
+      expect(details.articleCount).toBe(0);
     });
 
     it('returns no last updated date', () => {

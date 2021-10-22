@@ -168,6 +168,6 @@ describe('sciety-feed-page', () => {
     const html = JSDOM.fragment(renderedPage);
     const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
 
-    expect(itemCount).toStrictEqual(1);
+    expect(itemCount).toBe(1);
   });
 });

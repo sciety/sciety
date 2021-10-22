@@ -152,7 +152,7 @@ describe('review-id', () => {
     it('cannot be deserialized', () => {
       const unrecognisedFormat = 'foo';
 
-      expect(RI.reviewIdCodec.decode(unrecognisedFormat)._tag).toStrictEqual('Left');
+      expect(RI.reviewIdCodec.decode(unrecognisedFormat)._tag).toBe('Left');
     });
   });
 

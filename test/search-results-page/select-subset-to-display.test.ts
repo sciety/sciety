@@ -97,7 +97,7 @@ describe('select-subset-to-display', () => {
     };
     const result = selectSubsetToDisplay(state);
 
-    expect(result.availableGroupMatches).toStrictEqual(1);
+    expect(result.availableGroupMatches).toBe(1);
     expect(result.availableArticleMatches).toStrictEqual(numberOfMatchingArticles);
   });
 });

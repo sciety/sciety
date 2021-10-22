@@ -77,7 +77,7 @@ describe('user-page', () => {
         userPage(ports)(tabName),
       )();
 
-      expect(E.isRight(page)).toStrictEqual(true);
+      expect(E.isRight(page)).toBe(true);
     });
 
     it('uses the user displayname as the opengraph title', async () => {
@@ -335,7 +335,7 @@ describe('user-page', () => {
       const link = page.querySelector('.tab-panel a');
 
       expect(link?.getAttribute('href')).toStrictEqual(`/users/${params.handle}/lists/saved-articles`);
-      expect(link?.textContent).toStrictEqual('Saved articles');
+      expect(link?.textContent).toBe('Saved articles');
     });
   });
 });

@@ -356,7 +356,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const title = getTitle(doc, doi, dummyLogger);
 
-      expect(title).toStrictEqual('An article title');
+      expect(title).toBe('An article title');
     });
 
     it('returns `Unknown title` when no title present', async () => {
@@ -364,7 +364,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const title = getTitle(doc, doi, dummyLogger);
 
-      expect(title).toStrictEqual('Unknown title');
+      expect(title).toBe('Unknown title');
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
@@ -375,7 +375,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const title = getTitle(doc, doi, dummyLogger);
 
-      expect(title).toStrictEqual('An article title for <i>C. elegans</i>');
+      expect(title).toBe('An article title for <i>C. elegans</i>');
     });
 
     it('strips non html tags from the title', async () => {
@@ -386,7 +386,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const title = getTitle(doc, doi, dummyLogger);
 
-      expect(title).toStrictEqual('An article title for C. elegans');
+      expect(title).toBe('An article title for C. elegans');
     });
   });
 });

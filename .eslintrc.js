@@ -115,7 +115,7 @@ module.exports = {
         'jest/no-disabled-tests': 'off',
         'jest/no-hooks': 'off',
         'jest/prefer-expect-assertions': 'off',
-        'jest/prefer-to-be': 'off',
+        'jest/prefer-to-be': 'error',
         'jest/prefer-expect-resolves': 'off',
         'jest/unbound-method': 'off',
       },

@@ -16,7 +16,7 @@ describe('get-evaluated-articles-list-details', () => {
     );
 
     it('returns a count of 0', () => {
-      expect(result.articleCount).toStrictEqual(0);
+      expect(result.articleCount).toBe(0);
     });
 
     it('returns no last updated date', () => {
@@ -35,7 +35,7 @@ describe('get-evaluated-articles-list-details', () => {
     );
 
     it('returns a count of the articles', () => {
-      expect(result.articleCount).toStrictEqual(2);
+      expect(result.articleCount).toBe(2);
     });
 
     it('returns the last updated date', () => {
@@ -55,7 +55,7 @@ describe('get-evaluated-articles-list-details', () => {
     );
 
     it('returns a count of 1', () => {
-      expect(result.articleCount).toStrictEqual(1);
+      expect(result.articleCount).toBe(1);
     });
 
     it('returns the last updated date', () => {
@@ -72,7 +72,7 @@ describe('get-evaluated-articles-list-details', () => {
     );
 
     it('returns a count of 0', () => {
-      expect(result.articleCount).toStrictEqual(0);
+      expect(result.articleCount).toBe(0);
     });
 
     it('returns no last updated date', () => {

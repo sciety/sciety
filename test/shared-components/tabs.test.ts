@@ -48,7 +48,7 @@ describe('tabs', () => {
     );
     const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
 
-    expect(activeTab?.tagName).not.toStrictEqual('A');
+    expect(activeTab?.tagName).not.toBe('A');
   });
 
   it.each(eachTabActiveOnce)('shows inactive tabs as links: %s', ({ activeTabIndex, inactiveTabsIndices }) => {
@@ -62,10 +62,10 @@ describe('tabs', () => {
     );
     const inactiveTabs = Array.from(rendered.querySelectorAll('[role="tab"]:not([aria-selected="true"])'));
 
-    expect(inactiveTabs[0].tagName).toStrictEqual('A');
+    expect(inactiveTabs[0].tagName).toBe('A');
     expect(inactiveTabs[0].getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabsIndices[0]].url);
 
-    expect(inactiveTabs[1].tagName).toStrictEqual('A');
+    expect(inactiveTabs[1].tagName).toBe('A');
     expect(inactiveTabs[1].getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabsIndices[1]].url);
   });
 

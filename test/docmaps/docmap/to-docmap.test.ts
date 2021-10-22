@@ -245,8 +245,8 @@ describe('to-docmap', () => {
           });
 
           it('has a fixed content field that always has the value `review-article`', () => {
-            expect(outputOfAction0.type).toStrictEqual('review-article');
-            expect(outputOfAction1.type).toStrictEqual('review-article');
+            expect(outputOfAction0.type).toBe('review-article');
+            expect(outputOfAction1.type).toBe('review-article');
           });
         });
       });

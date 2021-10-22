@@ -6,13 +6,13 @@ describe('sanitise', () => {
     const dirtyInput = toHtmlFragment('<strong><em>bold italic</strong> italic</em>');
     const sanitised = sanitise(dirtyInput);
 
-    expect(sanitised).toStrictEqual('<strong><em>bold italic</em></strong> italic');
+    expect(sanitised).toBe('<strong><em>bold italic</em></strong> italic');
   });
 
   it('removes <script> tags', () => {
     const dirtyInput = toHtmlFragment('cleaned <script>var bad = true;</script> html');
     const sanitised = sanitise(dirtyInput);
 
-    expect(sanitised).toStrictEqual('cleaned  html');
+    expect(sanitised).toBe('cleaned  html');
   });
 });
