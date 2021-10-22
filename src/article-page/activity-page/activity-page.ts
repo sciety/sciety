@@ -90,7 +90,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       articleDetails.server,
       (server) => getArticleFeedEventsByDateDescending({
         ...ports,
-        countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
         getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
       })(doi, server, userId),
       TE.map((feedItemsByDateDescending) => ({
