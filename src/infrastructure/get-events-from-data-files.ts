@@ -14,10 +14,10 @@ export const getEventsFromDataFiles = (
   TE.traverseArray((groupId) => pipe(
     `./data/reviews/${groupId}.csv`,
     readEventsFile,
-    TE.map(RA.map(([date, articleDoi, reviewId]) => groupEvaluatedArticle(
+    TE.map(RA.map(({ date, articleDoi, evaluationLocator }) => groupEvaluatedArticle(
       groupId,
       articleDoi,
-      reviewId,
+      evaluationLocator,
       date,
     ))),
   )),

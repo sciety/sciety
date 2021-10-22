@@ -5,11 +5,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import * as t from 'io-ts';
-import { DateFromISOString } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { readEventsFile } from '../infrastructure/read-events-file';
-import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as RI from '../types/review-id';
 
 export type Evaluation = {
@@ -36,18 +33,12 @@ const eqEval: Eq.Eq<Evaluation> = Eq.struct({
   evaluationLocator: S.Eq,
 });
 
-const reviews = t.readonlyArray(t.tuple([
-  DateFromISOString,
-  DoiFromString,
-  RI.reviewIdCodec,
-]));
-
 export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pipe(
   path,
   readEventsFile,
   TE.bimap(
     (errors) => PR.failure(errors).join(', '),
-    RA.map(([date, articleDoi, evaluationLocator]) => ({
+    RA.map(({ date, articleDoi, evaluationLocator }) => ({
       date,
       articleDoi: articleDoi.value,
       evaluationLocator: RI.serialize(evaluationLocator),
