@@ -1,7 +1,18 @@
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { identifyAllPossibleIndexEntries } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
+import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
+import {
+  DocmapIndexEntryModel,
+  identifyAllPossibleIndexEntries,
+  Ports,
+} from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -10,8 +21,15 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
-  const defaultPorts = {
-    getGroup: () => TE.left(DE.notFound),
+  const defaultPorts: Ports = {
+    getGroup: (groupId) => pipe(
+      supportedGroupIds,
+      RA.findIndex((eachGroupId) => eachGroupId === groupId),
+      O.fold(
+        () => TE.left(DE.notFound),
+        (groupIndex) => TE.right(supportedGroups[groupIndex]),
+      ),
+    ),
   };
 
   describe('when there are evaluated events by a supported group', () => {
@@ -23,22 +41,29 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId1, arbitraryReviewId(), earlierDate),
       groupEvaluatedArticle(supportedGroupIds[0], articleId2, arbitraryReviewId(), laterDate),
     ];
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
-    it.skip('returns a list of all the evaluated index entry models', () => {
+    it('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
         {
           articleId: articleId2,
           groupId: supportedGroupIds[0],
           updated: laterDate,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
         {
           articleId: articleId1,
           groupId: supportedGroupIds[0],
           updated: earlierDate,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
       ]);
     });
@@ -55,7 +80,15 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(supportedGroupIds[0], articleId, arbitraryReviewId(), middleDate),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it('returns a single index entry model', () => {
       expect(result).toHaveLength(1);
@@ -79,26 +112,56 @@ describe('identify-all-possible-index-entries', () => {
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
     ];
 
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts)(events);
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
 
-    it.skip('excludes articles evaluated by the unsupported group', () => {
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('excludes articles evaluated by the unsupported group', () => {
       expect(result).toHaveLength(2);
       expect(result).toStrictEqual(expect.arrayContaining([
         expect.objectContaining({
           groupId: supportedGroupIds[0],
           articleId: articleId1,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[0].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[0]),
         }),
         expect.objectContaining({
           groupId: supportedGroupIds[1],
           articleId: articleId2,
-          publisherAccountId: `https://sciety.org/groups/${supportedGroups[1].slug}`,
+          publisherAccountId: publisherAccountId(supportedGroups[1]),
         }),
       ]));
     });
   });
 
   describe('when a supported group cannot be fetched', () => {
-    it.todo('has no entries in the docmap index');
+    const events = [
+      groupEvaluatedArticle(supportedGroupIds[0], arbitraryDoi(), arbitraryReviewId()),
+    ];
+    let result: unknown;
+
+    beforeEach(async () => {
+      result = await pipe(
+        events,
+        identifyAllPossibleIndexEntries(
+          supportedGroupIds,
+          {
+            ...defaultPorts,
+            getGroup: () => TE.left(DE.notFound),
+          },
+        ),
+      )();
+    });
+
+    it('fails with an internal server error', () => {
+      expect(result).toStrictEqual(E.left(expect.objectContaining({
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+      })));
+    });
   });
 });

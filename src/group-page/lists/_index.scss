@@ -1,4 +1,9 @@
-@use '../sass/card';
+@use '../../sass/baseline';
+@use '../../sass/card';
+
+.group-page-lists {
+  margin-bottom: baseline.increments(3);
+}
 
 .list-card {
   @include card.basics();

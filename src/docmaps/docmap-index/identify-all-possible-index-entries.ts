@@ -3,14 +3,16 @@ import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import * as ER from './error-response';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import { Group } from '../../types/group';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
+import { publisherAccountId } from '../docmap/publisher-account-id';
 
 export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
@@ -37,9 +39,14 @@ export type Ports = {
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
   ports: Ports,
-) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DocmapIndexEntryModel>;
+) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
-export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (supportedGroups) => (events) => pipe(
+export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (
+  supportedGroups,
+  ports,
+) => (
+  events,
+) => pipe(
   events,
   RA.filter(isGroupEvaluatedArticleEvent),
   RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
@@ -47,8 +54,20 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     articleId,
     groupId,
     updated: date,
-    publisherAccountId: 'foo',
   })),
-  RA.sort(byDate),
-  RA.uniq(eqEntry),
+  TE.traverseArray((incompleteEntry) => pipe(
+    incompleteEntry.groupId,
+    ports.getGroup,
+    TE.map((group) => ({
+      ...incompleteEntry,
+      publisherAccountId: publisherAccountId(group),
+    })),
+  )),
+  TE.bimap(
+    () => ER.internalServerError,
+    flow(
+      RA.sort(byDate),
+      RA.uniq(eqEntry),
+    ),
+  ),
 );

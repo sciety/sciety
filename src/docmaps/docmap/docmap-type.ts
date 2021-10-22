@@ -1,3 +1,11 @@
+export type Participant = {
+  actor: {
+    name: string,
+    type: 'person',
+  },
+  role: 'peer-reviewer',
+};
+
 type Output = {
   type: 'review-article',
   published: string,
@@ -5,7 +13,7 @@ type Output = {
 };
 
 type Action = {
-  participants: ReadonlyArray<unknown>,
+  participants: ReadonlyArray<Participant>,
   outputs: ReadonlyArray<Output>,
 };
 

@@ -5,7 +5,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { projectReviewResponseCounts } from './project-review-response-counts';
 import { FeedItem } from './render-feed';
+import { DomainEvent } from '../../domain-events';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
@@ -37,8 +39,6 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
   url: URL,
 }>;
 
-export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
-
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
 export type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
@@ -53,7 +53,7 @@ const articleVersionToFeedItem = (
 const reviewToFeedItem = (
   getReview: FetchReview,
   getGroup: GetGroup,
-  countReviewResponses: CountReviewResponses,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
@@ -80,7 +80,7 @@ const reviewToFeedItem = (
       getReview,
       TE.match(
         () => ({
-          url: RI.inferredUrl(feedEvent.reviewId),
+          url: RI.inferredSourceUrl(feedEvent.reviewId),
           fullText: O.none,
         }),
         (review) => ({
@@ -90,7 +90,10 @@ const reviewToFeedItem = (
         }),
       ),
     ),
-    reviewResponses: pipe(feedEvent.reviewId, countReviewResponses),
+    reviewResponses: pipe(
+      getAllEvents,
+      T.map(projectReviewResponseCounts(feedEvent.reviewId)),
+    ),
     userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
   },
   sequenceS(T.ApplyPar),
@@ -111,7 +114,7 @@ const reviewToFeedItem = (
 type Dependencies = {
   fetchReview: FetchReview,
   getGroup: GetGroup,
-  countReviewResponses: CountReviewResponses,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
 };
 
@@ -124,7 +127,7 @@ type GetFeedEventsContent = (r: Dependencies) => (
 export const getFeedEventsContent: GetFeedEventsContent = ({
   fetchReview,
   getGroup,
-  countReviewResponses,
+  getAllEvents,
   getUserReviewResponse,
 }) => (feedEvents, server, userId) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
@@ -133,7 +136,7 @@ export const getFeedEventsContent: GetFeedEventsContent = ({
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
         return reviewToFeedItem(
-          fetchReview, getGroup, countReviewResponses, getUserReviewResponse, feedEvent, userId,
+          fetchReview, getGroup, getAllEvents, getUserReviewResponse, feedEvent, userId,
         );
     }
   };

@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  CountReviewResponses,
   FeedEvent,
   FetchReview,
   getFeedEventsContent,
@@ -33,19 +32,15 @@ describe('get-feed-events-content', () => {
           occurredAt: new Date(),
         },
       ];
+      const getAllEvents = T.of([]);
       const fetchReview: FetchReview = () => TE.right({
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
       const getGroup = () => TE.right(arbitraryGroup());
-      const countReviewResponses: CountReviewResponses = () => T.of({
-        helpfulCount: 0,
-        notHelpfulCount: 0,
-      });
       const getUserReviewResponse: GetUserReviewResponse = () => T.of(O.none);
-
       const viewModel = await getFeedEventsContent({
-        fetchReview, getGroup, countReviewResponses, getUserReviewResponse,
+        fetchReview, getGroup, getAllEvents, getUserReviewResponse,
       })(feedEvents, 'biorxiv', O.none)();
 
       expect(viewModel).toHaveLength(2);

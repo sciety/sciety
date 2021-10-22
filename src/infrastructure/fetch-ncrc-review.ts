@@ -1,14 +1,11 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { constructNcrcReview } from './construct-ncrc-review';
+import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import * as DE from '../types/data-error';
@@ -31,10 +28,9 @@ type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
 }>;
 const tuple: TupleFn = t.tuple as never;
 
-const columnType = t.tuple([tt.readonlyNonEmptyArray(t.string)]); // TODO use a uuid
-
-const rowType = t.tuple([tuple([
-  t.unknown, // A uuid
+// row array can be shorter if end column(s) are empty, so response will be shorter: a tuple is wrong in this case
+const ncrcSheet = t.array(tuple([
+  t.string, // A uuid
   t.unknown, // B title_journal
   t.string, // C Title
   t.unknown, // D Topic
@@ -57,7 +53,7 @@ const rowType = t.tuple([tuple([
   t.unknown, // U compendium_feature
   t.string, // V Study_Design
   t.unknown, // W Subtopic_Tag
-])]);
+]));
 
 const querySheet = (logger: Logger) => <A>(
   params: Params$Resource$Spreadsheets$Values$Get,
@@ -82,6 +78,7 @@ const querySheet = (logger: Logger) => <A>(
     ),
     TE.chainEitherKW((res) => pipe(
       res?.data?.values,
+      // implication: if any of the rows don't match the codec we fail the whole sheet
       decoder.decode,
       E.mapLeft(PR.failure),
       E.mapLeft((errors) => {
@@ -92,34 +89,20 @@ const querySheet = (logger: Logger) => <A>(
   );
 };
 
-const getRowNumber = (logger: Logger) => (key: string) => pipe(
+type FindableNcrcReview = NcrcReview & { uuid: string };
+
+const getSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-    range: 'Sheet1!A:A', // TODO don't select the header
-    majorDimension: 'COLUMNS',
-  }, columnType),
-  TE.chainEitherKW(flow(
-    RNEA.head,
-    RA.findIndex((uuid) => uuid === key),
-    O.map((n) => n + 1),
-    O.altW(() => {
-      logger('error', 'Cannot find NcrcId in NCRC sheet', {
-        ncrcId: key,
-      });
-      return O.none;
-    }),
-    E.fromOption(() => DE.notFound),
-  )),
-);
-
-const getNcrcReview = (logger: Logger) => flow(
-  (rowNumber: number) => querySheet(logger)({
-    spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-    range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
-  }, rowType),
-  TE.map(flow(
-    RNEA.head,
-    (row) => ({
+    range: 'Sheet1!A2:X',
+  }, ncrcSheet),
+  TE.map((rows) => {
+    logger('debug', 'Fetched NCRC Google Sheet', { rowNumber: rows.length });
+    return rows;
+  }),
+  TE.map(
+    RA.map((row) => ({
+      uuid: row[0],
       title: row[2],
       ourTake: row[7],
       studyDesign: row[21],
@@ -128,12 +111,24 @@ const getNcrcReview = (logger: Logger) => flow(
       studyStrength: row[11],
       limitations: row[12],
       valueAdded: row[8],
-    }),
-  )),
+    })),
+  ),
 );
 
-export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => flow(
-  getRowNumber(logger),
-  TE.chainW(getNcrcReview(logger)),
+let cache: Promise<E.Either<DE.DataError, ReadonlyArray<FindableNcrcReview>>>;
+
+const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
+  if (cache === undefined || E.isLeft(await cache)) {
+    cache = getSheet(logger)();
+  }
+  return cache;
+};
+
+export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
+  cachedGetSheet(logger),
+  TE.chainEitherKW(flow(
+    RA.findFirst((row) => row.uuid === evaluationUuid),
+    E.fromOption(() => DE.notFound),
+  )),
   TE.map(constructNcrcReview),
 );

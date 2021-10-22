@@ -1,10 +1,11 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
+import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
-import { arbitraryDate, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -25,17 +26,47 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: earlierDate,
+          authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: laterDate,
+          authors: [],
         },
       ],
     });
 
-    it('includes the article id in the url used as the docmap id', () => {
-      expect(result.id).toStrictEqual(expect.stringContaining(articleId.value));
+    describe('the docmap id', () => {
+      const anotherDocmap = toDocmap({
+        articleId,
+        group,
+        inputPublishedDate: O.none,
+        evaluations: [
+          {
+            sourceUrl: new URL(arbitraryUri()),
+            reviewId: arbitraryReviewId(),
+            occurredAt: arbitraryDate(),
+            authors: [],
+          },
+        ],
+      });
+
+      it('is a valid URL', () => {
+        expect(new URL(result.id).hostname).toBe('sciety.org');
+      });
+
+      it('includes the article id', () => {
+        expect(result.id).toContain(articleId.value);
+      });
+
+      it('includes the group slug', () => {
+        expect(result.id).toContain(group.slug);
+      });
+
+      it('is the same for all docmaps generated with a given article id and group', () => {
+        expect(anotherDocmap.id).toStrictEqual(result.id);
+      });
     });
 
     it('includes the publisher properties', async () => {
@@ -45,7 +76,7 @@ describe('to-docmap', () => {
         logo: expect.stringContaining(group.avatarPath),
         homepage: group.homepage,
         account: {
-          id: expect.stringContaining(group.id),
+          id: publisherAccountId(group),
           service: 'https://sciety.org',
         },
       }));
@@ -71,6 +102,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: arbitraryDate(),
+          authors: [],
         },
       ],
     });
@@ -92,6 +124,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           occurredAt: arbitraryDate(),
+          authors: [],
         },
       ],
     });
@@ -109,129 +142,42 @@ describe('to-docmap', () => {
     const earlierReviewId = arbitraryReviewId();
     const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
+    const authorName = arbitraryString();
+    const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
+      {
+        sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
+        reviewId: earlierReviewId,
+        occurredAt: earlierDate,
+        authors: [],
+      },
+      {
+        sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
+        reviewId: laterReviewId,
+        occurredAt: laterDate,
+        authors: [authorName],
+      },
+    ];
     const result = toDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.none,
-      evaluations: [
-        {
-          sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
-          reviewId: earlierReviewId,
-          occurredAt: earlierDate,
-        },
-        {
-          sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
-          reviewId: laterReviewId,
-          occurredAt: laterDate,
-        },
-      ],
+      evaluations,
     });
 
     it('returns a single step', () => {
       expect(Object.keys(result.steps)).toHaveLength(1);
     });
 
-    it('with a single action', () => {
-      expect(result.steps[firstStep].actions).toHaveLength(1);
-    });
+    describe('the step', () => {
+      const theStep = result.steps[firstStep];
 
-    it('with a single anonymous person actor as the participants', () => {
-      expect(result.steps[firstStep].actions[0].participants).toStrictEqual([{
-        actor: {
-          name: 'anonymous',
-          type: 'person',
-        },
-        role: 'peer-reviewer',
-      }]);
-    });
-
-    it('with one output per evaluation', () => {
-      expect(result.steps[firstStep].actions[0].outputs).toHaveLength(2);
-    });
-
-    it('each output links to the evaluation on sciety', () => {
-      const contentValues = pipe(
-        result.steps[firstStep].actions[0].outputs,
-        RA.map((output) => output.content),
-      );
-
-      expect(contentValues[0]).toStrictEqual(
-        expect.arrayContaining([{
-          type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
-        }]),
-      );
-      expect(contentValues[1]).toStrictEqual(
-        expect.arrayContaining([{
-          type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
-        }]),
-      );
-    });
-
-    it('each output links to the original source of the evaluation', () => {
-      const contentValues = pipe(
-        result.steps[firstStep].actions[0].outputs,
-        RA.map((output) => output.content),
-      );
-
-      expect(contentValues[0]).toStrictEqual(
-        expect.arrayContaining([{
-          type: 'web-page',
-          url: `https://reviews.example.com/${earlierReviewId}`,
-        }]),
-      );
-      expect(contentValues[1]).toStrictEqual(
-        expect.arrayContaining([{
-          type: 'web-page',
-          url: `https://reviews.example.com/${laterReviewId}`,
-        }]),
-      );
-    });
-
-    it('each output has published date of corresponding evaluation', () => {
-      expect(pipe(
-        result.steps[firstStep].actions[0].outputs,
-        RA.map((output) => output.published),
-      )).toStrictEqual([earlierDate.toISOString(), laterDate.toISOString()]);
-    });
-
-    it('output content is always `review-article`', () => {
-      expect(pipe(
-        result.steps[firstStep].actions[0].outputs,
-        RA.map((output) => output.type),
-        RA.uniq(S.Eq),
-      )).toStrictEqual(['review-article']);
-    });
-  });
-
-  describe('when there is a single evaluation by the selected group', () => {
-    describe('in the first step', () => {
-      const occurredAt = new Date('1900');
-      const reviewId = arbitraryReviewId();
-      const sourceUrl = new URL(`https://reviews.example.com/${reviewId}`);
-      const firstStep = '_:b0';
-
-      const result = toDocmap({
-        articleId,
-        group: arbitraryGroup(),
-        inputPublishedDate: O.none,
-        evaluations: [
-          {
-            sourceUrl,
-            reviewId,
-            occurredAt,
-          },
-        ],
-      });
-
-      it('assertions are empty', async () => {
-        expect(result.steps[firstStep].assertions).toStrictEqual([]);
+      it('has empty assertions', async () => {
+        expect(theStep.assertions).toStrictEqual([]);
       });
 
       describe('the inputs', () => {
         it('include the uri and doi', async () => {
-          expect(result.steps[firstStep].inputs).toStrictEqual([
+          expect(theStep.inputs).toStrictEqual([
             expect.objectContaining(
               {
                 doi: articleId.value,
@@ -241,38 +187,66 @@ describe('to-docmap', () => {
         });
       });
 
-      describe('the only action', () => {
-        describe('the only participant', () => {
-          it('is anonymous', async () => {
-            expect(result.steps[firstStep].actions[0].participants[0]).toStrictEqual(
-              { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
-            );
-          });
+      it('has one action per evaluation', () => {
+        expect(theStep.actions).toHaveLength(evaluations.length);
+      });
+
+      describe('each action', () => {
+        const action0 = theStep.actions[0];
+        const action1 = theStep.actions[1];
+
+        it('contains a single person actor as the participants', () => {
+          expect(action0.participants[0].actor.name).toStrictEqual(anonymous);
+          expect(action1.participants[0].actor.name).toStrictEqual(authorName);
         });
 
-        describe('the only output', () => {
-          const output = result.steps[firstStep].actions[0].outputs[0];
+        it('has a single output', () => {
+          expect(action0.outputs).toHaveLength(1);
+          expect(action1.outputs).toHaveLength(1);
+        });
 
-          it('is always of type review-article', async () => {
-            expect(output.type).toStrictEqual('review-article');
+        describe('the output', () => {
+          const outputOfAction0 = action0.outputs[0];
+          const outputOfAction1 = action1.outputs[0];
+
+          it('links to the evaluation on sciety', () => {
+            expect(outputOfAction0.content).toStrictEqual(
+              expect.arrayContaining([{
+                type: 'web-page',
+                url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
+              }]),
+            );
+            expect(outputOfAction1.content).toStrictEqual(
+              expect.arrayContaining([{
+                type: 'web-page',
+                url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
+              }]),
+            );
           });
 
-          it('includes the published date of the evaluation', async () => {
-            expect(output.published).toStrictEqual(occurredAt.toISOString());
+          it('links to the original source of the evaluation', () => {
+            expect(outputOfAction0.content).toStrictEqual(
+              expect.arrayContaining([{
+                type: 'web-page',
+                url: `https://reviews.example.com/${earlierReviewId}`,
+              }]),
+            );
+            expect(outputOfAction1.content).toStrictEqual(
+              expect.arrayContaining([{
+                type: 'web-page',
+                url: `https://reviews.example.com/${laterReviewId}`,
+              }]),
+            );
           });
 
-          it('includes the url to the original evaluation source', async () => {
-            expect(output.content).toStrictEqual(expect.arrayContaining([{
-              type: 'web-page',
-              url: sourceUrl.toString(),
-            }]));
+          it('has published date of corresponding evaluation', () => {
+            expect(outputOfAction0.published).toStrictEqual(earlierDate.toISOString());
+            expect(outputOfAction1.published).toStrictEqual(laterDate.toISOString());
           });
 
-          it('includes the url to the evaluation on sciety', async () => {
-            expect(output.content).toStrictEqual(expect.arrayContaining([{
-              type: 'web-page',
-              url: `https://sciety.org/articles/activity/${articleId.value}#${reviewId}`,
-            }]));
+          it('has a fixed content field that always has the value `review-article`', () => {
+            expect(outputOfAction0.type).toStrictEqual('review-article');
+            expect(outputOfAction1.type).toStrictEqual('review-article');
           });
         });
       });

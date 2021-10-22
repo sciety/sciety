@@ -2,43 +2,32 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import { Errors } from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import * as ER from './error-response';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import * as GID from '../../types/group-id';
-
-type ErrorResponse = {
-  body: { error: string },
-  status: StatusCodes,
-};
 
 type FilterByParams = (
   query: Record<string, unknown>
-) => (entries: ReadonlyArray<DocmapIndexEntryModel>) => E.Either<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
+) => (
+  entries: ReadonlyArray<DocmapIndexEntryModel>
+) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
-  group: tt.optionFromNullable(GroupIdFromString),
+  publisheraccount: tt.optionFromNullable(t.string),
 });
 
-const toBadRequestResponse = (errors: Errors) => ({
-  body: { error: PR.failure(errors).join('\n') },
-  status: StatusCodes.BAD_REQUEST,
-});
-
-const filterByGroup = (
-  requestedGroupId: O.Option<GID.GroupId>,
+const filterByPublisherAccount = (
+  requestedPublisherAccountId: O.Option<string>,
 ) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
-  requestedGroupId,
+  requestedPublisherAccountId,
   O.fold(
     () => indexEntries,
-    (groupId) => pipe(
+    (publisherAccountId) => pipe(
       indexEntries,
-      RA.filter((indexEntry) => indexEntry.groupId === groupId),
+      RA.filter((indexEntry) => indexEntry.publisherAccountId === publisherAccountId),
     ),
   ),
 );
@@ -60,11 +49,14 @@ export const filterByParams: FilterByParams = (query) => (entries) => pipe(
   query,
   paramsCodec.decode,
   E.bimap(
-    toBadRequestResponse,
-    ({ group, updatedAfter }) => pipe(
+    (errors) => pipe(
+      PR.failure(errors).join('\n'),
+      ER.badRequest,
+    ),
+    ({ publisheraccount, updatedAfter }) => pipe(
       entries,
       filterByUpdatedAfter(updatedAfter),
-      filterByGroup(group),
+      filterByPublisherAccount(publisheraccount),
     ),
   ),
 );

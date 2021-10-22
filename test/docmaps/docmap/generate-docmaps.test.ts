@@ -19,17 +19,18 @@ import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryDoi();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   const indexedGroupId = ncrcGroupId;
-  const review = (groupId: GroupId, date: Date) => ({
-    reviewId: arbitraryReviewId(),
+  const review = (groupId: GroupId, date: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
+    reviewId,
     groupId,
     occurredAt: date,
+    authors: [],
   });
   const defaultPorts = {
     fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
@@ -136,8 +137,9 @@ describe('generate-docmaps', () => {
 
     it('returns an array containing a docmap for each group', () => {
       expect(docmaps).toHaveLength(2);
-      expect(docmaps[0].publisher.account.id).toContain(ncrcGroupId);
-      expect(docmaps[1].publisher.account.id).toContain(rapidReviewsGroupId);
+      expect(docmaps[0].publisher.account.id).not.toBe(
+        docmaps[1].publisher.account.id,
+      );
     });
   });
 
@@ -166,16 +168,23 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      const passingReviewId = arbitraryReviewId();
+      const failingReviewId = arbitraryNcrcId();
+      const reviews = [
+        review(indexedGroupId, arbitraryDate(), arbitraryReviewId()),
+        review(indexedGroupId, arbitraryDate(), failingReviewId),
+      ];
       response = await pipe(
         generateDocmaps({
           ...defaultPorts,
-          fetchReview: (id: ReviewId) => (id === passingReviewId
-            ? TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
-            : TE.left(DE.notFound)),
+          findReviewsForArticleDoi: () => TE.right(reviews),
+          fetchReview: (id: ReviewId) => (
+            id === failingReviewId
+              ? TE.left(DE.notFound)
+              : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+          ),
           getAllEvents: T.of([
-            groupEvaluatedArticle(ncrcGroupId, articleId, passingReviewId),
-            groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, articleId, reviews[0].reviewId),
+            groupEvaluatedArticle(ncrcGroupId, articleId, reviews[1].reviewId),
           ]),
         })(articleId.value),
       )();

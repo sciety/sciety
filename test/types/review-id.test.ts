@@ -95,7 +95,7 @@ describe('review-id', () => {
         ingestedReviewId,
         RI.reviewIdCodec.decode,
         O.fromEither,
-        O.chain(RI.inferredUrl),
+        O.chain(RI.inferredSourceUrl),
         O.map((url) => url.toString()),
       )).toStrictEqual(O.some(key));
     });
@@ -134,7 +134,7 @@ describe('review-id', () => {
         ingestedReviewId,
         RI.reviewIdCodec.decode,
         O.fromEither,
-        O.chain(RI.inferredUrl),
+        O.chain(RI.inferredSourceUrl),
         O.map((url) => url.toString()),
       )).toStrictEqual(O.some(key));
     });

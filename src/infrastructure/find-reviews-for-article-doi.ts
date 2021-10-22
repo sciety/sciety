@@ -12,6 +12,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.Dat
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
+  authors: ReadonlyArray<string>,
 }>>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -25,6 +26,7 @@ export const findReviewsForArticleDoi = (getAllEvents: GetAllEvents): FindReview
       reviewId: event.reviewId,
       groupId: event.groupId,
       occurredAt: event.date,
+      authors: event.authors,
     })),
   )),
   TE.rightTask,

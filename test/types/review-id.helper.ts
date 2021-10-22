@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { ReviewId } from '../../src/types/review-id';
 import { arbitraryNumber, arbitraryWord } from '../helpers';
 
-const arbitraryReviewDoi = (): ReviewId => (
+export const arbitraryReviewDoi = (): ReviewId => (
   `doi:${arbitraryWord(20)}` as ReviewId
 );
 
@@ -10,7 +10,7 @@ const arbitraryHypothesisAnnotationId = (): ReviewId => (
   `hypothesis:${arbitraryWord(20)}` as ReviewId
 );
 
-const arbitraryNcrcId = (): ReviewId => (
+export const arbitraryNcrcId = (): ReviewId => (
   `ncrc:${v4()}` as ReviewId
 );
 

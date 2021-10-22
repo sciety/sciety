@@ -11,7 +11,6 @@ import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
-import { catchStaticFileErrors } from './catch-static-file-errors';
 import { executeIfAuthenticated } from './execute-if-authenticated';
 import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
@@ -493,8 +492,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/static/:file(.+)',
-    catchStaticFileErrors(adapters.logger),
-    loadStaticFile,
+    loadStaticFile(adapters.logger),
   );
 
   return router;

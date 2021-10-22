@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type NcrcReview = {
+export type NcrcReview = {
   title: string,
   ourTake: string,
   studyDesign: string,

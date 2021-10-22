@@ -43,7 +43,7 @@ const urlTemplates = ({
   rapidreviews: (id: ReviewId) => key(id),
 });
 
-export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
+export const inferredSourceUrl = (id: ReviewId): O.Option<URL> => pipe(
   urlTemplates,
   R.lookup(service(id)),
   O.map((template) => template(id)),

@@ -43,7 +43,7 @@ export const userSavedArticleToAListCard: UserSavedArticleToAListCard = (ports) 
       date: event.date,
       details: {
         title: toHtmlFragment('Saved articles'),
-        content: toHtmlFragment(`<p>${defaultUserListDescription(`@${handle}`)}.</p>`),
+        content: toHtmlFragment(`<p>${defaultUserListDescription(`@${handle}`)}</p>`),
       },
     }),
   ),

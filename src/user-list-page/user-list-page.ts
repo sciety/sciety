@@ -52,7 +52,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
       <img src="${avatarUrl}" alt="" class="page-header__avatar">
       <span>A list by <a href="/users/${handle}">${handle}</a></span>
     </p>
-    <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}.</p>
+    <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}</p>
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
     ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
   </header>
