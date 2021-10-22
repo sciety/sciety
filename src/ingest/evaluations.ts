@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as PR from 'io-ts/PathReporter';
-import { readEventsFile } from '../infrastructure/read-events-file';
+import { readEventsFile } from '../infrastructure/events-file';
 import * as RI from '../types/review-id';
 
 export type Evaluation = {
@@ -50,12 +50,4 @@ export const uniq = (evaluations: Evaluations): Evaluations => pipe(
   evaluations,
   RA.sortBy([byDateAscending, byArticleLocatorAscending]),
   RA.uniq(eqEval),
-);
-
-export const toCsv = (evaluations: Evaluations): string => pipe(
-  evaluations,
-  RA.map((evaluation) => (
-    `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
-  )),
-  (events) => `Date,Article DOI,Review ID\n${events.join('')}`,
 );

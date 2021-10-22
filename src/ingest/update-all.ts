@@ -8,6 +8,7 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
+import { toCsv } from '../infrastructure/events-file';
 
 type Adapters = {
   fetchData: FetchData,
@@ -48,7 +49,7 @@ const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
   )),
   TE.chain((results) => pipe(
     results.all,
-    Es.toCsv,
+    toCsv,
     writeFile(`./data/reviews/${group.id}.csv`),
     TE.bimap(
       (error) => error.toString(),
