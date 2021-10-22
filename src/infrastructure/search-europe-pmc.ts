@@ -120,7 +120,8 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
     E.mapLeft((errors) => {
-      logger('error',
+      logger(
+        'error',
         `Could not parse response from Europe PMC: url="${url}"`,
         { errors: PR.failure(errors), url },
       );
