@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import {
   DomainEvent,
@@ -9,8 +8,6 @@ import {
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../domain-events';
 import * as ReviewId from '../../types/review-id';
-
-type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const projectHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
   RA.filter((event: DomainEvent): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
@@ -38,12 +35,11 @@ const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<Domai
 });
 
 type ProjectReviewResponseCounts = (
-  getEvents: GetEvents
-) => (
   reviewId: ReviewId.ReviewId,
-) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
+) => (events: ReadonlyArray<DomainEvent>,
+) => { helpfulCount: number, notHelpfulCount: number };
 
-export const projectReviewResponseCounts: ProjectReviewResponseCounts = (getEvents) => (reviewId) => pipe(
-  getEvents,
-  T.map(projection(reviewId)),
+export const projectReviewResponseCounts: ProjectReviewResponseCounts = (reviewId) => (events) => pipe(
+  events,
+  projection(reviewId),
 );

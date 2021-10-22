@@ -93,8 +93,8 @@ const reviewToFeedItem = (
       ),
     ),
     reviewResponses: pipe(
-      feedEvent.reviewId,
-      projectReviewResponseCounts(getAllEvents),
+      getAllEvents,
+      T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
     userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
   },

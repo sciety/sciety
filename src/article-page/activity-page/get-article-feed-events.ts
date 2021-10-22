@@ -7,7 +7,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
 import {
-  CountReviewResponses,
   FetchReview,
   getFeedEventsContent,
   GetGroup,

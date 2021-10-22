@@ -7,7 +7,6 @@ import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
 import {
