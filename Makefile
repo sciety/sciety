@@ -37,7 +37,7 @@ find-unused-sass-declarations: node_modules
 	npx sass-unused 'src/**/*.scss'
 
 lint: export TARGET = dev
-lint: build
+lint: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint
 
 lint\:fix: export TARGET = dev
