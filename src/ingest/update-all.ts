@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import { toJsonl } from '../infrastructure/events-file';
+import { encodeEvaluationsToJsonl } from '../infrastructure/evaluations-as-jsonl';
 
 type Adapters = {
   fetchData: FetchData,
@@ -49,7 +49,7 @@ const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
   )),
   TE.chain((results) => pipe(
     results.all,
-    toJsonl,
+    encodeEvaluationsToJsonl,
     writeFile(`./data/reviews/${group.id}.jsonl`),
     TE.bimap(
       (error) => error.toString(),
