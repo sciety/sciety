@@ -17,8 +17,8 @@ const readableEvaluations = t.readonlyArray(t.type({
 export type ReadableEvaluations = t.TypeOf<typeof readableEvaluations>;
 
 export const decodeEvaluationsFromJsonl = flow(
-  (wholeFile: string) => wholeFile.split('\n'),
-  RA.filter((s) => s.length > 0),
+  (fileContents: string) => fileContents.split('\n'),
+  RA.filter((line) => line !== ''),
   E.traverseArray(tt.JsonFromString.decode),
   E.chain(readableEvaluations.decode),
   E.mapLeft(PR.failure),
