@@ -36,7 +36,7 @@ export type Group = {
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
 const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
-  `./data/reviews/${group.id}.csv`,
+  `./data/reviews/${group.id}.jsonl`,
   Es.fromFile,
   TE.map((existing) => pipe(
     [...existing, ...feedData.evaluations],

@@ -12,7 +12,7 @@ export const getEventsFromDataFiles = (
 ): TE.TaskEither<unknown, RNEA.ReadonlyNonEmptyArray<DomainEvent>> => pipe(
   groupIds,
   TE.traverseArray((groupId) => pipe(
-    `./data/reviews/${groupId}.csv`,
+    `./data/reviews/${groupId}.jsonl`,
     readEventsFile,
     TE.map(RA.map(({ date, articleDoi, evaluationLocator }) => groupEvaluatedArticle(
       groupId,

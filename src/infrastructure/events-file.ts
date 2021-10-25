@@ -1,6 +1,4 @@
-import { Buffer } from 'buffer';
 import fs from 'fs';
-import csvParseSync from 'csv-parse/lib/sync';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -12,11 +10,11 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi } from '../types/doi';
 import * as RI from '../types/review-id';
 
-const readableEvaluations = t.readonlyArray(t.tuple([
-  DateFromISOString,
-  DoiFromString,
-  RI.reviewIdCodec,
-]));
+const readableEvaluations = t.readonlyArray(t.type({
+  date: DateFromISOString,
+  articleDoi: DoiFromString,
+  evaluationLocator: RI.reviewIdCodec,
+}));
 
 type ReadableEvaluations = ReadonlyArray<{
   date: Date,
@@ -25,18 +23,15 @@ type ReadableEvaluations = ReadonlyArray<{
 }>;
 
 export const readEventsFile = (filePath: string): TE.TaskEither<t.Errors, ReadableEvaluations> => pipe(
-  filePath,
-  TE.taskify(fs.readFile),
-  T.map(E.orElse(() => E.right(Buffer.from('')))),
+  TE.taskify((callback) => fs.readFile(filePath, 'utf8', callback))(),
+  TE.map((foo) => foo as string),
+  T.map(E.orElse(() => E.right(''))),
   TE.chainEitherKW(flow(
-    (fileContents) => csvParseSync(fileContents, { fromLine: 2 }) as unknown,
+    (wholeFile) => wholeFile.split('\n'),
+    RA.filter((s) => s.length > 0),
+    RA.map(JSON.parse),
     readableEvaluations.decode,
   )),
-  TE.map(RA.map(([date, articleDoi, evaluationLocator]) => ({
-    date,
-    articleDoi,
-    evaluationLocator,
-  }))),
 );
 
 type WriteableEvaluation = {
