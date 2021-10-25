@@ -38,6 +38,11 @@ describe('readable-evalutions-from-string', () => {
   });
 
   describe('when a line does not match the domain model', () => {
-    it.todo('returns a left');
+    const fileContents = '{"foo":"bar"}';
+    const result = readableEvaluationsFromString(fileContents);
+
+    it('returns a left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });

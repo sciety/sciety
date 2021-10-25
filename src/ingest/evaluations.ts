@@ -5,7 +5,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import * as PR from 'io-ts/PathReporter';
 import { readEventsFile } from '../infrastructure/events-file';
 import * as RI from '../types/review-id';
 
@@ -37,7 +36,7 @@ export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pi
   path,
   readEventsFile,
   TE.bimap(
-    (errors) => PR.failure(errors).join(', '),
+    (errors) => errors.join(', '),
     RA.map(({ date, articleDoi, evaluationLocator }) => ({
       date,
       articleDoi: articleDoi.value,

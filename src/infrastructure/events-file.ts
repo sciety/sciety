@@ -3,11 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import { readTextFile } from './read-text-file';
 import { ReadableEvaluations, readableEvaluationsFromString } from './readable-evaluations-from-string';
 
-export const readEventsFile = (filePath: string): TE.TaskEither<t.Errors, ReadableEvaluations> => pipe(
+export const readEventsFile = (filePath: string): TE.TaskEither<Array<string>, ReadableEvaluations> => pipe(
   filePath,
   readTextFile,
   T.map(E.orElse(() => E.right(''))),
