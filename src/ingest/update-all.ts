@@ -9,6 +9,7 @@ import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
 import { encodeEvaluationsToJsonl } from '../infrastructure/evaluations-as-jsonl';
+import { evaluationEventsFilepathForGroupId } from '../infrastructure/events-file';
 
 type Adapters = {
   fetchData: FetchData,
@@ -36,7 +37,8 @@ export type Group = {
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
 const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
-  `./data/reviews/${group.id}.jsonl`,
+  group.id,
+  evaluationEventsFilepathForGroupId,
   Es.fromFile,
   TE.map((existing) => pipe(
     [...existing, ...feedData.evaluations],
@@ -50,7 +52,7 @@ const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
   TE.chain((results) => pipe(
     results.all,
     encodeEvaluationsToJsonl,
-    writeFile(`./data/reviews/${group.id}.jsonl`),
+    writeFile(evaluationEventsFilepathForGroupId(group.id)),
     TE.bimap(
       (error) => error.toString(),
       () => ({

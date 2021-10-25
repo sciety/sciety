@@ -5,6 +5,8 @@ import { pipe } from 'fp-ts/function';
 import { decodeEvaluationsFromJsonl, ReadableEvaluations } from './evaluations-as-jsonl';
 import { readTextFile } from './read-text-file';
 
+export const evaluationEventsFilepathForGroupId = (groupId: string): string => `./data/reviews/${groupId}.jsonl`;
+
 export const readEventsFile = (filePath: string): TE.TaskEither<Array<string>, ReadableEvaluations> => pipe(
   filePath,
   readTextFile,
