@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import { toCsv } from '../infrastructure/events-file';
+import { toJsonl } from '../infrastructure/events-file';
 
 type Adapters = {
   fetchData: FetchData,
@@ -35,7 +35,7 @@ export type Group = {
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
-const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
+const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
   `./data/reviews/${group.id}.jsonl`,
   Es.fromFile,
   TE.map((existing) => pipe(
@@ -49,8 +49,8 @@ const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
   )),
   TE.chain((results) => pipe(
     results.all,
-    toCsv,
-    writeFile(`./data/reviews/${group.id}.csv`),
+    toJsonl,
+    writeFile(`./data/reviews/${group.id}.jsonl`),
     TE.bimap(
       (error) => error.toString(),
       () => ({
@@ -103,7 +103,7 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchGoogleSheet,
   }),
   TE.map(reportSkippedItems(group)),
-  TE.chain(overwriteCsv(group)),
+  TE.chain(overwriteJsonl(group)),
   TE.match(
     reportError(group),
     reportSuccess(group),

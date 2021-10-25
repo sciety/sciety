@@ -2,7 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import { readTextFile } from './read-text-file';
 import { ReadableEvaluations, readableEvaluationsFromString } from './readable-evaluations-from-string';
 
@@ -21,10 +22,17 @@ type WriteableEvaluation = {
 
 type WriteableEvaluations = ReadonlyArray<WriteableEvaluation>;
 
-export const toCsv = (evaluations: WriteableEvaluations): string => pipe(
+export const toJsonl = (evaluations: WriteableEvaluations): string => pipe(
   evaluations,
-  RA.map((evaluation) => (
-    `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
+  RA.map(flow(
+    (evaluation) => (
+      {
+        date: evaluation.date.toISOString(),
+        articleDoi: evaluation.articleDoi,
+        evaluationLocator: evaluation.evaluationLocator,
+      }
+    ),
+    tt.JsonFromString.encode,
   )),
-  (events) => `Date,Article DOI,Review ID\n${events.join('')}`,
+  (events) => `${events.join('\n')}`,
 );
