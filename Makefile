@@ -94,6 +94,7 @@ ingest-events: export TARGET = dev
 ingest-events: build
 	$(DOCKER_COMPOSE) run -e INGEST_DEBUG=${INGEST_DEBUG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
+	find data/reviews -name "*.csv" | xargs -n 1 ./scripts/review-events-to-jsonl.sh
 
 update-event-data: ingest-events backstop-test
 
