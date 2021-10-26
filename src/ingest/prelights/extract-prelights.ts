@@ -16,10 +16,6 @@ const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedI
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     E.fromOption(() => ({ item: item.guid, reason: 'No DC.Identifier found' })),
-    E.filterOrElse(
-      (doi) => doi.startsWith('10.1101/'),
-      () => ({ item: item.guid, reason: 'Not a biorxiv DOI' }),
-    ),
   )),
 );
 
@@ -43,6 +39,10 @@ export const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<
       (i) => ({ item: i.guid, reason: `Category was '${item.category}` }),
     ),
     TE.chain(toDoi(fetchData)),
+    TE.filterOrElse(
+      (doi) => doi.startsWith('10.1101/'),
+      () => ({ item: item.guid, reason: 'Not a biorxiv DOI' }),
+    ),
     TE.map((articleDoi) => ({
       date: item.pubDate,
       articleDoi,
