@@ -14,6 +14,7 @@ const itemCodec = t.type({
   author: t.string,
   preprints: t.type({
     preprint: t.array(t.type({
+      preprintdoi: t.string,
       preprinturl: t.string,
     })),
   }),

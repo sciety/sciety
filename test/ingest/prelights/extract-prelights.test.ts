@@ -53,6 +53,7 @@ describe('extract-prelights', () => {
         category: '<a name = "highlight">highlight</a>',
         pubDate,
         preprintUrl: arbitraryWord(),
+        preprintDoi: '',
         author,
       }],
       extractPrelights(fetchData),
