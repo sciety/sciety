@@ -37,6 +37,7 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => (
     category: item.category,
     pubDate: item.pubDate,
     preprintUrl: preprintItem.preprinturl,
+    preprintDoi: preprintItem.preprintdoi,
     author: item.author,
   }))
 );
