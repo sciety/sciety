@@ -11,6 +11,7 @@ const itemCodec = t.type({
   pubDate: tt.DateFromISOString,
   category: t.string,
   guid: t.string,
+  author: t.string,
   preprints: t.type({
     preprint: t.array(t.type({
       preprinturl: t.string,
@@ -35,7 +36,7 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => (
     category: item.category,
     pubDate: item.pubDate,
     preprintUrl: preprintItem.preprinturl,
-    author: '',
+    author: item.author,
   }))
 );
 

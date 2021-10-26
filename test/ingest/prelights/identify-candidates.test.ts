@@ -5,7 +5,7 @@ import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 describe('identify-candidates', () => {
   describe('when the feed contains an item ...', () => {
     describe('referring to a single preprint', () => {
-      it.skip('identifies a single candidate evaluation', () => {
+      it('identifies a single candidate evaluation', () => {
         const category = arbitraryString();
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
@@ -44,7 +44,7 @@ describe('identify-candidates', () => {
     });
 
     describe('referring to two preprints', () => {
-      it.skip('identifies two candidate evaluations', () => {
+      it('identifies two candidate evaluations', () => {
         const category = arbitraryString();
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
