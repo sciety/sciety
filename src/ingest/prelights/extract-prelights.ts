@@ -47,6 +47,7 @@ export const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<
       date: item.pubDate,
       articleDoi,
       evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
+      authors: [item.author],
     })),
   )),
   T.map((things) => ({

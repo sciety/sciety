@@ -12,6 +12,7 @@ describe('extract-prelights', () => {
     const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
     const pubDate = arbitraryDate();
     const preprintDoi = arbitraryDoi('10.1101');
+    const author = arbitraryString();
     const fetchData = () => TE.right(`<meta name="DC.Identifier" content="${preprintDoi.value}" />`);
     const result = pipe(
       [{
@@ -19,7 +20,7 @@ describe('extract-prelights', () => {
         category: '<a name = "highlight">highlight</a>',
         pubDate,
         preprintUrl: arbitraryWord(),
-        author: arbitraryString(),
+        author,
       }],
       extractPrelights(fetchData),
     );
@@ -31,11 +32,16 @@ describe('extract-prelights', () => {
             date: pubDate,
             articleDoi: preprintDoi.value,
             evaluationLocator: `prelights:${guid}`,
+            authors: [author],
           },
         ],
         skippedItems: [],
       }));
     });
+  });
+
+  describe('when there are multiple authors in a single field', () => {
+    it.todo('returns a single author string');
   });
 
   describe('given an item that is not a highlight', () => {
