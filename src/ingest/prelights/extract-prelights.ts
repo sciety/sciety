@@ -5,11 +5,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { FetchData } from '../fetch-data';
 import { FeedData, SkippedItem } from '../update-all';
 
 const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedItem, string> => pipe(
-  fetchData<string>(item.preprintUrl),
+  fetchData(item.preprintUrl),
   TE.mapLeft((e) => ({ item: item.guid, reason: e })),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
@@ -31,6 +30,8 @@ export type Prelight = {
   preprintUrl: string,
   author: string,
 };
+
+type FetchData = (url: string) => TE.TaskEither<string, string>;
 
 export const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Prelight>): T.Task<FeedData> => pipe(
   items,
