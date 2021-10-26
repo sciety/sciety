@@ -8,7 +8,40 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('extract-prelights', () => {
-  describe('given a valid evaluation', () => {
+  describe('given a valid evaluation with a preprintDoi', () => {
+    const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
+    const pubDate = arbitraryDate();
+    const preprintDoi = arbitraryDoi('10.1101');
+    const author = arbitraryString();
+    const fetchData = shouldNotBeCalled;
+    const result = pipe(
+      [{
+        guid,
+        category: '<a name = "highlight">highlight</a>',
+        pubDate,
+        preprintUrl: arbitraryWord(),
+        preprintDoi: preprintDoi.value,
+        author,
+      }],
+      extractPrelights(fetchData),
+    );
+
+    it.skip('records the evaluation', async () => {
+      expect(await result()).toStrictEqual(expect.objectContaining({
+        evaluations: [
+          {
+            date: pubDate,
+            articleDoi: preprintDoi.value,
+            evaluationLocator: `prelights:${guid}`,
+            authors: [author],
+          },
+        ],
+        skippedItems: [],
+      }));
+    });
+  });
+
+  describe('given a valid evaluation without a preprintDoi', () => {
     const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
     const pubDate = arbitraryDate();
     const preprintDoi = arbitraryDoi('10.1101');
