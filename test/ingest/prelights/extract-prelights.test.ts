@@ -86,6 +86,7 @@ describe('extract-prelights', () => {
         guid,
         category: '<a name = "something">something</a>',
         pubDate: arbitraryDate(),
+        preprintDoi: arbitraryString(),
         preprintUrl: arbitraryWord(),
         author: arbitraryString(),
       }],
