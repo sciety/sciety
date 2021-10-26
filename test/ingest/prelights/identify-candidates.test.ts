@@ -5,11 +5,12 @@ import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 describe('identify-candidates', () => {
   describe('when the feed contains an item ...', () => {
     describe('referring to a single preprint', () => {
-      it('identifies a single candidate evaluation', () => {
+      it.skip('identifies a single candidate evaluation', () => {
         const category = arbitraryString();
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
         const preprintUrl = arbitraryUri();
+        const author = arbitraryString();
         const result = identifyCandidates(`
           <?xml version="1.0" encoding="UTF-8"?>
           <rss version="2.0">
@@ -18,6 +19,7 @@ describe('identify-candidates', () => {
             <item>
               <category>${category}</category>
               <guid isPermaLink="false">${guid}</guid>
+              <author>${author}</author>
               <pubDate>${pubDate.toISOString()}</pubDate>
               <preprints>
                 <preprint>
@@ -33,6 +35,7 @@ describe('identify-candidates', () => {
           {
             category,
             guid,
+            author,
             pubDate,
             preprintUrl,
           },
