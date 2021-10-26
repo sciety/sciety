@@ -29,6 +29,7 @@ export type Prelight = {
   category: string,
   pubDate: Date,
   preprintUrl: string,
+  author: string,
 };
 
 export const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Prelight>): T.Task<FeedData> => pipe(

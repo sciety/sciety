@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from '../../../src/ingest/prelights/extract-prelights';
-import { arbitraryDate, arbitraryWord } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('extract-prelights', () => {
@@ -17,6 +17,7 @@ describe('extract-prelights', () => {
         category: '<a name = "something">something</a>',
         pubDate: arbitraryDate(),
         preprintUrl: arbitraryWord(),
+        author: arbitraryString(),
       }],
       extractPrelights(fetchData),
     );

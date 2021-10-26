@@ -44,10 +44,11 @@ describe('identify-candidates', () => {
     });
 
     describe('referring to two preprints', () => {
-      it('identifies two candidate evaluations', () => {
+      it.skip('identifies two candidate evaluations', () => {
         const category = arbitraryString();
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
+        const author = arbitraryString();
         const preprintUrl1 = arbitraryUri();
         const preprintUrl2 = arbitraryUri();
         const result = identifyCandidates(`
@@ -58,6 +59,7 @@ describe('identify-candidates', () => {
             <item>
               <category>${category}</category>
               <guid isPermaLink="false">${guid}</guid>
+              <author>${author}</author>
               <pubDate>${pubDate.toISOString()}</pubDate>
               <preprints>
                 <preprint>
@@ -74,10 +76,10 @@ describe('identify-candidates', () => {
 
         expect(result).toStrictEqual(E.right([
           {
-            category, guid, pubDate, preprintUrl: preprintUrl1,
+            category, guid, pubDate, preprintUrl: preprintUrl1, author,
           },
           {
-            category, guid, pubDate, preprintUrl: preprintUrl2,
+            category, guid, pubDate, preprintUrl: preprintUrl2, author,
           },
         ]));
       });
