@@ -23,7 +23,7 @@ export const getCachedAxiosRequest = (
       url,
     });
     const durationInMs = new Date().getTime() - startTime.getTime();
-    logger('debug', 'Response time', { url, durationInMs });
+    logger('debug', 'Response time', { url, durationInMs, responseStatus: response.status });
   }
   return response.data;
 };
