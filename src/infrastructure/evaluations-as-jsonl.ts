@@ -12,6 +12,7 @@ const readableEvaluations = t.readonlyArray(t.type({
   date: DateFromISOString,
   articleDoi: DoiFromString,
   evaluationLocator: RI.reviewIdCodec,
+  authors: t.readonlyArray(t.string),
 }));
 
 export type ReadableEvaluations = t.TypeOf<typeof readableEvaluations>;

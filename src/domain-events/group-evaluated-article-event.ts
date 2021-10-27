@@ -16,11 +16,12 @@ export const groupEvaluatedArticle = (
   doi: Doi,
   reviewId: ReviewId,
   date: Date = new Date(),
+  authors: ReadonlyArray<string> = [],
 ): GroupEvaluatedArticleEvent => ({
   type: 'GroupEvaluatedArticle',
   date,
   groupId,
   articleId: doi,
   reviewId,
-  authors: [],
+  authors,
 });

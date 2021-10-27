@@ -75,10 +75,6 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
       articleId,
       ports.findReviewsForArticleDoi,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
-      TE.map(RA.map((ev) => ({
-        ...ev,
-        authors: [],
-      }))),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
