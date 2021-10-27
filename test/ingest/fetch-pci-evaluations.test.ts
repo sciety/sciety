@@ -54,6 +54,7 @@ describe('fetch-pci-evaluations', () => {
             articleDoi: articleId,
             date,
             evaluationLocator: `doi:${reviewId}`,
+            authors: [],
           },
         ],
         skippedItems: [],

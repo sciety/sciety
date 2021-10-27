@@ -24,6 +24,7 @@ const toEvaluation = (ncrcReview: NcrcReview) => {
     date: new Date(ncrcReview.date),
     articleDoi: `10.1101/${doiSuffix}`,
     evaluationLocator: `ncrc:${ncrcReview.id}`,
+    authors: [],
   };
 };
 

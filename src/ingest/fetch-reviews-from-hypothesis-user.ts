@@ -22,6 +22,7 @@ const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> =>
     date: new Date(row.created),
     articleDoi: `10.1101/${doi}`,
     evaluationLocator: `hypothesis:${row.id}`,
+    authors: [],
   });
 };
 

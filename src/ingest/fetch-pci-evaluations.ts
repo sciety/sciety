@@ -54,6 +54,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
           date: new Date(candidate.date),
           articleDoi,
           evaluationLocator: validatedEvaluationDoi.toString(),
+          authors: [],
         }),
       ),
     );

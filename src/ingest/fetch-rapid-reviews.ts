@@ -21,6 +21,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
     date: new Date(review.created['date-time']),
     articleDoi: review.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${review.URL}`,
+    authors: [],
   })),
   E.filterOrElse(
     (review) => review.articleDoi.startsWith('10.1101/'),

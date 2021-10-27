@@ -12,6 +12,7 @@ export type Evaluation = {
   date: Date,
   articleDoi: string,
   evaluationLocator: string,
+  authors: ReadonlyArray<string>,
 };
 
 export type Evaluations = ReadonlyArray<Evaluation>;
@@ -41,6 +42,7 @@ export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pi
       date,
       articleDoi: articleDoi.value,
       evaluationLocator: RI.serialize(evaluationLocator),
+      authors: [],
     })),
   ),
 );

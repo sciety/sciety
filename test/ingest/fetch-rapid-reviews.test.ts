@@ -54,6 +54,7 @@ describe('fetch-rapid-reviews', () => {
             articleDoi,
             date,
             evaluationLocator: `rapidreviews:${reviewUrl}`,
+            authors: [],
           },
         ],
         skippedItems: [],

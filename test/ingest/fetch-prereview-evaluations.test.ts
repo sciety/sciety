@@ -52,11 +52,13 @@ describe('fetch-prereview-evaluations', () => {
             articleDoi: articleId.value,
             date: date1,
             evaluationLocator: `doi:${reviewDoi1.value}`,
+            authors: [],
           },
           {
             articleDoi: articleId.value,
             date: date2,
             evaluationLocator: `doi:${reviewDoi2.value}`,
+            authors: [],
           },
         ],
       })));
@@ -95,6 +97,7 @@ describe('fetch-prereview-evaluations', () => {
             articleDoi: articleId.value,
             date: date1,
             evaluationLocator: `doi:${reviewDoi1.value}`,
+            authors: [],
           },
         ],
       })));

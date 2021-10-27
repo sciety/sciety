@@ -62,6 +62,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     date: p.date,
     articleDoi: p.handle.value,
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,
+    authors: [],
   })),
 );
 

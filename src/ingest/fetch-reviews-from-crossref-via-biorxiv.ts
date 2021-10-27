@@ -40,6 +40,7 @@ const toEvaluation = (review: CrossrefReview) => {
     date,
     articleDoi: review.biorxivDoi,
     evaluationLocator: `doi:${reviewDoi}`,
+    authors: [],
   };
 };
 
