@@ -31,6 +31,7 @@ const eqEval: Eq.Eq<Evaluation> = Eq.struct({
   date: D.Eq,
   articleDoi: S.Eq,
   evaluationLocator: S.Eq,
+  authors: RA.getEq(S.Eq),
 });
 
 export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pipe(
@@ -38,11 +39,13 @@ export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pi
   readEventsFile,
   TE.bimap(
     (errors) => errors.join(', '),
-    RA.map(({ date, articleDoi, evaluationLocator }) => ({
+    RA.map(({
+      date, articleDoi, evaluationLocator, authors,
+    }) => ({
       date,
       articleDoi: articleDoi.value,
       evaluationLocator: RI.serialize(evaluationLocator),
-      authors: [],
+      authors,
     })),
   ),
 );
