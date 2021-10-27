@@ -26,7 +26,7 @@ describe('extract-prelights', () => {
       extractPrelights(fetchData),
     );
 
-    it.skip('records the evaluation', async () => {
+    it('records the evaluation', async () => {
       expect(await result()).toStrictEqual(expect.objectContaining({
         evaluations: [
           {
