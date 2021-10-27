@@ -12,7 +12,7 @@ type Ports = {
 };
 
 export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
-  ports.fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
+  ports.fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`),
   TE.chainEitherK(identifyCandidates),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
 );

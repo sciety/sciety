@@ -12,7 +12,7 @@ describe('extract-prelights', () => {
     const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
     const pubDate = arbitraryDate();
     const preprintDoi = arbitraryDoi('10.1101');
-    const author = arbitraryString();
+    const author = `${arbitraryString()}, ${arbitraryString()}`;
     const fetchData = shouldNotBeCalled;
     const result = pipe(
       [{
@@ -72,10 +72,6 @@ describe('extract-prelights', () => {
         skippedItems: [],
       }));
     });
-  });
-
-  describe('when there are multiple authors in a single field', () => {
-    it.todo('returns a single author string');
   });
 
   describe('given an item that is not a highlight', () => {
