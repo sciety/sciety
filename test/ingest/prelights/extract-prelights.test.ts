@@ -88,7 +88,28 @@ describe('extract-prelights', () => {
     });
   });
 
-  describe('when the preprint is not on a supported server', () => {
-    it.todo('skips the item');
+  describe('when the preprint is not on biorxiv or medrxiv', () => {
+    const guid = arbitraryWord();
+    const result = pipe(
+      [{
+        guid,
+        category: '<a name = "highlight">highlight</a>',
+        pubDate: arbitraryDate(),
+        preprintDoi: arbitraryDoi('10.1234').value,
+        preprintUrl: arbitraryWord(),
+        author: arbitraryString(),
+      }],
+      extractPrelights,
+    );
+
+    it('skips the item', () => {
+      expect(result).toStrictEqual(expect.objectContaining({
+        evaluations: [],
+        skippedItems: [expect.objectContaining({
+          item: guid,
+          reason: expect.stringContaining('DOI'),
+        })],
+      }));
+    });
   });
 });

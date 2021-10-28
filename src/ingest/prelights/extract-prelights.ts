@@ -26,7 +26,7 @@ export const extractPrelights = (items: ReadonlyArray<Prelight>): FeedData => pi
     ),
     E.filterOrElse(
       (i) => i.preprintDoi.startsWith('10.1101/'),
-      (i) => ({ item: i.guid, reason: 'Not a biorxiv DOI' }),
+      (i) => ({ item: i.guid, reason: `${i.preprintDoi} is not a biorxiv or medrxiv DOI` }),
     ),
     E.map(({
       pubDate, preprintDoi, guid, author,
