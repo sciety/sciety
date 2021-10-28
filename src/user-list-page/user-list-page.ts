@@ -54,7 +54,6 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
     </p>
     <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}</p>
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
-    ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/e9OVhb4n">Subscribe</a>' : ''}
   </header>
   ${savedArticlesList}
