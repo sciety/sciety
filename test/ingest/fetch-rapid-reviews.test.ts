@@ -26,7 +26,7 @@ const ingest = (items: ReadonlyArray<unknown>) => {
 };
 
 describe('fetch-rapid-reviews', () => {
-  describe('when there are no evaluations', () => {
+  describe('when there are no Crossref reviews', () => {
     it('returns no evaluations and no skipped items', async () => {
       expect(await ingest([])()).toStrictEqual(E.right({
         evaluations: [],
@@ -35,7 +35,7 @@ describe('fetch-rapid-reviews', () => {
     });
   });
 
-  describe('when there is a valid evaluation', () => {
+  describe('when there is a valid Crossref review', () => {
     it('returns 1 evaluation and no skipped items', async () => {
       const articleDoi = arbitraryDoi().value;
       const date = arbitraryDate();
@@ -62,7 +62,7 @@ describe('fetch-rapid-reviews', () => {
     });
   });
 
-  describe('when there is an invalid evaluation', () => {
+  describe('when there is a Crossref review for a article that is not on bioRxiv nor medRxiv', () => {
     it('returns 0 evaluations and 1 skipped item', async () => {
       const articleDoi = '10.26434/chemrxiv.12770225.v1';
       const date = arbitraryDate();
@@ -85,5 +85,21 @@ describe('fetch-rapid-reviews', () => {
         ],
       }));
     });
+  });
+
+  describe('when there is an Crossref review with no author field', () => {
+    it.todo('returns an evaluation with an empty array of authors');
+  });
+
+  describe('when there is an Crossref review with an empty array for the author field', () => {
+    it.todo('returns an evaluation with an empty array of authors');
+  });
+
+  describe('when there is an Crossref review from an author with only a family name', () => {
+    it.todo('returns the evaluation including an author with that family name');
+  });
+
+  describe('when there is an Crossref review from an author with both a given name and a family name', () => {
+    it.todo('returns the evaluation including an author with both those names');
   });
 });
