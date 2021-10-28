@@ -2,7 +2,7 @@ import { toUserId } from '../../types/user-id';
 
 export const card1 = {
   userId: toUserId('1449681648019255299'),
-  description: 'Selected papers from the Global South curated by Stefano Voanello',
+  description: 'Selected papers from the Global South curated by Stefano Vianello',
 };
 
 export const card2 = {
