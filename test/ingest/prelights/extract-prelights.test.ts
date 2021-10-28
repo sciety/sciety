@@ -7,13 +7,13 @@ import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {
-    const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
+    const postNumber = arbitraryNumber(1000, 100000);
     const pubDate = arbitraryDate();
     const preprintDoi = arbitraryDoi('10.1101');
     const author = `${arbitraryString()}, ${arbitraryString()}`;
     const result = pipe(
       [{
-        guid,
+        guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
         category: '<a name = "highlight">highlight</a>',
         pubDate,
         preprintUrl: arbitraryWord(),
@@ -29,7 +29,7 @@ describe('extract-prelights', () => {
           {
             date: pubDate,
             articleDoi: preprintDoi.value,
-            evaluationLocator: `prelights:${guid}`,
+            evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
             authors: [author],
           },
         ],
@@ -39,7 +39,7 @@ describe('extract-prelights', () => {
   });
 
   describe('given a valid evaluation without a preprintDoi', () => {
-    const guid = `https://prelights.biologists.com/?post_type=highlight&p=${arbitraryNumber(1000, 100000)}`;
+    const guid = arbitraryWord();
     const pubDate = arbitraryDate();
     const author = arbitraryString();
     const result = pipe(
