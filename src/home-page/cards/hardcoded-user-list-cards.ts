@@ -1,8 +1,8 @@
 import { toUserId } from '../../types/user-id';
 
 export const card1 = {
-  userId: toUserId('1417520401282854918'),
-  description: 'Some interesting preprints on ion channel proteins',
+  userId: toUserId('1449681648019255299'),
+  description: 'Selected papers from the Global South curated by Stefano Voanello',
 };
 
 export const card2 = {
