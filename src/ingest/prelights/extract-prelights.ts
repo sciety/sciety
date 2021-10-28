@@ -13,6 +13,13 @@ export type Prelight = {
 
 const skipWithReason = (item: Prelight, reason: string) => ({ item: item.guid, reason });
 
+const toEvaluation = (prelight: Prelight) => ({
+  date: prelight.pubDate,
+  articleDoi: prelight.preprintDoi,
+  evaluationLocator: `prelights:${prelight.guid.replace('&#038;', '&')}`,
+  authors: [prelight.author],
+});
+
 export const extractPrelights = (items: ReadonlyArray<Prelight>): FeedData => pipe(
   items,
   RA.map(flow(
@@ -29,14 +36,7 @@ export const extractPrelights = (items: ReadonlyArray<Prelight>): FeedData => pi
       (i) => i.preprintDoi.startsWith('10.1101/'),
       (i) => skipWithReason(i, `${i.preprintDoi} is not a biorxiv or medrxiv DOI`),
     ),
-    E.map(({
-      pubDate, preprintDoi, guid, author,
-    }) => ({
-      date: pubDate,
-      articleDoi: preprintDoi,
-      evaluationLocator: `prelights:${guid.replace('&#038;', '&')}`,
-      authors: [author],
-    })),
+    E.map(toEvaluation),
   )),
   (evaluationsOrSkippedItems) => ({
     evaluations: RA.rights(evaluationsOrSkippedItems),
