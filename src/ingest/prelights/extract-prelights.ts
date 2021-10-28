@@ -8,7 +8,6 @@ export type Prelight = {
   category: string,
   pubDate: Date,
   preprintDoi: string,
-  preprintUrl: string,
   author: string,
 };
 

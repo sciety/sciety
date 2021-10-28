@@ -9,7 +9,6 @@ describe('identify-candidates', () => {
         const category = arbitraryString();
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
-        const preprintUrl = arbitraryUri();
         const preprintDoi = arbitraryString();
         const author = arbitraryString();
         const result = identifyCandidates(`
@@ -24,7 +23,6 @@ describe('identify-candidates', () => {
               <pubDate>${pubDate.toISOString()}</pubDate>
               <preprints>
                 <preprint>
-                  <preprinturl>${preprintUrl}</preprinturl>
                   <preprintdoi>${preprintDoi}</preprintdoi>
                 </preprint>
               </preprints>
@@ -39,7 +37,6 @@ describe('identify-candidates', () => {
             guid,
             author,
             pubDate,
-            preprintUrl,
             preprintDoi,
           },
         ]));
@@ -52,8 +49,6 @@ describe('identify-candidates', () => {
         const pubDate = arbitraryDate();
         const guid = arbitraryUri();
         const author = arbitraryString();
-        const preprintUrl1 = arbitraryUri();
-        const preprintUrl2 = arbitraryUri();
         const preprintDoi1 = arbitraryString();
         const preprintDoi2 = arbitraryString();
         const result = identifyCandidates(`
@@ -68,11 +63,9 @@ describe('identify-candidates', () => {
               <pubDate>${pubDate.toISOString()}</pubDate>
               <preprints>
                 <preprint>
-                  <preprinturl>${preprintUrl1}</preprinturl>
                   <preprintdoi>${preprintDoi1}</preprintdoi>
                 </preprint>
                 <preprint>
-                  <preprinturl>${preprintUrl2}</preprinturl>
                   <preprintdoi>${preprintDoi2}</preprintdoi>
                 </preprint>
               </preprints>
@@ -83,10 +76,10 @@ describe('identify-candidates', () => {
 
         expect(result).toStrictEqual(E.right([
           {
-            category, guid, pubDate, preprintUrl: preprintUrl1, preprintDoi: preprintDoi1, author,
+            category, guid, pubDate, preprintDoi: preprintDoi1, author,
           },
           {
-            category, guid, pubDate, preprintUrl: preprintUrl2, preprintDoi: preprintDoi2, author,
+            category, guid, pubDate, preprintDoi: preprintDoi2, author,
           },
         ]));
       });
