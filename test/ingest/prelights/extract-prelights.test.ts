@@ -23,8 +23,8 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it('records the evaluation', async () => {
-      expect(await result()).toStrictEqual(expect.objectContaining({
+    it('records the evaluation', () => {
+      expect(result).toStrictEqual(expect.objectContaining({
         evaluations: [
           {
             date: pubDate,
@@ -54,8 +54,8 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it('skips the evaluation', async () => {
-      expect(await result()).toStrictEqual(expect.objectContaining({
+    it('skips the evaluation', () => {
+      expect(result).toStrictEqual(expect.objectContaining({
         evaluations: [],
         skippedItems: [expect.objectContaining({
           item: guid,
@@ -78,8 +78,8 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it('skips the item', async () => {
-      expect(await result()).toStrictEqual(expect.objectContaining({
+    it('skips the item', () => {
+      expect(result).toStrictEqual(expect.objectContaining({
         evaluations: [],
         skippedItems: [expect.objectContaining({
           item: guid,
