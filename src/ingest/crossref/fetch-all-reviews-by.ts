@@ -23,6 +23,10 @@ const crossrefReviewFromJson = t.type({
       id: t.string,
     })),
   }),
+  author: tt.optionFromNullable(t.readonlyArray(t.type({
+    given: tt.optionFromNullable(t.string),
+    family: t.string,
+  }))),
 });
 
 export type CrossrefReview = t.TypeOf<typeof crossrefReviewFromJson>;
