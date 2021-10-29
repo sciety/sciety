@@ -29,11 +29,13 @@ describe('get-twitter-user-details', () => {
     expect(await result()).toStrictEqual(E.right(expected));
   });
 
-  it('returns the bigger version of the avatar url', async () => {
+  it.each([
+    ['png'],
+  ])('returns the bigger version of the avatar url', async (fileFormat) => {
     const getTwitterResponse: GetTwitterResponse = () => TE.right({
       data: {
         name: 'John Smith',
-        profile_image_url: 'http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png',
+        profile_image_url: `http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.${fileFormat}`,
         username: 'arbitrary_twitter_handle',
       },
     });
@@ -45,7 +47,7 @@ describe('get-twitter-user-details', () => {
     )();
 
     expect(result).toStrictEqual(expect.objectContaining({
-      avatarUrl: 'http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_bigger.png',
+      avatarUrl: `http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_bigger.${fileFormat}`,
     }));
   });
 
