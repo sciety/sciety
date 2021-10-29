@@ -107,13 +107,34 @@ describe('fetch-rapid-reviews', () => {
       )();
     });
 
-    it('returns an evaluation with an empty array of authors', async () => {
+    it('returns an evaluation with an empty array of authors', () => {
       expect(result.evaluations[0].authors).toStrictEqual([]);
     });
   });
 
   describe('when there is an Crossref review with an empty array for the author field', () => {
-    it.todo('returns an evaluation with an empty array of authors');
+    const items = [
+      {
+        URL: arbitraryUri(),
+        created: { 'date-time': arbitraryDate().toString() },
+        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        author: [],
+      },
+    ];
+
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        items,
+        ingest,
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns an evaluation with an empty array of authors', () => {
+      expect(result.evaluations[0].authors).toStrictEqual([]);
+    });
   });
 
   describe('when there is an Crossref review from an author with only a family name', () => {
