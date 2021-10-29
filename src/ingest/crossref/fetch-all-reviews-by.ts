@@ -37,7 +37,7 @@ const crossrefReviewsFromJson = t.type({
   }),
 });
 
-const pageSize = 100;
+const pageSize = 1000;
 
 const constructUrls = (reviewerId: string) => (numberOfEvaluations: number) => (
   Array.from(Array(Math.ceil(numberOfEvaluations / pageSize)).keys())
