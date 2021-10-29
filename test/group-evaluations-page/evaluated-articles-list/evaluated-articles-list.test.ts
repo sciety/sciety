@@ -141,7 +141,7 @@ describe('evaluated-articles-list', () => {
       expect(cardCount(html)).toBe(2);
     });
 
-    it.skip('returns error cards instead of the failing article cards', async () => {
+    it('returns error cards instead of the failing article cards', async () => {
       const errorCardCount = Array.from(JSDOM.fragment(html).querySelectorAll('.error-card')).length;
 
       expect(errorCardCount).toBe(2);

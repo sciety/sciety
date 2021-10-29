@@ -87,7 +87,7 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
   TE.chainTaskK(T.traverseArray(toArticleCardViewModel(ports))),
-  TE.map(RA.rights),
+  TE.chainEitherK(E.fromPredicate((foo) => !RA.every(E.isLeft)(foo), () => noArticlesCanBeFetchedMessage)),
   TE.map(RA.match(
     () => noArticlesCanBeFetchedMessage,
     flow(
