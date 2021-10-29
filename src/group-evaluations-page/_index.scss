@@ -53,5 +53,5 @@
 }
 
 .error-card {
-  @include card.basics()
+  @include card.basics();
 }
