@@ -87,18 +87,15 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
   TE.chainTaskK(T.traverseArray(toArticleCardViewModel(ports))),
-  TE.chainEitherK(E.fromPredicate((foo) => !RA.every(E.isLeft)(foo), () => noArticlesCanBeFetchedMessage)),
-  TE.map(RA.match(
-    () => noArticlesCanBeFetchedMessage,
-    flow(
-      renderEvaluatedArticlesList,
-      addPaginationControls(pageOfArticles.nextPage, group),
-      (content) => `
-        ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
-        ${content}
-      `,
-      toHtmlFragment,
-    ),
+  TE.chainEitherK(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
+  TE.map(flow(
+    renderEvaluatedArticlesList,
+    addPaginationControls(pageOfArticles.nextPage, group),
+    (content) => `
+      ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
+      ${content}
+    `,
+    toHtmlFragment,
   )),
   TE.toUnion,
 );
