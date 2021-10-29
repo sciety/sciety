@@ -166,6 +166,34 @@ describe('fetch-rapid-reviews', () => {
   });
 
   describe('when there is an Crossref review from an author with both a given name and a family name', () => {
-    it.todo('returns the evaluation including an author with both those names');
+    const givenName = arbitraryWord();
+    const familyName = arbitraryWord();
+    const items = [
+      {
+        URL: arbitraryUri(),
+        created: { 'date-time': arbitraryDate().toString() },
+        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        author: [{
+          given: givenName,
+          family: familyName,
+        }],
+      },
+    ];
+
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        items,
+        ingest,
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns the evaluation including an author with both those names', () => {
+      expect(result.evaluations[0].authors).toStrictEqual([
+        `${givenName} ${familyName}`,
+      ]);
+    });
   });
 });
