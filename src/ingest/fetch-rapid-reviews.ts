@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -21,7 +22,11 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
     date: new Date(review.created['date-time']),
     articleDoi: review.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${review.URL}`,
-    authors: [],
+    authors: pipe(
+      review.author,
+      O.map(RA.map((author) => author.family)),
+      O.getOrElseW(() => []),
+    ),
   })),
   E.filterOrElse(
     (review) => review.articleDoi.startsWith('10.1101/'),
