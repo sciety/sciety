@@ -31,6 +31,7 @@ describe('get-twitter-user-details', () => {
 
   it.each([
     ['png'],
+    ['jpg'],
   ])('returns the bigger version of the avatar url', async (fileFormat) => {
     const getTwitterResponse: GetTwitterResponse = () => TE.right({
       data: {
