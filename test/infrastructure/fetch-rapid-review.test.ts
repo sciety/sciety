@@ -101,12 +101,14 @@ describe('fetch-rapid-review', () => {
   });
 
   describe('when fetching summary', () => {
+    const dcTitleOfASummary = () => `Reviews of ${arbitraryString()}`;
+
     it('returns the description as part of the fullText', async () => {
       const description = arbitraryString();
 
       expect(await pipe(
         rapidReviewResponseWith([
-          ['dc.title', `Reviews of ${arbitraryString()}`],
+          ['dc.title', dcTitleOfASummary()],
           ['dc.creator', arbitraryString()],
           ['description', description],
         ]),
@@ -114,11 +116,29 @@ describe('fetch-rapid-review', () => {
       )()).toStrictEqual(E.right(expect.stringContaining(description)));
     });
 
+    describe('when the description contains bullets', () => {
+      it('replaces bullets with line breaks', async () => {
+        const ratings = [arbitraryString(), arbitraryString(), arbitraryString()];
+        const description = `${ratings[0]} • ${ratings[1]} • ${ratings[2]}`;
+
+        expect(await pipe(
+          rapidReviewResponseWith([
+            ['dc.title', dcTitleOfASummary()],
+            ['dc.creator', arbitraryString()],
+            ['description', description],
+          ]),
+          toFullText,
+        )()).toStrictEqual(E.right(expect.stringContaining(
+          `${ratings[0]} <br> ${ratings[1]} <br> ${ratings[2]}`,
+        )));
+      });
+    });
+
     describe('cant find the description meta tag', () => {
       it('returns "not-found"', async () => {
         expect(await pipe(
           rapidReviewResponseWith([
-            ['dc.title', `Reviews of ${arbitraryString()}`],
+            ['dc.title', dcTitleOfASummary()],
             ['dc.creator', arbitraryString()],
           ]),
           toFullText,

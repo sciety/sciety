@@ -20,10 +20,13 @@ const summary = (logger: Logger) => (doc: Document) => pipe(
       logger('error', 'Rapid-review summary has no description');
       return err;
     },
-    (description) => `
+    flow(
+      (text) => text.replace(/•/g, '<br>'),
+      (description) => `
       <h3>Strength of evidence</h3>
       <p>${description}</p>
-    `,
+      `,
+    ),
   ),
 );
 
