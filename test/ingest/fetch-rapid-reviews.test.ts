@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews';
+import { FeedData } from '../../src/ingest/update-all';
 import { arbitraryDate, arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -88,7 +89,27 @@ describe('fetch-rapid-reviews', () => {
   });
 
   describe('when there is an Crossref review with no author field', () => {
-    it.todo('returns an evaluation with an empty array of authors');
+    const items = [
+      {
+        URL: arbitraryUri(),
+        created: { 'date-time': arbitraryDate().toString() },
+        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+      },
+    ];
+
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        items,
+        ingest,
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns an evaluation with an empty array of authors', async () => {
+      expect(result.evaluations[0].authors).toStrictEqual([]);
+    });
   });
 
   describe('when there is an Crossref review with an empty array for the author field', () => {
