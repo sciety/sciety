@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews';
@@ -60,6 +61,35 @@ describe('fetch-rapid-reviews', () => {
         ],
         skippedItems: [],
       }));
+    });
+  });
+
+  describe('when there is a valid Crossref review with multiple authors', () => {
+    const items = [
+      {
+        URL: arbitraryUri(),
+        created: { 'date-time': arbitraryDate().toString() },
+        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        author: [
+          { given: 'Fred', family: 'Blogs' },
+          { given: 'Joe', family: 'Smith' },
+        ],
+      },
+    ];
+
+    let authors: ReadonlyArray<string>;
+
+    beforeEach(async () => {
+      authors = await pipe(
+        items,
+        ingest,
+        TE.getOrElse(shouldNotBeCalled),
+        T.map((result) => result.evaluations[0].authors),
+      )();
+    });
+
+    it('maintains the order of the authors', () => {
+      expect(authors).toStrictEqual(['Fred Blogs', 'Joe Smith']);
     });
   });
 
