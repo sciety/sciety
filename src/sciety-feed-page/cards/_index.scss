@@ -1,7 +1,7 @@
 @use '../../sass/settings';
 @use '../../sass/card';
 
-.sciety-feed-card__link {
+.sciety-feed-card {
   @include card.basics();
   display: block;
 
@@ -10,8 +10,8 @@
   }
 }
 
-a.sciety-feed-card__link:link,
-a.sciety-feed-card__link:visited {
+a.sciety-feed-card:link,
+a.sciety-feed-card:visited {
   color: settings.$colour-text-primary;
 
   &:hover,

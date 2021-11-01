@@ -28,7 +28,7 @@ export const scietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
   toHtmlFragment,
   (details) => `
     <article>
-      <a href="${viewModel.linkUrl}" class="sciety-feed-card__link">
+      <a href="${viewModel.linkUrl}" class="sciety-feed-card">
         <div class="sciety-feed-card__event_title">
           <img class="sciety-feed-card__avatar" src="${viewModel.avatarUrl}" alt="">
           <h2 class="sciety-feed-card__event_title_text">${viewModel.titleText}</h2>
