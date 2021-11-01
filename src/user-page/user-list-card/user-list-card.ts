@@ -5,6 +5,7 @@ import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../../domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
+import { defaultUserListDescription } from '../static-messages';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -19,6 +20,7 @@ export const userListCard = (
       handle,
       href: `/users/${handle}/lists/saved-articles`,
       title: 'Saved articles',
+      description: defaultUserListDescription(`@${handle}`),
     }),
     renderUserListCard,
   )),

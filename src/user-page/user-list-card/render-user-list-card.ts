@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { defaultUserListDescription } from '../static-messages';
 
 type UserListCardViewModel = {
   articleCount: number,
@@ -9,6 +8,7 @@ type UserListCardViewModel = {
   handle: string,
   href: string,
   title: string,
+  description: string,
 };
 
 const lastUpdated = O.fold(
@@ -22,7 +22,7 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
     <h3 class="list-card__title">
       <a href="${viewModel.href}" class="list-card__link">${viewModel.title}</a>
     </h3>
-    <p>${defaultUserListDescription(`@${viewModel.handle}`)}</p>
+    <p>${viewModel.description}</p>
     <div class="list-card__meta">
       <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
     </div>

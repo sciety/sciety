@@ -6,6 +6,7 @@ import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-lis
 import { DomainEvent } from '../../domain-events';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { defaultGroupListDescription } from '../messages';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -27,6 +28,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, Html
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
     title: 'Evaluated articles',
+    description: defaultGroupListDescription(group.name),
   })),
   T.map(renderEvaluatedArticlesListCard),
   T.map(renderLists),
