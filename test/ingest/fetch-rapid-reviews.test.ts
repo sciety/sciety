@@ -8,15 +8,15 @@ import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 
-const ingest = (items: ReadonlyArray<unknown>) => {
+const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => {
   const fetchData = jest.fn()
     .mockReturnValueOnce(TE.right({
       message: {
-        'total-results': items.length,
+        'total-results': crossrefResponseItems.length,
       },
     }))
     .mockReturnValueOnce(TE.right({
-      message: { items },
+      message: { items: crossrefResponseItems },
     }));
   return pipe(
     {
