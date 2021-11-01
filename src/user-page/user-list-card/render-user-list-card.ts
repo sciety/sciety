@@ -8,6 +8,7 @@ type UserListCardViewModel = {
   href: string,
   title: string,
   description: string,
+  articleCountLabel: string,
 };
 
 const lastUpdated = O.fold(
@@ -23,7 +24,7 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
     </h3>
     <p>${viewModel.description}</p>
     <div class="list-card__meta">
-      <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
+      <span class="visually-hidden">${viewModel.articleCountLabel} </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
     </div>
   </article>
 `);

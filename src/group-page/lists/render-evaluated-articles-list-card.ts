@@ -9,6 +9,7 @@ type ViewModel = {
   href: string,
   title: string,
   description: string,
+  articleCountLabel: string,
 };
 
 const lastUpdated = O.fold(
@@ -26,7 +27,7 @@ export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragm
         ${viewModel.description}
       </p>
       <div class="list-card__meta">
-        <span class="visually-hidden">This group has evaluated </span><span>${viewModel.articleCount} articles</span>${lastUpdated(viewModel.lastUpdated)}
+        <span class="visually-hidden">${viewModel.articleCountLabel} </span><span>${viewModel.articleCount} articles</span>${lastUpdated(viewModel.lastUpdated)}
       </div>
     </div>
   `,

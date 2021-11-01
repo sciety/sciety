@@ -20,6 +20,7 @@ export const userListCard = (
       href: `/users/${handle}/lists/saved-articles`,
       title: 'Saved articles',
       description: defaultUserListDescription(`@${handle}`),
+      articleCountLabel: 'This list contains',
     }),
     renderUserListCard,
   )),
