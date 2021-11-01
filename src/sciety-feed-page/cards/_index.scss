@@ -1,15 +1,9 @@
 @use '../../sass/settings';
 @use '../../sass/card';
 
-.sciety-feed-card {
-  @include card.basics();
-  padding: 0;
-}
-
-
 .sciety-feed-card__link {
+  @include card.basics();
   display: block;
-  padding: 1rem;
 
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
