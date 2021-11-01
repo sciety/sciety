@@ -9,6 +9,7 @@ type ViewModel = {
   group: Group,
   articleCount: number,
   lastUpdated: O.Option<Date>,
+  href: string,
 };
 
 const lastUpdated = O.fold(
@@ -20,7 +21,7 @@ export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragm
   `
     <div class="list-card">
       <h3 class="list-card__title">
-        <a href="/groups/${viewModel.group.slug}/evaluated-articles" class="list-card__link">Evaluated articles</a>
+        <a href="${viewModel.href}" class="list-card__link">Evaluated articles</a>
       </h3>
       <p>
         ${defaultGroupListDescription(viewModel.group.name)}

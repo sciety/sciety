@@ -17,6 +17,7 @@ export const userListCard = (
     (listDetails) => ({
       ...listDetails,
       handle,
+      href: `/users/${handle}/lists/saved-articles`,
     }),
     renderUserListCard,
   )),
