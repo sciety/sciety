@@ -8,6 +8,7 @@ type UserListCardViewModel = {
   lastUpdated: O.Option<Date>,
   handle: string,
   href: string,
+  title: string,
 };
 
 const lastUpdated = O.fold(
@@ -19,7 +20,7 @@ const lastUpdated = O.fold(
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <h3 class="list-card__title">
-      <a href="${viewModel.href}" class="list-card__link">Saved articles</a>
+      <a href="${viewModel.href}" class="list-card__link">${viewModel.title}</a>
     </h3>
     <p>${defaultUserListDescription(`@${viewModel.handle}`)}</p>
     <div class="list-card__meta">

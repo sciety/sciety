@@ -26,6 +26,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, Html
     group,
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
+    title: 'Evaluated articles',
   })),
   T.map(renderEvaluatedArticlesListCard),
   T.map(renderLists),
