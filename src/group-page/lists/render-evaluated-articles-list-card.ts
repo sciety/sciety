@@ -1,11 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
-import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ViewModel = {
-  group: Group,
   articleCount: number,
   lastUpdated: O.Option<Date>,
   href: string,

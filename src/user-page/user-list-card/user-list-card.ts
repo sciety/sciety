@@ -17,7 +17,6 @@ export const userListCard = (
     getUserListDetails(userId),
     (listDetails) => ({
       ...listDetails,
-      handle,
       href: `/users/${handle}/lists/saved-articles`,
       title: 'Saved articles',
       description: defaultUserListDescription(`@${handle}`),

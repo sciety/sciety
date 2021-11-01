@@ -5,7 +5,6 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 type UserListCardViewModel = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
-  handle: string,
   href: string,
   title: string,
   description: string,

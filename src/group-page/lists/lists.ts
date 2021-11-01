@@ -24,7 +24,6 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, Html
   ports.getAllEvents,
   T.map(getEvaluatedArticlesListDetails(group.id)),
   T.map((details) => ({
-    group,
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
     title: 'Evaluated articles',
