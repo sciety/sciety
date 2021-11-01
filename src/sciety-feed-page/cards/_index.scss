@@ -6,9 +6,14 @@
   padding: 0;
 }
 
+
 .sciety-feed-card__link {
   display: block;
   padding: 1rem;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.20);
+  }
 }
 
 a.sciety-feed-card__link:link,
