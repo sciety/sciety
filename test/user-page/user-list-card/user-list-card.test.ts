@@ -17,15 +17,6 @@ describe('user-list-card', () => {
     expect(rendered?.textContent).toContain('Saved articles');
   });
 
-  it('the title holds a link', async () => {
-    const rendered = await pipe(
-      userListCard(T.of([]))(arbitraryWord(), arbitraryUserId()),
-      T.map(JSDOM.fragment),
-    )();
-
-    expect(rendered.querySelector('h3 a')).not.toBeNull();
-  });
-
   it('displays the list owner\'s handle in the description', async () => {
     const handle = arbitraryWord();
     const rendered = await pipe(

@@ -316,7 +316,7 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
-    it('shows a link to the saved-articles list page', async () => {
+    it('shows a card linking to the saved-articles list page', async () => {
       const params = { handle: arbitraryWord() };
 
       const page = await pipe(
@@ -335,7 +335,6 @@ describe('user-page', () => {
       const link = page.querySelector('.tab-panel a');
 
       expect(link?.getAttribute('href')).toStrictEqual(`/users/${params.handle}/lists/saved-articles`);
-      expect(link?.textContent).toBe('Saved articles');
     });
   });
 });
