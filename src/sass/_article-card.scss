@@ -9,14 +9,12 @@
 
 .article-card {
   @include card.basics();
+  @include card.link();
+  display: block;
 }
 
 .article-card__title {
   @include card.title();
-}
-
-.article-card__link {
-  @include card.link();
 }
 
 .article-card__footer {

@@ -27,6 +27,10 @@ $_icon-inline-offset: 6px;
 .saved-articles-control {
   @include button.basics();
   background-color: transparent;
+
+  &:hover {
+    outline: 1px solid settings.$colour-accent-hover;
+  }
 }
 
 .user-list-subscribe {

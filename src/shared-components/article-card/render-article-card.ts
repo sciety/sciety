@@ -50,16 +50,18 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 );
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
-  <article class="article-card">
-    <h3 class="article-card__title">
-      <a class="article-card__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
-    </h3>
-    ${renderAuthors(model.authors, `article-card-author-list-${model.doi.value}`)}
-    <footer class="article-card__footer">
-      <div class="article-card__meta">
-        <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
-      </div>
-      ${renderControls(controls)}
-    </footer>
+  <article>
+    <a class="article-card" href="/articles/activity/${model.doi.value}">
+      <h3 class="article-card__title">
+        ${model.title}
+      </h3>
+      ${renderAuthors(model.authors, `article-card-author-list-${model.doi.value}`)}
+      <footer class="article-card__footer">
+        <div class="article-card__meta">
+          <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
+        </div>
+        ${renderControls(controls)}
+      </footer>
+    </a>
   </article>
 `);

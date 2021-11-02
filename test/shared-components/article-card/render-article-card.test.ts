@@ -31,7 +31,7 @@ const getSpans = (articleViewModel: ArticleViewModel) => pipe(
 );
 
 describe('render-article-card', () => {
-  it('links the article title to the article page', () => {
+  it('links to the article page', () => {
     const articleViewModel = generateArticleViewModel({
       doi: new Doi('10.1101/1234'),
       title: sanitise(toHtmlFragment('The article title')),
@@ -41,7 +41,6 @@ describe('render-article-card', () => {
     const link = rendered.querySelector('a');
 
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
-    expect(link?.textContent).toBe('The article title');
   });
 
   describe('latest version', () => {
