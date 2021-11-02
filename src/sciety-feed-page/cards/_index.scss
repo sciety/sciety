@@ -3,20 +3,11 @@
 
 .sciety-feed-card {
   @include card.basics();
+  @include card.link();
   display: block;
 
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-}
-
-a.sciety-feed-card:link,
-a.sciety-feed-card:visited {
-  color: settings.$colour-text-primary;
-
-  &:hover,
-  &:active {
-    color: settings.$colour-text-primary;
   }
 }
 
