@@ -11,6 +11,10 @@
   @include card.basics();
   @include card.link();
   display: block;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  }
 }
 
 .article-card__title {
