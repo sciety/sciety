@@ -16,7 +16,6 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-// TODO: should not reuse CSS classes from the group page
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <h3 class="list-card__title">

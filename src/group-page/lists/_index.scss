@@ -1,22 +1,5 @@
 @use '../../sass/baseline';
-@use '../../sass/card';
 
 .group-page-lists {
   margin-bottom: baseline.increments(3);
-}
-
-.list-card {
-  @include card.basics();
-}
-
-.list-card__title {
-  @include card.title();
-}
-
-.list-card__link {
-  @include card.link();
-}
-
-.list-card__meta {
-  @include card.meta();
 }

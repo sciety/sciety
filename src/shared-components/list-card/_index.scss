@@ -1,0 +1,17 @@
+@use '../../sass/card';
+
+.list-card {
+  @include card.basics();
+}
+
+.list-card__title {
+  @include card.title();
+}
+
+.list-card__link {
+  @include card.link();
+}
+
+.list-card__meta {
+  @include card.meta();
+}
