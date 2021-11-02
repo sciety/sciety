@@ -17,8 +17,8 @@ const lastUpdated = O.fold(
 );
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
-  <article class="list-card">
-    <a href="${viewModel.href}" class="list-card__link">
+  <article>
+    <a href="${viewModel.href}" class="list-card">
       <h3 class="list-card__title">${viewModel.title}</h3>
       <p>${viewModel.description}</p>
       <div class="list-card__meta">
