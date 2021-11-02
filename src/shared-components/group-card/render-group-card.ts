@@ -45,19 +45,21 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
 
 export const renderGroupCard = flow(
   (result: GroupViewModel) => `
-    <article class="group-card">
-      <div class="group-card__body">
-        <h3 class="group-card__title">
-          <a class="group-card__link" href="/groups/${result.slug}">${htmlEscape(result.name)}</a>
-        </h3>
-        <div class="group-card__description">
-          ${result.description}
+    <article>
+      <a class="group-card group-card__link" href="/groups/${result.slug}">
+        <div class="group-card__body">
+          <h3 class="group-card__title">
+            ${htmlEscape(result.name)}
+          </h3>
+          <div class="group-card__description">
+            ${result.description}
+          </div>
+          <span class="group-card__meta">
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
+          </span>
         </div>
-        <span class="group-card__meta">
-          <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
-        </span>
-      </div>
-      <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
+        <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
+      </a>
     </article>
   `,
   toHtmlFragment,
