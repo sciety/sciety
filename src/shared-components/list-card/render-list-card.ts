@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../date';
 
-type UserListCardViewModel = {
+type ListCardViewModel = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
   href: string,
@@ -17,7 +17,7 @@ const lastUpdated = O.fold(
 );
 
 // TODO: should not reuse CSS classes from the group page
-export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
+export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <h3 class="list-card__title">
       <a href="${viewModel.href}" class="list-card__link">${viewModel.title}</a>
