@@ -28,10 +28,6 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
-import { getTwitterResponse } from './get-twitter-response';
-import { getTwitterUserDetails } from './get-twitter-user-details';
-import { getTwitterUserDetailsBatch } from './get-twitter-user-details-batch';
-import { getTwitterUserId } from './get-twitter-user-id';
 import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
@@ -39,6 +35,10 @@ import {
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { getTwitterResponse } from '../third-parties/twitter/get-twitter-response';
+import { getTwitterUserDetails } from '../third-parties/twitter/get-twitter-user-details';
+import { getTwitterUserDetailsBatch } from '../third-parties/twitter/get-twitter-user-details-batch';
+import { getTwitterUserId } from '../third-parties/twitter/get-twitter-user-id';
 
 type Dependencies = {
   prettyLog: boolean,

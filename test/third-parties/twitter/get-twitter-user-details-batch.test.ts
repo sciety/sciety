@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { axiosError } from './helpers';
-import { getTwitterUserDetailsBatch } from '../../src/infrastructure/get-twitter-user-details-batch';
-import * as DE from '../../src/types/data-error';
-import { toUserId } from '../../src/types/user-id';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryUri, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { getTwitterUserDetailsBatch } from '../../../src/third-parties/twitter/get-twitter-user-details-batch';
+import * as DE from '../../../src/types/data-error';
+import { toUserId } from '../../../src/types/user-id';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryUri, arbitraryWord } from '../../helpers';
+import { axiosError } from '../../infrastructure/helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-twitter-user-details-batch', () => {
   describe('when given no user ids', () => {

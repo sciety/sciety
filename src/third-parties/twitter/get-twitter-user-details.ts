@@ -2,9 +2,9 @@ import axios from 'axios';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetTwitterResponse } from './get-twitter-response';
-import { Logger, Payload } from './logger';
-import * as DE from '../types/data-error';
-import { UserId } from '../types/user-id';
+import { Logger, Payload } from '../../infrastructure/logger';
+import * as DE from '../../types/data-error';
+import { UserId } from '../../types/user-id';
 
 type TwitterUserDetails = {
   avatarUrl: string,

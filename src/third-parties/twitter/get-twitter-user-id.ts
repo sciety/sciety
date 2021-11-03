@@ -5,9 +5,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { GetTwitterResponse } from './get-twitter-response';
-import { Logger } from './logger';
-import * as DE from '../types/data-error';
-import { toUserId, UserId } from '../types/user-id';
+import { Logger } from '../../infrastructure/logger';
+import * as DE from '../../types/data-error';
+import { toUserId, UserId } from '../../types/user-id';
 
 export type GetTwitterUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 

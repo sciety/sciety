@@ -8,9 +8,9 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetTwitterResponse } from './get-twitter-response';
-import { Logger } from './logger';
-import * as DE from '../types/data-error';
-import { toUserId, UserId } from '../types/user-id';
+import { Logger } from '../../infrastructure/logger';
+import * as DE from '../../types/data-error';
+import { toUserId, UserId } from '../../types/user-id';
 
 type UserDetails = {
   userId: UserId,

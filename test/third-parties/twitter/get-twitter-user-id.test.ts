@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { axiosError } from './helpers';
-import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
-import { getTwitterUserId } from '../../src/infrastructure/get-twitter-user-id';
-import * as DE from '../../src/types/data-error';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryWord } from '../helpers';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { GetTwitterResponse } from '../../../src/third-parties/twitter/get-twitter-response';
+import { getTwitterUserId } from '../../../src/third-parties/twitter/get-twitter-user-id';
+import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryWord } from '../../helpers';
+import { axiosError } from '../../infrastructure/helpers';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-twitter-user-id', () => {
   describe('when the user handle exists', () => {

@@ -2,13 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { axiosError } from './helpers';
-import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
-import { getTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
-import * as DE from '../../src/types/data-error';
-import { dummyLogger } from '../dummy-logger';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { GetTwitterResponse } from '../../../src/third-parties/twitter/get-twitter-response';
+import { getTwitterUserDetails } from '../../../src/third-parties/twitter/get-twitter-user-details';
+import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { axiosError } from '../../infrastructure/helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-twitter-user-details', () => {
   it('returns the details for the user', async () => {

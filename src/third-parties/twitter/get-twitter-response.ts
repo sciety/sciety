@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
 import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchData } from './fetchers';
-import { Logger } from './logger';
+import { fetchData } from '../../infrastructure/fetchers';
+import { Logger } from '../../infrastructure/logger';
 
 export type GetTwitterResponse = (url: string) => TE.TaskEither<AxiosError, Json>;
 
