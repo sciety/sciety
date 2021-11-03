@@ -10,7 +10,6 @@ import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
-import { fetchCrossrefArticle } from './fetch-crossref-article';
 import { fetchDataciteReview } from './fetch-datacite-review';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -35,6 +34,7 @@ import {
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { fetchCrossrefArticle } from '../third-parties/crossref';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';

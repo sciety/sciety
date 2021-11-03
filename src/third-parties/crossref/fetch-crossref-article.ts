@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { DOMParser } from 'xmldom';
-import { Logger } from './logger';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
-import { ArticleServer } from '../types/article-server';
-import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { Logger } from '../../infrastructure/logger';
+import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   abstract: SanitisedHtmlFragment,

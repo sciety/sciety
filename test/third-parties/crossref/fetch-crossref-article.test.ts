@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
-import * as DE from '../../src/types/data-error';
-import { dummyLogger } from '../dummy-logger';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
+import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('fetch-crossref-article', () => {
   const doi = arbitraryDoi();

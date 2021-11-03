@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { XMLSerializer } from 'xmldom';
-import { Logger } from './logger';
-import { Doi } from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { Logger } from '../../infrastructure/logger';
+import { Doi } from '../../types/doi';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)

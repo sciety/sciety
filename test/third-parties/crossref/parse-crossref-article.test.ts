@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getServer, getTitle,
-} from '../../src/infrastructure/parse-crossref-article';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryUri } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+} from '../../../src/third-parties/crossref/parse-crossref-article';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryUri } from '../../helpers';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
