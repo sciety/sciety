@@ -35,10 +35,9 @@ import {
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
-import { getTwitterResponse } from '../third-parties/twitter/get-twitter-response';
-import { getTwitterUserDetails } from '../third-parties/twitter/get-twitter-user-details';
-import { getTwitterUserDetailsBatch } from '../third-parties/twitter/get-twitter-user-details-batch';
-import { getTwitterUserId } from '../third-parties/twitter/get-twitter-user-id';
+import {
+  getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId
+} from '../third-parties/twitter';
 
 type Dependencies = {
   prettyLog: boolean,

@@ -14,9 +14,7 @@ import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events
 import { Logger } from './logger';
 import { SearchResults } from './search-europe-pmc';
 import { DomainEvent } from '../domain-events';
-import { GetTwitterUserDetails } from '../third-parties/twitter/get-twitter-user-details';
-import { GetUserDetailsBatch } from '../third-parties/twitter/get-twitter-user-details-batch';
-import { GetTwitterUserId } from '../third-parties/twitter/get-twitter-user-id';
+import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
