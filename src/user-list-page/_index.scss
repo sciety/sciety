@@ -24,6 +24,10 @@ $_icon-inline-offset: 6px;
   margin-right: 0.5rem;
 }
 
+svg.saved-articles-control__icon {
+  fill: settings.$colour-text-primary;
+}
+
 .saved-articles-control {
   @include button.basics();
   background-color: transparent;
