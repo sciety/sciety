@@ -7,10 +7,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
-import { biorxivArticleDetails, BiorxivArticleDetails } from './codecs/BiorxivArticleDetails';
-import { Logger } from './logger';
-import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
+import { biorxivArticleDetails, BiorxivArticleDetails } from './BiorxivArticleDetails';
+import { Logger } from '../../infrastructure/logger';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 

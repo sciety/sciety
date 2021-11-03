@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
-import { getArticleVersionEventsFromBiorxiv } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
-import { Doi } from '../../src/types/doi';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryDoi } from '../types/doi.helper';
+import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv';
+import { Doi } from '../../../src/types/doi';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {

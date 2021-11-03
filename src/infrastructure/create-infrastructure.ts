@@ -21,7 +21,6 @@ import { fetchData } from './fetchers';
 import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
-import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
@@ -33,6 +32,7 @@ import {
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import {
