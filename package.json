@@ -13,7 +13,7 @@
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
     "@types/passport-local": "^1.0.34",
-    "axios": "^0.21.4",
+    "axios": "^0.24.0",
     "axios-cache-adapter": "^2.7.3",
     "chalk": "4.1.2",
     "clownface": "^1.4.0",
