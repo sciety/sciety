@@ -7,12 +7,12 @@ import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
-import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
-import { Evaluation } from './evaluation';
-import { EvaluationFetcher } from './fetch-review';
-import { Logger } from './logger';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
+import { hypothesisAnnotation, HypothesisAnnotation } from './HypothesisAnnotation';
+import { Evaluation } from '../../infrastructure/evaluation';
+import { EvaluationFetcher } from '../../infrastructure/fetch-review';
+import { Logger } from '../../infrastructure/logger';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
 

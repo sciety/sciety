@@ -12,7 +12,6 @@ import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchDataciteReview } from './fetch-datacite-review';
 import { fetchDataset } from './fetch-dataset';
-import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
 import { fetchRapidReview } from './fetch-rapid-review';
@@ -35,6 +34,7 @@ import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
+import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
