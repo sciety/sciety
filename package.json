@@ -97,7 +97,7 @@
     "sass": "^1.43.4",
     "sass-unused": "^0.5.0",
     "stylelint": "^13.13.1",
-    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-sass-guidelines": "^9.0.1",
     "supertest": "^6.1.6",
     "taiko": "^1.2.5",
     "ts-jest": "^26.5.6",
