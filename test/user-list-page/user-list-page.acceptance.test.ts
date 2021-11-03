@@ -212,7 +212,7 @@ describe('user-list-page', () => {
           contentOf,
           T.map(JSDOM.fragment),
         )();
-        const deleteButtons = page.querySelectorAll('.article-card img');
+        const deleteButtons = page.querySelectorAll('.saved-articles-control');
 
         expect(deleteButtons).toHaveLength(2);
       });
@@ -250,7 +250,7 @@ describe('user-list-page', () => {
           contentOf,
           T.map(JSDOM.fragment),
         )();
-        const deleteButtons = page.querySelectorAll('.article-card img');
+        const deleteButtons = page.querySelectorAll('.saved-articles-control');
 
         expect(deleteButtons).toHaveLength(0);
       });
