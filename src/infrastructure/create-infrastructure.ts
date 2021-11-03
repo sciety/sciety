@@ -36,7 +36,7 @@ import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import {
-  getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId
+  getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
 
 type Dependencies = {
