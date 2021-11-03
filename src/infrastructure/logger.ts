@@ -3,8 +3,9 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as D from 'fp-ts/Date';
 import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
+import axios from 'axios';
 
 enum Level {
   error,
@@ -53,7 +54,25 @@ export const replaceError = (_key: string, value: unknown): unknown => {
   return value;
 };
 
-export const jsonSerializer = (prettyPrint = false): Serializer => (
+const filterAxiosGarbageInPayload = (payload: Payload) => {
+  if (payload.error && axios.isAxiosError(payload.error)) {
+    return ({
+      ...payload,
+      error: {
+        url: payload.error.config.url,
+        status: payload.error.response?.status,
+      },
+    })
+  }
+
+  return payload;
+};
+
+export const jsonSerializer = (prettyPrint = false): Serializer => flow(
+  (entry) => ({
+    ...entry,
+    payload: filterAxiosGarbageInPayload(entry.payload),
+  }),
   (entry) => (
     JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
   )
