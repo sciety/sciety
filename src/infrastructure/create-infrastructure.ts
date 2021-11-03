@@ -11,7 +11,6 @@ import { Adapters } from './adapters';
 import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchDataset } from './fetch-dataset';
-import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
@@ -34,6 +33,7 @@ import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
+import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
