@@ -28,8 +28,8 @@ $_icon-inline-offset: 6px;
   @include button.basics();
   background-color: transparent;
 
-  &:hover {
-    outline: 1px solid settings.$colour-accent-hover;
+  &:hover svg.saved-articles-control__icon {
+    fill: settings.$colour-accent;
   }
 }
 

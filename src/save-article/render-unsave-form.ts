@@ -8,7 +8,11 @@ export const renderUnsaveForm = (articleId: Doi): HtmlFragment => pipe(
   (id) => `<form method="post" action="/unsave-article">
       <input type="hidden" name="${articleIdFieldName}" value="${id}">
       <button class="saved-articles-control">
-        <img src="/static/images/delete.svg" alt="Remove this article from the list">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="rgb(52, 67, 74)" class="saved-articles-control__icon">
+          <desc>Remove this article from the list</desc>
+          <path d="M0 0h24v24H0V0z" fill="none"/>
+          <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>
+        </svg>
       </button>
     </form>`,
   toHtmlFragment,
