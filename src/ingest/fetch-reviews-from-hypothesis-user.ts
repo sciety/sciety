@@ -4,9 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
-import * as Hyp from './hypothesis';
 import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
+import * as Hyp from '../third-parties/hypothesis';
 
 // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
 // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"

@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { extractPrelights } from '../../../src/ingest/prelights/extract-prelights';
+import { extractPrelights } from '../../../src/third-parties/prelights/extract-prelights';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';

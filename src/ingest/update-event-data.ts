@@ -7,8 +7,8 @@ import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
 import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
-import { fetchPrelightsEvaluations } from './prelights/fetch-prelights-evaluations';
 import { Group, updateAll } from './update-all';
+import { fetchPrelightsEvaluations } from '../third-parties/prelights/fetch-prelights-evaluations';
 
 const allGroups: Array<Group> = [
   {

@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as CR from './crossref';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
+import * as CR from '../third-parties/crossref';
 
 type BiorxivItem = {
   biorxiv_doi: string,

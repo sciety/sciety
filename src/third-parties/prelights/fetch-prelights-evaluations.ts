@@ -2,8 +2,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from './extract-prelights';
 import { identifyCandidates } from './identify-candidates';
-import { FetchData } from '../fetch-data';
-import { FetchEvaluations } from '../update-all';
+import { FetchData } from '../../ingest/fetch-data';
+import { FetchEvaluations } from '../../ingest/update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 

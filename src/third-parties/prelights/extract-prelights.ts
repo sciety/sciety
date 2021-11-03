@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { FeedData } from '../update-all';
+import { FeedData } from '../../ingest/update-all';
 
 export type Prelight = {
   guid: string,

@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as CR from './crossref';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
+import * as CR from '../third-parties/crossref';
 
 type Ports = {
   fetchData: FetchData,
