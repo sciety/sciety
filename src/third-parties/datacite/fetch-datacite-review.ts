@@ -5,11 +5,11 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
-import { FetchDataset } from './fetch-dataset';
-import { EvaluationFetcher } from './fetch-review';
-import { Logger } from './logger';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
+import { FetchDataset } from '../../infrastructure/fetch-dataset';
+import { EvaluationFetcher } from '../../infrastructure/fetch-review';
+import { Logger } from '../../infrastructure/logger';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 const fetchReviewContent = (
   fetchDataset: FetchDataset,

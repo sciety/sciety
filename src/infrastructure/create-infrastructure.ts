@@ -10,7 +10,6 @@ import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
-import { fetchDataciteReview } from './fetch-datacite-review';
 import { fetchDataset } from './fetch-dataset';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
@@ -33,6 +32,7 @@ import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
+import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import {

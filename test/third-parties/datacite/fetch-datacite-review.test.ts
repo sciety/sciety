@@ -5,12 +5,12 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { flow, identity, pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
-import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
-import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
-import * as DE from '../../src/types/data-error';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { FetchDataset } from '../../../src/infrastructure/fetch-dataset';
+import { fetchDataciteReview } from '../../../src/third-parties/datacite';
+import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryWord } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const reviewDoi = arbitraryWord();
 
