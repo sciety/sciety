@@ -3,10 +3,10 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchPrelightsHighlight } from '../../src/infrastructure/fetch-prelights-highlight';
-import * as DE from '../../src/types/data-error';
-import { arbitraryString, arbitraryUri } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { fetchPrelightsHighlight } from '../../../src/third-parties/prelights';
+import * as DE from '../../../src/types/data-error';
+import { arbitraryString, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const makeDoc = (descriptions: Array<string>) => `
   <!doctype html>
@@ -23,7 +23,7 @@ const makeDoc = (descriptions: Array<string>) => `
   </html>
 `;
 
-describe('fetch-prelight-highlight', () => {
+describe('fetch-prelights-highlight', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const guid = new URL(arbitraryUri());
     const getHtml = () => TE.right(makeDoc([arbitraryString()]));

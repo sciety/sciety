@@ -12,7 +12,6 @@ import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchDataset } from './fetch-dataset';
 import { fetchNcrcReview } from './fetch-ncrc-review';
-import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
@@ -35,6 +34,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
+import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
