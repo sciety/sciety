@@ -29,11 +29,11 @@ import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
-import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
+import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,

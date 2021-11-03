@@ -10,13 +10,13 @@ import {
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { Logger } from './logger';
-import { ArticleServer } from '../types/article-server';
-import { DoiFromString } from '../types/codecs/DoiFromString';
-import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { Logger } from '../../infrastructure/logger';
+import { ArticleServer } from '../../types/article-server';
+import { DoiFromString } from '../../types/codecs/DoiFromString';
+import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
 

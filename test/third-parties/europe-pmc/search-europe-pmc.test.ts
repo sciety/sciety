@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { Json } from 'io-ts-types';
-import { searchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
-import { Doi } from '../../src/types/doi';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
+import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
+import { Doi } from '../../../src/types/doi';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
