@@ -50,8 +50,8 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 );
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
-  <article class="article-card__article">
-    <a class="article-card" href="/articles/activity/${model.doi.value}">
+  <article class="article-card">
+    <a class="article-card__link" href="/articles/activity/${model.doi.value}">
       <h3 class="article-card__title">
         ${model.title}
       </h3>

@@ -11,11 +11,11 @@ $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
-.article-card__article {
+.article-card {
   position: relative;
 }
 
-.article-card {
+.article-card__link {
   @include card.basics();
   @include card.link();
   display: block;

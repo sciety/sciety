@@ -60,7 +60,7 @@ describe('unsave article', () => {
       await click('Save to my list');
       await click('Saved to my list');
       await click('Saved articles');
-      await click($('.article-card__article button'));
+      await click($('.article-card button'));
       await goto('localhost:8080/articles/10.1101/2021.02.16.431437');
       const result = await text('Save to my list').exists();
 
