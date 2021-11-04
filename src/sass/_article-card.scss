@@ -7,6 +7,10 @@
 
 @use 'list';
 
+$_optional-controls-icon-size: 24px;
+$_footer-icon-separation: 16px;
+$_card-padding: 16px;
+
 .article-card__article {
   position: relative;
 }
@@ -29,7 +33,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: calc(16px + 24px);
+  margin-right: calc(functions.px-to-rem($_footer-icon-separation) + $_optional-controls-icon-size);
 }
 
 .article-card__meta {
@@ -39,5 +43,5 @@
 .article-card__controls {
   position: absolute;
   bottom: functions.px-to-rem(12px);
-  right: functions.px-to-rem(16px);
+  right: functions.px-to-rem($_card-padding);
 }
