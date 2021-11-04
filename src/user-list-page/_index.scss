@@ -30,6 +30,10 @@ svg.saved-articles-control__icon {
 
 .saved-articles-control {
   @include button.basics();
+  padding: 0;
+  display: block;
+  height: $_icon-size;
+  width: $_icon-size;
   background-color: transparent;
 
   &:hover svg.saved-articles-control__icon {

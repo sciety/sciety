@@ -50,7 +50,7 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 );
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
-  <article>
+  <article class="article-card__article">
     <a class="article-card" href="/articles/activity/${model.doi.value}">
       <h3 class="article-card__title">
         ${model.title}
@@ -60,8 +60,8 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: A
         <div class="article-card__meta">
           <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
         </div>
-        ${renderControls(controls)}
       </footer>
     </a>
+    ${renderControls(controls)}
   </article>
 `);
