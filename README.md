@@ -152,6 +152,24 @@ At the prompt, execute this command:
 \copy (SELECT date, type, payload FROM events ORDER BY date) TO STDOUT WITH CSV;
 ```
 
+### Dump logs into BigQuery
+
+Requires aws access to 540790251273
+
+```
+aws s3 cp --recursive s3://sciety-data-extractions/ingress-nginx-controller-20210501-20211031 ./logs
+gunzip -r logs
+find logs -type 'f' | grep -v jsonl | xargs -n 1 ./scripts/convert-cloudwatch-logs-to-bigquery-jsonl.sh
+(find logs -type 'f' | grep jsonl | xargs cat) > logs/singlefile.jsonl
+bq load \
+   --project_id=elife-data-pipeline \
+   --autodetect \
+   --replace \
+   --source_format=NEWLINE_DELIMITED_JSON \
+   de_proto.sciety_ingress_temp \
+   logs/singlefile.jsonl
+```
+
 License
 -------
 
