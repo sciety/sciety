@@ -39,7 +39,7 @@ const getArticleDetails = (ports: Ports) => flow(
   TE.fromTaskOption(() => DE.notFound),
 );
 
-const toArticleCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
+const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
   evaluatedArticle.doi,
   getArticleDetails(ports),
   TE.bimap(
@@ -95,7 +95,7 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
   pageOfArticles.items,
   E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
   TE.fromEither,
-  TE.chainTaskK(T.traverseArray(toArticleCardViewModel(ports))),
+  TE.chainTaskK(T.traverseArray(toCardViewModel(ports))),
   TE.chainEitherK(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(flow(
     renderEvaluatedArticlesList,
