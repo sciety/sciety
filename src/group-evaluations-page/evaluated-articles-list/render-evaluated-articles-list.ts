@@ -2,12 +2,12 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import { renderArticleErrorCard } from './render-article-error-card';
+import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-article-error-card';
 import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type RenderEvaluatedArticlesList = (
-  articleViewModels: ReadonlyArray<E.Either<unknown, ArticleViewModel>>,
+  articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleViewModel>>,
 ) => HtmlFragment;
 
 export const renderEvaluatedArticlesList: RenderEvaluatedArticlesList = flow(
