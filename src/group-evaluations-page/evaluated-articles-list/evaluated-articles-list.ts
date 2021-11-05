@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
