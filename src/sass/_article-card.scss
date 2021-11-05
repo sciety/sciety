@@ -29,6 +29,10 @@ $_card-padding: 16px;
   @include card.title();
 }
 
+.article-card__error_message {
+  margin-bottom: baseline.increments(1);
+}
+
 .article-card__footer {
   display: flex;
   justify-content: space-between;
