@@ -154,7 +154,15 @@ At the prompt, execute this command:
 
 ### Dump logs into BigQuery
 
-Requires aws access to 540790251273
+Start an [export from CloudWatch], using:
+
+- `ingress-nginx-controller-` as stream prefix
+- `sciety-data-extractions` as S3 bucket
+- `ingress-nginx-controller-20210501-20211031` or similar as S3 bucket prefix
+
+The export might take from a few minutes to hours.
+
+Requires AWS access to the 540790251273 account.
 
 ```
 aws s3 cp --recursive s3://sciety-data-extractions/ingress-nginx-controller-20210501-20211031 ./logs
@@ -185,6 +193,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Docker]: https://www.docker.com/
 [Docker Compose]: https://docs.docker.com/compose/
 [eLife]: https://elifesciences.org/
+[Export from CloudWatch]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/$252Faws$252Fcontainerinsights$252Flibero-eks--franklin$252Fapplication
 [ESLint]: https://eslint.org/
 [Git LFS]: https://git-lfs.github.com/
 [GNU Make]: https://www.gnu.org/software/make/
