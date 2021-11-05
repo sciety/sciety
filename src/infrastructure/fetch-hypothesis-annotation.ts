@@ -39,13 +39,13 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
       async () => getJson(uri),
       (error) => {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
-          logger('warn', 'Missing hypothesis annotation', { uri, error });
+          logger('warn', 'Missing hypothesis annotation', { error });
           return DE.notFound;
         }
         if (axios.isAxiosError(error)) {
-          logger('error', `Failed to fetch hypothesis evaluation; key=${key}, status=${error.response?.status ?? 'undefined'}`, { uri, error });
+          logger('error', 'Failed to fetch hypothesis evaluation', { error });
         } else {
-          logger('error', `Failed to fetch hypothesis evaluation; key=${key}`, { uri, error });
+          logger('error', 'Failed to fetch hypothesis evaluation', { uri, error });
         }
         return DE.unavailable;
       },

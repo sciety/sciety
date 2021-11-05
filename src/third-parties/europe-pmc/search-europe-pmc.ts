@@ -122,7 +122,7 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
     E.mapLeft((errors) => {
       logger(
         'error',
-        `Could not parse response from Europe PMC: url="${url}"`,
+        'Could not parse response from Europe PMC',
         { errors: PR.failure(errors), url },
       );
       return DE.unavailable;

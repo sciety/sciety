@@ -66,7 +66,7 @@ export const fetchCrossrefArticle = (
           errorType = DE.unavailable;
         }
       }
-      logger('error', `Failed to fetch article from Crossref`, payload);
+      logger('error', 'Failed to fetch article from Crossref', payload);
       return E.left(errorType);
     }
 
