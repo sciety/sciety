@@ -32,26 +32,31 @@ export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
-const getArticleDetails = (ports: Ports) => fetchArticleDetails(
-  getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-  flow(ports.fetchArticle, T.map(O.fromEither)),
+const getArticleDetails = (ports: Ports) => flow(
+  fetchArticleDetails(
+    getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+    flow(ports.fetchArticle, T.map(O.fromEither)),
+  ),
+  TE.fromTaskOption(() => DE.notFound),
 );
 
 const toArticleCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
   evaluatedArticle.doi,
   getArticleDetails(ports),
-  TO.map((articleDetails) => ({
-    ...evaluatedArticle,
-    ...articleDetails,
-    latestVersionDate: articleDetails.latestVersionDate,
-    latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
-  })),
-  TE.fromTaskOption(() => ({
-    ...evaluatedArticle,
-    href: `/articles/${evaluatedArticle.doi.value}`,
-    latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
-    error: DE.notFound,
-  })),
+  TE.bimap(
+    (error) => ({
+      ...evaluatedArticle,
+      href: `/articles/${evaluatedArticle.doi.value}`,
+      latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
+      error,
+    }),
+    (articleDetails) => ({
+      ...evaluatedArticle,
+      ...articleDetails,
+      latestVersionDate: articleDetails.latestVersionDate,
+      latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
+    }),
+  ),
 );
 
 type EvaluatedArticlesList = (
