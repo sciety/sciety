@@ -31,12 +31,9 @@ export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
-const getArticleDetails = (ports: Ports) => flow(
-  fetchArticleDetails(
-    getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-    flow(ports.fetchArticle, T.map(O.fromEither)),
-  ),
-  TE.fromTaskOption(() => DE.notFound),
+const getArticleDetails = (ports: Ports) => fetchArticleDetails(
+  getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+  flow(ports.fetchArticle, T.map(O.fromEither)),
 );
 
 const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(

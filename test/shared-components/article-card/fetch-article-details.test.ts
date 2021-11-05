@@ -1,7 +1,10 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../../src/shared-components/article-card/fetch-article-details';
+import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -25,7 +28,7 @@ describe('fetch-article-details', () => {
       )();
 
       expect(articleDetails).toStrictEqual(
-        O.some(
+        E.right(
           expect.objectContaining({
             latestVersionDate: O.some(latestDate),
           }),
@@ -40,7 +43,7 @@ describe('fetch-article-details', () => {
       )();
 
       expect(articleDetails).toStrictEqual(
-        O.some(
+        E.right(
           expect.objectContaining({
             latestVersionDate: O.none,
           }),
@@ -56,7 +59,7 @@ describe('fetch-article-details', () => {
         () => TO.none,
       )(arbitraryDoi())();
 
-      expect(articleDetails).toStrictEqual(O.none);
+      expect(articleDetails).toStrictEqual(E.left(DE.notFound));
     });
 
     describe('title', () => {
@@ -65,13 +68,13 @@ describe('fetch-article-details', () => {
         const title = await pipe(
           doi,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
-          TO.map((article) => article.title),
+          TE.map((article) => article.title),
         )();
         const expected = pipe(
           titleText,
           toHtmlFragment,
           sanitise,
-          O.some,
+          E.right,
         );
 
         expect(title).toStrictEqual(expected);
@@ -84,11 +87,11 @@ describe('fetch-article-details', () => {
         const authors = await pipe(
           doi,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
-          TO.map((article) => article.authors),
+          TE.map((article) => article.authors),
         )();
         const expected = pipe(
           ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
-          O.some,
+          E.right,
         );
 
         expect(authors).toStrictEqual(expected);

@@ -1,7 +1,8 @@
 import * as O from 'fp-ts/Option';
-import * as TO from 'fp-ts/TaskOption';
+import * as TE from 'fp-ts/TaskEither';
 import { populateArticleViewModelsSkippingFailures } from '../../../src/my-feed-page/my-feed/populate-article-view-models';
 import { ArticleActivity } from '../../../src/types/article-activity';
+import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
@@ -22,7 +23,7 @@ describe('populate-article-view-models', () => {
           latestActivityDate: new Date(),
         },
       ];
-      const fetchArticleDetails = (doi: Doi) => TO.of({
+      const fetchArticleDetails = (doi: Doi) => TE.right({
         title: sanitise(toHtmlFragment('')),
         authors: [],
         // eslint-disable-next-line jest/no-if
@@ -47,7 +48,7 @@ describe('populate-article-view-models', () => {
           latestActivityDate: new Date(),
         },
       ];
-      const fetchArticleDetails = () => TO.of({
+      const fetchArticleDetails = () => TE.right({
         title: sanitise(toHtmlFragment('')),
         authors: [],
         latestVersionDate: O.none,
@@ -78,12 +79,12 @@ describe('populate-article-view-models', () => {
       },
     ];
     const fetchArticleDetails = (doi: Doi) => (eqDoi.equals(doi, successDoi)
-      ? TO.of({
+      ? TE.right({
         title: sanitise(toHtmlFragment('')),
         authors: [],
         latestVersionDate: O.none,
       })
-      : TO.none);
+      : TE.left(DE.notFound));
 
     it('only returns view models for the not failing articles', async () => {
       const results = await populateArticleViewModelsSkippingFailures(fetchArticleDetails)(activities)();

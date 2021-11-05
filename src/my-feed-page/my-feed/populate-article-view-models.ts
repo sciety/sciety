@@ -7,11 +7,12 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
-type FetchArticleDetails = (doi: Doi) => TO.TaskOption<{
+type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
   latestVersionDate: O.Option<Date>,
@@ -22,6 +23,7 @@ const populateArticleViewModel = (
 ): PopulateArticleViewModel => (articleActivity) => pipe(
   articleActivity.doi,
   fetchArticleDetails,
+  TO.fromTaskEither,
   TO.map((articleDetails) => ({
     ...articleActivity,
     latestVersionDate: articleDetails.latestVersionDate,
