@@ -47,7 +47,9 @@ const toArticleCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActiv
     latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
   })),
   TE.fromTaskOption(() => ({
+    ...evaluatedArticle,
     href: `/articles/${evaluatedArticle.doi.value}`,
+    latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
   })),
 );
 
