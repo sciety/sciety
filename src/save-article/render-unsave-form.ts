@@ -7,7 +7,7 @@ export const renderUnsaveForm = (articleId: Doi): HtmlFragment => pipe(
   articleId.value,
   (id) => `<form method="post" action="/unsave-article">
       <input type="hidden" name="${articleIdFieldName}" value="${id}">
-      <button class="saved-articles-control">
+      <button aria-label="Remove this article from the list" class="saved-articles-control">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" class="saved-articles-control__icon">
           <desc>Remove this article from the list</desc>
           <path d="M0 0h24v24H0V0z" fill="none"/>
