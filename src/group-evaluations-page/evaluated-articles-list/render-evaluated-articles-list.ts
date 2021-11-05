@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
+import { renderArticleErrorCard } from './render-article-error-card';
 import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
@@ -11,7 +12,7 @@ type RenderEvaluatedArticlesList = (
 
 export const renderEvaluatedArticlesList: RenderEvaluatedArticlesList = flow(
   RA.map(E.fold(
-    () => toHtmlFragment('<div class="error-card">Can\'t currently display this article.</div>'),
+    renderArticleErrorCard,
     renderArticleCard(O.none),
   )),
   RA.map((activity) => `<li class="evaluated-articles-list__item">${activity}</li>`),
