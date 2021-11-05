@@ -50,6 +50,7 @@ const toArticleCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActiv
     ...evaluatedArticle,
     href: `/articles/${evaluatedArticle.doi.value}`,
     latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
+    error: DE.notFound,
   })),
 );
 

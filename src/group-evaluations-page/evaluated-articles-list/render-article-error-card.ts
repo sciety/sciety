@@ -1,12 +1,14 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
+import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ArticleErrorCardViewModel = {
   evaluationCount: number,
   href: string,
   latestActivityDate: O.Option<Date>,
+  error: DE.DataError,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -26,12 +28,17 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
+const renderErrorMessage = DE.fold({
+  notFound: () => 'This article has not been indexed by Crossref yet.',
+  unavailable: () => 'We couldn\'t get details of this article at this time.',
+});
+
 export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): HtmlFragment => (
   toHtmlFragment(`
     <article class="article-card">
       <a class="article-card__link" href="${viewModel.href}">
         <p class="article-card__error_message">
-          Can't currently display this article.
+          ${renderErrorMessage(viewModel.error)}
         </p>
         <footer class="article-card__footer">
           <div class="article-card__meta">
