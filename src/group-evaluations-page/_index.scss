@@ -51,7 +51,3 @@
 .evaluated-articles__static_message {
   @include layout.page-content-horizontal-margins();
 }
-
-.error-card {
-  @include card.basics();
-}

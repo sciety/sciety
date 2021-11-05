@@ -137,14 +137,8 @@ describe('evaluated-articles-list', () => {
       )();
     });
 
-    it('returns the successful article cards', async () => {
-      expect(cardCount(html)).toBe(2);
-    });
-
-    it('returns error cards instead of the failing article cards', async () => {
-      const errorCardCount = Array.from(JSDOM.fragment(html).querySelectorAll('.error-card')).length;
-
-      expect(errorCardCount).toBe(2);
+    it('returns cards for all of the articles', async () => {
+      expect(cardCount(html)).toBe(4);
     });
 
     it('shows "page x of y"', () => {

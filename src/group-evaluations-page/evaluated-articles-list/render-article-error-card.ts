@@ -6,10 +6,10 @@ export type ArticleErrorCardViewModel = {
 
 export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): HtmlFragment => (
   toHtmlFragment(`
-    <div class="error-card">
-      <a href="${viewModel.href}">
+    <article class="article-card">
+      <a class="article-card__link" href="${viewModel.href}">
         Can't currently display this article.
       </a>
-    </div>
+    </article>
   `)
 );
