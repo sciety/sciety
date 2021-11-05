@@ -55,7 +55,7 @@ export const fetchCrossrefArticle = (
       }
     } catch (error: unknown) {
       const payload = {
-        doi,
+        doi: doi.value,
         error,
         message: '',
       };
