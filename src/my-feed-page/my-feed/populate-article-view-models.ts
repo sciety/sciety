@@ -12,6 +12,7 @@ import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
+
 type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
@@ -33,7 +34,7 @@ const populateArticleViewModel = (
   })),
 );
 
-export type GetArticle = (doi: Doi) => TE.TaskEither<unknown, {
+export type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
   authors: ReadonlyArray<string>,
@@ -48,9 +49,7 @@ type PopulateArticleViewModelsSkippingFailures = (
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
   fetchArticleDetails,
 ) => flow(
-  RA.map(populateArticleViewModel(
-    fetchArticleDetails,
-  )),
+  RA.map(populateArticleViewModel(fetchArticleDetails)),
   T.sequenceArray,
   T.map(RA.compact),
 );

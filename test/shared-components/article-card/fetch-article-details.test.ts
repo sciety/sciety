@@ -11,7 +11,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
-const getArticle = () => TO.some({
+const getArticle = () => TE.right({
   title: sanitise(toHtmlFragment(titleText)),
   server: 'biorxiv' as const,
   authors: ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
@@ -53,13 +53,13 @@ describe('fetch-article-details', () => {
   });
 
   describe('getArticle', () => {
-    it('returns O.none when getArticle fails', async () => {
+    it('returns on the left when getArticle fails', async () => {
       const articleDetails = await fetchArticleDetails(
         () => TO.some(new Date()),
-        () => TO.none,
+        () => TE.left(DE.unavailable),
       )(arbitraryDoi())();
 
-      expect(articleDetails).toStrictEqual(E.left(DE.notFound));
+      expect(articleDetails).toStrictEqual(E.left(DE.unavailable));
     });
 
     describe('title', () => {

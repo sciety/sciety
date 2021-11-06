@@ -59,7 +59,7 @@ const constructArticleViewModels = (ports: Ports) => flow(
   populateArticleViewModelsSkippingFailures(
     fetchArticleDetails(
       getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-      flow(ports.fetchArticle, T.map(O.fromEither)),
+      ports.fetchArticle,
     ),
   ),
   T.map(RNEA.fromReadonlyArray),

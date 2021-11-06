@@ -8,11 +8,13 @@ import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
-type GetArticle = (doi: Doi) => TO.TaskOption<{
+type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
   authors: ReadonlyArray<string>,
 }>;
+
+type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
@@ -23,12 +25,10 @@ type FetchArticleDetails = (
   latestVersionDate: O.Option<Date>,
 }>;
 
-type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
-
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
   doi,
   getArticle,
-  TO.chainTaskK(({ authors, title, server }) => pipe(
+  TE.chainW(({ authors, title, server }) => pipe(
     getLatestArticleVersionDate(doi, server),
     T.map((latestVersionDate) => ({
       latestVersionDate,
@@ -36,6 +36,6 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
       title,
       server,
     })),
+    TE.rightTask,
   )),
-  TE.fromTaskOption(() => DE.notFound),
 );

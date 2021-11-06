@@ -24,7 +24,7 @@ type Article = {
   authors: ReadonlyArray<string>,
 };
 
-type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
+type GetArticle = (id: Doi) => TE.TaskEither<DE.DataError, Article>;
 
 export type Ports = {
   fetchArticle: GetArticle,
@@ -33,7 +33,7 @@ export type Ports = {
 
 const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-  flow(ports.fetchArticle, T.map(O.fromEither)),
+  ports.fetchArticle,
 );
 
 const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
