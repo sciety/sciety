@@ -40,17 +40,7 @@ const notFoundResponse = () => ({
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
   TE.mapLeft(notFoundResponse),
-  TE.chainTaskK((group) => pipe(
-    ports.getAllEvents,
-    T.map((events) => ({
-      group,
-      articles: evaluatedArticles(group.id)(events),
-      pageSize: 20,
-    })),
-  )),
-  TE.chain(({
-    group,
-  }) => pipe(
+  TE.chain((group) => pipe(
     {
       header: header(ports, group),
       evaluatedArticlesList: pipe(
