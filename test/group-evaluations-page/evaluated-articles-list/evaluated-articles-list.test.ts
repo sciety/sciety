@@ -3,7 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { evaluatedArticlesList, Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
+import { Ports } from '../../../src/group-evaluations-page/evaluated-articles-list';
+import { evaluatedArticlesList } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles-list';
 import {
   noArticlesCanBeFetchedMessage,
   noEvaluatedArticlesMessage,
