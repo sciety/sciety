@@ -9,10 +9,23 @@ echo "Exporting from $from 00:00 to $to 00:00"
 from_epoch_ms="$(date --date "$from 00:00:00 +0000" +%s)000"
 to_epoch_ms="$(date --date "$to 00:00:00 +0000" +%s)000"
 
-aws logs create-export-task \
+cloudWatchTaskId=$(aws logs create-export-task \
 	--log-group-name '/aws/containerinsights/libero-eks--franklin/application' \
  	--log-stream-name-prefix 'ingress-nginx-controller-' \
  	--from  $from_epoch_ms \
  	--to  $to_epoch_ms \
  	--destination 'sciety-data-extractions' \
- 	--destination-prefix "ingress-nginx-controller-$from-$to"
+ 	--destination-prefix "ingress-nginx-controller-$from-$to" \
+     | jq -r '.taskId')
+
+
+timeout="1800"
+
+timeout --foreground "$timeout" bash << EOT
+    while true; do
+      aws logs describe-export-tasks --task-id=$cloudWatchTaskId \
+        | jq -r '.exportTasks[0].status.code' \
+        | grep COMPLETED && break
+      sleep 30
+    done
+EOT
