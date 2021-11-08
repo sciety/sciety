@@ -15,4 +15,11 @@ mkdir logs
 aws s3 cp --recursive $logsUri ./logs
 gunzip -r logs
 find logs -type 'f' | grep -v jsonl | xargs -n 1 ./scripts/convert-cloudwatch-logs-to-bigquery-jsonl.sh
-(find logs -type 'f' | grep jsonl | xargs cat) > logs/singlefile.jsonl
+(find logs -type 'f' | grep jsonl | xargs cat) > logs/singlefile.bq
+
+bq load \
+   --project_id=elife-data-pipeline \
+   --autodetect \
+   --source_format=NEWLINE_DELIMITED_JSON \
+   de_proto.sciety_ingress_v1 \
+   logs/singlefile.bq
