@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
+import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
@@ -95,7 +95,7 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
   TE.chainTaskK(T.traverseArray(toCardViewModel(ports))),
   TE.chainEitherK(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(flow(
-    renderEvaluatedArticlesList,
+    renderComponent,
     addPaginationControls(pageOfArticles.nextPage, group),
     (content) => `
       ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}

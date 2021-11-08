@@ -15,7 +15,7 @@ const renderLastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-export const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<Date>): HtmlFragment => pipe(
+export const renderComponent = (group: Group, articleCount: number, lastUpdated: O.Option<Date>): HtmlFragment => pipe(
   `<header class="page-header page-header--group-evaluations">
     <h1>
       Evaluated Articles

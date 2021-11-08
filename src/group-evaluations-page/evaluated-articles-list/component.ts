@@ -9,14 +9,11 @@ import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-
-type Ports = EvaluatedArticlesListPorts & {
-  getAllEvents: GetAllEvents,
-  getGroupBySlug: (groupSlug: string) => TE.TaskEither<DE.DataError, Group>,
+export type Ports = EvaluatedArticlesListPorts & {
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-export const evaluatedArticlesListComponent = (
+export const component = (
   ports: Ports,
   group: Group,
   page: O.Option<number>,

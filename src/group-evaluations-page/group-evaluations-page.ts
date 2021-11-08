@@ -4,9 +4,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
-import { evaluatedArticlesListComponent } from './evaluated-articles-list/evaluated-articles-list-component';
-import { header } from './header/header';
+import {
+  component as evaluatedArticlesList,
+  Ports as EvaluatedArticlesListPorts,
+} from './evaluated-articles-list';
+import {
+  component as header,
+  Ports as HeaderPorts,
+} from './header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import * as DE from '../types/data-error';
@@ -17,7 +22,7 @@ import { RenderPageError } from '../types/render-page-error';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = EvaluatedArticlesListPorts & {
+type Ports = HeaderPorts & EvaluatedArticlesListPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: (groupSlug: string) => TE.TaskEither<DE.DataError, Group>,
 };
@@ -42,7 +47,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
   TE.chain((group) => pipe(
     {
       header: header(ports, group),
-      evaluatedArticlesList: evaluatedArticlesListComponent(ports, group, page),
+      evaluatedArticlesList: evaluatedArticlesList(ports, group, page),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
