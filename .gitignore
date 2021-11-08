@@ -19,3 +19,4 @@ coverage/
 /.purgecss/
 events.json
 events-staging.json
+/logs/
