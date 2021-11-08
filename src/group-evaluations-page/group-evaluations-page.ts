@@ -7,11 +7,10 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
 import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
+import { renderHeader } from './header/render-header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import { getEvaluatedArticlesListDetails } from '../group-page/lists/get-evaluated-articles-list-details';
-import { defaultGroupListDescription } from '../group-page/messages';
-import { templateDate } from '../shared-components/date';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -38,31 +37,6 @@ const notFoundResponse = () => ({
   type: DE.notFound,
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
-
-const renderArticleCount = (articleCount: number) => pipe(
-  articleCount === 1,
-  (singular) => `<span>${articleCount} ${singular ? 'article' : 'articles'}</span>`,
-);
-
-const renderLastUpdated = O.fold(
-  () => '',
-  (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
-);
-
-const renderHeader = (group: Group, articleCount: number, lastUpdated: O.Option<Date>) => pipe(
-  `<header class="page-header page-header--group-evaluations">
-    <h1>
-      Evaluated Articles
-    </h1>
-    <p class="page-header__subheading">
-      <img src="${group.avatarPath}" alt="" class="page-header__avatar">
-      <span>A list by <a href="/groups/${group.slug}">${group.name}</a></span>
-    </p>
-    <p class="page-header__description">${defaultGroupListDescription(group.name)}.</p>
-    <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
-  </header>`,
-  toHtmlFragment,
-);
 
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
