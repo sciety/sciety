@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
-import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
+import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { PageOfItems } from '../../shared-components/paginate';
@@ -84,10 +84,8 @@ export const toPageOfCards = (
   group: Group,
 ) => (pageOfArticles: PageOfItems<ArticleActivity>): T.Task<HtmlFragment> => pipe(
   pageOfArticles.items,
-  E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
-  TE.fromEither,
-  TE.chainTaskK(T.traverseArray(toCardViewModel(ports))),
-  TE.chainEitherK(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
+  T.traverseArray(toCardViewModel(ports)),
+  T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(flow(
     renderComponent,
     addPaginationControls(pageOfArticles.nextPage, group),

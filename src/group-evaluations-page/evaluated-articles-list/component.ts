@@ -1,10 +1,9 @@
-import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { evaluatedArticles } from './evaluated-articles';
+import { noEvaluatedArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
@@ -16,14 +15,6 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const emptyPage = (pageNumber: number) => () => E.right({
-  items: [],
-  nextPage: O.none,
-  pageNumber,
-  numberOfOriginalItems: 0,
-  numberOfPages: 0,
-});
-
 export const component = (
   ports: Ports,
   group: Group,
@@ -32,6 +23,12 @@ export const component = (
   ports.getAllEvents,
   TE.rightTask,
   TE.map(evaluatedArticles(group.id)),
-  TE.chainEitherK(RA.match(emptyPage(pageNumber), paginate(20, pageNumber))),
-  TE.chainTaskK(toPageOfCards(ports, group)),
+  TE.chain(RA.match(
+    () => TE.right(noEvaluatedArticlesMessage),
+    flow(
+      paginate(20, pageNumber),
+      TE.fromEither,
+      TE.chainTaskK(toPageOfCards(ports, group)),
+    ),
+  )),
 );
