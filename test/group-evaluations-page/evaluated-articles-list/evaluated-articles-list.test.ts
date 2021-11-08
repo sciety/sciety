@@ -43,10 +43,11 @@ describe('evaluated-articles-list', () => {
     beforeEach(async () => {
       const articles = generateArticles(2);
       html = await pipe(
+        articles,
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
-        })(articles, arbitraryGroup(), 1, 20),
+        }, arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -65,10 +66,11 @@ describe('evaluated-articles-list', () => {
 
     beforeEach(async () => {
       html = await pipe(
+        [],
         evaluatedArticlesList({
           fetchArticle: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
-        })([], arbitraryGroup(), 1, 20),
+        }, arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -96,10 +98,11 @@ describe('evaluated-articles-list', () => {
       const articles = generateArticles(20);
       group = arbitraryGroup();
       html = await pipe(
+        articles,
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
-        })(articles, group, 1, 7),
+        }, group, 1, 7),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -129,10 +132,11 @@ describe('evaluated-articles-list', () => {
         });
       };
       html = await pipe(
+        articles,
         evaluatedArticlesList({
           fetchArticle,
           findVersionsForArticleDoi,
-        })(articles, arbitraryGroup(), 1, 20),
+        }, arbitraryGroup(), 1, 20),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -151,15 +155,11 @@ describe('evaluated-articles-list', () => {
 
     beforeEach(async () => {
       html = await pipe(
+        generateArticles(1),
         evaluatedArticlesList({
           fetchArticle: () => TE.left(DE.unavailable),
           findVersionsForArticleDoi,
-        })(
-          generateArticles(1),
-          arbitraryGroup(),
-          1,
-          1,
-        ),
+        }, arbitraryGroup(), 1, 1),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -177,14 +177,12 @@ describe('evaluated-articles-list', () => {
     it('returns not found', async () => {
       const pageNumber = 2;
       const pageSize = 1;
-      const result = await evaluatedArticlesList({
-        fetchArticle: shouldNotBeCalled,
-        findVersionsForArticleDoi,
-      })(
+      const result = await pipe(
         generateArticles(1),
-        arbitraryGroup(),
-        pageNumber,
-        pageSize,
+        evaluatedArticlesList({
+          fetchArticle: shouldNotBeCalled,
+          findVersionsForArticleDoi,
+        }, arbitraryGroup(), pageNumber, pageSize),
       )();
 
       expect(result).toStrictEqual(E.left(DE.notFound));

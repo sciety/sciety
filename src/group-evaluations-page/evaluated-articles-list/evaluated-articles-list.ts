@@ -56,12 +56,12 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
 );
 
 type EvaluatedArticlesList = (
-  ports: Ports
-) => (
-  articles: ReadonlyArray<ArticleActivity>,
+  ports: Ports,
   group: Group,
   pageNumber: number,
   pageSize: number
+) => (
+  articles: ReadonlyArray<ArticleActivity>,
 ) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
@@ -114,7 +114,7 @@ const emptyPage = (pageNumber: number) => E.right({
   numberOfPages: 0,
 });
 
-export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
+export const evaluatedArticlesList: EvaluatedArticlesList = (ports, group, pageNumber, pageSize) => (articles) => pipe(
   articles,
   RA.match(
     () => emptyPage(pageNumber),

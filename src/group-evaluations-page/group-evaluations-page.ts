@@ -7,16 +7,14 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
 import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
-import { renderHeader } from './header/render-header';
+import { header } from './header/header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
-import { getEvaluatedArticlesListDetails } from '../group-page/lists/get-evaluated-articles-list-details';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import {header} from './header/header';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -51,11 +49,16 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
     })),
   )),
   TE.chain(({
-    group, articles, pageSize,
+    group,
   }) => pipe(
     {
       header: header(ports, group),
-      evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page), pageSize),
+      evaluatedArticlesList: pipe(
+        ports.getAllEvents,
+        T.map(evaluatedArticles(group.id)),
+        TE.rightTask,
+        TE.chainW(evaluatedArticlesList(ports, group, O.getOrElse(() => 1)(page), 20)),
+      ),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
