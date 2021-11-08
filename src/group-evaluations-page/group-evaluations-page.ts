@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -41,13 +42,18 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
+const toPageNumber = (page: O.Option<number>) => pipe(
+  page,
+  O.getOrElse(() => 1),
+);
+
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
   TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
     {
       header: header(ports, group),
-      evaluatedArticlesList: evaluatedArticlesList(ports, group, page),
+      evaluatedArticlesList: evaluatedArticlesList(ports, group, toPageNumber(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

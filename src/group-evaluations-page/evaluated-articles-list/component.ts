@@ -16,7 +16,7 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const emptyPage = (pageNumber: number) => E.right({
+const emptyPage = (pageNumber: number) => () => E.right({
   items: [],
   nextPage: O.none,
   pageNumber,
@@ -27,19 +27,11 @@ const emptyPage = (pageNumber: number) => E.right({
 export const component = (
   ports: Ports,
   group: Group,
-  page: O.Option<number>,
+  pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(evaluatedArticles(group.id)),
   TE.rightTask,
-  TE.chainW(
-    flow(
-      RA.match(
-        () => emptyPage(O.getOrElse(() => 1)(page)),
-        paginate(20, O.getOrElse(() => 1)(page)),
-      ),
-      TE.fromEither,
-    ),
-  ),
+  TE.chainEitherK(RA.match(emptyPage(pageNumber), paginate(20, pageNumber))),
   TE.chainTaskK(toPageOfCards(ports, group)),
 );
