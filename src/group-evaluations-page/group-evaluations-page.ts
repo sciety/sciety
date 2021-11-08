@@ -46,17 +46,21 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
     T.map((events) => ({
       group,
       articles: evaluatedArticles(group.id)(events),
-      ...getEvaluatedArticlesListDetails(group.id)(events),
       pageSize: 20,
     })),
   )),
   TE.chain(({
-    group, articles, articleCount, lastUpdated, pageSize,
+    group, articles, pageSize,
   }) => pipe(
     {
       header: pipe(
-        renderHeader(group, articleCount, lastUpdated),
-        TE.right,
+        ports.getAllEvents,
+        T.map((events) => ({
+          grp: group,
+          ...getEvaluatedArticlesListDetails(group.id)(events),
+        })),
+        T.map(({ grp, articleCount, lastUpdated }) => renderHeader(grp, articleCount, lastUpdated)),
+        TE.rightTask,
       ),
       evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page), pageSize),
     },
