@@ -174,9 +174,11 @@ bq load \
    --autodetect \
    --replace \
    --source_format=NEWLINE_DELIMITED_JSON \
-   de_proto.sciety_ingress_temp \
+   de_proto.sciety_ingress_v1 \
    logs/singlefile.jsonl
 ```
+
+[Prototype dashboard](https://datastudio.google.com/reporting/bc7fa747-9d10-4272-836d-f40425b93c95) using this data.
 
 License
 -------
