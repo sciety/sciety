@@ -1,12 +1,11 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
-import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
+import { Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
+import { evaluatedArticlesListComponent } from './evaluated-articles-list/evaluated-articles-list-component';
 import { header } from './header/header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
@@ -43,12 +42,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
   TE.chain((group) => pipe(
     {
       header: header(ports, group),
-      evaluatedArticlesList: pipe(
-        ports.getAllEvents,
-        T.map(evaluatedArticles(group.id)),
-        TE.rightTask,
-        TE.chainW(evaluatedArticlesList(ports, group, O.getOrElse(() => 1)(page), 20)),
-      ),
+      evaluatedArticlesList: evaluatedArticlesListComponent(ports, group, page),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
