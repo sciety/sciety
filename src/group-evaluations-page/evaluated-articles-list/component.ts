@@ -30,8 +30,8 @@ export const component = (
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
-  T.map(evaluatedArticles(group.id)),
   TE.rightTask,
+  TE.map(evaluatedArticles(group.id)),
   TE.chainEitherK(RA.match(emptyPage(pageNumber), paginate(20, pageNumber))),
   TE.chainTaskK(toPageOfCards(ports, group)),
 );
