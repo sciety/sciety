@@ -16,6 +16,7 @@ import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import {header} from './header/header';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -53,15 +54,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ s
     group, articles, pageSize,
   }) => pipe(
     {
-      header: pipe(
-        ports.getAllEvents,
-        T.map((events) => ({
-          grp: group,
-          ...getEvaluatedArticlesListDetails(group.id)(events),
-        })),
-        T.map(({ grp, articleCount, lastUpdated }) => renderHeader(grp, articleCount, lastUpdated)),
-        TE.rightTask,
-      ),
+      header: header(ports, group),
       evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page), pageSize),
     },
     sequenceS(TE.ApplyPar),
