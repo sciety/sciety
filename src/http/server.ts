@@ -11,6 +11,7 @@ import { routeNotFound } from './route-not-found';
 import { Logger } from '../infrastructure';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
+import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
 export const createApplicationServer = (router: Router, logger: Logger): E.Either<string, Server> => {
   const app = new Koa();
@@ -101,7 +102,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
             id: toUserId(profile.id),
             handle: profile.username,
           };
-
+          createAccountIfNecessary(user);
           cb(undefined, user);
         },
       ),
