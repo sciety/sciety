@@ -14,5 +14,5 @@ while true; do
   if [[ $taskStatus == FAILED ]]; then
    exit 1
   fi
-  sleep 30
+  sleep 10
 done
