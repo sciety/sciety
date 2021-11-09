@@ -7,9 +7,12 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
 PORT := 8080
+AWS_DEFAULT_REGION := us-east-1
 
 export IMAGE
 export IMAGE_TAG
+export AWS_DEFAULT_REGION
+
 
 .PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release reports stop test* update*
 
