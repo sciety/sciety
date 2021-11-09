@@ -202,4 +202,4 @@ get-error-logs:
 
 
 update-datastudio:
-	scripts/launch-cloud-watch-export.sh
+	./scripts/update-datastudio.sh
