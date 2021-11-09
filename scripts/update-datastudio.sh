@@ -10,4 +10,4 @@ echo "cloudWatchTaskId: ${cloudWatchTaskId}"
 
 $scripts/wait-for-cloud-watch-task-completion.sh $cloudWatchTaskId
 
-$scripts/download-and-convert-cloudwatch-export.sh $cloudWatchTaskId
+$scripts/download-and-convert-from-cloudwatch-and-upload-to-bigquery.sh $cloudWatchTaskId
