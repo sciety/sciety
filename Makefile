@@ -197,3 +197,6 @@ get-error-logs:
 	--from="2021-09-10T00:00:00Z" \
 	'{app_kubernetes_io_instance="sciety--prod"} | json | __error__="" | level = "error"'
 
+
+update-datastudio:
+	scripts/launch-cloud-watch-export.sh
