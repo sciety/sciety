@@ -86,6 +86,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
           id: toUserId(username),
           handle: 'account27775998',
         };
+        createAccountIfNecessary(user);
         return cb(null, user);
       },
     ));
