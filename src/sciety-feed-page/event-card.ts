@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import match from 'ts-guard-match';
 import {
   groupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
   groupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
@@ -41,37 +42,15 @@ export const eventCard = (
 ) => (
   event: EventCardEvents,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  event,
-  (evnt) => {
-    if (isCollapsedGroupEvaluatedMultipleArticles(evnt)) {
-      return pipe(
-        evnt,
-        groupEvaluatedMultipleArticlesCard(ports),
-      );
-    }
-
-    if (isCollapsedGroupEvaluatedArticle(evnt) || isGroupEvaluatedArticleEvent(evnt)) {
-      return pipe(
-        evnt,
-        groupEvaluatedArticleCard(ports),
-      );
-    }
-
-    if (isUserSavedArticleEvent(evnt)) {
-      return pipe(
-        evnt,
-        userSavedArticleToAListCard(ports),
-      );
-    }
-
-    if (isUserFollowedEditorialCommunityEvent(evnt)) {
-      return pipe(
-        evnt,
-        userFollowedAGroupCard(ports),
-      );
-    }
-
-    return TE.left(DE.unavailable);
-  },
-  TE.map(scietyFeedCard),
+  match(event)
+    .when(isGroupEvaluatedArticleEvent, groupEvaluatedArticleCard(ports))
+    .when(isCollapsedGroupEvaluatedArticle, groupEvaluatedArticleCard(ports))
+    .when(isCollapsedGroupEvaluatedMultipleArticles, groupEvaluatedMultipleArticlesCard(ports))
+    .when(isUserSavedArticleEvent, userSavedArticleToAListCard(ports))
+    .when(isUserFollowedEditorialCommunityEvent, userFollowedAGroupCard(ports))
+    .run(),
+  TE.bimap(
+    () => DE.unavailable,
+    scietyFeedCard,
+  ),
 );
