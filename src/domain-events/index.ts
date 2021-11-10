@@ -15,5 +15,6 @@ export {
   isGroupEvaluatedArticleEvent,
   isUserUnsavedArticleEvent,
   isUserSavedArticleEvent,
+  isUserCreatedAccountEvent,
 } from './type-guards';
 export { byDate } from './utils';

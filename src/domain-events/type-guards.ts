@@ -1,5 +1,6 @@
 import { DomainEvent } from './domain-event';
 import { GroupEvaluatedArticleEvent } from './group-evaluated-article-event';
+import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserSavedArticleEvent } from './user-saved-article-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
@@ -23,4 +24,9 @@ export const isUserSavedArticleEvent = (event: DomainEvent):
 export const isUserUnsavedArticleEvent = (event: DomainEvent):
   event is UserUnsavedArticleEvent => (
   event.type === 'UserUnsavedArticle'
+);
+
+export const isUserCreatedAccountEvent = (event: DomainEvent):
+  event is UserCreatedAccountEvent => (
+  event.type === 'UserCreatedAccount'
 );
