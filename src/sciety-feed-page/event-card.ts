@@ -13,7 +13,12 @@ import {
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
 import {
-  DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  GroupEvaluatedArticleEvent,
+  isGroupEvaluatedArticleEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserSavedArticleEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
@@ -24,10 +29,17 @@ export type Ports =
   & GroupEvaluatedMultipleArticlesCardPorts
   & UserFollowedAGroupCardPorts;
 
+export type EventCardEvents = (
+  GroupEvaluatedArticleEvent
+  | CollapsedEvent
+  | UserSavedArticleEvent
+  | UserFollowedEditorialCommunityEvent
+);
+
 export const eventCard = (
   ports: Ports,
 ) => (
-  event: DomainEvent | CollapsedEvent,
+  event: EventCardEvents,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   event,
   (evnt) => {
