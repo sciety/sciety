@@ -83,7 +83,7 @@
     "eslint-config-airbnb-typescript": "^14.0.2",
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-fp-ts": "^0.3.0",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-jest-formatting": "^3.0.0",
     "eslint-plugin-no-loops": "^0.3.0",
