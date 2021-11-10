@@ -1,9 +1,20 @@
 import * as T from 'fp-ts/Task';
-import { userCreatedAccount } from '../../src/domain-events/user-created-account-event';
-import { userFollowedEditorialCommunity } from '../../src/domain-events/user-followed-editorial-community-event';
+import {
+  userCreatedAccount,
+  userFollowedEditorialCommunity,
+  userFoundReviewHelpful,
+  userFoundReviewNotHelpful,
+  userRevokedFindingReviewHelpful,
+  userRevokedFindingReviewNotHelpful,
+  userSavedArticle,
+  userUnfollowedEditorialCommunity,
+  userUnsavedArticle,
+} from '../../src/domain-events';
 import { createAccountIfNecessary } from '../../src/user-account/create-account-if-necessary';
 import { arbitraryWord } from '../helpers';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const arbitraryUser = () => ({
@@ -34,6 +45,13 @@ describe('create-account-if-necessary', () => {
 
       describe.each([
         ['UserFollowedEditorialCommunityEvent', userFollowedEditorialCommunity(user.id, arbitraryGroupId())],
+        ['UserUnfollowedEditorialCommunityEvent', userUnfollowedEditorialCommunity(user.id, arbitraryGroupId())],
+        ['UserSavedArticleEvent', userSavedArticle(user.id, arbitraryDoi())],
+        ['UserUnsavedArticleEvent', userUnsavedArticle(user.id, arbitraryDoi())],
+        ['UserFoundReviewHelpfulEvent', userFoundReviewHelpful(user.id, arbitraryReviewId())],
+        ['UserRevokedFindingReviewHelpfulEvent', userRevokedFindingReviewHelpful(user.id, arbitraryReviewId())],
+        ['UserFoundReviewNotHelpfulEvent', userFoundReviewNotHelpful(user.id, arbitraryReviewId())],
+        ['UserRevokedFindingReviewNotHelpfulEvent', userRevokedFindingReviewNotHelpful(user.id, arbitraryReviewId())],
       ])('when the existing event is %s', (_, event) => {
         const getAllEvents = T.of([event]);
         const commitEvents = jest.fn(() => T.of(undefined));
