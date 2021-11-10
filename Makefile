@@ -215,5 +215,5 @@ get-error-logs:
 		de_proto.sciety_event_v1 \
 		"gs://sciety-data/events/events.jsonl"
 
-update-datastudio: .bq-update-events
+update-datastudio: update-db-dump .bq-update-events
 	./scripts/update-datastudio.sh
