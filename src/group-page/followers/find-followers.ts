@@ -1,7 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
-import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../../domain-events';
+import {
+  DomainEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserUnfollowedEditorialCommunityEvent,
+} from '../../domain-events';
+import { match } from '../../shared-components/guardMatch';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
@@ -24,15 +31,20 @@ const calculateFollowedGroupCounts = (
   userIds: ReadonlyArray<UserId>,
 ) => pipe(
   events,
-  RA.reduce(new Map<UserId, number>(), (state, event) => {
-    if (isUserFollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
-      return state.set(event.userId, (state.get(event.userId) ?? 0) + 1);
-    }
-    if (isUserUnfollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
-      return state.set(event.userId, (state.get(event.userId) ?? 0) - 1);
-    }
-    return state;
-  }),
+  // eslint-disable-next-line max-len
+  RA.filter((e): e is UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent => isUserFollowedEditorialCommunityEvent(e) || isUserUnfollowedEditorialCommunityEvent(e)),
+  RA.reduce(new Map<UserId, number>(), (state, event) => match(event)
+    .whenAnd(
+      isUserFollowedEditorialCommunityEvent,
+      (e) => userIds.includes(e.userId),
+      (e) => state.set(e.userId, (state.get(e.userId) ?? 0) + 1),
+    )
+    .whenAnd(
+      isUserUnfollowedEditorialCommunityEvent,
+      (e) => userIds.includes(e.userId),
+      (e) => state.set(e.userId, (state.get(e.userId) ?? 0) - 1),
+    )
+    .run()),
 );
 
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
