@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/Task';
+import { userCreatedAccount } from '../../src/domain-events/user-created-account-event';
 import { userFollowedEditorialCommunity } from '../../src/domain-events/user-followed-editorial-community-event';
 import { createAccountIfNecessary } from '../../src/user-account/create-account-if-necessary';
 import { arbitraryWord } from '../helpers';
@@ -13,7 +14,19 @@ const arbitraryUser = () => ({
 describe('create-account-if-necessary', () => {
   describe('when the user has already created an account', () => {
     describe('because there is a UserCreatedAccount event', () => {
-      it.todo('raises no events');
+      const user = arbitraryUser();
+      const getAllEvents = T.of([
+        userCreatedAccount(user.id, user.handle),
+      ]);
+      const commitEvents = jest.fn(() => T.of(undefined));
+
+      beforeEach(async () => {
+        await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+      });
+
+      it.skip('raises no events', () => {
+        expect(commitEvents).toHaveBeenCalledWith([]);
+      });
     });
 
     describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
