@@ -83,4 +83,23 @@ describe('create-account-if-necessary', () => {
       })]);
     });
   });
+
+  describe('when another user has already created an account but this user has not', () => {
+    const user = arbitraryUser();
+    const getAllEvents = T.of([
+      userCreatedAccount(arbitraryUserId(), arbitraryWord()),
+    ]);
+    const commitEvents = jest.fn(() => T.of(undefined));
+
+    beforeEach(async () => {
+      await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+    });
+
+    it('raises a UserCreatedAccount event', () => {
+      expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
+        userId: user.id,
+        handle: user.handle,
+      })]);
+    });
+  });
 });
