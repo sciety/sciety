@@ -17,14 +17,17 @@ describe('create-account-if-necessary', () => {
     });
 
     describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
-      it.skip('raises no events', async () => {
-        const user = arbitraryUser();
-        const getAllEvents = T.of([
-          userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
-        ]);
-        const commitEvents = jest.fn(() => T.of(undefined));
-        await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+      const user = arbitraryUser();
+      const getAllEvents = T.of([
+        userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
+      ]);
+      const commitEvents = jest.fn(() => T.of(undefined));
 
+      beforeEach(async () => {
+        await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+      });
+
+      it.skip('raises no events', async () => {
         expect(commitEvents).toHaveBeenCalledWith([]);
       });
     });
