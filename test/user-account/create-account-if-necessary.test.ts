@@ -47,6 +47,19 @@ describe('create-account-if-necessary', () => {
   });
 
   describe('when the user has not already created an account', () => {
-    it.todo('raises a UserCreatedAccount event');
+    const user = arbitraryUser();
+    const getAllEvents = T.of([]);
+    const commitEvents = jest.fn(() => T.of(undefined));
+
+    beforeEach(async () => {
+      await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+    });
+
+    it.skip('raises a UserCreatedAccount event', () => {
+      expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
+        userId: user.id,
+        handle: user.handle,
+      })]);
+    });
   });
 });
