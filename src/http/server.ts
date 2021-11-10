@@ -8,13 +8,14 @@ import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
-import { Adapters, Logger } from '../infrastructure';
+import { Adapters } from '../infrastructure';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
-export const createApplicationServer = (router: Router, logger: Logger, adapters: Adapters): E.Either<string, Server> => {
+export const createApplicationServer = (router: Router, adapters: Adapters): E.Either<string, Server> => {
   const app = new Koa();
+  const { logger } = adapters;
 
   app.use(rTracer.koaMiddleware());
 
