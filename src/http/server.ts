@@ -86,8 +86,8 @@ export const createApplicationServer = (router: Router, logger: Logger, commitEv
           id: toUserId(username),
           handle: 'account27775998',
         };
-        createAccountIfNecessary(commitEvents)(user);
-        return cb(null, user);
+        void createAccountIfNecessary(commitEvents)(user)()
+          .then(() => cb(null, user));
       },
     ));
   } else {
@@ -103,8 +103,8 @@ export const createApplicationServer = (router: Router, logger: Logger, commitEv
             id: toUserId(profile.id),
             handle: profile.username,
           };
-          createAccountIfNecessary(commitEvents)(user);
-          cb(undefined, user);
+          void createAccountIfNecessary(commitEvents)(user)()
+            .then(() => cb(undefined, user));
         },
       ),
     );

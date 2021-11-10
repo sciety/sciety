@@ -4,7 +4,8 @@ import { User } from '../types/user';
 
 type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
-type CreateAccountIfNecessary = (commitEvents: CommitEvents) => (user: User) => void;
+type CreateAccountIfNecessary = (commitEvents: CommitEvents) => (user: User) => T.Task<void>;
 
-export const createAccountIfNecessary: CreateAccountIfNecessary = () => () => {
-};
+export const createAccountIfNecessary: CreateAccountIfNecessary = (commitEvents) => () => (
+  commitEvents([])
+);

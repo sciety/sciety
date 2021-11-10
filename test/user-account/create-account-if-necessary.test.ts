@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/Task';
 import { createAccountIfNecessary } from '../../src/user-account/create-account-if-necessary';
 import { arbitraryWord } from '../helpers';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -14,10 +15,10 @@ describe('create-account-if-necessary', () => {
     });
 
     describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
-      it.skip('raises no events', () => {
-        const commitEvents = jest.fn();
+      it.skip('raises no events', async () => {
+        const commitEvents = jest.fn(() => T.of(undefined));
         const user = arbitraryUser();
-        createAccountIfNecessary(commitEvents)(user);
+        await createAccountIfNecessary(commitEvents)(user)();
 
         expect(commitEvents).toHaveBeenCalledWith([]);
       });
