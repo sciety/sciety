@@ -1,12 +1,16 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import match from 'ts-guard-match';
 import {
-  groupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
-  groupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
+  groupEvaluatedArticleCard,
+  GroupEvaluatedArticleCardPorts,
+  groupEvaluatedMultipleArticlesCard,
+  GroupEvaluatedMultipleArticlesCardPorts,
   scietyFeedCard,
-  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
-  userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
+  userFollowedAGroupCard,
+  UserFollowedAGroupCardPorts,
+  userSavedArticleToAListCard,
+  UserSavedArticleToAListCardPorts,
+
 } from './cards';
 import {
   CollapsedEvent,
@@ -21,6 +25,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserSavedArticleEvent,
 } from '../domain-events';
+import { match } from '../shared-components/guardMatch';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
 
