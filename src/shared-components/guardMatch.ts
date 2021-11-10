@@ -10,9 +10,7 @@ type MatchStarter<TInput> = {
     guard: (inputValue: any) => inputValue is TPattern,
     predicate: (matchedValue: TPattern) => boolean,
     action: (matchedValue: TPattern) => TResult
-  ) => Exclude<TInput, TPattern> extends never
-    ? BuiltMatch<TResult>
-    : MatchBuilder<Exclude<TInput, TPattern>, TResult>,
+  ) => MatchBuilder<TInput, TResult>,
 };
 
 type MatchBuilder<TInput, TResult> = {
@@ -27,9 +25,7 @@ type MatchBuilder<TInput, TResult> = {
     guard: (inputValue: any) => inputValue is TPattern,
     predicate: (matchedValue: TPattern) => boolean,
     action: (matchedValue: TPattern) => TResult
-  ) => Exclude<TInput, TPattern> extends never
-    ? BuiltMatch<TResult>
-    : MatchBuilder<Exclude<TInput, TPattern>, TResult>,
+  ) => MatchBuilder<TInput, TResult>,
 
   otherwise: (action: (v: TInput) => TResult) => BuiltMatch<TResult>,
 };

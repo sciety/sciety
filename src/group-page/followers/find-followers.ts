@@ -31,8 +31,6 @@ const calculateFollowedGroupCounts = (
   userIds: ReadonlyArray<UserId>,
 ) => pipe(
   events,
-  // eslint-disable-next-line max-len
-  RA.filter((e): e is UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent => isUserFollowedEditorialCommunityEvent(e) || isUserUnfollowedEditorialCommunityEvent(e)),
   RA.reduce(new Map<UserId, number>(), (state, event) => match(event)
     .whenAnd(
       isUserFollowedEditorialCommunityEvent,
@@ -44,6 +42,7 @@ const calculateFollowedGroupCounts = (
       (e) => userIds.includes(e.userId),
       (e) => state.set(e.userId, (state.get(e.userId) ?? 0) - 1),
     )
+    .otherwise(() => state)
     .run()),
 );
 
