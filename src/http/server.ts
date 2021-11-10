@@ -13,7 +13,7 @@ import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
-export const createApplicationServer = (router: Router, logger: Logger, ports: Adapters): E.Either<string, Server> => {
+export const createApplicationServer = (router: Router, logger: Logger, adapters: Adapters): E.Either<string, Server> => {
   const app = new Koa();
 
   app.use(rTracer.koaMiddleware());
@@ -86,7 +86,7 @@ export const createApplicationServer = (router: Router, logger: Logger, ports: A
           id: toUserId(username),
           handle: 'account27775998',
         };
-        void createAccountIfNecessary(ports)(user)()
+        void createAccountIfNecessary(adapters)(user)()
           .then(() => cb(null, user));
       },
     ));
@@ -103,7 +103,7 @@ export const createApplicationServer = (router: Router, logger: Logger, ports: A
             id: toUserId(profile.id),
             handle: profile.username,
           };
-          void createAccountIfNecessary(ports)(user)()
+          void createAccountIfNecessary(adapters)(user)()
             .then(() => cb(undefined, user));
         },
       ),
