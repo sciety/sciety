@@ -1,3 +1,4 @@
+import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
 import { UserFoundReviewNotHelpfulEvent } from './user-found-review-not-helpful-event';
@@ -15,4 +16,5 @@ export type RuntimeGeneratedEvent =
   UserRevokedFindingReviewHelpfulEvent |
   UserFoundReviewNotHelpfulEvent |
   UserRevokedFindingReviewNotHelpfulEvent |
-  UserSavedArticleEvent;
+  UserSavedArticleEvent |
+  UserCreatedAccountEvent;
