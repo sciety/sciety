@@ -14,17 +14,22 @@ export const isGroupEvaluatedArticleEvent = (event: DomainEvent):
   event is GroupEvaluatedArticleEvent => (
   event.type === 'GroupEvaluatedArticle'
 );
+
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserFollowedEditorialCommunityEvent => (
   event.type === 'UserFollowedEditorialCommunity'
 );
+
 export const isUserSavedArticleEvent = (event: DomainEvent):
   event is UserSavedArticleEvent => (
   event.type === 'UserSavedArticle'
-); export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
+);
+
+export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserUnfollowedEditorialCommunityEvent => (
   event.type === 'UserUnfollowedEditorialCommunity'
 );
+
 export const isUserUnsavedArticleEvent = (event: DomainEvent):
   event is UserUnsavedArticleEvent => (
   event.type === 'UserUnsavedArticle'
