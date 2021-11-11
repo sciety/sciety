@@ -56,7 +56,6 @@ export const fetchCrossrefArticle = (
     } catch (error: unknown) {
       const payload = {
         doi: doi.value,
-        error,
         message: '',
       };
       let errorType: DE.DataError = DE.notFound;
