@@ -47,7 +47,7 @@ describe('create-account-if-necessary', () => {
       });
     });
 
-    describe.skip('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
+    describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
       const userAccount = arbitraryUserAccount();
 
       describe.each([

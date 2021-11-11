@@ -17,5 +17,9 @@ export {
   isUserUnsavedArticleEvent,
   isUserSavedArticleEvent,
   isUserCreatedAccountEvent,
+  isUserFoundReviewHelpfulEvent,
+  isUserFoundReviewNotHelpfulEvent,
+  isUserRevokedFindingReviewHelpfulEvent,
+  isUserRevokedFindingReviewNotHelpfulEvent,
 } from './type-guards';
 export { byDate } from './utils';

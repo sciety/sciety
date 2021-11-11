@@ -2,7 +2,17 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent, isUserCreatedAccountEvent, isUserFollowedEditorialCommunityEvent, RuntimeGeneratedEvent,
+  DomainEvent,
+  isUserCreatedAccountEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserFoundReviewHelpfulEvent,
+  isUserFoundReviewNotHelpfulEvent,
+  isUserRevokedFindingReviewHelpfulEvent,
+  isUserRevokedFindingReviewNotHelpfulEvent,
+  isUserSavedArticleEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+  isUserUnsavedArticleEvent,
+  RuntimeGeneratedEvent,
 } from '../domain-events';
 import { userCreatedAccount } from '../domain-events/user-created-account-event';
 import { UserId } from '../types/user-id';
@@ -27,7 +37,15 @@ export type UserAccount = {
 type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<void>;
 
 const isInterestingEvent = (userId: UserId) => (event: DomainEvent) => (
-  isUserFollowedEditorialCommunityEvent(event) || isUserCreatedAccountEvent(event)
+  isUserFollowedEditorialCommunityEvent(event)
+  || isUserUnfollowedEditorialCommunityEvent(event)
+  || isUserSavedArticleEvent(event)
+  || isUserUnsavedArticleEvent(event)
+  || isUserFoundReviewHelpfulEvent(event)
+  || isUserRevokedFindingReviewHelpfulEvent(event)
+  || isUserFoundReviewNotHelpfulEvent(event)
+  || isUserRevokedFindingReviewNotHelpfulEvent(event)
+  || isUserCreatedAccountEvent(event)
 ) && event.userId === userId;
 
 export const createAccountIfNecessary: CreateAccountIfNecessary = ({
