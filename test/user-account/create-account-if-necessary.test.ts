@@ -42,7 +42,7 @@ describe('create-account-if-necessary', () => {
         await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
       });
 
-      it.skip('raises no events', () => {
+      it('raises no events', () => {
         expect(commitEvents).toHaveBeenCalledWith([]);
       });
     });
@@ -87,6 +87,8 @@ describe('create-account-if-necessary', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
         userId: userAccount.id,
         handle: userAccount.handle,
+        avatarUrl: userAccount.avatarUrl,
+        displayName: userAccount.displayName,
       })]);
     });
   });
@@ -112,6 +114,8 @@ describe('create-account-if-necessary', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
         userId: userAccount.id,
         handle: userAccount.handle,
+        avatarUrl: userAccount.avatarUrl,
+        displayName: userAccount.displayName,
       })]);
     });
   });
