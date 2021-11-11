@@ -13,6 +13,7 @@
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
     "@types/passport-local": "^1.0.34",
+    "@xmldom/xmldom": "^0.7.5",
     "axios": "^0.21.4",
     "axios-cache-adapter": "^2.7.3",
     "chalk": "4.1.2",
@@ -47,8 +48,7 @@
     "serialize-error": "^8.1.0",
     "striptags": "^3.2.0",
     "text-clipper": "^2.1.0",
-    "uuid": "^8.3.2",
-    "xmldom": "^0.6.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/clownface": "^1.2.5",
@@ -73,7 +73,6 @@
     "@types/sanitize-html": "^2.5.0",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.1",
-    "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "backstopjs": "^5.1.0",

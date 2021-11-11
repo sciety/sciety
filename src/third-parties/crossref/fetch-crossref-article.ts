@@ -1,7 +1,7 @@
+import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
