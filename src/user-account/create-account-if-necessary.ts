@@ -1,6 +1,6 @@
-import * as B from 'fp-ts/boolean';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
@@ -37,7 +37,7 @@ export type UserAccount = {
 
 type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<void>;
 
-const isInterestingEvent = (userId: UserId) => (event: DomainEvent) => (
+const isBreadcrumbInitiatedBy = (userId: UserId) => (event: DomainEvent) => (
   isUserFollowedEditorialCommunityEvent(event)
   || isUserUnfollowedEditorialCommunityEvent(event)
   || isUserSavedArticleEvent(event)
@@ -46,12 +46,18 @@ const isInterestingEvent = (userId: UserId) => (event: DomainEvent) => (
   || isUserRevokedFindingReviewHelpfulEvent(event)
   || isUserFoundReviewNotHelpfulEvent(event)
   || isUserRevokedFindingReviewNotHelpfulEvent(event)
-  || isUserCreatedAccountEvent(event)
+) && event.userId === userId;
+
+const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
+  isUserCreatedAccountEvent(event)
 ) && event.userId === userId;
 
 const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter(isInterestingEvent(userId)),
+  RA.filter((event) => (
+    isBreadcrumbInitiatedBy(userId)(event)
+     || isAccountCreatedBy(userId)(event)
+  )),
   RA.isEmpty,
 );
 
