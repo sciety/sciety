@@ -11,9 +11,12 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type UserAccount = {
+// ts-unused-exports:disable-next-line
+export type UserAccount = {
   id: UserId,
   handle: string,
+  avatarUrl: string,
+  displayName: string,
 };
 
 type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<void>;

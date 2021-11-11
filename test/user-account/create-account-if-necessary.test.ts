@@ -10,29 +10,36 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
-import { createAccountIfNecessary } from '../../src/user-account/create-account-if-necessary';
-import { arbitraryWord } from '../helpers';
+import { createAccountIfNecessary, UserAccount } from '../../src/user-account/create-account-if-necessary';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-const arbitraryUser = () => ({
+const arbitraryUserAccount = (): UserAccount => ({
   id: arbitraryUserId(),
   handle: arbitraryWord(),
+  avatarUrl: arbitraryUri(),
+  displayName: arbitraryString(),
 });
 
 describe('create-account-if-necessary', () => {
   describe('when the user has already created an account', () => {
     describe('because there is a UserCreatedAccount event', () => {
-      const user = arbitraryUser();
+      const userAccount = arbitraryUserAccount();
       const getAllEvents = T.of([
-        userCreatedAccount(user.id, user.handle),
+        userCreatedAccount(
+          userAccount.id,
+          userAccount.handle,
+          userAccount.avatarUrl,
+          userAccount.displayName,
+        ),
       ]);
       const commitEvents = jest.fn(() => T.of(undefined));
 
       beforeEach(async () => {
-        await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+        await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
       });
 
       it.skip('raises no events', () => {
@@ -41,23 +48,23 @@ describe('create-account-if-necessary', () => {
     });
 
     describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
-      const user = arbitraryUser();
+      const userAccount = arbitraryUserAccount();
 
       describe.each([
-        ['UserFollowedEditorialCommunityEvent', userFollowedEditorialCommunity(user.id, arbitraryGroupId())],
-        ['UserUnfollowedEditorialCommunityEvent', userUnfollowedEditorialCommunity(user.id, arbitraryGroupId())],
-        ['UserSavedArticleEvent', userSavedArticle(user.id, arbitraryDoi())],
-        ['UserUnsavedArticleEvent', userUnsavedArticle(user.id, arbitraryDoi())],
-        ['UserFoundReviewHelpfulEvent', userFoundReviewHelpful(user.id, arbitraryReviewId())],
-        ['UserRevokedFindingReviewHelpfulEvent', userRevokedFindingReviewHelpful(user.id, arbitraryReviewId())],
-        ['UserFoundReviewNotHelpfulEvent', userFoundReviewNotHelpful(user.id, arbitraryReviewId())],
-        ['UserRevokedFindingReviewNotHelpfulEvent', userRevokedFindingReviewNotHelpful(user.id, arbitraryReviewId())],
+        ['UserFollowedEditorialCommunityEvent', userFollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
+        ['UserUnfollowedEditorialCommunityEvent', userUnfollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
+        ['UserSavedArticleEvent', userSavedArticle(userAccount.id, arbitraryDoi())],
+        ['UserUnsavedArticleEvent', userUnsavedArticle(userAccount.id, arbitraryDoi())],
+        ['UserFoundReviewHelpfulEvent', userFoundReviewHelpful(userAccount.id, arbitraryReviewId())],
+        ['UserRevokedFindingReviewHelpfulEvent', userRevokedFindingReviewHelpful(userAccount.id, arbitraryReviewId())],
+        ['UserFoundReviewNotHelpfulEvent', userFoundReviewNotHelpful(userAccount.id, arbitraryReviewId())],
+        ['UserRevokedFindingReviewNotHelpfulEvent', userRevokedFindingReviewNotHelpful(userAccount.id, arbitraryReviewId())],
       ])('when the existing event is %s', (_, event) => {
         const getAllEvents = T.of([event]);
         const commitEvents = jest.fn(() => T.of(undefined));
 
         beforeEach(async () => {
-          await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+          await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
         });
 
         it('raises no events', async () => {
@@ -68,37 +75,43 @@ describe('create-account-if-necessary', () => {
   });
 
   describe('when the user has not already created an account', () => {
-    const user = arbitraryUser();
+    const userAccount = arbitraryUserAccount();
     const getAllEvents = T.of([]);
     const commitEvents = jest.fn(() => T.of(undefined));
 
     beforeEach(async () => {
-      await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+      await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
     });
 
     it.skip('raises a UserCreatedAccount event', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
-        userId: user.id,
-        handle: user.handle,
+        userId: userAccount.id,
+        handle: userAccount.handle,
       })]);
     });
   });
 
   describe('when another user has already created an account but this user has not', () => {
-    const user = arbitraryUser();
+    const userAccount = arbitraryUserAccount();
+    const anotherUserAccount = arbitraryUserAccount();
     const getAllEvents = T.of([
-      userCreatedAccount(arbitraryUserId(), arbitraryWord()),
+      userCreatedAccount(
+        anotherUserAccount.id,
+        anotherUserAccount.handle,
+        anotherUserAccount.avatarUrl,
+        anotherUserAccount.displayName,
+      ),
     ]);
     const commitEvents = jest.fn(() => T.of(undefined));
 
     beforeEach(async () => {
-      await createAccountIfNecessary({ getAllEvents, commitEvents })(user)();
+      await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
     });
 
     it.skip('raises a UserCreatedAccount event', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
-        userId: user.id,
-        handle: user.handle,
+        userId: userAccount.id,
+        handle: userAccount.handle,
       })]);
     });
   });

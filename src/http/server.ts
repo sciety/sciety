@@ -85,6 +85,8 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
         const user = {
           id: toUserId(username),
           handle: 'account27775998',
+          avatarUrl: '',
+          displayName: '',
         };
         void createAccountIfNecessary(adapters)(user)()
           .then(() => cb(null, user));
@@ -99,12 +101,17 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
           callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
         },
         (_token, _tokenSecret, profile, cb) => {
-          const user = {
+          // photos can never be undefined:
+          // https://github.com/jaredhanson/passport-twitter/blob/cfe7807b0e89e9ff130592c28622e134749e757b/lib/profile.js#L21
+          const photos = profile.photos ?? [{ value: '' }];
+          const userAccount = {
             id: toUserId(profile.id),
             handle: profile.username,
+            avatarUrl: photos[0].value,
+            displayName: profile.displayName,
           };
-          void createAccountIfNecessary(adapters)(user)()
-            .then(() => cb(undefined, user));
+          void createAccountIfNecessary(adapters)(userAccount)()
+            .then(() => cb(undefined, { id: userAccount.id, handle: userAccount.handle }));
         },
       ),
     );

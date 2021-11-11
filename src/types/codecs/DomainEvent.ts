@@ -76,6 +76,8 @@ const userCreatedAccountEvent = t.type({
   date: DateFromISOString,
   userId: UserIdFromString,
   handle: t.string,
+  avatarUrl: t.string,
+  displayName: t.string,
 });
 
 export const domainEvent = t.union([
