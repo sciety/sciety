@@ -47,7 +47,7 @@ describe('create-account-if-necessary', () => {
       });
     });
 
-    describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
+    describe.skip('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
       const userAccount = arbitraryUserAccount();
 
       describe.each([
@@ -83,7 +83,7 @@ describe('create-account-if-necessary', () => {
       await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
     });
 
-    it.skip('raises a UserCreatedAccount event', () => {
+    it('raises a UserCreatedAccount event', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
         userId: userAccount.id,
         handle: userAccount.handle,
@@ -110,7 +110,7 @@ describe('create-account-if-necessary', () => {
       await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
     });
 
-    it.skip('raises a UserCreatedAccount event', () => {
+    it('raises a UserCreatedAccount event', () => {
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
         userId: userAccount.id,
         handle: userAccount.handle,

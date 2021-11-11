@@ -39,6 +39,9 @@ export const createAccountIfNecessary: CreateAccountIfNecessary = ({
   getAllEvents,
   T.map(RA.filter(isInterestingEvent(user.id))),
   T.map(RA.isNonEmpty),
-  T.map((hasAlreadyLoggedInBefore) => (hasAlreadyLoggedInBefore ? [] : [userCreatedAccount(user.id, user.handle, '', '')])),
+  T.map((hasAlreadyLoggedInBefore) => (
+    hasAlreadyLoggedInBefore
+      ? []
+      : [userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName)])),
   T.chain(commitEvents),
 );
