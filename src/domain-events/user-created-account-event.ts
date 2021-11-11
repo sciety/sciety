@@ -6,13 +6,13 @@ export type UserCreatedAccountEvent = Readonly<{
   type: 'UserCreatedAccount',
   date: Date,
   userId: UserId,
-  handle: string | undefined,
+  handle: string,
 }>;
 
 // ts-unused-exports:disable-next-line
 export const userCreatedAccount = (
   userId: UserId,
-  handle: string | undefined,
+  handle: string,
   date: Date = new Date(),
 ): UserCreatedAccountEvent => ({
   id: generate(),
