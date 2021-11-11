@@ -1,3 +1,4 @@
+import * as B from 'fp-ts/boolean';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -48,6 +49,12 @@ const isInterestingEvent = (userId: UserId) => (event: DomainEvent) => (
   || isUserCreatedAccountEvent(event)
 ) && event.userId === userId;
 
+const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter(isInterestingEvent(userId)),
+  RA.isEmpty,
+);
+
 export const createAccountIfNecessary: CreateAccountIfNecessary = ({
   getAllEvents,
   commitEvents,
@@ -55,11 +62,10 @@ export const createAccountIfNecessary: CreateAccountIfNecessary = ({
   user,
 ) => pipe(
   getAllEvents,
-  T.map(RA.filter(isInterestingEvent(user.id))),
-  T.map(RA.isNonEmpty),
-  T.map((hasAlreadyLoggedInBefore) => (
-    hasAlreadyLoggedInBefore
-      ? []
-      : [userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName)])),
+  T.map(shouldCreateAccount(user.id)),
+  T.map(B.fold(
+    () => [],
+    () => [userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName)],
+  )),
   T.chain(commitEvents),
 );
