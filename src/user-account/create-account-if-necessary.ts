@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
-import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -11,7 +11,12 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type CreateAccountIfNecessary = (ports: Ports) => (user: User) => T.Task<void>;
+type UserAccount = {
+  id: UserId,
+  handle: string,
+};
+
+type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<void>;
 
 export const createAccountIfNecessary: CreateAccountIfNecessary = ({ commitEvents }) => () => (
   commitEvents([])

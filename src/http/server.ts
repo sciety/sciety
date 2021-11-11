@@ -9,7 +9,6 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
 import { Adapters } from '../infrastructure';
-import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
@@ -82,8 +81,8 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
     koaPassport.use(new LocalStrategy(
-      (username, password, cb) => {
-        const user: User = {
+      (username, _password, cb) => {
+        const user = {
           id: toUserId(username),
           handle: 'account27775998',
         };
@@ -99,8 +98,8 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
           consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
           callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
         },
-        (token, tokenSecret, profile, cb) => {
-          const user: User = {
+        (_token, _tokenSecret, profile, cb) => {
+          const user = {
             id: toUserId(profile.id),
             handle: profile.username,
           };
