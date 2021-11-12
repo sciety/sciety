@@ -19,7 +19,7 @@ type NcrcReview = {
 };
 
 const toEvaluation = (ncrcReview: NcrcReview) => {
-  const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
+  const [, doiSuffix] = /.*\/([^/]*)$/.exec(ncrcReview.link) ?? [];
   return {
     date: new Date(ncrcReview.date),
     articleDoi: `10.1101/${doiSuffix}`,

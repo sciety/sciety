@@ -52,6 +52,7 @@ module.exports = {
     'consistent-return': 'off',
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
+    'function-paren-newline': ['error', 'consistent'],
     'import/no-useless-path-segments': ['error', {
       noUselessIndex: true,
     }],
