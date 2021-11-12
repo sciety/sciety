@@ -152,30 +152,14 @@ At the prompt, execute this command:
 \copy (SELECT date, type, payload FROM events ORDER BY date) TO STDOUT WITH CSV;
 ```
 
-### Dump logs into BigQuery
+### Update Data Studio
 
-Start an [export from CloudWatch], using:
+The export might take a few minutes.
 
-- `ingress-nginx-controller-` as stream prefix
-- `sciety-data-extractions` as S3 bucket
-- `ingress-nginx-controller-20210501-20211031` or similar as S3 bucket prefix
+Requires AWS access to the 540790251273 account. Ensure the AWS credentials point to the Sciety profile, e.g. by setting `AWS_PROFILE` (if needed).
 
-The export might take from a few minutes to hours.
-
-Requires AWS access to the 540790251273 account.
-
-```
-aws s3 cp --recursive s3://sciety-data-extractions/ingress-nginx-controller-20210501-20211031 ./logs
-gunzip -r logs
-find logs -type 'f' | grep -v jsonl | xargs -n 1 ./scripts/convert-cloudwatch-logs-to-bigquery-jsonl.sh
-(find logs -type 'f' | grep jsonl | xargs cat) > logs/singlefile.jsonl
-bq load \
-   --project_id=elife-data-pipeline \
-   --autodetect \
-   --replace \
-   --source_format=NEWLINE_DELIMITED_JSON \
-   de_proto.sciety_ingress_v1 \
-   logs/singlefile.jsonl
+```bash
+make update-datastudio
 ```
 
 [Prototype dashboard](https://datastudio.google.com/reporting/bc7fa747-9d10-4272-836d-f40425b93c95) using this data.

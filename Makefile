@@ -7,9 +7,12 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
 PORT := 8080
+AWS_DEFAULT_REGION := us-east-1
 
 export IMAGE
 export IMAGE_TAG
+export AWS_DEFAULT_REGION
+
 
 .PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release reports stop test* update*
 
@@ -197,3 +200,20 @@ get-error-logs:
 	--from="2021-09-10T00:00:00Z" \
 	'{app_kubernetes_io_instance="sciety--prod"} | json | __error__="" | level = "error"'
 
+
+.gs-events-json-to-jsonl:
+	gsutil cat "gs://sciety-data/events/events.json" \
+		| jq -c '.[]' \
+		| gsutil cp - "gs://sciety-data/events/events.jsonl" \
+
+.bq-update-events: .gs-events-json-to-jsonl
+	bq load \
+		--project_id=elife-data-pipeline \
+		--autodetect \
+		--replace \
+		--source_format=NEWLINE_DELIMITED_JSON \
+		de_proto.sciety_event_v1 \
+		"gs://sciety-data/events/events.jsonl"
+
+update-datastudio: update-db-dump .bq-update-events
+	./scripts/update-datastudio.sh

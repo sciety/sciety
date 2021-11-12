@@ -8,12 +8,13 @@ import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
-import { Logger } from '../infrastructure';
-import { User } from '../types/user';
+import { Adapters } from '../infrastructure';
 import { toUserId } from '../types/user-id';
+import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
-export const createApplicationServer = (router: Router, logger: Logger): E.Either<string, Server> => {
+export const createApplicationServer = (router: Router, adapters: Adapters): E.Either<string, Server> => {
   const app = new Koa();
+  const { logger } = adapters;
 
   app.use(rTracer.koaMiddleware());
 
@@ -80,12 +81,15 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
     koaPassport.use(new LocalStrategy(
-      (username, password, cb) => {
-        const user: User = {
+      (username, _password, cb) => {
+        const user = {
           id: toUserId(username),
           handle: 'account27775998',
+          avatarUrl: '',
+          displayName: '',
         };
-        return cb(null, user);
+        void createAccountIfNecessary(adapters)(user)()
+          .then(() => cb(null, user));
       },
     ));
   } else {
@@ -96,13 +100,18 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
           consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
           callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
         },
-        (token, tokenSecret, profile, cb) => {
-          const user: User = {
+        (_token, _tokenSecret, profile, cb) => {
+          // photos can never be undefined:
+          // https://github.com/jaredhanson/passport-twitter/blob/cfe7807b0e89e9ff130592c28622e134749e757b/lib/profile.js#L21
+          const photos = profile.photos ?? [{ value: '' }];
+          const userAccount = {
             id: toUserId(profile.id),
             handle: profile.username,
+            avatarUrl: photos[0].value,
+            displayName: profile.displayName,
           };
-
-          cb(undefined, user);
+          void createAccountIfNecessary(adapters)(userAccount)()
+            .then(() => cb(undefined, { id: userAccount.id, handle: userAccount.handle }));
         },
       ),
     );

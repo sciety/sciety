@@ -70,6 +70,16 @@ const userUnsavedArticleEvent = t.type({
   articleId: DoiFromString,
 });
 
+const userCreatedAccountEvent = t.type({
+  id: EventIdFromString,
+  type: t.literal('UserCreatedAccount'),
+  date: DateFromISOString,
+  userId: UserIdFromString,
+  handle: t.string,
+  avatarUrl: t.string,
+  displayName: t.string,
+});
+
 export const domainEvent = t.union([
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
@@ -79,6 +89,7 @@ export const domainEvent = t.union([
   userRevokedFindingReviewNotHelpfulEvent,
   userSavedArticleEvent,
   userUnsavedArticleEvent,
+  userCreatedAccountEvent,
 ], 'type');
 
 export const domainEvents = t.readonlyArray(domainEvent);

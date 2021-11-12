@@ -1,5 +1,5 @@
+import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
-import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../../src/third-parties/crossref/parse-crossref-article';

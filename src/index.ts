@@ -30,7 +30,7 @@ void pipe(
     (router) => ({ router, adapters }),
   )),
   TE.chainEitherKW(({ adapters, router }) => pipe(
-    createApplicationServer(router, adapters.logger),
+    createApplicationServer(router, adapters),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
       (server) => server.on('listening', () => adapters.logger('debug', 'Server running')),

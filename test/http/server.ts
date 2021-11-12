@@ -89,7 +89,7 @@ export const createTestServer = async (): Promise<TestServer> => {
 
   const router = createRouter(adapters);
   const server = pipe(
-    createApplicationServer(router, dummyLogger),
+    createApplicationServer(router, adapters),
     E.getOrElseW((e) => {
       throw new Error(e);
     }),

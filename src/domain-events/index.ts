@@ -9,11 +9,17 @@ export { userRevokedFindingReviewNotHelpful, UserRevokedFindingReviewNotHelpfulE
 export { userSavedArticle, UserSavedArticleEvent } from './user-saved-article-event';
 export { UserUnfollowedEditorialCommunityEvent, userUnfollowedEditorialCommunity } from './user-unfollowed-editorial-community-event';
 export { userUnsavedArticle, UserUnsavedArticleEvent } from './user-unsaved-article-event';
+export { userCreatedAccount } from './user-created-account-event';
 export {
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
   isGroupEvaluatedArticleEvent,
   isUserUnsavedArticleEvent,
   isUserSavedArticleEvent,
+  isUserCreatedAccountEvent,
+  isUserFoundReviewHelpfulEvent,
+  isUserFoundReviewNotHelpfulEvent,
+  isUserRevokedFindingReviewHelpfulEvent,
+  isUserRevokedFindingReviewNotHelpfulEvent,
 } from './type-guards';
 export { byDate } from './utils';

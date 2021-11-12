@@ -1,9 +1,9 @@
+import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { DOMParser } from 'xmldom';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';

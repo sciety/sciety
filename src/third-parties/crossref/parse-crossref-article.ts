@@ -1,6 +1,6 @@
+import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
-import { XMLSerializer } from 'xmldom';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
