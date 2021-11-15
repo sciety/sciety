@@ -9,74 +9,90 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 describe('group-list', () => {
   const groupId = arbitraryGroupId();
 
-  describe('when the list contains no articles', () => {
-    const result = pipe(
-      [],
-      groupList(groupId),
-    );
+  describe('when the list owner exists', () => {
+    it.todo('returns the list name');
 
-    it('returns a count of 0', () => {
-      expect(result.articleCount).toBe(0);
+    it.todo('returns the list description');
+
+    it.todo('returns the owner name');
+
+    it.todo('returns the owner avatar path');
+
+    it.todo('returns the owner href');
+
+    describe('when the list contains no articles', () => {
+      const result = pipe(
+        [],
+        groupList(groupId),
+      );
+
+      it('returns a count of 0', () => {
+        expect(result.articleCount).toBe(0);
+      });
+
+      it('returns no last updated date', () => {
+        expect(result.lastUpdated).toStrictEqual(O.none);
+      });
     });
 
-    it('returns no last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.none);
-    });
-  });
+    describe('when the list contains some articles', () => {
+      const newerDate = new Date('2021-07-08');
+      const result = pipe(
+        [
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        ],
+        groupList(groupId),
+      );
 
-  describe('when the list contains some articles', () => {
-    const newerDate = new Date('2021-07-08');
-    const result = pipe(
-      [
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
-      ],
-      groupList(groupId),
-    );
+      it('returns a count of the articles', () => {
+        expect(result.articleCount).toBe(2);
+      });
 
-    it('returns a count of the articles', () => {
-      expect(result.articleCount).toBe(2);
-    });
-
-    it('returns the last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
-    });
-  });
-
-  describe('when the group has evaluated one article more than once', () => {
-    const newerDate = new Date('2021-07-08');
-    const articleId = arbitraryDoi();
-    const result = pipe(
-      [
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
-      ],
-      groupList(groupId),
-    );
-
-    it('returns a count of 1', () => {
-      expect(result.articleCount).toBe(1);
+      it('returns the last updated date', () => {
+        expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+      });
     });
 
-    it('returns the last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+    describe('when the group has evaluated one article more than once', () => {
+      const newerDate = new Date('2021-07-08');
+      const articleId = arbitraryDoi();
+      const result = pipe(
+        [
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+        ],
+        groupList(groupId),
+      );
+
+      it('returns a count of 1', () => {
+        expect(result.articleCount).toBe(1);
+      });
+
+      it('returns the last updated date', () => {
+        expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+      });
     });
-  });
 
-  describe('when a list with a different owner contains some articles', () => {
-    const result = pipe(
-      [
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      ],
-      groupList(groupId),
-    );
+    describe('when a list with a different owner contains some articles', () => {
+      const result = pipe(
+        [
+          groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        ],
+        groupList(groupId),
+      );
 
-    it('returns a count of 0', () => {
-      expect(result.articleCount).toBe(0);
+      it('returns a count of 0', () => {
+        expect(result.articleCount).toBe(0);
+      });
+
+      it('returns no last updated date', () => {
+        expect(result.lastUpdated).toStrictEqual(O.none);
+      });
     });
 
-    it('returns no last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.none);
+    describe('when the list owner does not exist', () => {
+      it.todo('returns not found');
     });
   });
 });
