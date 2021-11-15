@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
 import { getEvaluatedArticlesListDetails } from '../../group-page/lists/get-evaluated-articles-list-details';
+import { defaultGroupListDescription } from '../../group-page/messages';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
 
@@ -18,6 +19,7 @@ export const component = (
   ports.getAllEvents,
   T.map((events) => ({
     name: 'Evaluated Articles',
+    description: defaultGroupListDescription(group.name),
     avatarPath: group.avatarPath,
     grp: group,
     ...getEvaluatedArticlesListDetails(group.id)(events),

@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { defaultGroupListDescription } from '../../group-page/messages';
 import { templateDate } from '../../shared-components/date';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -17,6 +16,7 @@ const renderLastUpdated = O.fold(
 
 type ViewModel = {
   name: string,
+  description: string,
   avatarPath: string,
   grp: Group,
   articleCount: number,
@@ -30,7 +30,7 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
       <img src="${viewModel.avatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="/groups/${viewModel.grp.slug}">${viewModel.grp.name}</a></span>
     </p>
-    <p class="page-header__description">${defaultGroupListDescription(viewModel.grp.name)}.</p>
+    <p class="page-header__description">${viewModel.description}.</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
   </header>`,
   toHtmlFragment,
