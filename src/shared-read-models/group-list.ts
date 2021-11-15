@@ -8,6 +8,7 @@ import { GroupId } from '../types/group-id';
 
 // ts-unused-exports:disable-next-line
 export type ListDetails = {
+  name: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
@@ -21,6 +22,7 @@ export const groupList = (
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === groupId),
   (evaluationEvents) => ({
+    name: 'Evaluated Articles',
     articleCount: pipe(
       evaluationEvents,
       RA.map((event) => event.articleId.value),

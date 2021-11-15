@@ -12,15 +12,29 @@ describe('group-list', () => {
   const groupId = arbitraryGroupId();
 
   describe('when the list owner exists', () => {
-    it.todo('returns the list name');
+    describe('common properties', () => {
+      let result: ListDetails;
 
-    it.todo('returns the list description');
+      beforeEach(async () => {
+        result = await pipe(
+          [],
+          groupList(groupId),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
 
-    it.todo('returns the owner name');
+      it('returns the list name', () => {
+        expect(result.name).not.toBeNull();
+      });
 
-    it.todo('returns the owner avatar path');
+      it.todo('returns the list description');
 
-    it.todo('returns the owner href');
+      it.todo('returns the owner name');
+
+      it.todo('returns the owner avatar path');
+
+      it.todo('returns the owner href');
+    });
 
     describe('when the list contains no articles', () => {
       let result: ListDetails;

@@ -21,7 +21,6 @@ export const component = (
   TE.chain(groupList(group.id)),
   TE.map((groupListResult) => ({
     ...groupListResult,
-    name: 'Evaluated Articles',
     description: defaultGroupListDescription(group.name),
     ownerName: group.name,
     ownerHref: `/groups/${group.slug}`,
