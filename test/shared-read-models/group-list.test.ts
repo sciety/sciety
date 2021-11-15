@@ -9,7 +9,7 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 describe('group-list', () => {
   const groupId = arbitraryGroupId();
 
-  describe('when the group has evaluated no articles', () => {
+  describe('when the list contains no articles', () => {
     const result = pipe(
       [],
       groupList(groupId),
@@ -24,7 +24,7 @@ describe('group-list', () => {
     });
   });
 
-  describe('when the group has evaluated some articles', () => {
+  describe('when the list contains some articles', () => {
     const newerDate = new Date('2021-07-08');
     const result = pipe(
       [
@@ -63,7 +63,7 @@ describe('group-list', () => {
     });
   });
 
-  describe('when a different group has evaluated some articles', () => {
+  describe('when a list with a different owner contains some articles', () => {
     const result = pipe(
       [
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
