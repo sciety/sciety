@@ -18,6 +18,7 @@ export const component = (
   ports.getAllEvents,
   T.map((events) => ({
     name: 'Evaluated Articles',
+    avatarPath: group.avatarPath,
     grp: group,
     ...getEvaluatedArticlesListDetails(group.id)(events),
   })),

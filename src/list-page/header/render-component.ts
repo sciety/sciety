@@ -17,6 +17,7 @@ const renderLastUpdated = O.fold(
 
 type ViewModel = {
   name: string,
+  avatarPath: string,
   grp: Group,
   articleCount: number,
   lastUpdated: O.Option<Date>,
@@ -26,7 +27,7 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--group-evaluations">
     <h1>${viewModel.name}</h1>
     <p class="page-header__subheading">
-      <img src="${viewModel.grp.avatarPath}" alt="" class="page-header__avatar">
+      <img src="${viewModel.avatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="/groups/${viewModel.grp.slug}">${viewModel.grp.name}</a></span>
     </p>
     <p class="page-header__description">${defaultGroupListDescription(viewModel.grp.name)}.</p>
