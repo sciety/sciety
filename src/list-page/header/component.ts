@@ -17,6 +17,7 @@ export const component = (
 ): TE.TaskEither<never, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map((events) => ({
+    name: 'Evaluated Articles',
     grp: group,
     ...getEvaluatedArticlesListDetails(group.id)(events),
   })),
