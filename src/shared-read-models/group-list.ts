@@ -22,7 +22,7 @@ export const groupList = (
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === groupId),
   (evaluationEvents) => ({
-    name: 'Evaluated Articles',
+    name: 'Evaluated articles',
     articleCount: pipe(
       evaluationEvents,
       RA.map((event) => event.articleId.value),
