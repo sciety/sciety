@@ -1,18 +1,18 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../src/domain-events';
-import { getEvaluatedArticlesListDetails } from '../../src/shared-read-models/get-evaluated-articles-list-details';
+import { groupList } from '../../src/shared-read-models/group-list';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
-describe('get-evaluated-articles-list-details', () => {
+describe('group-list', () => {
   const groupId = arbitraryGroupId();
 
   describe('when the group has evaluated no articles', () => {
     const result = pipe(
       [],
-      getEvaluatedArticlesListDetails(groupId),
+      groupList(groupId),
     );
 
     it('returns a count of 0', () => {
@@ -31,7 +31,7 @@ describe('get-evaluated-articles-list-details', () => {
         groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
       ],
-      getEvaluatedArticlesListDetails(groupId),
+      groupList(groupId),
     );
 
     it('returns a count of the articles', () => {
@@ -51,7 +51,7 @@ describe('get-evaluated-articles-list-details', () => {
         groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
         groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
       ],
-      getEvaluatedArticlesListDetails(groupId),
+      groupList(groupId),
     );
 
     it('returns a count of 1', () => {
@@ -68,7 +68,7 @@ describe('get-evaluated-articles-list-details', () => {
       [
         groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ],
-      getEvaluatedArticlesListDetails(groupId),
+      groupList(groupId),
     );
 
     it('returns a count of 0', () => {

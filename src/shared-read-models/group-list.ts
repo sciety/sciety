@@ -10,7 +10,7 @@ type ListDetails = {
   lastUpdated: O.Option<Date>,
 };
 
-export const getEvaluatedArticlesListDetails = (
+export const groupList = (
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,

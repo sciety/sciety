@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
 import { defaultGroupListDescription } from '../../group-page/messages';
-import { getEvaluatedArticlesListDetails } from '../../shared-read-models/get-evaluated-articles-list-details';
+import { groupList } from '../../shared-read-models/group-list';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
 
@@ -23,7 +23,7 @@ export const component = (
     ownerName: group.name,
     ownerHref: `/groups/${group.slug}`,
     ownerAvatarPath: group.avatarPath,
-    ...getEvaluatedArticlesListDetails(group.id)(events),
+    ...groupList(group.id)(events),
   })),
   T.map(renderComponent),
   TE.rightTask,
