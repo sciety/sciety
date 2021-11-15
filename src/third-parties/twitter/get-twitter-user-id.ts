@@ -20,8 +20,13 @@ const dataTwitterResponse = t.type({
 });
 
 const errorsTwitterResponse = t.type({
-  errors: t.UnknownArray,
+  errors: t.array(t.type({
+    detail: t.string,
+    type: t.string,
+  }))
 });
+
+type TwitterErrors = t.TypeOf<typeof errorsTwitterResponse>;
 
 const twitterResponse = t.union([
   dataTwitterResponse,
@@ -49,7 +54,10 @@ export const getTwitterUserId = (
   TE.filterOrElseW(
     dataTwitterResponse.is,
     (response) => {
-      logger('error', 'Error in Twitter response', { response });
+      logger('error', 'Error in Twitter response', {
+        message: (response as TwitterErrors).errors[0].detail,
+        type: (response as TwitterErrors).errors[0].type,
+      });
       return DE.notFound;
     },
   ),
