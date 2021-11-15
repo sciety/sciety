@@ -19,14 +19,15 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
   app.use(rTracer.koaMiddleware());
 
   app.use(async ({ request, res }, next) => {
-    logger('info', 'Received HTTP request', {
+    const logLevel = request.url.startsWith('/static') ? 'debug' : 'info';
+    logger(logLevel, 'Received HTTP request', {
       method: request.method,
       url: request.url,
       referer: request.headers.referer,
     });
 
     res.once('finish', () => {
-      logger('info', 'Sent HTTP response', {
+      logger(logLevel, 'Sent HTTP response', {
         status: res.statusCode,
       });
     });
@@ -36,7 +37,7 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
         return;
       }
 
-      logger('info', 'HTTP response may not have been completely sent', {
+      logger('warn', 'HTTP response may not have been completely sent', {
         status: res.statusCode,
       });
     });

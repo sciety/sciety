@@ -33,7 +33,7 @@ void pipe(
     createApplicationServer(router, adapters),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
-      (server) => server.on('listening', () => adapters.logger('debug', 'Server running')),
+      (server) => server.on('listening', () => adapters.logger('info', 'Server running')),
     )),
   )),
   TE.match(
