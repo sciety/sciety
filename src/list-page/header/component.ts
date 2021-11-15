@@ -20,6 +20,6 @@ export const component = (
     grp: group,
     ...getEvaluatedArticlesListDetails(group.id)(events),
   })),
-  T.map(({ grp, articleCount, lastUpdated }) => renderComponent(grp, articleCount, lastUpdated)),
+  T.map(renderComponent),
   TE.rightTask,
 );
