@@ -1,9 +1,9 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
 import { DomainEvent } from '../../domain-events';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
+import { getEvaluatedArticlesListDetails } from '../../shared-read-models/get-evaluated-articles-list-details';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { defaultGroupListDescription } from '../messages';

@@ -3,8 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
-import { getEvaluatedArticlesListDetails } from '../../group-page/lists/get-evaluated-articles-list-details';
 import { defaultGroupListDescription } from '../../group-page/messages';
+import { getEvaluatedArticlesListDetails } from '../../shared-read-models/get-evaluated-articles-list-details';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
 

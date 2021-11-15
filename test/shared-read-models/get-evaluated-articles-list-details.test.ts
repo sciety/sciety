@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
-import { getEvaluatedArticlesListDetails } from '../../../src/group-page/lists/get-evaluated-articles-list-details';
-import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { groupEvaluatedArticle } from '../../src/domain-events';
+import { getEvaluatedArticlesListDetails } from '../../src/shared-read-models/get-evaluated-articles-list-details';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('get-evaluated-articles-list-details', () => {
   const groupId = arbitraryGroupId();
