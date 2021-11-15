@@ -3,7 +3,7 @@ import { performance } from 'perf_hooks';
 import {
   groupEvaluatedArticle,
 } from '../../../src/domain-events';
-import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
+import { evaluatedArticles } from '../../../src/list-page/evaluated-articles-list/evaluated-articles';
 import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';

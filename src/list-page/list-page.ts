@@ -35,7 +35,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-type GroupEvaluationsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type ListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const notFoundResponse = () => ({
   type: DE.notFound,
@@ -47,7 +47,7 @@ const toPageNumber = (page: O.Option<number>) => pipe(
   O.getOrElse(() => 1),
 );
 
-export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
+export const groupEvaluationsPage = (ports: Ports): ListPage => ({ slug, page }) => pipe(
   ports.getGroupBySlug(slug),
   TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
