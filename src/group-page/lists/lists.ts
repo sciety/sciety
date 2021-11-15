@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
 import { groupList, Ports as GroupListPorts } from '../../shared-read-models/group-list';
+import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { defaultGroupListDescription } from '../messages';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -20,7 +20,7 @@ const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(
   </section>
 `);
 
-export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, HtmlFragment> => pipe(
+export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(groupList(ports, group.id)),
@@ -28,7 +28,6 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, Html
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
     title: details.name,
-    description: defaultGroupListDescription(group.name),
     articleCountLabel: 'This group has evaluated',
   })),
   TE.map(renderListCard),

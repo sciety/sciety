@@ -4,6 +4,7 @@ import * as RS from 'fp-ts/ReadonlySet';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
+import { defaultGroupListDescription } from '../group-page/messages';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -16,6 +17,7 @@ export type Ports = {
 // ts-unused-exports:disable-next-line
 export type ListDetails = {
   name: string,
+  description: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
@@ -25,7 +27,7 @@ export const groupList = (
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,
-): TE.TaskEither<never, ListDetails> => pipe(
+): TE.TaskEither<DE.DataError, ListDetails> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === groupId),
@@ -44,4 +46,12 @@ export const groupList = (
     ),
   }),
   TE.right,
+  TE.chain((partial) => pipe(
+    groupId,
+    ports.getGroup,
+    TE.map((group) => ({
+      ...partial,
+      description: defaultGroupListDescription(group.name),
+    })),
+  )),
 );

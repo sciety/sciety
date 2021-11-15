@@ -36,7 +36,9 @@ describe('group-list', () => {
         expect(result.name).not.toBeNull();
       });
 
-      it.todo('returns the list description');
+      it('returns the list description', () => {
+        expect(result.description).toContain(group.name);
+      });
 
       it.todo('returns the owner name');
 
