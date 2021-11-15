@@ -40,7 +40,9 @@ describe('group-list', () => {
         expect(result.description).toContain(group.name);
       });
 
-      it.todo('returns the owner name');
+      it('returns the owner name', () => {
+        expect(result.ownerName).toBe(group.name);
+      });
 
       it.todo('returns the owner avatar path');
 
