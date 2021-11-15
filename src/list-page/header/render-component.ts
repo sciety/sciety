@@ -24,7 +24,7 @@ type ViewModel = {
 };
 
 export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
-  `<header class="page-header page-header--group-evaluations">
+  `<header class="page-header page-header--list">
     <h1>${viewModel.name}</h1>
     <p class="page-header__subheading">
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">

@@ -14,29 +14,29 @@
   @include card.list-item();
 }
 
-.page-header.page-header--group-evaluations {
+.page-header.page-header--list {
   margin-bottom: 1rem;
 }
 
-.page-header--group-evaluations .page-header__subheading {
+.page-header--list .page-header__subheading {
   @include typography.subheading();
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.page-header--group-evaluations .page-header__avatar {
+.page-header--list .page-header__avatar {
   @include avatar.border();
   width: avatar.$size--medium;
   height: avatar.$size--medium;
   margin-right: 0.5rem;
 }
 
-.page-header--group-evaluations .page-header__description {
+.page-header--list .page-header__description {
   margin-bottom: 0.5rem;
 }
 
-.page-header--group-evaluations .page-header__meta {
+.page-header--list .page-header__meta {
   @include typography.details();
   @include typography.list-separator();
 }
