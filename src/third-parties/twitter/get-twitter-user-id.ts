@@ -23,7 +23,7 @@ const errorsTwitterResponse = t.type({
   errors: t.array(t.type({
     detail: t.string,
     type: t.string,
-  }))
+  })),
 });
 
 type TwitterErrors = t.TypeOf<typeof errorsTwitterResponse>;
