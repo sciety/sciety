@@ -4,11 +4,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
-import { noArticlesCanBeFetchedMessage, noEvaluatedArticlesMessage } from './static-messages';
+import { renderComponent } from './render-component';
+import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
-import { PageOfItems, paginate } from '../../shared-components/paginate';
+import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
@@ -55,15 +55,6 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
   ),
 );
 
-type EvaluatedArticlesList = (
-  ports: Ports
-) => (
-  articles: ReadonlyArray<ArticleActivity>,
-  group: Group,
-  pageNumber: number,
-  pageSize: number
-) => TE.TaskEither<DE.DataError, HtmlFragment>;
-
 const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
   (pageOfContent: HtmlFragment) => `
     <div>
@@ -88,14 +79,15 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfItems<ArticleActivity>) => pipe(
+export const toPageOfCards = (
+  ports: Ports,
+  group: Group,
+) => (pageOfArticles: PageOfItems<ArticleActivity>): T.Task<HtmlFragment> => pipe(
   pageOfArticles.items,
-  E.fromPredicate(RA.isNonEmpty, () => noEvaluatedArticlesMessage),
-  TE.fromEither,
-  TE.chainTaskK(T.traverseArray(toCardViewModel(ports))),
-  TE.chainEitherK(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
+  T.traverseArray(toCardViewModel(ports)),
+  T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(flow(
-    renderEvaluatedArticlesList,
+    renderComponent,
     addPaginationControls(pageOfArticles.nextPage, group),
     (content) => `
       ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
@@ -104,22 +96,4 @@ const toPageOfCards = (ports: Ports, group: Group) => (pageOfArticles: PageOfIte
     toHtmlFragment,
   )),
   TE.toUnion,
-);
-
-const emptyPage = (pageNumber: number) => E.right({
-  items: [],
-  nextPage: O.none,
-  pageNumber,
-  numberOfOriginalItems: 0,
-  numberOfPages: 0,
-});
-
-export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
-  articles,
-  RA.match(
-    () => emptyPage(pageNumber),
-    paginate(pageSize, pageNumber),
-  ),
-  TE.fromEither,
-  TE.chainTaskK(toPageOfCards(ports, group)),
 );
