@@ -17,7 +17,7 @@ export type Ports = {
 export type ListDetails = {
   name: string,
   description: string,
-  ownerName: string;
+  ownerName: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
