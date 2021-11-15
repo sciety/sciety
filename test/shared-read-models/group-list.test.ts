@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
-import { groupList, ListDetails } from '../../src/shared-read-models/group-list';
+import { groupList, ListDetails, Ports } from '../../src/shared-read-models/group-list';
 import { GroupId } from '../../src/types/group-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -10,9 +10,9 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
-const callGroupListWith = async (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
+const callGroupListWith = async (ports: Ports, groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  groupList(groupId),
+  groupList(ports, groupId),
   TE.getOrElse(shouldNotBeCalled),
 )();
 
@@ -21,11 +21,15 @@ describe('group-list', () => {
   const groupId = group.id;
 
   describe('when the list owner exists', () => {
+    const ports = {
+      getGroup: () => TE.right(group),
+    };
+
     describe('common properties', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await callGroupListWith(group.id, []);
+        result = await callGroupListWith(ports, group.id, []);
       });
 
       it('returns the list name', () => {
@@ -45,7 +49,7 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await callGroupListWith(group.id, []);
+        result = await callGroupListWith(ports, group.id, []);
       });
 
       it('returns a count of 0', () => {
@@ -62,7 +66,7 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await callGroupListWith(group.id, [
+        result = await callGroupListWith(ports, group.id, [
           groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
           groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
         ]);
@@ -83,7 +87,7 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await callGroupListWith(group.id, [
+        result = await callGroupListWith(ports, group.id, [
           groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
           groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
         ]);
@@ -102,7 +106,7 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await callGroupListWith(group.id, [
+        result = await callGroupListWith(ports, group.id, [
           groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
         ]);
       });

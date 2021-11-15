@@ -4,7 +4,14 @@ import * as RS from 'fp-ts/ReadonlySet';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
+import * as DE from '../types/data-error';
+import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
+
+// ts-unused-exports:disable-next-line
+export type Ports = {
+  getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>,
+};
 
 // ts-unused-exports:disable-next-line
 export type ListDetails = {
@@ -14,6 +21,7 @@ export type ListDetails = {
 };
 
 export const groupList = (
+  ports: Ports,
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,

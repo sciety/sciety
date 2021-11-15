@@ -3,14 +3,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
-import { groupList } from '../../shared-read-models/group-list';
+import { groupList, Ports as GroupListPorts } from '../../shared-read-models/group-list';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { defaultGroupListDescription } from '../messages';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type Ports = {
+export type Ports = GroupListPorts & {
   getAllEvents: GetAllEvents,
 };
 
@@ -23,7 +23,7 @@ const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(groupList(group.id)),
+  TE.chain(groupList(ports, group.id)),
   TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,

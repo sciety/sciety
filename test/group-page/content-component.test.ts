@@ -18,6 +18,7 @@ describe('content-component', () => {
     fetchStaticFile: () => TE.right(''),
     getUserDetailsBatch: () => TE.right([]),
     getAllEvents: T.of(events),
+    getGroup: () => TE.right(group),
   };
 
   it.each([
