@@ -1,26 +1,31 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../src/domain-events';
+import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
 import { groupList, ListDetails } from '../../src/shared-read-models/group-list';
+import { GroupId } from '../../src/types/group-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
+const callGroupListWith = async (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  groupList(groupId),
+  TE.getOrElse(shouldNotBeCalled),
+)();
+
 describe('group-list', () => {
-  const groupId = arbitraryGroupId();
+  const group = arbitraryGroup();
+  const groupId = group.id;
 
   describe('when the list owner exists', () => {
     describe('common properties', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await pipe(
-          [],
-          groupList(groupId),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await callGroupListWith(group.id, []);
       });
 
       it('returns the list name', () => {
@@ -40,11 +45,7 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await pipe(
-          [],
-          groupList(groupId),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await callGroupListWith(group.id, []);
       });
 
       it('returns a count of 0', () => {
@@ -61,14 +62,10 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await pipe(
-          [
-            groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-            groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
-          ],
-          groupList(groupId),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await callGroupListWith(group.id, [
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        ]);
       });
 
       it('returns a count of the articles', () => {
@@ -86,14 +83,10 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await pipe(
-          [
-            groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-            groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
-          ],
-          groupList(groupId),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await callGroupListWith(group.id, [
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+        ]);
       });
 
       it('returns a count of 1', () => {
@@ -109,13 +102,9 @@ describe('group-list', () => {
       let result: ListDetails;
 
       beforeEach(async () => {
-        result = await pipe(
-          [
-            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-          ],
-          groupList(groupId),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await callGroupListWith(group.id, [
+          groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        ]);
       });
 
       it('returns a count of 0', () => {
