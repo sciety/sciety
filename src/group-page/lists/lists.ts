@@ -22,15 +22,15 @@ const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(
 
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, HtmlFragment> => pipe(
   ports.getAllEvents,
-  T.map(groupList(group.id)),
-  T.map((details) => ({
+  TE.rightTask,
+  TE.chain(groupList(group.id)),
+  TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
     title: 'Evaluated articles',
     description: defaultGroupListDescription(group.name),
     articleCountLabel: 'This group has evaluated',
   })),
-  T.map(renderListCard),
-  T.map(renderLists),
-  TE.rightTask,
+  TE.map(renderListCard),
+  TE.map(renderLists),
 );

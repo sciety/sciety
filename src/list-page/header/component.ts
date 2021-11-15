@@ -17,14 +17,15 @@ export const component = (
   group: Group,
 ): TE.TaskEither<never, HtmlFragment> => pipe(
   ports.getAllEvents,
-  T.map((events) => ({
+  TE.rightTask,
+  TE.chain(groupList(group.id)),
+  TE.map((groupListResult) => ({
+    ...groupListResult,
     name: 'Evaluated Articles',
     description: defaultGroupListDescription(group.name),
     ownerName: group.name,
     ownerHref: `/groups/${group.slug}`,
     ownerAvatarPath: group.avatarPath,
-    ...groupList(group.id)(events),
   })),
-  T.map(renderComponent),
-  TE.rightTask,
+  TE.map(renderComponent),
 );
