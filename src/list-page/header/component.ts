@@ -19,11 +19,5 @@ export const component = (
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(groupList(ports, group.id)),
-  TE.map((groupListResult) => ({
-    ...groupListResult,
-    ownerName: group.name,
-    ownerHref: `/groups/${group.slug}`,
-    ownerAvatarPath: group.avatarPath,
-  })),
   TE.map(renderComponent),
 );

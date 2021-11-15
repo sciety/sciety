@@ -44,9 +44,13 @@ describe('group-list', () => {
         expect(result.ownerName).toBe(group.name);
       });
 
-      it.todo('returns the owner avatar path');
+      it('returns the owner avatar path', () => {
+        expect(result.ownerAvatarPath).toBe(group.avatarPath);
+      });
 
-      it.todo('returns the owner href');
+      it('returns the owner href', () => {
+        expect(result.ownerHref).toContain(group.slug);
+      });
     });
 
     describe('when the list contains no articles', () => {

@@ -18,6 +18,8 @@ export type ListDetails = {
   name: string,
   description: string,
   ownerName: string,
+  ownerAvatarPath: string,
+  ownerHref: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
@@ -57,6 +59,8 @@ export const groupList = (
       ...partial,
       description: defaultGroupListDescription(group.name),
       ownerName: group.name,
+      ownerAvatarPath: group.avatarPath,
+      ownerHref: `/groups/${group.slug}`,
     })),
   )),
 );
