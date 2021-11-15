@@ -4,7 +4,6 @@ import * as RS from 'fp-ts/ReadonlySet';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
-import { defaultGroupListDescription } from '../group-page/messages';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -21,6 +20,10 @@ export type ListDetails = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
+
+const defaultGroupListDescription = (groupName: string): string => (
+  `Articles that have been evaluated by ${groupName}.`
+);
 
 export const groupList = (
   ports: Ports,
