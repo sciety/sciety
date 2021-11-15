@@ -20,8 +20,9 @@ export const component = (
   T.map((events) => ({
     name: 'Evaluated Articles',
     description: defaultGroupListDescription(group.name),
-    avatarPath: group.avatarPath,
-    grp: group,
+    ownerName: group.name,
+    ownerHref: `/groups/${group.slug}`,
+    ownerAvatarPath: group.avatarPath,
     ...getEvaluatedArticlesListDetails(group.id)(events),
   })),
   T.map(renderComponent),
