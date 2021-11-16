@@ -30,7 +30,7 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="${viewModel.ownerHref}">${viewModel.ownerName}</a></span>
     </p>
-    <p class="page-header__description">${viewModel.description}.</p>
+    <p class="page-header__description">${viewModel.description}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
   </header>`,
   toHtmlFragment,
