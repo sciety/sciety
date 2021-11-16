@@ -64,7 +64,7 @@ describe('fetch-crossref-article', () => {
     });
   });
 
-  describe('when crossref returns unusable authors', () => {
+  describe('when crossref returns no usable authors', () => {
     it('returns a Right', async () => {
       const getXml = async (): Promise<string> => `
         <?xml version="1.0" encoding="UTF-8"?>
