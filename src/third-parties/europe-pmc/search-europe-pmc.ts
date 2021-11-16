@@ -88,13 +88,19 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
   }
 };
 
-const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) => {
+const constructSearchResults = (logger: Logger, pageSize: number) => (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
     title: pipe(item.title, toHtmlFragment, sanitise),
     authors: pipe(
       item.authorList,
+      (authors) => {
+        if (O.isNone(authors)) {
+          logger('error', 'No authorList provided by EuropePMC', { doi: item.doi.value });
+        }
+        return authors;
+      },
       O.map(flow(
         (authorList) => authorList.author,
         RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
@@ -143,5 +149,5 @@ export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => 
   tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
   getFromUrl(dependencies),
-  TE.map(constructSearchResults(pageSize)),
+  TE.map(constructSearchResults(dependencies.logger, pageSize)),
 );
