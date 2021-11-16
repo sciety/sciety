@@ -235,16 +235,19 @@ describe('parse-crossref-article', () => {
   });
 
   describe('parsing the authors', () => {
-    it('extracts no authors from the XML response when there are no contributors', async () => {
-      const response = crossrefResponseWith('');
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+    describe('when there are no contributors', () => {
+      it.skip('returns none', async () => {
+        const response = crossrefResponseWith('');
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some([]));
+        expect(authors).toStrictEqual(O.none);
+      });
     });
 
-    it('extracts authors from the XML response', async () => {
-      const response = crossrefResponseWith(`
+    describe('when there are person contributors with a given name and a surname', () => {
+      it('extracts authors from the XML response', async () => {
+        const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -255,41 +258,47 @@ describe('parse-crossref-article', () => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
-    });
+        expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
+      });
 
-    it('strips XML from the author names', async () => {
-      const response = crossrefResponseWith(`
+      describe('when any part of the author name contains XML', () => {
+        it('strips XML from the author names', async () => {
+          const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name><scp>Fergus</scp></given_name>
             <surname>Fo<scp>untain</scp></surname>
           </person_name>
         </contributors>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+          const doc = parser.parseFromString(response, 'text/xml');
+          const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
+          expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
+        });
+      });
     });
 
-    it('handles a person without a given_name', async () => {
-      const response = crossrefResponseWith(`
+    describe('when there is a person author without a given name', () => {
+      it('uses the surname', async () => {
+        const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <surname>Ross</surname>
           </person_name>
         </contributors>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some(['Ross']));
+        expect(authors).toStrictEqual(O.some(['Ross']));
+      });
     });
 
-    it('only includes authors', async () => {
-      const response = crossrefResponseWith(`
+    describe('when there are both author and non-author contributors', () => {
+      it('only includes authors', async () => {
+        const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -300,14 +309,16 @@ describe('parse-crossref-article', () => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some(['Eesha Ross']));
+        expect(authors).toStrictEqual(O.some(['Eesha Ross']));
+      });
     });
 
-    it('includes organisational authors', () => {
-      const response = crossrefResponseWith(`
+    describe('when there is an organisational author', () => {
+      it('uses the organisation\'s name', () => {
+        const response = crossrefResponseWith(`
         <contributors>
           <organization contributor_role="author" sequence="first">SEQC2 Oncopanel Sequencing Working Group</organization>
           <person_name contributor_role="author" sequence="additional">
@@ -317,29 +328,26 @@ describe('parse-crossref-article', () => {
           </person_name>
         </contributors>
       `);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, dummyLogger);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']));
+        expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']));
+      });
     });
 
-    describe('when there is unexpected XML', () => {
-      describe('when there is no surname', () => {
-        it('return O.none from getAuthors', () => {
-          const response = crossrefResponseWith(`
-          <contributors>
-            <organization contributor_role="author" sequence="first">SEQC2 Oncopanel Sequencing Working Group</organization>
-            <person_name contributor_role="author" sequence="additional">
-              <given_name>Yifan</given_name>
-              <ORCID>http://orcid.org/0000-0002-3677-6973</ORCID>
-            </person_name>
-          </contributors>
-        `);
-          const doc = parser.parseFromString(response, 'text/xml');
-          const authors = getAuthors(doc, doi, dummyLogger);
+    describe('when the mandatory surname is missing', () => {
+      it('return O.none from getAuthors', () => {
+        const response = crossrefResponseWith(`
+        <contributors>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Yifan</given_name>
+          </person_name>
+        </contributors>
+      `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const authors = getAuthors(doc, doi, dummyLogger);
 
-          expect(O.isSome(authors)).toBeFalsy();
-        });
+        expect(O.isSome(authors)).toBeFalsy();
       });
     });
   });
