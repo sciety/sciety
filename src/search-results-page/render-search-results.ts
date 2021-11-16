@@ -13,16 +13,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
 const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
-// export type SearchResults = {
-//   query: string,
-//   category: string,
-//   itemsToDisplay: ReadonlyArray<ItemViewModel>,
-//   availableArticleMatches: number,
-//   availableGroupMatches: number,
-//   pageNumber: number,
-//   nextCursor: O.Option<string>,
-//   numberOfPages: number,
-// };
+
 export type SearchResults = SearchParameters & Tabs & {
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
   pageNumber: number,
