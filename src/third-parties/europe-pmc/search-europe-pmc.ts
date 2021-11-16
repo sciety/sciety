@@ -48,9 +48,9 @@ const europePmcAuthor = t.union([
 const resultDetails = t.type({
   doi: DoiFromString,
   title: t.string,
-  authorList: t.type({
+  authorList: tt.optionFromNullable(t.type({
     author: t.readonlyArray(europePmcAuthor),
-  }),
+  })),
   bookOrReportDetails: t.type({
     publisher: europePmcPublisher,
   }),
@@ -94,9 +94,11 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
     title: pipe(item.title, toHtmlFragment, sanitise),
     authors: pipe(
-      item.authorList.author,
-      RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
-      O.some,
+      item.authorList,
+      O.map(flow(
+        (authorList) => authorList.author,
+        RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
+      )),
     ),
   }));
   const nextCursor = data.resultList.result.length < pageSize ? O.none : data.nextCursorMark;
