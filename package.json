@@ -30,7 +30,7 @@
     "io-ts": "^2.2.16",
     "io-ts-types": "^0.5.16",
     "is-what": "^3.14.1",
-    "jsdom": "^18.0.1",
+    "jsdom": "^18.1.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-passport": "^4.1.4",
