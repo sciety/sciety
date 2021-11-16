@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { Json } from 'io-ts-types';
-import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
+import { searchEuropePmc, SearchResults } from '../../../src/third-parties/europe-pmc';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
@@ -113,6 +113,41 @@ describe('search-europe-pmc adapter', () => {
     }));
 
     expect(results).toStrictEqual(expected);
+  });
+
+  describe('when there is no authorList', () => {
+    let results: E.Either<unknown, SearchResults>;
+
+    beforeEach(async () => {
+      results = await searchEuropePmc({
+        getJson: async () => ({
+          hitCount: 1,
+          nextCursorMark: arbitraryWord(),
+          resultList: {
+            result: [
+              {
+                doi: '10.1111/1234',
+                title: 'Article title',
+                bookOrReportDetails: {
+                  publisher: 'bioRxiv',
+                },
+              },
+            ],
+          },
+        }),
+        logger: dummyLogger,
+      })(10)('some query', O.none)();
+    });
+
+    it('returns a result with None as authors', async () => {
+      expect(results).toStrictEqual(E.right(expect.objectContaining({
+        items: [
+          expect.objectContaining({
+            authors: O.none,
+          }),
+        ],
+      })));
+    });
   });
 
   it('constructs the Europe PMC query safely', async () => {
