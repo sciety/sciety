@@ -9,7 +9,7 @@ import { renderAuthors } from '../render-card-authors';
 export type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
   latestVersionDate: O.Option<Date>,
   latestActivityDate: O.Option<Date>,
   evaluationCount: number,

@@ -49,6 +49,7 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
     (articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
+      authors: O.some(articleDetails.authors),
       latestVersionDate: articleDetails.latestVersionDate,
       latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
     }),

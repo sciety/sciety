@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
@@ -45,7 +46,7 @@ export const groupEvaluatedArticleCard = (ports: Ports) => (
         () => undefined,
         (article) => ({
           title: article.title,
-          content: renderAuthors(article.authors, `sciety-feed-card-author-list-${event.groupId}-${article.doi.value}`),
+          content: renderAuthors(O.some(article.authors), `sciety-feed-card-author-list-${event.groupId}-${article.doi.value}`),
         }),
       ),
       TE.rightTask,

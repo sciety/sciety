@@ -29,7 +29,7 @@ const populateArticleViewModel = (
     ...articleActivity,
     latestVersionDate: articleDetails.latestVersionDate,
     latestActivityDate: O.some(articleActivity.latestActivityDate),
-    authors: articleDetails.authors,
+    authors: O.some(articleDetails.authors),
     title: articleDetails.title,
   })),
 );

@@ -49,6 +49,7 @@ const populateArticleViewModel = (
   )),
   TE.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
+    authors: O.some(item.authors),
     latestVersionDate,
     latestActivityDate,
     evaluationCount,

@@ -10,7 +10,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 const generateArticleViewModel = ({
   doi = arbitraryDoi(),
   title = sanitise(toHtmlFragment('default title')),
-  authors = ['Smith J'],
+  authors = O.some(['Smith J']),
   latestActivityDate = O.some(new Date()),
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
@@ -113,7 +113,7 @@ describe('render-article-card', () => {
 
     describe('when the authors list is not empty', () => {
       const articleViewModel = generateArticleViewModel({
-        authors: ['Doe J', 'Foo A'],
+        authors: O.some(['Doe J', 'Foo A']),
       });
 
       it('the authors are in an ordered list', () => {
@@ -137,7 +137,18 @@ describe('render-article-card', () => {
 
     describe('when the authors list is empty', () => {
       it('displays nothing', () => {
-        const articleViewModel = generateArticleViewModel({ authors: [] });
+        const articleViewModel = generateArticleViewModel({ authors: O.some([]) });
+
+        const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
+        const authors = rendered.querySelector(authorListSelector);
+
+        expect(authors).toBeNull();
+      });
+    });
+
+    describe('when the authors list is missing', () => {
+      it('displays nothing', () => {
+        const articleViewModel = generateArticleViewModel({ authors: O.none });
 
         const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
         const authors = rendered.querySelector(authorListSelector);
