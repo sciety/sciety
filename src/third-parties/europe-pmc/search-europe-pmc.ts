@@ -45,22 +45,28 @@ const europePmcAuthor = t.union([
   t.type({ collectiveName: t.string }),
 ]);
 
-const resultDetails = t.type({
+const authorsFromJson = tt.optionFromNullable(t.type({
+  author: t.readonlyArray(europePmcAuthor),
+}));
+
+type Authors = t.TypeOf<typeof authorsFromJson>;
+
+const itemFromJson = t.type({
   doi: DoiFromString,
   title: t.string,
-  authorList: tt.optionFromNullable(t.type({
-    author: t.readonlyArray(europePmcAuthor),
-  })),
+  authorList: authorsFromJson,
   bookOrReportDetails: t.type({
     publisher: europePmcPublisher,
   }),
 });
 
+type Item = t.TypeOf<typeof itemFromJson>;
+
 const europePmcResponse = t.type({
   hitCount: t.number,
   nextCursorMark: tt.optionFromNullable(t.string),
   resultList: t.type({
-    result: t.array(resultDetails),
+    result: t.array(itemFromJson),
   }),
 });
 
@@ -88,6 +94,13 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
   }
 };
 
+const logIfNoAuthors = (logger: Logger, item: Item) => (authors: Authors): Authors => {
+  if (O.isNone(authors)) {
+    logger('error', 'No authorList provided by EuropePMC', { doi: item.doi.value });
+  }
+  return authors;
+};
+
 const constructSearchResults = (logger: Logger, pageSize: number) => (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
@@ -95,12 +108,7 @@ const constructSearchResults = (logger: Logger, pageSize: number) => (data: Euro
     title: pipe(item.title, toHtmlFragment, sanitise),
     authors: pipe(
       item.authorList,
-      (authors) => {
-        if (O.isNone(authors)) {
-          logger('error', 'No authorList provided by EuropePMC', { doi: item.doi.value });
-        }
-        return authors;
-      },
+      logIfNoAuthors(logger, item),
       O.map(flow(
         (authorList) => authorList.author,
         RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
