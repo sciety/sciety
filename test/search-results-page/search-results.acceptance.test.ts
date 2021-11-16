@@ -109,7 +109,7 @@ describe('search-results-page acceptance', () => {
           doi: arbitraryDoi(),
           server: 'biorxiv' as const,
           title: pipe(arbitraryString(), toHtmlFragment, sanitise),
-          authors: [arbitraryString()],
+          authors: O.some([arbitraryString()]),
         });
 
         it('displays the first n articles if more than n matching articles', async () => {

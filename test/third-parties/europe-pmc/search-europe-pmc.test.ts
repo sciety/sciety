@@ -54,19 +54,19 @@ describe('search-europe-pmc adapter', () => {
           doi: new Doi('10.1111/1234'),
           server: 'biorxiv',
           title: 'Article title',
-          authors: [
+          authors: O.some([
             'Author 1',
             'Author 2',
-          ],
+          ]),
         },
         {
           doi: new Doi('10.1111/4321'),
           server: 'biorxiv',
           title: 'Another Article title',
-          authors: [
+          authors: O.some([
             'Author 3',
             'Author 4',
-          ],
+          ]),
         },
       ],
       nextCursor: O.some(nextCursor),
@@ -104,10 +104,10 @@ describe('search-europe-pmc adapter', () => {
     const expected = E.right(expect.objectContaining({
       items: [
         expect.objectContaining({
-          authors: [
+          authors: O.some([
             'Full Name',
             'Collective Name',
-          ],
+          ]),
         }),
       ],
     }));

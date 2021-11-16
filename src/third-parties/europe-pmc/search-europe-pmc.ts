@@ -24,7 +24,7 @@ type SearchResult = {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 };
 
 export type SearchResults = {
@@ -96,6 +96,7 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
     authors: pipe(
       item.authorList.author,
       RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
+      O.some,
     ),
   }));
   const nextCursor = data.resultList.result.length < pageSize ? O.none : data.nextCursorMark;

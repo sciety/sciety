@@ -12,7 +12,7 @@ const arbitraryArticleItem = () => ({
   doi: arbitraryDoi(),
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),
-  authors: [arbitraryString()],
+  authors: O.some([arbitraryString()]),
 });
 
 const arbitraryGroupItem = () => ({

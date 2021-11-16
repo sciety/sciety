@@ -12,7 +12,7 @@ export type ArticleItem = {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 };
 
 export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;
