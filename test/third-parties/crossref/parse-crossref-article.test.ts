@@ -236,7 +236,7 @@ describe('parse-crossref-article', () => {
 
   describe('parsing the authors', () => {
     describe('when there are no contributors', () => {
-      it.skip('returns none', async () => {
+      it('returns none', async () => {
         const response = crossrefResponseWith('');
         const doc = parser.parseFromString(response, 'text/xml');
         const authors = getAuthors(doc, doi, dummyLogger);

@@ -131,7 +131,7 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<Re
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
     logger('debug', 'Did not find contributors', { doi });
-    return O.some([]);
+    return O.none;
   }
 
   const authors = Array.from(contributorsElement.childNodes)

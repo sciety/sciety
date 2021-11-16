@@ -2,6 +2,7 @@ import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
@@ -76,7 +77,6 @@ export const fetchCrossrefArticle = (
 
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
-        return E.left(DE.unavailable);
       }
 
       if (O.isNone(server)) {
@@ -86,7 +86,10 @@ export const fetchCrossrefArticle = (
 
       return E.right({
         abstract: getAbstract(doc, doi, logger),
-        authors: authors.value,
+        authors: pipe(
+          authors,
+          O.getOrElseW(() => []),
+        ),
         doi,
         title: getTitle(doc, doi, logger),
         server: server.value,
