@@ -52,7 +52,8 @@ export const allLists = (
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === groupId),
-  createListPartial,
+  (eventsForThisGroup) => ({ [groupId]: createListPartial(eventsForThisGroup) }),
+  (allListPartials) => allListPartials[groupId],
   TE.right,
   TE.chain((partial) => pipe(
     groupId,
