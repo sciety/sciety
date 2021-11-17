@@ -35,7 +35,7 @@ describe('populate-article-view-model', () => {
       doi: new Doi('10.1101/222222'),
       server: 'biorxiv' as const,
       title: pipe('', toHtmlFragment, sanitise),
-      authors: [],
+      authors: O.none,
     };
     const viewModel = await pipe(
       article,

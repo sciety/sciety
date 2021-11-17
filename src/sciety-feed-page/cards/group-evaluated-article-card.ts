@@ -16,7 +16,7 @@ type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
   title: HtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 export type GroupEvaluatedArticleCard = {
@@ -46,7 +46,7 @@ export const groupEvaluatedArticleCard = (ports: Ports) => (
         () => undefined,
         (article) => ({
           title: article.title,
-          content: renderAuthors(O.some(article.authors), `sciety-feed-card-author-list-${event.groupId}-${article.doi.value}`),
+          content: renderAuthors(article.authors, `sciety-feed-card-author-list-${event.groupId}-${article.doi.value}`),
         }),
       ),
       TE.rightTask,

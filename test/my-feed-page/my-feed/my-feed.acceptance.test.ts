@@ -1,10 +1,11 @@
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import { groupEvaluatedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
-import { myFeed } from '../../../src/my-feed-page/my-feed/my-feed';
+import { myFeed } from '../../../src/my-feed-page/my-feed';
 import {
   feedTitle,
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
@@ -73,7 +74,7 @@ describe('my-feed acceptance', () => {
         const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
-            authors: [],
+            authors: O.none,
             server: 'biorxiv' as const,
           }),
           findVersionsForArticleDoi: arbitraryVersions,
@@ -103,7 +104,7 @@ describe('my-feed acceptance', () => {
         const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
-            authors: [],
+            authors: O.none,
             server: 'biorxiv' as const,
           }),
           findVersionsForArticleDoi: arbitraryVersions,
@@ -127,7 +128,7 @@ describe('my-feed acceptance', () => {
                 ? TE.left(DE.unavailable)
                 : TE.right({
                   title: sanitise(toHtmlFragment('My article title')),
-                  authors: [],
+                  authors: O.none,
                   server: 'biorxiv' as const,
                 })),
             findVersionsForArticleDoi: arbitraryVersions,

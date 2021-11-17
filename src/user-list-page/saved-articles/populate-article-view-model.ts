@@ -15,7 +15,7 @@ type ArticleItem = {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 };
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
@@ -51,7 +51,6 @@ export const populateArticleViewModel = (
   )),
   TE.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
-    authors: O.some(item.authors),
     latestVersionDate,
     latestActivityDate,
     evaluationCount,

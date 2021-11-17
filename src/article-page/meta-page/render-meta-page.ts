@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { tabs } from '../../shared-components/tabs';
 import { ArticleServer } from '../../types/article-server';
@@ -9,9 +11,16 @@ import { tabList } from '../tab-list';
 type ArticleDetails = {
   title: string,
   abstract: HtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
   server: ArticleServer,
 };
+
+const renderAuthors = (authors: O.Option<ReadonlyArray<string>>): string => pipe(
+  authors,
+  O.getOrElse<ReadonlyArray<string>>(() => []),
+  RA.map((author) => `<li>${author}</li>`),
+  (listItems) => listItems.join(''),
+);
 
 export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
@@ -22,7 +31,7 @@ export const renderMetaPage = (components: {
   `
       <section class="article-meta">
         <ol aria-label="Authors of this article" class="article-author-list" role="list">
-          ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}
+          ${renderAuthors(components.articleDetails.authors)}
         </ol>
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>

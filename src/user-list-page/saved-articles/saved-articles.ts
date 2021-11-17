@@ -23,7 +23,7 @@ type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 export type Ports = {

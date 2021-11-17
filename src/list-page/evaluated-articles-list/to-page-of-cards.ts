@@ -21,7 +21,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 type Article = {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 };
 
 type GetArticle = (id: Doi) => TE.TaskEither<DE.DataError, Article>;
@@ -49,7 +49,7 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
     (articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
-      authors: O.some(articleDetails.authors),
+      authors: articleDetails.authors,
       latestVersionDate: articleDetails.latestVersionDate,
       latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
     }),

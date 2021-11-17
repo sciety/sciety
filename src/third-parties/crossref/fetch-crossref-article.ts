@@ -2,11 +2,10 @@ import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
-import { Logger } from '../../infrastructure/logger';
+import { Logger } from '../../infrastructure';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -14,7 +13,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   abstract: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
   doi: Doi,
   title: SanitisedHtmlFragment,
   server: ArticleServer,
@@ -86,10 +85,7 @@ export const fetchCrossrefArticle = (
 
       return E.right({
         abstract: getAbstract(doc, doi, logger),
-        authors: pipe(
-          authors,
-          O.getOrElseW(() => []),
-        ),
+        authors,
         doi,
         title: getTitle(doc, doi, logger),
         server: server.value,

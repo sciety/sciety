@@ -15,7 +15,7 @@ type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOpt
 
 type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
   latestVersionDate: O.Option<Date>,
 }>;
 
@@ -29,7 +29,7 @@ const populateArticleViewModel = (
     ...articleActivity,
     latestVersionDate: articleDetails.latestVersionDate,
     latestActivityDate: O.some(articleActivity.latestActivityDate),
-    authors: O.some(articleDetails.authors),
+    authors: articleDetails.authors,
     title: articleDetails.title,
   })),
 );
@@ -37,7 +37,7 @@ const populateArticleViewModel = (
 export type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 type PopulateArticleViewModelsSkippingFailures = (

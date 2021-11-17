@@ -14,7 +14,7 @@ const titleText = 'Accuracy of predicting chemical body composition of growing p
 const getArticle = () => TE.right({
   title: sanitise(toHtmlFragment(titleText)),
   server: 'biorxiv' as const,
-  authors: ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
+  authors: O.some(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G']),
 });
 
 describe('fetch-article-details', () => {
@@ -90,7 +90,7 @@ describe('fetch-article-details', () => {
           TE.map((article) => article.authors),
         )();
         const expected = pipe(
-          ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
+          O.some(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G']),
           E.right,
         );
 

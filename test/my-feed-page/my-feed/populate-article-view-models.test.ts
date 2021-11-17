@@ -25,7 +25,7 @@ describe('populate-article-view-models', () => {
       ];
       const fetchArticleDetails = (doi: Doi) => TE.right({
         title: sanitise(toHtmlFragment('')),
-        authors: [],
+        authors: O.none,
         // eslint-disable-next-line jest/no-if
         latestVersionDate: eqDoi.equals(doi, new Doi('10.1101/11111'))
           ? O.some(new Date('2021-01-01'))
@@ -50,7 +50,7 @@ describe('populate-article-view-models', () => {
       ];
       const fetchArticleDetails = () => TE.right({
         title: sanitise(toHtmlFragment('')),
-        authors: [],
+        authors: O.none,
         latestVersionDate: O.none,
       });
       const results = await populateArticleViewModelsSkippingFailures(fetchArticleDetails)(activities)();
@@ -81,7 +81,7 @@ describe('populate-article-view-models', () => {
     const fetchArticleDetails = (doi: Doi) => (eqDoi.equals(doi, successDoi)
       ? TE.right({
         title: sanitise(toHtmlFragment('')),
-        authors: [],
+        authors: O.none,
         latestVersionDate: O.none,
       })
       : TE.left(DE.notFound));

@@ -11,12 +11,12 @@ import datasetFactory from 'rdf-dataset-indexed';
 import { bootstrapGroups } from '../../src/data/bootstrap-groups';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
-import { Adapters } from '../../src/infrastructure/adapters';
+import { Adapters } from '../../src/infrastructure';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
-import { FetchCrossrefArticle } from '../../src/third-parties/crossref/fetch-crossref-article';
+import { FetchCrossrefArticle } from '../../src/third-parties/crossref';
 import { fetchDataciteReview } from '../../src/third-parties/datacite';
 import * as DE from '../../src/types/data-error';
 import { FollowList } from '../../src/types/follow-list';
@@ -42,7 +42,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   );
   const fetchArticle: FetchCrossrefArticle = (doi) => TE.right({
     abstract: 'Article abstract.' as SanitisedHtmlFragment,
-    authors: [],
+    authors: O.none,
     doi,
     title: 'Article title' as SanitisedHtmlFragment,
     publicationDate: new Date(),

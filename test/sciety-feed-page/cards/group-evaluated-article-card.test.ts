@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
@@ -17,7 +18,7 @@ describe('group-evaluated-article-card', () => {
     const article = {
       doi: arbitraryDoi(),
       title: arbitraryHtmlFragment(),
-      authors: [],
+      authors: O.none,
     };
     const group = arbitraryGroup();
     let viewModel: ScietyFeedCard;

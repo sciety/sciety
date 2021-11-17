@@ -11,7 +11,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
@@ -21,7 +21,7 @@ type FetchArticleDetails = (
   getArticle: GetArticle,
 ) => (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
+  authors: O.Option<ReadonlyArray<string>>,
   latestVersionDate: O.Option<Date>,
 }>;
 

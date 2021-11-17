@@ -16,7 +16,7 @@ describe('meta page acceptance criteria', () => {
     const adapters = {
       fetchArticle: () => TE.right({
         title: arbitrarySanitisedHtmlFragment(),
-        authors: [],
+        authors: O.none,
         server: 'biorxiv' as const,
         abstract: arbitrarySanitisedHtmlFragment(),
       }),
