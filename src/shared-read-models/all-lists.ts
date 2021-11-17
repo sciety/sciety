@@ -1,8 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
+import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -43,6 +44,11 @@ const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticle
   ),
 });
 
+const separateByGroupId = (groupId: GroupId) => flow(
+  RA.filter((event: GroupEvaluatedArticleEvent) => event.groupId === groupId),
+  (eventsForThisGroup) => ({ [groupId]: eventsForThisGroup }),
+);
+
 export const allLists = (
   ports: Ports,
   groupId: GroupId,
@@ -51,8 +57,8 @@ export const allLists = (
 ): TE.TaskEither<DE.DataError, ListDetails> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
-  RA.filter((event) => event.groupId === groupId),
-  (eventsForThisGroup) => ({ [groupId]: createListPartial(eventsForThisGroup) }),
+  separateByGroupId(groupId),
+  R.map(createListPartial),
   (allListPartials) => allListPartials[groupId],
   TE.right,
   TE.chain((partial) => pipe(
