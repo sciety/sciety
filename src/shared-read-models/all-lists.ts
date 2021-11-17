@@ -28,6 +28,21 @@ const defaultGroupListDescription = (groupName: string): string => (
   `Articles that have been evaluated by ${groupName}.`
 );
 
+const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticleEvent>) => ({
+  name: 'Evaluated articles',
+  articleCount: pipe(
+    evaluationEvents,
+    RA.map((event) => event.articleId.value),
+    (articleIds) => (new Set(articleIds)),
+    RS.size,
+  ),
+  lastUpdated: pipe(
+    evaluationEvents,
+    RA.last,
+    O.map((event) => event.date),
+  ),
+});
+
 export const allLists = (
   ports: Ports,
   groupId: GroupId,
@@ -37,20 +52,7 @@ export const allLists = (
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === groupId),
-  (evaluationEvents) => ({
-    name: 'Evaluated articles',
-    articleCount: pipe(
-      evaluationEvents,
-      RA.map((event) => event.articleId.value),
-      (articleIds) => (new Set(articleIds)),
-      RS.size,
-    ),
-    lastUpdated: pipe(
-      evaluationEvents,
-      RA.last,
-      O.map((event) => event.date),
-    ),
-  }),
+  createListPartial,
   TE.right,
   TE.chain((partial) => pipe(
     groupId,
