@@ -53,16 +53,18 @@ export const allLists = (
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
-    { [groupId]: [] as Array<GroupEvaluatedArticleEvent> },
-    (accumlator, event) => {
-      if (event.groupId === groupId) {
-        accumlator[groupId].push(event);
+    {} as Record<string, Array<GroupEvaluatedArticleEvent>>,
+    (accumulator, event) => {
+      if (accumulator[event.groupId]) {
+        accumulator[event.groupId].push(event);
+      } else {
+        accumulator[event.groupId] = [event];
       }
-      return accumlator;
+      return accumulator;
     },
   ),
   R.map(createListPartial),
-  (allListPartials) => allListPartials[groupId],
+  (allListPartials) => allListPartials[groupId] ?? createListPartial([]),
   TE.right,
   TE.chain((partial) => pipe(
     groupId,
