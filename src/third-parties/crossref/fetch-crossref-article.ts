@@ -71,7 +71,7 @@ export const fetchCrossrefArticle = (
 
     try {
       const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc, doi, logger);
+      const authors = getAuthors(doc);
       const server = getServer(doc);
 
       if (O.isNone(authors)) {

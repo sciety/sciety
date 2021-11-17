@@ -239,7 +239,7 @@ describe('parse-crossref-article', () => {
       it('returns none', async () => {
         const response = crossrefResponseWith('');
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.none);
       });
@@ -259,7 +259,7 @@ describe('parse-crossref-article', () => {
           </person_name>
         </contributors>`);
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
       });
@@ -274,7 +274,7 @@ describe('parse-crossref-article', () => {
           </person_name>
         </contributors>`);
           const doc = parser.parseFromString(response, 'text/xml');
-          const authors = getAuthors(doc, doi, dummyLogger);
+          const authors = getAuthors(doc);
 
           expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
         });
@@ -290,7 +290,7 @@ describe('parse-crossref-article', () => {
           </person_name>
         </contributors>`);
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Ross']));
       });
@@ -310,7 +310,7 @@ describe('parse-crossref-article', () => {
           </person_name>
         </contributors>`);
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Eesha Ross']));
       });
@@ -329,7 +329,7 @@ describe('parse-crossref-article', () => {
         </contributors>
       `);
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']));
       });
@@ -345,7 +345,7 @@ describe('parse-crossref-article', () => {
         </contributors>
       `);
         const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc, doi, dummyLogger);
+        const authors = getAuthors(doc);
 
         expect(O.isSome(authors)).toBeFalsy();
       });

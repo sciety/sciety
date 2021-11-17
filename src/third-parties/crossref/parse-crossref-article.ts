@@ -126,11 +126,10 @@ const personAuthor = (person: Element) => {
 
 const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
 
-export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => {
+export const getAuthors = (doc: Document): O.Option<ReadonlyArray<string>> => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-    logger('debug', 'Did not find contributors', { doi });
     return O.none;
   }
 
