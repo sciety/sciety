@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
-import { groupList, ListDetails, Ports } from '../../src/shared-read-models/group-list';
+import { allLists, ListDetails, Ports } from '../../src/shared-read-models/all-lists';
 import { GroupId } from '../../src/types/group-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -12,11 +12,11 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 const callGroupListWith = async (ports: Ports, groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  groupList(ports, groupId),
+  allLists(ports, groupId),
   TE.getOrElse(shouldNotBeCalled),
 )();
 
-describe('group-list', () => {
+describe('all-lists', () => {
   const group = arbitraryGroup();
   const groupId = group.id;
 

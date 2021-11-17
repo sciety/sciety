@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
-import { groupList, Ports as GroupListPorts } from '../../shared-read-models/group-list';
+import { allLists, Ports as GroupListPorts } from '../../shared-read-models/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -23,7 +23,7 @@ const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(groupList(ports, group.id)),
+  TE.chain(allLists(ports, group.id)),
   TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
