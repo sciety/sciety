@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -44,11 +44,6 @@ const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticle
   ),
 });
 
-const separateByGroupId = (groupId: GroupId) => flow(
-  RA.filter((event: GroupEvaluatedArticleEvent) => event.groupId === groupId),
-  (eventsForThisGroup) => ({ [groupId]: eventsForThisGroup }),
-);
-
 export const allLists = (
   ports: Ports,
   groupId: GroupId,
@@ -57,7 +52,15 @@ export const allLists = (
 ): TE.TaskEither<DE.DataError, ListDetails> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
-  separateByGroupId(groupId),
+  RA.reduce(
+    { [groupId]: [] as Array<GroupEvaluatedArticleEvent> },
+    (accumlator, event) => {
+      if (event.groupId === groupId) {
+        accumlator[groupId].push(event);
+      }
+      return accumlator;
+    },
+  ),
   R.map(createListPartial),
   (allListPartials) => allListPartials[groupId],
   TE.right,
