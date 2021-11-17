@@ -5,6 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export const renderAuthors = (authors: O.Option<ReadonlyArray<string>>): HtmlFragment => pipe(
   authors,
+  O.filter(RA.isNonEmpty),
   O.fold(
     () => '',
     flow(

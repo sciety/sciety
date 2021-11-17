@@ -20,6 +20,10 @@ describe('render-authors', () => {
   });
 
   describe('when the authors list is empty', () => {
-    it.todo('returns empty string');
+    it('returns empty string', () => {
+      const result = renderAuthors(O.some([]));
+
+      expect(result).toBe('');
+    });
   });
 });
