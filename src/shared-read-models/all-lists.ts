@@ -44,6 +44,24 @@ const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticle
   ),
 });
 
+type ListPartial = {
+  name: string,
+  articleCount: number,
+  lastUpdated: O.Option<Date>,
+};
+
+const augmentWithOwnerDetails = (ports: Ports, groupId: GroupId) => (partial: ListPartial) => pipe(
+  groupId,
+  ports.getGroup,
+  TE.map((group) => ({
+    ...partial,
+    description: defaultGroupListDescription(group.name),
+    ownerName: group.name,
+    ownerAvatarPath: group.avatarPath,
+    ownerHref: `/groups/${group.slug}`,
+  })),
+);
+
 export const allLists = (
   ports: Ports,
   groupId: GroupId,
@@ -66,15 +84,5 @@ export const allLists = (
   R.map(createListPartial),
   (allListPartials) => allListPartials[groupId] ?? createListPartial([]),
   TE.right,
-  TE.chain((partial) => pipe(
-    groupId,
-    ports.getGroup,
-    TE.map((group) => ({
-      ...partial,
-      description: defaultGroupListDescription(group.name),
-      ownerName: group.name,
-      ownerAvatarPath: group.avatarPath,
-      ownerHref: `/groups/${group.slug}`,
-    })),
-  )),
+  TE.chain(augmentWithOwnerDetails(ports, groupId)),
 );
