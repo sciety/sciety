@@ -12,7 +12,11 @@ describe('render-authors', () => {
   });
 
   describe('when there is no authors list', () => {
-    it.todo('returns empty string');
+    it('returns empty string', () => {
+      const result = renderAuthors(O.none);
+
+      expect(result).toBe('');
+    });
   });
 
   describe('when the authors list is empty', () => {
