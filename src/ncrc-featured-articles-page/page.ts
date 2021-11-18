@@ -15,7 +15,7 @@ const header = {
   ownerName: 'NCRC',
   ownerHref: '/groups/ncrc',
   ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
-  articleCount: 0,
+  articleCount: 1,
   lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
 };
 
