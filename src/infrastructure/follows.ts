@@ -8,11 +8,19 @@ import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-  UserFollowedEditorialCommunityEvent,
-  UserUnfollowedEditorialCommunityEvent,
 } from '../domain-events';
 import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
+
+// HELPERS
+
+type GuardedType<T> = T extends (x: any) => x is infer U ? U : never;
+
+const refineAndPredicate = <A, B extends A>(refinement: R.Refinement<A, B>, predicate: P.Predicate<B>) => (
+  input: A,
+) => refinement(input) && predicate(input);
+
+// ----
 
 export type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
@@ -22,17 +30,13 @@ const involves = (
   userId: UserId,
   groupId: GroupId,
 ) => (
-  event: UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent,
+  event: GuardedType<typeof isEventAboutFollowingAGroup>,
 ) => event.editorialCommunityId === groupId && event.userId === userId;
 
 const isEventAboutFollowingAGroup = pipe(
   isUserFollowedEditorialCommunityEvent,
   R.or(isUserUnfollowedEditorialCommunityEvent),
 );
-
-const refineAndPredicate = <A, B extends A>(refinement: R.Refinement<A, B>, predicate: P.Predicate<B>) => (
-  input: A,
-) => refinement(input) && predicate(input);
 
 export const follows = (getAllEvents: GetAllEvents): Follows => (userId, groupId) => pipe(
   getAllEvents,
