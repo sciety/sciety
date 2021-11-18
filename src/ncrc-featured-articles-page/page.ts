@@ -2,9 +2,12 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { articlesList } from './articlesList';
 import { renderComponent } from '../list-page/header/render-component';
+import { renderErrorPage } from '../list-page/render-page';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
+import { RenderPageError } from '../types/render-page-error';
 
 const header = {
   name: 'Featured articles',
@@ -28,19 +31,22 @@ const render = (components: Components) => toHtmlFragment(`
   </section>
 `);
 
-export const page = (): TE.TaskEither<never, Page> => pipe(
+export const page = (): TE.TaskEither<RenderPageError, Page> => pipe(
   {
     header: pipe(
       header,
       renderComponent,
       TE.right,
     ),
-    articlesList: TE.right(toHtmlFragment('')),
+    articlesList: articlesList(1),
   },
   sequenceS(TE.ApplyPar),
   TE.map(render),
-  TE.map((content) => ({
-    title: 'Featured articles',
-    content,
-  })),
+  TE.bimap(
+    renderErrorPage,
+    (content) => ({
+      title: 'Featured articles',
+      content,
+    }),
+  ),
 );
