@@ -46,7 +46,7 @@ const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
 );
 
 export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
-  ports.fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
+  ports.fetchGoogleSheet('1sMU60q9qvMyvWEH352VvmxSRMZKklWAm_w78mpckzMQ', 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
     (res) => res?.data?.values,
     E.fromNullable('.values not provided'),
