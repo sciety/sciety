@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -27,16 +28,19 @@ const render = (components: Components) => toHtmlFragment(`
   </section>
 `);
 
-export const page = (): TE.TaskEither<never, Page> => TE.right({
-  title: 'Featured articles',
-  content: pipe(
-    {
-      header: pipe(
-        header,
-        renderComponent,
-      ),
-      articlesList: toHtmlFragment(''),
-    },
-    render,
-  ),
-});
+export const page = (): TE.TaskEither<never, Page> => pipe(
+  {
+    header: pipe(
+      header,
+      renderComponent,
+      TE.right,
+    ),
+    articlesList: TE.right(toHtmlFragment('')),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(render),
+  TE.map((content) => ({
+    title: 'Featured articles',
+    content,
+  })),
+);
