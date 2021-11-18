@@ -1,15 +1,17 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
 import { paginate } from '../../shared-components/paginate';
 import * as DE from '../../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 
-const toPageOfCards = () => T.of(toHtmlFragment(''));
+export type Ports = ToPageOfCardsPorts;
 
 export const articlesList = (
+  ports: Ports,
+  listId: string,
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   [],
@@ -19,7 +21,7 @@ export const articlesList = (
     flow(
       paginate(20, pageNumber),
       TE.fromEither,
-      TE.chainTaskK(toPageOfCards),
+      TE.chainTaskK(toPageOfCards(ports, listId)),
     ),
   )),
 );

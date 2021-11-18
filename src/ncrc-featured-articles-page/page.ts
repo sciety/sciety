@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { articlesList } from './articles-list/articlesList';
+import { articlesList, Ports } from './articles-list/articlesList';
 import { renderComponent } from '../list-page/header/render-component';
 import { renderErrorPage } from '../list-page/render-page';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -31,14 +31,16 @@ const render = (components: Components) => toHtmlFragment(`
   </section>
 `);
 
-export const page = (): TE.TaskEither<RenderPageError, Page> => pipe(
+const listId = 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7';
+
+export const page = (ports: Ports) => (): TE.TaskEither<RenderPageError, Page> => pipe(
   {
     header: pipe(
       header,
       renderComponent,
       TE.right,
     ),
-    articlesList: articlesList(1),
+    articlesList: articlesList(ports, listId, 1),
   },
   sequenceS(TE.ApplyPar),
   TE.map(render),
