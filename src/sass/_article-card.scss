@@ -37,7 +37,7 @@ $_card-padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: calc(functions.px-to-rem($_footer-icon-separation) + $_optional-controls-icon-size);
+  margin-right: calc(#{functions.px-to-rem($_footer-icon-separation)} + #{$_optional-controls-icon-size});
 }
 
 .article-card__meta {
