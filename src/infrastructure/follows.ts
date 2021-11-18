@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
+import * as P from 'fp-ts/Predicate';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as Refinement from 'fp-ts/Refinement';
+import * as R from 'fp-ts/Refinement';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import {
@@ -26,14 +27,17 @@ const involves = (
 
 const isEventAboutFollowingAGroup = pipe(
   isUserFollowedEditorialCommunityEvent,
-  Refinement.or(isUserUnfollowedEditorialCommunityEvent),
+  R.or(isUserUnfollowedEditorialCommunityEvent),
 );
+
+const refineAndPredicate = <A, B extends A>(refinement: R.Refinement<A, B>, predicate: P.Predicate<B>) => (
+  input: A,
+) => refinement(input) && predicate(input);
 
 export const follows = (getAllEvents: GetAllEvents): Follows => (userId, groupId) => pipe(
   getAllEvents,
   T.map(flow(
-    RA.filter(isEventAboutFollowingAGroup),
-    RA.findLast(involves(userId, groupId)),
+    RA.findLast(refineAndPredicate(isEventAboutFollowingAGroup, involves(userId, groupId))),
     O.filter(isUserFollowedEditorialCommunityEvent),
     O.isSome,
   )),
