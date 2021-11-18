@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { articlesList } from './articlesList';
+import { articlesList } from './articles-list/articlesList';
 import { renderComponent } from '../list-page/header/render-component';
 import { renderErrorPage } from '../list-page/render-page';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';

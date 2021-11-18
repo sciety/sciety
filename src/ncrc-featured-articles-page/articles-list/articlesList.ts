@@ -2,10 +2,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { noEvaluatedArticlesMessage } from '../list-page/evaluated-articles-list/static-messages';
-import { paginate } from '../shared-components/paginate';
-import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
+import { paginate } from '../../shared-components/paginate';
+import * as DE from '../../types/data-error';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const toPageOfCards = () => T.of(toHtmlFragment(''));
 
