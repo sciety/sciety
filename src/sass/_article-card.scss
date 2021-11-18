@@ -12,11 +12,11 @@ $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
 .article-card {
+  @include card.basics();
   position: relative;
 }
 
 .article-card__link {
-  @include card.basics();
   @include card.link();
   display: block;
 
