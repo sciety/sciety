@@ -38,6 +38,7 @@ import { legalPage } from '../legal-page';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../list-page/list-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
+import { page as ncrcFeaturedArticlesPage } from '../ncrc-featured-articles-page/page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -365,10 +366,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
-    pageHandler(() => TE.right({
-      title: 'Articles featured by NCRC',
-      content: toHtmlFragment(''),
-    })),
+    pageHandler(ncrcFeaturedArticlesPage),
   );
 
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
