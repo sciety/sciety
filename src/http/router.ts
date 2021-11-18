@@ -363,6 +363,14 @@ export const createRouter = (adapters: Adapters): Router => {
     },
   );
 
+  router.get(
+    '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
+    pageHandler(() => TE.right({
+      title: 'Articles featured by NCRC',
+      content: toHtmlFragment(''),
+    })),
+  );
+
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
   router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
