@@ -18,10 +18,4 @@ export const inMemoryGroupRepository = (
     T.map(RA.findFirst((ec) => ec.id === id)),
     T.map(E.fromOption(() => DE.notFound)),
   ),
-
-  lookupBySlug: (slug) => pipe(
-    T.of(data),
-    T.map(RA.findFirst((group) => group.slug === slug)),
-    T.map(E.fromOption(() => DE.notFound)),
-  ),
 });

@@ -131,7 +131,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getGroup: groups.lookup,
-        getGroupBySlug: groups.lookupBySlug,
         getAllGroups: groups.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,

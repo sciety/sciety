@@ -20,7 +20,6 @@ import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
 type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
-type GetGroupBySlug = (slug: string) => TE.TaskEither<DE.DataError, Group>;
 
 type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -37,7 +36,6 @@ export type Adapters = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
   getGroup: GetGroup,
-  getGroupBySlug: GetGroupBySlug,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,

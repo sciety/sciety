@@ -57,34 +57,4 @@ describe('in-memory-editorial-communities', () => {
       });
     });
   });
-
-  describe('lookup by slug', () => {
-    let result: E.Either<DE.DataError, Group>;
-
-    describe('when the group exists', () => {
-      beforeEach(async () => {
-        result = await pipe(
-          groupSlug,
-          repository.lookupBySlug,
-        )();
-      });
-
-      it('returns the group', () => {
-        expect(result).toStrictEqual(E.right(group));
-      });
-    });
-
-    describe('when the group does not exist', () => {
-      beforeEach(async () => {
-        result = await pipe(
-          arbitraryWord(),
-          repository.lookupBySlug,
-        )();
-      });
-
-      it('returns nothing', () => {
-        expect(result).toStrictEqual(E.left(DE.notFound));
-      });
-    });
-  });
 });
