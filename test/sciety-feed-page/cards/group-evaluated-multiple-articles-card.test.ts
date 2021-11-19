@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { groupCreated } from '../../../src/domain-events';
 import { groupEvaluatedMultipleArticlesCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
@@ -17,12 +19,12 @@ describe('group-evaluated-multiple-articles-card', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         {
-          groupId: arbitraryGroupId(),
+          groupId: group.id,
           articleCount: arbitraryNumber(2, 10),
           date: arbitraryDate(),
         },
         groupEvaluatedMultipleArticlesCard({
-          getGroup: () => TE.right(group),
+          getAllEvents: T.of([groupCreated(group)]),
         }),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -48,7 +50,7 @@ describe('group-evaluated-multiple-articles-card', () => {
           date: arbitraryDate(),
         },
         groupEvaluatedMultipleArticlesCard({
-          getGroup: () => TE.left(DE.notFound),
+          getAllEvents: T.of([]),
         }),
       )();
     });

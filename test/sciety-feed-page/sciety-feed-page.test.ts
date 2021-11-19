@@ -64,12 +64,12 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders collapsed multiple article evaluated events as a single card', async () => {
-    const groupId = arbitraryGroupId();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        groupCreated(group),
+        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
