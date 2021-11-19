@@ -14,7 +14,7 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release reports stop test* update*
+.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release stop test* update*
 
 dev: export TARGET = dev
 dev: .env install build
@@ -185,17 +185,6 @@ download-db-dump-staging:
 	kubectl wait --for condition=Ready pod psql
 	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events-staging.json
 	kubectl delete --wait=false pod psql
-
-report-visits:
-	@npx ts-node reports/visits.ts
-
-get-ingress-logs:
-	@export $$(cat .env | grep LOKI | xargs) && \
-	logcli query -q -o raw --limit 600000 --batch 5000 \
-	--timezone=UTC \
-	--from="2021-09-27T00:00:00Z" \
-	--to="2021-10-04T00:00:00Z" \
-	'{app_kubernetes_io_name="ingress-nginx"}' > reports/ingress-logs.jsonl
 
 get-error-logs:
 	@export $$(cat .env | grep LOKI | xargs) && \
