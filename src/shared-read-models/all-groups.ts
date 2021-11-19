@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { DomainEvent, GroupCreatedEvent } from '../domain-events';
 import { isGroupCreatedEvent } from '../domain-events/type-guards';
@@ -35,6 +36,16 @@ export const getGroup: GetGroup = (groupId: GroupId) => flow(
   E.fromOption(() => DE.notFound),
 );
 
+const byName: Ord.Ord<Group> = pipe(
+  S.Ord,
+  Ord.contramap((group) => group.name),
+);
+
 type GetGroupBySlug = (slug: string) => (events: ReadonlyArray<DomainEvent>) => E.Either<DE.DataError, Group>;
 
-export const getGroupBySlug: GetGroupBySlug = () => () => E.left(DE.notFound);
+export const getGroupBySlug: GetGroupBySlug = (slug: string) => flow(
+  RA.reduce(new Map(), recordEvent),
+  RM.values(byName),
+  RA.findFirst((group) => group.slug === slug),
+  E.fromOption(() => DE.notFound),
+);
