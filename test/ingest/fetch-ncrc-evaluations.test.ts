@@ -27,7 +27,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi(), 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, arbitraryDate()],
+                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value, 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, arbitraryDate().toISOString()],
               ],
             },
           }),
@@ -50,7 +50,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi()],
+                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value],
               ],
             },
           }),
@@ -73,7 +73,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi(), 0, 0, 0, 0, 0, 0, 0, 'nature', 0, 0, 0, arbitraryDate()],
+                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value, 0, 0, 0, 0, 0, 0, 0, 'nature', 0, 0, 0, arbitraryDate().toISOString()],
               ],
             },
           }),
