@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import { medrxivOrBiorxivLinkToDoi } from '../../src/ingest/medrxiv-or-biorxiv-link-to-doi';
 
 describe('medrxiv-or-biorxiv-link-to-doi', () => {
@@ -12,6 +13,16 @@ describe('medrxiv-or-biorxiv-link-to-doi', () => {
       const result = medrxivOrBiorxivLinkToDoi(input);
 
       expect(result).toBe(expected);
+    });
+  });
+
+  describe.skip('when the input is empty', () => {
+    const input = '';
+
+    it('returns a left', () => {
+      const result = medrxivOrBiorxivLinkToDoi('');
+
+      expect(result).toStrictEqual(E.left(`link not parseable for DOI: "${input}"`));
     });
   });
 });
