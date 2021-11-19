@@ -3,8 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { userFollowedEditorialCommunity } from '../../src/domain-events';
-import * as DE from '../../src/types/data-error';
+import { groupCreated, userFollowedEditorialCommunity } from '../../src/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
@@ -12,7 +11,6 @@ import { userPage } from '../../src/user-page/user-page';
 import {
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -32,7 +30,6 @@ const arbitraryUserDetails = {
 };
 
 const defaultPorts = {
-  getGroup: () => TE.right(arbitraryGroup()),
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
@@ -189,12 +186,16 @@ describe('user-page', () => {
 
     describe('user is following groups', () => {
       it('displays followed groups as group cards', async () => {
+        const group1 = arbitraryGroup();
+        const group2 = arbitraryGroup();
         const userId = arbitraryUserId();
         const ports = {
           ...defaultPorts,
           getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
-            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+            groupCreated(group1),
+            groupCreated(group2),
+            userFollowedEditorialCommunity(userId, group1.id),
+            userFollowedEditorialCommunity(userId, group2.id),
           ]),
           getUserId: () => TE.right(userId),
         };
@@ -215,7 +216,6 @@ describe('user-page', () => {
           const userId = arbitraryUserId();
           const ports = {
             ...defaultPorts,
-            getGroup: () => TE.left(DE.notFound),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
@@ -243,7 +243,6 @@ describe('user-page', () => {
 
       beforeAll(async () => {
         const ports = {
-          getGroup: () => shouldNotBeCalled,
           getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([]),
           getUserId: () => TE.right(arbitraryUserId()),
@@ -274,7 +273,6 @@ describe('user-page', () => {
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
       const ports = {
-        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
@@ -298,7 +296,6 @@ describe('user-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
-        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,

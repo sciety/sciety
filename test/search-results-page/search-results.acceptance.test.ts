@@ -15,7 +15,8 @@ import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryGroup } from '../types/group.helper';
+import {arbitraryGroup} from '../types/group.helper';
+import {groupCreated} from '../../src/domain-events';
 
 const pageSize = arbitraryNumber(5, 10);
 
@@ -29,8 +30,6 @@ const dummyAdapters = {
   findReviewsForArticleDoi: shouldNotBeCalled,
   findVersionsForArticleDoi: shouldNotBeCalled,
   getAllEvents: shouldNotBeCalled,
-  getGroup: () => shouldNotBeCalled,
-
 };
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -421,11 +420,14 @@ describe('search-results-page acceptance', () => {
 
       describe('with "groups" as category', () => {
         it('displays all matching groups regardless of limit on articles', async () => {
+          const group1 = arbitraryGroup();
+          const group2 = arbitraryGroup();
+          const group3 = arbitraryGroup();
           const n = 2;
           const matchedGroups = [
-            arbitraryGroupId(),
-            arbitraryGroupId(),
-            arbitraryGroupId(),
+            group1.id,
+            group2.id,
+            group3.id,
           ];
           const page = pipe(
             {
@@ -437,8 +439,11 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of(matchedGroups),
-              getGroup: () => TE.right(arbitraryGroup()),
-              getAllEvents: T.of([]),
+              getAllEvents: T.of([
+                groupCreated(group1),
+                groupCreated(group2),
+                groupCreated(group3),
+              ]),
             })(n),
           );
           const rendered = await contentOf(page)();
@@ -458,7 +463,6 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              getGroup: () => TE.right(arbitraryGroup()),
               getAllEvents: T.of([]),
             })(1),
           );

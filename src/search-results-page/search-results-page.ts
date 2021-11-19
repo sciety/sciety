@@ -22,7 +22,6 @@ type Ports = PerformAllSearchesPorts & {
   findReviewsForArticleDoi: FetchExtraDetailsPorts['findReviewsForArticleDoi'],
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: FetchExtraDetailsPorts['getAllEvents'],
-  getGroup: FetchExtraDetailsPorts['getGroup'],
 };
 
 type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;

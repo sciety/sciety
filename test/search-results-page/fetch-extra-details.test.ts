@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { groupCreated } from '../../src/domain-events';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
 import * as DE from '../../src/types/data-error';
 import { Doi } from '../../src/types/doi';
@@ -35,7 +36,6 @@ describe('fetch-extra-details', () => {
           },
         ]),
         getAllEvents: shouldNotBeCalled,
-        getGroup: shouldNotBeCalled,
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
       };
 
@@ -82,14 +82,10 @@ describe('fetch-extra-details', () => {
     describe('when the details can be fetched', () => {
       it('returns a correct view model', async () => {
         const pageNumber = arbitraryNumber(2, 5);
-        const groupId = arbitraryGroupId();
+        const group = arbitraryGroup();
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
-          getAllEvents: T.of([]),
-          getGroup: () => TE.right({
-            ...arbitraryGroup(),
-            id: groupId,
-          }),
+          getAllEvents: T.of([groupCreated(group)]),
           getLatestArticleVersionDate: shouldNotBeCalled,
         };
         const matches = {
@@ -100,7 +96,7 @@ describe('fetch-extra-details', () => {
           itemsToDisplay: [
             {
               _tag: 'Group' as const,
-              id: groupId,
+              id: group.id,
             },
           ],
           nextCursor: O.none,
@@ -132,8 +128,7 @@ describe('fetch-extra-details', () => {
         const pageNumber = arbitraryNumber(2, 5);
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
-          getAllEvents: shouldNotBeCalled,
-          getGroup: () => TE.left(DE.notFound),
+          getAllEvents: T.of([]),
           getLatestArticleVersionDate: shouldNotBeCalled,
         };
         const matches = {

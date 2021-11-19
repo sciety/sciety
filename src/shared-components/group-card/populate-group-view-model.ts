@@ -6,18 +6,15 @@ import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import { DomainEvent } from '../../domain-events';
+import { getGroup } from '../../shared-read-models/all-groups';
 import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
-type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
-
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
-  getGroup: GetGroup,
   getAllEvents: GetAllEvents,
 };
 
@@ -26,8 +23,8 @@ export const populateGroupViewModel = (
 ) => (
   groupId: GroupId,
 ): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
-  groupId,
-  ports.getGroup,
+  ports.getAllEvents,
+  T.map(getGroup(groupId)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),
