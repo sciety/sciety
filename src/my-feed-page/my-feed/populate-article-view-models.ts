@@ -6,6 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { ArticleActivity } from '../../types/article-activity';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -15,7 +16,7 @@ type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOpt
 
 type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
 }>;
 
@@ -36,8 +37,8 @@ const populateArticleViewModel = (
 
 export type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
+  authors: ArticleAuthors,
   server: ArticleServer,
-  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 type PopulateArticleViewModelsSkippingFailures = (

@@ -3,9 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { ArticleAuthors } from '../types/article-authors';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderAuthors = (authors: O.Option<ReadonlyArray<string>>, authorListId: string) => HtmlFragment;
+type RenderAuthors = (authors: ArticleAuthors, authorListId: string) => HtmlFragment;
 
 export const renderAuthors: RenderAuthors = (authors, authorListId) => pipe(
   authors,

@@ -2,6 +2,7 @@ import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { Logger } from '../../infrastructure/logger';
+import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -126,7 +127,7 @@ const personAuthor = (person: Element) => {
 
 const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
 
-export const getAuthors = (doc: Document): O.Option<ReadonlyArray<string>> => {
+export const getAuthors = (doc: Document): ArticleAuthors => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
