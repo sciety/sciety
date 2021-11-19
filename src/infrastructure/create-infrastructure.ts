@@ -77,12 +77,21 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         RNEA.map(({ id }) => id),
         getEventsFromDataFiles,
       ),
+      groupEvents: pipe(
+        bootstrapGroups,
+        RNEA.map((group) => DomainEvent.groupCreated(group)),
+        TE.right,
+      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.map(({ eventsFromDataFiles, eventsFromDatabase }) => (
+    TE.map(({ eventsFromDataFiles, eventsFromDatabase, groupEvents }) => (
       {
         events: pipe(
-          eventsFromDataFiles.concat(eventsFromDatabase),
+          [
+            ...eventsFromDataFiles,
+            ...eventsFromDatabase,
+            ...groupEvents,
+          ],
           A.sort(DomainEvent.byDate),
         ),
         pool,
