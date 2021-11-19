@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { groupCreated } from '../../src/domain-events';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
-import * as DE from '../../src/types/data-error';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';

@@ -8,7 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
+import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
@@ -42,10 +42,6 @@ describe('generate-docmaps', () => {
         version: 1,
       },
     ]),
-    getGroup: (groupId: GroupId) => TE.right({
-      ...arbitraryGroup(),
-      id: groupId,
-    }),
     fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
     getAllEvents: T.of([]),
   };
@@ -70,13 +66,17 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been reviewed only by unsupported groups', () => {
+    const group1 = arbitraryGroup();
+    const group2 = arbitraryGroup();
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
-          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          groupCreated(group1),
+          groupCreated(group2),
+          groupEvaluatedArticle(group1.id, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(group2.id, articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -92,6 +92,10 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
+          groupCreated({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
           groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
       });
@@ -108,6 +112,10 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
+          groupCreated({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
           groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
           groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
         ]),
@@ -129,6 +137,14 @@ describe('generate-docmaps', () => {
           review(rapidReviewsGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
+          groupCreated({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
+          groupCreated({
+            ...arbitraryGroup(),
+            id: rapidReviewsGroupId,
+          }),
           groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
           groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
         ]),
@@ -153,6 +169,10 @@ describe('generate-docmaps', () => {
           review(ncrcGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
+          groupCreated({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
           groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
           groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
@@ -183,6 +203,10 @@ describe('generate-docmaps', () => {
               : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
           ),
           getAllEvents: T.of([
+            groupCreated({
+              ...arbitraryGroup(),
+              id: ncrcGroupId,
+            }),
             groupEvaluatedArticle(ncrcGroupId, articleId, reviews[0].reviewId),
             groupEvaluatedArticle(ncrcGroupId, articleId, reviews[1].reviewId),
           ]),

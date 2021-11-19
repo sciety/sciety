@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -9,6 +10,7 @@ import {
   generateDocmapViewModel,
   Ports,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import { groupCreated } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import { inferredSourceUrl, ReviewId } from '../../../src/types/review-id';
@@ -40,10 +42,10 @@ const defaultPorts: Ports = {
       version: 1,
     },
   ]),
-  getGroup: () => TE.right({
+  getAllEvents: T.of([groupCreated({
     ...arbitraryGroup(),
     id: indexedGroupId,
-  }),
+  })]),
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
 
@@ -67,7 +69,7 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => TE.right([review(group.id, arbitraryDate())]),
-      getGroup: () => TE.right(group),
+      getAllEvents: T.of([groupCreated(group)]),
     };
     const result = await pipe(
       { articleId, groupId: group.id },
@@ -247,7 +249,7 @@ describe('generate-docmap-view-model', () => {
     let result: E.Either<DE.DataError, DocmapModel>;
     const ports = {
       ...defaultPorts,
-      getGroup: () => TE.left(DE.notFound),
+      getAllEvents: T.of([]),
     };
 
     beforeEach(async () => {

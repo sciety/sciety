@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { groupCreated } from '../../src/domain-events';
 import { searchResultsPage } from '../../src/search-results-page';
 import * as DE from '../../src/types/data-error';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -15,8 +16,7 @@ import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
-import {arbitraryGroup} from '../types/group.helper';
-import {groupCreated} from '../../src/domain-events';
+import { arbitraryGroup } from '../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
 

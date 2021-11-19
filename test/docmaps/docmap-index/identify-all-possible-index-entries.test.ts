@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -10,8 +10,7 @@ import {
   Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
-import * as DE from '../../../src/types/data-error';
+import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -22,13 +21,10 @@ describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
   const defaultPorts: Ports = {
-    getGroup: (groupId) => pipe(
-      supportedGroupIds,
-      RA.findIndex((eachGroupId) => eachGroupId === groupId),
-      O.fold(
-        () => TE.left(DE.notFound),
-        (groupIndex) => TE.right(supportedGroups[groupIndex]),
-      ),
+    getAllEvents: pipe(
+      supportedGroups,
+      RA.map(groupCreated),
+      T.of,
     ),
   };
 
@@ -152,7 +148,7 @@ describe('identify-all-possible-index-entries', () => {
           supportedGroupIds,
           {
             ...defaultPorts,
-            getGroup: () => TE.left(DE.notFound),
+            getAllEvents: T.of([]),
           },
         ),
       )();
