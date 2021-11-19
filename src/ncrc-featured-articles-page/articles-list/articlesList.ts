@@ -6,7 +6,7 @@ import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
 import { paginate } from '../../shared-components/paginate';
-import { activityFor, allArticleActivity } from '../../shared-read-models/all-article-activity';
+import { activityForDoi, allArticleActivity } from '../../shared-read-models/all-article-activity';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -24,11 +24,11 @@ export const articlesList = (
   listId: string,
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  doiList,
-  T.traverseArray((doi) => pipe(
-    ports.getAllEvents,
-    T.map(allArticleActivity),
-    T.map(activityFor(doi)),
+  ports.getAllEvents,
+  T.map(allArticleActivity),
+  T.map((model) => pipe(
+    doiList,
+    RA.map(activityForDoi(model)),
   )),
   TE.rightTask,
   TE.chain(RA.match(
