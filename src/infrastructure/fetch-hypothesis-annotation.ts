@@ -32,11 +32,11 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
 };
 
 export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): EvaluationFetcher => (key) => {
-  const uri = `https://api.hypothes.is/api/annotations/${key}`;
-  logger('debug', 'Fetching evaluation from Hypothesis', { uri });
+  const url = `https://api.hypothes.is/api/annotations/${key}`;
+  logger('debug', 'Fetching evaluation from Hypothesis', { url });
   return pipe(
     TE.tryCatch(
-      async () => getJson(uri),
+      async () => getJson(url),
       (error) => {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
           logger('warn', 'Missing hypothesis annotation', { error });
@@ -45,7 +45,7 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
         if (axios.isAxiosError(error)) {
           logger('error', 'Failed to fetch hypothesis evaluation', { error });
         } else {
-          logger('error', 'Failed to fetch hypothesis evaluation', { uri, error });
+          logger('error', 'Failed to fetch hypothesis evaluation', { url, error });
         }
         return DE.unavailable;
       },
@@ -53,7 +53,7 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
     TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
       E.mapLeft((error) => {
-        logger('error', 'Invalid response from hypothes.is', { uri, errors: PR.failure(error) });
+        logger('error', 'Invalid response from hypothes.is', { url, errors: PR.failure(error) });
         return DE.unavailable;
       }),
     )),
