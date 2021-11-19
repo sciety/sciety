@@ -1,15 +1,13 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { UserFollowedEditorialCommunityEvent } from '../../domain-events';
+import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
+import { getGroup } from '../../shared-read-models/all-groups';
 import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
-import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
-
-type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   handle: string,
@@ -17,8 +15,8 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
 }>;
 
 export type Ports = {
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserDetails: GetUserDetails,
-  getGroup: GetGroup,
 };
 
 type UserFollowedAGroupCard = (
@@ -28,8 +26,8 @@ type UserFollowedAGroupCard = (
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {
     group: pipe(
-      event.editorialCommunityId,
-      ports.getGroup,
+      ports.getAllEvents,
+      T.map(getGroup(event.editorialCommunityId)),
     ),
     userDetails: pipe(
       event.userId,

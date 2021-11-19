@@ -1,27 +1,27 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { groupCreated, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-followed-a-group-card', () => {
   const userId = arbitraryUserId();
   const date = arbitraryDate();
-  const event = userFollowedEditorialCommunity(userId, arbitraryGroupId(), date);
+  const group = arbitraryGroup();
+  const event = userFollowedEditorialCommunity(userId, group.id, date);
 
   describe('happy path', () => {
     const avatarUrl = arbitraryUri();
     const handle = arbitraryWord();
-    const group = arbitraryGroup();
     const ports = {
-      getGroup: () => TE.right(group),
+      getAllEvents: T.of([groupCreated(group)]),
       getUserDetails: () => TE.right({ handle, avatarUrl }),
     };
 
@@ -61,10 +61,9 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the user details cannot be obtained', () => {
-    const group = arbitraryGroup();
     const ports = {
+      getAllEvents: T.of([groupCreated(group)]),
       getUserDetails: () => TE.left(DE.unavailable),
-      getGroup: () => TE.right(group),
     };
 
     let viewModel: ScietyFeedCard;
@@ -100,7 +99,7 @@ describe('user-followed-a-group-card', () => {
 
   describe('when the group cannot be found', () => {
     const ports = {
-      getGroup: () => TE.left(DE.notFound),
+      getAllEvents: T.of([]),
       getUserDetails: () => TE.right({
         handle: arbitraryWord(),
         avatarUrl: arbitraryUri(),

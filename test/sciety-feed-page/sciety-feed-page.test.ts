@@ -36,7 +36,6 @@ describe('sciety-feed-page', () => {
 
   const defaultPorts = {
     getUserDetails,
-    getGroup: () => TE.right(group),
     fetchArticle: () => TE.right({
       doi: arbitraryDoi(),
       title: arbitraryHtmlFragment(),
@@ -118,7 +117,8 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+        groupCreated(group),
+        userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       ]),
     };
     const renderedPage = await pipe(
@@ -132,9 +132,10 @@ describe('sciety-feed-page', () => {
 
   it('renders at most a page of cards at a time', async () => {
     const events = [
-      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
-      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
-      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+      groupCreated(group),
+      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
+      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
+      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
     ];
     const ports = {
       ...defaultPorts,
