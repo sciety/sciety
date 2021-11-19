@@ -15,8 +15,8 @@ import {
 } from './header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
+import { getGroupBySlug } from '../shared-read-models/all-groups';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -25,7 +25,6 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = HeaderPorts & EvaluatedArticlesListPorts & {
   getAllEvents: GetAllEvents,
-  getGroupBySlug: (groupSlug: string) => TE.TaskEither<DE.DataError, Group>,
 };
 
 export const paramsCodec = t.type({
@@ -48,7 +47,8 @@ const toPageNumber = (page: O.Option<number>) => pipe(
 );
 
 export const groupEvaluationsPage = (ports: Ports): ListPage => ({ slug, page }) => pipe(
-  ports.getGroupBySlug(slug),
+  ports.getAllEvents,
+  T.map(getGroupBySlug(slug)),
   TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
     {

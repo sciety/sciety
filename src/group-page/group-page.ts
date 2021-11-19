@@ -8,10 +8,11 @@ import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
+import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { getGroupBySlug } from '../shared-read-models/all-groups';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -19,7 +20,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
 type Ports = ContentComponentPorts & {
-  getGroupBySlug: (slug: string) => TE.TaskEither<DE.DataError, Group>,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
@@ -53,7 +54,8 @@ type GroupPage = (
 ) => TE.TaskEither<RenderPageError, Page>;
 
 export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user, page: pageNumber }) => pipe(
-  ports.getGroupBySlug(slug),
+  ports.getAllEvents,
+  T.map(getGroupBySlug(slug)),
   TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
     {
