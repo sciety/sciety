@@ -45,7 +45,7 @@ jobs:
 
       - name: Ingestion smoke test
         run: |
-          make IMAGE_TAG=${IMAGE_TAG} INGEST_ONLY=non-existent-group INGEST_DEBUG=true ingest-events
+          make INGEST_ONLY=non-existent-group INGEST_DEBUG=true ingest-events
 
       - name: Server smoke test
         run: |
