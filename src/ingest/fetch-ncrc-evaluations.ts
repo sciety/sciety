@@ -18,15 +18,17 @@ type NcrcReview = {
   journal: string,
 };
 
-const toEvaluation = (ncrcReview: NcrcReview) => {
-  const [, doiSuffix] = /.*\/([^/]*)$/.exec(ncrcReview.link) ?? [];
-  return {
-    date: new Date(ncrcReview.date),
-    articleDoi: `10.1101/${doiSuffix}`,
-    evaluationLocator: `ncrc:${ncrcReview.id}`,
-    authors: [],
-  };
+const linkToDoi = (link: string): string => {
+  const [, doiSuffix] = /.*\/([^/]*)$/.exec(link) ?? [];
+  return `10.1101/${doiSuffix}`;
 };
+
+const toEvaluation = (ncrcReview: NcrcReview) => ({
+  date: new Date(ncrcReview.date),
+  articleDoi: linkToDoi(ncrcReview.link),
+  evaluationLocator: `ncrc:${ncrcReview.id}`,
+  authors: [],
+});
 
 const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
   data,
