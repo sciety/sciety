@@ -22,7 +22,10 @@ type NcrcReview = {
 
 const toEvaluation = (ncrcReview: NcrcReview) => ({
   date: new Date(ncrcReview.date),
-  articleDoi: medrxivOrBiorxivLinkToDoi(ncrcReview.link),
+  articleDoi: pipe(
+    medrxivOrBiorxivLinkToDoi(ncrcReview.link),
+    E.getOrElse(() => ''),
+  ),
   evaluationLocator: `ncrc:${ncrcReview.id}`,
   authors: [],
 });
