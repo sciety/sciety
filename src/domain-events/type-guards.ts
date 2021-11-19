@@ -1,4 +1,5 @@
 import { DomainEvent } from './domain-event';
+import { GroupCreatedEvent } from './group-created-event';
 import { GroupEvaluatedArticleEvent } from './group-evaluated-article-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
@@ -9,6 +10,11 @@ import { UserRevokedFindingReviewNotHelpfulEvent } from './user-revoked-finding-
 import { UserSavedArticleEvent } from './user-saved-article-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
+
+export const isGroupCreatedEvent = (event: DomainEvent):
+  event is GroupCreatedEvent => (
+  event.type === 'GroupCreated'
+);
 
 export const isGroupEvaluatedArticleEvent = (event: DomainEvent):
   event is GroupEvaluatedArticleEvent => (

@@ -32,7 +32,7 @@ describe('all-groups', () => {
         getGroup(group.id),
       );
 
-      it.skip('returns the group', () => {
+      it('returns the group', () => {
         expect(result).toStrictEqual(E.right(group));
       });
     });
