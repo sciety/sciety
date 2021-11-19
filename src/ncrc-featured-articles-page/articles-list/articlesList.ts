@@ -15,14 +15,16 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
+const doiList = [
+  new Doi('10.1101/2021.05.20.21257512'),
+];
+
 export const articlesList = (
   ports: Ports,
   listId: string,
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  [
-    new Doi('10.1101/2021.05.20.21257512'),
-  ],
+  doiList,
   T.traverseArray((doi) => pipe(
     ports.getAllEvents,
     T.map(allArticleActivity),
