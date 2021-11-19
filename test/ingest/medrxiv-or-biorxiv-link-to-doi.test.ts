@@ -8,7 +8,7 @@ describe('medrxiv-or-biorxiv-link-to-doi', () => {
     ['medrxiv early with date and full pdf', 'https://www.medrxiv.org/content/medrxiv/early/2021/07/03/2021.06.28.21259452.full.pdf', '10.1101/2021.06.28.21259452'],
     ['biorxiv link', 'https://biorxiv.org/content/10.1101/2021.11.04.467308v1', '10.1101/2021.11.04.467308'],
   ])('%s', (_, input, expected) => {
-    it.skip('extracts the doi from the input', () => {
+    it('extracts the doi from the input', () => {
       const result = medrxivOrBiorxivLinkToDoi(input);
 
       expect(result).toBe(expected);
