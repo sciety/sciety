@@ -1,17 +1,16 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { GroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, GroupEvaluatedArticleEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
+import { getGroup } from '../../shared-read-models/all-groups';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
-import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
-
-type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
@@ -27,7 +26,7 @@ export type GroupEvaluatedArticleCard = {
 };
 
 export type Ports = {
-  getGroup: GetGroup,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   fetchArticle: FetchArticle,
 };
 
@@ -36,8 +35,8 @@ export const groupEvaluatedArticleCard = (ports: Ports) => (
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   {
     group: pipe(
-      event.groupId,
-      ports.getGroup,
+      ports.getAllEvents,
+      T.map(getGroup(event.groupId)),
     ),
     details: pipe(
       event.articleId,

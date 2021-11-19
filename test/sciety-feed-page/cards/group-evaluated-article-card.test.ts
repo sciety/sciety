@@ -1,17 +1,19 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
+import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
 import { groupEvaluatedArticleCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
+
+const group = arbitraryGroup();
 
 describe('group-evaluated-article-card', () => {
   describe('when the article can be fetched', () => {
@@ -20,15 +22,14 @@ describe('group-evaluated-article-card', () => {
       title: arbitraryHtmlFragment(),
       authors: O.none,
     };
-    const group = arbitraryGroup();
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
       const fetchArticle = () => TE.right(article);
       const createCard = pipe(
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticleCard({
-          getGroup: () => TE.right(group),
+          getAllEvents: T.of([groupCreated(group)]),
           fetchArticle,
         }),
         TE.getOrElse(shouldNotBeCalled),
@@ -48,9 +49,9 @@ describe('group-evaluated-article-card', () => {
   describe('when the article cannot be fetched', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
-      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
       groupEvaluatedArticleCard({
-        getGroup: () => TE.right(arbitraryGroup()),
+        getAllEvents: T.of([groupCreated(group)]),
         fetchArticle,
       }),
     );

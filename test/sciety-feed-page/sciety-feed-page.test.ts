@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
+  groupCreated,
   groupEvaluatedArticle, userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
@@ -31,9 +32,11 @@ describe('sciety-feed-page', () => {
     avatarUrl: arbitraryUri(),
   });
 
+  const group = arbitraryGroup();
+
   const defaultPorts = {
     getUserDetails,
-    getGroup: () => TE.right(arbitraryGroup()),
+    getGroup: () => TE.right(group),
     fetchArticle: () => TE.right({
       doi: arbitraryDoi(),
       title: arbitraryHtmlFragment(),
@@ -42,13 +45,13 @@ describe('sciety-feed-page', () => {
   };
 
   it('renders collapsed single article evaluated events as a single card', async () => {
-    const groupId = arbitraryGroupId();
     const articleId = arbitraryDoi();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+        groupCreated(group),
+        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -82,7 +85,8 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        groupCreated(group),
+        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -128,9 +132,9 @@ describe('sciety-feed-page', () => {
 
   it('renders at most a page of cards at a time', async () => {
     const events = [
-      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+      userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
     ];
     const ports = {
       ...defaultPorts,
@@ -152,7 +156,8 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        groupCreated(group),
+        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
