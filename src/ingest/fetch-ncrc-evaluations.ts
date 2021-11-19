@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
+import { medrxivOrBiorxivLinkToDoi } from './medrxiv-or-biorxiv-link-to-doi';
 import { FetchEvaluations } from './update-all';
 import { sheetId } from '../third-parties/ncrc/sheet-id';
 
@@ -19,14 +20,9 @@ type NcrcReview = {
   journal: string,
 };
 
-const linkToDoi = (link: string): string => {
-  const [, doiSuffix] = /.*\/([^/]*)$/.exec(link) ?? [];
-  return `10.1101/${doiSuffix}`;
-};
-
 const toEvaluation = (ncrcReview: NcrcReview) => ({
   date: new Date(ncrcReview.date),
-  articleDoi: linkToDoi(ncrcReview.link),
+  articleDoi: medrxivOrBiorxivLinkToDoi(ncrcReview.link),
   evaluationLocator: `ncrc:${ncrcReview.id}`,
   authors: [],
 });
