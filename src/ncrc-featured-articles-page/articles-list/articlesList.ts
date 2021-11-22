@@ -1,4 +1,6 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -15,9 +17,15 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const doiList = [
-  new Doi('10.1101/2021.05.20.21257512'),
-];
+const doiList = {
+  'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': [
+    new Doi('10.1101/2021.05.20.21257512'),
+  ],
+  '5ac3a439-e5c6-4b15-b109-92928a740812': [
+    new Doi('10.1101/2021.03.21.436299'),
+    new Doi('10.1101/2021.07.05.451181'),
+  ],
+};
 
 export const articlesList = (
   ports: Ports,
@@ -28,9 +36,10 @@ export const articlesList = (
   T.map(allArticleActivity),
   T.map((model) => pipe(
     doiList,
-    RA.map(activityForDoi(model)),
+    R.lookup(listId),
+    E.fromOption(() => DE.notFound),
+    E.map(RA.map(activityForDoi(model))),
   )),
-  TE.rightTask,
   TE.chain(RA.match(
     () => TE.right(noEvaluatedArticlesMessage),
     flow(
