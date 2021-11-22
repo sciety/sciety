@@ -17,8 +17,8 @@ import { RenderPageError } from '../types/render-page-error';
 
 const headers = {
   'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': {
-    name: 'Featured articles',
-    description: 'Articles that have been identified as high-impact by NCRC editors.',
+    name: 'High interest articles',
+    description: 'Articles that have been identified as high interest by NCRC editors.',
     ownerName: 'NCRC',
     ownerHref: '/groups/ncrc',
     ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
