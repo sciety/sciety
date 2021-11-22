@@ -8,10 +8,8 @@ import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
 import * as Hyp from '../third-parties/hypothesis';
 
-// TODO bioRxiv/medRxiv content is available at multiple URL patterns:
-// curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
-
-const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => {
+// ts-unused-exports:disable-next-line
+export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   // eslint-disable-next-line no-useless-escape
   const matches = new RegExp(`https://www.(bio|med)rxiv.org/content/${doiRegex}v[0-9]+\.*$`).exec(row.uri);
