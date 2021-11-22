@@ -372,6 +372,14 @@ export const createRouter = (adapters: Adapters): Router => {
     )),
   );
 
+  router.get(
+    '/lists/236c53b1-8de4-439d-8331-6204859b7167',
+    pageHandler(createPageFromParams(
+      ncrcFeaturedArticlesPageParams,
+      ncrcFeaturedArticlesPage(adapters),
+    )),
+  );
+
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
   router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
