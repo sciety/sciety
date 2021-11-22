@@ -15,17 +15,14 @@ type Ports = {
 
 type NcrcReview = {
   date: string,
-  link: string,
+  articleDoi: string,
   id: string,
   journal: string,
 };
 
 const toEvaluation = (ncrcReview: NcrcReview) => ({
   date: new Date(ncrcReview.date),
-  articleDoi: pipe(
-    medrxivOrBiorxivLinkToDoi(ncrcReview.link),
-    E.getOrElse(() => ''),
-  ),
+  articleDoi: ncrcReview.articleDoi,
   evaluationLocator: `ncrc:${ncrcReview.id}`,
   authors: [],
 });
@@ -45,6 +42,16 @@ const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
     (r) => /(biorxiv|medrxiv)/i.test(r.journal),
     (r) => ({ item: r.id, reason: 'not a biorxiv | medrxiv article' }),
   ),
+  E.chain((r) => pipe(
+    medrxivOrBiorxivLinkToDoi(r.link),
+    E.bimap(
+      (reason) => ({ item: r.id, reason }),
+      (articleDoi) => ({
+        ...r,
+        articleDoi,
+      }),
+    ),
+  )),
 );
 
 export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(

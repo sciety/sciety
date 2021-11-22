@@ -27,7 +27,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value, 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, arbitraryDate().toISOString()],
+                ['123', 0, 0, 0, 0, 0, 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1', 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, arbitraryDate().toISOString()],
               ],
             },
           }),
