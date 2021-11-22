@@ -8,9 +8,8 @@ import { pipe } from 'fp-ts/function';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
+import { getGroup } from '../../shared-read-models/all-groups';
 import { ArticleServer } from '../../types/article-server';
-import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ReviewId } from '../../types/review-id';
@@ -41,8 +40,6 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
-export type GetGroup = (id: GroupId) => TE.TaskEither<DE.DataError, Group>;
-
 const articleVersionToFeedItem = (
   server: ArticleServer,
   feedEvent: ArticleVersionEvent,
@@ -52,7 +49,6 @@ const articleVersionToFeedItem = (
 
 const reviewToFeedItem = (
   getReview: FetchReview,
-  getGroup: GetGroup,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
   feedEvent: ReviewEvent,
@@ -60,8 +56,8 @@ const reviewToFeedItem = (
 ) => pipe(
   {
     groupDetails: pipe(
-      feedEvent.groupId,
-      getGroup,
+      getAllEvents,
+      T.map(getGroup(feedEvent.groupId)),
       TE.match(
         () => ({
           groupName: 'A group',
@@ -113,7 +109,6 @@ const reviewToFeedItem = (
 
 type Dependencies = {
   fetchReview: FetchReview,
-  getGroup: GetGroup,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
 };
@@ -126,7 +121,6 @@ type GetFeedEventsContent = (r: Dependencies) => (
 
 export const getFeedEventsContent: GetFeedEventsContent = ({
   fetchReview,
-  getGroup,
   getAllEvents,
   getUserReviewResponse,
 }) => (feedEvents, server, userId) => {
@@ -136,7 +130,7 @@ export const getFeedEventsContent: GetFeedEventsContent = ({
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
         return reviewToFeedItem(
-          fetchReview, getGroup, getAllEvents, getUserReviewResponse, feedEvent, userId,
+          fetchReview, getAllEvents, getUserReviewResponse, feedEvent, userId,
         );
     }
   };

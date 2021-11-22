@@ -11,7 +11,6 @@ import {
 } from '../../../src/article-page/activity-page/get-feed-events-content';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('get-feed-events-content', () => {
@@ -37,10 +36,9 @@ describe('get-feed-events-content', () => {
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
-      const getGroup = () => TE.right(arbitraryGroup());
       const getUserReviewResponse: GetUserReviewResponse = () => T.of(O.none);
       const viewModel = await getFeedEventsContent({
-        fetchReview, getGroup, getAllEvents, getUserReviewResponse,
+        fetchReview, getAllEvents, getUserReviewResponse,
       })(feedEvents, 'biorxiv', O.none)();
 
       expect(viewModel).toHaveLength(2);

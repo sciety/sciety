@@ -9,7 +9,6 @@ import { constant, pipe } from 'fp-ts/function';
 import {
   FetchReview,
   getFeedEventsContent,
-  GetGroup,
   GetUserReviewResponse,
 } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
@@ -50,7 +49,6 @@ type Dependencies = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: FetchReview,
-  getGroup: GetGroup,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
 };
