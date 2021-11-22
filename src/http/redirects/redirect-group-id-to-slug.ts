@@ -5,12 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
-import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, { slug: string }>,
 };
 
 export const redirectGroupIdToSlug = (ports: Ports, path: string): Middleware => async (context, next) => {
