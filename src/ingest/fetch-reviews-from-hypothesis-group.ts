@@ -9,7 +9,6 @@ import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
 import * as Hyp from '../third-parties/hypothesis';
 
-// ts-unused-exports:disable-next-line
 export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
   row.uri,
   medrxivOrBiorxivLinkToDoi,
