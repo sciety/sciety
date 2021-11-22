@@ -42,7 +42,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   })),
   TE.map((cardViewModel) => [cardViewModel]),
   TE.map((cardViewModels) => ((group.slug === 'ncrc')
-    ? [...cardViewModels, {
+    ? [{
       href: '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
       title: 'Featured articles',
       articleCountLabel: 'This list contains',
@@ -52,7 +52,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
       articleCount: 1,
       lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
-    }]
+    }, ...cardViewModels]
     : cardViewModels)),
   TE.map(RA.map(renderListCard)),
   TE.map(renderCards),
