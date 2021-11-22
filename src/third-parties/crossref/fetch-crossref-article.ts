@@ -6,6 +6,7 @@ import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
 import { Logger } from '../../infrastructure';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -13,7 +14,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   abstract: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   doi: Doi,
   title: SanitisedHtmlFragment,
   server: ArticleServer,

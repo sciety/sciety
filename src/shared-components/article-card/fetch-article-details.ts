@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -10,8 +11,8 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
+  authors: ArticleAuthors,
   server: ArticleServer,
-  authors: O.Option<ReadonlyArray<string>>,
 }>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
@@ -21,7 +22,7 @@ type FetchArticleDetails = (
   getArticle: GetArticle,
 ) => (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
 }>;
 

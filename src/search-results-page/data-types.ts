@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { ArticleAuthors } from '../types/article-authors';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -12,7 +13,7 @@ export type ArticleItem = {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
 };
 
 export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;

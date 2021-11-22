@@ -6,6 +6,7 @@ import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
 import { DomainEvent } from '../../domain-events';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -28,7 +29,7 @@ type Params = {
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   server: ArticleServer,
 }>;
 

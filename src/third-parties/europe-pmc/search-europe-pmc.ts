@@ -11,6 +11,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from '../../infrastructure/logger';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
@@ -24,7 +25,7 @@ type SearchResult = {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
 };
 
 export type SearchResults = {

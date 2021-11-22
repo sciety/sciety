@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -7,6 +6,7 @@ import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
 import { getGroup } from '../../shared-read-models/all-groups';
+import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
@@ -15,7 +15,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
   title: HtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
 }>;
 
 export type GroupEvaluatedArticleCard = {

@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderAuthors } from './render-authors';
 import { tabs } from '../../shared-components/tabs';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -11,7 +11,7 @@ import { tabList } from '../tab-list';
 type ArticleDetails = {
   title: string,
   abstract: HtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   server: ArticleServer,
 };
 

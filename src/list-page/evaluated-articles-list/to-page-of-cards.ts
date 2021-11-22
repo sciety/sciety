@@ -11,6 +11,7 @@ import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../sh
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -21,7 +22,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 type Article = {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
 };
 
 type GetArticle = (id: Doi) => TE.TaskEither<DE.DataError, Article>;

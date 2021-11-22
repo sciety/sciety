@@ -14,8 +14,8 @@ export const allArticleActivity: AllArticleActivity = () => ({
   },
 });
 
-export const activityFor = (
-  doi: Doi,
-) => (
+export const activityForDoi = (
   activities: AllArticleActivityReadModel,
+) => (
+  doi: Doi,
 ): ArticleActivity => activities[doi.value];

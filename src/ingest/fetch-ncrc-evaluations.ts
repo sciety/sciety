@@ -5,7 +5,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
+import { medrxivOrBiorxivLinkToDoi } from './medrxiv-or-biorxiv-link-to-doi';
 import { FetchEvaluations } from './update-all';
+import { sheetId } from '../third-parties/ncrc/sheet-id';
 
 type Ports = {
   fetchGoogleSheet: FetchGoogleSheet,
@@ -18,14 +20,12 @@ type NcrcReview = {
   journal: string,
 };
 
-const linkToDoi = (link: string): string => {
-  const [, doiSuffix] = /.*\/([^/]*)$/.exec(link) ?? [];
-  return `10.1101/${doiSuffix}`;
-};
-
 const toEvaluation = (ncrcReview: NcrcReview) => ({
   date: new Date(ncrcReview.date),
-  articleDoi: linkToDoi(ncrcReview.link),
+  articleDoi: pipe(
+    medrxivOrBiorxivLinkToDoi(ncrcReview.link),
+    E.getOrElse(() => ''),
+  ),
   evaluationLocator: `ncrc:${ncrcReview.id}`,
   authors: [],
 });
@@ -48,7 +48,7 @@ const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
 );
 
 export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
-  ports.fetchGoogleSheet('1sMU60q9qvMyvWEH352VvmxSRMZKklWAm_w78mpckzMQ', 'Sheet1!A2:S'),
+  ports.fetchGoogleSheet(sheetId, 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
     (res) => res?.data?.values,
     E.fromNullable('.values not provided'),

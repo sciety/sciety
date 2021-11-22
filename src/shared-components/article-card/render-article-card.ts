@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -9,7 +10,7 @@ import { renderAuthors } from '../render-card-authors';
 export type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
-  authors: O.Option<ReadonlyArray<string>>,
+  authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
   latestActivityDate: O.Option<Date>,
   evaluationCount: number,
