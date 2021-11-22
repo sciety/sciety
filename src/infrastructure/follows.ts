@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as P from 'fp-ts/Predicate';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Refinement';
 import * as T from 'fp-ts/Task';
@@ -11,16 +10,7 @@ import {
 } from '../domain-events';
 import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
-
-// HELPERS
-
-type GuardedType<T> = T extends (x: any) => x is infer U ? U : never;
-
-const refineAndPredicate = <A, B extends A>(refinement: R.Refinement<A, B>, predicate: P.Predicate<B>) => (
-  input: A,
-) => refinement(input) && predicate(input);
-
-// ----
+import { GuardedType, refineAndPredicate } from '../utilities';
 
 export type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
