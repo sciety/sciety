@@ -35,11 +35,10 @@ const render = (components: Components) => toHtmlFragment(`
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
+  id: t.string,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
-
-const listId = 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7';
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   {
@@ -48,7 +47,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       renderComponent,
       TE.right,
     ),
-    articlesList: articlesList(ports, listId, params.page),
+    articlesList: articlesList(ports, params.id, params.page),
   },
   sequenceS(TE.ApplyPar),
   TE.map(render),

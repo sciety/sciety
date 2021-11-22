@@ -365,15 +365,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
-    pageHandler(createPageFromParams(
-      ncrcFeaturedArticlesPageParams,
-      ncrcFeaturedArticlesPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/lists/236c53b1-8de4-439d-8331-6204859b7167',
+    '/lists/:id',
     pageHandler(createPageFromParams(
       ncrcFeaturedArticlesPageParams,
       ncrcFeaturedArticlesPage(adapters),
