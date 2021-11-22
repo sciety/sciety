@@ -18,7 +18,7 @@ export type TabIndex = 0 | 1 | 2;
 
 const tabList = (groupSlug: string, listCount: number, followerCount: number): [Tab, Tab, Tab] => [
   {
-    label: toHtmlFragment(`Lists (${listCount})`),
+    label: toHtmlFragment(`<span class="visually-hidden">This group has ${listCount} </span>Lists<span aria-hidden="true"> (${listCount})</span>`),
     url: `/groups/${groupSlug}/lists`,
   },
   {
@@ -26,7 +26,7 @@ const tabList = (groupSlug: string, listCount: number, followerCount: number): [
     url: `/groups/${groupSlug}/about`,
   },
   {
-    label: toHtmlFragment(`Followers (${followerCount})`),
+    label: toHtmlFragment(`<span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>`),
     url: `/groups/${groupSlug}/followers`,
   },
 ];
