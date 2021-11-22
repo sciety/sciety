@@ -39,14 +39,18 @@ const headers = {
 type Components = {
   header: HtmlFragment,
   articlesList: HtmlFragment,
+  title: string,
 };
 
-const render = (components: Components) => toHtmlFragment(`
-  ${components.header}
-  <section class="evaluated-articles">
-    ${components.articlesList}
-  </section>
-`);
+const renderPage = (components: Components) => ({
+  content: toHtmlFragment(`
+    ${components.header}
+    <section class="evaluated-articles">
+      ${components.articlesList}
+    </section>
+  `),
+  title: components.title,
+});
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -65,14 +69,14 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       T.of,
     ),
     articlesList: articlesList(ports, params.id, params.page),
+    title: pipe(
+      headers,
+      R.lookup(params.id),
+      E.fromOption(() => DE.notFound),
+      E.map((header) => header.name),
+      T.of,
+    ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(render),
-  TE.bimap(
-    renderErrorPage,
-    (content) => ({
-      title: 'Featured articles',
-      content,
-    }),
-  ),
+  TE.bimap(renderErrorPage, renderPage),
 );
