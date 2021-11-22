@@ -14,9 +14,9 @@ describe('journey-to-group-list', () => {
 
   it('navigates to a group list page via that group\'s page', async () => {
     await goto('localhost:8080/groups/ncrc');
-    await click('Featured articles');
+    await click('High interest articles');
     const pageTitle = await $('h1').text();
 
-    expect(pageTitle).toContain('Featured articles');
+    expect(pageTitle).toContain('High interest articles');
   });
 });
