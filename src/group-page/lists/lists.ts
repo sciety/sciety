@@ -16,7 +16,9 @@ export type Ports = GroupListPorts & {
 
 const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
   <section class="group-page-lists">
-    ${evaluatedArticlesListCard}
+    <ul class="group-page-followers-list" role="list">
+      <li class="group-page-followers-list__item" role="listitem">${evaluatedArticlesListCard}</li>
+    </ul>
   </section>
 `);
 
