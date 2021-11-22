@@ -16,9 +16,9 @@ export type Ports = AboutPorts & FollowersPorts & ListsPorts;
 
 export type TabIndex = 0 | 1 | 2;
 
-const tabList = (groupSlug: string, followerCount: number): [Tab, Tab, Tab] => [
+const tabList = (groupSlug: string, listCount: number, followerCount: number): [Tab, Tab, Tab] => [
   {
-    label: toHtmlFragment('Lists (1)'),
+    label: toHtmlFragment(`Lists (${listCount})`),
     url: `/groups/${groupSlug}/lists`,
   },
   {
@@ -57,6 +57,7 @@ export const contentComponent: ContentComponent = (
 ) => pipe(
   {
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
+    listCount: TE.right(group.slug === 'ncrc' ? 2 : 1),
     followerCount: pipe(
       ports.getAllEvents,
       T.map(findFollowers(group.id)),
@@ -65,8 +66,8 @@ export const contentComponent: ContentComponent = (
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ content, followerCount }) => tabs({
-    tabList: tabList(group.slug, followerCount),
+  TE.map(({ content, listCount, followerCount }) => tabs({
+    tabList: tabList(group.slug, listCount, followerCount),
     activeTabIndex,
   })(content)),
 );
