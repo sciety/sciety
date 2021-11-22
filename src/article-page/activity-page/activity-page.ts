@@ -21,8 +21,6 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
-import { Group } from '../../types/group';
-import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -45,12 +43,9 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
-
 type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: FetchReview,
-  getGroup: GetGroup,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
