@@ -57,7 +57,7 @@ export const contentComponent: ContentComponent = (
 ) => pipe(
   {
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
-    listCount: TE.right(group.slug === 'ncrc' ? 2 : 1),
+    listCount: TE.right((group.slug === 'ncrc' || group.slug === 'biophysics-colab') ? 2 : 1),
     followerCount: pipe(
       ports.getAllEvents,
       T.map(findFollowers(group.id)),

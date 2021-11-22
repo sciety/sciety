@@ -54,6 +54,19 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
     }, ...cardViewModels]
     : cardViewModels)),
+  TE.map((cardViewModels) => ((group.slug === 'biophysics-colab')
+    ? [{
+      href: '/lists/5ac3a439-e5c6-4b15-b109-92928a740812',
+      title: 'Endorsed articles',
+      articleCountLabel: 'This list contains',
+      description: 'Articles that have been endorsed by Biophysics Colab.',
+      ownerName: 'Biophysics Colab',
+      ownerHref: '/groups/biophysics-colab',
+      ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+      articleCount: 2,
+      lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
+    }, ...cardViewModels]
+    : cardViewModels)),
   TE.map(RA.map(renderListCard)),
   TE.map(renderCards),
 );
