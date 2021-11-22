@@ -25,6 +25,15 @@ const headers = {
     articleCount: 1,
     lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
   },
+  '5ac3a439-e5c6-4b15-b109-92928a740812': {
+    name: 'Endorsed articles',
+    description: 'Articles that have been endorsed by Biophysics Colab.',
+    ownerName: 'Biophysics Colab',
+    ownerHref: '/groups/biophysics-colab',
+    ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+    articleCount: 2,
+    lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
+  },
 };
 
 type Components = {
