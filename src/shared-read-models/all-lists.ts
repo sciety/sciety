@@ -29,7 +29,11 @@ const defaultGroupListDescription = (groupName: string): string => (
   `Articles that have been evaluated by ${groupName}.`
 );
 
-const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticleEvent>) => ({
+const createListFromEvaluationEvents = (
+  ownerId: GroupId,
+) => (
+  evaluationEvents: ReadonlyArray<GroupEvaluatedArticleEvent>,
+) => ({
   name: 'Evaluated articles',
   articleCount: pipe(
     evaluationEvents,
@@ -42,19 +46,21 @@ const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticle
     RA.last,
     O.map((event) => event.date),
   ),
+  ownerId,
 });
 
 type List = {
   name: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
+  ownerId: GroupId,
 };
 
-const augmentWithOwnerDetails = (ports: Ports, groupId: GroupId) => (partial: List) => pipe(
-  groupId,
+const augmentWithOwnerDetails = (ports: Ports) => (list: List) => pipe(
+  list.ownerId,
   ports.getGroup,
   TE.map((group) => ({
-    ...partial,
+    ...list,
     description: defaultGroupListDescription(group.name),
     ownerName: group.name,
     ownerAvatarPath: group.avatarPath,
@@ -81,8 +87,8 @@ export const allLists = (
       return accumulator;
     },
   ),
-  R.map(createListPartial),
-  (allListPartials) => allListPartials[groupId] ?? createListPartial([]),
+  R.map(createListFromEvaluationEvents(groupId)),
+  (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId)([]),
   TE.right,
-  TE.chain(augmentWithOwnerDetails(ports, groupId)),
+  TE.chain(augmentWithOwnerDetails(ports)),
 );
