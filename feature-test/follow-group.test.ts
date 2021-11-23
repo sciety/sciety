@@ -19,17 +19,16 @@ describe('follow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the PeerJ group page', () => {
-      it('adds the group to my profile page', async () => {
-        await goto('localhost:8080/groups');
-        await click('PeerJ');
-        await click('Follow');
-        await click('My profile');
-        await click('Following');
-        const groupExists = await text('PeerJ', within($('.followed-groups-list'))).exists();
+    it('adds the group to my profile page', async () => {
+      const groupToBeFollowed = 'Biophysics Colab';
+      await goto('localhost:8080/groups');
+      await click(groupToBeFollowed);
+      await click('Follow');
+      await click('My profile');
+      await click('Following');
+      const groupExists = await text(groupToBeFollowed, within($('.followed-groups-list'))).exists();
 
-        expect(groupExists).toBe(true);
-      });
+      expect(groupExists).toBe(true);
     });
   });
 });

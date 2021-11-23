@@ -5,8 +5,8 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('list-items template', () => {
   it.each([
-    [['Alice'] as const, toHtmlFragment('<li class="item">Alice</li>\n')],
-    [['Alice', 'Bob'] as const, toHtmlFragment('<li class="item">Alice</li>\n<li class="item">Bob</li>\n')],
+    [['Alice'] as const, toHtmlFragment('<li class="item" role="listitem">Alice</li>\n')],
+    [['Alice', 'Bob'] as const, toHtmlFragment('<li class="item" role="listitem">Alice</li>\n<li class="item" role="listitem">Bob</li>\n')],
   ])('returns <li> elements on %s', (items, expected) => {
     const actual = pipe(
       items,

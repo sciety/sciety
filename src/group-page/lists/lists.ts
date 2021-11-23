@@ -1,8 +1,11 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
+import { templateListItems } from '../../shared-components/list-items';
 import { allLists, Ports as GroupListPorts } from '../../shared-read-models/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
@@ -14,11 +17,18 @@ export type Ports = GroupListPorts & {
   getAllEvents: GetAllEvents,
 };
 
-const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
-  <section class="group-page-lists">
-    ${evaluatedArticlesListCard}
-  </section>
-`);
+const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
+  cards,
+  (items) => templateListItems(items, 'group-page-followers-list__item'),
+  (listContent) => `
+    <section class="group-page-lists">
+      <ul class="group-page-followers-list" role="list">
+        ${listContent}
+      </ul>
+    </section>
+  `,
+  toHtmlFragment,
+);
 
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
@@ -30,6 +40,33 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
     title: details.name,
     articleCountLabel: 'This group has evaluated',
   })),
-  TE.map(renderListCard),
-  TE.map(renderLists),
+  TE.map((cardViewModel) => [cardViewModel]),
+  TE.map((cardViewModels) => ((group.slug === 'ncrc')
+    ? [{
+      href: '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
+      title: 'High interest articles',
+      articleCountLabel: 'This list contains',
+      description: 'Articles that have been identified as high interest by NCRC editors.',
+      ownerName: 'NCRC',
+      ownerHref: '/groups/ncrc',
+      ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+      articleCount: 1,
+      lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
+    }, ...cardViewModels]
+    : cardViewModels)),
+  TE.map((cardViewModels) => ((group.slug === 'biophysics-colab')
+    ? [{
+      href: '/lists/5ac3a439-e5c6-4b15-b109-92928a740812',
+      title: 'Endorsed articles',
+      articleCountLabel: 'This list contains',
+      description: 'Articles that have been endorsed by Biophysics Colab.',
+      ownerName: 'Biophysics Colab',
+      ownerHref: '/groups/biophysics-colab',
+      ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+      articleCount: 2,
+      lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
+    }, ...cardViewModels]
+    : cardViewModels)),
+  TE.map(RA.map(renderListCard)),
+  TE.map(renderCards),
 );
