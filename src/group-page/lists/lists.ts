@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
+import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { allLists, Ports as GroupListPorts } from '../../shared-read-models/all-lists';
@@ -50,7 +51,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       ownerName: 'NCRC',
       ownerHref: '/groups/ncrc',
       ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
-      articleCount: 1,
+      articleCount: listsData['cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'].length,
       lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
     }, ...cardViewModels]
     : cardViewModels)),
@@ -63,7 +64,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       ownerName: 'Biophysics Colab',
       ownerHref: '/groups/biophysics-colab',
       ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
-      articleCount: 2,
+      articleCount: listsData['5ac3a439-e5c6-4b15-b109-92928a740812'].length,
       lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
     }, ...cardViewModels]
     : cardViewModels)),
