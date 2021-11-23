@@ -47,13 +47,13 @@ type AllListsReadModel = Record<ListId, List>;
 
 // getAllEvents,
 // T.map(allListsReadModel),
-// T.map(allListsOwnedBy(groupId)),
-type AllListsOwnedBy = (groupId: GID.GroupId) => (readModel: AllListsReadModel) => ReadonlyArray<List>;
+// T.map(selectAllListsOwnedBy(groupId)),
+type SelectAllListsOwnedBy = (groupId: GID.GroupId) => (readModel: AllListsReadModel) => ReadonlyArray<List>;
 
 // getAllEvents,
 // T.map(allListsReadModel),
-// T.map(getList(listId)),
-type GetList = (listId: ListId) => (readModel: AllListsReadModel) => O.Option<List>;
+// T.map(selectList(listId)),
+type SelectList = (listId: ListId) => (readModel: AllListsReadModel) => O.Option<List>;
 
 type ListPageHeaderViewModel = {
   name: string,
