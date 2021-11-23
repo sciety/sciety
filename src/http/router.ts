@@ -11,7 +11,6 @@ import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
-import { executeIfAuthenticated } from './execute-if-authenticated';
 import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
@@ -27,7 +26,9 @@ import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
-import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
+import {
+  executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
+} from '../follow';
 import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../group-page/group-page';
