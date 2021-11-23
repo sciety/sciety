@@ -70,10 +70,14 @@ export const fetchCrossrefArticle = (
       return E.left(errorType);
     }
 
+    let abstract: SanitisedHtmlFragment;
+    let authors: ArticleAuthors;
+    let server: O.Option<'medrxiv' | 'biorxiv'>;
+    let title: SanitisedHtmlFragment;
     try {
       const doc = parser.parseFromString(response, 'text/xml');
-      const authors = getAuthors(doc);
-      const server = getServer(doc);
+      authors = getAuthors(doc);
+      server = getServer(doc);
 
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
@@ -84,13 +88,8 @@ export const fetchCrossrefArticle = (
         return E.left(DE.notFound);
       }
 
-      return E.right({
-        abstract: getAbstract(doc, doi, logger),
-        authors,
-        doi,
-        title: getTitle(doc, doi, logger),
-        server: server.value,
-      });
+      abstract = getAbstract(doc, doi, logger);
+      title = getTitle(doc, doi, logger);
     } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });
 
@@ -103,5 +102,12 @@ export const fetchCrossrefArticle = (
       // - ...
       return E.left(DE.unavailable);
     }
+    return E.right({
+      abstract,
+      authors,
+      doi,
+      title,
+      server: server.value,
+    });
   };
 };
