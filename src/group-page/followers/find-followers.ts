@@ -1,11 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { match } from 'ts-pattern';
 import { Follower } from './augment-with-user-details';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
-import { refineAndPredicate } from '../../utilities';
+import { condWithRefinement } from '../../utilities';
 
 type FindFollowers = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;
 
@@ -21,29 +20,29 @@ const calculateFollowerUserIds = (
   return state;
 });
 
-const isUserFollowedEditorialCommunityEventBy = (
-  userIds: ReadonlyArray<UserId>,
-) => refineAndPredicate(isUserFollowedEditorialCommunityEvent, (e) => userIds.includes(e.userId));
-
-const isUserUnfollowedEditorialCommunityEventBy = (
-  userIds: ReadonlyArray<UserId>,
-) => refineAndPredicate(isUserUnfollowedEditorialCommunityEvent, (e) => userIds.includes(e.userId));
-
 const calculateFollowedGroupCounts = (
   events: ReadonlyArray<DomainEvent>,
   userIds: ReadonlyArray<UserId>,
 ) => pipe(
   events,
-  RA.reduce(new Map<UserId, number>(), (state, event) => match(event)
-    .when(
-      isUserFollowedEditorialCommunityEventBy(userIds),
-      (e) => state.set(e.userId, (state.get(e.userId) ?? 0) + 1),
-    )
-    .when(
-      isUserUnfollowedEditorialCommunityEventBy(userIds),
-      (e) => state.set(e.userId, (state.get(e.userId) ?? 0) - 1),
-    )
-    .otherwise(() => state)),
+  RA.reduce(new Map<UserId, number>(), (state, event) => pipe(
+    event,
+    condWithRefinement(
+      () => state,
+      [
+        [
+          isUserFollowedEditorialCommunityEvent,
+          (e) => userIds.includes(e.userId),
+          (e) => state.set(e.userId, (state.get(e.userId) ?? 0) + 1),
+        ],
+        [
+          isUserUnfollowedEditorialCommunityEvent,
+          (e) => userIds.includes(e.userId),
+          (e) => state.set(e.userId, (state.get(e.userId) ?? 0) - 1),
+        ],
+      ],
+    ),
+  )),
 );
 
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
