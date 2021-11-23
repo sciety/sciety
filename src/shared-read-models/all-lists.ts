@@ -15,7 +15,7 @@ export type Ports = {
 };
 
 // ts-unused-exports:disable-next-line
-export type ListDetails = {
+export type ListDetailsViewModel = {
   name: string,
   description: string,
   ownerName: string,
@@ -44,13 +44,13 @@ const createListPartial = (evaluationEvents: ReadonlyArray<GroupEvaluatedArticle
   ),
 });
 
-type ListPartial = {
+type List = {
   name: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
 
-const augmentWithOwnerDetails = (ports: Ports, groupId: GroupId) => (partial: ListPartial) => pipe(
+const augmentWithOwnerDetails = (ports: Ports, groupId: GroupId) => (partial: List) => pipe(
   groupId,
   ports.getGroup,
   TE.map((group) => ({
@@ -67,7 +67,7 @@ export const allLists = (
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,
-): TE.TaskEither<DE.DataError, ListDetails> => pipe(
+): TE.TaskEither<DE.DataError, ListDetailsViewModel> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(

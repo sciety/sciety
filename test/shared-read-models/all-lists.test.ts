@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
-import { allLists, ListDetails, Ports } from '../../src/shared-read-models/all-lists';
+import { allLists, ListDetailsViewModel, Ports } from '../../src/shared-read-models/all-lists';
 import { GroupId } from '../../src/types/group-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -26,7 +26,7 @@ describe('all-lists', () => {
     };
 
     describe('common properties', () => {
-      let result: ListDetails;
+      let result: ListDetailsViewModel;
 
       beforeEach(async () => {
         result = await callGroupListWith(ports, group.id, []);
@@ -54,7 +54,7 @@ describe('all-lists', () => {
     });
 
     describe('when the list contains no articles', () => {
-      let result: ListDetails;
+      let result: ListDetailsViewModel;
 
       beforeEach(async () => {
         result = await callGroupListWith(ports, group.id, []);
@@ -71,7 +71,7 @@ describe('all-lists', () => {
 
     describe('when the list contains some articles', () => {
       const newerDate = new Date('2021-07-08');
-      let result: ListDetails;
+      let result: ListDetailsViewModel;
 
       beforeEach(async () => {
         result = await callGroupListWith(ports, group.id, [
@@ -92,7 +92,7 @@ describe('all-lists', () => {
     describe('when the group has evaluated one article more than once', () => {
       const newerDate = new Date('2021-07-08');
       const articleId = arbitraryDoi();
-      let result: ListDetails;
+      let result: ListDetailsViewModel;
 
       beforeEach(async () => {
         result = await callGroupListWith(ports, group.id, [
@@ -111,7 +111,7 @@ describe('all-lists', () => {
     });
 
     describe('when a list with a different owner contains some articles', () => {
-      let result: ListDetails;
+      let result: ListDetailsViewModel;
 
       beforeEach(async () => {
         result = await callGroupListWith(ports, group.id, [
