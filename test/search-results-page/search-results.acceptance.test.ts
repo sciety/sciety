@@ -7,13 +7,11 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { searchResultsPage } from '../../src/search-results-page';
 import * as DE from '../../src/types/data-error';
-import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryEuropePmcItem } from '../third-parties/europe-pmc/helpers';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 
@@ -105,13 +103,6 @@ describe('search-results-page acceptance', () => {
 
     describe('when there are results', () => {
       describe('with "articles" as category', () => {
-        const arbitraryArticleItem = () => ({
-          doi: arbitraryDoi(),
-          server: 'biorxiv' as const,
-          title: pipe(arbitraryString(), toHtmlFragment, sanitise),
-          authors: O.some([arbitraryString()]),
-        });
-
         it('displays the first n articles if more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
@@ -125,8 +116,8 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
                 items: [
-                  arbitraryArticleItem(),
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -153,7 +144,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
                 items: [
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
@@ -181,7 +172,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
                 items: [
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
@@ -208,9 +199,9 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
                 items: [
-                  arbitraryArticleItem(),
-                  arbitraryArticleItem(),
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
+                  arbitraryEuropePmcItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: 4,
                 nextCursor: O.some(arbitraryWord()),
@@ -238,9 +229,9 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
                 items: [
-                  arbitraryArticleItem(),
-                  arbitraryArticleItem(),
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
+                  arbitraryEuropePmcItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -266,7 +257,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               searchEuropePmc: () => () => TE.right({
-                items: [arbitraryArticleItem()],
+                items: [arbitraryEuropePmcItem()],
                 total: arbitraryNumber(5, 10),
                 nextCursor: O.some(arbitraryWord()),
               }),
@@ -295,7 +286,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchEuropePmc: () => searchEuropePmcMock.mockImplementation(() => TE.right({
                 items: [
-                  arbitraryArticleItem(),
+                  arbitraryEuropePmcItem(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -378,7 +369,7 @@ describe('search-results-page acceptance', () => {
               searchResultsPage({
                 ...dummyAdapters,
                 searchEuropePmc: () => () => TE.right({
-                  items: [arbitraryArticleItem()],
+                  items: [arbitraryEuropePmcItem()],
                   total: 1,
                   nextCursor: O.none,
                 }),
