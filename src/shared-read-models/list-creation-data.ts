@@ -9,6 +9,7 @@ type ListData = {
   members: ReadonlyArray<Doi>,
 };
 
+// ts-unused-exports:disable-next-line
 export const listCreationData: Record<string, ListData> = {
   'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': {
     listId: 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
