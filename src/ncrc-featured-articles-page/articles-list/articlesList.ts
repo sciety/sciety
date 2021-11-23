@@ -10,21 +10,11 @@ import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-l
 import { paginate } from '../../shared-components/paginate';
 import { activityForDoi, allArticleActivity } from '../../shared-read-models/all-article-activity';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
+import { lists } from '../lists';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-};
-
-const doiList = {
-  'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': [
-    new Doi('10.1101/2021.05.20.21257512'),
-  ],
-  '5ac3a439-e5c6-4b15-b109-92928a740812': [
-    new Doi('10.1101/2021.03.21.436299'),
-    new Doi('10.1101/2021.07.05.451181'),
-  ],
 };
 
 export const articlesList = (
@@ -35,7 +25,7 @@ export const articlesList = (
   ports.getAllEvents,
   T.map(allArticleActivity),
   T.map((model) => pipe(
-    doiList,
+    lists,
     R.lookup(listId),
     E.fromOption(() => DE.notFound),
     E.map(RA.map(activityForDoi(model))),
