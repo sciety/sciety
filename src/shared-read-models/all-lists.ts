@@ -4,6 +4,7 @@ import * as RS from 'fp-ts/ReadonlySet';
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { listCreationData } from './list-creation-data';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -25,10 +26,6 @@ export type ListDetailsViewModel = {
   lastUpdated: O.Option<Date>,
 };
 
-const defaultGroupListDescription = (groupName: string): string => (
-  `Articles that have been evaluated by ${groupName}.`
-);
-
 const createListFromEvaluationEvents = (
   ownerId: GroupId,
 ) => (
@@ -47,10 +44,17 @@ const createListFromEvaluationEvents = (
     O.map((event) => event.date),
   ),
   ownerId,
+  description: pipe(
+    Object.values(listCreationData),
+    RA.findFirst((list) => list.ownerId === ownerId && list.name === 'Evaluated articles'),
+    O.map((list) => list.description),
+    O.getOrElse(() => ''),
+  ),
 });
 
 type List = {
   name: string,
+  description: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
   ownerId: GroupId,
@@ -61,7 +65,6 @@ const augmentWithOwnerDetails = (ports: Ports) => (list: List) => pipe(
   ports.getGroup,
   TE.map((group) => ({
     ...list,
-    description: defaultGroupListDescription(group.name),
     ownerName: group.name,
     ownerAvatarPath: group.avatarPath,
     ownerHref: `/groups/${group.slug}`,
@@ -89,6 +92,7 @@ export const allLists = (
   ),
   R.map(createListFromEvaluationEvents(groupId)),
   (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId)([]),
+  (foo) => foo,
   TE.right,
   TE.chain(augmentWithOwnerDetails(ports)),
 );

@@ -22,7 +22,7 @@ type List = {
   lastUpdated: Date,
 };
 
-const listCreationData: Record<ListId, List> = {
+export const listCreationData: Record<ListId, List> = {
   'ee7e738a-a1f1-465b-807c-132d273ca952': {
     listId: 'ee7e738a-a1f1-465b-807c-132d273ca952',
     name: 'Evaluated articles',
