@@ -7,13 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { listCreationData } from './list-creation-data';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-
-// ts-unused-exports:disable-next-line
-export type Ports = {
-  getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>,
-};
 
 const createListFromEvaluationEvents = (
   ownerId: GroupId,
@@ -50,7 +44,6 @@ export type List = {
 };
 
 export const allLists = (
-  ports: Ports,
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,

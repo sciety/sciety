@@ -7,14 +7,14 @@ import { DomainEvent } from '../../domain-events';
 import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
-import { allLists, Ports as GroupListPorts } from '../../shared-read-models/all-lists';
+import { allLists } from '../../shared-read-models/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type Ports = GroupListPorts & {
+export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
@@ -64,7 +64,7 @@ const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(allLists(ports, group.id)),
+  TE.chain(allLists(group.id)),
   TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
