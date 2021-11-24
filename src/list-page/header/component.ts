@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
-import { allLists, List } from '../../shared-read-models/all-lists';
+import { allLists, List, selectAllListsOwnedBy } from '../../shared-read-models/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
@@ -32,7 +32,7 @@ export const component = (
   ports.getAllEvents,
   TE.rightTask,
   TE.map(allLists),
-  TE.chain((readModel) => readModel(group.id)),
+  TE.map(selectAllListsOwnedBy(group.id)),
   TE.chain(augmentWithOwnerDetails(ports)),
   TE.map(renderComponent),
 );

@@ -2,11 +2,9 @@ import * as M from 'fp-ts/Map';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { listCreationData } from './list-creation-data';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
-import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 
 const createListFromEvaluationEvents = (
@@ -42,11 +40,11 @@ export type List = {
   ownerId: GroupId,
 };
 
+type ReadModel = Map<GroupId, List>;
+
 export const allLists = (
   events: ReadonlyArray<DomainEvent>,
-) => (
-  groupId: GroupId,
-): TE.TaskEither<DE.DataError, List> => pipe(
+): ReadModel => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
@@ -61,6 +59,8 @@ export const allLists = (
     },
   ),
   M.mapWithIndex(createListFromEvaluationEvents),
-  (readModel) => readModel.get(groupId) ?? createListFromEvaluationEvents(groupId, []),
-  TE.right,
+);
+
+export const selectAllListsOwnedBy = (groupId: GroupId) => (readModel: ReadModel): List => (
+  readModel.get(groupId) ?? createListFromEvaluationEvents(groupId, [])
 );
