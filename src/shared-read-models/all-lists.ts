@@ -15,17 +15,6 @@ export type Ports = {
   getGroup: (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>,
 };
 
-// ts-unused-exports:disable-next-line
-export type ListDetailsViewModel = {
-  name: string,
-  description: string,
-  ownerName: string,
-  ownerAvatarPath: string,
-  ownerHref: string,
-  articleCount: number,
-  lastUpdated: O.Option<Date>,
-};
-
 const createListFromEvaluationEvents = (
   ownerId: GroupId,
 ) => (
@@ -52,7 +41,7 @@ const createListFromEvaluationEvents = (
   ),
 });
 
-type List = {
+export type List = {
   name: string,
   description: string,
   articleCount: number,
@@ -60,23 +49,12 @@ type List = {
   ownerId: GroupId,
 };
 
-const augmentWithOwnerDetails = (ports: Ports) => (list: List) => pipe(
-  list.ownerId,
-  ports.getGroup,
-  TE.map((group) => ({
-    ...list,
-    ownerName: group.name,
-    ownerAvatarPath: group.avatarPath,
-    ownerHref: `/groups/${group.slug}`,
-  })),
-);
-
 export const allLists = (
   ports: Ports,
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,
-): TE.TaskEither<DE.DataError, ListDetailsViewModel> => pipe(
+): TE.TaskEither<DE.DataError, List> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
@@ -92,7 +70,5 @@ export const allLists = (
   ),
   R.map(createListFromEvaluationEvents(groupId)),
   (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId)([]),
-  (foo) => foo,
   TE.right,
-  TE.chain(augmentWithOwnerDetails(ports)),
 );
