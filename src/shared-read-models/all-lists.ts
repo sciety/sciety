@@ -1,7 +1,7 @@
+import * as M from 'fp-ts/Map';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
-import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { listCreationData } from './list-creation-data';
@@ -50,17 +50,17 @@ export const allLists = (
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
-    {} as Record<GroupId, Array<GroupEvaluatedArticleEvent>>,
+    new Map<GroupId, Array<GroupEvaluatedArticleEvent>>(),
     (accumulator, event) => {
-      if (accumulator[event.groupId]) {
-        accumulator[event.groupId].push(event);
+      if (accumulator.has(event.groupId)) {
+        accumulator.get(event.groupId)?.push(event);
       } else {
-        accumulator[event.groupId] = [event];
+        accumulator.set(event.groupId, [event]);
       }
       return accumulator;
     },
   ),
-  R.mapWithIndex(createListFromEvaluationEvents),
-  (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId, []),
+  M.mapWithIndex(createListFromEvaluationEvents),
+  (readModel) => readModel.get(groupId) ?? createListFromEvaluationEvents(groupId, []),
   TE.right,
 );
