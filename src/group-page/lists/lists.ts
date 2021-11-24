@@ -48,9 +48,6 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       title: 'High interest articles',
       articleCountLabel: 'This list contains',
       description: 'Articles that have been identified as high interest by NCRC editors.',
-      ownerName: 'NCRC',
-      ownerHref: '/groups/ncrc',
-      ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
       articleCount: listsData['cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'].length,
       lastUpdated: O.some(new Date('2021-11-24')),
     }, ...cardViewModels]
@@ -61,9 +58,6 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       title: 'Endorsed articles',
       articleCountLabel: 'This list contains',
       description: 'Articles that have been endorsed by Biophysics Colab.',
-      ownerName: 'Biophysics Colab',
-      ownerHref: '/groups/biophysics-colab',
-      ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
       articleCount: listsData['5ac3a439-e5c6-4b15-b109-92928a740812'].length,
       lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
     }, ...cardViewModels]
