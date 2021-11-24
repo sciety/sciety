@@ -157,7 +157,7 @@ const listCreationData: Record<ListId, List> = {
     description: 'Articles that have been identified as high interest by NCRC editors.',
     ownerId: GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg'),
     members: [],
-    lastUpdated: new Date('2021-11-18T11:33:00Z'),
+    lastUpdated: new Date('2021-11-24'),
   },
   '5ac3a439-e5c6-4b15-b109-92928a740812': {
     listId: '5ac3a439-e5c6-4b15-b109-92928a740812',
