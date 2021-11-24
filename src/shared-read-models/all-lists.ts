@@ -44,9 +44,9 @@ export type List = {
 };
 
 export const allLists = (
-  groupId: GroupId,
-) => (
   events: ReadonlyArray<DomainEvent>,
+) => (
+  groupId: GroupId,
 ): TE.TaskEither<DE.DataError, List> => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),

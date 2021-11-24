@@ -12,7 +12,8 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 const callGroupListWith = async (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  allLists(groupId),
+  allLists,
+  (readModel) => readModel(groupId),
   TE.getOrElse(shouldNotBeCalled),
 )();
 

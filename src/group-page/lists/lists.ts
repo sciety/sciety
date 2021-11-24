@@ -64,7 +64,8 @@ const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(allLists(group.id)),
+  TE.map(allLists),
+  TE.chain((readModel) => readModel(group.id)),
   TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
