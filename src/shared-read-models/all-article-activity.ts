@@ -7,6 +7,11 @@ type AllArticleActivityReadModel = Record<string, ArticleActivity>;
 type AllArticleActivity = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
 
 export const allArticleActivity: AllArticleActivity = () => ({
+  '10.1101/2021.11.04.467308': {
+    doi: new Doi('10.1101/2021.11.04.467308'),
+    latestActivityDate: new Date('2021-11-19'),
+    evaluationCount: 2,
+  },
   '10.1101/2021.05.20.21257512': {
     doi: new Doi('10.1101/2021.05.20.21257512'),
     latestActivityDate: new Date('2021-07-09'),

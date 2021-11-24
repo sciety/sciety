@@ -24,7 +24,7 @@ const headers = {
     ownerHref: '/groups/ncrc',
     ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
     articleCount: lists['cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'].length,
-    lastUpdated: O.some(new Date('2021-11-18T11:33:00Z')),
+    lastUpdated: O.some(new Date('2021-11-24')),
   },
   '5ac3a439-e5c6-4b15-b109-92928a740812': {
     name: 'Endorsed articles',
