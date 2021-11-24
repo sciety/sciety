@@ -11,7 +11,6 @@ import { GroupId } from '../types/group-id';
 
 const createListFromEvaluationEvents = (
   ownerId: GroupId,
-) => (
   evaluationEvents: ReadonlyArray<GroupEvaluatedArticleEvent>,
 ) => ({
   name: 'Evaluated articles',
@@ -51,7 +50,7 @@ export const allLists = (
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
-    {} as Record<string, Array<GroupEvaluatedArticleEvent>>,
+    {} as Record<GroupId, Array<GroupEvaluatedArticleEvent>>,
     (accumulator, event) => {
       if (accumulator[event.groupId]) {
         accumulator[event.groupId].push(event);
@@ -61,7 +60,7 @@ export const allLists = (
       return accumulator;
     },
   ),
-  R.map(createListFromEvaluationEvents(groupId)),
-  (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId)([]),
+  R.mapWithIndex(createListFromEvaluationEvents),
+  (readModel) => readModel[groupId] ?? createListFromEvaluationEvents(groupId, []),
   TE.right,
 );
