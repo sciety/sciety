@@ -58,6 +58,11 @@ export const allArticleActivity: AllArticleActivity = () => ({
     latestActivityDate: new Date('2021-03-22'),
     evaluationCount: 2,
   },
+  '10.1101/2021.02.26.21252482': {
+    doi: new Doi('10.1101/2021.02.26.21252482'),
+    latestActivityDate: new Date('2021-03-15'),
+    evaluationCount: 2,
+  },
   // Biophysics Colab:
   '10.1101/2021.03.21.436299': {
     doi: new Doi('10.1101/2021.03.21.436299'),
