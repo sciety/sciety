@@ -1,135 +1,111 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
-import { allLists, ListDetails, Ports } from '../../src/shared-read-models/all-lists';
+import { allLists, List, selectAllListsOwnedBy } from '../../src/shared-read-models/all-lists';
 import { GroupId } from '../../src/types/group-id';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
-const callGroupListWith = async (ports: Ports, groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
+const callGroupListWith = (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  allLists(ports, groupId),
-  TE.getOrElse(shouldNotBeCalled),
-)();
+  allLists,
+  selectAllListsOwnedBy(groupId),
+);
 
 describe('all-lists', () => {
   const group = arbitraryGroup();
   const groupId = group.id;
 
-  describe('when the list owner exists', () => {
-    const ports = {
-      getGroup: () => TE.right(group),
-    };
+  describe('common properties', () => {
+    let result: List;
 
-    describe('common properties', () => {
-      let result: ListDetails;
-
-      beforeEach(async () => {
-        result = await callGroupListWith(ports, group.id, []);
-      });
-
-      it('returns the list name', () => {
-        expect(result.name).not.toBeNull();
-      });
-
-      it('returns the list description', () => {
-        expect(result.description).toContain(group.name);
-      });
-
-      it('returns the owner name', () => {
-        expect(result.ownerName).toBe(group.name);
-      });
-
-      it('returns the owner avatar path', () => {
-        expect(result.ownerAvatarPath).toBe(group.avatarPath);
-      });
-
-      it('returns the owner href', () => {
-        expect(result.ownerHref).toContain(group.slug);
-      });
+    beforeEach(() => {
+      result = callGroupListWith(group.id, []);
     });
 
-    describe('when the list contains no articles', () => {
-      let result: ListDetails;
-
-      beforeEach(async () => {
-        result = await callGroupListWith(ports, group.id, []);
-      });
-
-      it('returns a count of 0', () => {
-        expect(result.articleCount).toBe(0);
-      });
-
-      it('returns no last updated date', () => {
-        expect(result.lastUpdated).toStrictEqual(O.none);
-      });
+    it('returns the list name', () => {
+      expect(result.name).not.toBeNull();
     });
 
-    describe('when the list contains some articles', () => {
-      const newerDate = new Date('2021-07-08');
-      let result: ListDetails;
+    it('returns the list description', () => {
+      expect(result.description).not.toBeNull();
+    });
+  });
 
-      beforeEach(async () => {
-        result = await callGroupListWith(ports, group.id, [
-          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
-        ]);
-      });
+  describe('when the list contains no articles', () => {
+    let result: List;
 
-      it('returns a count of the articles', () => {
-        expect(result.articleCount).toBe(2);
-      });
-
-      it('returns the last updated date', () => {
-        expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
-      });
+    beforeEach(() => {
+      result = callGroupListWith(group.id, []);
     });
 
-    describe('when the group has evaluated one article more than once', () => {
-      const newerDate = new Date('2021-07-08');
-      const articleId = arbitraryDoi();
-      let result: ListDetails;
-
-      beforeEach(async () => {
-        result = await callGroupListWith(ports, group.id, [
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
-        ]);
-      });
-
-      it('returns a count of 1', () => {
-        expect(result.articleCount).toBe(1);
-      });
-
-      it('returns the last updated date', () => {
-        expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
-      });
+    it('returns a count of 0', () => {
+      expect(result.articleCount).toBe(0);
     });
 
-    describe('when a list with a different owner contains some articles', () => {
-      let result: ListDetails;
+    it('returns no last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.none);
+    });
+  });
 
-      beforeEach(async () => {
-        result = await callGroupListWith(ports, group.id, [
-          groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-        ]);
-      });
+  describe('when the list contains some articles', () => {
+    const newerDate = new Date('2021-07-08');
+    let result: List;
 
-      it('returns a count of 0', () => {
-        expect(result.articleCount).toBe(0);
-      });
-
-      it('returns no last updated date', () => {
-        expect(result.lastUpdated).toStrictEqual(O.none);
-      });
+    beforeEach(() => {
+      result = callGroupListWith(group.id, [
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+      ]);
     });
 
-    describe('when the list owner does not exist', () => {
-      it.todo('returns not found');
+    it('returns a count of the articles', () => {
+      expect(result.articleCount).toBe(2);
+    });
+
+    it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+    });
+  });
+
+  describe('when the group has evaluated one article more than once', () => {
+    const newerDate = new Date('2021-07-08');
+    const articleId = arbitraryDoi();
+    let result: List;
+
+    beforeEach(() => {
+      result = callGroupListWith(group.id, [
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+      ]);
+    });
+
+    it('returns a count of 1', () => {
+      expect(result.articleCount).toBe(1);
+    });
+
+    it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+    });
+  });
+
+  describe('when a list with a different owner contains some articles', () => {
+    let result: List;
+
+    beforeEach(() => {
+      result = callGroupListWith(group.id, [
+        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      ]);
+    });
+
+    it('returns a count of 0', () => {
+      expect(result.articleCount).toBe(0);
+    });
+
+    it('returns no last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.none);
     });
   });
 });

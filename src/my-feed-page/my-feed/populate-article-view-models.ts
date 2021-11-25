@@ -29,7 +29,6 @@ const populateArticleViewModel = (
   TO.map((articleDetails) => ({
     ...articleActivity,
     latestVersionDate: articleDetails.latestVersionDate,
-    latestActivityDate: O.some(articleActivity.latestActivityDate),
     authors: articleDetails.authors,
     title: articleDetails.title,
   })),

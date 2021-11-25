@@ -12,10 +12,6 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 
-type FollowedGroupsActivities = (
-  events: ReadonlyArray<DomainEvent>
-) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<ArticleActivity>;
-
 type ActivityDetails = {
   latestActivityDate: Date,
   evaluatedByFollowedGroup: boolean,
@@ -61,13 +57,21 @@ const addEventToActivities = (
   (activity) => activities.set(event.articleId.value, activity),
 );
 
-const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
+const byLatestActivityDateDesc: Ord.Ord<{
+  doi: Doi,
+  latestActivityDate: Date,
+  evaluationCount: number,
+}> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap(
     (activityDetails) => (activityDetails.latestActivityDate),
   ),
 );
+
+type FollowedGroupsActivities = (
+  events: ReadonlyArray<DomainEvent>
+) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<ArticleActivity>;
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
@@ -79,4 +83,8 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
   )),
   RM.values(byLatestActivityDateDesc),
   RA.takeLeft(20),
+  RA.map((activity) => ({
+    ...activity,
+    latestActivityDate: O.some(activity.latestActivityDate),
+  })),
 );

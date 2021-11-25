@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
@@ -21,7 +20,6 @@ describe('group page', () => {
           fetchStaticFile: shouldNotBeCalled,
           follows: shouldNotBeCalled,
           getAllEvents: T.of([]),
-          getGroup: () => TE.left(DE.notFound),
           getUserDetailsBatch: shouldNotBeCalled,
         })(groupPageTabs.lists),
         T.map(flow(

@@ -44,7 +44,6 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
     (error) => ({
       ...evaluatedArticle,
       href: `/articles/${evaluatedArticle.doi.value}`,
-      latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
       error,
     }),
     (articleDetails) => ({
@@ -52,7 +51,6 @@ const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) =>
       ...articleDetails,
       authors: articleDetails.authors,
       latestVersionDate: articleDetails.latestVersionDate,
-      latestActivityDate: O.some(evaluatedArticle.latestActivityDate),
     }),
   ),
 );

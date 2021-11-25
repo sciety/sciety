@@ -9,15 +9,15 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
   {
-    first: userListCard(ports)(
+    first: userListCard({ ...ports, getUserDetails: () => TE.right(card1) })(
       card1.userId,
       card1.description,
     ),
-    second: userListCard(ports)(
+    second: userListCard({ ...ports, getUserDetails: () => TE.right(card2) })(
       card2.userId,
       card2.description,
     ),
-    third: userListCard(ports)(
+    third: userListCard({ ...ports, getUserDetails: () => TE.right(card3) })(
       card3.userId,
       card3.description,
     ),
