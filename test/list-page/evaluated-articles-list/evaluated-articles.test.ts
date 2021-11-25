@@ -1,5 +1,6 @@
 /* eslint-disable jest/expect-expect */
 import { performance } from 'perf_hooks';
+import * as O from 'fp-ts/Option';
 import {
   groupEvaluatedArticle,
 } from '../../../src/domain-events';
@@ -48,7 +49,7 @@ describe('evaluated-articles', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: date,
+          latestActivityDate: O.some(date),
         }),
       ]);
     });
@@ -98,7 +99,7 @@ describe('evaluated-articles', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate,
+          latestActivityDate: O.some(latestActivityDate),
         }),
       ]);
     });
@@ -152,7 +153,7 @@ describe('evaluated-articles', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: mostRecentActivityDate,
+          latestActivityDate: O.some(mostRecentActivityDate),
         }),
       ]);
     });
@@ -182,10 +183,10 @@ describe('evaluated-articles', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: laterDate,
+          latestActivityDate: O.some(laterDate),
         }),
         expect.objectContaining({
-          latestActivityDate: earlierDate,
+          latestActivityDate: O.some(earlierDate),
         }),
       ]);
     });

@@ -36,7 +36,7 @@ describe('construct-all-article-activity-read-model', () => {
     it('returns the activity for that article', () => {
       expect(articleActivity).toStrictEqual(O.some({
         doi: articleId,
-        latestActivityDate: laterDate,
+        latestActivityDate: O.some(laterDate),
         evaluationCount: 2,
       }));
     });

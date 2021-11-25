@@ -63,7 +63,12 @@ const addEventToActivities = (
   (activity) => activities.set(event.articleId.value, activity),
 );
 
-const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivityByGroup: Date }> = pipe(
+const byLatestActivityDateByGroupDesc: Ord.Ord<{
+  doi: Doi,
+  latestActivityDate: Date,
+  evaluationCount: number,
+  latestActivityByGroup: Date,
+}> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap(
@@ -90,4 +95,8 @@ export const evaluatedArticles = (groupId: GroupId) => (
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
+  RA.map((activity) => ({
+    ...activity,
+    latestActivityDate: O.some(activity.latestActivityDate),
+  })),
 );

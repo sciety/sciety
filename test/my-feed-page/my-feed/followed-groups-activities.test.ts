@@ -1,4 +1,5 @@
 import { performance } from 'perf_hooks';
+import * as O from 'fp-ts/Option';
 import {
   groupEvaluatedArticle,
   GroupEvaluatedArticleEvent,
@@ -59,7 +60,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
+          latestActivityDate: O.some(new Date('2020-12-15T00:00:00.000Z')),
         }),
       ]);
     });
@@ -128,7 +129,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate,
+          latestActivityDate: O.some(latestActivityDate),
         }),
       ]);
     });
@@ -181,7 +182,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
+          latestActivityDate: O.some(new Date('2021-03-10T00:00:00.000Z')),
         }),
       ]);
     });
@@ -211,10 +212,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: laterDate,
+          latestActivityDate: O.some(laterDate),
         }),
         expect.objectContaining({
-          latestActivityDate: earlierDate,
+          latestActivityDate: O.some(earlierDate),
         }),
       ]);
     });
