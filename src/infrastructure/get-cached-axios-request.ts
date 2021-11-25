@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { RedisStore, setupCache } from 'axios-cache-adapter';
-import redis from 'redis';
+import * as redis from 'redis';
 import { Logger } from './logger';
 
 let store;
 if (process.env.APP_CACHE === 'redis') {
   const client = redis.createClient({
-    host: 'sciety_cache',
+    socket: { host: 'sciety_cache' },
   });
   store = new RedisStore(client);
 }
