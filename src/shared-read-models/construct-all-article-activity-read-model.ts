@@ -2,11 +2,11 @@ import { DomainEvent } from '../domain-events';
 import { ArticleActivity } from '../types/article-activity';
 import { Doi } from '../types/doi';
 
-type AllArticleActivityReadModel = Record<string, ArticleActivity>;
+export type AllArticleActivityReadModel = Record<string, ArticleActivity>;
 
-type AllArticleActivity = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
+type ConstructAllArticleActivityReadModel = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
 
-export const allArticleActivity: AllArticleActivity = () => ({
+export const constructAllArticleActivityReadModel: ConstructAllArticleActivityReadModel = () => ({
   // NCRC High impact:
   '10.1101/2021.11.04.467308': {
     doi: new Doi('10.1101/2021.11.04.467308'),
