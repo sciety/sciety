@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../src/domain-events';
-import { constructAllArticleActivityReadModel } from '../../src/shared-read-models/construct-all-article-activity-read-model';
+import { activityForDoi, constructAllArticleActivityReadModel } from '../../src/shared-read-models/construct-all-article-activity-read-model';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -14,7 +13,7 @@ describe('construct-all-article-activity-read-model', () => {
     const articleActivity = pipe(
       [],
       constructAllArticleActivityReadModel,
-      R.lookup(articleId.value),
+      (readModel) => activityForDoi(readModel)(articleId),
     );
 
     it('article is not in the read model', () => {
@@ -31,10 +30,10 @@ describe('construct-all-article-activity-read-model', () => {
         groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId(), laterDate),
       ],
       constructAllArticleActivityReadModel,
-      R.lookup(articleId.value),
+      (readModel) => activityForDoi(readModel)(articleId),
     );
 
-    it.skip('returns the activity for that article', () => {
+    it('returns the activity for that article', () => {
       expect(articleActivity).toStrictEqual(O.some({
         doi: articleId,
         latestActivityDate: laterDate,
