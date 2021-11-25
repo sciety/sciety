@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { ArticleActivity } from '../types/article-activity';
