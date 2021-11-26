@@ -3,12 +3,11 @@ import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-
-const arbitraryListId = () => `list-id-${arbitraryWord(6)}`;
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryGroupId();

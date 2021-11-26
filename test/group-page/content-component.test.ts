@@ -8,9 +8,8 @@ import { contentComponent } from '../../src/group-page/content-component';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
-
-const arbitraryListId = arbitraryString;
 
 describe('content-component', () => {
   const group = arbitraryGroup();
