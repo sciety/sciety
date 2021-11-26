@@ -1,38 +1,41 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
+import { listCreated } from '../../../src/domain-events/list-created-event';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
+import { arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-describe('select-all-lists-owned-by', () => {
-  const group = arbitraryGroup();
-  const groupId = group.id;
+const arbitraryListId = () => `list-id-${arbitraryWord(6)}`;
 
-  describe('common properties', () => {
+describe('select-all-lists-owned-by', () => {
+  const ownerId = arbitraryGroupId();
+
+  describe('when the group does not own any list', () => {
     const result = pipe(
       [],
-      selectAllListsOwnedBy(group.id),
-      (lists) => lists[0],
+      selectAllListsOwnedBy(ownerId),
     );
 
-    it('returns the list name', () => {
-      expect(result.name).not.toBeNull();
-    });
-
-    it('returns the list description', () => {
-      expect(result.description).not.toBeNull();
+    it.skip('returns an empty array of lists', () => {
+      expect(result).toStrictEqual([]);
     });
   });
 
-  describe('when the list contains no articles', () => {
+  describe('when the group owns an empty list', () => {
     const result = pipe(
-      [],
-      selectAllListsOwnedBy(group.id),
+      [
+        listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), ownerId),
+      ],
+      selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
     );
+
+    it.todo('returns a title');
+
+    it.todo('returns a description');
 
     it('returns a count of 0', () => {
       expect(result.articleCount).toBe(0);
@@ -43,17 +46,22 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the list contains some articles', () => {
+  describe('when the group owns a list whose content is determined by evaluation events', () => {
     const newerDate = new Date('2021-07-08');
 
     const result = pipe(
       [
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
+        groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId(), newerDate),
       ],
-      selectAllListsOwnedBy(group.id),
+      selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
     );
+
+    it.todo('returns a title');
+
+    it.todo('returns a description');
 
     it('returns a count of the articles', () => {
       expect(result.articleCount).toBe(2);
@@ -64,16 +72,17 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the group has evaluated one article more than once', () => {
-    const newerDate = new Date('2021-07-08');
+  describe('when the group owns a list whose content is determined by evaluation events and the group has evaluated one article more than once', () => {
+    const olderDate = new Date('2021-07-08');
     const articleId = arbitraryDoi();
 
     const result = pipe(
       [
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+        listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
+        groupEvaluatedArticle(ownerId, articleId, arbitraryReviewId(), olderDate),
+        groupEvaluatedArticle(ownerId, articleId, arbitraryReviewId()),
       ],
-      selectAllListsOwnedBy(group.id),
+      selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
     );
 
@@ -81,26 +90,23 @@ describe('select-all-lists-owned-by', () => {
       expect(result.articleCount).toBe(1);
     });
 
-    it('returns the last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+    it.skip('returns the date of the article first being added to the list', () => {
+      expect(result.lastUpdated).toStrictEqual(O.some(olderDate));
     });
   });
 
   describe('when a list with a different owner contains some articles', () => {
+    const anotherOwnerId = arbitraryGroupId();
     const result = pipe(
       [
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), anotherOwnerId),
+        groupEvaluatedArticle(anotherOwnerId, arbitraryDoi(), arbitraryReviewId()),
       ],
-      selectAllListsOwnedBy(group.id),
-      (lists) => lists[0],
+      selectAllListsOwnedBy(ownerId),
     );
 
-    it('returns a count of 0', () => {
-      expect(result.articleCount).toBe(0);
-    });
-
-    it('returns no last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.none);
+    it.skip('returns an empty array of lists', () => {
+      expect(result).toStrictEqual([]);
     });
   });
 });
