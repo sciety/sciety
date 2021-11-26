@@ -11,15 +11,15 @@ export type ListCreatedEvent = Readonly<{
   ownerId: GroupId,
 }>;
 
-// ts-unused-exports:disable-next-line
 export const listCreated = (
   listId: ListId,
   name: string,
   description: string,
   ownerId: GroupId,
+  date = new Date(),
 ): ListCreatedEvent => ({
   type: 'ListCreated',
-  date: new Date(),
+  date,
   listId,
   name,
   description,
