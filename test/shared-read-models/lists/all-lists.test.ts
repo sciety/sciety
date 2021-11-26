@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, groupEvaluatedArticle } from '../../../src/domain-events';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
-import { allLists, List } from '../../../src/shared-read-models/lists/all-lists';
+import { constructListsReadModel, List } from '../../../src/shared-read-models/lists/construct-lists-read-model';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -11,7 +11,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 const callGroupListWith = (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  allLists,
+  constructListsReadModel,
   selectAllListsOwnedBy(groupId),
 );
 

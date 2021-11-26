@@ -1,1 +1,1 @@
-export { selectAllListsOwnedBy } from './all-lists';
+export { selectAllListsOwnedBy } from './select-all-lists-owned-by';
