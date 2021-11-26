@@ -1,1 +1,1 @@
-export { activityForDoi } from './construct-all-article-activity-read-model';
+export { getActivityForDoi } from './construct-all-article-activity-read-model';

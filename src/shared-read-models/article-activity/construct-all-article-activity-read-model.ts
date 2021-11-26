@@ -32,7 +32,7 @@ export const constructAllArticleActivityReadModel: ConstructAllArticleActivityRe
   RA.reduce(new Map<string, ArticleActivity>(), addEventToActivities),
 );
 
-export const activityForDoi = (
+export const getActivityForDoi = (
   activities: AllArticleActivityReadModel,
 ) => (
   doi: Doi,
