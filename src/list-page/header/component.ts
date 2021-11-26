@@ -5,7 +5,7 @@ import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
 import { selectAllListsOwnedBy } from '../../shared-read-models/lists';
-import { constructListsReadModel, List } from '../../shared-read-models/lists/construct-lists-read-model';
+import { List } from '../../shared-read-models/lists/construct-lists-read-model';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -31,7 +31,6 @@ export const component = (
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.map(constructListsReadModel),
   TE.map(selectAllListsOwnedBy(group.id)),
   TE.chain(augmentWithOwnerDetails(ports)),
   TE.map(renderComponent),

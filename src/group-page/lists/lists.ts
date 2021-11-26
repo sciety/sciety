@@ -8,7 +8,6 @@ import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { selectAllListsOwnedBy } from '../../shared-read-models/lists';
-import { constructListsReadModel } from '../../shared-read-models/lists/construct-lists-read-model';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -65,7 +64,6 @@ const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.map(constructListsReadModel),
   TE.map(selectAllListsOwnedBy(group.id)),
   TE.map((details) => ({
     ...details,

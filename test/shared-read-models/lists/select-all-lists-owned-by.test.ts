@@ -1,21 +1,14 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, groupEvaluatedArticle } from '../../../src/domain-events';
+import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
-import { constructListsReadModel, List } from '../../../src/shared-read-models/lists/construct-lists-read-model';
-import { GroupId } from '../../../src/types/group-id';
+import { List } from '../../../src/shared-read-models/lists/construct-lists-read-model';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const callGroupListWith = (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
-  events,
-  constructListsReadModel,
-  selectAllListsOwnedBy(groupId),
-);
-
-describe('all-lists', () => {
+describe('select-all-lists-owned-by', () => {
   const group = arbitraryGroup();
   const groupId = group.id;
 
@@ -23,7 +16,10 @@ describe('all-lists', () => {
     let result: List;
 
     beforeEach(() => {
-      result = callGroupListWith(group.id, []);
+      result = pipe(
+        [],
+        selectAllListsOwnedBy(group.id),
+      );
     });
 
     it('returns the list name', () => {
@@ -39,7 +35,10 @@ describe('all-lists', () => {
     let result: List;
 
     beforeEach(() => {
-      result = callGroupListWith(group.id, []);
+      result = pipe(
+        [],
+        selectAllListsOwnedBy(group.id),
+      );
     });
 
     it('returns a count of 0', () => {
@@ -56,10 +55,13 @@ describe('all-lists', () => {
     let result: List;
 
     beforeEach(() => {
-      result = callGroupListWith(group.id, [
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
-      ]);
+      result = pipe(
+        [
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        ],
+        selectAllListsOwnedBy(group.id),
+      );
     });
 
     it('returns a count of the articles', () => {
@@ -77,10 +79,13 @@ describe('all-lists', () => {
     let result: List;
 
     beforeEach(() => {
-      result = callGroupListWith(group.id, [
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
-      ]);
+      result = pipe(
+        [
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+        ],
+        selectAllListsOwnedBy(group.id),
+      );
     });
 
     it('returns a count of 1', () => {
@@ -96,9 +101,12 @@ describe('all-lists', () => {
     let result: List;
 
     beforeEach(() => {
-      result = callGroupListWith(group.id, [
-        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      ]);
+      result = pipe(
+        [
+          groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        ],
+        selectAllListsOwnedBy(group.id),
+      );
     });
 
     it('returns a count of 0', () => {
