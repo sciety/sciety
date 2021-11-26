@@ -1,4 +1,3 @@
-import { listCreationEvents } from './../../../src/shared-read-models/lists/list-creation-data';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
@@ -26,18 +25,24 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the group owns an empty list', () => {
+    const listName = arbitraryString();
+    const listDescription = arbitraryString();
     const listCreationDate = arbitraryDate();
     const result = pipe(
       [
-        listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), ownerId, listCreationDate),
+        listCreated(arbitraryListId(), listName, listDescription, ownerId, listCreationDate),
       ],
       selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
     );
 
-    it.todo('returns a title');
+    it.skip('returns the list name', () => {
+      expect(result.name).toBe(listName);
+    });
 
-    it.todo('returns a description');
+    it.skip('returns the list description', () => {
+      expect(result.description).toBe(listDescription);
+    });
 
     it('returns a count of 0', () => {
       expect(result.articleCount).toBe(0);
@@ -49,11 +54,13 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the group owns a list whose content is determined by evaluation events', () => {
+    const listName = 'Evaluated articles';
+    const listDescription = arbitraryString();
     const newerDate = new Date('2021-07-08');
 
     const result = pipe(
       [
-        listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
+        listCreated(arbitraryListId(), listName, listDescription, ownerId),
         groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId(), newerDate),
       ],
@@ -61,9 +68,13 @@ describe('select-all-lists-owned-by', () => {
       (lists) => lists[0],
     );
 
-    it.todo('returns a title');
+    it('returns the list name', () => {
+      expect(result.name).toBe(listName);
+    });
 
-    it.todo('returns a description');
+    it.skip('returns the list description', () => {
+      expect(result.description).toBe(listDescription);
+    });
 
     it('returns a count of the articles', () => {
       expect(result.articleCount).toBe(2);
