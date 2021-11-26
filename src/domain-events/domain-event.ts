@@ -1,5 +1,6 @@
 import { GroupCreatedEvent } from './group-created-event';
 import { GroupEvaluatedArticleEvent } from './group-evaluated-article-event';
+import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
@@ -13,6 +14,7 @@ import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 export type DomainEvent =
   GroupCreatedEvent |
   GroupEvaluatedArticleEvent |
+  ListCreatedEvent |
   UserSavedArticleEvent |
   UserUnsavedArticleEvent |
   UserFollowedEditorialCommunityEvent |
