@@ -1,6 +1,5 @@
 import { GroupId } from '../types/group-id';
-
-type ListId = string;
+import { ListId } from '../types/list-id';
 
 export type ListCreatedEvent = Readonly<{
   type: 'ListCreated',

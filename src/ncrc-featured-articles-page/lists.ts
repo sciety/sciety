@@ -1,10 +1,7 @@
 import { Doi } from '../types/doi';
+import { ListId } from '../types/list-id';
 
-type ListId = string;
-
-type List = ReadonlyArray<Doi>;
-
-export const lists: Record<ListId, List> = {
+export const lists: Record<ListId, ReadonlyArray<Doi>> = {
   'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': [
     new Doi('10.1101/2021.11.04.467308'),
     new Doi('10.1101/2021.09.15.21263613'),

@@ -1,19 +1,5 @@
-import * as O from 'fp-ts/Option';
 import { listCreated, ListCreatedEvent } from '../../domain-events/list-created-event';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Doi } from '../../types/doi';
 import * as GID from '../../types/group-id';
-
-type ListId = string;
-
-type List = {
-  listId: ListId,
-  name: string,
-  description: string,
-  ownerId: GID.GroupId,
-  members: ReadonlyArray<Doi>,
-  lastUpdated: Date,
-};
 
 export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
   listCreated(
@@ -143,36 +129,3 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     new Date('2021-11-22T15:09:00Z'),
   ),
 ];
-
-type AllListsReadModel = Record<ListId, List>;
-
-// Queries:
-
-// getAllEvents,
-// T.map(allListsReadModel),
-// T.map(selectAllListsOwnedBy(groupId)),
-type SelectAllListsOwnedBy = (groupId: GID.GroupId) => (readModel: AllListsReadModel) => ReadonlyArray<List>;
-
-// getAllEvents,
-// T.map(allListsReadModel),
-// T.map(selectList(listId)),
-type SelectList = (listId: ListId) => (readModel: AllListsReadModel) => O.Option<List>;
-
-type ListPageHeaderViewModel = {
-  name: string,
-  description: string,
-  ownerName: string,
-  ownerHref: string,
-  ownerAvatarPath: string,
-  articleCount: number,
-  lastUpdated: Date, // possibly coupled to user list cards
-};
-
-type ListCardViewModel = {
-  title: string,
-  description: string,
-  href: string,
-  articleCount: number,
-  articleCountLabel: string, // possibly coupled to user list cards
-  lastUpdated: Date, // possibly coupled to user list cards
-};
