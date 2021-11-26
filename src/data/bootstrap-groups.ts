@@ -2,6 +2,25 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { Group } from '../types/group';
 import * as Gid from '../types/group-id';
 
+// Group creation times:
+//
+// 10360d97-bf52-4aef-b2fa-2f60d319edd7 new Date('2020-08-12T13:59:31Z'),
+// 19b7464a-edbe-42e8-b7cc-04d1eb1f7332 new Date('2020-08-17T13:07:08Z'),
+// 316db7d9-88cc-4c26-b386-f067e0f56334 new Date('2020-08-12T13:59:31Z'),
+// 32025f28-0506-480e-84a0-b47ef1e92ec5 new Date('2020-08-17T13:56:40Z'),
+// 4bbf0c12-629b-4bb8-91d6-974f4df8efb2 new Date('2021-06-29T08:13:16Z'),
+// 4eebcec9-a4bb-44e1-bde3-2ae11e65daaa new Date('2020-08-17T13:56:40Z'),
+// 50401e46-b764-47b7-8557-6bb35444b7c8 new Date('2021-06-29T08:13:16Z'),
+// 5142a5bc-6b18-42b1-9a8d-7342d7d17e94 new Date('2021-05-13T14:33:27Z'),
+// 53ed5364-a016-11ea-bb37-0242ac130002 new Date('2020-08-12T13:53:54Z'),
+// 62f9b0d0-8d43-4766-a52a-ce02af61bc6a new Date('2021-02-18T10:28:53Z'),
+// 74fd66e9-3b90-4b5a-a4ab-5be83db4c5de new Date('2020-08-12T13:59:31Z'),
+// 7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84 new Date('2020-08-17T13:56:40Z'),
+// 8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65 new Date('2021-05-13T10:39:42Z'),
+// b560187e-f2fb-4ff9-a861-a204f3fc0fb0 new Date('2020-08-12T13:59:31Z'),
+// b90854bf-795c-42ba-8664-8257b9c68b0c new Date('2021-06-29T08:13:16Z'),
+// f97bd177-5cb6-4296-8573-078318755bf2 new Date('2021-01-05T11:43:07Z'),
+
 const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
     id: Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),

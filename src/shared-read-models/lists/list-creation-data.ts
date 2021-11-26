@@ -22,7 +22,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     description: 'Articles that have been evaluated by Biophysics Colab.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-06-29T08:13:17Z'),
   },
   {
     type: 'ListCreated',
@@ -30,7 +30,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
     description: 'Articles that have been evaluated by ASAPbio crowd review.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-06-29T08:13:17Z'),
   },
   {
     type: 'ListCreated',
@@ -38,7 +38,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     description: 'Articles that have been evaluated by NCRC.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-02-18T10:28:54Z'),
   },
   {
     type: 'ListCreated',
@@ -46,7 +46,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
     description: 'Articles that have been evaluated by Rapid Reviews COVID-19.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-05-13T14:33:28Z'),
   },
   {
     type: 'ListCreated',
@@ -54,7 +54,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     description: 'Articles that have been evaluated by eLife.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-12T13:59:32Z'),
   },
   {
     type: 'ListCreated',
@@ -62,7 +62,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
     description: 'Articles that have been evaluated by ScreenIT.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-05-13T10:39:43Z'),
   },
   {
     type: 'ListCreated',
@@ -70,7 +70,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
     description: 'Articles that have been evaluated by preLights.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-01-05T11:43:08Z'),
   },
   {
     type: 'ListCreated',
@@ -78,7 +78,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     description: 'Articles that have been evaluated by PREreview.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-12T13:59:32Z'),
   },
   {
     type: 'ListCreated',
@@ -86,7 +86,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('53ed5364-a016-11ea-bb37-0242ac130002'),
     description: 'Articles that have been evaluated by PeerJ.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-12T13:53:55Z'),
   },
   {
     type: 'ListCreated',
@@ -94,7 +94,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
     description: 'Articles that have been evaluated by Review Commons.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-12T13:59:32Z'),
   },
   {
     type: 'ListCreated',
@@ -102,7 +102,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     description: 'Articles that have been evaluated by Peer Community In Zoology.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-12T13:59:32Z'),
   },
   {
     type: 'ListCreated',
@@ -110,7 +110,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
     description: 'Articles that have been evaluated by Peer Community in Evolutionary Biology.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-17T13:07:09Z'),
   },
   {
     type: 'ListCreated',
@@ -118,7 +118,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
     description: 'Articles that have been evaluated by Peer Community in Ecology.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-17T13:56:41Z'),
   },
   {
     type: 'ListCreated',
@@ -126,7 +126,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     description: 'Articles that have been evaluated by Peer Community in Animal Science.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-17T13:56:41Z'),
   },
   {
     type: 'ListCreated',
@@ -134,7 +134,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     description: 'Articles that have been evaluated by Peer Community in Archaeology.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2021-06-29T08:13:17Z'),
   },
   {
     type: 'ListCreated',
@@ -142,7 +142,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     name: 'Evaluated articles',
     ownerId: GID.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
     description: 'Articles that have been evaluated by Peer Community in Paleontology.',
-    date: new Date(), // not sure what value to put here
+    date: new Date('2020-08-17T13:56:41Z'),
   },
   {
     type: 'ListCreated',
