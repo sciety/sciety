@@ -3,14 +3,19 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity } from '../../src/domain-events';
+import { listCreated } from '../../src/domain-events/list-created-event';
 import { contentComponent } from '../../src/group-page/content-component';
+import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
+const arbitraryListId = arbitraryString;
+
 describe('content-component', () => {
   const group = arbitraryGroup();
   const events = [
+    listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), group.id),
     userFollowedEditorialCommunity(arbitraryUserId(), group.id),
     userFollowedEditorialCommunity(arbitraryUserId(), group.id),
   ];
@@ -33,6 +38,6 @@ describe('content-component', () => {
     )();
     const followersTabLabel = content.querySelector('.tab:nth-child(3)')?.textContent;
 
-    expect(followersTabLabel).toContain(`(${events.length})`);
+    expect(followersTabLabel).toContain('(2)');
   });
 });
