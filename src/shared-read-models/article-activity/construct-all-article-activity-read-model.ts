@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
-import { Doi } from '../../types/doi';
 
 export type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
@@ -30,18 +29,4 @@ export const constructAllArticleActivityReadModel: ConstructAllArticleActivityRe
   events,
   RA.filter(isGroupEvaluatedArticleEvent),
   RA.reduce(new Map<string, ArticleActivity>(), addEventToActivities),
-);
-
-export const getActivityForDoi = (
-  activities: AllArticleActivityReadModel,
-) => (
-  doi: Doi,
-): ArticleActivity => pipe(
-  activities.get(doi.value),
-  O.fromNullable,
-  O.getOrElseW(() => ({
-    doi,
-    latestActivityDate: O.none,
-    evaluationCount: 0,
-  })),
 );

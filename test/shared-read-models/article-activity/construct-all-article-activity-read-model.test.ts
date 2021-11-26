@@ -1,7 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
-import { constructAllArticleActivityReadModel, getActivityForDoi } from '../../../src/shared-read-models/article-activity/construct-all-article-activity-read-model';
+import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
+import { constructAllArticleActivityReadModel } from '../../../src/shared-read-models/article-activity/construct-all-article-activity-read-model';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
