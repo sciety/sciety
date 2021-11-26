@@ -6,8 +6,6 @@ import { ArticleActivity } from '../../types/article-activity';
 
 type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
-type ConstructAllArticleActivityReadModel = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
-
 const addEventToActivities = (state: AllArticleActivityReadModel, event: GroupEvaluatedArticleEvent) => pipe(
   state.get(event.articleId.value),
   O.fromNullable,
@@ -24,6 +22,8 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: GroupEv
     }),
   ),
 );
+
+type ConstructAllArticleActivityReadModel = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
 
 export const constructAllArticleActivityReadModel: ConstructAllArticleActivityReadModel = (events) => pipe(
   events,
