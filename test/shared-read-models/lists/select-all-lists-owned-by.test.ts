@@ -36,11 +36,11 @@ describe('select-all-lists-owned-by', () => {
       (lists) => lists[0],
     );
 
-    it.skip('returns the list name', () => {
+    it('returns the list name', () => {
       expect(result.name).toBe(listName);
     });
 
-    it.skip('returns the list description', () => {
+    it('returns the list description', () => {
       expect(result.description).toBe(listDescription);
     });
 
@@ -48,7 +48,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.articleCount).toBe(0);
     });
 
-    it.skip('returns the list creation date as last updated date', () => {
+    it('returns the list creation date as last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(O.some(listCreationDate));
     });
   });
@@ -72,7 +72,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.name).toBe(listName);
     });
 
-    it.skip('returns the list description', () => {
+    it('returns the list description', () => {
       expect(result.description).toBe(listDescription);
     });
 

@@ -1,9 +1,7 @@
-import * as M from 'fp-ts/Map';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import { pipe } from 'fp-ts/function';
-import { createListFromEvaluationEvents } from './create-list-from-evaluation-events';
 import { List } from './list';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../../domain-events';
 import { ListCreatedEvent } from '../../domain-events/list-created-event';
@@ -20,12 +18,13 @@ const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<Domai
   RS.size,
 );
 
-const calculateLastUpdated = (ownerId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+const calculateLastUpdated = (ownerId: GroupId, listCreationDate: Date) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === ownerId),
   RA.last,
   O.map((event) => event.date),
+  O.getOrElse(() => listCreationDate),
 );
 
 export const constructListsReadModel = (
@@ -33,28 +32,22 @@ export const constructListsReadModel = (
 ): ReadModel => pipe(
   events,
   RA.filter((event): event is ListCreatedEvent => event.type === 'ListCreated'),
-  RA.map((event): List => ({
+  RA.map((event) => ({
     ...event,
     articleCount: 0,
-    lastUpdated: O.some(event.date),
+    lastUpdated: event.date,
   })),
   RA.map((list) => ({
     ...list,
     articleCount: pipe(events, calculateArticleCount(list.ownerId)),
-    lastUpdated: pipe(events, calculateLastUpdated(list.ownerId)),
+    lastUpdated: pipe(
+      events,
+      calculateLastUpdated(list.ownerId, list.lastUpdated),
+      O.some,
+    ),
   })),
-  () => events,
-  RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
   RA.reduce(
-    new Map<GroupId, Array<GroupEvaluatedArticleEvent>>(),
-    (accumulator, event) => {
-      if (accumulator.has(event.groupId)) {
-        accumulator.get(event.groupId)?.push(event);
-      } else {
-        accumulator.set(event.groupId, [event]);
-      }
-      return accumulator;
-    },
+    new Map<GroupId, List>(),
+    (readModel, list) => readModel.set(list.ownerId, list),
   ),
-  M.mapWithIndex(createListFromEvaluationEvents),
 );
