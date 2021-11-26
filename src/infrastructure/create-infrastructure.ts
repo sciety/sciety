@@ -30,6 +30,7 @@ import {
 } from './logger';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
@@ -91,6 +92,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...eventsFromDataFiles,
             ...eventsFromDatabase,
             ...groupEvents,
+            ...listCreationEvents,
           ],
           A.sort(DomainEvent.byDate),
         ),
