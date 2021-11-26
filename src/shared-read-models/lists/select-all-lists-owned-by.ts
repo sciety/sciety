@@ -8,7 +8,9 @@ import { List } from './list';
 import { DomainEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 
-export const selectAllListsOwnedBy = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>): ReadonlyArray<List> => pipe(
+type SelectAllListsOwnedBy = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<List>;
+
+export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (groupId) => (events) => pipe(
   events,
   constructListsReadModel,
   RM.lookup(S.Eq)(groupId),
