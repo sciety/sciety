@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
-import { allLists, List, selectAllListsOwnedBy } from '../../shared-read-models/all-lists';
+import { allLists, List, selectAllListsOwnedBy } from '../../shared-read-models/lists/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';

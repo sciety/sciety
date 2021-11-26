@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, groupEvaluatedArticle } from '../../src/domain-events';
-import { allLists, List, selectAllListsOwnedBy } from '../../src/shared-read-models/all-lists';
-import { GroupId } from '../../src/types/group-id';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryGroup } from '../types/group.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { DomainEvent, groupEvaluatedArticle } from '../../../src/domain-events';
+import { allLists, List, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/all-lists';
+import { GroupId } from '../../../src/types/group-id';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 const callGroupListWith = (groupId: GroupId, events: ReadonlyArray<DomainEvent>) => pipe(
   events,

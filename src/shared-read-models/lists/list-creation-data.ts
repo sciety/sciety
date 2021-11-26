@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as O from 'fp-ts/Option';
-import { Doi } from '../types/doi';
-import * as GID from '../types/group-id';
+import { Doi } from '../../types/doi';
+import * as GID from '../../types/group-id';
 
 // type ListCreatedEvent = {
 //   listId: string,

@@ -7,7 +7,7 @@ import { DomainEvent } from '../../domain-events';
 import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
-import { allLists, selectAllListsOwnedBy } from '../../shared-read-models/all-lists';
+import { allLists, selectAllListsOwnedBy } from '../../shared-read-models/lists/all-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
