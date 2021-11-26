@@ -31,6 +31,7 @@ export const component = (
   ports.getAllEvents,
   TE.rightTask,
   TE.map(selectAllListsOwnedBy(group.id)),
+  TE.map((lists) => lists[0]),
   TE.chain(augmentWithOwnerDetails(ports)),
   TE.map(renderComponent),
 );

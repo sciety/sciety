@@ -65,6 +65,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   ports.getAllEvents,
   TE.rightTask,
   TE.map(selectAllListsOwnedBy(group.id)),
+  TE.map((l) => l[0]),
   TE.map((details) => ({
     ...details,
     href: `/groups/${group.slug}/evaluated-articles`,
