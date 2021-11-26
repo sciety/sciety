@@ -1,9 +1,10 @@
+import { listCreationEvents } from './../../../src/shared-read-models/lists/list-creation-data';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { groupEvaluatedArticle } from '../../../src/domain-events';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
-import { arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -25,9 +26,10 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the group owns an empty list', () => {
+    const listCreationDate = arbitraryDate();
     const result = pipe(
       [
-        listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), ownerId),
+        listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), ownerId, listCreationDate),
       ],
       selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
@@ -41,8 +43,8 @@ describe('select-all-lists-owned-by', () => {
       expect(result.articleCount).toBe(0);
     });
 
-    it('returns no last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.none);
+    it.skip('returns the list creation date as last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.some(listCreationDate));
     });
   });
 
