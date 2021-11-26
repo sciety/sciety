@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import { pipe } from 'fp-ts/function';
 import { List } from './list';
-import { listCreationData } from './list-creation-data';
+import { listCreationEvents } from './list-creation-data';
 import { GroupEvaluatedArticleEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 
@@ -25,7 +25,7 @@ export const createListFromEvaluationEvents = (
   ),
   ownerId,
   description: pipe(
-    Object.values(listCreationData),
+    listCreationEvents,
     RA.findFirst((list) => list.ownerId === ownerId && list.name === 'Evaluated articles'),
     O.map((list) => list.description),
     O.getOrElse(() => ''),
