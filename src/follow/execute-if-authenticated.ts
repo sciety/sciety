@@ -7,50 +7,41 @@ import { Middleware } from 'koa';
 import { sessionGroupProperty } from './finish-follow-command';
 import { CommitEvents, followCommand, GetFollowList } from './follow-command';
 import { groupProperty } from './follow-handler';
+import { DomainEvent } from '../domain-events';
 import { renderErrorPage } from '../http/render-error-page';
 import { constructRedirectUrl } from '../http/require-authentication';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { getGroup } from '../shared-read-models/all-groups';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
-type ToExistingGroup = (groupId: GroupId.GroupId) => TE.TaskEither<DE.DataError, Group>;
-
 type Ports = {
   logger: Logger,
-  getGroup: ToExistingGroup,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
   getFollowList: GetFollowList,
 };
 
-type Params = {
-  [groupProperty]: string | null | undefined,
-};
-
-const validate = (toExistingGroup: ToExistingGroup) => (requestBody: Params) => pipe(
-  requestBody[groupProperty],
-  GroupId.fromNullable,
-  TE.fromOption(() => DE.notFound),
-  TE.chain(toExistingGroup),
+const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
+  ports.getAllEvents,
+  T.map(getGroup(groupId)),
   TE.map((group) => ({
     groupId: group.id,
   })),
 );
 
-export const executeIfAuthenticated = ({
-  getGroup: toExistingGroup,
-  commitEvents,
-  getFollowList,
-  logger,
-}: Ports): Middleware => async (context, next) => {
+export const executeIfAuthenticated = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
-    validate(toExistingGroup)(context.request.body),
+    context.request.body[groupProperty],
+    GroupId.fromNullable,
+    TE.fromOption(() => DE.notFound),
+    TE.chain(validate(ports)),
     TE.fold(
       () => {
-        logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
+        ports.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
         context.response.body = standardPageLayout(O.none)({
@@ -70,7 +61,7 @@ export const executeIfAuthenticated = ({
         const { user } = context.state;
         context.redirect('back');
         return pipe(
-          followCommand(getFollowList, commitEvents)(user, params.groupId),
+          followCommand(ports.getFollowList, ports.commitEvents)(user, params.groupId),
           T.chain(() => next),
         );
       },
