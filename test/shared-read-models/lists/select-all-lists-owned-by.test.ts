@@ -19,7 +19,7 @@ describe('select-all-lists-owned-by', () => {
       selectAllListsOwnedBy(ownerId),
     );
 
-    it.skip('returns an empty array of lists', () => {
+    it('returns an empty array of lists', () => {
       expect(result).toStrictEqual([]);
     });
   });
@@ -118,7 +118,7 @@ describe('select-all-lists-owned-by', () => {
       selectAllListsOwnedBy(ownerId),
     );
 
-    it.skip('returns an empty array of lists', () => {
+    it('returns an empty array of lists', () => {
       expect(result).toStrictEqual([]);
     });
   });
