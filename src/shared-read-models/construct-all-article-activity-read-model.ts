@@ -36,7 +36,12 @@ export const activityForDoi = (
   activities: AllArticleActivityReadModel,
 ) => (
   doi: Doi,
-): O.Option<ArticleActivity> => pipe(
+): ArticleActivity => pipe(
   activities.get(doi.value),
   O.fromNullable,
+  O.getOrElseW(() => ({
+    doi,
+    latestActivityDate: O.none,
+    evaluationCount: 0,
+  })),
 );

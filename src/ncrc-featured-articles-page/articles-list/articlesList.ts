@@ -28,7 +28,6 @@ const selectArticlesBelongingToList = (
   R.lookup(listId),
   E.fromOption(() => DE.notFound),
   E.map(RA.map(activityForDoi(articleActivityReadModel))),
-  E.map(RA.compact), // need to specify how to handle articles with no activty here
 );
 
 export const articlesList = (

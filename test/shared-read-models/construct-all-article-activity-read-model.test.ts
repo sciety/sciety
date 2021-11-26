@@ -16,8 +16,12 @@ describe('construct-all-article-activity-read-model', () => {
       (readModel) => activityForDoi(readModel)(articleId),
     );
 
-    it('article is not in the read model', () => {
-      expect(O.isNone(articleActivity)).toBe(true);
+    it('article has no activity', () => {
+      expect(articleActivity).toStrictEqual({
+        doi: articleId,
+        latestActivityDate: O.none,
+        evaluationCount: 0,
+      });
     });
   });
 
@@ -34,11 +38,11 @@ describe('construct-all-article-activity-read-model', () => {
     );
 
     it('returns the activity for that article', () => {
-      expect(articleActivity).toStrictEqual(O.some({
+      expect(articleActivity).toStrictEqual({
         doi: articleId,
         latestActivityDate: O.some(laterDate),
         evaluationCount: 2,
-      }));
+      });
     });
   });
 });
