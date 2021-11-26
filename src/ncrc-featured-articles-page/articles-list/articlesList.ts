@@ -9,7 +9,6 @@ import { DomainEvent } from '../../domain-events';
 import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
 import { paginate } from '../../shared-components/paginate';
 import { getActivityForDoi } from '../../shared-read-models/article-activity';
-import { AllArticleActivityReadModel, constructAllArticleActivityReadModel } from '../../shared-read-models/article-activity/construct-all-article-activity-read-model';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
 import { lists } from '../lists';
@@ -20,11 +19,11 @@ export type Ports = ToPageOfCardsPorts & {
 
 const selectArticlesBelongingToList = (
   listId: string,
-) => (articleActivityReadModel: AllArticleActivityReadModel) => pipe(
+) => (events: ReadonlyArray<DomainEvent>) => pipe(
   lists,
   R.lookup(listId),
   E.fromOption(() => DE.notFound),
-  E.map(RA.map(getActivityForDoi(articleActivityReadModel))),
+  E.map(RA.map((doi) => getActivityForDoi(doi)(events))),
 );
 
 export const articlesList = (
@@ -33,7 +32,6 @@ export const articlesList = (
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
-  T.map(constructAllArticleActivityReadModel),
   T.map(selectArticlesBelongingToList(listId)),
   TE.chain(RA.match(
     () => TE.right(noEvaluatedArticlesMessage),
