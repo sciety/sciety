@@ -17,9 +17,6 @@ import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
-
-type GetGroup = (groupId: GroupId) => TE.TaskEither<DE.DataError, Group>;
 
 type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -35,7 +32,6 @@ export type Adapters = {
   getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
-  getGroup: GetGroup,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,

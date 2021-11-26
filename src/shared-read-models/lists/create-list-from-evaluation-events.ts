@@ -2,17 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import { pipe } from 'fp-ts/function';
+import { List } from './list';
 import { listCreationData } from './list-creation-data';
 import { GroupEvaluatedArticleEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
-
-type List = {
-  name: string,
-  description: string,
-  articleCount: number,
-  lastUpdated: O.Option<Date>,
-  ownerId: GroupId,
-};
 
 export const createListFromEvaluationEvents = (
   ownerId: GroupId,

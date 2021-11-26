@@ -130,7 +130,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
-        getGroup: groups.lookup,
         getAllGroups: groups.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
