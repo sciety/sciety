@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 
-export type AllArticleActivityReadModel = Map<string, ArticleActivity>;
+type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
 type ConstructAllArticleActivityReadModel = (events: ReadonlyArray<DomainEvent>) => AllArticleActivityReadModel;
 
