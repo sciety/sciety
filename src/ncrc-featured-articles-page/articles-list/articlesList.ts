@@ -8,11 +8,8 @@ import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
 import { paginate } from '../../shared-components/paginate';
-import {
-  activityForDoi,
-  AllArticleActivityReadModel,
-  constructAllArticleActivityReadModel,
-} from '../../shared-read-models/construct-all-article-activity-read-model';
+import { activityForDoi } from '../../shared-read-models/article-activity';
+import { AllArticleActivityReadModel, constructAllArticleActivityReadModel } from '../../shared-read-models/article-activity/construct-all-article-activity-read-model';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
 import { lists } from '../lists';

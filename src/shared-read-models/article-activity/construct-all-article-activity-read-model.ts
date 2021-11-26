@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
-import { ArticleActivity } from '../types/article-activity';
-import { Doi } from '../types/doi';
+import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import { ArticleActivity } from '../../types/article-activity';
+import { Doi } from '../../types/doi';
 
 export type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
