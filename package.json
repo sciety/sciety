@@ -16,7 +16,7 @@
     "@xmldom/xmldom": "^0.7.5",
     "axios": "^0.21.4",
     "axios-cache-adapter": "^2.7.3",
-    "chalk": "4.1.2",
+    "chalk": "5.0.0",
     "clownface": "^1.4.0",
     "cls-rtracer": "^2.6.0",
     "escape-goat": "^3.0.0",
