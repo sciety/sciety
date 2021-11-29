@@ -4,7 +4,6 @@ import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
-import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
