@@ -12,8 +12,9 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 
-type ActivityDetails = {
-  latestActivityDate: Date,
+type ArticleActivityDetails = {
+  mostRecentRecordedEvaluationByFollowedGroups: Date,
+  latestArticleActivityDate: Date,
   evaluatedByFollowedGroup: boolean,
   evaluationCount: number,
 };
@@ -21,8 +22,9 @@ type ActivityDetails = {
 const eventToActivityDetails = (
   event: EvaluationRecordedEvent,
   groupIds: ReadonlyArray<GroupId>,
-): ActivityDetails => ({
-  latestActivityDate: event.date,
+): ArticleActivityDetails => ({
+  mostRecentRecordedEvaluationByFollowedGroups: event.date,
+  latestArticleActivityDate: event.publishedAt,
   evaluatedByFollowedGroup: groupIds.map((groupId) => groupId).includes(event.groupId),
   evaluationCount: 1,
 });
@@ -30,12 +32,16 @@ const eventToActivityDetails = (
 const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
 
 const mergeActivities = (
-  existingActivityDetails: ActivityDetails,
-  newActivityDetails: ActivityDetails,
-): ActivityDetails => ({
-  latestActivityDate: mostRecentDate(
-    existingActivityDetails.latestActivityDate,
-    newActivityDetails.latestActivityDate,
+  existingActivityDetails: ArticleActivityDetails,
+  newActivityDetails: ArticleActivityDetails,
+): ArticleActivityDetails => ({
+  mostRecentRecordedEvaluationByFollowedGroups: mostRecentDate(
+    existingActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
+    newActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
+  ),
+  latestArticleActivityDate: mostRecentDate(
+    existingActivityDetails.latestArticleActivityDate,
+    newActivityDetails.latestArticleActivityDate,
   ),
   evaluatedByFollowedGroup:
       existingActivityDetails.evaluatedByFollowedGroup || newActivityDetails.evaluatedByFollowedGroup,
@@ -45,7 +51,7 @@ const mergeActivities = (
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
-  activities: Map<string, ActivityDetails>,
+  activities: Map<string, ArticleActivityDetails>,
   event: EvaluationRecordedEvent,
 ) => pipe(
   activities.get(event.articleId.value),
@@ -57,15 +63,16 @@ const addEventToActivities = (
   (activity) => activities.set(event.articleId.value, activity),
 );
 
-const byLatestActivityDateDesc: Ord.Ord<{
+const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
   doi: Doi,
-  latestActivityDate: Date,
+  mostRecentRecordedEvaluationByFollowedGroups: Date,
+  latestArticleActivityDate: Date,
   evaluationCount: number,
 }> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap(
-    (activityDetails) => (activityDetails.latestActivityDate),
+    (activityDetails) => (activityDetails.mostRecentRecordedEvaluationByFollowedGroups),
   ),
 );
 
@@ -81,10 +88,10 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
     (key, activityDetails) => O.some({ doi: new Doi(key), ...activityDetails }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
-  RM.values(byLatestActivityDateDesc),
+  RM.values(byMostRecentRecordedEvaluationByFollowedGroups),
   RA.takeLeft(20),
   RA.map((activity) => ({
     ...activity,
-    latestActivityDate: O.some(activity.latestActivityDate),
+    latestActivityDate: O.some(activity.latestArticleActivityDate),
   })),
 );

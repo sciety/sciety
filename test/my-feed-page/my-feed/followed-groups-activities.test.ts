@@ -23,12 +23,15 @@ describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = arbitraryDoi();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
+    const latestEvaluationPublishedDate = new Date('2020-12-15T00:00:00.000Z');
     const events = [
       evaluationRecorded(
         groupIdFromString(groupId),
         articleId,
         arbitraryReviewId(),
-        new Date('2020-12-15T00:00:00.000Z'),
+        arbitraryDate(),
+        [],
+        latestEvaluationPublishedDate,
       ),
     ];
 
@@ -52,12 +55,12 @@ describe('followed-groups-activities', () => {
       ]);
     });
 
-    it('latest activity date matches event date', () => {
+    it('latest activity date matches the evaluation published date', () => {
       const activities = followedGroupsActivities(events)([groupIdFromString(groupId)]);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(new Date('2020-12-15T00:00:00.000Z')),
+          latestActivityDate: O.some(latestEvaluationPublishedDate),
         }),
       ]);
     });
@@ -85,19 +88,23 @@ describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article more than once', () => {
     const groupId = arbitraryGroupId();
     const articleId = arbitraryDoi();
-    const latestActivityDate = new Date('2020-01-01');
+    const latestEvaluationPublishedDate = new Date('2020-01-01');
     const events = [
       evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('1980-01-01'),
       ),
       evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
-        latestActivityDate,
+        arbitraryDate(),
+        [],
+        latestEvaluationPublishedDate,
       ),
     ];
 
@@ -126,7 +133,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(latestActivityDate),
+          latestActivityDate: O.some(latestEvaluationPublishedDate),
         }),
       ]);
     });
@@ -141,24 +148,32 @@ describe('followed-groups-activities', () => {
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('2020-10-14T00:00:00.000Z'),
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('2021-03-10T00:00:00.000Z'),
       ),
     ];
@@ -188,19 +203,21 @@ describe('followed-groups-activities', () => {
   describe('when one of the groups has evaluated multiple articles', () => {
     const groupId = arbitraryGroupId();
 
-    it('returns the most recently evaluated articles first', () => {
+    it('returns the article with the most recently recorded evaluation first', () => {
+      const earlierArticle = arbitraryDoi();
+      const laterArticle = arbitraryDoi();
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
         evaluationRecorded(
           groupId,
-          arbitraryDoi(),
+          earlierArticle,
           arbitraryReviewId(),
           earlierDate,
         ),
         evaluationRecorded(
           groupId,
-          arbitraryDoi(),
+          laterArticle,
           arbitraryReviewId(),
           laterDate,
         ),
@@ -209,10 +226,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(laterDate),
+          doi: laterArticle,
         }),
         expect.objectContaining({
-          latestActivityDate: O.some(earlierDate),
+          doi: earlierArticle,
         }),
       ]);
     });
