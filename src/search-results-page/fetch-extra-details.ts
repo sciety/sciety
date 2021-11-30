@@ -15,7 +15,7 @@ import { GroupId } from '../types/group-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   groupId: GroupId,
-  recordedAt: Date,
+  publishedAt: Date,
 }>>;
 
 export type Ports = PopulateGroupViewModelPorts & {
@@ -23,11 +23,11 @@ export type Ports = PopulateGroupViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
-type GetLatestActivityDate = (reviews: ReadonlyArray<{ recordedAt: Date }>) => O.Option<Date>;
+type GetLatestActivityDate = (reviews: ReadonlyArray<{ publishedAt: Date }>) => O.Option<Date>;
 
 const getLatestActivityDate: GetLatestActivityDate = flow(
   RA.last,
-  O.map(({ recordedAt }) => recordedAt),
+  O.map(({ publishedAt }) => publishedAt),
 );
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;

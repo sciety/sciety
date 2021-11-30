@@ -26,12 +26,12 @@ describe('fetch-extra-details', () => {
           {
             reviewId: arbitraryReviewId(),
             groupId: arbitraryGroupId(),
-            recordedAt: new Date('2021-01-01'),
+            publishedAt: new Date('2021-01-01'),
           },
           {
             reviewId: new Doi('10.1101/222222'),
             groupId: arbitraryGroupId(),
-            recordedAt: latestActivityDate,
+            publishedAt: latestActivityDate,
           },
         ]),
         getAllEvents: shouldNotBeCalled,
