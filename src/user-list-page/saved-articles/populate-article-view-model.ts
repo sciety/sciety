@@ -7,7 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ArticleViewModel } from '../../shared-components/article-card';
-import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations/find-reviews-for-article-doi';
+import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';

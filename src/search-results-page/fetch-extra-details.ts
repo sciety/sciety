@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
-import { findReviewsForArticleDoi } from '../shared-read-models/evaluations/find-reviews-for-article-doi';
+import { findReviewsForArticleDoi } from '../shared-read-models/evaluations';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';

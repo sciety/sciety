@@ -15,7 +15,7 @@ import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
-import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations/find-reviews-for-article-doi';
+import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
