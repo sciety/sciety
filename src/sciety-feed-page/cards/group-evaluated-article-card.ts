@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { DomainEvent, GroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, EvaluationRecordedEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
 import { getGroup } from '../../shared-read-models/all-groups';
 import { ArticleAuthors } from '../../types/article-authors';
@@ -31,7 +31,7 @@ export type Ports = {
 };
 
 export const groupEvaluatedArticleCard = (ports: Ports) => (
-  event: GroupEvaluatedArticleCard | GroupEvaluatedArticleEvent,
+  event: GroupEvaluatedArticleCard | EvaluationRecordedEvent,
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   {
     group: pipe(

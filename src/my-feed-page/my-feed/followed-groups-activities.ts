@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import {
-  DomainEvent, GroupEvaluatedArticleEvent,
+  DomainEvent, EvaluationRecordedEvent,
   isGroupEvaluatedArticleEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
@@ -19,7 +19,7 @@ type ActivityDetails = {
 };
 
 const eventToActivityDetails = (
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
   groupIds: ReadonlyArray<GroupId>,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
@@ -46,7 +46,7 @@ const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
   activities: Map<string, ActivityDetails>,
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
 ) => pipe(
   activities.get(event.articleId.value),
   O.fromNullable,

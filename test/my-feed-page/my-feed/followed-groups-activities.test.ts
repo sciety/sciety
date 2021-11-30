@@ -1,9 +1,6 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import {
-  groupEvaluatedArticle,
-  GroupEvaluatedArticleEvent,
-} from '../../../src/domain-events';
+import { EvaluationRecordedEvent, groupEvaluatedArticle } from '../../../src/domain-events';
 import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
 import { GroupId } from '../../../src/types/group-id';
@@ -15,7 +12,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 const generateNEventsForGroup = (
   numberOfEvents: number,
   groupId: GroupId,
-): ReadonlyArray<GroupEvaluatedArticleEvent> => (
+): ReadonlyArray<EvaluationRecordedEvent> => (
   [...Array(numberOfEvents).keys()].map((i) => (groupEvaluatedArticle(
     groupId,
     new Doi(`10.1101/${i}`),

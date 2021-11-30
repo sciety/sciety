@@ -7,7 +7,7 @@ import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import {
-  DomainEvent, GroupEvaluatedArticleEvent,
+  DomainEvent, EvaluationRecordedEvent,
   isGroupEvaluatedArticleEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
@@ -27,7 +27,7 @@ const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
 });
 
 const eventToActivityDetails = (
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
   groupId: GroupId,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
@@ -44,7 +44,7 @@ const combineActivityDetails = (a: ActivityDetails) => O.fold(
 );
 
 const updateActivity = (
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
   groupId: GroupId,
 ) => pipe(
   eventToActivityDetails(event, groupId),
@@ -55,7 +55,7 @@ const addEventToActivities = (
   groupId: GroupId,
 ) => (
   activities: Map<string, ActivityDetails>,
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
 ) => pipe(
   activities.get(event.articleId.value),
   O.fromNullable,

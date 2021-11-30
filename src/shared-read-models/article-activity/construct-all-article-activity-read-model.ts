@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, EvaluationRecordedEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 
 type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
-const addEventToActivities = (state: AllArticleActivityReadModel, event: GroupEvaluatedArticleEvent) => pipe(
+const addEventToActivities = (state: AllArticleActivityReadModel, event: EvaluationRecordedEvent) => pipe(
   state.get(event.articleId.value),
   O.fromNullable,
   O.fold(

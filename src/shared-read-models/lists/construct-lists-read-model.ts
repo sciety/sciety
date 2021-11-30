@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import { pipe } from 'fp-ts/function';
 import { List } from './list';
-import { DomainEvent, GroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, EvaluationRecordedEvent } from '../../domain-events';
 import { ListCreatedEvent } from '../../domain-events/list-created-event';
 import { GroupId } from '../../types/group-id';
 
@@ -11,7 +11,7 @@ type ReadModel = Map<GroupId, List>;
 
 const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
+  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === ownerId),
   RA.map((event) => event.articleId.value),
   (articleIds) => (new Set(articleIds)),
@@ -20,7 +20,7 @@ const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<Domai
 
 const calculateLastUpdated = (ownerId: GroupId, listCreationDate: Date) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
+  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'GroupEvaluatedArticle'),
   RA.filter((event) => event.groupId === ownerId),
   RA.last,
   O.map((event) => event.date),

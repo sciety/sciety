@@ -1,4 +1,4 @@
-import { GroupEvaluatedArticleEvent } from './evaluation-recorded-event';
+import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
 import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
@@ -13,7 +13,7 @@ import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export type DomainEvent =
   GroupCreatedEvent |
-  GroupEvaluatedArticleEvent |
+  EvaluationRecordedEvent |
   ListCreatedEvent |
   UserSavedArticleEvent |
   UserUnsavedArticleEvent |

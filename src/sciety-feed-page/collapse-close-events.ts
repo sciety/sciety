@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import { GroupEvaluatedArticleCard, GroupEvaluatedMultipleArticlesCard } from './cards';
-import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
+import { DomainEvent, EvaluationRecordedEvent } from '../domain-events';
 
 type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 
 const collapsedGroupEvaluatedArticle = (
-  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
+  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle,
   evaluationCount: number,
 ): CollapsedGroupEvaluatedArticle => ({
   type: 'CollapsedGroupEvaluatedArticle',
@@ -27,7 +27,7 @@ export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEval
 type StateEntry = DomainEvent | CollapsedEvent;
 
 const collapsedGroupEvaluatedMultipleArticles = (
-  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
+  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
   articleIds: Set<string>,
 ): CollapsedGroupEvaluatedMultipleArticles => ({
   type: 'CollapsedGroupEvaluatedMultipleArticles',
@@ -46,12 +46,12 @@ export const isCollapsedGroupEvaluatedMultipleArticles = (
 ): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
 const isGroupEvaluatedArticleEvent = (event: StateEntry):
-  event is GroupEvaluatedArticleEvent => (
+  event is EvaluationRecordedEvent => (
   event.type === 'GroupEvaluatedArticle'
 );
 
 const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<StateEntry>, event: GroupEvaluatedArticleEvent,
+  state: ReadonlyArray<StateEntry>, event: EvaluationRecordedEvent,
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
@@ -68,7 +68,7 @@ const collapsesIntoPreviousEvent = (
 
 const replaceWithCollapseEvent = (
   state: Array<StateEntry>,
-  event: GroupEvaluatedArticleEvent,
+  event: EvaluationRecordedEvent,
 ) => {
   const last = state.pop();
   if (!last) { return; }
