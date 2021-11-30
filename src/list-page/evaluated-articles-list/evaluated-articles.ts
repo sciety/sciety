@@ -30,7 +30,7 @@ const eventToActivityDetails = (
   event: EvaluationRecordedEvent,
   groupId: GroupId,
 ): ActivityDetails => ({
-  latestActivityDate: event.date,
+  latestActivityDate: event.publishedAt,
   latestActivityByGroup: pipe(
     event.date,
     O.fromPredicate(() => event.groupId === groupId),

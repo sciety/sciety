@@ -18,6 +18,8 @@ describe('evaluated-articles', () => {
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         date,
       ),
     ];
@@ -42,7 +44,7 @@ describe('evaluated-articles', () => {
       ]);
     });
 
-    it('latest activity date matches event date', () => {
+    it('latest activity date matches publication date of the evaluation', () => {
       const activities = evaluatedArticles(groupId)(events);
 
       expect(activities).toStrictEqual([
@@ -62,12 +64,16 @@ describe('evaluated-articles', () => {
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('1980-01-01'),
       ),
       evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         latestActivityDate,
       ),
     ];
@@ -92,7 +98,7 @@ describe('evaluated-articles', () => {
       ]);
     });
 
-    it('has a latest activity date of the latest evaluation', () => {
+    it('has a latest activity date of the publication of the latest evaluation', () => {
       const activities = evaluatedArticles(groupId)(events);
 
       expect(activities).toStrictEqual([
@@ -113,24 +119,32 @@ describe('evaluated-articles', () => {
         groupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         new Date('2020-10-14T00:00:00.000Z'),
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         mostRecentActivityDate,
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         mostRecentActivityDate,
       ),
       evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
+        arbitraryDate(),
+        [],
         mostRecentActivityDate,
       ),
     ];
@@ -146,7 +160,7 @@ describe('evaluated-articles', () => {
       ]);
     });
 
-    it('has a latest activity date of the latest evaluation by any group', () => {
+    it('has a latest activity date of the publication of the latest evaluation by any group', () => {
       const activities = evaluatedArticles(groupId)(events);
 
       expect(activities).toStrictEqual([
@@ -161,18 +175,20 @@ describe('evaluated-articles', () => {
     const groupId = arbitraryGroupId();
 
     it('returns the most recently evaluated articles first', () => {
+      const article1 = arbitraryDoi();
+      const article2 = arbitraryDoi();
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
         evaluationRecorded(
           groupId,
-          arbitraryDoi(),
+          article1,
           arbitraryReviewId(),
           earlierDate,
         ),
         evaluationRecorded(
           groupId,
-          arbitraryDoi(),
+          article2,
           arbitraryReviewId(),
           laterDate,
         ),
@@ -181,10 +197,10 @@ describe('evaluated-articles', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(laterDate),
+          doi: article2,
         }),
         expect.objectContaining({
-          latestActivityDate: O.some(earlierDate),
+          doi: article1,
         }),
       ]);
     });
