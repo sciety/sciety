@@ -243,40 +243,25 @@ describe('followed-groups-activities', () => {
   });
 
   describe('when another not followed group evaluates an article previously evaluated by a followed group', () => {
-    it('orders by the latest activity date by any group', () => {
+    it('orders by the most recently recorded evaluation by a followed group', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
-      const articleMostRecentlyReviewedByTheFollowedGroup = arbitraryDoi();
-      const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = arbitraryDoi();
+      const articleA = arbitraryDoi();
+      const articleB = arbitraryDoi();
       const events = [
-        evaluationRecorded(
-          followedGroupId,
-          articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
-          arbitraryReviewId(),
-          new Date('1980-01-01'),
-        ),
-        evaluationRecorded(
-          followedGroupId,
-          articleMostRecentlyReviewedByTheFollowedGroup,
-          arbitraryReviewId(),
-          new Date('2000-01-01'),
-        ),
-        evaluationRecorded(
-          notFollowedGroupId,
-          articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
-          arbitraryReviewId(),
-          new Date('2020-01-01'),
-        ),
+        evaluationRecorded(followedGroupId, articleB, arbitraryReviewId(), new Date('1980-01-01')),
+        evaluationRecorded(followedGroupId, articleA, arbitraryReviewId(), new Date('2000-01-01')),
+        evaluationRecorded(notFollowedGroupId, articleB, arbitraryReviewId(), new Date('2020-01-01')),
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
+          doi: articleA,
         }),
         expect.objectContaining({
-          doi: articleMostRecentlyReviewedByTheFollowedGroup,
+          doi: articleB,
         }),
       ]);
     });

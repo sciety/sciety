@@ -35,10 +35,12 @@ const mergeActivities = (
   existingActivityDetails: ArticleActivityDetails,
   newActivityDetails: ArticleActivityDetails,
 ): ArticleActivityDetails => ({
-  mostRecentRecordedEvaluationByFollowedGroups: mostRecentDate(
-    existingActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
-    newActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
-  ),
+  mostRecentRecordedEvaluationByFollowedGroups: (newActivityDetails.evaluatedByFollowedGroup)
+    ? mostRecentDate(
+      existingActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
+      newActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
+    )
+    : existingActivityDetails.mostRecentRecordedEvaluationByFollowedGroups,
   latestArticleActivityDate: mostRecentDate(
     existingActivityDetails.latestArticleActivityDate,
     newActivityDetails.latestArticleActivityDate,
