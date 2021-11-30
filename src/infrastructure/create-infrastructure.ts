@@ -29,7 +29,6 @@ import {
 } from './logger';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
-import { findReviewsForArticleDoi } from '../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
