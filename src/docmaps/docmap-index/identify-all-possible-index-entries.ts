@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
@@ -48,7 +48,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   events,
 ) => pipe(
   events,
-  RA.filter(isGroupEvaluatedArticleEvent),
+  RA.filter(isEvaluationRecordedEvent),
   RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
   RA.map(({ articleId, groupId, date }) => ({
     articleId,

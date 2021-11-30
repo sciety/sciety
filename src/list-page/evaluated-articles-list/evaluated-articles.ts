@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import {
   DomainEvent, EvaluationRecordedEvent,
-  isGroupEvaluatedArticleEvent,
+  isEvaluationRecordedEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
@@ -88,7 +88,7 @@ export const evaluatedArticles = (groupId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<ArticleActivity> => pipe(
   events,
-  RA.filter(isGroupEvaluatedArticleEvent),
+  RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),

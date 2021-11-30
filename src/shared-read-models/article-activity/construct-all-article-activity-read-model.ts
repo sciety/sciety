@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, EvaluationRecordedEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 
 type AllArticleActivityReadModel = Map<string, ArticleActivity>;
@@ -27,6 +27,6 @@ type ConstructAllArticleActivityReadModel = (events: ReadonlyArray<DomainEvent>)
 
 export const constructAllArticleActivityReadModel: ConstructAllArticleActivityReadModel = (events) => pipe(
   events,
-  RA.filter(isGroupEvaluatedArticleEvent),
+  RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map<string, ArticleActivity>(), addEventToActivities),
 );

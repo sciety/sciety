@@ -16,7 +16,7 @@ export const isGroupCreatedEvent = (event: DomainEvent):
   event.type === 'GroupCreated'
 );
 
-export const isGroupEvaluatedArticleEvent = (event: DomainEvent):
+export const isEvaluationRecordedEvent = (event: DomainEvent):
   event is EvaluationRecordedEvent => (
   event.type === 'EvaluationRecorded'
 );

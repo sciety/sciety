@@ -6,7 +6,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import {
   DomainEvent, EvaluationRecordedEvent,
-  isGroupEvaluatedArticleEvent,
+  isEvaluationRecordedEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
@@ -75,7 +75,7 @@ type FollowedGroupsActivities = (
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
-  RA.filter(isGroupEvaluatedArticleEvent),
+  RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => O.some({ doi: new Doi(key), ...activityDetails }),

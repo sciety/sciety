@@ -10,7 +10,7 @@ import {
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
-  DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  DomainEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginate } from '../shared-components/paginate';
@@ -72,7 +72,7 @@ type Ports = EventCardPorts & {
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
-  isGroupEvaluatedArticleEvent(event)
+  isEvaluationRecordedEvent(event)
     || isUserSavedArticleEvent(event)
     || isUserFollowedEditorialCommunityEvent(event)
 );

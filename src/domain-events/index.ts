@@ -14,7 +14,7 @@ export { userCreatedAccount } from './user-created-account-event';
 export {
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-  isGroupEvaluatedArticleEvent,
+  isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
   isUserSavedArticleEvent,
   isUserCreatedAccountEvent,

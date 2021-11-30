@@ -13,7 +13,7 @@ import {
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
 import {
-  DomainEvent, isGroupEvaluatedArticleEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  DomainEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
@@ -37,7 +37,7 @@ export const eventCard = (
     );
   }
 
-  if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
+  if (isCollapsedGroupEvaluatedArticle(event) || isEvaluationRecordedEvent(event)) {
     return pipe(
       event,
       groupEvaluatedArticleCard(ports),

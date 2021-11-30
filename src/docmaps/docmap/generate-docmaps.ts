@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, generateDocmapViewModel } from './generate-docmap-view-model';
 import { toDocmap } from './to-docmap';
-import { DomainEvent, isGroupEvaluatedArticleEvent } from '../../domain-events';
+import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Doi } from '../../types/doi';
 import { supportedGroups } from '../supported-groups';
@@ -17,7 +17,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 const getEvaluatingGroupIds = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
   getAllEvents,
   T.map(flow(
-    RA.filter(isGroupEvaluatedArticleEvent),
+    RA.filter(isEvaluationRecordedEvent),
     RA.filter(({ articleId }) => articleId.value === doi.value),
     RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
     RA.map(({ groupId }) => groupId),

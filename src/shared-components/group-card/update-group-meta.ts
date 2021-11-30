@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
-  isGroupEvaluatedArticleEvent,
+  isEvaluationRecordedEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
 } from '../../domain-events';
@@ -27,7 +27,7 @@ export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: Do
       followerCount: meta.followerCount - 1,
     };
   }
-  if (isGroupEvaluatedArticleEvent(event) && event.groupId === groupId) {
+  if (isEvaluationRecordedEvent(event) && event.groupId === groupId) {
     return pipe(
       meta.latestActivity,
       O.fold(
