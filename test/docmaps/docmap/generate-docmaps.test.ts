@@ -25,7 +25,6 @@ describe('generate-docmaps', () => {
   const articleId = arbitraryDoi();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
-  const indexedGroupId = ncrcGroupId;
   const review = (groupId: GroupId, recordedAt: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
     reviewId,
     groupId,
@@ -35,7 +34,6 @@ describe('generate-docmaps', () => {
   });
   const defaultPorts = {
     fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
-    findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
     findVersionsForArticleDoi: (): ReturnType<DocmapPorts['findVersionsForArticleDoi']> => TO.some([
       {
         source: new URL(arbitraryUri()),
@@ -190,14 +188,9 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       const failingReviewId = arbitraryNcrcId();
-      const reviews = [
-        review(indexedGroupId, arbitraryDate(), arbitraryReviewId()),
-        review(indexedGroupId, arbitraryDate(), failingReviewId),
-      ];
       response = await pipe(
         generateDocmaps({
           ...defaultPorts,
-          findReviewsForArticleDoi: () => TE.right(reviews),
           fetchReview: (id: ReviewId) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
@@ -208,8 +201,8 @@ describe('generate-docmaps', () => {
               ...arbitraryGroup(),
               id: ncrcGroupId,
             }),
-            evaluationRecorded(ncrcGroupId, articleId, reviews[0].reviewId),
-            evaluationRecorded(ncrcGroupId, articleId, reviews[1].reviewId),
+            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(ncrcGroupId, articleId, failingReviewId),
           ]),
         })(articleId.value),
       )();

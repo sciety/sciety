@@ -8,7 +8,7 @@ import { Doi, eqDoi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
-export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   recordedAt: Date,

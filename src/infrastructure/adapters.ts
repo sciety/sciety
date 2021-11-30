@@ -10,7 +10,6 @@ import { FindGroups } from './find-groups';
 import { Follows } from './follows';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
-import { FindReviewsForArticleDoi } from '../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
@@ -26,7 +25,6 @@ export type Adapters = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findGroups: FindGroups,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   follows: Follows,
   getAllGroups: GetAllGroups,

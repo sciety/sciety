@@ -10,9 +10,8 @@ import {
   generateDocmapViewModel,
   Ports,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
-import { GroupId } from '../../../src/types/group-id';
 import { inferredSourceUrl, ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -25,17 +24,8 @@ import { arbitraryNcrcId, arbitraryReviewDoi, arbitraryReviewId } from '../../ty
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryDoi();
 
-const review = (groupId: GroupId, recordedAt: Date) => ({
-  reviewId: arbitraryReviewId(),
-  groupId,
-  recordedAt,
-  publishedAt: arbitraryDate(),
-  authors: [],
-});
-
 const defaultPorts: Ports = {
   fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
-  findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
   findVersionsForArticleDoi: () => TO.some([
     {
       source: new URL(arbitraryUri()),
@@ -43,21 +33,22 @@ const defaultPorts: Ports = {
       version: 1,
     },
   ]),
-  getAllEvents: T.of([groupCreated({
-    ...arbitraryGroup(),
-    id: indexedGroupId,
-  })]),
+  getAllEvents: T.of([]),
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
 
 describe('generate-docmap-view-model', () => {
   it('includes the article id', async () => {
+    const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(indexedGroupId, arbitraryDate())]),
+      getAllEvents: T.of([
+        groupCreated({ ...group }),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
+      ]),
     };
     const result = await pipe(
-      { articleId, groupId: indexedGroupId },
+      { articleId, groupId: group.id },
       generateDocmapViewModel(ports),
       TE.getOrElse(shouldNotBeCalled),
     )();
@@ -69,8 +60,10 @@ describe('generate-docmap-view-model', () => {
     const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => TE.right([review(group.id, arbitraryDate())]),
-      getAllEvents: T.of([groupCreated(group)]),
+      getAllEvents: T.of([
+        groupCreated({ ...group }),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
+      ]),
     };
     const result = await pipe(
       { articleId, groupId: group.id },
@@ -83,17 +76,19 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierDate = new Date('1900');
+    const earlierReviewId = arbitraryReviewId();
     const laterDate = new Date('2000');
-    const reviews = [
-      review(indexedGroupId, earlierDate),
-      review(indexedGroupId, laterDate),
-    ];
+    const laterReviewId = arbitraryReviewId();
     let result: DocmapModel;
 
     beforeEach(async () => {
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right(reviews),
+        getAllEvents: T.of([
+          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          evaluationRecorded(indexedGroupId, articleId, earlierReviewId, earlierDate),
+          evaluationRecorded(indexedGroupId, articleId, laterReviewId, laterDate),
+        ]),
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
@@ -105,11 +100,11 @@ describe('generate-docmap-view-model', () => {
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
           recordedAt: earlierDate,
-          reviewId: reviews[0].reviewId,
+          reviewId: earlierReviewId,
         }),
         expect.objectContaining({
           recordedAt: laterDate,
-          reviewId: reviews[1].reviewId,
+          reviewId: laterReviewId,
         }),
       ]);
     });
@@ -117,15 +112,6 @@ describe('generate-docmap-view-model', () => {
 
   describe('when we can infer a source URL for the reviews', () => {
     const reviewIdWithInferrableSourceUrl = arbitraryReviewDoi();
-    const reviews = [
-      {
-        reviewId: reviewIdWithInferrableSourceUrl,
-        groupId: indexedGroupId,
-        recordedAt: arbitraryDate(),
-        publishedAt: arbitraryDate(),
-        authors: [],
-      },
-    ];
     const sourceUrl = pipe(
       inferredSourceUrl(reviewIdWithInferrableSourceUrl),
       O.getOrElseW(shouldNotBeCalled),
@@ -136,7 +122,10 @@ describe('generate-docmap-view-model', () => {
       const ports = {
         ...defaultPorts,
         fetchReview: shouldNotBeCalled,
-        findReviewsForArticleDoi: () => TE.right(reviews),
+        getAllEvents: T.of([
+          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          evaluationRecorded(indexedGroupId, articleId, reviewIdWithInferrableSourceUrl),
+        ]),
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
@@ -155,15 +144,6 @@ describe('generate-docmap-view-model', () => {
 
   describe('when we cannot infer a source URL for the reviews', () => {
     const reviewIdWithUninferrableSourceUrl = arbitraryNcrcId();
-    const reviews = [
-      {
-        reviewId: reviewIdWithUninferrableSourceUrl,
-        groupId: indexedGroupId,
-        recordedAt: arbitraryDate(),
-        publishedAt: arbitraryDate(),
-        authors: [],
-      },
-    ];
     const sourceUrl = new URL(arbitraryUri());
     let result: DocmapModel;
 
@@ -171,7 +151,10 @@ describe('generate-docmap-view-model', () => {
       const ports = {
         ...defaultPorts,
         fetchReview: () => TE.right({ url: sourceUrl }),
-        findReviewsForArticleDoi: () => TE.right(reviews),
+        getAllEvents: T.of([
+          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          evaluationRecorded(indexedGroupId, articleId, reviewIdWithUninferrableSourceUrl),
+        ]),
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
@@ -202,17 +185,14 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are evaluations by other groups', () => {
     it('only uses the evaluation by the selected group', async () => {
-      const earlierDate = new Date('1900');
-      const laterDate = new Date('2000');
-      const reviewByThisGroup = review(indexedGroupId, laterDate);
+      const idOfEvaluationByThisGroup = arbitraryReviewId();
       const ports = {
         ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right(
-          [
-            review(arbitraryGroupId(), earlierDate),
-            reviewByThisGroup,
-          ],
-        ),
+        getAllEvents: T.of([
+          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(indexedGroupId, articleId, idOfEvaluationByThisGroup),
+        ]),
       };
 
       const result = await pipe(
@@ -222,7 +202,7 @@ describe('generate-docmap-view-model', () => {
 
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
-          reviewId: reviewByThisGroup.reviewId,
+          reviewId: idOfEvaluationByThisGroup,
         }),
       ]);
     });
@@ -232,7 +212,10 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
     const ports = {
       ...defaultPorts,
-      findVersionsForArticleDoi: () => TO.none,
+      getAllEvents: T.of([
+        groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+        evaluationRecorded(indexedGroupId, articleId, arbitraryReviewId()),
+      ]),
     };
 
     beforeEach(async () => {

@@ -1,14 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupCreated } from '../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../src/domain-events';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryNumber } from '../helpers';
+import { arbitraryDate, arbitraryNumber } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -18,23 +17,18 @@ describe('fetch-extra-details', () => {
 
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
+      const group = arbitraryGroup();
+      const articleId = arbitraryDoi();
       const pageNumber = arbitraryNumber(2, 5);
       const latestVersionDate = new Date();
-      const latestActivityDate = new Date('2021-01-02');
+      const earlierPublicationDate = new Date('1970');
+      const laterPublicationDate = new Date('2020');
       const ports = {
-        findReviewsForArticleDoi: () => TE.right([
-          {
-            reviewId: arbitraryReviewId(),
-            groupId: arbitraryGroupId(),
-            publishedAt: new Date('2021-01-01'),
-          },
-          {
-            reviewId: new Doi('10.1101/222222'),
-            groupId: arbitraryGroupId(),
-            publishedAt: latestActivityDate,
-          },
+        getAllEvents: T.of([
+          groupCreated(group),
+          evaluationRecorded(group.id, articleId, arbitraryReviewId(), arbitraryDate(), [], earlierPublicationDate),
+          evaluationRecorded(group.id, articleId, arbitraryReviewId(), arbitraryDate(), [], laterPublicationDate),
         ]),
-        getAllEvents: shouldNotBeCalled,
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
       };
 
@@ -46,7 +40,7 @@ describe('fetch-extra-details', () => {
         itemsToDisplay: [
           {
             _tag: 'Article' as const,
-            doi: new Doi('10.1101/222222'),
+            doi: articleId,
             server: 'biorxiv' as const,
             title: pipe('', toHtmlFragment, sanitise),
             authors: O.some([]),
@@ -67,7 +61,7 @@ describe('fetch-extra-details', () => {
           expect.objectContaining({
             evaluationCount: 2,
             latestVersionDate: O.some(latestVersionDate),
-            latestActivityDate: O.some(latestActivityDate),
+            latestActivityDate: O.some(laterPublicationDate),
           }),
         ],
         nextCursor: O.none,

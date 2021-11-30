@@ -19,7 +19,6 @@ type FindVersionsForArticleDoi = (
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>;
 
 type Ports = PerformAllSearchesPorts & {
-  findReviewsForArticleDoi: FetchExtraDetailsPorts['findReviewsForArticleDoi'],
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: FetchExtraDetailsPorts['getAllEvents'],
 };

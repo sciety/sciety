@@ -25,9 +25,8 @@ const dummyAdapters = {
     total: 0,
     nextCursor: O.none,
   }),
-  findReviewsForArticleDoi: shouldNotBeCalled,
   findVersionsForArticleDoi: shouldNotBeCalled,
-  getAllEvents: shouldNotBeCalled,
+  getAllEvents: T.of([]),
 };
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -121,7 +120,6 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(n),
           );
@@ -148,7 +146,6 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(1),
           );
@@ -176,7 +173,6 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(1),
           );
@@ -205,7 +201,6 @@ describe('search-results-page acceptance', () => {
                 total: 4,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(3),
           );
@@ -235,7 +230,6 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(n),
           );
@@ -260,7 +254,6 @@ describe('search-results-page acceptance', () => {
                 total: arbitraryNumber(5, 10),
                 nextCursor: O.some(arbitraryWord()),
               }),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(1),
           );
@@ -290,7 +283,6 @@ describe('search-results-page acceptance', () => {
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
               })),
-              findReviewsForArticleDoi: () => TE.right([]),
               findVersionsForArticleDoi: () => TO.none,
             })(n),
           );
@@ -372,7 +364,6 @@ describe('search-results-page acceptance', () => {
                   total: 1,
                   nextCursor: O.none,
                 }),
-                findReviewsForArticleDoi: () => TE.right([]),
                 findVersionsForArticleDoi: () => TO.none,
               })(pageSize),
             );

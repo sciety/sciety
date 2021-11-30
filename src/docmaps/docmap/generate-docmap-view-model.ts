@@ -11,6 +11,7 @@ import { Evaluation } from './evaluation';
 import { getDateOfMostRecentArticleVersion, Ports as GetDateOfMostRecentArticleVersionPorts } from './get-date-of-most-recent-article-version';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
+import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations/find-reviews-for-article-doi';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -43,11 +44,8 @@ type ReviewForArticle = {
   authors: ReadonlyArray<string>,
 };
 
-type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<ReviewForArticle>>;
-
 export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
@@ -75,7 +73,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
     articleId: TE.right(articleId),
     evaluations: pipe(
       articleId,
-      ports.findReviewsForArticleDoi,
+      findReviewsForArticleDoi(ports.getAllEvents),
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(

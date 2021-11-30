@@ -64,7 +64,6 @@ export const createTestServer = async (): Promise<TestServer> => {
     findGroups: () => T.of([]),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
     getAllGroups: groups.all,
-    findReviewsForArticleDoi: () => TE.right([]),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,

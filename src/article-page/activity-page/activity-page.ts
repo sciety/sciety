@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
-import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
+import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
@@ -46,7 +46,6 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: FetchReview,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };

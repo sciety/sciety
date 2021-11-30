@@ -5,7 +5,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
+import { DomainEvent } from '../../domain-events';
 import { ArticleViewModel } from '../../shared-components/article-card';
+import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -19,15 +21,11 @@ type ArticleItem = {
   authors: ArticleAuthors,
 };
 
-export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
-  publishedAt: Date,
-}>>;
-
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type Ports = {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
 type GetLatestActivityDate = (reviews: ReadonlyArray<{ publishedAt: Date }>) => O.Option<Date>;
@@ -41,7 +39,7 @@ export const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
   item.doi,
-  ports.findReviewsForArticleDoi,
+  findReviewsForArticleDoi(ports.getAllEvents),
   TE.chainTaskK(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),

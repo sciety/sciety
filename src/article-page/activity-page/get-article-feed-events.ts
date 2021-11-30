@@ -15,18 +15,11 @@ import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
+import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
-import { GroupId } from '../../types/group-id';
-import { ReviewId } from '../../types/review-id';
 import { UserId } from '../../types/user-id';
-
-export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
-  reviewId: ReviewId,
-  groupId: GroupId,
-  recordedAt: Date,
-}>>;
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,
@@ -46,7 +39,6 @@ type GetArticleFeedEventsByDateDescending = (
 ) => TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 type Dependencies = {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -60,7 +52,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   [
     pipe(
-      deps.findReviewsForArticleDoi(doi),
+      doi,
+      findReviewsForArticleDoi(deps.getAllEvents),
       TE.map(RA.map((review) => ({ type: 'review', ...review, occurredAt: review.recordedAt } as const))),
     ),
     pipe(

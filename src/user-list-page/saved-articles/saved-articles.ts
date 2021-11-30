@@ -5,11 +5,10 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import {
-  FindReviewsForArticleDoi, populateArticleViewModel,
-} from './populate-article-view-model';
+import { populateArticleViewModel } from './populate-article-view-model';
 import { renderSavedArticles } from './render-saved-articles';
 import { informationUnavailable, noSavedArticles } from './static-messages';
+import { DomainEvent } from '../../domain-events';
 import { renderUnsaveForm } from '../../save-article/render-unsave-form';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
@@ -29,8 +28,8 @@ type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
 
 export type Ports = {
   fetchArticle: FetchArticle,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
 type SavedArticles = (ports: Ports) => (
@@ -59,7 +58,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   )),
   TE.chain(flow(
     TE.traverseArray(populateArticleViewModel({
-      findReviewsForArticleDoi: ports.findReviewsForArticleDoi,
+      ...ports,
       getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
     })),
     TE.mapLeft(() => informationUnavailable),
