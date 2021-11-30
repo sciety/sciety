@@ -21,7 +21,7 @@ const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
   outputs: [
     {
       type: 'review-article' as const,
-      published: evaluation.recordedAt.toISOString(),
+      published: evaluation.publishedAt.toISOString(),
       content: [
         {
           type: 'web-page',

@@ -26,12 +26,14 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           recordedAt: earlierEvaluationRecordedDate,
+          publishedAt: arbitraryDate(),
           authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           recordedAt: laterEvaluationRecordedDate,
+          publishedAt: arbitraryDate(),
           authors: [],
         },
       ],
@@ -47,6 +49,7 @@ describe('to-docmap', () => {
             sourceUrl: new URL(arbitraryUri()),
             reviewId: arbitraryReviewId(),
             recordedAt: arbitraryDate(),
+            publishedAt: arbitraryDate(),
             authors: [],
           },
         ],
@@ -102,6 +105,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           recordedAt: arbitraryDate(),
+          publishedAt: arbitraryDate(),
           authors: [],
         },
       ],
@@ -124,6 +128,7 @@ describe('to-docmap', () => {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
           recordedAt: arbitraryDate(),
+          publishedAt: arbitraryDate(),
           authors: [],
         },
       ],
@@ -137,8 +142,8 @@ describe('to-docmap', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
-    const earlierDate = new Date('1900');
-    const laterDate = new Date('2000');
+    const earlierEvaluationPublishedDate = new Date('1900');
+    const laterEvaluationPublishedDate = new Date('2000');
     const earlierReviewId = arbitraryReviewId();
     const laterReviewId = arbitraryReviewId();
     const firstStep = '_:b0';
@@ -147,13 +152,15 @@ describe('to-docmap', () => {
       {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
         reviewId: earlierReviewId,
-        recordedAt: earlierDate,
+        recordedAt: arbitraryDate(),
+        publishedAt: earlierEvaluationPublishedDate,
         authors: [],
       },
       {
         sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
         reviewId: laterReviewId,
-        recordedAt: laterDate,
+        recordedAt: arbitraryDate(),
+        publishedAt: laterEvaluationPublishedDate,
         authors: [authorName],
       },
     ];
@@ -240,8 +247,8 @@ describe('to-docmap', () => {
           });
 
           it('has published date of corresponding evaluation', () => {
-            expect(outputOfAction0.published).toStrictEqual(earlierDate.toISOString());
-            expect(outputOfAction1.published).toStrictEqual(laterDate.toISOString());
+            expect(outputOfAction0.published).toStrictEqual(earlierEvaluationPublishedDate.toISOString());
+            expect(outputOfAction1.published).toStrictEqual(laterEvaluationPublishedDate.toISOString());
           });
 
           it('has a fixed content field that always has the value `review-article`', () => {

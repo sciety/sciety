@@ -25,10 +25,11 @@ import { arbitraryNcrcId, arbitraryReviewDoi, arbitraryReviewId } from '../../ty
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryDoi();
 
-const review = (groupId: GroupId, date: Date) => ({
+const review = (groupId: GroupId, recordedAt: Date) => ({
   reviewId: arbitraryReviewId(),
   groupId,
-  recordedAt: date,
+  recordedAt,
+  publishedAt: arbitraryDate(),
   authors: [],
 });
 
@@ -121,6 +122,7 @@ describe('generate-docmap-view-model', () => {
         reviewId: reviewIdWithInferrableSourceUrl,
         groupId: indexedGroupId,
         recordedAt: arbitraryDate(),
+        publishedAt: arbitraryDate(),
         authors: [],
       },
     ];
@@ -158,6 +160,7 @@ describe('generate-docmap-view-model', () => {
         reviewId: reviewIdWithUninferrableSourceUrl,
         groupId: indexedGroupId,
         recordedAt: arbitraryDate(),
+        publishedAt: arbitraryDate(),
         authors: [],
       },
     ];

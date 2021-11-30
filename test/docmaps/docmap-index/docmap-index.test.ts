@@ -51,12 +51,6 @@ describe('docmap-index', () => {
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
-        const review = (groupId: GID.GroupId, date: Date) => ({
-          reviewId: arbitraryReviewId(),
-          groupId,
-          recordedAt: date,
-          authors: [],
-        });
         const ports = {
           getAllEvents: T.of([
             groupCreated({
@@ -66,7 +60,13 @@ describe('docmap-index', () => {
             evaluationRecorded(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
           fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
-          findReviewsForArticleDoi: () => TE.right([review(ncrcGroupId, arbitraryDate())]),
+          findReviewsForArticleDoi: () => TE.right([{
+            reviewId: arbitraryReviewId(),
+            groupId: ncrcGroupId,
+            recordedAt: arbitraryDate(),
+            publishedAt: arbitraryDate(),
+            authors: [],
+          }]),
           findVersionsForArticleDoi: (): ReturnType<DocmapPorts['findVersionsForArticleDoi']> => TO.some([
             {
               source: new URL(arbitraryUri()),

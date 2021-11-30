@@ -39,6 +39,7 @@ type ReviewForArticle = {
   reviewId: ReviewId,
   groupId: GroupId,
   recordedAt: Date,
+  publishedAt: Date,
   authors: ReadonlyArray<string>,
 };
 

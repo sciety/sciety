@@ -26,10 +26,11 @@ describe('generate-docmaps', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   const indexedGroupId = ncrcGroupId;
-  const review = (groupId: GroupId, date: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
+  const review = (groupId: GroupId, recordedAt: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
     reviewId,
     groupId,
-    recordedAt: date,
+    recordedAt,
+    publishedAt: arbitraryDate(),
     authors: [],
   });
   const defaultPorts = {

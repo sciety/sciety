@@ -5,5 +5,6 @@ export type Evaluation = {
   sourceUrl: URL,
   reviewId: RI.ReviewId,
   recordedAt: Date,
+  publishedAt: Date,
   authors: ReadonlyArray<string>,
 };
