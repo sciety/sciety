@@ -15,7 +15,7 @@ import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
-import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -53,7 +53,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   [
     pipe(
       ports.getAllEvents,
-      T.map(findReviewsForArticleDoi(doi)),
+      T.map(getEvaluationsForDoi(doi)),
       T.map(RA.map((review) => ({ type: 'review', ...review, occurredAt: review.recordedAt } as const))),
       TE.rightTask,
     ),

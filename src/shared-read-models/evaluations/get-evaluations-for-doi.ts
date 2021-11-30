@@ -5,7 +5,7 @@ import { Doi, eqDoi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
-type FindReviewsForArticleDoi = (articleDoi: Doi) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<{
+type GetEvaluationsForDoi = (articleDoi: Doi) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   recordedAt: Date,
@@ -13,7 +13,7 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => (events: ReadonlyArray<Doma
   authors: ReadonlyArray<string>,
 }>;
 
-export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (articleDoi) => (events) => pipe(
+export const getEvaluationsForDoi: GetEvaluationsForDoi = (articleDoi) => (events) => pipe(
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),

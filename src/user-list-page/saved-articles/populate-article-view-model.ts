@@ -7,7 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ArticleViewModel } from '../../shared-components/article-card';
-import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -39,7 +39,7 @@ export const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
   ports.getAllEvents,
-  T.map(findReviewsForArticleDoi(item.doi)),
+  T.map(getEvaluationsForDoi(item.doi)),
   T.chain(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),

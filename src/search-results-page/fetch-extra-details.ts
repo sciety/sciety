@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
-import { findReviewsForArticleDoi } from '../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../shared-read-models/evaluations';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
@@ -30,7 +30,7 @@ const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem) => pipe(
   ports.getAllEvents,
-  T.map(findReviewsForArticleDoi(item.doi)),
+  T.map(getEvaluationsForDoi(item.doi)),
   T.chain(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),

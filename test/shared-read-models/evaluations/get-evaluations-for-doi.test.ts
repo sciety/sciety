@@ -2,13 +2,13 @@ import { performance } from 'perf_hooks';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../../src/domain-events';
-import { findReviewsForArticleDoi } from '../../../src/shared-read-models/evaluations/find-reviews-for-article-doi';
+import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-describe('find-reviews-for-article-doi', () => {
+describe('get-evaluations-for-doi', () => {
   const article1 = arbitraryDoi();
   const article2 = arbitraryDoi();
   const group1 = arbitraryGroupId();
@@ -29,7 +29,7 @@ describe('find-reviews-for-article-doi', () => {
           evaluationRecorded(group1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
           evaluationRecorded(group2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
         ],
-        findReviewsForArticleDoi(articleDoi),
+        getEvaluationsForDoi(articleDoi),
         RA.map((reviewReference) => reviewReference.reviewId),
       );
 
@@ -52,7 +52,7 @@ describe('find-reviews-for-article-doi', () => {
     it('performs acceptably', async () => {
       const startTime = performance.now();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const result = findReviewsForArticleDoi(arbitraryDoi())(events);
+      const result = getEvaluationsForDoi(arbitraryDoi())(events);
       const endTime = performance.now();
 
       expect(endTime - startTime).toBeLessThan(50);

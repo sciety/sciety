@@ -11,7 +11,7 @@ import { Evaluation } from './evaluation';
 import { getDateOfMostRecentArticleVersion, Ports as GetDateOfMostRecentArticleVersionPorts } from './get-date-of-most-recent-article-version';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
-import { findReviewsForArticleDoi } from '../../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -74,7 +74,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
     evaluations: pipe(
       ports.getAllEvents,
       TE.rightTask,
-      TE.map(findReviewsForArticleDoi(articleId)),
+      TE.map(getEvaluationsForDoi(articleId)),
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(
