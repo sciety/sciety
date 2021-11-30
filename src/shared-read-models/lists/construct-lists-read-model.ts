@@ -11,7 +11,7 @@ type ReadModel = Map<GroupId, List>;
 
 const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'GroupEvaluatedArticle'),
+  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'EvaluationRecorded'),
   RA.filter((event) => event.groupId === ownerId),
   RA.map((event) => event.articleId.value),
   (articleIds) => (new Set(articleIds)),
@@ -20,7 +20,7 @@ const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<Domai
 
 const calculateLastUpdated = (ownerId: GroupId, listCreationDate: Date) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'GroupEvaluatedArticle'),
+  RA.filter((event): event is EvaluationRecordedEvent => event.type === 'EvaluationRecorded'),
   RA.filter((event) => event.groupId === ownerId),
   RA.last,
   O.map((event) => event.date),

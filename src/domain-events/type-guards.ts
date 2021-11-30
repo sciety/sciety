@@ -18,7 +18,7 @@ export const isGroupCreatedEvent = (event: DomainEvent):
 
 export const isGroupEvaluatedArticleEvent = (event: DomainEvent):
   event is EvaluationRecordedEvent => (
-  event.type === 'GroupEvaluatedArticle'
+  event.type === 'EvaluationRecorded'
 );
 
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):

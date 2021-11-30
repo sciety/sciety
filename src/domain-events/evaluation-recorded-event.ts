@@ -3,7 +3,7 @@ import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
 export type EvaluationRecordedEvent = Readonly<{
-  type: 'GroupEvaluatedArticle',
+  type: 'EvaluationRecorded',
   date: Date,
   groupId: GroupId,
   articleId: Doi,
@@ -18,7 +18,7 @@ export const groupEvaluatedArticle = (
   date: Date = new Date(),
   authors: ReadonlyArray<string> = [],
 ): EvaluationRecordedEvent => ({
-  type: 'GroupEvaluatedArticle',
+  type: 'EvaluationRecorded',
   date,
   groupId,
   articleId: doi,

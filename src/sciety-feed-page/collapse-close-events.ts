@@ -47,7 +47,7 @@ export const isCollapsedGroupEvaluatedMultipleArticles = (
 
 const isGroupEvaluatedArticleEvent = (event: StateEntry):
   event is EvaluationRecordedEvent => (
-  event.type === 'GroupEvaluatedArticle'
+  event.type === 'EvaluationRecorded'
 );
 
 const collapsesIntoPreviousEvent = (
