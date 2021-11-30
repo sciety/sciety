@@ -1,7 +1,7 @@
 export { DomainEvent } from './domain-event';
 export { RuntimeGeneratedEvent } from './runtime-generated-event';
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
-export { GroupEvaluatedArticleEvent, groupEvaluatedArticle } from './group-evaluated-article-event';
+export { GroupEvaluatedArticleEvent, groupEvaluatedArticle } from './evaluation-recorded-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
