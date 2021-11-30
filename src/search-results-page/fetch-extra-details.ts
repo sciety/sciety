@@ -13,10 +13,9 @@ import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
-// TODO: Find reviewsForArticleDoi should return a TaskEither
 type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   groupId: GroupId,
-  occurredAt: Date,
+  recordedAt: Date,
 }>>;
 
 export type Ports = PopulateGroupViewModelPorts & {
@@ -24,11 +23,11 @@ export type Ports = PopulateGroupViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
-type GetLatestActivityDate = (reviews: ReadonlyArray<{ occurredAt: Date }>) => O.Option<Date>;
+type GetLatestActivityDate = (reviews: ReadonlyArray<{ recordedAt: Date }>) => O.Option<Date>;
 
 const getLatestActivityDate: GetLatestActivityDate = flow(
   RA.last,
-  O.map(({ occurredAt }) => occurredAt),
+  O.map(({ recordedAt }) => recordedAt),
 );
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;

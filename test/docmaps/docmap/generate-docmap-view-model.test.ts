@@ -28,7 +28,7 @@ const articleId = arbitraryDoi();
 const review = (groupId: GroupId, date: Date) => ({
   reviewId: arbitraryReviewId(),
   groupId,
-  occurredAt: date,
+  recordedAt: date,
   authors: [],
 });
 
@@ -103,11 +103,11 @@ describe('generate-docmap-view-model', () => {
     it('returns all evaluations', () => {
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
-          occurredAt: earlierDate,
+          recordedAt: earlierDate,
           reviewId: reviews[0].reviewId,
         }),
         expect.objectContaining({
-          occurredAt: laterDate,
+          recordedAt: laterDate,
           reviewId: reviews[1].reviewId,
         }),
       ]);
@@ -120,7 +120,7 @@ describe('generate-docmap-view-model', () => {
       {
         reviewId: reviewIdWithInferrableSourceUrl,
         groupId: indexedGroupId,
-        occurredAt: arbitraryDate(),
+        recordedAt: arbitraryDate(),
         authors: [],
       },
     ];
@@ -157,7 +157,7 @@ describe('generate-docmap-view-model', () => {
       {
         reviewId: reviewIdWithUninferrableSourceUrl,
         groupId: indexedGroupId,
-        occurredAt: arbitraryDate(),
+        recordedAt: arbitraryDate(),
         authors: [],
       },
     ];

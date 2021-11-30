@@ -54,7 +54,7 @@ describe('docmap-index', () => {
         const review = (groupId: GID.GroupId, date: Date) => ({
           reviewId: arbitraryReviewId(),
           groupId,
-          occurredAt: date,
+          recordedAt: date,
           authors: [],
         });
         const ports = {

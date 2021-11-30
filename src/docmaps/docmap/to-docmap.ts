@@ -21,7 +21,7 @@ const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
   outputs: [
     {
       type: 'review-article' as const,
-      published: evaluation.occurredAt.toISOString(),
+      published: evaluation.recordedAt.toISOString(),
       content: [
         {
           type: 'web-page',
@@ -42,8 +42,8 @@ export const toDocmap = ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: `https://sciety.org/docmaps/v1/articles/${articleId.value}/${group.slug}.docmap.json`,
   type: 'docmap',
-  created: RNEA.head(evaluations).occurredAt.toISOString(),
-  updated: RNEA.last(evaluations).occurredAt.toISOString(),
+  created: RNEA.head(evaluations).recordedAt.toISOString(),
+  updated: RNEA.last(evaluations).recordedAt.toISOString(),
   publisher: {
     id: group.homepage,
     name: group.name,

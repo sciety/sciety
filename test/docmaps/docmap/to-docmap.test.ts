@@ -25,13 +25,13 @@ describe('to-docmap', () => {
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
-          occurredAt: earlierDate,
+          recordedAt: earlierDate,
           authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
-          occurredAt: laterDate,
+          recordedAt: laterDate,
           authors: [],
         },
       ],
@@ -46,7 +46,7 @@ describe('to-docmap', () => {
           {
             sourceUrl: new URL(arbitraryUri()),
             reviewId: arbitraryReviewId(),
-            occurredAt: arbitraryDate(),
+            recordedAt: arbitraryDate(),
             authors: [],
           },
         ],
@@ -101,7 +101,7 @@ describe('to-docmap', () => {
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
-          occurredAt: arbitraryDate(),
+          recordedAt: arbitraryDate(),
           authors: [],
         },
       ],
@@ -123,7 +123,7 @@ describe('to-docmap', () => {
         {
           sourceUrl: new URL(arbitraryUri()),
           reviewId: arbitraryReviewId(),
-          occurredAt: arbitraryDate(),
+          recordedAt: arbitraryDate(),
           authors: [],
         },
       ],
@@ -147,13 +147,13 @@ describe('to-docmap', () => {
       {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
         reviewId: earlierReviewId,
-        occurredAt: earlierDate,
+        recordedAt: earlierDate,
         authors: [],
       },
       {
         sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
         reviewId: laterReviewId,
-        occurredAt: laterDate,
+        recordedAt: laterDate,
         authors: [authorName],
       },
     ];

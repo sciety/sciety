@@ -38,7 +38,7 @@ type GenerateDocmapViewModel = (
 type ReviewForArticle = {
   reviewId: ReviewId,
   groupId: GroupId,
-  occurredAt: Date,
+  recordedAt: Date,
   authors: ReadonlyArray<string>,
 };
 

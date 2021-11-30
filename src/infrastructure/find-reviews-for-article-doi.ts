@@ -11,7 +11,7 @@ import { ReviewId } from '../types/review-id';
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
-  occurredAt: Date,
+  recordedAt: Date,
   authors: ReadonlyArray<string>,
 }>>;
 
@@ -25,7 +25,7 @@ export const findReviewsForArticleDoi = (getAllEvents: GetAllEvents): FindReview
     RA.map((event) => ({
       reviewId: event.reviewId,
       groupId: event.groupId,
-      occurredAt: event.date,
+      recordedAt: event.date,
       authors: event.authors,
     })),
   )),

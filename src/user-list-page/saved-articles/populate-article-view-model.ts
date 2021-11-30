@@ -20,7 +20,7 @@ type ArticleItem = {
 };
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
-  occurredAt: Date,
+  recordedAt: Date,
 }>>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
@@ -30,11 +30,11 @@ type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
-type GetLatestActivityDate = (reviews: ReadonlyArray<{ occurredAt: Date }>) => O.Option<Date>;
+type GetLatestActivityDate = (reviews: ReadonlyArray<{ recordedAt: Date }>) => O.Option<Date>;
 
 const getLatestActivityDate: GetLatestActivityDate = flow(
   RA.last,
-  O.map(({ occurredAt }) => occurredAt),
+  O.map(({ recordedAt }) => recordedAt),
 );
 
 export const populateArticleViewModel = (

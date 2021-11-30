@@ -29,7 +29,7 @@ describe('generate-docmaps', () => {
   const review = (groupId: GroupId, date: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
     reviewId,
     groupId,
-    occurredAt: date,
+    recordedAt: date,
     authors: [],
   });
   const defaultPorts = {

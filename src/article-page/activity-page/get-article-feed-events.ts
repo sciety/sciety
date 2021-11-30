@@ -25,7 +25,7 @@ import { UserId } from '../../types/user-id';
 export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
-  occurredAt: Date,
+  recordedAt: Date,
 }>>;
 
 export type FindVersionsForArticleDoi = (
@@ -61,7 +61,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   [
     pipe(
       deps.findReviewsForArticleDoi(doi),
-      TE.map(RA.map((review) => ({ type: 'review', ...review } as const))),
+      TE.map(RA.map((review) => ({ type: 'review', ...review, occurredAt: review.recordedAt } as const))),
     ),
     pipe(
       deps.findVersionsForArticleDoi(doi, server),

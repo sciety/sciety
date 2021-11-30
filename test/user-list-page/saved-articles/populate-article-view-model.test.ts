@@ -20,12 +20,12 @@ describe('populate-article-view-model', () => {
         {
           reviewId: arbitraryReviewId(),
           groupId: arbitraryGroupId(),
-          occurredAt: new Date('2021-01-01'),
+          recordedAt: new Date('2021-01-01'),
         },
         {
           reviewId: new Doi('10.1101/222222'),
           groupId: arbitraryGroupId(),
-          occurredAt: latestActivityDate,
+          recordedAt: latestActivityDate,
         },
       ]),
       getLatestArticleVersionDate: () => TO.some(latestVersionDate),
