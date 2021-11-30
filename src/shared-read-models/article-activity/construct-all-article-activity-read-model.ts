@@ -12,12 +12,12 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: Evaluat
   O.fold(
     () => state.set(event.articleId.value, {
       doi: event.articleId,
-      latestActivityDate: O.some(event.date),
+      latestActivityDate: O.some(event.publishedAt),
       evaluationCount: 1,
     }),
     (entry) => state.set(event.articleId.value, {
       ...entry,
-      latestActivityDate: O.some(event.date),
+      latestActivityDate: O.some(event.publishedAt),
       evaluationCount: entry.evaluationCount + 1,
     }),
   ),
