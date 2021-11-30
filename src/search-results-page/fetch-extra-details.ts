@@ -29,9 +29,9 @@ type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T
 const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem) => pipe(
-  item.doi,
-  findReviewsForArticleDoi(ports.getAllEvents),
-  TE.chainTaskK(flow(
+  ports.getAllEvents,
+  T.map(findReviewsForArticleDoi(item.doi)),
+  T.chain(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
       latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
@@ -39,12 +39,13 @@ const populateArticleViewModel = (
     }),
     sequenceS(T.ApplyPar),
   )),
-  TE.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
+  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
     latestVersionDate,
     latestActivityDate,
     evaluationCount,
   })),
+  TE.rightTask,
 );
 
 const fetchItemDetails = (

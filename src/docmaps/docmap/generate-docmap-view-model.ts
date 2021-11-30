@@ -72,8 +72,9 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
   {
     articleId: TE.right(articleId),
     evaluations: pipe(
-      articleId,
-      findReviewsForArticleDoi(ports.getAllEvents),
+      ports.getAllEvents,
+      TE.rightTask,
+      TE.map(findReviewsForArticleDoi(articleId)),
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
       TE.chainEitherKW(flow(
