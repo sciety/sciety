@@ -8,6 +8,7 @@ export type EvaluationRecordedEvent = Readonly<{
   groupId: GroupId,
   articleId: Doi,
   reviewId: ReviewId,
+  publishedAt: Date,
   authors: ReadonlyArray<string>,
 }>;
 
@@ -17,11 +18,13 @@ export const evaluationRecorded = (
   reviewId: ReviewId,
   date: Date = new Date(),
   authors: ReadonlyArray<string> = [],
+  publishedAt: Date = new Date(),
 ): EvaluationRecordedEvent => ({
   type: 'EvaluationRecorded',
   date,
   groupId,
   articleId: doi,
   reviewId,
+  publishedAt,
   authors,
 });

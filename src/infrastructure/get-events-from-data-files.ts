@@ -23,6 +23,7 @@ export const getEventsFromDataFiles = (
       evaluationLocator,
       date,
       authors,
+      date,
     ))),
   )),
   TE.chainEitherKW(flow(
