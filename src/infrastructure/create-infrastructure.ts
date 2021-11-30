@@ -18,7 +18,6 @@ import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchData } from './fetchers';
 import { findGroups } from './find-groups';
-import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
@@ -30,6 +29,7 @@ import {
 } from './logger';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { findReviewsForArticleDoi } from '../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';

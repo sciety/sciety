@@ -7,10 +7,10 @@ import { EventSourcedFollowListRepository } from './event-sourced-follow-list-re
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { FindGroups } from './find-groups';
-import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { Follows } from './follows';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
+import { FindReviewsForArticleDoi } from '../shared-read-models/evaluations/find-reviews-for-article-doi';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
