@@ -1,6 +1,6 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { EvaluationRecordedEvent, groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded, EvaluationRecordedEvent } from '../../../src/domain-events';
 import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
 import { GroupId } from '../../../src/types/group-id';
@@ -13,7 +13,7 @@ const generateNEventsForGroup = (
   numberOfEvents: number,
   groupId: GroupId,
 ): ReadonlyArray<EvaluationRecordedEvent> => (
-  [...Array(numberOfEvents).keys()].map((i) => (groupEvaluatedArticle(
+  [...Array(numberOfEvents).keys()].map((i) => (evaluationRecorded(
     groupId,
     new Doi(`10.1101/${i}`),
     arbitraryReviewId(),
@@ -24,7 +24,7 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryDoi();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const events = [
-      groupEvaluatedArticle(
+      evaluationRecorded(
         groupIdFromString(groupId),
         articleId,
         arbitraryReviewId(),
@@ -68,7 +68,7 @@ describe('followed-groups-activities', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
-        groupEvaluatedArticle(
+        evaluationRecorded(
           notFollowedGroupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -87,13 +87,13 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
-      groupEvaluatedArticle(
+      evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('1980-01-01'),
       ),
-      groupEvaluatedArticle(
+      evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
@@ -137,25 +137,25 @@ describe('followed-groups-activities', () => {
     const otherGroupId = arbitraryGroupId();
     const articleId = arbitraryDoi();
     const events = [
-      groupEvaluatedArticle(
+      evaluationRecorded(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('2020-10-14T00:00:00.000Z'),
       ),
-      groupEvaluatedArticle(
+      evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
-      groupEvaluatedArticle(
+      evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
-      groupEvaluatedArticle(
+      evaluationRecorded(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
@@ -192,13 +192,13 @@ describe('followed-groups-activities', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        groupEvaluatedArticle(
+        evaluationRecorded(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
           earlierDate,
         ),
-        groupEvaluatedArticle(
+        evaluationRecorded(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -232,19 +232,19 @@ describe('followed-groups-activities', () => {
       const articleMostRecentlyReviewedByTheFollowedGroup = arbitraryDoi();
       const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = arbitraryDoi();
       const events = [
-        groupEvaluatedArticle(
+        evaluationRecorded(
           followedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
           arbitraryReviewId(),
           new Date('1980-01-01'),
         ),
-        groupEvaluatedArticle(
+        evaluationRecorded(
           followedGroupId,
           articleMostRecentlyReviewedByTheFollowedGroup,
           arbitraryReviewId(),
           new Date('2000-01-01'),
         ),
-        groupEvaluatedArticle(
+        evaluationRecorded(
           notFollowedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
           arbitraryReviewId(),
@@ -269,7 +269,7 @@ describe('followed-groups-activities', () => {
     const numberOfEvents = 15000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => groupEvaluatedArticle(
+      [...Array(numberOfEvents)].map(() => evaluationRecorded(
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),

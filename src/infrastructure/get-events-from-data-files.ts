@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { evaluationEventsFilepathForGroupId, readEventsFile } from './events-file';
-import { DomainEvent, groupEvaluatedArticle } from '../domain-events';
+import { DomainEvent, evaluationRecorded } from '../domain-events';
 import { GroupId } from '../types/group-id';
 
 export const getEventsFromDataFiles = (
@@ -17,7 +17,7 @@ export const getEventsFromDataFiles = (
     readEventsFile,
     TE.map(RA.map(({
       date, articleDoi, evaluationLocator, authors,
-    }) => groupEvaluatedArticle(
+    }) => evaluationRecorded(
       groupId,
       articleDoi,
       evaluationLocator,

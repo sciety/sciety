@@ -8,7 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
@@ -75,8 +75,8 @@ describe('generate-docmaps', () => {
         getAllEvents: T.of([
           groupCreated(group1),
           groupCreated(group2),
-          groupEvaluatedArticle(group1.id, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(group2.id, articleId, arbitraryReviewId()),
+          evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
+          evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -96,7 +96,7 @@ describe('generate-docmaps', () => {
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
-          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -116,8 +116,8 @@ describe('generate-docmaps', () => {
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
-          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -145,8 +145,8 @@ describe('generate-docmaps', () => {
             ...arbitraryGroup(),
             id: rapidReviewsGroupId,
           }),
-          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(rapidReviewsGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(rapidReviewsGroupId, articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -173,8 +173,8 @@ describe('generate-docmaps', () => {
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
-          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(ncrcGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
       });
     });
@@ -207,8 +207,8 @@ describe('generate-docmaps', () => {
               ...arbitraryGroup(),
               id: ncrcGroupId,
             }),
-            groupEvaluatedArticle(ncrcGroupId, articleId, reviews[0].reviewId),
-            groupEvaluatedArticle(ncrcGroupId, articleId, reviews[1].reviewId),
+            evaluationRecorded(ncrcGroupId, articleId, reviews[0].reviewId),
+            evaluationRecorded(ncrcGroupId, articleId, reviews[1].reviewId),
           ]),
         })(articleId.value),
       )();

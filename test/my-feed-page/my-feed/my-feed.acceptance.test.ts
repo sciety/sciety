@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
-import { groupEvaluatedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { evaluationRecorded, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { myFeed } from '../../../src/my-feed-page/my-feed';
 import {
   feedTitle,
@@ -80,7 +80,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
         const html = await myFeed(adapters)(userId)();
@@ -110,7 +110,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
         const html = await myFeed(adapters)(userId)();
@@ -134,8 +134,8 @@ describe('my-feed acceptance', () => {
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              groupEvaluatedArticle(groupId, failingDoi, arbitraryReviewId()),
-              groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+              evaluationRecorded(groupId, failingDoi, arbitraryReviewId()),
+              evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
 
@@ -155,7 +155,7 @@ describe('my-feed acceptance', () => {
             findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+              evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
           const html = await myFeed(adapters)(userId)();

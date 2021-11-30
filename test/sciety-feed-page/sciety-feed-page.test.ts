@@ -5,8 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
-  groupCreated,
-  groupEvaluatedArticle, userFollowedEditorialCommunity,
+  evaluationRecorded,
+  groupCreated, userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -49,8 +49,8 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -67,8 +67,8 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -85,7 +85,7 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -158,7 +158,7 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
         userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),

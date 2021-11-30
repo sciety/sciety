@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import { groupEvaluatedArticleCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
@@ -27,7 +27,7 @@ describe('group-evaluated-article-card', () => {
     beforeEach(async () => {
       const fetchArticle = () => TE.right(article);
       const createCard = pipe(
-        groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
         groupEvaluatedArticleCard({
           getAllEvents: T.of([groupCreated(group)]),
           fetchArticle,
@@ -49,7 +49,7 @@ describe('group-evaluated-article-card', () => {
   describe('when the article cannot be fetched', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
-      groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
       groupEvaluatedArticleCard({
         getAllEvents: T.of([groupCreated(group)]),
         fetchArticle,

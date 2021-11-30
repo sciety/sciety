@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -29,8 +29,8 @@ describe('get-activity-for-doi', () => {
     const laterDate = new Date(2000);
     const articleActivity = pipe(
       [
-        groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId(), earlierDate),
-        groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId(), laterDate),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), earlierDate),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), laterDate),
       ],
       getActivityForDoi(articleId),
     );

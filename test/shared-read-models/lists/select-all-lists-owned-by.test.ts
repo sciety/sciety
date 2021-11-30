@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded } from '../../../src/domain-events';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -60,8 +60,8 @@ describe('select-all-lists-owned-by', () => {
     const result = pipe(
       [
         listCreated(arbitraryListId(), listName, listDescription, ownerId),
-        groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(ownerId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), newerDate),
       ],
       selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
@@ -91,8 +91,8 @@ describe('select-all-lists-owned-by', () => {
     const result = pipe(
       [
         listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
-        groupEvaluatedArticle(ownerId, articleId, arbitraryReviewId(), olderDate),
-        groupEvaluatedArticle(ownerId, articleId, arbitraryReviewId()),
+        evaluationRecorded(ownerId, articleId, arbitraryReviewId(), olderDate),
+        evaluationRecorded(ownerId, articleId, arbitraryReviewId()),
       ],
       selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
@@ -112,7 +112,7 @@ describe('select-all-lists-owned-by', () => {
     const result = pipe(
       [
         listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), anotherOwnerId),
-        groupEvaluatedArticle(anotherOwnerId, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(anotherOwnerId, arbitraryDoi(), arbitraryReviewId()),
       ],
       selectAllListsOwnedBy(ownerId),
     );

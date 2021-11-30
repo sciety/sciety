@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../src/domain-events';
+import { evaluationRecorded } from '../../src/domain-events';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -20,9 +20,9 @@ describe('find-reviews-for-article-doi', () => {
   const reviewId2 = arbitraryReviewId();
   const reviewId3 = arbitraryReviewId();
   const getAllEvents = T.of([
-    groupEvaluatedArticle(group1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
-    groupEvaluatedArticle(group1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
-    groupEvaluatedArticle(group2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
+    evaluationRecorded(group1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
+    evaluationRecorded(group1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
+    evaluationRecorded(group2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
   ]);
 
   describe('findReviewsForArticleDoi', () => {
@@ -46,7 +46,7 @@ describe('find-reviews-for-article-doi', () => {
     const numberOfEvents = 55000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => groupEvaluatedArticle(
+      [...Array(numberOfEvents)].map(() => evaluationRecorded(
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),

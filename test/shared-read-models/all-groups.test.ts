@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import {
-  groupCreated, groupEvaluatedArticle, userFollowedEditorialCommunity, userSavedArticle,
+  evaluationRecorded, groupCreated, userFollowedEditorialCommunity, userSavedArticle,
 } from '../../src/domain-events';
 import { getGroup, getGroupBySlug } from '../../src/shared-read-models/all-groups';
 import * as DE from '../../src/types/data-error';
@@ -16,7 +16,7 @@ const group = arbitraryGroup();
 const arbitraryUninterestingEvents = [
   groupCreated(arbitraryGroup()),
   userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
-  groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
+  evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
   userSavedArticle(arbitraryUserId(), arbitraryDoi()),
 ];
 

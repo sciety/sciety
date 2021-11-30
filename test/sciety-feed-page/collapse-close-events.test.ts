@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { groupEvaluatedArticle } from '../../src/domain-events';
+import { evaluationRecorded } from '../../src/domain-events';
 import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -15,8 +15,8 @@ describe('collapse-close-events', () => {
 
       const result = pipe(
         [
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), date),
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), earlierDate),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), date),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), earlierDate),
         ],
         collapseCloseEvents,
       );
@@ -38,9 +38,9 @@ describe('collapse-close-events', () => {
 
       const result = pipe(
         [
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
         ],
         collapseCloseEvents,
       );
@@ -62,9 +62,9 @@ describe('collapse-close-events', () => {
       const groupId = arbitraryGroupId();
 
       const events = [
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
       ];
       const result = pipe(
         events,
@@ -87,10 +87,10 @@ describe('collapse-close-events', () => {
 
       const result = pipe(
         [
-          groupEvaluatedArticle(groupId, firstArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, firstArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, secondArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, secondArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
         ],
         collapseCloseEvents,
       );
@@ -111,10 +111,10 @@ describe('collapse-close-events', () => {
 
       const result = pipe(
         [
-          groupEvaluatedArticle(groupId, firstArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, firstArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, secondArticleId, arbitraryReviewId()),
-          groupEvaluatedArticle(groupId, firstArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
         ],
         collapseCloseEvents,
       );
@@ -132,8 +132,8 @@ describe('collapse-close-events', () => {
       const articleId = arbitraryDoi();
 
       const events = [
-        groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        groupEvaluatedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
       ];
       const result = pipe(
         events,
@@ -150,9 +150,9 @@ describe('collapse-close-events', () => {
       const groupTwo = arbitraryGroupId();
 
       const events = [
-        groupEvaluatedArticle(groupOne, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupTwo, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupOne, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupTwo, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
       ];
       const result = pipe(
         events,

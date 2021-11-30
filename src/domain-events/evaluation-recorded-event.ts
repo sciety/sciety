@@ -11,7 +11,7 @@ export type EvaluationRecordedEvent = Readonly<{
   authors: ReadonlyArray<string>,
 }>;
 
-export const groupEvaluatedArticle = (
+export const evaluationRecorded = (
   groupId: GroupId,
   doi: Doi,
   reviewId: ReviewId,

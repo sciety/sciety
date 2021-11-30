@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import {
-  groupEvaluatedArticle,
+  evaluationRecorded,
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
 } from '../../../src/domain-events';
@@ -28,25 +28,25 @@ describe('update-group-meta', () => {
     expect(result).toStrictEqual({ ...initial, followerCount: 40 });
   });
 
-  it('updates the meta when passed a newer GroupEvaluatedArticle', () => {
+  it('updates the meta when passed a newer EvaluationRecorded', () => {
     const newerDate = new Date('2020');
-    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivity: O.some(newerDate) });
   });
 
-  it('does not change the latestActivity date when passed an older GroupEvaluatedArticle', () => {
+  it('does not change the latestActivity date when passed an older EvaluationRecorded', () => {
     const olderDate = new Date('1920');
-    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
   });
 
-  it('updates the meta when passed the first GroupEvaluatedArticle', () => {
+  it('updates the meta when passed the first EvaluationRecorded', () => {
     const newerDate = new Date('2020');
-    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 1, latestActivity: O.some(newerDate) });

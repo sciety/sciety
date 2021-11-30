@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { groupCreated, groupEvaluatedArticle } from '../../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -63,7 +63,7 @@ describe('docmap-index', () => {
               ...arbitraryGroup(),
               id: ncrcGroupId,
             }),
-            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
           fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
           findReviewsForArticleDoi: () => TE.right([review(ncrcGroupId, arbitraryDate())]),
@@ -95,7 +95,7 @@ describe('docmap-index', () => {
     beforeEach(async () => {
       const ports = {
         getAllEvents: T.of([
-          groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+          evaluationRecorded(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
         ]),
         fetchReview: () => TE.left(DE.unavailable),
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
