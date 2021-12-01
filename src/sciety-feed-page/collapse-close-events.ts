@@ -30,12 +30,13 @@ type StateEntry = DomainEvent | CollapsedEvent;
 const collapsedGroupEvaluatedMultipleArticles = (
   last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
   articleIds: Set<string>,
+  publishedAt: Date,
 ): CollapsedGroupEvaluatedMultipleArticles => ({
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: last.groupId,
   articleIds,
   articleCount: articleIds.size,
-  date: last.date,
+  date: mostRecentDate(last.date, publishedAt),
 });
 
 export const isCollapsedGroupEvaluatedArticle = (
@@ -77,16 +78,28 @@ const replaceWithCollapseEvent = (
     if (event.articleId.value === last.articleId.value) {
       state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
     } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+      state.push(collapsedGroupEvaluatedMultipleArticles(
+        last,
+        new Set([last.articleId.value, event.articleId.value]),
+        event.publishedAt,
+      ));
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
       state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
     } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
+      state.push(collapsedGroupEvaluatedMultipleArticles(
+        last,
+        new Set([last.articleId.value, event.articleId.value]),
+        event.publishedAt,
+      ));
     }
   } else if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
-    state.push(collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
+    state.push(collapsedGroupEvaluatedMultipleArticles(
+      last,
+      last.articleIds.add(event.articleId.value),
+      event.publishedAt,
+    ));
   }
 };
 
