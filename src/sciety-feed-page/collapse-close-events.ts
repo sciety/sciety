@@ -2,16 +2,16 @@ import { pipe } from 'fp-ts/function';
 import { GroupEvaluatedMultipleArticlesCard, GroupEvaluatedSingleArticle } from './cards';
 import { DomainEvent, EvaluationRecordedEvent } from '../domain-events';
 
-type CollapsedGroupEvaluatedArticle = GroupEvaluatedSingleArticle & {
+type CollapsedGroupEvaluatedSingleArticle = GroupEvaluatedSingleArticle & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 
 const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
 
 const collapsedGroupEvaluatedSingleArticle = (
-  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle,
+  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle,
   publishedAt: Date,
-): CollapsedGroupEvaluatedArticle => ({
+): CollapsedGroupEvaluatedSingleArticle => ({
   type: 'CollapsedGroupEvaluatedArticle',
   groupId: last.groupId,
   articleId: last.articleId,
@@ -23,12 +23,12 @@ type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCar
   articleIds: Set<string>,
 };
 
-export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
+export type CollapsedEvent = CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 type StateEntry = DomainEvent | CollapsedEvent;
 
 const collapsedGroupEvaluatedMultipleArticles = (
-  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
+  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles,
   articleIds: Set<string>,
   publishedAt: Date,
 ): CollapsedGroupEvaluatedMultipleArticles => ({
@@ -41,7 +41,7 @@ const collapsedGroupEvaluatedMultipleArticles = (
 
 export const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
-): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
+): entry is CollapsedGroupEvaluatedSingleArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 
 export const isCollapsedGroupEvaluatedMultipleArticles = (
   entry: StateEntry,
