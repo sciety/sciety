@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../src/domain-events';
-import { userSavedArticle } from '../../src/domain-events/user-saved-article-event';
+import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
 import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDate } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
