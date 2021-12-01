@@ -1,13 +1,27 @@
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
+import { userSavedArticle } from '../../src/domain-events/user-saved-article-event';
 import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('collapse-close-events', () => {
   describe('when there is a non-evaluation event', () => {
-    it.todo('returns the event date');
+    const date = new Date('2021-09-14 12:00');
+    const result = pipe(
+      [
+        userSavedArticle(arbitraryUserId(), arbitraryDoi(), date),
+      ],
+      collapseCloseEvents,
+    );
+
+    it('returns the event date', () => {
+      expect(result).toStrictEqual([expect.objectContaining({
+        date,
+      })]);
+    });
   });
 
   describe('when there is a single evaluation on a single article', () => {
