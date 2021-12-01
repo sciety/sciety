@@ -49,31 +49,38 @@ describe('collapse-close-events', () => {
   });
 
   describe('given consecutive events in which the same group evaluated an article', () => {
-    it('collapses the events into a single feed item', () => {
+    describe('when there are two evaluations', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
-      const date = new Date('2021-09-14 12:00');
+      const laterDate = new Date('2021-09-14 12:00');
       const earlierDate = new Date('2021-09-14 11:00');
 
       const result = pipe(
         [
-          evaluationRecorded(groupId, articleId, arbitraryReviewId(), date),
-          evaluationRecorded(groupId, articleId, arbitraryReviewId(), earlierDate),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
         ],
         collapseCloseEvents,
       );
 
-      expect(result).toStrictEqual([
-        {
-          type: 'CollapsedGroupEvaluatedArticle',
-          groupId,
-          articleId,
-          date,
-        },
-      ]);
-    });
+      it('collapses the events into a single feed item', () => {
+        expect(result).toStrictEqual([expect.objectContaining(
+          {
+            type: 'CollapsedGroupEvaluatedArticle',
+            groupId,
+            articleId,
+          },
+        )]);
+      });
 
-    it.todo('returns the most recent evaluation published date');
+      it.skip('returns the most recent evaluation published date', () => {
+        expect(result).toStrictEqual([expect.objectContaining(
+          {
+            date: laterDate,
+          },
+        )]);
+      });
+    });
 
     it('collapses three events into a single feed item', () => {
       const groupId = arbitraryGroupId();
