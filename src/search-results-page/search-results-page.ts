@@ -16,7 +16,7 @@ import { Doi } from '../types/doi';
 type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer,
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ publishedAt: Date }>>;
 
 type Ports = PerformAllSearchesPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
@@ -36,7 +36,7 @@ export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (pa
       tupled(ports.findVersionsForArticleDoi),
       TO.map(flow(
         RNEA.last,
-        (version) => version.occurredAt,
+        (version) => version.publishedAt,
       )),
     ),
   })),

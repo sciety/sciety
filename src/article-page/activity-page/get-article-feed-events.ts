@@ -26,7 +26,7 @@ export type FindVersionsForArticleDoi = (
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
   source: URL,
-  occurredAt: Date,
+  publishedAt: Date,
   version: number,
 }>>;
 
@@ -61,7 +61,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       ports.findVersionsForArticleDoi(doi, server),
       TO.matchW(
         constant([]),
-        RNEA.map((version) => ({ type: 'article-version', ...version, publishedAt: version.occurredAt } as const)),
+        RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
       ),
       TE.rightTask,
     ),

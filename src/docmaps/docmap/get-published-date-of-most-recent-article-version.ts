@@ -12,7 +12,7 @@ type FindVersionsForArticleDoi = (
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
   source: URL,
-  occurredAt: Date,
+  publishedAt: Date,
   version: number,
 }>>;
 
@@ -21,6 +21,11 @@ export type Ports = {
   fetchArticle: (doi: Doi) => TE.TaskEither<DE.DataError, { server: ArticleServer }>,
 };
 
-type GetDateOfMostRecentArticleVersion = (ports: Ports, articleId: Doi) => TE.TaskEither<DE.DataError, O.Option<Date>>;
+type GetPublishedDateOfMostRecentArticleVersion = (
+  ports: Ports,
+  articleId: Doi,
+) => TE.TaskEither<DE.DataError, O.Option<Date>>;
 
-export const getDateOfMostRecentArticleVersion: GetDateOfMostRecentArticleVersion = () => TE.right(O.none);
+export const getPublishedDateOfMostRecentArticleVersion: GetPublishedDateOfMostRecentArticleVersion = () => (
+  TE.right(O.none)
+);

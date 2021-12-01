@@ -29,7 +29,7 @@ const defaultPorts: Ports = {
   findVersionsForArticleDoi: () => TO.some([
     {
       source: new URL(arbitraryUri()),
-      occurredAt: arbitraryDate(),
+      publishedAt: arbitraryDate(),
       version: 1,
     },
   ]),

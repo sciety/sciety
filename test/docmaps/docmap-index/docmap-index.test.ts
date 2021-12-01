@@ -70,7 +70,7 @@ describe('docmap-index', () => {
           findVersionsForArticleDoi: (): ReturnType<DocmapPorts['findVersionsForArticleDoi']> => TO.some([
             {
               source: new URL(arbitraryUri()),
-              occurredAt: arbitraryDate(),
+              publishedAt: arbitraryDate(),
               version: 1,
             },
           ]),

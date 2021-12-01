@@ -21,7 +21,7 @@ type Dependencies = {
 
 type ArticleVersion = {
   source: URL,
-  occurredAt: Date,
+  publishedAt: Date,
   version: number,
 };
 
@@ -58,7 +58,7 @@ const mapResponse = (doi: Doi, server: ArticleServer) => flow(
   (response: BiorxivArticleDetails) => response.collection,
   RNEA.map(({ version, date }) => ({
     source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
-    occurredAt: date,
+    publishedAt: date,
     version,
   })),
 );

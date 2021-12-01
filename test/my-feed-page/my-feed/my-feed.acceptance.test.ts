@@ -65,9 +65,9 @@ describe('my-feed acceptance', () => {
     describe('following groups with evaluations', () => {
       const arbitraryVersions = () => TO.some([
         {
-          occurredAt: new Date(),
+          publishedAt: new Date(),
         },
-      ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>);
+      ] as RNEA.ReadonlyNonEmptyArray<{ publishedAt: Date }>);
 
       it('displays content in the form of article cards', async () => {
         const groupId = arbitraryGroupId();

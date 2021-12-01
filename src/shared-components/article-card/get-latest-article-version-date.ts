@@ -9,7 +9,7 @@ import { Doi } from '../../types/doi';
 export type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer,
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ publishedAt: Date }>>;
 
 type GetLatestArticleVersionDate = (
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
@@ -24,6 +24,6 @@ export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
   tupled(findVersionsForArticleDoi),
   T.map(O.map(flow(
     RNEA.last,
-    (version) => version.occurredAt,
+    (version) => version.publishedAt,
   ))),
 );

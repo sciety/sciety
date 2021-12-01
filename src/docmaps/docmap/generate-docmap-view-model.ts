@@ -8,7 +8,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
-import { getDateOfMostRecentArticleVersion, Ports as GetDateOfMostRecentArticleVersionPorts } from './get-date-of-most-recent-article-version';
+import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/all-groups';
 import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
@@ -82,7 +82,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
         E.fromOption(() => DE.notFound),
       )),
     ),
-    inputPublishedDate: getDateOfMostRecentArticleVersion(ports, articleId),
+    inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(ports, articleId),
     group: pipe(
       ports.getAllEvents,
       T.map(getGroup(groupId)),
