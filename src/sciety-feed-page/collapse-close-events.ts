@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { GroupEvaluatedArticleCard, GroupEvaluatedMultipleArticlesCard } from './cards';
+import { GroupEvaluatedMultipleArticlesCard, GroupEvaluatedSingleArticleMultipleTimes } from './cards';
 import { DomainEvent, EvaluationRecordedEvent } from '../domain-events';
 
-type CollapsedGroupEvaluatedArticle = GroupEvaluatedArticleCard & {
+type CollapsedGroupEvaluatedArticle = GroupEvaluatedSingleArticleMultipleTimes & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 

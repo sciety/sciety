@@ -18,7 +18,7 @@ type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type GroupEvaluatedArticleCard = {
+export type GroupEvaluatedSingleArticleMultipleTimes = {
   groupId: GroupId,
   articleId: Doi,
   evaluationCount: number,
@@ -31,7 +31,7 @@ export type Ports = {
 };
 
 export const groupEvaluatedArticleCard = (ports: Ports) => (
-  event: GroupEvaluatedArticleCard | EvaluationRecordedEvent,
+  event: GroupEvaluatedSingleArticleMultipleTimes | EvaluationRecordedEvent,
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   {
     group: pipe(
