@@ -144,13 +144,15 @@ describe('collapse-close-events', () => {
     const groupId = arbitraryGroupId();
     const firstArticleId = arbitraryDoi();
     const secondArticleId = arbitraryDoi();
+    const laterDate = new Date('2021-09-14 12:00');
+    const earlierDate = new Date('2021-09-14 11:00');
 
     const result = pipe(
       [
-        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
-        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
       ],
       collapseCloseEvents,
     );
@@ -163,7 +165,13 @@ describe('collapse-close-events', () => {
       })]);
     });
 
-    it.todo('returns the most recent evaluation published date');
+    it.skip('returns the most recent evaluation published date', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          date: laterDate,
+        },
+      )]);
+    });
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
