@@ -82,7 +82,7 @@ describe('collapse-close-events', () => {
       });
     });
 
-    it('collapses three events into a single feed item', () => {
+    describe('when there are three evaluations', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
 
@@ -95,14 +95,16 @@ describe('collapse-close-events', () => {
         collapseCloseEvents,
       );
 
-      expect(result).toStrictEqual([
-        {
-          type: 'CollapsedGroupEvaluatedArticle',
-          groupId,
-          articleId,
-          date: expect.any(Date),
-        },
-      ]);
+      it('collapses the events into a single feed item', () => {
+        expect(result).toStrictEqual([
+          {
+            type: 'CollapsedGroupEvaluatedArticle',
+            groupId,
+            articleId,
+            date: expect.any(Date),
+          },
+        ]);
+      });
     });
   });
 
@@ -139,21 +141,21 @@ describe('collapse-close-events', () => {
   });
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
+    const groupId = arbitraryGroupId();
+    const firstArticleId = arbitraryDoi();
+    const secondArticleId = arbitraryDoi();
+
+    const result = pipe(
+      [
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+      ],
+      collapseCloseEvents,
+    );
+
     it('collapses into one feed item', () => {
-      const groupId = arbitraryGroupId();
-      const firstArticleId = arbitraryDoi();
-      const secondArticleId = arbitraryDoi();
-
-      const result = pipe(
-        [
-          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
-        ],
-        collapseCloseEvents,
-      );
-
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
@@ -165,21 +167,21 @@ describe('collapse-close-events', () => {
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
+    const groupId = arbitraryGroupId();
+    const firstArticleId = arbitraryDoi();
+    const secondArticleId = arbitraryDoi();
+
+    const result = pipe(
+      [
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
+      ],
+      collapseCloseEvents,
+    );
+
     it('collapses into one feed item', () => {
-      const groupId = arbitraryGroupId();
-      const firstArticleId = arbitraryDoi();
-      const secondArticleId = arbitraryDoi();
-
-      const result = pipe(
-        [
-          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, secondArticleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, firstArticleId, arbitraryReviewId()),
-        ],
-        collapseCloseEvents,
-      );
-
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
@@ -189,37 +191,37 @@ describe('collapse-close-events', () => {
   });
 
   describe('given consecutive events in which different groups evaluated an article', () => {
+    const articleId = arbitraryDoi();
+
+    const events = [
+      evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+      evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+    ];
+    const result = pipe(
+      events,
+      collapseCloseEvents,
+    );
+
     it('does not collapse the events', () => {
-      const articleId = arbitraryDoi();
-
-      const events = [
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-      ];
-      const result = pipe(
-        events,
-        collapseCloseEvents,
-      );
-
       expect(result).toStrictEqual(events);
     });
   });
 
   describe('given group one evaluates 2 articles separated by group two reviewing an article', () => {
+    const groupOne = arbitraryGroupId();
+    const groupTwo = arbitraryGroupId();
+
+    const events = [
+      evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(groupTwo, arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
+    ];
+    const result = pipe(
+      events,
+      collapseCloseEvents,
+    );
+
     it('does not collapse the events', () => {
-      const groupOne = arbitraryGroupId();
-      const groupTwo = arbitraryGroupId();
-
-      const events = [
-        evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
-        evaluationRecorded(groupTwo, arbitraryDoi(), arbitraryReviewId()),
-        evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
-      ];
-      const result = pipe(
-        events,
-        collapseCloseEvents,
-      );
-
       expect(result).toStrictEqual(events);
     });
   });
