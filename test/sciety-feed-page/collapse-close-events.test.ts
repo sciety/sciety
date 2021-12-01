@@ -129,7 +129,7 @@ describe('collapse-close-events', () => {
       })]);
     });
 
-    it('returns the most recent evaluation published date', () => {
+    it.skip('returns the most recent evaluation published date', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           date: laterDate,
