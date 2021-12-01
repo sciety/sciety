@@ -90,9 +90,12 @@ const replaceWithCollapseEvent = (
 const processEvent = (
   state: Array<StateEntry>, event: DomainEvent,
 ) => {
-  if (isEvaluationRecordedEvent(event)
-    && collapsesIntoPreviousEvent(state, event)) {
-    replaceWithCollapseEvent(state, event);
+  if (isEvaluationRecordedEvent(event)) {
+    if (collapsesIntoPreviousEvent(state, event)) {
+      replaceWithCollapseEvent(state, event);
+    } else {
+      state.push({ ...event, date: event.publishedAt });
+    }
   } else {
     state.push(event);
   }

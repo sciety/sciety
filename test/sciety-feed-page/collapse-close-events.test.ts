@@ -41,7 +41,7 @@ describe('collapse-close-events', () => {
       collapseCloseEvents,
     );
 
-    it.skip('returns the evaluation published date', () => {
+    it('returns the evaluation published date', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         date: publishedDate,
       })]);
