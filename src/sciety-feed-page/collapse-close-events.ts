@@ -68,38 +68,46 @@ const collapsesIntoPreviousEvent = (
   },
 );
 
+const calculateNextStateEntry = (
+  current: StateEntry,
+  event: EvaluationRecordedEvent,
+) => {
+  if (isEvaluationRecordedEvent(current)) {
+    if (event.articleId.value === current.articleId.value) {
+      return collapsedGroupEvaluatedSingleArticle(current, event.publishedAt);
+    }
+    return collapsedGroupEvaluatedMultipleArticles(
+      current,
+      new Set([current.articleId.value, event.articleId.value]),
+      event.publishedAt,
+    );
+  } if (isCollapsedGroupEvaluatedArticle(current)) {
+    if (event.articleId.value === current.articleId.value) {
+      return collapsedGroupEvaluatedSingleArticle(current, event.publishedAt);
+    }
+    return collapsedGroupEvaluatedMultipleArticles(
+      current,
+      new Set([current.articleId.value, event.articleId.value]),
+      event.publishedAt,
+    );
+  } if (isCollapsedGroupEvaluatedMultipleArticles(current)) {
+    return collapsedGroupEvaluatedMultipleArticles(
+      current,
+      current.articleIds.add(event.articleId.value),
+      event.publishedAt,
+    );
+  }
+};
+
 const replaceWithCollapseEvent = (
   state: Array<StateEntry>,
   event: EvaluationRecordedEvent,
 ) => {
-  const last = state.pop();
-  if (!last) { return; }
-  if (isEvaluationRecordedEvent(last)) {
-    if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
-    } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(
-        last,
-        new Set([last.articleId.value, event.articleId.value]),
-        event.publishedAt,
-      ));
-    }
-  } else if (isCollapsedGroupEvaluatedArticle(last)) {
-    if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
-    } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(
-        last,
-        new Set([last.articleId.value, event.articleId.value]),
-        event.publishedAt,
-      ));
-    }
-  } else if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
-    state.push(collapsedGroupEvaluatedMultipleArticles(
-      last,
-      last.articleIds.add(event.articleId.value),
-      event.publishedAt,
-    ));
+  const current = state.pop();
+  if (!current) { return; }
+  const next = calculateNextStateEntry(current, event);
+  if (next) {
+    state.push(next);
   }
 };
 
