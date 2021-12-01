@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
 import { userSavedArticle } from '../../src/domain-events/user-saved-article-event';
 import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
+import { arbitraryDate } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -25,7 +26,26 @@ describe('collapse-close-events', () => {
   });
 
   describe('when there is a single evaluation on a single article', () => {
-    it.todo('returns the evaluation published date');
+    const publishedDate = new Date('2021-09-14 12:00');
+    const result = pipe(
+      [
+        evaluationRecorded(
+          arbitraryGroupId(),
+          arbitraryDoi(),
+          arbitraryReviewId(),
+          arbitraryDate(),
+          [],
+          publishedDate,
+        ),
+      ],
+      collapseCloseEvents,
+    );
+
+    it.skip('returns the evaluation published date', () => {
+      expect(result).toStrictEqual([expect.objectContaining({
+        date: publishedDate,
+      })]);
+    });
   });
 
   describe('given consecutive events in which the same group evaluated an article', () => {
