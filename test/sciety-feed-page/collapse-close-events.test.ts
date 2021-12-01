@@ -6,6 +6,14 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('collapse-close-events', () => {
+  describe('when there is a non-evaluation event', () => {
+    it.todo('returns the event date');
+  });
+
+  describe('when there is a single evaluation on a single article', () => {
+    it.todo('returns the evaluation published date');
+  });
+
   describe('given consecutive events in which the same group evaluated an article', () => {
     it('collapses the events into a single feed item', () => {
       const groupId = arbitraryGroupId();
@@ -30,6 +38,8 @@ describe('collapse-close-events', () => {
         },
       ]);
     });
+
+    it.todo('returns the most recent evaluation published date');
 
     it('collapses three events into a single feed item', () => {
       const groupId = arbitraryGroupId();
@@ -75,6 +85,8 @@ describe('collapse-close-events', () => {
         articleCount: 3,
       })]);
     });
+
+    it.todo('returns the most recent evaluation published date');
   });
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
@@ -99,6 +111,8 @@ describe('collapse-close-events', () => {
         articleCount: 2,
       })]);
     });
+
+    it.todo('returns the most recent evaluation published date');
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
