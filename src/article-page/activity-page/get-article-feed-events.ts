@@ -54,7 +54,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     pipe(
       ports.getAllEvents,
       T.map(getEvaluationsForDoi(doi)),
-      T.map(RA.map((review) => ({ type: 'review', ...review, publishedAt: review.recordedAt } as const))),
+      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
       TE.rightTask,
     ),
     pipe(
