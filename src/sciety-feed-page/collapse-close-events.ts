@@ -8,13 +8,11 @@ type CollapsedGroupEvaluatedArticle = GroupEvaluatedSingleArticleMultipleTimes &
 
 const collapsedGroupEvaluatedArticle = (
   last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle,
-  evaluationCount: number,
 ): CollapsedGroupEvaluatedArticle => ({
   type: 'CollapsedGroupEvaluatedArticle',
   groupId: last.groupId,
   articleId: last.articleId,
   date: last.date,
-  evaluationCount,
 });
 
 type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
@@ -74,13 +72,13 @@ const replaceWithCollapseEvent = (
   if (!last) { return; }
   if (isEvaluationRecordedEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last, 2));
+      state.push(collapsedGroupEvaluatedArticle(last));
     } else {
       state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
+      state.push(collapsedGroupEvaluatedArticle(last));
     } else {
       state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }

@@ -26,7 +26,6 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
-          evaluationCount: 2,
           date,
         },
       ]);
@@ -50,7 +49,6 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
-          evaluationCount: 3,
           date: expect.any(Date),
         },
       ]);

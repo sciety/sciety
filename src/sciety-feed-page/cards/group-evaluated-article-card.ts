@@ -21,7 +21,6 @@ type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
 export type GroupEvaluatedSingleArticleMultipleTimes = {
   groupId: GroupId,
   articleId: Doi,
-  evaluationCount: number,
   date: Date,
 };
 
