@@ -6,13 +6,16 @@ type CollapsedGroupEvaluatedArticle = GroupEvaluatedSingleArticle & {
   type: 'CollapsedGroupEvaluatedArticle',
 };
 
-const collapsedGroupEvaluatedArticle = (
+const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
+
+const collapsedGroupEvaluatedSingleArticle = (
   last: EvaluationRecordedEvent | CollapsedGroupEvaluatedArticle,
+  publishedAt: Date,
 ): CollapsedGroupEvaluatedArticle => ({
   type: 'CollapsedGroupEvaluatedArticle',
   groupId: last.groupId,
   articleId: last.articleId,
-  date: last.date,
+  date: mostRecentDate(last.date, publishedAt),
 });
 
 type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
@@ -72,13 +75,13 @@ const replaceWithCollapseEvent = (
   if (!last) { return; }
   if (isEvaluationRecordedEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last));
+      state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
     } else {
       state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push(collapsedGroupEvaluatedArticle(last));
+      state.push(collapsedGroupEvaluatedSingleArticle(last, event.publishedAt));
     } else {
       state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
