@@ -123,7 +123,7 @@ describe('collapse-close-events', () => {
       collapseCloseEvents,
     );
 
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
