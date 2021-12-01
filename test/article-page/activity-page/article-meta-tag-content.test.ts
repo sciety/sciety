@@ -5,10 +5,10 @@ import * as RFI from './review-feed-item.helper';
 import { articleMetaTagContent } from '../../../src/article-page/activity-page/article-meta-tag-content';
 import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../helpers';
 
-const arbitraryArticleVersionFeedItem = (occurredAt: Date = arbitraryDate()) => ({
+const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) => ({
   type: 'article-version' as const,
   source: new URL(arbitraryUri()),
-  occurredAt,
+  publishedAt,
   version: arbitraryNumber(1, 10),
   server: 'biorxiv' as const,
 });

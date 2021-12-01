@@ -21,13 +21,13 @@ type ReviewEvent = {
   type: 'review',
   groupId: GroupId,
   reviewId: ReviewId,
-  occurredAt: Date,
+  publishedAt: Date,
 };
 
 type ArticleVersionEvent = {
   type: 'article-version',
   source: URL,
-  occurredAt: Date,
+  publishedAt: Date,
   version: number,
 };
 
@@ -99,7 +99,7 @@ const reviewToFeedItem = (
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
-    occurredAt: feedEvent.occurredAt,
+    publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
     counts: reviewResponses,

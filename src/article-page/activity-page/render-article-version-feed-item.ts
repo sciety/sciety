@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export type ArticleVersionFeedItem = {
   type: 'article-version',
   source: URL,
-  occurredAt: Date,
+  publishedAt: Date,
   version: number,
   server: ArticleServer,
 };
@@ -23,7 +23,7 @@ const renderBiorxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =
             Version ${feedItem.version} published on bioRxiv
           </a>
         </div>
-        ${templateDate(feedItem.occurredAt, 'activity-feed__item__date')}
+        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
     </header>
   </div>
@@ -39,7 +39,7 @@ const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =
             Version ${feedItem.version} published on medRxiv
           </a>
         </div>
-        ${templateDate(feedItem.occurredAt, 'activity-feed__item__date')}
+        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
     </header>
   </div>

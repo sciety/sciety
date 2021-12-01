@@ -12,7 +12,7 @@ export const arbitrary = (): ReviewFeedItem => ({
   type: 'review',
   id: arbitraryReviewId(),
   source: O.some(new URL(t.arbitraryUri())),
-  occurredAt: new Date(),
+  publishedAt: new Date(),
   groupHref: arbitraryWord(),
   groupName: 'group 1',
   groupAvatar: '/avatar',
@@ -39,7 +39,7 @@ export const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem
   source: O.some(new URL(uri)),
 });
 
-export const withDate = (occurredAt: Date) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withDate = (publishedAt: Date) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
   ...rfi,
-  occurredAt,
+  publishedAt,
 });

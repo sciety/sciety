@@ -13,7 +13,7 @@ type MergeFeeds = (feeds: RNEA.ReadonlyNonEmptyArray<Feed>) => Feed;
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
-  Ord.contramap((event) => event.occurredAt),
+  Ord.contramap((event) => event.publishedAt),
 );
 
 const byDateDescending: Ord.Ord<FeedEvent> = pipe(

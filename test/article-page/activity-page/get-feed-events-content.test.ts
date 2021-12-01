@@ -22,13 +22,13 @@ describe('get-feed-events-content', () => {
           type: 'review',
           groupId,
           reviewId: arbitraryReviewId(),
-          occurredAt: new Date(),
+          publishedAt: new Date(),
         },
         {
           type: 'review',
           groupId,
           reviewId: arbitraryReviewId(),
-          occurredAt: new Date(),
+          publishedAt: new Date(),
         },
       ];
       const getAllEvents = T.of([]);

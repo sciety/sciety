@@ -54,14 +54,14 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     pipe(
       ports.getAllEvents,
       T.map(getEvaluationsForDoi(doi)),
-      T.map(RA.map((review) => ({ type: 'review', ...review, occurredAt: review.recordedAt } as const))),
+      T.map(RA.map((review) => ({ type: 'review', ...review, publishedAt: review.recordedAt } as const))),
       TE.rightTask,
     ),
     pipe(
       ports.findVersionsForArticleDoi(doi, server),
       TO.matchW(
         constant([]),
-        RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
+        RNEA.map((version) => ({ type: 'article-version', ...version, publishedAt: version.occurredAt } as const)),
       ),
       TE.rightTask,
     ),

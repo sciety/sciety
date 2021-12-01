@@ -15,20 +15,20 @@ describe('merge-feeds', () => {
       type: 'review',
       groupId: arbitraryGroupId(),
       reviewId: arbitraryReviewId(),
-      occurredAt: secondDate,
+      publishedAt: secondDate,
     },
   ] as const);
   const feed2 = TE.right([
     {
       type: 'article-version',
       source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
-      occurredAt: thirdDate,
+      publishedAt: thirdDate,
       version: 2,
     },
     {
       type: 'article-version',
       source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
-      occurredAt: firstDate,
+      publishedAt: firstDate,
       version: 1,
     },
   ] as const);
@@ -60,8 +60,8 @@ describe('merge-feeds', () => {
       TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(feedEvents[0].occurredAt).toStrictEqual(thirdDate);
-    expect(feedEvents[1].occurredAt).toStrictEqual(secondDate);
-    expect(feedEvents[2].occurredAt).toStrictEqual(firstDate);
+    expect(feedEvents[0].publishedAt).toStrictEqual(thirdDate);
+    expect(feedEvents[1].publishedAt).toStrictEqual(secondDate);
+    expect(feedEvents[2].publishedAt).toStrictEqual(firstDate);
   });
 });

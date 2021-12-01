@@ -15,7 +15,7 @@ export type ReviewFeedItem = {
   type: 'review',
   id: RI.ReviewId,
   source: O.Option<URL>,
-  occurredAt: Date,
+  publishedAt: Date,
   groupName: string,
   groupHref: string,
   groupAvatar: string,
@@ -35,7 +35,7 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
         ${htmlEscape(review.groupName)}
       </a>
     </div>
-    ${templateDate(review.occurredAt, 'activity-feed__item__date')}
+    ${templateDate(review.publishedAt, 'activity-feed__item__date')}
   </div>
 `);
 

@@ -12,12 +12,12 @@ export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaD
     feedItems,
     RA.filter((item): item is ArticleVersionFeedItem => item.type === 'article-version'),
     RA.lookup(0),
-    O.map((articleVersionFeedItem) => articleVersionFeedItem.occurredAt),
+    O.map((articleVersionFeedItem) => articleVersionFeedItem.publishedAt),
   ),
   latestActivity: pipe(
     feedItems,
     RA.filter((item): item is ReviewFeedItem => item.type === 'review'),
     RA.lookup(0),
-    O.map((articleVersionFeedItem) => articleVersionFeedItem.occurredAt),
+    O.map((reviewFeedItem) => reviewFeedItem.publishedAt),
   ),
 });

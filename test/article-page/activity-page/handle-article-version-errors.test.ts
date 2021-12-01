@@ -10,7 +10,7 @@ describe('handle-article-version-errors', () => {
         {
           type: 'article-version',
           version: 1,
-          occurredAt: new Date(),
+          publishedAt: new Date(),
           source: new URL('https://example.com'),
           server: 'biorxiv',
         },

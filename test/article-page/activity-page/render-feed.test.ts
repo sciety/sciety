@@ -10,7 +10,7 @@ describe('render-feed', () => {
       {
         type: 'article-version',
         source: new URL('http://example.com'),
-        occurredAt: new Date(),
+        publishedAt: new Date(),
         version: 1,
         server: 'biorxiv',
       },
