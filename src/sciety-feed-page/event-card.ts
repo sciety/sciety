@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  groupEvaluatedArticleCard, GroupEvaluatedArticleCardPorts,
-  groupEvaluatedMultipleArticlesCard, GroupEvaluatedMultipleArticlesCardPorts,
+  GroupEvaluatedArticleCardPorts, groupEvaluatedMultipleArticlesCard,
+  GroupEvaluatedMultipleArticlesCardPorts, groupEvaluatedSingleArticleCard,
   scietyFeedCard,
   userFollowedAGroupCard, UserFollowedAGroupCardPorts,
   userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
@@ -40,7 +40,7 @@ export const eventCard = (
   if (isCollapsedGroupEvaluatedArticle(event) || isEvaluationRecordedEvent(event)) {
     return pipe(
       event,
-      groupEvaluatedArticleCard(ports),
+      groupEvaluatedSingleArticleCard(ports),
       TE.map(scietyFeedCard),
     );
   }

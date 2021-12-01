@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
-import { groupEvaluatedArticleCard } from '../../../src/sciety-feed-page/cards';
+import { groupEvaluatedSingleArticleCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryHtmlFragment } from '../../helpers';
@@ -28,7 +28,7 @@ describe('group-evaluated-article-card', () => {
       const fetchArticle = () => TE.right(article);
       const createCard = pipe(
         evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticleCard({
+        groupEvaluatedSingleArticleCard({
           getAllEvents: T.of([groupCreated(group)]),
           fetchArticle,
         }),
@@ -50,7 +50,7 @@ describe('group-evaluated-article-card', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
       evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
-      groupEvaluatedArticleCard({
+      groupEvaluatedSingleArticleCard({
         getAllEvents: T.of([groupCreated(group)]),
         fetchArticle,
       }),
