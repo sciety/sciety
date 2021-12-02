@@ -52,6 +52,11 @@ const allGroups: Array<Group> = [
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
   },
   {
+    id: 'af792cd3-1600-465c-89e5-250c48f793aa',
+    name: 'PCI Neuroscience',
+    fetchFeed: fetchPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+  },
+  {
     id: '53ed5364-a016-11ea-bb37-0242ac130002',
     name: 'PeerJ',
     fetchFeed: fetchReviewsFromCrossrefViaBiorxiv('10.7717', '10.7287'),
