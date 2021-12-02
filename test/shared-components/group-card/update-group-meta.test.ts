@@ -5,6 +5,7 @@ import {
   userUnfollowedEditorialCommunity,
 } from '../../../src/domain-events';
 import { updateGroupMeta } from '../../../src/shared-components/group-card/update-group-meta';
+import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -28,28 +29,46 @@ describe('update-group-meta', () => {
     expect(result).toStrictEqual({ ...initial, followerCount: 40 });
   });
 
-  it('updates the meta when passed a newer EvaluationRecorded', () => {
+  describe('when passed the first EvaluationRecorded', () => {
     const newerDate = new Date('2020');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
-    const result = updateGroupMeta(groupId)(initial, event);
-
-    expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivity: O.some(newerDate) });
-  });
-
-  it('does not change the latestActivity date when passed an older EvaluationRecorded', () => {
-    const olderDate = new Date('1920');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
-    const result = updateGroupMeta(groupId)(initial, event);
-
-    expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
-  });
-
-  it('updates the meta when passed the first EvaluationRecorded', () => {
-    const newerDate = new Date('2020');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], newerDate);
     const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
 
-    expect(result).toStrictEqual({ ...initial, reviewCount: 1, latestActivity: O.some(newerDate) });
+    it('sets review count to 1', () => {
+      expect(result.reviewCount).toBe(1);
+    });
+
+    it('sets the latest activity', () => {
+      expect(result.latestActivity).toStrictEqual(O.some(newerDate));
+    });
+  });
+
+  describe('when passed a newer EvaluationRecorded', () => {
+    const newerDate = new Date('2020');
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], newerDate);
+    const result = updateGroupMeta(groupId)(initial, event);
+
+    it('updates the review count', () => {
+      expect(result.reviewCount).toBe(28);
+    });
+
+    it('updates the latest activity', () => {
+      expect(result.latestActivity).toStrictEqual(O.some(newerDate));
+    });
+  });
+
+  describe('when passed an older EvaluationRecorded', () => {
+    const olderDate = new Date('1920');
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], olderDate);
+    const result = updateGroupMeta(groupId)(initial, event);
+
+    it('updates the review count', () => {
+      expect(result.reviewCount).toBe(28);
+    });
+
+    it('does not update the latest activity', () => {
+      expect(result.latestActivity).toStrictEqual(initial.latestActivity);
+    });
   });
 
   it('does not update the meta when passed any other domain event', () => {

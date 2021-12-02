@@ -34,12 +34,12 @@ export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: Do
         () => ({
           ...meta,
           reviewCount: meta.reviewCount + 1,
-          latestActivity: O.some(event.date),
+          latestActivity: O.some(event.publishedAt),
         }),
-        (date) => (event.date > date ? {
+        (date) => (event.publishedAt > date ? {
           ...meta,
           reviewCount: meta.reviewCount + 1,
-          latestActivity: O.some(event.date),
+          latestActivity: O.some(event.publishedAt),
         } : {
           ...meta,
           reviewCount: meta.reviewCount + 1,
