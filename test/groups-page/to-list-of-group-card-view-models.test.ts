@@ -34,7 +34,7 @@ describe('to-list-of-group-card-view-models', () => {
     )();
   });
 
-  it.skip('sorts the groups by latest activity date', () => {
+  it('sorts the groups by latest activity date', () => {
     expect(groupNames).toStrictEqual([
       mostActiveGroup.name,
       leastActiveGroup.name,
