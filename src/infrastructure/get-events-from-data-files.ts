@@ -16,14 +16,14 @@ export const getEventsFromDataFiles = (
     evaluationEventsFilepathForGroupId,
     readEventsFile,
     TE.map(RA.map(({
-      date, articleDoi, evaluationLocator, authors,
+      date, articleDoi, evaluationLocator, authors, publishedAt,
     }) => evaluationRecorded(
       groupId,
       articleDoi,
       evaluationLocator,
       date,
       authors,
-      date,
+      publishedAt,
     ))),
   )),
   TE.chainEitherKW(flow(
