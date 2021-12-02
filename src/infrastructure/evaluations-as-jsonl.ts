@@ -8,29 +8,22 @@ import * as PR from 'io-ts/PathReporter';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as RI from '../types/review-id';
 
-const readableEvaluation = t.type({
+const readableEvaluations = t.readonlyArray(t.type({
   date: DateFromISOString,
   articleDoi: DoiFromString,
   evaluationLocator: RI.reviewIdCodec,
   authors: t.readonlyArray(t.string),
-});
+  publishedAt: DateFromISOString,
+}));
 
-const readableEvaluations = t.readonlyArray(readableEvaluation);
-
-export type ReadableEvaluations = ReadonlyArray<t.TypeOf<typeof readableEvaluation> & { publishedAt: Date }>;
+export type ReadableEvaluations = t.TypeOf<typeof readableEvaluations>;
 
 export const decodeEvaluationsFromJsonl = flow(
   (fileContents: string) => fileContents.split('\n'),
   RA.filter((line) => line !== ''),
   E.traverseArray(tt.JsonFromString.decode),
   E.chain(readableEvaluations.decode),
-  E.bimap(
-    PR.failure,
-    RA.map((incompleteReadableEvaluation) => ({
-      ...incompleteReadableEvaluation,
-      publishedAt: incompleteReadableEvaluation.date,
-    })),
-  ),
+  E.mapLeft(PR.failure),
 );
 
 type WriteableEvaluation = {

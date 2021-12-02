@@ -5,7 +5,7 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('evaluations-as-jsonl', () => {
   describe('when all lines are valid json that match domain model', () => {
-    const fileContents = '{"date":"2018-09-22T00:00:00.000Z","articleDoi":"10.1101/318121","evaluationLocator":"doi:10.24072/pci.paleo.100001", "authors": []}\n{"date":"2019-10-15T00:00:00.000Z","articleDoi":"10.1101/352609","evaluationLocator":"doi:10.24072/pci.paleo.100002", "authors": []}';
+    const fileContents = '{"date":"2018-09-22T00:00:00.000Z","articleDoi":"10.1101/318121","evaluationLocator":"doi:10.24072/pci.paleo.100001", "authors": [], "publishedAt": "2018-08-01T00:00:00.000Z"}\n{"date":"2019-10-15T00:00:00.000Z","articleDoi":"10.1101/352609","evaluationLocator":"doi:10.24072/pci.paleo.100002", "authors": [], "publishedAt": "2018-08-01T00:00:00.000Z"}';
     const result = pipe(
       decodeEvaluationsFromJsonl(fileContents),
       E.getOrElseW(shouldNotBeCalled),
@@ -17,7 +17,7 @@ describe('evaluations-as-jsonl', () => {
   });
 
   describe('when a line is empty', () => {
-    const fileContents = '{"date":"2018-09-22T00:00:00.000Z","articleDoi":"10.1101/318121","evaluationLocator":"doi:10.24072/pci.paleo.100001", "authors": []}\n';
+    const fileContents = '{"date":"2018-09-22T00:00:00.000Z","articleDoi":"10.1101/318121","evaluationLocator":"doi:10.24072/pci.paleo.100001", "authors": [],"publishedAt": "2018-08-01T00:00:00.000Z"}\n';
     const result = pipe(
       decodeEvaluationsFromJsonl(fileContents),
       E.getOrElseW(shouldNotBeCalled),
