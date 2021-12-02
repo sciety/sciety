@@ -172,6 +172,15 @@ let downplayedPotentialGroups: ReadonlyArray<Group> = [];
 
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   downplayedPotentialGroups = [
+    {
+      id: Gid.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
+      name: 'Peer Community in Neuroscience',
+      avatarPath: '/static/groups/pci-neuroscience--af792cd3-1600-465c-89e5-250c48f793aa.png',
+      descriptionPath: 'pci-neuroscience--af792cd3-1600-465c-89e5-250c48f793aa.md',
+      shortDescription: 'Free and transparent preprint peer-review by and for neuroscientists.',
+      homepage: 'https://neuro.peercommunityin.org/',
+      slug: 'pci-neuroscience',
+    },
   ];
 }
 
