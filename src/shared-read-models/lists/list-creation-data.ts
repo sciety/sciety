@@ -129,8 +129,8 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     new Date('2021-11-22T15:09:00Z'),
   ),
   listCreated(
-    'af792cd3-1600-465c-89e5-250c48f793aa',
-    'Endorsed articles',
+    'f2ce72ba-a982-4156-ab34-4a536bd86cb7',
+    'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Neuroscience.',
     GID.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
     new Date('2021-12-02T10:28:00Z'),
