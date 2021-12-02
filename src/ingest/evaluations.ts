@@ -53,7 +53,9 @@ export const fromFile = (path: string): TE.TaskEither<string, ReadonlyArray<Eval
 
 type EvaluationWithPublishedAt = Evaluation & { publishedAt: Date };
 
-export const uniq = (evaluations: ReadonlyArray<EvaluationWithPublishedAt>): ReadonlyArray<EvaluationWithPublishedAt> => pipe(
+export const uniq = (
+  evaluations: ReadonlyArray<EvaluationWithPublishedAt>,
+): ReadonlyArray<EvaluationWithPublishedAt> => pipe(
   evaluations,
   RA.sortBy([byDateAscending, byArticleLocatorAscending]),
   RA.uniq(eqEval),
