@@ -3,7 +3,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderGroups } from './render-groups';
-import { populateGroupViewModel, Ports as ViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
+import { toListOfGroupCardViewModels, Ports as ViewModelPorts } from './to-list-of-group-card-view-models';
 import { renderGroupCard } from '../shared-components/group-card/render-group-card';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -24,8 +24,7 @@ type GroupsPage = TE.TaskEither<RenderPageError, Page>;
 
 export const groupsPage = (ports: Ports): GroupsPage => pipe(
   ports.getAllGroups,
-  TE.map(RNEA.map((group) => group.id)),
-  TE.chain(TE.traverseArray(populateGroupViewModel(ports))),
+  TE.chain(toListOfGroupCardViewModels(ports)),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
   TE.bimap(
