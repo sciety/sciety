@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/function';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/all-groups';
+import { getGroup } from '../../shared-read-models/groups';
 import { ArticleServer } from '../../types/article-server';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';

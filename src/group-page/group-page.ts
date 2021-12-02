@@ -10,7 +10,7 @@ import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
-import { getGroupBySlug } from '../shared-read-models/all-groups';
+import { getGroupBySlug } from '../shared-read-models/groups';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';

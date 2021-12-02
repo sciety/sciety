@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { DomainEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/all-groups';
+import { getGroup } from '../../shared-read-models/groups';
 import { List, selectAllListsOwnedBy } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';

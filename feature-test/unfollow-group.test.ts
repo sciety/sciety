@@ -19,14 +19,14 @@ describe('unfollow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the NCRC group page', () => {
+    describe('from the ScreenIT group page', () => {
       it('removes the group from my profile page', async () => {
         await goto('localhost:8080/groups');
-        await click('NCRC');
+        await click('ScreenIT');
         await click('Follow');
         await click('Unfollow');
         await click('My profile');
-        const groupExists = await text('NCRC', within($('.followed-groups'))).exists();
+        const groupExists = await text('ScreenIT', within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);
       });

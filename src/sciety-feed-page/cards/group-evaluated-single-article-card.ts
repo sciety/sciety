@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent } from '../../domain-events';
 import { renderAuthors } from '../../shared-components/render-card-authors';
-import { getGroup } from '../../shared-read-models/all-groups';
+import { getGroup } from '../../shared-read-models/groups';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';

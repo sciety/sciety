@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import { DomainEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/all-groups';
+import { getGroup } from '../../shared-read-models/groups';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';

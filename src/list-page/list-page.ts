@@ -15,7 +15,7 @@ import {
 } from './header';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
-import { getGroupBySlug } from '../shared-read-models/all-groups';
+import { getGroupBySlug } from '../shared-read-models/groups';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';

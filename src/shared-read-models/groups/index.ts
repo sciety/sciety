@@ -4,11 +4,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { DomainEvent, GroupCreatedEvent } from '../domain-events';
-import { isGroupCreatedEvent } from '../domain-events/type-guards';
-import * as DE from '../types/data-error';
-import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
+import { DomainEvent, GroupCreatedEvent } from '../../domain-events';
+import { isGroupCreatedEvent } from '../../domain-events/type-guards';
+import * as DE from '../../types/data-error';
+import { Group } from '../../types/group';
+import { GroupId } from '../../types/group-id';
 
 const toGroup = (event: GroupCreatedEvent) => ({
   id: event.groupId,

@@ -11,7 +11,7 @@ import { DomainEvent } from '../domain-events';
 import { renderErrorPage } from '../http/render-error-page';
 import { constructRedirectUrl } from '../http/require-authentication';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
-import { getGroup } from '../shared-read-models/all-groups';
+import { getGroup } from '../shared-read-models/groups';
 import * as DE from '../types/data-error';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';

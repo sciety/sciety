@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/all-groups';
+import { getGroup } from '../../shared-read-models/groups';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
