@@ -8,6 +8,7 @@ describe('evaluations', () => {
         articleDoi: '10.1101/111111',
         evaluationLocator: 'ncrc:1234',
         authors: [],
+        publishedAt: new Date('2021-07-08'),
       };
 
       expect(Es.uniq([evaluation, evaluation])).toStrictEqual(Es.uniq([evaluation]));

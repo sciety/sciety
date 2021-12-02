@@ -38,6 +38,7 @@ type WriteableEvaluation = {
   articleDoi: string,
   evaluationLocator: string,
   authors?: ReadonlyArray<string>,
+  publishedAt: Date,
 };
 
 type WriteableEvaluations = ReadonlyArray<WriteableEvaluation>;
@@ -51,6 +52,7 @@ export const encodeEvaluationsToJsonl = (evaluations: WriteableEvaluations): str
         articleDoi: evaluation.articleDoi,
         evaluationLocator: evaluation.evaluationLocator,
         authors: evaluation.authors ? evaluation.authors : [],
+        publishedAt: evaluation.publishedAt.toISOString(),
       }
     ),
     tt.JsonFromString.encode,

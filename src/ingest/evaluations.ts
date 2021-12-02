@@ -27,30 +27,33 @@ const byArticleLocatorAscending: Ord.Ord<Evaluation> = pipe(
   Ord.contramap((ev) => ev.articleDoi),
 );
 
-const eqEval: Eq.Eq<Evaluation> = Eq.struct({
+const eqEval: Eq.Eq<EvaluationWithPublishedAt> = Eq.struct({
   date: D.Eq,
   articleDoi: S.Eq,
   evaluationLocator: S.Eq,
   authors: RA.getEq(S.Eq),
 });
 
-export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pipe(
+export const fromFile = (path: string): TE.TaskEither<string, ReadonlyArray<EvaluationWithPublishedAt>> => pipe(
   path,
   readEventsFile,
   TE.bimap(
     (errors) => errors.join(', '),
     RA.map(({
-      date, articleDoi, evaluationLocator, authors,
+      date, articleDoi, evaluationLocator, authors, publishedAt,
     }) => ({
       date,
       articleDoi: articleDoi.value,
       evaluationLocator: RI.serialize(evaluationLocator),
       authors,
+      publishedAt,
     })),
   ),
 );
 
-export const uniq = (evaluations: Evaluations): Evaluations => pipe(
+type EvaluationWithPublishedAt = Evaluation & { publishedAt: Date };
+
+export const uniq = (evaluations: ReadonlyArray<EvaluationWithPublishedAt>): ReadonlyArray<EvaluationWithPublishedAt> => pipe(
   evaluations,
   RA.sortBy([byDateAscending, byArticleLocatorAscending]),
   RA.uniq(eqEval),

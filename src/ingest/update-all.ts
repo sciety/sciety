@@ -36,12 +36,17 @@ export type Group = {
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
+const duplicateDateAsPublishedAt = RA.map((evaluation: Es.Evaluation) => ({
+  ...evaluation,
+  publishedAt: evaluation.date,
+}));
+
 const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
   group.id,
   evaluationEventsFilepathForGroupId,
   Es.fromFile,
   TE.map((existing) => pipe(
-    [...existing, ...feedData.evaluations],
+    [...existing, ...duplicateDateAsPublishedAt(feedData.evaluations)],
     Es.uniq,
     (all) => ({
       all,
