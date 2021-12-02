@@ -118,6 +118,8 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
     'High interest articles',
     'Articles that have been identified as high interest by NCRC editors.',
+    // this group id is wrong, but if it were right it would trigger a bug
+    // on the selection of the list from its Read Model
     GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg'),
     new Date('2021-11-24'),
   ),
@@ -125,6 +127,8 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     '5ac3a439-e5c6-4b15-b109-92928a740812',
     'Endorsed articles',
     'Articles that have been endorsed by Biophysics Colab.',
+    // this group id is wrong, but if it were right it would trigger a bug
+    // on the selection of the list from its Read Model
     GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png'),
     new Date('2021-11-22T15:09:00Z'),
   ),

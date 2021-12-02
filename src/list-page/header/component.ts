@@ -31,6 +31,8 @@ export const component = (
   ports.getAllEvents,
   TE.rightTask,
   TE.map(selectAllListsOwnedBy(group.id)),
+  // this should be looking up by list id, not by group id, as it doesn't support
+  // multiple lists for a given group
   TE.map((lists) => lists[0]),
   TE.chain(augmentWithOwnerDetails(ports)),
   TE.map(renderComponent),

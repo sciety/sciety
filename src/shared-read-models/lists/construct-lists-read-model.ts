@@ -7,6 +7,7 @@ import { DomainEvent, EvaluationRecordedEvent } from '../../domain-events';
 import { ListCreatedEvent } from '../../domain-events/list-created-event';
 import { GroupId } from '../../types/group-id';
 
+// this should use ListId as key, to allow a group to have multiple lists
 type ReadModel = Map<GroupId, List>;
 
 const calculateArticleCount = (ownerId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
