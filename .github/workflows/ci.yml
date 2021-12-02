@@ -23,6 +23,10 @@ jobs:
         with:
           lfs: true
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: NPM Cache
         uses: actions/cache@v2
         with:
