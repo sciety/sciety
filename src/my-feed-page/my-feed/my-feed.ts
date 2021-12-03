@@ -76,13 +76,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
       Showing page ${pageofItems.pageNumber} of ${pageofItems.numberOfPages}<span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     <ol class="my-feed__list" role="list">${cards.join('')}</ol>
-    ${pipe(
-    pageofItems.nextPage,
-    O.fold(
-      () => '',
-      (page) => paginationControls(`/my-feed?page=${page}`),
-    ),
-  )}`,
+    ${paginationControls('/my-feed?', pageofItems.nextPage)}`,
 );
 
 type YourFeed = (ports: Ports) => (

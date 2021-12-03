@@ -19,13 +19,7 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) =
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${(pipe(
-    nextPageNumber,
-    O.fold(
-      () => '',
-      (p) => paginationControls(`/groups/${group.slug}/evaluated-articles?page=${p}`),
-    ),
-  ))}
+      ${paginationControls(`/groups/${group.slug}/evaluated-articles?`, nextPageNumber)}
     </div>
   `,
   toHtmlFragment,

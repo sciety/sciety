@@ -50,13 +50,7 @@ const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
     <ol class="sciety-feed-list">
       ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
     </ol>
-    ${pipe(
-    viewModel.nextPage,
-    O.fold(
-      () => '',
-      (page) => paginationControls(`/sciety-feed?page=${page}`),
-    ),
-  )}
+    ${paginationControls('/sciety-feed?', viewModel.nextPage)}
   </section>
   ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
 `);

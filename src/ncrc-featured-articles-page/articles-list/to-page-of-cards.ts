@@ -18,13 +18,7 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, listId: string)
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${(pipe(
-    nextPageNumber,
-    O.fold(
-      () => '',
-      (p) => paginationControls(`/lists/${listId}?page=${p}`),
-    ),
-  ))}
+      ${paginationControls(`/lists/${listId}?`, nextPageNumber)}
     </div>
   `,
   toHtmlFragment,

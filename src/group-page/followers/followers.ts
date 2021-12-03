@@ -1,8 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts, Follower } from './augment-with-user-details';
 import { findFollowers } from './find-followers';
 import { paginate } from './paginate';
@@ -12,7 +11,7 @@ import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 
 export type Ports = AugmentWithUserDetailsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -32,15 +31,6 @@ const augmentFollowersWithUserDetails = (
   sequenceS(TE.ApplyPar),
 );
 
-const renderNextLink = (groupSlug: string) => flow(
-  O.map((nextPage: number) => `/groups/${groupSlug}/followers?page=${nextPage}`),
-  O.fold(
-    () => '',
-    paginationControls,
-  ),
-  toHtmlFragment,
-);
-
 const pageSize = 10;
 
 export const followers = (
@@ -55,7 +45,7 @@ export const followers = (
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,
-    nextLink: renderNextLink(group.slug)(partial.nextPage),
+    nextLink: paginationControls(`/groups/${group.slug}/followers?`, partial.nextPage),
   })),
   TE.map(renderFollowers),
 );
