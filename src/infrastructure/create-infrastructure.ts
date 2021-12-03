@@ -23,7 +23,6 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
-import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
@@ -109,7 +108,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
-      const groups = inMemoryGroupRepository(bootstrapGroups);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const fetchFile = fetchStaticFile(loggerIO(logger));
@@ -131,7 +129,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
-        getAllGroups: groups.all,
         getAllEvents,
         commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,

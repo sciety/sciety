@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { CommitEvents } from './commit-events';
@@ -15,9 +14,6 @@ import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
-
-type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 
 export type Adapters = {
   commitEvents: CommitEvents,
@@ -27,7 +23,6 @@ export type Adapters = {
   findGroups: FindGroups,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   follows: Follows,
-  getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
   getUserDetails: GetTwitterUserDetails,

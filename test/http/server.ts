@@ -8,14 +8,12 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
-import { bootstrapGroups } from '../../src/data/bootstrap-groups';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
-import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import { FetchCrossrefArticle } from '../../src/third-parties/crossref';
 import { fetchDataciteReview } from '../../src/third-parties/datacite';
 import * as DE from '../../src/types/data-error';
@@ -33,7 +31,6 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const groups = inMemoryGroupRepository(bootstrapGroups);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
@@ -63,7 +60,6 @@ export const createTestServer = async (): Promise<TestServer> => {
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     findGroups: () => T.of([]),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-    getAllGroups: groups.all,
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,
