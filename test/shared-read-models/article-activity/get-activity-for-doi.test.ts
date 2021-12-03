@@ -28,33 +28,68 @@ describe('get-activity-for-doi', () => {
   describe('when an article has one or more evaluations', () => {
     const earlierPublishedDate = new Date(1900);
     const laterPublishedDate = new Date(2000);
-    const articleActivity = pipe(
-      [
-        evaluationRecorded(
-          arbitraryGroupId(),
-          articleId,
-          arbitraryReviewId(),
-          arbitraryDate(),
-          [],
-          earlierPublishedDate,
-        ),
-        evaluationRecorded(
-          arbitraryGroupId(),
-          articleId,
-          arbitraryReviewId(),
-          arbitraryDate(),
-          [],
-          laterPublishedDate,
-        ),
-      ],
-      getActivityForDoi(articleId),
-    );
 
-    it('returns the activity for that article', () => {
-      expect(articleActivity).toStrictEqual({
-        doi: articleId,
-        latestActivityDate: O.some(laterPublishedDate),
-        evaluationCount: 2,
+    describe('and the evaluations are recorded in order of publication', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            arbitraryReviewId(),
+            arbitraryDate(),
+            [],
+            earlierPublishedDate,
+          ),
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            arbitraryReviewId(),
+            arbitraryDate(),
+            [],
+            laterPublishedDate,
+          ),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it('returns the activity for that article', () => {
+        expect(articleActivity).toStrictEqual({
+          doi: articleId,
+          latestActivityDate: O.some(laterPublishedDate),
+          evaluationCount: 2,
+        });
+      });
+    });
+
+    describe('and the evaluations are NOT recorded in order of publication', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            arbitraryReviewId(),
+            arbitraryDate(),
+            [],
+            laterPublishedDate,
+          ),
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            arbitraryReviewId(),
+            arbitraryDate(),
+            [],
+            earlierPublishedDate,
+          ),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.skip('returns the activity for that article', () => {
+        expect(articleActivity).toStrictEqual({
+          doi: articleId,
+          latestActivityDate: O.some(laterPublishedDate),
+          evaluationCount: 2,
+        });
       });
     });
   });
