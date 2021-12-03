@@ -91,7 +91,6 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
   RM.values(byMostRecentRecordedEvaluationByFollowedGroups),
-  RA.takeLeft(20),
   RA.map((activity) => ({
     ...activity,
     latestActivityDate: O.some(activity.latestArticleActivityDate),

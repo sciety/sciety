@@ -233,13 +233,6 @@ describe('followed-groups-activities', () => {
         }),
       ]);
     });
-
-    it('limits the number of entries to 20', () => {
-      const events = generateNEventsForGroup(25, groupId);
-      const activities = followedGroupsActivities(events)([groupId]);
-
-      expect(activities).toHaveLength(20);
-    });
   });
 
   describe('when another not followed group evaluates an article previously evaluated by a followed group', () => {
