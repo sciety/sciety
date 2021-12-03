@@ -20,6 +20,7 @@ import {
   FindVersionsForArticleDoi,
   getLatestArticleVersionDate,
 } from '../../shared-components/article-card/get-latest-article-version-date';
+import { paginate } from '../../shared-components/paginate';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -86,6 +87,11 @@ export const myFeed: YourFeed = (ports) => flow(
     getEvaluatedArticles(ports),
     TE.mapLeft(constant(noEvaluationsYet)),
   )),
+  TE.chainEitherK(flow(
+    paginate(20, 1),
+    E.mapLeft(() => 'No such page.'),
+  )),
+  TE.map(({ items }) => items),
   TE.chain(flow(
     constructArticleViewModels(ports),
     TE.mapLeft(constant(troubleFetchingTryAgain)),
