@@ -35,10 +35,12 @@ type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
+// ts-unused-exports:disable-next-line
 export type FindGroups = (ports: Ports, query: string)
 => (events: ReadonlyArray<DomainEvent>)
 => T.Task<ReadonlyArray<GroupId>>;
 
+// ts-unused-exports:disable-next-line
 export const findGroups: FindGroups = (ports, query) => (events) => pipe(
   events,
   getAllGroups,
