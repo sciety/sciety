@@ -1,0 +1,9 @@
+@use '../sass/layout';
+@use '../sass/typography';
+
+@mixin feed-page-numbers() {
+  @include typography.details();
+  @include layout.page-content-horizontal-margins();
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

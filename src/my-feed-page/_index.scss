@@ -3,6 +3,11 @@
 @use '../sass/breakpoints';
 @use '../sass/card';
 @use '../sass/layout';
+@use '../sass/feed-page-numbers';
+
+.my-feed-page-numbers {
+  @include feed-page-numbers.feed-page-numbers();
+}
 
 .my-feed-page-cta {
   @include layout.page-content-horizontal-margins();
