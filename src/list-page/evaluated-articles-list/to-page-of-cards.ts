@@ -6,54 +6,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
-import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
-import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
+import { toCardViewModel, Ports as ToCardViewModelPorts } from '../../ncrc-featured-articles-page/articles-list/to-card-view-model';
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
-import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer } from '../../types/article-server';
-import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
-type Article = {
-  title: SanitisedHtmlFragment,
-  server: ArticleServer,
-  authors: ArticleAuthors,
-};
-
-type GetArticle = (id: Doi) => TE.TaskEither<DE.DataError, Article>;
-
-export type Ports = {
-  fetchArticle: GetArticle,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-};
-
-const getArticleDetails = (ports: Ports) => fetchArticleDetails(
-  getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-  ports.fetchArticle,
-);
-
-const toCardViewModel = (ports: Ports) => (evaluatedArticle: ArticleActivity) => pipe(
-  evaluatedArticle.doi,
-  getArticleDetails(ports),
-  TE.bimap(
-    (error) => ({
-      ...evaluatedArticle,
-      href: `/articles/${evaluatedArticle.doi.value}`,
-      error,
-    }),
-    (articleDetails) => ({
-      ...evaluatedArticle,
-      ...articleDetails,
-      authors: articleDetails.authors,
-      latestVersionDate: articleDetails.latestVersionDate,
-    }),
-  ),
-);
+export type Ports = ToCardViewModelPorts;
 
 const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
   (pageOfContent: HtmlFragment) => `
