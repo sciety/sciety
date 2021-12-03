@@ -31,7 +31,7 @@ export const myFeedPage = (ports: Ports): HomePage => flow(
       user,
       O.fold(
         () => T.of(callToAction),
-        ({ id }) => myFeed(ports)(id),
+        ({ id }) => myFeed(ports)(id, 20, 1),
       ),
     ),
   }),

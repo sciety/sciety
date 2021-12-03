@@ -75,9 +75,12 @@ const renderArticleCardList = flow(
 
 type YourFeed = (ports: Ports) => (
   userId: UserId,
+  pageSize: number,
+  pageNumber: number,
 ) => T.Task<HtmlFragment>;
 
-export const myFeed: YourFeed = (ports) => flow(
+export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pipe(
+  userId,
   TE.right,
   TE.chain(flow(
     getFollowedGroups(ports),
@@ -88,7 +91,7 @@ export const myFeed: YourFeed = (ports) => flow(
     TE.mapLeft(constant(noEvaluationsYet)),
   )),
   TE.chainEitherK(flow(
-    paginate(20, 1),
+    paginate(pageSize, pageNumber),
     E.mapLeft(() => 'No such page.'),
   )),
   TE.map(({ items }) => items),

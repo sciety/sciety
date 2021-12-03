@@ -26,7 +26,7 @@ describe('my-feed acceptance', () => {
       fetchArticle: shouldNotBeCalled,
       findVersionsForArticleDoi: shouldNotBeCalled,
       getAllEvents: T.of([]),
-    })(arbitraryUserId())();
+    })(arbitraryUserId(), 20, 1)();
 
     expect(html).toContain(feedTitle);
   });
@@ -42,7 +42,7 @@ describe('my-feed acceptance', () => {
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
         };
 
-        const html = await myFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId, 20, 1)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -56,7 +56,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
         };
-        const html = await myFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId, 20, 1)();
 
         expect(html).toContain(followSomething);
       });
@@ -83,12 +83,12 @@ describe('my-feed acceptance', () => {
             evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
-        const html = await myFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId, 20, 1)();
 
         expect(html).toContain('class="article-card"');
       });
 
-      it.skip('renders at most a page of cards at a time', async () => {
+      it('renders at most a page of cards at a time', async () => {
         const groupId = arbitraryGroupId();
         const adapters = {
           fetchArticle: () => TE.right({
@@ -100,13 +100,14 @@ describe('my-feed acceptance', () => {
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
             evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
-        const renderedComponent = await myFeed(adapters)(userId)();
+        const pageSize = 2;
+        const renderedComponent = await myFeed(adapters)(userId, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
         const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
-
-        const pageSize = 20;
 
         expect(itemCount).toStrictEqual(pageSize);
       });
@@ -131,7 +132,7 @@ describe('my-feed acceptance', () => {
             evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
-        const html = await myFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId, 20, 1)();
 
         expect(html).toContain('My article title');
       });
@@ -157,7 +158,7 @@ describe('my-feed acceptance', () => {
             ]),
           };
 
-          const html = await myFeed(adapters)(userId)();
+          const html = await myFeed(adapters)(userId, 20, 1)();
           const fragment = JSDOM.fragment(html);
           const cards = Array.from(fragment.querySelectorAll('.article-card'));
 
@@ -176,7 +177,7 @@ describe('my-feed acceptance', () => {
               evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
-          const html = await myFeed(adapters)(userId)();
+          const html = await myFeed(adapters)(userId, 20, 1)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });
