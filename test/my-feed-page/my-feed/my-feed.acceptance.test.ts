@@ -88,10 +88,28 @@ describe('my-feed acceptance', () => {
         expect(html).toContain('class="article-card"');
       });
 
-      /*
-      Not implementing, pending further discussion on testing architecture
-      */
-      it.todo('display a maximum of 20 articles');
+      it.skip('renders at most a page of cards at a time', async () => {
+        const groupId = arbitraryGroupId();
+        const adapters = {
+          fetchArticle: () => TE.right({
+            title: sanitise(toHtmlFragment('My article title')),
+            authors: O.none,
+            server: 'biorxiv' as const,
+          }),
+          findVersionsForArticleDoi: arbitraryVersions,
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, groupId),
+            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+          ]),
+        };
+        const renderedComponent = await myFeed(adapters)(userId)();
+        const html = JSDOM.fragment(renderedComponent);
+        const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
+
+        const pageSize = 20;
+
+        expect(itemCount).toStrictEqual(pageSize);
+      });
 
       it.todo('displays the articles in order of latest activity in descending order');
 
