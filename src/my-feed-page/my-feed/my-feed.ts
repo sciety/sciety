@@ -104,7 +104,7 @@ export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pip
   )),
   TE.chainEitherK(flow(
     paginate(pageSize, pageNumber),
-    E.mapLeft(() => 'No such page.'),
+    E.mapLeft(() => '<p>No such page.</p>'),
   )),
   TE.chain((pageOfItems) => pipe(
     pageOfItems.items,
