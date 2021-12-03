@@ -1,23 +1,11 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { evaluationRecorded, EvaluationRecordedEvent } from '../../../src/domain-events';
+import { evaluationRecorded } from '../../../src/domain-events';
 import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
-import { Doi } from '../../../src/types/doi';
-import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-
-const generateNEventsForGroup = (
-  numberOfEvents: number,
-  groupId: GroupId,
-): ReadonlyArray<EvaluationRecordedEvent> => (
-  [...Array(numberOfEvents).keys()].map((i) => (evaluationRecorded(
-    groupId,
-    new Doi(`10.1101/${i}`),
-    arbitraryReviewId(),
-  ))));
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {

@@ -14,13 +14,14 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import { DomainEvent } from '../../domain-events';
-import { renderArticleCard } from '../../shared-components/article-card';
-import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import {
   FindVersionsForArticleDoi,
   getLatestArticleVersionDate,
-} from '../../shared-components/article-card/get-latest-article-version-date';
-import { paginate } from '../../shared-components/paginate';
+  renderArticleCard,
+} from '../../shared-components/article-card';
+import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
+import { PageOfItems, paginate } from '../../shared-components/paginate';
+import { paginationControls } from '../../shared-components/pagination-controls';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -67,10 +68,18 @@ const constructArticleViewModels = (ports: Ports) => flow(
   T.map(E.fromOption(constant('all-articles-failed'))),
 );
 
-const renderArticleCardList = flow(
+const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
   RNEA.map(renderArticleCard(O.none)),
   RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
-  (cards) => `<ul class="my-feed__list" role="list">${cards.join('')}</ul>`,
+  (cards) => `
+    <ul class="my-feed__list" role="list">${cards.join('')}</ul>
+    ${pipe(
+    pageofItems.nextPage,
+    O.fold(
+      () => '',
+      (page) => paginationControls(`/my-feed?page=${page}`),
+    ),
+  )}`,
 );
 
 type YourFeed = (ports: Ports) => (
@@ -94,12 +103,14 @@ export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pip
     paginate(pageSize, pageNumber),
     E.mapLeft(() => 'No such page.'),
   )),
-  TE.map(({ items }) => items),
-  TE.chain(flow(
+  TE.chain((pageOfItems) => pipe(
+    pageOfItems.items,
     constructArticleViewModels(ports),
-    TE.mapLeft(constant(troubleFetchingTryAgain)),
+    TE.bimap(
+      constant(troubleFetchingTryAgain),
+      renderArticleCardList(pageOfItems),
+    ),
   )),
-  TE.map(renderArticleCardList),
   TE.toUnion,
   T.map(flow(
     toHtmlFragment,
