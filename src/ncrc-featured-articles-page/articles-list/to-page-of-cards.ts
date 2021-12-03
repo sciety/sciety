@@ -4,13 +4,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { renderComponent } from '../../list-page/evaluated-articles-list/render-component';
 import { noArticlesCanBeFetchedMessage } from '../../list-page/evaluated-articles-list/static-messages';
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 
 export type Ports = ToCardViewModelPorts;
 
