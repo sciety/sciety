@@ -73,7 +73,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
   RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
   (cards) => `
     <p class="my-feed-page-numbers">
-      Showing page ${pageofItems.pageNumber} of ${pageofItems.numberOfPages}<span class="visually-hidden"> pages of articles that have been evaluated by group that you follow</span>
+      Showing page ${pageofItems.pageNumber} of ${pageofItems.numberOfPages}<span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     <ol class="my-feed__list" role="list">${cards.join('')}</ol>
     ${pipe(
