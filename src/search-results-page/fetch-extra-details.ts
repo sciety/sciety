@@ -8,6 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
+import { getActivityForDoi } from '../shared-read-models/article-activity';
 import { getEvaluationsForDoi } from '../shared-read-models/evaluations';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
@@ -16,13 +17,6 @@ import { Doi } from '../types/doi';
 export type Ports = PopulateGroupViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
-
-type GetLatestActivityDate = (reviews: ReadonlyArray<{ publishedAt: Date }>) => O.Option<Date>;
-
-const getLatestActivityDate: GetLatestActivityDate = flow(
-  RA.last,
-  O.map(({ publishedAt }) => publishedAt),
-);
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
@@ -34,7 +28,11 @@ const populateArticleViewModel = (
   T.chain(flow(
     (reviews) => ({
       latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
-      latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
+      latestActivityDate: pipe(
+        ports.getAllEvents,
+        T.map(getActivityForDoi(item.doi)),
+        T.map((activity) => activity.latestActivityDate),
+      ),
       evaluationCount: T.of(reviews.length),
     }),
     sequenceS(T.ApplyPar),
