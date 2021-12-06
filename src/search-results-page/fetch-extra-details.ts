@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -7,8 +6,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
+import { populateArticleViewModel } from '../shared-components/article-card/populate-article-view-model';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
-import { getActivityForDoi } from '../shared-read-models/article-activity';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
@@ -18,26 +17,6 @@ export type Ports = PopulateGroupViewModelPorts & {
 };
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
-
-const populateArticleViewModel = (
-  ports: Ports,
-) => (item: ArticleItem) => pipe(
-  {
-    latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
-    articleActivity: pipe(
-      ports.getAllEvents,
-      T.map(getActivityForDoi(item.doi)),
-    ),
-  },
-  sequenceS(T.ApplyPar),
-  T.map(({ latestVersionDate, articleActivity }) => ({
-    ...item,
-    latestVersionDate,
-    latestActivityDate: articleActivity.latestActivityDate,
-    evaluationCount: articleActivity.evaluationCount,
-  })),
-  TE.rightTask,
-);
 
 const fetchItemDetails = (
   ports: Ports,

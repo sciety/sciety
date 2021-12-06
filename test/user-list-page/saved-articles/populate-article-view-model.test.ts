@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { populateArticleViewModel } from '../../../src/user-list-page/saved-articles/populate-article-view-model';
+import { populateArticleViewModel } from '../../../src/shared-components/article-card/populate-article-view-model';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';

@@ -5,7 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { populateArticleViewModel } from './populate-article-view-model';
+import { populateArticleViewModel } from '../../shared-components/article-card/populate-article-view-model';
 import { renderSavedArticles } from './render-saved-articles';
 import { informationUnavailable, noSavedArticles } from './static-messages';
 import { DomainEvent } from '../../domain-events';
