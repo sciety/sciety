@@ -5,7 +5,6 @@ import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { FindGroups } from './find-groups';
 import { Follows } from './follows';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
@@ -20,7 +19,6 @@ export type Adapters = {
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
-  findGroups: FindGroups,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   follows: Follows,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

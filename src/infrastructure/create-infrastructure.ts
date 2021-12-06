@@ -17,7 +17,6 @@ import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchData } from './fetchers';
-import { findGroups } from './find-groups';
 import { follows } from './follows';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
@@ -127,7 +126,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
-        findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
