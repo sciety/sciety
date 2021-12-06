@@ -433,7 +433,8 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   const requireIngestionAuthentication: Middleware = async (context, next) => {
-    if (context.request.headers.authorization === 'super-secret') {
+    const expectedToken = process.env.INGESTION_AUTH_BEARER_TOKEN ?? Math.random().toString(36);
+    if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
       await next();
     } else {
       context.response.body = 'Unauthorized';
