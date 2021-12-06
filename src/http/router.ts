@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ParameterizedContext } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
@@ -432,9 +432,19 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
+  const requireIngestionAuthentication: Middleware = async (context, next) => {
+    if (context.request.headers.authorization === 'super-secret') {
+      await next();
+    } else {
+      context.response.body = 'Unauthorized';
+      context.response.status = StatusCodes.FORBIDDEN;
+    }
+  };
+
   router.post(
     '/record-evaluation',
     bodyParser({ enableTypes: ['json'] }),
+    requireIngestionAuthentication,
     async (context) => {
       adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
       context.response.status = StatusCodes.OK;
