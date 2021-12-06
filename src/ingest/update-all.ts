@@ -104,25 +104,35 @@ const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
   return feedData;
 };
 
+type EvaluationCommand = {
+  groupId: string,
+  articleId: string,
+  evaluationLocator: string,
+  publishedAt: Date,
+  authors: ReadonlyArray<string>,
+};
+
+const send = (evaluation: EvaluationCommand) => TE.right(evaluation.evaluationLocator);
+
+const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
+  feedData.evaluations,
+  RA.map((evaluation) => ({
+    groupId: group.id,
+    articleId: evaluation.articleDoi,
+    evaluationLocator: evaluation.evaluationLocator,
+    publishedAt: evaluation.date,
+    authors: evaluation.authors,
+  })),
+  TE.traverseArray(send),
+);
+
 const updateGroup = (group: Group): T.Task<void> => pipe(
   group.fetchFeed({
     fetchData,
     fetchGoogleSheet,
   }),
   TE.map(reportSkippedItems(group)),
-  TE.map((feedData) => {
-    pipe(
-      feedData.evaluations,
-      RA.map((evaluation) => ({
-        groupId: group.id,
-        articleId: evaluation.articleDoi,
-        evaluationLocator: evaluation.evaluationLocator,
-        publishedAt: evaluation.date,
-        authors: evaluation.authors,
-      })),
-    );
-    return feedData;
-  }),
+  TE.chainFirstW(sendRecordEvaluationCommands(group)),
   TE.chain(overwriteJsonl(group)),
   TE.match(
     reportError(group),
