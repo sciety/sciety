@@ -432,6 +432,16 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
+  router.post(
+    '/record-evaluation',
+    bodyParser({ enableTypes: ['json'] }),
+    async (context) => {
+      adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
+      context.response.status = StatusCodes.OK;
+      context.response.body = '';
+    },
+  );
+
   // AUTHENTICATION
 
   router.get(
