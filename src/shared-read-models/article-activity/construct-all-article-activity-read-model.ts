@@ -4,6 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 
+const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
+
 type AllArticleActivityReadModel = Map<string, ArticleActivity>;
 
 const addEventToActivities = (state: AllArticleActivityReadModel, event: EvaluationRecordedEvent) => pipe(
@@ -17,7 +19,10 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: Evaluat
     }),
     (entry) => state.set(event.articleId.value, {
       ...entry,
-      latestActivityDate: O.some(event.publishedAt),
+      latestActivityDate: pipe(
+        entry.latestActivityDate,
+        O.map(mostRecentDate(event.publishedAt)),
+      ),
       evaluationCount: entry.evaluationCount + 1,
     }),
   ),

@@ -84,7 +84,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('returns the activity for that article', () => {
+      it('returns the activity for that article', () => {
         expect(articleActivity).toStrictEqual({
           doi: articleId,
           latestActivityDate: O.some(laterPublishedDate),
