@@ -9,7 +9,6 @@ import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
 import { getActivityForDoi } from '../shared-read-models/article-activity';
-import { getEvaluationsForDoi } from '../shared-read-models/evaluations';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
@@ -23,25 +22,19 @@ type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T
 const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem) => pipe(
-  ports.getAllEvents,
-  T.map(getEvaluationsForDoi(item.doi)),
-  T.chain(flow(
-    (reviews) => ({
-      latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
-      latestActivityDate: pipe(
-        ports.getAllEvents,
-        T.map(getActivityForDoi(item.doi)),
-        T.map((activity) => activity.latestActivityDate),
-      ),
-      evaluationCount: T.of(reviews.length),
-    }),
-    sequenceS(T.ApplyPar),
-  )),
-  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
+  {
+    latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
+    articleActivity: pipe(
+      ports.getAllEvents,
+      T.map(getActivityForDoi(item.doi)),
+    ),
+  },
+  sequenceS(T.ApplyPar),
+  T.map(({ latestVersionDate, articleActivity }) => ({
     ...item,
     latestVersionDate,
-    latestActivityDate,
-    evaluationCount,
+    latestActivityDate: articleActivity.latestActivityDate,
+    evaluationCount: articleActivity.evaluationCount,
   })),
   TE.rightTask,
 );
