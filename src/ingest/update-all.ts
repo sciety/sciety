@@ -1,4 +1,5 @@
 import fs from 'fs';
+import axios from 'axios';
 import chalk from 'chalk';
 import { printf } from 'fast-printf';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -112,7 +113,10 @@ type EvaluationCommand = {
   authors: ReadonlyArray<string>,
 };
 
-const send = (evaluation: EvaluationCommand) => TE.right(evaluation.evaluationLocator);
+const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
+  async () => axios.post('https://httpbin.org/post', JSON.stringify(evaluationCommand)),
+  String,
+);
 
 const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
   feedData.evaluations,
