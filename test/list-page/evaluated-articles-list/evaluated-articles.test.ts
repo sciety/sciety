@@ -66,7 +66,7 @@ describe('evaluated-articles', () => {
         arbitraryReviewId(),
         arbitraryDate(),
         [],
-        new Date('1980-01-01'),
+        latestActivityDate,
       ),
       evaluationRecorded(
         groupId,
@@ -74,7 +74,7 @@ describe('evaluated-articles', () => {
         arbitraryReviewId(),
         arbitraryDate(),
         [],
-        latestActivityDate,
+        new Date('1980-01-01'),
       ),
     ];
 
