@@ -13,13 +13,12 @@ import { RenderPageError } from '../../src/types/render-page-error';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryEuropePmcItem } from '../third-parties/europe-pmc/helpers';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
 
 const dummyAdapters = {
-  findGroups: () => T.of([]),
+  fetchStaticFile: () => TE.right(''),
   searchEuropePmc: () => () => TE.right({
     items: [],
     total: 0,
@@ -301,7 +300,6 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([arbitraryGroupId()]),
             })(pageSize),
           );
           const rendered = await contentOf(page)();
@@ -320,7 +318,9 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([arbitraryGroupId()]),
+              getAllEvents: T.of([
+                groupCreated(arbitraryGroup()),
+              ]),
             })(pageSize),
           );
           const rendered = await contentOf(page)();
@@ -339,7 +339,9 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([arbitraryGroupId()]),
+              getAllEvents: T.of([
+                groupCreated(arbitraryGroup()),
+              ]),
             })(pageSize),
           );
           const rendered = await contentOf(page)();
@@ -402,9 +404,9 @@ describe('search-results-page acceptance', () => {
 
       describe('with "groups" as category', () => {
         it('displays all matching groups regardless of limit on articles', async () => {
-          const group1 = arbitraryGroup();
-          const group2 = arbitraryGroup();
-          const group3 = arbitraryGroup();
+          const group1 = { ...arbitraryGroup(), name: 'fred' };
+          const group2 = { ...arbitraryGroup(), name: 'manfred' };
+          const group3 = { ...arbitraryGroup(), name: 'fred bloggs' };
           const n = 2;
           const matchedGroups = [
             group1.id,
@@ -413,14 +415,13 @@ describe('search-results-page acceptance', () => {
           ];
           const page = pipe(
             {
-              query: arbitraryString(),
+              query: 'fred',
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of(matchedGroups),
               getAllEvents: T.of([
                 groupCreated(group1),
                 groupCreated(group2),
@@ -444,8 +445,9 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([arbitraryGroupId()]),
-              getAllEvents: T.of([]),
+              getAllEvents: T.of([
+                groupCreated(arbitraryGroup()),
+              ]),
             })(1),
           );
           const rendered = await contentOf(page)();

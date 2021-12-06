@@ -7,18 +7,17 @@ import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ArticleResults } from './data-types';
+import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
+import { DomainEvent } from '../domain-events';
 import * as DE from '../types/data-error';
-import { GroupId } from '../types/group-id';
 
 type FindArticles = (
   pageSize: number,
 ) => (query: string, cursor: O.Option<string>) => TE.TaskEither<DE.DataError, ArticleResults>;
 
-type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
-
-export type Ports = {
-  findGroups: FindGroups,
+export type Ports = FindGroupsPorts & {
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   searchEuropePmc: FindArticles,
 };
 
@@ -51,8 +50,8 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
       tupled(ports.searchEuropePmc(pageSize)),
     ),
     groups: pipe(
-      params.query,
-      ports.findGroups, // TODO: should only ask for 10 of n; should return a TE
+      ports.getAllEvents,
+      T.chain(findGroups(ports, params.query)),
       T.map(RA.map((groupId) => ({ id: groupId }))),
       TE.rightTask,
     ),

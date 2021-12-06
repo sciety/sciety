@@ -31,7 +31,7 @@ const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
-type Ports = {
+export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
