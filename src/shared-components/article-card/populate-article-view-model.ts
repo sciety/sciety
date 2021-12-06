@@ -2,11 +2,10 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '.';
 import { DomainEvent } from '../../domain-events';
 import { getActivityForDoi } from '../../shared-read-models/article-activity';
-import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -30,25 +29,19 @@ type Ports = {
 export const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
-  ports.getAllEvents,
-  T.map(getEvaluationsForDoi(item.doi)),
-  T.chain(flow(
-    (reviews) => ({
-      latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
-      latestActivityDate: pipe(
-        ports.getAllEvents,
-        T.map(getActivityForDoi(item.doi)),
-        T.map((activity) => activity.latestActivityDate),
-      ),
-      evaluationCount: T.of(reviews.length),
-    }),
-    sequenceS(T.ApplyPar),
-  )),
-  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
+  {
+    latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
+    articleActivity: pipe(
+      ports.getAllEvents,
+      T.map(getActivityForDoi(item.doi)),
+    ),
+  },
+  sequenceS(T.ApplyPar),
+  T.map(({ latestVersionDate, articleActivity }) => ({
     ...item,
     latestVersionDate,
-    latestActivityDate,
-    evaluationCount,
+    latestActivityDate: articleActivity.latestActivityDate,
+    evaluationCount: articleActivity.evaluationCount,
   })),
   TE.rightTask,
 );
