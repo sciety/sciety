@@ -110,6 +110,19 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchGoogleSheet,
   }),
   TE.map(reportSkippedItems(group)),
+  TE.map((feedData) => {
+    pipe(
+      feedData.evaluations,
+      RA.map((evaluation) => ({
+        groupId: group.id,
+        articleId: evaluation.articleDoi,
+        evaluationLocator: evaluation.evaluationLocator,
+        publishedAt: evaluation.date,
+        authors: evaluation.authors,
+      })),
+    );
+    return feedData;
+  }),
   TE.chain(overwriteJsonl(group)),
   TE.match(
     reportError(group),
