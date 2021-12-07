@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euox pipefail
+set -euo pipefail
 
 temp_jsonl_fn="./temp-evaluations.jsonl"
 echo -n > "${temp_jsonl_fn}"
