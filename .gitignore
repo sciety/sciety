@@ -18,4 +18,5 @@ coverage/
 /.purgecss/
 events.json
 events-staging.json
+temp-evaluations.jsonl
 /logs/

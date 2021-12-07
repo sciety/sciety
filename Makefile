@@ -209,4 +209,5 @@ get-error-logs:
 		"gs://sciety-data/events/events.jsonl"
 
 update-datastudio: update-db-dump .bq-update-events
+	./scripts/upload-evaluations-from-local-files-to-bigquery.sh
 	./scripts/update-datastudio.sh
