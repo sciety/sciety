@@ -40,6 +40,7 @@ import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from 
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { page as ncrcFeaturedArticlesPage, paramsCodec as ncrcFeaturedArticlesPageParams } from '../ncrc-featured-articles-page/page';
+import { recordEvaluation } from '../record-evaluation';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -448,6 +449,7 @@ export const createRouter = (adapters: Adapters): Router => {
     requireIngestionAuthentication,
     async (context) => {
       adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
+      recordEvaluation(context.request.body);
       context.response.status = StatusCodes.OK;
       context.response.body = '';
     },
