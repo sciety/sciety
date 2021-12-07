@@ -22,7 +22,7 @@ describe('record an evaluation', () => {
 
     beforeEach(async () => {
       await axios.post(
-        'localhost:8080/record-evaluation',
+        'http://localhost:8080/record-evaluation',
         JSON.stringify({
           evaluationLocator,
           articleId,
@@ -31,6 +31,7 @@ describe('record an evaluation', () => {
         }),
         {
           headers: { Authorization: 'Bearer secret' },
+          timeout: 5000,
         },
       );
     });
