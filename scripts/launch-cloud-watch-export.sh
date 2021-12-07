@@ -13,6 +13,11 @@ fi
 from=$(bq query --format=prettyjson --use_legacy_sql=false 'SELECT DATE_ADD(DATE(MAX(request_timestamp)), INTERVAL 1 DAY) AS day_from FROM `elife-data-pipeline.de_proto.v_sciety_ingress`' | jq -r '.[0].day_from')
 to=$($DATE '+%Y-%m-%d')
 
+if [ "${from}" == "${to}" ]; then
+    >&2 echo "Not uploading cloudwatch ingress logs to BigQuery because it has already ran today."
+    exit 0
+fi
+
 >&2 echo "Exporting from $from 00:00 to $to 00:00"
 from_epoch_ms="$($DATE --date "$from 00:00:00 +0000" +%s)000"
 to_epoch_ms="$($DATE --date "$to 00:00:00 +0000" +%s)000"

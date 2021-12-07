@@ -6,6 +6,11 @@ scripts=$(dirname $0)
 
 cloudWatchTaskId=$($scripts/launch-cloud-watch-export.sh)
 
+if [ -z "${cloudWatchTaskId}" ]; then
+    # skipping an empty cloudwatch export (launch script will log message)
+    exit 0
+fi
+
 echo "cloudWatchTaskId: ${cloudWatchTaskId}"
 
 $scripts/wait-for-cloud-watch-task-completion.sh $cloudWatchTaskId
