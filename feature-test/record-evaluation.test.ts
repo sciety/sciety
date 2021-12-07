@@ -3,10 +3,10 @@ import dotenv from 'dotenv';
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { arbitraryDate } from '../test/helpers';
-import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { screenshotTeardown } from './utilities';
 import * as RI from '../src/types/review-id';
+import { arbitraryDate } from '../test/helpers';
+import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('record an evaluation', () => {
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe('record an evaluation', () => {
           publishedAt: arbitraryDate(),
         }),
         {
-          headers: { 'Authorization': 'Bearer secret' }
+          headers: { Authorization: 'Bearer secret' },
         },
       );
     });
@@ -38,6 +38,7 @@ describe('record an evaluation', () => {
     it('displays the evaluation', async () => {
       await goto(`localhost:8080/articles/${articleId}`);
       const evaluationIsDisplayed = await $(`[id="${evaluationLocator}"]`).exists();
+
       expect(evaluationIsDisplayed).toBe(true);
     });
   });
