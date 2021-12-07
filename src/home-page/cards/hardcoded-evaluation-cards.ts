@@ -1,26 +1,26 @@
 export const card1 = {
-  articleId: '10.1101/2021.07.23.453070',
-  articleTitle: 'Regulation of sedimentation rate shapes the evolution of multicellularity in a unicellular relative of animals.',
-  date: new Date('2021-11-10'),
-  groupSlug: 'review-commons',
-  groupName: 'Review Commons',
-  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
+  articleId: '10.1101/2021.10.23.465567',
+  articleTitle: 'SARS-CoV-2 Infection Impacts Carbon Metabolism and Depends on Glutamine for Replication in Syrian Hamster Astrocytes',
+  date: new Date('2021-11-21'),
+  groupSlug: 'rapid-reviews-covid-19',
+  groupName: 'Rapid Reviews COVID-19',
+  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
 };
 
 export const card2 = {
-  articleId: '10.1101/2021.11.07.21266027',
-  articleTitle: 'Ethnicity and outcomes in COVID-19 in the United Kingdom: a systematic review and meta-analysis',
-  date: new Date('2021-11-11'),
-  groupSlug: 'screenit',
-  groupName: 'ScreenIT',
-  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.png',
+  articleId: '10.1101/2020.10.30.360289',
+  articleTitle: 'Metabarcoding faecal samples to investigate spatiotemporal variation in the diet of the endangered Westland petrel (<i>Procellaria westlandica</i>)',
+  date: new Date('2021-12-02'),
+  groupSlug: 'pci-ecology',
+  groupName: 'Peer Community in Ecology',
+  avatarPath: '/static/groups/pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.jpg',
 };
 
 export const card3 = {
-  articleId: '10.1101/2021.06.03.446940',
-  articleTitle: 'AR-V7 exhibits non-canonical mechanisms of nuclear import and chromatin engagement in Castrate-Resistant Prostate Cancer',
-  date: new Date('2021-11-10'),
-  groupSlug: 'elife',
-  groupName: 'eLife',
-  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+  articleId: '10.1101/2021.11.09.467796',
+  articleTitle: 'Gender Imbalance in the Editorial Activities of a Researcher-led Journal',
+  date: new Date('2021-11-30'),
+  groupSlug: 'prelights',
+  groupName: 'preLights',
+  avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
 };
