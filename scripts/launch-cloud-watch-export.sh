@@ -23,11 +23,11 @@ from_epoch_ms="$($DATE --date "$from 00:00:00 +0000" +%s)000"
 to_epoch_ms="$($DATE --date "$to 00:00:00 +0000" +%s)000"
 
 cloudWatchTaskId=$(aws logs create-export-task \
-	--log-group-name '/aws/containerinsights/libero-eks--franklin/application' \
- 	--log-stream-name-prefix 'ingress-nginx-controller-' \
- 	--from  $from_epoch_ms \
- 	--to  $to_epoch_ms \
- 	--destination 'sciety-data-extractions' \
- 	--destination-prefix "ingress-nginx-controller-$from-$to" \
-     | jq -r '.taskId')
+		--log-group-name '/aws/containerinsights/libero-eks--franklin/application' \
+		--log-stream-name-prefix 'ingress-nginx-controller-' \
+		--from  $from_epoch_ms \
+		--to  $to_epoch_ms \
+		--destination 'sciety-data-extractions' \
+		--destination-prefix "ingress-nginx-controller-$from-$to" \
+			| jq -r '.taskId')
 echo $cloudWatchTaskId

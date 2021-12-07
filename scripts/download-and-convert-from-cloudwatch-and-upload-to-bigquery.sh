@@ -18,8 +18,8 @@ find logs -type 'f' | grep -v jsonl | xargs -n 1 ./scripts/convert-cloudwatch-lo
 (find logs -type 'f' | grep jsonl | xargs cat) > logs/singlefile.bq
 
 bq load \
-   --project_id=elife-data-pipeline \
-   --autodetect \
-   --source_format=NEWLINE_DELIMITED_JSON \
-   de_proto.sciety_ingress_v1 \
-   logs/singlefile.bq
+    --project_id=elife-data-pipeline \
+    --autodetect \
+    --source_format=NEWLINE_DELIMITED_JSON \
+    de_proto.sciety_ingress_v1 \
+    logs/singlefile.bq
