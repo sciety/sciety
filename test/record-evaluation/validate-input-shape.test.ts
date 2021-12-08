@@ -7,13 +7,13 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('validate-input-shape', () => {
+  const groupId = arbitraryGroupId();
+  const publishedAt = arbitraryDate();
+  const evaluationLocator = arbitraryReviewId();
+  const articleId = arbitraryDoi();
+
   describe('when the input is valid', () => {
     it.skip('returns a Command', () => {
-      const groupId = arbitraryGroupId();
-      const publishedAt = arbitraryDate();
-      const evaluationLocator = arbitraryReviewId();
-      const articleId = arbitraryDoi();
-
       const result = validateInputShape({
         groupId: groupId.toString(),
         publishedAt: publishedAt.toISOString(),
@@ -32,19 +32,55 @@ describe('validate-input-shape', () => {
 
   describe('when the input is invalid', () => {
     describe('because the groupId is invalid', () => {
-      it.todo('returns an error message');
+      it.skip('returns an error message', () => {
+        const result = validateInputShape({
+          groupId: null,
+          publishedAt: publishedAt.toISOString(),
+          evaluationLocator: RI.serialize(evaluationLocator),
+          articleId: articleId.value,
+        });
+
+        expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+      });
     });
 
     describe('because the publishedAt is invalid', () => {
-      it.todo('returns an error message');
+      it.skip('returns an error message', () => {
+        const result = validateInputShape({
+          groupId: groupId.toString(),
+          publishedAt: null,
+          evaluationLocator: RI.serialize(evaluationLocator),
+          articleId: articleId.value,
+        });
+
+        expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+      });
     });
 
     describe('because the evaluationLocator is invalid', () => {
-      it.todo('returns an error message');
+      it.skip('returns an error message', () => {
+        const result = validateInputShape({
+          groupId: groupId.toString(),
+          publishedAt: publishedAt.toISOString(),
+          evaluationLocator: null,
+          articleId: articleId.value,
+        });
+
+        expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+      });
     });
 
     describe('because the articleId is invalid', () => {
-      it.todo('returns an error message');
+      it.skip('returns an error message', () => {
+        const result = validateInputShape({
+          groupId: groupId.toString(),
+          publishedAt: publishedAt.toISOString(),
+          evaluationLocator: RI.serialize(evaluationLocator),
+          articleId: null,
+        });
+
+        expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+      });
     });
   });
 });
