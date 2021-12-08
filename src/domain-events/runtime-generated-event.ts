@@ -1,3 +1,4 @@
+import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
@@ -9,6 +10,7 @@ import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editori
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export type RuntimeGeneratedEvent =
+  EvaluationRecordedEvent |
   UserUnsavedArticleEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |

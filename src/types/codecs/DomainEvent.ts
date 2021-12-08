@@ -6,6 +6,17 @@ import { GroupIdFromString } from './GroupIdFromString';
 import { UserIdFromString } from './UserIdFromString';
 import { reviewIdCodec } from '../review-id';
 
+const evaluationRecordedEvent = t.type({
+  id: EventIdFromString,
+  type: t.literal('EvaluationRecorded'),
+  date: DateFromISOString,
+  groupId: GroupIdFromString,
+  evaluationLocator: reviewIdCodec,
+  articleId: DoiFromString,
+  publishedAt: DateFromISOString,
+  authors: t.readonlyArray(t.string),
+});
+
 const userFollowedEditorialCommunityEvent = t.type({
   id: EventIdFromString,
   type: t.literal('UserFollowedEditorialCommunity'),
@@ -81,6 +92,7 @@ const userCreatedAccountEvent = t.type({
 });
 
 export const domainEvent = t.union([
+  evaluationRecordedEvent,
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
   userFoundReviewHelpfulEvent,
