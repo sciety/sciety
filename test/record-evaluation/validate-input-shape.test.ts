@@ -13,7 +13,7 @@ describe('validate-input-shape', () => {
   const articleId = arbitraryDoi();
 
   describe('when the input is valid', () => {
-    it.skip('returns a Command', () => {
+    it('returns a Command', () => {
       const result = validateInputShape({
         groupId: groupId.toString(),
         publishedAt: publishedAt.toISOString(),
@@ -32,7 +32,7 @@ describe('validate-input-shape', () => {
 
   describe('when the input is invalid', () => {
     describe('because the groupId is invalid', () => {
-      it.skip('returns an error message', () => {
+      it('returns an error message', () => {
         const result = validateInputShape({
           groupId: null,
           publishedAt: publishedAt.toISOString(),
@@ -45,7 +45,7 @@ describe('validate-input-shape', () => {
     });
 
     describe('because the publishedAt is invalid', () => {
-      it.skip('returns an error message', () => {
+      it('returns an error message', () => {
         const result = validateInputShape({
           groupId: groupId.toString(),
           publishedAt: null,
@@ -58,7 +58,7 @@ describe('validate-input-shape', () => {
     });
 
     describe('because the evaluationLocator is invalid', () => {
-      it.skip('returns an error message', () => {
+      it('returns an error message', () => {
         const result = validateInputShape({
           groupId: groupId.toString(),
           publishedAt: publishedAt.toISOString(),
@@ -71,7 +71,7 @@ describe('validate-input-shape', () => {
     });
 
     describe('because the articleId is invalid', () => {
-      it.skip('returns an error message', () => {
+      it('returns an error message', () => {
         const result = validateInputShape({
           groupId: groupId.toString(),
           publishedAt: publishedAt.toISOString(),
