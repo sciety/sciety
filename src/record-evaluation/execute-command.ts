@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { raiseEventsIfNecessary } from './raise-events-if-necessary';
-import { DomainEvent } from '../domain-events';
-import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { getGroup } from '../shared-read-models/groups';
 import { GroupId } from '../types/group-id';
 
 export type Command = {
@@ -17,7 +17,13 @@ type ConfirmGroupExists = (groupId: GroupId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<void, void>;
 
-const confirmGroupExists: ConfirmGroupExists = () => () => E.right(undefined);
+const ignoreResult = () => undefined;
+
+const confirmGroupExists: ConfirmGroupExists = (groupId) => (events) => pipe(
+  events,
+  getGroup(groupId),
+  E.bimap(ignoreResult, ignoreResult),
+);
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
