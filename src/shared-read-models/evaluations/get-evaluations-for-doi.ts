@@ -18,7 +18,7 @@ export const getEvaluationsForDoi: GetEvaluationsForDoi = (articleDoi) => (event
   RA.filter(isEvaluationRecordedEvent),
   RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),
   RA.map((event) => ({
-    reviewId: event.reviewId,
+    reviewId: event.evaluationLocator,
     groupId: event.groupId,
     recordedAt: event.date,
     publishedAt: event.publishedAt,
