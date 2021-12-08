@@ -1,13 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { raiseEventsIfNecessary } from './raise-events-if-necessary';
+import { Command, raiseEventsIfNecessary } from './raise-events-if-necessary';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
 import { GroupId } from '../types/group-id';
-
-export type Command = {
-  groupId: GroupId,
-};
 
 type ExecuteCommand = (command: Command)
 => (events: ReadonlyArray<DomainEvent>)

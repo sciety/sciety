@@ -1,7 +1,11 @@
-import { DomainEvent } from '../domain-events';
-import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { GroupId } from '../types/group-id';
 
-type RaiseEventsIfNecessary = (validatedInput: unknown)
+export type Command = {
+  groupId: GroupId,
+};
+
+type RaiseEventsIfNecessary = (command: Command)
 => (events: ReadonlyArray<DomainEvent>)
 => ReadonlyArray<RuntimeGeneratedEvent>;
 
