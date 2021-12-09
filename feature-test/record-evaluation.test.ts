@@ -5,7 +5,7 @@ import {
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 import * as RI from '../src/types/review-id';
-import { arbitraryDate } from '../test/helpers';
+import { arbitraryDate, arbitraryString } from '../test/helpers';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('record an evaluation', () => {
@@ -28,9 +28,13 @@ describe('record an evaluation', () => {
           articleId,
           groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
           publishedAt: arbitraryDate(),
+          authors: [arbitraryString(), arbitraryString()],
         }),
         {
-          headers: { Authorization: 'Bearer secret' },
+          headers: {
+            Authorization: 'Bearer secret',
+            'Content-Type': 'application/json',
+          },
           timeout: 5000,
         },
       );
