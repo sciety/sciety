@@ -34,6 +34,8 @@ spec:
               value: {{ .Values.fathomSiteId }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
+            - name: INGESTION_AUTH_BEARER_TOKEN
+              value: {{ .Values.ingestionAuthBearerToken }}
             - name: PGDATABASE
               valueFrom:
                 secretKeyRef:
