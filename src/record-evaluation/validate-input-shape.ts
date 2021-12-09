@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { Command } from './raise-events-if-necessary';
+import { Command } from './create-appropriate-events';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { reviewIdCodec } from '../types/review-id';

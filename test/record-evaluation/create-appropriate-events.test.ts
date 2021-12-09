@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
-import { raiseEventsIfNecessary } from '../../src/record-evaluation/raise-events-if-necessary';
+import { createAppropriateEvents } from '../../src/record-evaluation/create-appropriate-events';
 import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
-describe('raise-events-if-necessary', () => {
+describe('create-appropriate-events', () => {
   const evaluationLocator = arbitraryReviewId();
   const input = {
     groupId: arbitraryGroupId(),
@@ -19,7 +19,7 @@ describe('raise-events-if-necessary', () => {
   describe('when the evaluation locator has NOT already been recorded', () => {
     const events = pipe(
       [],
-      raiseEventsIfNecessary(input),
+      createAppropriateEvents(input),
     );
 
     it('returns an EvaluationRecorded event', () => {
@@ -39,7 +39,7 @@ describe('raise-events-if-necessary', () => {
       [
         evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), evaluationLocator),
       ],
-      raiseEventsIfNecessary(input),
+      createAppropriateEvents(input),
     );
 
     it('returns no events', () => {
