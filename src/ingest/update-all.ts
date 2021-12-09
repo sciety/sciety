@@ -119,7 +119,7 @@ const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
       Authorization: `Bearer ${process.env.INGESTION_AUTH_BEARER_TOKEN}`,
       'Content-Type': 'application/json',
     },
-    timeout: 5000,
+    timeout: 10000,
   }),
   String,
 );
