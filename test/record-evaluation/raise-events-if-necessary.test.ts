@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
 import { raiseEventsIfNecessary } from '../../src/record-evaluation/raise-events-if-necessary';
-import { arbitraryDate } from '../helpers';
+import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -13,6 +13,7 @@ describe('raise-events-if-necessary', () => {
     articleId: arbitraryDoi(),
     evaluationLocator,
     publishedAt: arbitraryDate(),
+    authors: [arbitraryString(), arbitraryString()],
   };
 
   describe('when the evaluation locator has NOT already been recorded', () => {
@@ -28,6 +29,7 @@ describe('raise-events-if-necessary', () => {
         articleId: input.articleId,
         evaluationLocator: input.evaluationLocator,
         publishedAt: input.publishedAt,
+        authors: input.authors,
       })]);
     });
   });
