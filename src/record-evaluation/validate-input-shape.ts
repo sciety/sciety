@@ -13,6 +13,7 @@ const inputCodec = t.type({
   publishedAt: tt.DateFromISOString,
   evaluationLocator: reviewIdCodec,
   articleId: DoiFromString,
+  authors: t.readonlyArray(t.string),
 });
 
 type ValidateInputShape = (input: unknown) => E.Either<string, Command>;
