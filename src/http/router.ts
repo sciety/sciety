@@ -12,6 +12,7 @@ import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
+import { getSecretSafely } from './get-secret-safely';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
@@ -434,7 +435,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   const requireIngestionAuthentication: Middleware = async (context, next) => {
-    const expectedToken = process.env.INGESTION_AUTH_BEARER_TOKEN ?? Math.random().toString(36);
+    const expectedToken = getSecretSafely(process.env.INGESTION_AUTH_BEARER_TOKEN);
     if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
       await next();
     } else {
