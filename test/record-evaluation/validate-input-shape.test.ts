@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { validateInputShape } from '../../src/record-evaluation/validate-input-shape';
 import * as RI from '../../src/types/review-id';
-import { arbitraryDate } from '../helpers';
+import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -11,6 +11,7 @@ describe('validate-input-shape', () => {
   const publishedAt = arbitraryDate();
   const evaluationLocator = arbitraryReviewId();
   const articleId = arbitraryDoi();
+  const authors = [arbitraryString(), arbitraryString()];
 
   describe('when the input is valid', () => {
     it('returns a Command', () => {
@@ -19,6 +20,7 @@ describe('validate-input-shape', () => {
         publishedAt: publishedAt.toISOString(),
         evaluationLocator: RI.serialize(evaluationLocator),
         articleId: articleId.value,
+        authors,
       });
 
       expect(result).toStrictEqual(E.right({
@@ -26,6 +28,7 @@ describe('validate-input-shape', () => {
         publishedAt,
         evaluationLocator,
         articleId,
+        authors,
       }));
     });
   });
@@ -38,6 +41,7 @@ describe('validate-input-shape', () => {
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: RI.serialize(evaluationLocator),
           articleId: articleId.value,
+          authors,
         });
 
         expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
@@ -51,6 +55,7 @@ describe('validate-input-shape', () => {
           publishedAt: null,
           evaluationLocator: RI.serialize(evaluationLocator),
           articleId: articleId.value,
+          authors,
         });
 
         expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
@@ -64,6 +69,7 @@ describe('validate-input-shape', () => {
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: null,
           articleId: articleId.value,
+          authors,
         });
 
         expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
@@ -77,6 +83,21 @@ describe('validate-input-shape', () => {
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: RI.serialize(evaluationLocator),
           articleId: null,
+          authors,
+        });
+
+        expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+      });
+    });
+
+    describe('because the authors is invalid', () => {
+      it('returns an error message', () => {
+        const result = validateInputShape({
+          groupId: groupId.toString(),
+          publishedAt: publishedAt.toISOString(),
+          evaluationLocator: RI.serialize(evaluationLocator),
+          articleId: articleId.value,
+          authors: null,
         });
 
         expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
