@@ -22,7 +22,7 @@ describe('raise-events-if-necessary', () => {
       raiseEventsIfNecessary(input),
     );
 
-    it.skip('returns an EvaluationRecorded event', () => {
+    it('returns an EvaluationRecorded event', () => {
       expect(events).toStrictEqual([expect.objectContaining({
         type: 'EvaluationRecorded',
         groupId: input.groupId,
