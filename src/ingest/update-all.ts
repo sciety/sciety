@@ -114,9 +114,9 @@ type EvaluationCommand = {
 };
 
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
-  async () => axios.post('http://httpbin.org/post', JSON.stringify(evaluationCommand), {
+  async () => axios.post('https://staging.sciety.org/record-evaluation', JSON.stringify(evaluationCommand), {
     headers: {
-      Authorization: 'Bearer secret',
+      Authorization: `Bearer ${process.env.INGESTION_AUTH_BEARER_TOKEN}`,
       'Content-Type': 'application/json',
     },
     timeout: 5000,

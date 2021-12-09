@@ -135,6 +135,7 @@ update-db-dump:
 
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
+taiko: export INGESTION_AUTH_BEARER_TOKEN = secret
 taiko: node_modules clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
