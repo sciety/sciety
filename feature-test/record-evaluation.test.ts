@@ -16,7 +16,7 @@ describe('record an evaluation', () => {
 
   afterEach(screenshotTeardown);
 
-  describe.skip('when a new evaluation is successfully recorded', () => {
+  describe('when a new evaluation is successfully recorded', () => {
     const articleId = '10.1101/2021.07.23.453070';
     const evaluationLocator = RI.serialize(arbitraryReviewId());
 
