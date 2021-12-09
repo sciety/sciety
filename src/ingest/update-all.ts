@@ -114,7 +114,13 @@ type EvaluationCommand = {
 };
 
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
-  async () => axios.post('https://httpbin.org/post', JSON.stringify(evaluationCommand)),
+  async () => axios.post('http://httpbin.org/post', JSON.stringify(evaluationCommand), {
+    headers: {
+      'Authorization': 'Bearer secret',
+      'Content-Type': 'application/json',
+    },
+    timeout: 5000,
+  }),
   String,
 );
 
