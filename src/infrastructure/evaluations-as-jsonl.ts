@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { flow, pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
 import * as tt from 'io-ts-types';
@@ -24,31 +24,4 @@ export const decodeEvaluationsFromJsonl = flow(
   E.traverseArray(tt.JsonFromString.decode),
   E.chain(readableEvaluations.decode),
   E.mapLeft(PR.failure),
-);
-
-type WriteableEvaluation = {
-  date: Date,
-  articleDoi: string,
-  evaluationLocator: string,
-  authors?: ReadonlyArray<string>,
-  publishedAt: Date,
-};
-
-type WriteableEvaluations = ReadonlyArray<WriteableEvaluation>;
-
-export const encodeEvaluationsToJsonl = (evaluations: WriteableEvaluations): string => pipe(
-  evaluations,
-  RA.map(flow(
-    (evaluation) => (
-      {
-        date: evaluation.date.toISOString(),
-        articleDoi: evaluation.articleDoi,
-        evaluationLocator: evaluation.evaluationLocator,
-        authors: evaluation.authors ? evaluation.authors : [],
-        publishedAt: evaluation.publishedAt.toISOString(),
-      }
-    ),
-    tt.JsonFromString.encode,
-  )),
-  (events) => `${events.join('\n')}`,
 );

@@ -1,4 +1,3 @@
-import fs from 'fs';
 import axios from 'axios';
 import chalk from 'chalk';
 import { printf } from 'fast-printf';
@@ -9,8 +8,6 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import { encodeEvaluationsToJsonl } from '../infrastructure/evaluations-as-jsonl';
-import { evaluationEventsFilepathForGroupId } from '../infrastructure/events-file';
 
 type Adapters = {
   fetchData: FetchData,
@@ -35,41 +32,6 @@ export type Group = {
   fetchFeed: FetchEvaluations,
 };
 
-const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
-
-const duplicateDateAsPublishedAt = RA.map((evaluation: Es.Evaluation) => ({
-  ...evaluation,
-  publishedAt: evaluation.date,
-}));
-
-const overwriteJsonl = (group: Group) => (feedData: FeedData) => pipe(
-  group.id,
-  evaluationEventsFilepathForGroupId,
-  Es.fromFile,
-  TE.map((existing) => pipe(
-    [...existing, ...duplicateDateAsPublishedAt(feedData.evaluations)],
-    Es.uniq,
-    (all) => ({
-      all,
-      existing,
-      skippedItems: feedData.skippedItems,
-    }),
-  )),
-  TE.chain((results) => pipe(
-    results.all,
-    encodeEvaluationsToJsonl,
-    writeFile(evaluationEventsFilepathForGroupId(group.id)),
-    TE.bimap(
-      (error) => error.toString(),
-      () => ({
-        evaluationsCount: results.all.length,
-        newEvaluationsCount: results.all.length - results.existing.length,
-        skippedItemsCount: results.skippedItems.length,
-      }),
-    ),
-  )),
-);
-
 const report = (group: Group) => (message: string) => {
   process.stderr.write(printf('%-36s %s\n', chalk.white(group.name), message));
 };
@@ -79,18 +41,8 @@ const reportError = (group: Group) => (message: string) => pipe(
   report(group),
 );
 
-type Results = {
-  evaluationsCount: number,
-  newEvaluationsCount: number,
-  skippedItemsCount: number,
-};
-
-const reportSuccess = (group: Group) => (results: Results) => pipe(
-  printf('%5d evaluations (%s, %s, %s)',
-    results.evaluationsCount,
-    chalk.green(`${results.newEvaluationsCount} new`),
-    chalk.grey(`${results.evaluationsCount - results.newEvaluationsCount} existing`),
-    chalk.yellow(`${results.skippedItemsCount} skipped`)),
+const reportSuccess = (group: Group) => () => pipe(
+  '',
   report(group),
 );
 
@@ -116,7 +68,7 @@ type EvaluationCommand = {
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
   async () => axios.post('https://staging.sciety.org/record-evaluation', JSON.stringify(evaluationCommand), {
     headers: {
-      Authorization: `Bearer ${process.env.INGESTION_AUTH_BEARER_TOKEN}`,
+      Authorization: `Bearer ${process.env.INGESTION_AUTH_BEARER_TOKEN ?? 'secret'}`,
       'Content-Type': 'application/json',
     },
     timeout: 10000,
@@ -143,7 +95,6 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
   }),
   TE.map(reportSkippedItems(group)),
   TE.chainFirstW(sendRecordEvaluationCommands(group)),
-  TE.chain(overwriteJsonl(group)),
   TE.match(
     reportError(group),
     reportSuccess(group),
