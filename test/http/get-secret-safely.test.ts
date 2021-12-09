@@ -10,7 +10,7 @@ describe('get-secret-safely', () => {
     });
   });
 
-  describe.skip('when the input is not valid', () => {
+  describe('when the input is not valid', () => {
     it.each([
       [undefined],
       [''],
