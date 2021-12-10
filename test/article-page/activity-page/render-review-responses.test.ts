@@ -5,7 +5,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 describe('render-review-responses', () => {
   it('displays the response counts by type', () => {
     const rendered = renderReviewResponses({
-      reviewId: arbitraryReviewId(),
+      evaluationLocator: arbitraryReviewId(),
       counts: {
         helpfulCount: 35,
         notHelpfulCount: 17,
@@ -19,7 +19,7 @@ describe('render-review-responses', () => {
 
   describe('when there is no current user response', () => {
     const rendered = renderReviewResponses({
-      reviewId: arbitraryReviewId(),
+      evaluationLocator: arbitraryReviewId(),
       counts: {
         helpfulCount: 35,
         notHelpfulCount: 17,
@@ -38,7 +38,7 @@ describe('render-review-responses', () => {
 
   describe('when the user response is `helpful`', () => {
     const rendered = renderReviewResponses({
-      reviewId: arbitraryReviewId(),
+      evaluationLocator: arbitraryReviewId(),
       counts: {
         helpfulCount: 1,
         notHelpfulCount: 0,
@@ -57,7 +57,7 @@ describe('render-review-responses', () => {
 
   describe('when the user response is `not helpful`', () => {
     const rendered = renderReviewResponses({
-      reviewId: arbitraryReviewId(),
+      evaluationLocator: arbitraryReviewId(),
       counts: {
         helpfulCount: 1,
         notHelpfulCount: 0,

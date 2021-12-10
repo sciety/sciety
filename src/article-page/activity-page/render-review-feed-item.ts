@@ -115,6 +115,6 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
 export const renderReviewFeedItem = (
   teaserChars: number,
 ): RenderReviewFeedItem => flow(
-  (review) => render(teaserChars, review, renderReviewResponses({ ...review, reviewId: review.id })),
+  (review) => render(teaserChars, review, renderReviewResponses({ ...review, evaluationLocator: review.id })),
   toHtmlFragment,
 );
