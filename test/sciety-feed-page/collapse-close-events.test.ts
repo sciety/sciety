@@ -55,7 +55,11 @@ describe('collapse-close-events', () => {
         collapseCloseEvents,
       );
 
-      it('collapses the events into a single feed item', () => {
+      it('collapses into a single feed item', () => {
+        expect(result).toHaveLength(1);
+      });
+
+      it('collapses into a Group Evaluated Article feed item', () => {
         expect(result).toStrictEqual([expect.objectContaining(
           {
             type: 'CollapsedGroupEvaluatedArticle',
@@ -87,15 +91,18 @@ describe('collapse-close-events', () => {
         collapseCloseEvents,
       );
 
-      it('collapses the events into a single feed item', () => {
-        expect(result).toStrictEqual([
+      it('collapses into a single feed item', () => {
+        expect(result).toHaveLength(1);
+      });
+
+      it('collapses into a Group Evaluated Article feed item', () => {
+        expect(result).toStrictEqual([expect.objectContaining(
           {
             type: 'CollapsedGroupEvaluatedArticle',
             groupId,
             articleId,
-            date: expect.any(Date),
           },
-        ]);
+        )]);
       });
     });
   });
@@ -115,7 +122,11 @@ describe('collapse-close-events', () => {
       collapseCloseEvents,
     );
 
-    it('collapses into one feed item', () => {
+    it('collapses into a single feed item', () => {
+      expect(result).toHaveLength(1);
+    });
+
+    it('collapses into a Group Evaluated Multiple Articles feed item', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
@@ -149,7 +160,11 @@ describe('collapse-close-events', () => {
       collapseCloseEvents,
     );
 
-    it('collapses into one feed item', () => {
+    it('collapses into a single feed item', () => {
+      expect(result).toHaveLength(1);
+    });
+
+    it('collapses into a Group Evaluated Multiple Articles feed item', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
@@ -181,7 +196,11 @@ describe('collapse-close-events', () => {
       collapseCloseEvents,
     );
 
-    it('collapses into one feed item', () => {
+    it('collapses into a single feed item', () => {
+      expect(result).toHaveLength(1);
+    });
+
+    it('collapses into a Group Evaluated Multiple Articles feed item', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
@@ -203,7 +222,7 @@ describe('collapse-close-events', () => {
     );
 
     it('does not collapse the events', () => {
-      expect(result).toStrictEqual(events);
+      expect(result).toHaveLength(events.length);
     });
   });
 
@@ -222,7 +241,7 @@ describe('collapse-close-events', () => {
     );
 
     it('does not collapse the events', () => {
-      expect(result).toStrictEqual(events);
+      expect(result).toHaveLength(events.length);
     });
   });
 });
