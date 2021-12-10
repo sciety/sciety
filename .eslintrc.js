@@ -70,6 +70,27 @@ module.exports = {
       ],
     }],
     'import/prefer-default-export': 'off',
+    'import/no-internal-modules': [ 'error', {
+      'allow': [
+        // stable
+        'fp-ts/*',
+        'io-ts/*',
+        'io-ts-types/*',
+        'remarkable/linkify',
+        '**/types/*',
+        '**/types/codecs/*',
+        '**/shared-read-models/*',
+        '**/infrastructure/*',
+        '**/third-parties/*',
+        // unstable
+        '**/data/bootstrap-groups', // aim to remove bootstrap-groups
+        '**/shared-components/**', // aim to make it shared-components/*
+        '**/types/*.helper', // delete because it's only used in tests
+        '**/src/*', // aim to remove
+        '**/ingest/*', // unclear whether this dependency direction from third-parties into ingest is legit
+        '**/../list-page/**' // aim to remove when ncrc-featured-articles-page does not exist anymore
+      ],
+    }],
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
       ignoreRegExpLiterals: true,
@@ -119,6 +140,12 @@ module.exports = {
         'jest/prefer-to-be': 'error',
         'jest/prefer-expect-resolves': 'off',
         'jest/unbound-method': 'off',
+      },
+    },
+    {
+      files: ['test/**/*.ts'],
+      rules: {
+        'import/no-internal-modules': 'off',
       },
 
     },
