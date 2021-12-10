@@ -212,3 +212,9 @@ get-error-logs:
 update-datastudio: update-db-dump .bq-update-events
 	./scripts/upload-evaluations-from-local-files-to-bigquery.sh
 	./scripts/upload-ingress-logs-from-cloudwatch-to-bigquery.sh
+
+crossref-response:
+	curl -v \
+		-H 'Accept: application/vnd.crossref.unixref+xml' \
+		-H 'User-Agent: Sciety (https://sciety.org; mailto:team@sciety.org)' \
+		'https://api.crossref.org/works/${DOI}/transform'
