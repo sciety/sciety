@@ -7,7 +7,7 @@ export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-foun
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
 export { UserRevokedFindingReviewHelpfulEvent, userRevokedFindingReviewHelpful } from './user-revoked-finding-review-helpful-event';
 export { userRevokedFindingReviewNotHelpful, UserRevokedFindingReviewNotHelpfulEvent } from './user-revoked-finding-review-not-helpful-event';
-export { userSavedArticle, UserSavedArticleEvent } from './user-saved-article-event';
+export { userSavedArticle, UserSavedArticleEvent, isUserSavedArticleEvent } from './user-saved-article-event';
 export { UserUnfollowedEditorialCommunityEvent, userUnfollowedEditorialCommunity } from './user-unfollowed-editorial-community-event';
 export { userUnsavedArticle, UserUnsavedArticleEvent } from './user-unsaved-article-event';
 export { userCreatedAccount } from './user-created-account-event';
@@ -16,7 +16,6 @@ export {
   isUserUnfollowedEditorialCommunityEvent,
   isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
-  isUserSavedArticleEvent,
   isUserCreatedAccountEvent,
   isUserFoundReviewHelpfulEvent,
   isUserFoundReviewNotHelpfulEvent,
