@@ -20,7 +20,7 @@ describe('follow a group', () => {
     });
 
     it('adds the group to my profile page', async () => {
-      const groupToBeFollowed = 'ScreenIT';
+      const groupToBeFollowed = 'preLights';
       await goto('localhost:8080/groups');
       await click(groupToBeFollowed);
       await click('Follow');
