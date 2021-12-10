@@ -86,8 +86,8 @@ describe('generate-docmap-view-model', () => {
         ...defaultPorts,
         getAllEvents: T.of([
           groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
-          evaluationRecorded(indexedGroupId, articleId, earlierReviewId, earlierDate),
-          evaluationRecorded(indexedGroupId, articleId, laterReviewId, laterDate),
+          evaluationRecorded(indexedGroupId, articleId, earlierReviewId, [], new Date(), earlierDate),
+          evaluationRecorded(indexedGroupId, articleId, laterReviewId, [], new Date(), laterDate),
         ]),
       };
       result = await pipe(

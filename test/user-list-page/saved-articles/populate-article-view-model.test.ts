@@ -23,8 +23,8 @@ describe('populate-article-view-model', () => {
     const ports = {
       getAllEvents: T.of([
         groupCreated(group),
-        evaluationRecorded(group.id, articleId, arbitraryReviewId(), arbitraryDate(), [], laterPublicationDate),
-        evaluationRecorded(group.id, articleId, arbitraryReviewId(), arbitraryDate(), [], earlierPublicationDate),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
+        evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
       ]),
       getLatestArticleVersionDate: () => TO.some(latestVersionDate),
     };

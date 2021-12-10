@@ -19,8 +19,8 @@ describe('to-list-of-group-card-view-models', () => {
       groupCreated(inactiveGroup),
       groupCreated(leastActiveGroup),
       groupCreated(mostActiveGroup),
-      evaluationRecorded(leastActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], new Date('2019')),
-      evaluationRecorded(mostActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], new Date('2021')),
+      evaluationRecorded(leastActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
+      evaluationRecorded(mostActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
     ]),
   };
   let groupNames: ReadonlyArray<string>;

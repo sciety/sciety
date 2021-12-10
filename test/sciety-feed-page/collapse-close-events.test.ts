@@ -28,14 +28,7 @@ describe('collapse-close-events', () => {
     const publishedDate = new Date('2021-09-14 12:00');
     const result = pipe(
       [
-        evaluationRecorded(
-          arbitraryGroupId(),
-          arbitraryDoi(),
-          arbitraryReviewId(),
-          arbitraryDate(),
-          [],
-          publishedDate,
-        ),
+        evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), [], publishedDate, arbitraryDate()),
       ],
       collapseCloseEvents,
     );
@@ -56,8 +49,8 @@ describe('collapse-close-events', () => {
 
       const result = pipe(
         [
-          evaluationRecorded(groupId, articleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
-          evaluationRecorded(groupId, articleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], laterDate, arbitraryDate()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], earlierDate, arbitraryDate()),
         ],
         collapseCloseEvents,
       );
@@ -113,9 +106,9 @@ describe('collapse-close-events', () => {
     const groupId = arbitraryGroupId();
 
     const events = [
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], earlierDate),
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], laterDate),
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], earlierDate),
+      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], laterDate, arbitraryDate()),
+      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
     ];
     const result = pipe(
       events,
@@ -148,10 +141,10 @@ describe('collapse-close-events', () => {
 
     const result = pipe(
       [
-        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
-        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), arbitraryDate(), [], earlierDate),
-        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
-        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), arbitraryDate(), [], laterDate),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+        evaluationRecorded(groupId, firstArticleId, arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), [], laterDate, arbitraryDate()),
+        evaluationRecorded(groupId, secondArticleId, arbitraryReviewId(), [], laterDate, arbitraryDate()),
       ],
       collapseCloseEvents,
     );

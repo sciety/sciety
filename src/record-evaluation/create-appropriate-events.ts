@@ -30,9 +30,9 @@ const createEvaluationRecordedEvent = (command: Command) => evaluationRecorded(
   command.groupId,
   command.articleId,
   command.evaluationLocator,
-  new Date(),
   command.authors,
   command.publishedAt,
+  new Date(),
 );
 
 export const createAppropriateEvents: CreateAppropriateEvents = (command) => (events) => pipe(

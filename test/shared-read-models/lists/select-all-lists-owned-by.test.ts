@@ -61,7 +61,7 @@ describe('select-all-lists-owned-by', () => {
       [
         listCreated(arbitraryListId(), listName, listDescription, ownerId),
         evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId()),
-        evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), newerDate),
       ],
       selectAllListsOwnedBy(ownerId),
       (lists) => lists[0],
@@ -91,7 +91,7 @@ describe('select-all-lists-owned-by', () => {
     const result = pipe(
       [
         listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
-        evaluationRecorded(ownerId, articleId, arbitraryReviewId(), olderDate),
+        evaluationRecorded(ownerId, articleId, arbitraryReviewId(), [], new Date(), olderDate),
         evaluationRecorded(ownerId, articleId, arbitraryReviewId()),
       ],
       selectAllListsOwnedBy(ownerId),

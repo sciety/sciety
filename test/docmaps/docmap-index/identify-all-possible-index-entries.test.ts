@@ -34,8 +34,8 @@ describe('identify-all-possible-index-entries', () => {
     const earlierDate = new Date('1990');
     const laterDate = new Date('2000');
     const events = [
-      evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), earlierDate),
-      evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), laterDate),
+      evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), [], new Date(), earlierDate),
+      evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
     ];
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
@@ -71,9 +71,9 @@ describe('identify-all-possible-index-entries', () => {
     const latestDate = new Date('2021');
     const articleId = arbitraryDoi();
     const events = [
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), earlierDate),
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), latestDate),
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), middleDate),
+      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), earlierDate),
+      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), latestDate),
+      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), middleDate),
     ];
 
     let result: ReadonlyArray<DocmapIndexEntryModel>;

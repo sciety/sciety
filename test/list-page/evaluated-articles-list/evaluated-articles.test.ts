@@ -14,14 +14,7 @@ describe('evaluated-articles', () => {
     const groupId = arbitraryGroupId();
     const date = arbitraryDate();
     const events = [
-      evaluationRecorded(
-        groupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        date,
-      ),
+      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], date, arbitraryDate()),
     ];
 
     it('includes the article DOI', () => {
@@ -60,22 +53,8 @@ describe('evaluated-articles', () => {
     const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
-      evaluationRecorded(
-        groupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        latestActivityDate,
-      ),
-      evaluationRecorded(
-        groupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        new Date('1980-01-01'),
-      ),
+      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], latestActivityDate, arbitraryDate()),
+      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('1980-01-01'), arbitraryDate()),
     ];
 
     it('has a single entry for the article', () => {
@@ -115,38 +94,10 @@ describe('evaluated-articles', () => {
     const articleId = arbitraryDoi();
     const mostRecentActivityDate = new Date('2021-03-10T00:00:00.000Z');
     const events = [
-      evaluationRecorded(
-        groupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        new Date('2020-10-14T00:00:00.000Z'),
-      ),
-      evaluationRecorded(
-        otherGroupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        mostRecentActivityDate,
-      ),
-      evaluationRecorded(
-        otherGroupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        mostRecentActivityDate,
-      ),
-      evaluationRecorded(
-        otherGroupId,
-        articleId,
-        arbitraryReviewId(),
-        arbitraryDate(),
-        [],
-        mostRecentActivityDate,
-      ),
+      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], mostRecentActivityDate, arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], mostRecentActivityDate, arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], mostRecentActivityDate, arbitraryDate()),
     ];
 
     it('has an evaluation count of the number of evaluations by all groups', () => {
@@ -180,18 +131,8 @@ describe('evaluated-articles', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        evaluationRecorded(
-          groupId,
-          article1,
-          arbitraryReviewId(),
-          earlierDate,
-        ),
-        evaluationRecorded(
-          groupId,
-          article2,
-          arbitraryReviewId(),
-          laterDate,
-        ),
+        evaluationRecorded(groupId, article1, arbitraryReviewId(), [], new Date(), earlierDate),
+        evaluationRecorded(groupId, article2, arbitraryReviewId(), [], new Date(), laterDate),
       ];
       const activities = evaluatedArticles(groupId)(events);
 
@@ -213,24 +154,9 @@ describe('evaluated-articles', () => {
       const articleMostRecentlyReviewedByThisGroup = arbitraryDoi();
       const articleThatWasMoreRecentlyReviewedButByAnotherGroup = arbitraryDoi();
       const events = [
-        evaluationRecorded(
-          thisGroupId,
-          articleThatWasMoreRecentlyReviewedButByAnotherGroup,
-          arbitraryReviewId(),
-          new Date('1980-01-01'),
-        ),
-        evaluationRecorded(
-          thisGroupId,
-          articleMostRecentlyReviewedByThisGroup,
-          arbitraryReviewId(),
-          new Date('2000-01-01'),
-        ),
-        evaluationRecorded(
-          anotherGroupId,
-          articleThatWasMoreRecentlyReviewedButByAnotherGroup,
-          arbitraryReviewId(),
-          new Date('2020-01-01'),
-        ),
+        evaluationRecorded(thisGroupId, articleThatWasMoreRecentlyReviewedButByAnotherGroup, arbitraryReviewId(), [], new Date(), new Date('1980-01-01')),
+        evaluationRecorded(thisGroupId, articleMostRecentlyReviewedByThisGroup, arbitraryReviewId(), [], new Date(), new Date('2000-01-01')),
+        evaluationRecorded(anotherGroupId, articleThatWasMoreRecentlyReviewedButByAnotherGroup, arbitraryReviewId(), [], new Date(), new Date('2020-01-01')),
       ];
 
       const activities = evaluatedArticles(thisGroupId)(events);
@@ -251,12 +177,7 @@ describe('evaluated-articles', () => {
       const thisGroupId = arbitraryGroupId();
       const anotherGroupId = arbitraryGroupId();
       const events = [
-        evaluationRecorded(
-          anotherGroupId,
-          arbitraryDoi(),
-          arbitraryReviewId(),
-          arbitraryDate(),
-        ),
+        evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), arbitraryDate()),
       ];
 
       const activities = evaluatedArticles(thisGroupId)(events);
@@ -273,6 +194,8 @@ describe('evaluated-articles', () => {
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),
+        [],
+        new Date(),
         arbitraryDate(),
       ))
     );

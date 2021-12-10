@@ -25,9 +25,9 @@ describe('get-evaluations-for-doi', () => {
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const actualReviews = pipe(
         [
-          evaluationRecorded(group1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
-          evaluationRecorded(group1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
-          evaluationRecorded(group2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
+          evaluationRecorded(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+          evaluationRecorded(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+          evaluationRecorded(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
         ],
         getEvaluationsForDoi(articleDoi),
         RA.map((reviewReference) => reviewReference.reviewId),
@@ -45,6 +45,8 @@ describe('get-evaluations-for-doi', () => {
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),
+        [],
+        new Date(),
         arbitraryDate(),
       ))
     );

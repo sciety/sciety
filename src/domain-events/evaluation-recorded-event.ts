@@ -18,9 +18,9 @@ export const evaluationRecorded = (
   groupId: GroupId,
   doi: Doi,
   evaluationLocator: ReviewId,
-  date: Date = new Date(),
   authors: ReadonlyArray<string> = [],
   publishedAt: Date = new Date(),
+  date: Date = new Date(),
 ): EvaluationRecordedEvent => ({
   id: generate(),
   type: 'EvaluationRecorded',

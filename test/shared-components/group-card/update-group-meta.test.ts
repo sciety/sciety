@@ -31,7 +31,7 @@ describe('update-group-meta', () => {
 
   describe('when passed the first EvaluationRecorded', () => {
     const newerDate = new Date('2020');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], newerDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], newerDate, arbitraryDate());
     const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
 
     it('sets review count to 1', () => {
@@ -45,7 +45,7 @@ describe('update-group-meta', () => {
 
   describe('when passed a newer EvaluationRecorded', () => {
     const newerDate = new Date('2020');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], newerDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], newerDate, arbitraryDate());
     const result = updateGroupMeta(groupId)(initial, event);
 
     it('updates the review count', () => {
@@ -59,7 +59,7 @@ describe('update-group-meta', () => {
 
   describe('when passed an older EvaluationRecorded', () => {
     const olderDate = new Date('1920');
-    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), arbitraryDate(), [], olderDate);
+    const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], olderDate, arbitraryDate());
     const result = updateGroupMeta(groupId)(initial, event);
 
     it('updates the review count', () => {
