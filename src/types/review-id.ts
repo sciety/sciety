@@ -1,36 +1,35 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 
-export type ReviewId = string & { readonly ReviewId: unique symbol };
-
-const extractService = (candidate: string) => {
-  const [, service] = /^(.+?):(.+)$/.exec(candidate) ?? [];
-  return service;
-};
-
 const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
 
-export const isReviewId = (candidate: unknown): candidate is ReviewId => (
-  typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
+const startsWithSupportedService = (input: string): boolean => pipe(
+  supportedServices,
+  RA.some((svc) => input.startsWith(`${svc}:`)),
 );
 
-const toReviewId = (serialization: string): ReviewId => {
-  if (isReviewId(serialization)) {
-    return serialization as unknown as ReviewId;
-  }
+export const reviewIdCodec = t.brand(
+  t.string,
+  (input): input is t.Branded<string, { readonly ReviewId: unique symbol }> => startsWithSupportedService(input),
+  'ReviewId',
+);
 
-  throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
-};
+export type ReviewId = t.TypeOf<typeof reviewIdCodec>;
 
-export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
+export const isReviewId = reviewIdCodec.is;
 
-export const serialize = (id: ReviewId): string => id;
+export const deserialize = flow(
+  reviewIdCodec.decode,
+  O.fromEither,
+);
+
+export const serialize = reviewIdCodec.encode;
 
 export const service = (id: ReviewId): string => id.split(':')[0];
 
@@ -56,19 +55,3 @@ const eq: Eq.Eq<ReviewId> = pipe(
 );
 
 export const { equals } = eq;
-
-export const reviewIdCodec = new t.Type(
-  'reviewIdCodec',
-  isReviewId,
-  (input, context) => pipe(
-    t.string.validate(input, context),
-    E.chain(flow(
-      deserialize,
-      O.fold(
-        () => t.failure(input, context),
-        t.success,
-      ),
-    )),
-  ),
-  serialize,
-);
