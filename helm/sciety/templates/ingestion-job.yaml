@@ -12,7 +12,7 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "sciety.selectorLabels" . | nindent 8 }}
+            {{- include "sciety.selectorLabels" . | nindent 12 }}
             app.kubernetes.io/component: ingestion
         spec:
           containers:
@@ -25,5 +25,4 @@ spec:
                 value: {{ .Values.ingestionAuthBearerToken }}
               - name: INGESTION_TARGET_APP
                 value: "https://{{ .Values.hostname }}"
-            command: ["node", "./build/ingest/update-event-data"]
           restartPolicy: Never
