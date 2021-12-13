@@ -18,6 +18,7 @@ spec:
           containers:
           - name: app
             image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+            command: ["node", "./build/ingest/update-event-data"]
             env:
               - name: CROSSREF_API_BEARER_TOKEN
                 value: {{ .Values.crossrefApiBearerToken }}
