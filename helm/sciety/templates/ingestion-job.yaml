@@ -6,7 +6,7 @@ metadata:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingestion
 spec:
-  schedule: "0 */6 * * *"
+  schedule: "*/10 * * * *"
   jobTemplate:
     spec:
       template:
