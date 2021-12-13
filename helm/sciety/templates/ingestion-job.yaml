@@ -26,4 +26,14 @@ spec:
                 value: {{ .Values.ingestionAuthBearerToken }}
               - name: INGESTION_TARGET_APP
                 value: "https://{{ .Values.hostname }}"
+              - name: PRELIGHTS_FEED_KEY
+                value: {{ .Values.prelightsFeedKey }}
+            volumeMounts:
+              - name: gcp-ncrc-key
+                mountPath: "/var/run/secrets/app"
+                readOnly: true
+          volumes:
+            - name: gcp-ncrc-key
+              secret:
+                secretName: ncrc-sheet-key
           restartPolicy: Never
