@@ -1,27 +1,29 @@
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: {{ .Release.Name }}--ingestion
   labels:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingestion
 spec:
-  template:
-    metadata:
-      labels:
-        {{- include "sciety.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: ingestion
+  schedule: "0 */6 * * *"
+  jobTemplate:
     spec:
-      containers:
-      - name: app
-        image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
-        env:
-          - name: CROSSREF_API_BEARER_TOKEN
-            value: {{ .Values.crossrefApiBearerToken }}
-          - name: INGESTION_AUTH_BEARER_TOKEN
-            value: {{ .Values.ingestionAuthBearerToken }}
-          - name: INGESTION_TARGET_APP
-            value: "https://{{ .Values.hostname }}"
-        command: ["node", "./build/ingest/update-event-data"]
-      restartPolicy: Never
-  backoffLimit: 4
+      template:
+        metadata:
+          labels:
+            {{- include "sciety.selectorLabels" . | nindent 8 }}
+            app.kubernetes.io/component: ingestion
+        spec:
+          containers:
+          - name: app
+            image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+            env:
+              - name: CROSSREF_API_BEARER_TOKEN
+                value: {{ .Values.crossrefApiBearerToken }}
+              - name: INGESTION_AUTH_BEARER_TOKEN
+                value: {{ .Values.ingestionAuthBearerToken }}
+              - name: INGESTION_TARGET_APP
+                value: "https://{{ .Values.hostname }}"
+            command: ["node", "./build/ingest/update-event-data"]
+          restartPolicy: Never
