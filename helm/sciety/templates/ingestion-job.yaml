@@ -20,6 +20,8 @@ spec:
             value: {{ .Values.crossrefApiBearerToken }}
           - name: INGESTION_AUTH_BEARER_TOKEN
             value: {{ .Values.ingestionAuthBearerToken }}
+          - name: INGESTION_TARGET_APP
+            value: "https://{{ .Values.hostname }}"
         command: ["node", "./build/ingest/update-event-data"]
       restartPolicy: Never
   backoffLimit: 4
