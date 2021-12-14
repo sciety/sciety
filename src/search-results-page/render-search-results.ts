@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { nextLink, SearchParameters } from './next-link';
 import { pageTabs, PageTabsViewModel } from './page-tabs';
 import { renderSearchResultsList } from './render-search-results-list';
@@ -22,10 +22,21 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(O.none)(viewModel) : renderGroupCard(viewModel)
 );
 
-const pagination = (searchResults: SearchResults) => (content: HtmlFragment) => toHtmlFragment(`
-  ${content}
-  ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
-`);
+const pagination = (searchResults: SearchResults) => flow(
+  O.fold(
+    () => '',
+    (content: HtmlFragment) => (searchResults.category === 'articles'
+      ? `
+      <h3 class="search-results__page_count">
+        Showing page ${searchResults.pageNumber} of ${searchResults.numberOfPages}<span class="visually-hidden"> pages of search results</span>
+      </h3>
+      ${content}
+      ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
+    `
+      : content),
+  ),
+  toHtmlFragment,
+);
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
