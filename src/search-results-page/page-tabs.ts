@@ -1,37 +1,26 @@
 import { htmlEscape } from 'escape-goat';
-import { SearchParameters } from './next-link';
-import { ArticleViewModel } from '../shared-components/article-card';
-import { GroupViewModel } from '../shared-components/group-card/render-group-card';
 import { tabs } from '../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type ItemViewModel = ArticleViewModel | GroupViewModel;
-
-export type SearchResults = SearchParameters & Tabs & {
-  itemsToDisplay: ReadonlyArray<ItemViewModel>,
-  pageNumber: number,
-  numberOfPages: number,
-};
-
-type Tabs = {
+export type PageTabsViewModel = {
   query: string,
   availableArticleMatches: number,
   availableGroupMatches: number,
   category: string,
 };
 
-type PageTabs = (searchResults: SearchResults) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
+type PageTabs = (pageTabsViewModel: PageTabsViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
-export const pageTabs: PageTabs = (searchResults) => tabs({
+export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
   tabList: [
     {
-      label: toHtmlFragment(`Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
+      label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
+      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=articles`,
     },
     {
-      label: toHtmlFragment(`Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
+      label: toHtmlFragment(`Groups (${pageTabsViewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
+      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=groups`,
     },
   ],
-  activeTabIndex: searchResults.category === 'groups' ? 1 : 0,
+  activeTabIndex: pageTabsViewModel.category === 'groups' ? 1 : 0,
 });
