@@ -1,12 +1,11 @@
-import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { nextLink, SearchParameters } from './next-link';
+import { pageTabs } from './page-tabs';
 import { renderSearchResultsList } from './render-search-results-list';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { GroupViewModel, renderGroupCard } from '../shared-components/group-card/render-group-card';
-import { tabs } from '../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
@@ -34,20 +33,6 @@ type Tabs = {
   availableGroupMatches: number,
   category: string,
 };
-
-const pageTabs = (searchResults: SearchResults) => tabs({
-  tabList: [
-    {
-      label: toHtmlFragment(`Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
-    },
-    {
-      label: toHtmlFragment(`Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
-    },
-  ],
-  activeTabIndex: searchResults.category === 'groups' ? 1 : 0,
-});
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
