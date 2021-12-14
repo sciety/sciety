@@ -1,6 +1,4 @@
 import axios from 'axios';
-import chalk from 'chalk';
-import { printf } from 'fast-printf';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -32,26 +30,40 @@ export type Group = {
   fetchFeed: FetchEvaluations,
 };
 
-const report = (group: Group) => (message: string) => {
-  process.stderr.write(printf('%-36s %s\n', chalk.white(group.name), message));
+type LevelName = 'error' | 'warn' | 'info' | 'debug';
+
+const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
+  const thingToLog = {
+    timestamp: new Date(),
+    level,
+    message,
+    payload,
+  };
+
+  process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
 
-const reportError = (group: Group) => (message: string) => pipe(
-  chalk.redBright(message),
-  report(group),
+const reportError = (group: Group) => (errorMessage: string) => pipe(
+  {
+    error: errorMessage,
+    groupName: group.name,
+  },
+  report('error', 'Ingestion failed'),
 );
 
 const reportSuccess = (group: Group) => () => pipe(
-  '',
-  report(group),
+  {
+    groupName: group.name,
+  },
+  report('info', 'Ingestion successful'),
 );
 
 const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
       feedData.skippedItems,
-      RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
-      RA.map(report(group)),
+      RA.map((skippedItem) => ({ item: skippedItem.item, reason: skippedItem.reason, groupName: group.name })),
+      RA.map(report('debug', 'Ingestion item skipped')),
     );
   }
   return feedData;
@@ -66,7 +78,7 @@ type EvaluationCommand = {
 };
 
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
-  async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://localhost:8080'}/record-evaluation`, JSON.stringify(evaluationCommand), {
+  async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/record-evaluation`, JSON.stringify(evaluationCommand), {
     headers: {
       Authorization: `Bearer ${process.env.INGESTION_AUTH_BEARER_TOKEN ?? 'secret'}`,
       'Content-Type': 'application/json',
