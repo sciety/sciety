@@ -6,9 +6,6 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type PageOfResults = {
   cardsToDisplay: ReadonlyArray<HtmlFragment>,
-  pageNumber: number,
-  numberOfPages: number,
-  category: string,
 };
 
 export const renderSearchResultsList = (page: PageOfResults): O.Option<HtmlFragment> => pipe(

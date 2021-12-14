@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { flow, pipe } from 'fp-ts/function';
-import { nextLink, SearchParameters } from './next-link';
+import { pipe } from 'fp-ts/function';
 import { pageTabs, PageTabsViewModel } from './page-tabs';
+import { pagination, PaginationViewModel } from './pagination';
 import { renderSearchResultsList } from './render-search-results-list';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { GroupViewModel, renderGroupCard } from '../shared-components/group-card/render-group-card';
@@ -12,30 +12,12 @@ export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
 const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
 
-export type SearchResults = SearchParameters & PageTabsViewModel & {
+export type SearchResults = PaginationViewModel & PageTabsViewModel & {
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
-  pageNumber: number,
-  numberOfPages: number,
 };
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(O.none)(viewModel) : renderGroupCard(viewModel)
-);
-
-const pagination = (searchResults: SearchResults) => flow(
-  O.fold(
-    () => '',
-    (content: HtmlFragment) => (searchResults.category === 'articles'
-      ? `
-      <h3 class="search-results__page_count">
-        Showing page ${searchResults.pageNumber} of ${searchResults.numberOfPages}<span class="visually-hidden"> pages of search results</span>
-      </h3>
-      ${content}
-      ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
-    `
-      : content),
-  ),
-  toHtmlFragment,
 );
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
@@ -46,9 +28,6 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
       searchResults.itemsToDisplay,
       RA.map(renderSearchResult),
     ),
-    pageNumber: searchResults.pageNumber,
-    numberOfPages: searchResults.numberOfPages,
-    category: searchResults.category,
   },
   renderSearchResultsList,
   pagination(searchResults),
