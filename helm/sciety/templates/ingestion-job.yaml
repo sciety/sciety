@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/component: ingestion
 spec:
   schedule: "*/10 * * * *"
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:
