@@ -1,12 +1,11 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { constant, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { nextLink, SearchParameters } from './next-link';
+import { renderSearchResultsList } from './render-search-results-list';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { GroupViewModel, renderGroupCard } from '../shared-components/group-card/render-group-card';
-import { templateListItems } from '../shared-components/list-items';
 import { tabs } from '../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -19,33 +18,6 @@ export type SearchResults = SearchParameters & Tabs & {
   pageNumber: number,
   numberOfPages: number,
 };
-
-type PageOfResults = {
-  cardsToDisplay: ReadonlyArray<HtmlFragment>,
-  pageNumber: number,
-  numberOfPages: number,
-  category: string,
-};
-
-const list = (page: PageOfResults) => pipe(
-  page.cardsToDisplay,
-  RNEA.fromReadonlyArray,
-  O.fold(
-    constant(''),
-    (a) => `
-      ${page.category === 'articles'
-    ? `<h3 class="search-results__page_count">
-            Showing page ${page.pageNumber} of ${page.numberOfPages}<span class="visually-hidden"> pages of search results</span>
-          </h3>`
-    : ''
-}
-      <ul class="search-results-list" role="list">
-        ${templateListItems(a, 'search-results-list__item')}
-      </ul>
-    `,
-  ),
-  toHtmlFragment,
-);
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(O.none)(viewModel) : renderGroupCard(viewModel)
@@ -89,7 +61,7 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
     numberOfPages: searchResults.numberOfPages,
     category: searchResults.category,
   },
-  list,
+  renderSearchResultsList,
   pagination(searchResults),
   pageTabs(searchResults),
   toHtmlFragment,
