@@ -85,7 +85,7 @@ const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
     },
     timeout: 10000,
   }),
-  String,
+  (error) => `Failed to post evaluation command: ${String(error)}`,
 );
 
 const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
