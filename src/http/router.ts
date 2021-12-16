@@ -450,15 +450,20 @@ export const createRouter = (adapters: Adapters): Router => {
     requireIngestionAuthentication,
     async (context) => {
       adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
-      context.response.status = await pipe(
+      await pipe(
         context.request.body,
         recordEvaluation(adapters),
         TE.match(
-          () => StatusCodes.BAD_REQUEST,
-          () => StatusCodes.OK,
+          (error) => {
+            context.response.status = StatusCodes.BAD_REQUEST;
+            context.response.body = error;
+          },
+          () => {
+            context.response.status = StatusCodes.OK;
+            context.response.body = '';
+          },
         ),
       )();
-      context.response.body = '';
     },
   );
 
