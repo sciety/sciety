@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -90,6 +92,16 @@ const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
   (error) => `Failed to post evaluation command: ${String(error)}`,
 );
 
+const countUniques = (accumulator: Record<string, number>, errorMessage: string) => pipe(
+  accumulator,
+  R.lookup(errorMessage),
+  O.match(
+    () => 1,
+    (count) => count + 1,
+  ),
+  (count) => R.upsertAt(errorMessage, count)(accumulator),
+);
+
 const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
@@ -102,8 +114,13 @@ const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => p
   T.traverseArray(send),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
+    const lefts = pipe(
+      array,
+      RA.lefts,
+      RA.reduce({}, countUniques),
+    );
     const rightsCount = RA.rights(array).length;
-    const summaryOfRequests = `Lefts: ${leftsCount}; Rights: ${rightsCount}`;
+    const summaryOfRequests = `Lefts: ${JSON.stringify(lefts)} (total: ${leftsCount}); Rights: ${rightsCount}`;
     if (leftsCount > 0) {
       return E.left(summaryOfRequests);
     }
