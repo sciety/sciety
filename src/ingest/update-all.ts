@@ -35,32 +35,15 @@ export type Group = {
 
 type LevelName = 'error' | 'warn' | 'info' | 'debug';
 
-const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
+const report = (level: LevelName, message: string) => (payload: string | Record<string, unknown>) => {
   const thingToLog = {
     timestamp: new Date(),
     level,
     message,
     payload,
   };
-
   process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
-
-const reportError = (group: Group) => (errorMessage: string) => pipe(
-  {
-    error: errorMessage,
-    groupName: group.name,
-  },
-  report('error', 'Ingestion failed'),
-);
-
-const reportSuccess = (group: Group) => (message: string) => pipe(
-  {
-    message,
-    groupName: group.name,
-  },
-  report('info', 'Ingestion successful'),
-);
 
 const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
@@ -120,7 +103,12 @@ const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => p
       RA.reduce({}, countUniques),
     );
     const rightsCount = RA.rights(array).length;
-    const summaryOfRequests = `Lefts: ${JSON.stringify(lefts)} (total: ${leftsCount}); Rights: ${rightsCount}`;
+    const summaryOfRequests = {
+      groupName: group.name,
+      lefts,
+      leftsTotal: leftsCount,
+      rightsTotal: rightsCount,
+    };
     if (leftsCount > 0) {
       return E.left(summaryOfRequests);
     }
@@ -136,8 +124,8 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
   TE.map(reportSkippedItems(group)),
   TE.chainW(sendRecordEvaluationCommands(group)),
   TE.match(
-    reportError(group),
-    reportSuccess(group),
+    report('error', 'Ingestion failed'),
+    report('info', 'Ingestion successful'),
   ),
 );
 
