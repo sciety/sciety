@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -51,8 +52,9 @@ const reportError = (group: Group) => (errorMessage: string) => pipe(
   report('error', 'Ingestion failed'),
 );
 
-const reportSuccess = (group: Group) => () => pipe(
+const reportSuccess = (group: Group) => (message: string) => pipe(
   {
+    message,
     groupName: group.name,
   },
   report('info', 'Ingestion successful'),
@@ -97,7 +99,16 @@ const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => p
     publishedAt: evaluation.date,
     authors: evaluation.authors,
   })),
-  TE.traverseArray(send),
+  T.traverseArray(send),
+  T.map((array) => {
+    const leftsCount = RA.lefts(array).length;
+    const rightsCount = RA.rights(array).length;
+    const summaryOfRequests = `Lefts: ${leftsCount}; Rights: ${rightsCount}`;
+    if (leftsCount > 0) {
+      return E.left(summaryOfRequests);
+    }
+    return E.right(summaryOfRequests);
+  }),
 );
 
 const updateGroup = (group: Group): T.Task<void> => pipe(
@@ -106,7 +117,7 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchGoogleSheet,
   }),
   TE.map(reportSkippedItems(group)),
-  TE.chainFirstW(sendRecordEvaluationCommands(group)),
+  TE.chainW(sendRecordEvaluationCommands(group)),
   TE.match(
     reportError(group),
     reportSuccess(group),
