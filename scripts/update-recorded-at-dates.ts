@@ -2,10 +2,12 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import { promisify } from 'util';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
+import { Doi } from '../src/types/doi';
 
 const filename = './data/reviews/7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jsonl';
 
@@ -26,12 +28,13 @@ const runScript = (evaluationLocator: string): TE.TaskEither<unknown, Date> => p
   TE.map((string) => new Date(string)),
 );
 
-const updateDate = (partialEvent: { evaluationLocator: string }) => pipe(
+const updateDate = (partialEvent: { evaluationLocator: string, articleDoi: Doi }) => pipe(
   partialEvent.evaluationLocator,
   runScript,
   TE.map((newDate) => ({
     ...partialEvent,
     date: newDate,
+    articleDoi: partialEvent.articleDoi.value,
   })),
 );
 
@@ -41,7 +44,9 @@ const processFile = (filePath: string) => pipe(
   T.map(E.orElse(() => E.right(''))),
   TE.chainEitherKW(decodeEvaluationsFromJsonl),
   TE.chainW(TE.traverseArray(updateDate)),
-  TE.map((foo) => process.stdout.write(JSON.stringify(foo))),
+  TE.map(RA.map(
+    (partialEvent) => process.stdout.write(`${JSON.stringify(partialEvent)}\n`),
+  )),
 );
 
 void (async (): Promise<unknown> => pipe(
