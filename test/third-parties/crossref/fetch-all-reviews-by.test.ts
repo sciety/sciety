@@ -7,18 +7,10 @@ import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
-  const fetchData = jest.fn()
-    .mockReturnValueOnce(TE.right({
-      message: {
-        'total-results': items.length,
-      },
-    }))
-    .mockReturnValueOnce(TE.right({
-      message: { items },
-    }));
+  const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
   return pipe(
     arbitraryWord(),
-    CR.fetchAllReviewsBy(fetchData),
+    CR.fetchLatestReviewsBy(fetchData),
   );
 };
 

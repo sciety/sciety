@@ -8,24 +8,13 @@ import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 
-const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => {
-  const fetchData = jest.fn()
-    .mockReturnValueOnce(TE.right({
-      message: {
-        'total-results': crossrefResponseItems.length,
-      },
-    }))
-    .mockReturnValueOnce(TE.right({
-      message: { items: crossrefResponseItems },
-    }));
-  return pipe(
-    {
-      fetchData,
-      fetchGoogleSheet: shouldNotBeCalled,
-    },
-    fetchRapidReviews(),
-  );
-};
+const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
+  {
+    fetchData: <D>() => TE.right({ message: { items: crossrefResponseItems } } as unknown as D),
+    fetchGoogleSheet: shouldNotBeCalled,
+  },
+  fetchRapidReviews(),
+);
 
 describe('fetch-rapid-reviews', () => {
   describe('when there are no Crossref reviews', () => {

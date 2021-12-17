@@ -12,7 +12,7 @@ type Ports = {
 };
 
 const identifyCandidates = (fetchData: FetchData) => (
-  CR.fetchAllReviewsBy(fetchData)('10.1162')
+  CR.fetchLatestReviewsBy(fetchData)('10.1162')
 );
 
 const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
