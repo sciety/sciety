@@ -7,7 +7,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
-  return CR.fetchLatestReviewsBy(fetchData)(arbitraryWord(), arbitraryDate());
+  return CR.fetchReviewsIndexedSince(fetchData)(arbitraryWord(), arbitraryDate());
 };
 
 describe('fetch-all-reviews-by', () => {

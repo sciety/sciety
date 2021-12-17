@@ -1,3 +1,3 @@
 export { FetchCrossrefArticle, fetchCrossrefArticle } from './fetch-crossref-article';
 export { CrossrefItem, fetchReviewsBy } from './fetch-reviews';
-export { CrossrefReview, fetchLatestReviewsBy } from './fetch-all-reviews-by';
+export { CrossrefReview, fetchReviewsIndexedSince } from './fetch-reviews-indexed-since';
