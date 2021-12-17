@@ -23,7 +23,7 @@ describe('event-sourced-follow-list-repository', () => {
     expect(actual).toStrictEqual(expected);
   });
 
-  it('ignored communities that the user has unfollowed', async () => {
+  it('ignores groups that the user has unfollowed', async () => {
     const getAllEvents = T.of([
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId1, groupId1),
@@ -36,7 +36,7 @@ describe('event-sourced-follow-list-repository', () => {
     expect(actual).toStrictEqual(expected);
   });
 
-  it('ignores communities that other users have followed', async () => {
+  it('ignores groups that other users have followed', async () => {
     const getAllEvents = T.of([
       userFollowedEditorialCommunity(userId1, groupId1),
       userFollowedEditorialCommunity(userId2, groupId2),
@@ -49,7 +49,7 @@ describe('event-sourced-follow-list-repository', () => {
     expect(actual).toStrictEqual(expected);
   });
 
-  it('ignores communities followed by the user that other users have unfollowed', async () => {
+  it('ignores groups followed by the user that other users have unfollowed', async () => {
     const getAllEvents = T.of([
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId2, groupId1),
