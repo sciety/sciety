@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { FetchData } from './fetch-data';
+import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 
@@ -13,6 +14,8 @@ type Candidate = {
   articleId: string,
   reviewId: string,
 };
+
+const since = daysAgo(60);
 
 const identifyCandidates = (feed: string) => {
   const parser = new DOMParser({
@@ -27,11 +30,13 @@ const identifyCandidates = (feed: string) => {
     const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
     const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
     const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
-    candidates.push({
-      date,
-      articleId: articleDoiString,
-      reviewId: reviewDoiString,
-    });
+    if ((new Date(date).getTime()) > since.getTime()) {
+      candidates.push({
+        date,
+        articleId: articleDoiString,
+        reviewId: reviewDoiString,
+      });
+    }
   }
   return candidates;
 };
