@@ -9,7 +9,7 @@ import { pipe } from 'fp-ts/function';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
 import { Doi } from '../src/types/doi';
 
-const filename = './data/reviews/7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jsonl';
+const filename = process.env.FILENAME ?? '';
 
 const readFromFile = promisify(fs.readFile);
 
