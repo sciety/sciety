@@ -35,7 +35,7 @@ type FetchAllReviewsBy = (f: FetchData)
 => TE.TaskEither<string, ReadonlyArray<CrossrefReview>>;
 
 export const fetchLatestReviewsBy: FetchAllReviewsBy = (fetchData) => (reviewerId, since) => pipe(
-  `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review,from-pub-date:${since.toISOString().split('T')[0]}`,
+  `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review,from-index-date:${since.toISOString().split('T')[0]}&rows=1000`,
   (url) => fetchData<JSON>(url),
   TE.chainEitherK(flow(
     crossrefReviewsFromJson.decode,
