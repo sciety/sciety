@@ -2,7 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
-import { arbitraryDate, arbitraryUri } from '../helpers';
+import { daysAgo } from '../../src/ingest/time';
+import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 
@@ -16,13 +17,13 @@ const ingest = (xml: string) => pipe(
 
 describe('fetch-pci-evaluations', () => {
   describe('when there are no evaluations', () => {
-    it('returns no evaluations and no skipped items', async () => {
-      const pciXmlResponse = `
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <links>
-        </links>
-      `;
+    const pciXmlResponse = `
+      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <links>
+      </links>
+    `;
 
+    it('returns no evaluations and no skipped items', async () => {
       expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
         evaluations: [],
         skippedItems: [],
@@ -34,14 +35,14 @@ describe('fetch-pci-evaluations', () => {
     it('returns 1 evaluation and no skipped items', async () => {
       const articleId = arbitraryDoi().value;
       const reviewId = arbitraryDoi().value;
-      const date = arbitraryDate();
+      const date = daysAgo(5);
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
           <link providerId="PCIArchaeology">
             <resource>
               <doi>${reviewId}</doi>
-              <date>${date.toString()}</date>
+              <date>${date.toISOString()}</date>
             </resource>
             <doi>${articleId}</doi>
           </link>
@@ -71,7 +72,7 @@ describe('fetch-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>10.24072/pci.archaeo.100011</doi>
-              <date>15 Aug 2021</date>
+              <date>${daysAgo(5).toISOString()}</date>
             </resource>
             <doi>${articleId}</doi>
           </link>
@@ -99,7 +100,7 @@ describe('fetch-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>${evaluationId}</doi>
-              <date>15 Aug 2021</date>
+              <date>${daysAgo(5).toISOString()}</date>
             </resource>
             <doi>${arbitraryDoi().value}</doi>
           </link>
