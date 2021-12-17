@@ -35,7 +35,7 @@ export type Group = {
 
 type LevelName = 'error' | 'warn' | 'info' | 'debug';
 
-const report = (level: LevelName, message: string) => (payload: string | Record<string, unknown>) => {
+const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
   const thingToLog = {
     timestamp: new Date(),
     level,
@@ -121,7 +121,14 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchData,
     fetchGoogleSheet,
   }),
-  TE.map(reportSkippedItems(group)),
+  TE.bimap(
+    (error) => ({
+      groupName: group.name,
+      cause: 'Could not fetch feed',
+      error,
+    }),
+    reportSkippedItems(group),
+  ),
   TE.chainW(sendRecordEvaluationCommands(group)),
   TE.match(
     report('error', 'Ingestion failed'),
