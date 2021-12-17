@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchData } from './fetch-data';
+import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import * as CR from '../third-parties/crossref';
 
@@ -12,7 +13,7 @@ type Ports = {
 };
 
 const identifyCandidates = (fetchData: FetchData) => (
-  CR.fetchLatestReviewsBy(fetchData)('10.1162')
+  CR.fetchLatestReviewsBy(fetchData)('10.1162', daysAgo(30))
 );
 
 const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(

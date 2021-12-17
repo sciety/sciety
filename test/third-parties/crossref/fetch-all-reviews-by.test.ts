@@ -1,17 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import * as CR from '../../../src/third-parties/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
-  return pipe(
-    arbitraryWord(),
-    CR.fetchLatestReviewsBy(fetchData),
-  );
+  return CR.fetchLatestReviewsBy(fetchData)(arbitraryWord(), arbitraryDate());
 };
 
 describe('fetch-all-reviews-by', () => {

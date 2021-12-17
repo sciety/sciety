@@ -30,10 +30,12 @@ const crossrefReviewsFromJson = t.type({
   }),
 });
 
-type FetchAllReviewsBy = (f: FetchData) => (r: string) => TE.TaskEither<string, ReadonlyArray<CrossrefReview>>;
+type FetchAllReviewsBy = (f: FetchData)
+=> (r: string, since: Date)
+=> TE.TaskEither<string, ReadonlyArray<CrossrefReview>>;
 
-export const fetchLatestReviewsBy: FetchAllReviewsBy = (fetchData) => (reviewerId) => pipe(
-  `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review,from-pub-date:2021-12-01`,
+export const fetchLatestReviewsBy: FetchAllReviewsBy = (fetchData) => (reviewerId, since) => pipe(
+  `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review,from-pub-date:${since.toISOString().split('T')[0]}`,
   (url) => fetchData<JSON>(url),
   TE.chainEitherK(flow(
     crossrefReviewsFromJson.decode,
