@@ -1,11 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import * as Gid from '../../types/group-id';
 import { UserId } from '../../types/user-id';
-
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => {
   const result = new Set<string>();
