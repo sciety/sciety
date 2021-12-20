@@ -17,7 +17,6 @@ import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { FetchCrossrefArticle } from '../../src/third-parties/crossref';
 import { fetchDataciteReview } from '../../src/third-parties/datacite';
 import * as DE from '../../src/types/data-error';
-import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
@@ -62,7 +61,6 @@ export const createTestServer = async (): Promise<TestServer> => {
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,
-    getFollowList: (userId) => T.of(new FollowList(userId)),
     getUserDetails: () => TE.right({
       avatarUrl: '',
       displayName: '',

@@ -9,7 +9,6 @@ import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { commitEvents } from './commit-events';
-import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
@@ -107,7 +106,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const getAllEvents = T.of(events);
-      const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const fetchFile = fetchStaticFile(loggerIO(logger));
       const fetchers = {
         doi: fetchDataciteReview(fetchDataset(logger), logger),
@@ -128,7 +126,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
-        getFollowList,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

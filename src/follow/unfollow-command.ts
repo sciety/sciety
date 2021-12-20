@@ -7,7 +7,7 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 export type CommitEvents = (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => T.Task<void>;
-export type GetFollowList = (userId: UserId) => T.Task<FollowList>;
+type GetFollowList = (userId: UserId) => T.Task<FollowList>;
 
 type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 

@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { CommitEvents } from './commit-events';
-import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Logger } from './logger';
@@ -20,7 +19,6 @@ export type Adapters = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getFollowList: EventSourcedFollowListRepository,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
