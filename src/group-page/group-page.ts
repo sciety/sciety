@@ -6,11 +6,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
-import { follows } from './follows';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { isFollowing } from '../shared-read-models/followings';
 import { getGroupBySlug } from '../shared-read-models/groups';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
@@ -68,7 +68,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
           () => T.of(false),
           (u) => pipe(
             ports.getAllEvents,
-            T.map(follows(u.id, group.id)),
+            T.map(isFollowing(u.id, group.id)),
           ),
         ),
         T.map(renderFollowToggle(group.id, group.name)),
