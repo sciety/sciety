@@ -11,7 +11,7 @@ import { tabList } from './tab-list';
 import { UserDetails } from './user-details';
 import { userListCard } from './user-list-card';
 import { tabs } from '../shared-components/tabs';
-import { followedGroupIds } from '../shared-read-models/followings/followed-group-ids';
+import { followedGroupIds } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
