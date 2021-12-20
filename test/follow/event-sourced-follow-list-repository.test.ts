@@ -1,6 +1,5 @@
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/domain-events';
 import { createEventSourceFollowListRepository } from '../../src/follow/event-sourced-follow-list-repository';
-import { FollowList } from '../../src/follow/follow-list';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -15,9 +14,8 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
     ];
     const actual = createEventSourceFollowListRepository(userId1)(events);
-    const expected = new FollowList(userId1, [groupId1]);
 
-    expect(actual).toStrictEqual(expected);
+    expect(actual).toStrictEqual([groupId1]);
   });
 
   it('ignores groups that the user has unfollowed', () => {
@@ -26,9 +24,8 @@ describe('event-sourced-follow-list-repository', () => {
       userUnfollowedEditorialCommunity(userId1, groupId1),
     ];
     const actual = createEventSourceFollowListRepository(userId1)(events);
-    const expected = new FollowList(userId1, []);
 
-    expect(actual).toStrictEqual(expected);
+    expect(actual).toHaveLength(0);
   });
 
   it('ignores groups that other users have followed', () => {
@@ -37,9 +34,8 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId2, groupId2),
     ];
     const actual = createEventSourceFollowListRepository(userId1)(events);
-    const expected = new FollowList(userId1, [groupId1]);
 
-    expect(actual).toStrictEqual(expected);
+    expect(actual).toStrictEqual([groupId1]);
   });
 
   it('ignores groups followed by the user that other users have unfollowed', () => {
@@ -48,8 +44,7 @@ describe('event-sourced-follow-list-repository', () => {
       userUnfollowedEditorialCommunity(userId2, groupId1),
     ];
     const actual = createEventSourceFollowListRepository(userId1)(events);
-    const expected = new FollowList(userId1, [groupId1]);
 
-    expect(actual).toStrictEqual(expected);
+    expect(actual).toStrictEqual([groupId1]);
   });
 });

@@ -1,7 +1,8 @@
 import * as T from 'fp-ts/Task';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
-import { DomainEvent, UserUnfollowedEditorialCommunityEvent } from '../domain-events';
+import { createEventSourceFollowListRepository, isFollowing } from './event-sourced-follow-list-repository';
+import { DomainEvent, userUnfollowedEditorialCommunity, UserUnfollowedEditorialCommunityEvent } from '../domain-events';
 import { GroupId } from '../types/group-id';
 import { User } from '../types/user';
 
@@ -17,6 +18,10 @@ type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 export const unfollowCommand = (ports: Ports): UnfollowCommand => (user, groupId) => pipe(
   ports.getAllEvents,
   T.map(createEventSourceFollowListRepository(user.id)),
-  T.map((followList) => followList.unfollow(groupId)),
+  T.map(isFollowing(groupId)),
+  T.map(B.fold(
+    () => [],
+    () => [userUnfollowedEditorialCommunity(user.id, groupId)],
+  )),
   T.chain(ports.commitEvents),
 );
