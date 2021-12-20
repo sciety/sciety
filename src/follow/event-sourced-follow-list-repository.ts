@@ -3,12 +3,12 @@ import {
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
 } from '../domain-events';
-import * as Gid from '../types/group-id';
+import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-type GetFollowList = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Gid.GroupId>;
+type IsFollowing = (userId: UserId, groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => boolean;
 
-export const createEventSourceFollowListRepository: GetFollowList = (userId) => (events) => {
+export const isFollowing: IsFollowing = (userId, groupId) => (events) => {
   const result = new Set<string>();
   events.forEach((event) => {
     if (isUserFollowedEditorialCommunityEvent(event) && event.userId === userId) {
@@ -18,9 +18,5 @@ export const createEventSourceFollowListRepository: GetFollowList = (userId) => 
     }
   });
   const list = Array.from(result);
-  return list.map((id) => Gid.fromValidatedString(id));
+  return list.includes(groupId);
 };
-
-export const isFollowing = (groupId: Gid.GroupId) => (groupIds: ReadonlyArray<Gid.GroupId>): boolean => (
-  groupIds.includes(groupId)
-);

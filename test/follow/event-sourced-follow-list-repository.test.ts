@@ -1,5 +1,5 @@
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/domain-events';
-import { createEventSourceFollowListRepository } from '../../src/follow/event-sourced-follow-list-repository';
+import { isFollowing } from '../../src/follow/event-sourced-follow-list-repository';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -13,9 +13,9 @@ describe('event-sourced-follow-list-repository', () => {
     const events = [
       userFollowedEditorialCommunity(userId1, groupId1),
     ];
-    const actual = createEventSourceFollowListRepository(userId1)(events);
+    const actual = isFollowing(userId1, groupId1)(events);
 
-    expect(actual).toStrictEqual([groupId1]);
+    expect(actual).toBe(true);
   });
 
   it('ignores groups that the user has unfollowed', () => {
@@ -23,9 +23,9 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId1, groupId1),
     ];
-    const actual = createEventSourceFollowListRepository(userId1)(events);
+    const actual = isFollowing(userId1, groupId1)(events);
 
-    expect(actual).toHaveLength(0);
+    expect(actual).toBe(false);
   });
 
   it('ignores groups that other users have followed', () => {
@@ -33,9 +33,9 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userFollowedEditorialCommunity(userId2, groupId2),
     ];
-    const actual = createEventSourceFollowListRepository(userId1)(events);
+    const actual = isFollowing(userId1, groupId1)(events);
 
-    expect(actual).toStrictEqual([groupId1]);
+    expect(actual).toBe(true);
   });
 
   it('ignores groups followed by the user that other users have unfollowed', () => {
@@ -43,8 +43,8 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId2, groupId1),
     ];
-    const actual = createEventSourceFollowListRepository(userId1)(events);
+    const actual = isFollowing(userId1, groupId1)(events);
 
-    expect(actual).toStrictEqual([groupId1]);
+    expect(actual).toBe(true);
   });
 });
