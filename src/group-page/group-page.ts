@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
+import { follows } from './follows';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
@@ -13,15 +14,12 @@ import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { getGroupBySlug } from '../shared-read-models/groups';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
-import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { UserId } from '../types/user-id';
 
 type Ports = ContentComponentPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
 export const groupPageTabs: Record<string, TabIndex> = {
@@ -68,7 +66,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
         user,
         O.fold(
           () => T.of(false),
-          (u) => ports.follows(u.id, group.id),
+          (u) => follows(ports.getAllEvents)(u.id, group.id),
         ),
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,

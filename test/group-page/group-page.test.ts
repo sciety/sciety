@@ -18,7 +18,6 @@ describe('group page', () => {
         },
         groupPage({
           fetchStaticFile: shouldNotBeCalled,
-          follows: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getUserDetailsBatch: shouldNotBeCalled,
         })(groupPageTabs.lists),
