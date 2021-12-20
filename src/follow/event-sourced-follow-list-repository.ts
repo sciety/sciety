@@ -1,5 +1,5 @@
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../domain-events';
-import { FollowList } from '../types/follow-list';
+import { FollowList } from './follow-list';
 import { UserId } from '../types/user-id';
 
 type GetFollowList = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => FollowList;

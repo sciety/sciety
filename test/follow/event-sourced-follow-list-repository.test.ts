@@ -1,6 +1,6 @@
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/domain-events';
 import { createEventSourceFollowListRepository } from '../../src/follow/event-sourced-follow-list-repository';
-import { FollowList } from '../../src/types/follow-list';
+import { FollowList } from '../../src/follow/follow-list';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -14,7 +14,6 @@ describe('event-sourced-follow-list-repository', () => {
     const events = [
       userFollowedEditorialCommunity(userId1, groupId1),
     ];
-
     const actual = createEventSourceFollowListRepository(userId1)(events);
     const expected = new FollowList(userId1, [groupId1]);
 
@@ -26,7 +25,6 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId1, groupId1),
     ];
-
     const actual = createEventSourceFollowListRepository(userId1)(events);
     const expected = new FollowList(userId1, []);
 
@@ -38,7 +36,6 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userFollowedEditorialCommunity(userId2, groupId2),
     ];
-
     const actual = createEventSourceFollowListRepository(userId1)(events);
     const expected = new FollowList(userId1, [groupId1]);
 
@@ -50,7 +47,6 @@ describe('event-sourced-follow-list-repository', () => {
       userFollowedEditorialCommunity(userId1, groupId1),
       userUnfollowedEditorialCommunity(userId2, groupId1),
     ];
-
     const actual = createEventSourceFollowListRepository(userId1)(events);
     const expected = new FollowList(userId1, [groupId1]);
 

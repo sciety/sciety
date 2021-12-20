@@ -1,11 +1,11 @@
-import { GroupId } from './group-id';
-import { UserId } from './user-id';
 import {
   userFollowedEditorialCommunity,
   UserFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunity,
   UserUnfollowedEditorialCommunityEvent,
 } from '../domain-events';
+import { GroupId } from '../types/group-id';
+import { UserId } from '../types/user-id';
 
 export class FollowList {
   private readonly userId: UserId;

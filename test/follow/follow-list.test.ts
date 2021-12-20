@@ -1,6 +1,6 @@
-import { groupIdFromString } from './group-id.helper';
-import { arbitraryUserId } from './user-id.helper';
-import { FollowList } from '../../src/types/follow-list';
+import { groupIdFromString } from '../types/group-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
+import { FollowList } from '../../src/follow/follow-list';
 
 describe('follow-list', () => {
   const userId1 = arbitraryUserId();
