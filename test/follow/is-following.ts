@@ -1,5 +1,5 @@
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/domain-events';
-import { isFollowing } from '../../src/follow/event-sourced-follow-list-repository';
+import { isFollowing } from '../../src/follow/is-following';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { isFollowing } from './event-sourced-follow-list-repository';
+import { isFollowing } from './is-following';
 import { DomainEvent, userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from '../domain-events';
 import { GroupId } from '../types/group-id';
 import { User } from '../types/user';
