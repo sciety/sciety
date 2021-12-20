@@ -16,8 +16,8 @@ type FollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 
 export const followCommand = (ports: Ports): FollowCommand => (
   (user, groupId) => pipe(
-    user.id,
-    createEventSourceFollowListRepository(ports.getAllEvents),
+    ports.getAllEvents,
+    T.map(createEventSourceFollowListRepository(user.id)),
     T.map((followList) => followList.follow(groupId)),
     T.chain(ports.commitEvents),
   )

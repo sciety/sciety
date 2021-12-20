@@ -15,8 +15,8 @@ export type Ports = {
 type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 
 export const unfollowCommand = (ports: Ports): UnfollowCommand => (user, groupId) => pipe(
-  user.id,
-  createEventSourceFollowListRepository(ports.getAllEvents),
+  ports.getAllEvents,
+  T.map(createEventSourceFollowListRepository(user.id)),
   T.map((followList) => followList.unfollow(groupId)),
   T.chain(ports.commitEvents),
 );
