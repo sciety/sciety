@@ -21,7 +21,7 @@ import {
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { PageOfItems, paginate } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
-import { followedGroupIds } from '../../shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -45,7 +45,7 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
 
 const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
   ports.getAllEvents,
-  T.map(followedGroupIds(uid)),
+  T.map(getGroupIdsFollowedBy(uid)),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('no-groups-followed'))),
 );

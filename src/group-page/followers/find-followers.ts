@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../../domain-events';
-import { followedGroupIds } from '../../shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
@@ -27,7 +27,7 @@ export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
     userId,
     followedGroupCount: pipe(
       events,
-      followedGroupIds(userId),
+      getGroupIdsFollowedBy(userId),
       RA.size,
     ),
     listCount: 1,

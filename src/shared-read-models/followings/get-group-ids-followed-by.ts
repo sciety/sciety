@@ -21,7 +21,7 @@ const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<Domai
 
 type FollowedGroupIds = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Gid.GroupId>;
 
-export const followedGroupIds: FollowedGroupIds = (userId) => (events) => pipe(
+export const getGroupIdsFollowedBy: FollowedGroupIds = (userId) => (events) => pipe(
   events,
   calculateFollowedGroups(userId),
 );

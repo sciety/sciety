@@ -1,5 +1,5 @@
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
-import { followedGroupIds } from '../../../src/shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../../src/shared-read-models/followings';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -12,7 +12,7 @@ describe('project-followed-group-ids', () => {
     const events = [
       userFollowedEditorialCommunity(importantUser, group1),
     ];
-    const followed = followedGroupIds(importantUser)(events);
+    const followed = getGroupIdsFollowedBy(importantUser)(events);
 
     it('lists that group', () => {
       expect(followed).toStrictEqual([group1]);
@@ -28,7 +28,7 @@ describe('project-followed-group-ids', () => {
       userFollowedEditorialCommunity(importantUser, group2),
       userFollowedEditorialCommunity(importantUser, group3),
     ];
-    const followed = followedGroupIds(importantUser)(events);
+    const followed = getGroupIdsFollowedBy(importantUser)(events);
 
     it('returns a list', () => {
       expect(followed).toStrictEqual([group1, group2, group3]);
@@ -41,7 +41,7 @@ describe('project-followed-group-ids', () => {
       userFollowedEditorialCommunity(importantUser, group1),
       userUnfollowedEditorialCommunity(importantUser, group1),
     ];
-    const followed = followedGroupIds(importantUser)(events);
+    const followed = getGroupIdsFollowedBy(importantUser)(events);
 
     it('does not list that group', () => {
       expect(followed).toStrictEqual([]);
@@ -55,7 +55,7 @@ describe('project-followed-group-ids', () => {
       userUnfollowedEditorialCommunity(importantUser, group1),
       userFollowedEditorialCommunity(importantUser, group1),
     ];
-    const followed = followedGroupIds(importantUser)(events);
+    const followed = getGroupIdsFollowedBy(importantUser)(events);
 
     it('lists that group', () => {
       expect(followed).toStrictEqual([group1]);
@@ -67,7 +67,7 @@ describe('project-followed-group-ids', () => {
     const events = [
       userFollowedEditorialCommunity(arbitraryUserId(), group1),
     ];
-    const followed = followedGroupIds(importantUser)(events);
+    const followed = getGroupIdsFollowedBy(importantUser)(events);
 
     it('is ignored', () => {
       expect(followed).toStrictEqual([]);
@@ -76,7 +76,7 @@ describe('project-followed-group-ids', () => {
 
   describe('when other events have occurred', () => {
     const group1 = arbitraryGroupId();
-    const followed = followedGroupIds(importantUser)([
+    const followed = getGroupIdsFollowedBy(importantUser)([
       userFollowedEditorialCommunity(importantUser, group1),
       userSavedArticle(importantUser, arbitraryDoi()),
     ]);

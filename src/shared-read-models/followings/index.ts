@@ -1,1 +1,1 @@
-export { followedGroupIds } from './followed-group-ids';
+export { getGroupIdsFollowedBy } from './get-group-ids-followed-by';
