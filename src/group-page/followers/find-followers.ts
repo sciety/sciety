@@ -2,6 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../../domain-events';
+import { followedGroupIds } from '../../shared-read-models/followings';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
@@ -19,36 +20,17 @@ const calculateFollowerUserIds = (
   return state;
 });
 
-const calculateFollowedGroupCounts = (
-  events: ReadonlyArray<DomainEvent>,
-  userIds: ReadonlyArray<UserId>,
-) => pipe(
-  events,
-  RA.reduce(new Map<UserId, number>(), (state, event) => {
-    if (isUserFollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
-      return state.set(event.userId, (state.get(event.userId) ?? 0) + 1);
-    }
-    if (isUserUnfollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
-      return state.set(event.userId, (state.get(event.userId) ?? 0) - 1);
-    }
-    return state;
-  }),
-);
-
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
   events,
   calculateFollowerUserIds(groupId),
-  (userIds) => ({
-    userIds,
-    followedGroupCounts: calculateFollowedGroupCounts(events, userIds),
-  }),
-  ({ userIds, followedGroupCounts }) => pipe(
-    userIds,
-    RA.map((userId) => ({
-      userId,
-      followedGroupCount: followedGroupCounts.get(userId) ?? 0,
-      listCount: 1,
-    })),
-    RA.reverse,
-  ),
+  RA.map((userId) => ({
+    userId,
+    followedGroupCount: pipe(
+      events,
+      followedGroupIds(userId),
+      RA.size,
+    ),
+    listCount: 1,
+  })),
+  RA.reverse,
 );
