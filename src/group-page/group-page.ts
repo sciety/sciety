@@ -66,7 +66,10 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
         user,
         O.fold(
           () => T.of(false),
-          (u) => follows(ports.getAllEvents)(u.id, group.id),
+          (u) => pipe(
+            ports.getAllEvents,
+            T.map(follows(u.id, group.id)),
+          ),
         ),
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
