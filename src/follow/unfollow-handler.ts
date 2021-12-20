@@ -1,18 +1,21 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { CommitEvents, GetFollowList, unfollowCommand } from './unfollow-command';
+import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
+import { CommitEvents, unfollowCommand } from './unfollow-command';
+import { DomainEvent } from '../domain-events';
 import * as GroupId from '../types/group-id';
 
 type Ports = {
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
-  getFollowList: GetFollowList,
 };
 
 export const unfollowHandler = (ports: Ports): Middleware => {
   const command = unfollowCommand(
-    ports.getFollowList,
+    createEventSourceFollowListRepository(ports.getAllEvents),
     ports.commitEvents,
   );
   return async (context, next) => {
