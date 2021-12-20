@@ -75,7 +75,6 @@ export const createTestServer = async (): Promise<TestServer> => {
       userId: toUserId(''),
     })),
     getUserId: () => TE.right(arbitraryUserId()),
-    follows: () => T.of(false),
     findVersionsForArticleDoi: () => T.of(O.none),
   };
 

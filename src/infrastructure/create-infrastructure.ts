@@ -17,7 +17,6 @@ import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchData } from './fetchers';
-import { follows } from './follows';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
@@ -142,7 +141,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
-        follows: follows(getAllEvents),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
           getJson: getCachedAxiosRequest(logger),
           logger,

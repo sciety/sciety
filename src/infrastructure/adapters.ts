@@ -5,7 +5,6 @@ import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { Follows } from './follows';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -20,7 +19,6 @@ export type Adapters = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
-  follows: Follows,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
   getUserDetails: GetTwitterUserDetails,
