@@ -8,7 +8,6 @@ import {
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
-type FollowedGroups = (events: ReadonlyArray<DomainEvent>) => (userId: UserId) => ReadonlyArray<GroupId>;
 type FollowOrUnfollowEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
 
 const reduceFollowOrUnfollowEventToGroupIds = (
@@ -36,7 +35,9 @@ const isFollowOrUnfollowEventForUser = (userId: UserId) => (event: DomainEvent):
   && event.userId === userId
 );
 
-export const followedGroups: FollowedGroups = (events) => (userId) => pipe(
+type FollowedGroups = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<GroupId>;
+
+export const followedGroups: FollowedGroups = (userId) => (events) => pipe(
   events,
   RA.filter(isFollowOrUnfollowEventForUser(userId)),
   RA.reduce(RA.empty, reduceFollowOrUnfollowEventToGroupIds),

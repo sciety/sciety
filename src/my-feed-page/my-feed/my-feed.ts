@@ -45,7 +45,7 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
 
 const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
   ports.getAllEvents,
-  T.map((events) => followedGroups(events)(uid)),
+  T.map(followedGroups(uid)),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('no-groups-followed'))),
 );
