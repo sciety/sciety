@@ -38,7 +38,11 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   ports.getUserId, // TODO: get the user details (extended to include the id) from Twitter here instead
   TE.chain((id) => pipe(
     {
-      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
+      groupIds: pipe(
+        ports.getAllEvents,
+        T.map(followedGroupIds(id)),
+        TE.rightTask,
+      ),
       userDetails: ports.getUserDetails(id),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       userId: TE.right(id),

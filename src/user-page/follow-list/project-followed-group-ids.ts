@@ -22,11 +22,9 @@ const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<Domai
   );
 };
 
-type FollowedGroupIds = (userId: UserId) => T.Task<ReadonlyArray<Gid.GroupId>>;
+type FollowedGroupIds = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Gid.GroupId>;
 
-export const followedGroupIds = (
-  getAllEvents: GetAllEvents,
-): FollowedGroupIds => (userId) => pipe(
-  getAllEvents,
-  T.map(calculateFollowedGroups(userId)),
+export const followedGroupIds: FollowedGroupIds = (userId) => (events) => pipe(
+  events,
+  calculateFollowedGroups(userId),
 );
