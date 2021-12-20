@@ -4,9 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { sessionGroupProperty } from './finish-follow-command';
-import { CommitEvents, followCommand } from './follow-command';
+import { followCommand, Ports as FollowCommandPorts } from './follow-command';
 import { groupProperty } from './follow-handler';
 import { DomainEvent } from '../domain-events';
 import { renderErrorPage } from '../http/render-error-page';
@@ -19,10 +18,9 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
-type Ports = {
+type Ports = FollowCommandPorts & {
   logger: Logger,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: CommitEvents,
 };
 
 const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
@@ -61,10 +59,7 @@ export const executeIfAuthenticated = (ports: Ports): Middleware => async (conte
         const { user } = context.state;
         context.redirect('back');
         return pipe(
-          followCommand(
-            createEventSourceFollowListRepository(ports.getAllEvents),
-            ports.commitEvents,
-          )(user, params.groupId),
+          followCommand(ports)(user, params.groupId),
           T.chain(() => next),
         );
       },
