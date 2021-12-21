@@ -43,7 +43,7 @@ export const researchsquareArticleVersionErrorFeedItem = toHtmlFragment(`
       </div>
     </header>
     <p>
-      We couldn't get version information from Research Square. Please try refreshing this page.
+      We couldn't get version information from Research Square.
     </p>
   </div>
 `);

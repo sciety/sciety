@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { templateDate } from '../../shared-components/date';
 import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import {researchsquareArticleVersionErrorFeedItem} from './render-article-version-error-feed-item';
 
 export type ArticleVersionFeedItem = {
   type: 'article-version',
@@ -45,22 +46,6 @@ const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =
   </div>
 `);
 
-const renderResearchsquareArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
-  <div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/researchsquare.png" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
-          <a href="${feedItem.source.toString()}">
-            Version ${feedItem.version} published on Research Square
-          </a>
-        </div>
-        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
-      </div>
-    </header>
-  </div>
-`);
-
 export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => {
   switch (feedItem.server) {
     case 'medrxiv':
@@ -68,6 +53,6 @@ export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
     case 'biorxiv':
       return renderBiorxivArticleVersionFeedItem(feedItem);
     case 'researchsquare':
-      return renderResearchsquareArticleVersionFeedItem(feedItem);
+      return researchsquareArticleVersionErrorFeedItem;
   }
 };
