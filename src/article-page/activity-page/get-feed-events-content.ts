@@ -47,16 +47,20 @@ const articleVersionToFeedItem = (
   T.of({ ...feedEvent, server })
 );
 
-const reviewToFeedItem = (
-  getReview: FetchReview,
+type Ports = {
+  fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
+};
+
+const reviewToFeedItem = (
+  ports: Ports,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
 ) => pipe(
   {
     groupDetails: pipe(
-      getAllEvents,
+      ports.getAllEvents,
       T.map(getGroup(feedEvent.groupId)),
       TE.match(
         () => ({
@@ -73,7 +77,7 @@ const reviewToFeedItem = (
     ),
     review: pipe(
       feedEvent.reviewId,
-      getReview,
+      ports.fetchReview,
       TE.match(
         () => ({
           url: RI.inferredSourceUrl(feedEvent.reviewId),
@@ -87,10 +91,10 @@ const reviewToFeedItem = (
       ),
     ),
     reviewResponses: pipe(
-      getAllEvents,
+      ports.getAllEvents,
       T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
-    userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
+    userReviewResponse: ports.getUserReviewResponse(feedEvent.reviewId, userId),
   },
   sequenceS(T.ApplyPar),
   T.map(({
@@ -107,12 +111,6 @@ const reviewToFeedItem = (
   })),
 );
 
-type Ports = {
-  fetchReview: FetchReview,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getUserReviewResponse: GetUserReviewResponse,
-};
-
 type GetFeedEventsContent = (ports: Ports, server: ArticleServer, userId: O.Option<UserId>)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
@@ -123,9 +121,7 @@ export const getFeedEventsContent: GetFeedEventsContent = (ports, server, userId
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
-        return reviewToFeedItem(
-          ports.fetchReview, ports.getAllEvents, ports.getUserReviewResponse, feedEvent, userId,
-        );
+        return reviewToFeedItem(ports, feedEvent, userId);
     }
   };
   return pipe(
