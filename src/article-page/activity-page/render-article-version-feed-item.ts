@@ -14,30 +14,14 @@ export type ArticleVersionFeedItem = {
 
 type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
-const renderBiorxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
+const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, avatarUrl: string) => toHtmlFragment(`
   <div class="activity-feed__item_contents">
     <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/biorxiv.jpg" alt="">
+      <img class="activity-feed__item__avatar" src="${avatarUrl}" alt="">
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version ${feedItem.version} published on bioRxiv
-          </a>
-        </div>
-        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
-      </div>
-    </header>
-  </div>
-`);
-
-const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
-  <div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/medrxiv.jpg" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
-          <a href="${feedItem.source.toString()}">
-            Version ${feedItem.version} published on medRxiv
+            Version ${feedItem.version} published on ${name}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
@@ -49,9 +33,9 @@ const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =
 export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => {
   switch (feedItem.server) {
     case 'medrxiv':
-      return renderMedrxivArticleVersionFeedItem(feedItem);
+      return renderVersionFeedItem(feedItem, 'medRxiv', '/static/images/medrxiv.jpg');
     case 'biorxiv':
-      return renderBiorxivArticleVersionFeedItem(feedItem);
+      return renderVersionFeedItem(feedItem, 'bioRxiv', '/static/images/biorxiv.jpg');
     default:
       return renderVersionErrorFeedItem(feedItem.server);
   }
