@@ -11,18 +11,20 @@ type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: Arti
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
+const renderFeedItem = (feedItem: FeedItem) => {
+  if (feedItem.type === 'article-version') {
+    return renderArticleVersionFeedItem(feedItem);
+  }
+  if (feedItem.type === 'article-version-error') {
+    return renderVersionErrorFeedItem(feedItem.server);
+  }
+  return renderReviewFeedItem(850)(feedItem);
+};
+
 type RenderFeed = (feedItems: RNEA.ReadonlyNonEmptyArray<FeedItem>) => HtmlFragment;
 
 export const renderFeed: RenderFeed = flow(
-  RNEA.map((feedItem) => {
-    if (feedItem.type === 'article-version') {
-      return renderArticleVersionFeedItem(feedItem);
-    }
-    if (feedItem.type === 'article-version-error') {
-      return renderVersionErrorFeedItem(feedItem.server);
-    }
-    return renderReviewFeedItem(850)(feedItem);
-  }),
+  RNEA.map(renderFeedItem),
   (items) => `
     <section class="activity-feed">
       <ol role="list" class="activity-feed__list">
