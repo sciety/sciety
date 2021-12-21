@@ -7,7 +7,6 @@ import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -30,7 +29,6 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   authors: ArticleAuthors,
-  server: ArticleServer,
 }>;
 
 type Ports = {
