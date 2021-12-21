@@ -1,8 +1,8 @@
 import { URL } from 'url';
+import { researchsquareArticleVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { templateDate } from '../../shared-components/date';
 import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import {researchsquareArticleVersionErrorFeedItem} from './render-article-version-error-feed-item';
 
 export type ArticleVersionFeedItem = {
   type: 'article-version',
