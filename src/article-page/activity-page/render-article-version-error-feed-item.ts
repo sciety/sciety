@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ServerInfo = {
@@ -7,38 +8,41 @@ type ServerInfo = {
   versionsSupported: boolean,
 };
 
-const renderVersionErrorFeedItem = (server: ServerInfo): HtmlFragment => pipe(
-  `<div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="${server.avatarUrl}" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
-          Published on ${server.name}
+const servers: Record<ArticleServer, ServerInfo> = {
+  biorxiv: {
+    name: 'bioRxiv',
+    avatarUrl: '/static/images/biorxiv.jpg',
+    versionsSupported: true,
+  },
+  medrxiv: {
+    name: 'medRxiv',
+    avatarUrl: '/static/images/medrxiv.jpg',
+    versionsSupported: true,
+  },
+  researchsquare: {
+    name: 'Research Square',
+    avatarUrl: '/static/images/researchsquare.png',
+    versionsSupported: false,
+  },
+};
+
+export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment => pipe(
+  servers[server],
+  (viewModel) => `
+    <div class="activity-feed__item_contents">
+      <header class="activity-feed__item_header">
+        <img class="activity-feed__item__avatar" src="${viewModel.avatarUrl}" alt="">
+        <div class="activity-feed__item__meta">
+          <div class="activity-feed__item__title">
+            Published on ${viewModel.name}
+          </div>
         </div>
-      </div>
-    </header>
-    <p>
-      We couldn't get version information from ${server.name}.
-      ${server.versionsSupported ? 'Please try refreshing this page.' : ''}
-    </p>
-  </div>`,
+      </header>
+      <p>
+        We couldn't get version information from ${viewModel.name}.
+        ${viewModel.versionsSupported ? 'Please try refreshing this page.' : ''}
+      </p>
+    </div>
+  `,
   toHtmlFragment,
 );
-
-export const biorxivArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
-  name: 'bioRxiv',
-  avatarUrl: '/static/images/biorxiv.jpg',
-  versionsSupported: true,
-});
-
-export const medrxivArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
-  name: 'medRxiv',
-  avatarUrl: '/static/images/medrxiv.jpg',
-  versionsSupported: true,
-});
-
-export const researchsquareArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
-  name: 'Research Square',
-  avatarUrl: '/static/images/researchsquare.png',
-  versionsSupported: false,
-});

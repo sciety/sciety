@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { researchsquareArticleVersionErrorFeedItem } from './render-article-version-error-feed-item';
+import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { templateDate } from '../../shared-components/date';
 import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -52,7 +52,7 @@ export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
       return renderMedrxivArticleVersionFeedItem(feedItem);
     case 'biorxiv':
       return renderBiorxivArticleVersionFeedItem(feedItem);
-    case 'researchsquare':
-      return researchsquareArticleVersionErrorFeedItem;
+    default:
+      return renderVersionErrorFeedItem(feedItem.server);
   }
 };

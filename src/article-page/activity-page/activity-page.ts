@@ -9,11 +9,7 @@ import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from 
 import { FetchReview } from './get-feed-events-content';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
-import {
-  biorxivArticleVersionErrorFeedItem,
-  medrxivArticleVersionErrorFeedItem,
-  researchsquareArticleVersionErrorFeedItem,
-} from './render-article-version-error-feed-item';
+import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
@@ -99,15 +95,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
                 case 'article-version':
                   return renderArticleVersionFeedItem(feedItem);
                 case 'article-version-error':
-                  switch (feedItem.server) {
-                    case 'medrxiv':
-                      return medrxivArticleVersionErrorFeedItem;
-                    case 'biorxiv':
-                      return biorxivArticleVersionErrorFeedItem;
-                    case 'researchsquare':
-                      return researchsquareArticleVersionErrorFeedItem;
-                  }
-                  break;
+                  return renderVersionErrorFeedItem(feedItem.server);
                 case 'review':
                   return renderReviewFeedItem(850)(feedItem);
               }
