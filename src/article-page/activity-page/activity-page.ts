@@ -12,6 +12,7 @@ import { renderActivityPage } from './render-activity-page';
 import {
   biorxivArticleVersionErrorFeedItem,
   medrxivArticleVersionErrorFeedItem,
+  researchsquareArticleVersionErrorFeedItem,
 } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
@@ -98,7 +99,15 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
                 case 'article-version':
                   return renderArticleVersionFeedItem(feedItem);
                 case 'article-version-error':
-                  return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+                  switch (feedItem.server) {
+                    case 'medrxiv':
+                      return medrxivArticleVersionErrorFeedItem;
+                    case 'biorxiv':
+                      return biorxivArticleVersionErrorFeedItem;
+                    case 'researchsquare':
+                      return researchsquareArticleVersionErrorFeedItem;
+                  }
+                  break;
                 case 'review':
                   return renderReviewFeedItem(850)(feedItem);
               }

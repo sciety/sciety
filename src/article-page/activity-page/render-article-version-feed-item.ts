@@ -45,11 +45,29 @@ const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =
   </div>
 `);
 
+const renderResearchsquareArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
+  <div class="activity-feed__item_contents">
+    <header class="activity-feed__item_header">
+      <img class="activity-feed__item__avatar" src="/static/images/researchsquare.png" alt="">
+      <div class="activity-feed__item__meta">
+        <div class="activity-feed__item__title">
+          <a href="${feedItem.source.toString()}">
+            Version ${feedItem.version} published on Research Square
+          </a>
+        </div>
+        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
+      </div>
+    </header>
+  </div>
+`);
+
 export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => {
   switch (feedItem.server) {
     case 'medrxiv':
       return renderMedrxivArticleVersionFeedItem(feedItem);
     case 'biorxiv':
       return renderBiorxivArticleVersionFeedItem(feedItem);
+    case 'researchsquare':
+      return renderResearchsquareArticleVersionFeedItem(feedItem);
   }
 };

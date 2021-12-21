@@ -72,7 +72,7 @@ export const fetchCrossrefArticle = (
 
     let abstract: SanitisedHtmlFragment;
     let authors: ArticleAuthors;
-    let server: O.Option<'medrxiv' | 'biorxiv'>;
+    let server: O.Option<'medrxiv' | 'biorxiv' | 'researchsquare'>;
     let title: SanitisedHtmlFragment;
     try {
       const doc = parser.parseFromString(response, 'text/xml');

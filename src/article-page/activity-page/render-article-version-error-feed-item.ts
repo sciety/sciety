@@ -31,3 +31,19 @@ export const medrxivArticleVersionErrorFeedItem = toHtmlFragment(`
     </p>
   </div>
 `);
+
+export const researchsquareArticleVersionErrorFeedItem = toHtmlFragment(`
+  <div class="activity-feed__item_contents">
+    <header class="activity-feed__item_header">
+      <img class="activity-feed__item__avatar" src="/static/images/researchsquare.png" alt="">
+      <div class="activity-feed__item__meta">
+        <div class="activity-feed__item__title">
+          Published on Research Square
+        </div>
+      </div>
+    </header>
+    <p>
+      We couldn't get version information from Research Square. Please try refreshing this page.
+    </p>
+  </div>
+`);

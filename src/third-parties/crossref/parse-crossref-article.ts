@@ -105,6 +105,9 @@ export const getServer = flow(
     if (resource.includes('://biorxiv.org')) {
       return O.some('biorxiv' as const);
     }
+    if (resource.includes('://www.researchsquare.com')) {
+      return O.some('researchsquare' as const);
+    }
 
     return O.none;
   }),
