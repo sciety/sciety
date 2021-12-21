@@ -87,21 +87,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         articleDetails,
         feedItemsByDateDescending,
         saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-        feed: pipe(
-          feedItemsByDateDescending,
-          renderFeed(
-            (feedItem) => {
-              switch (feedItem.type) {
-                case 'article-version':
-                  return renderArticleVersionFeedItem(feedItem);
-                case 'article-version-error':
-                  return renderVersionErrorFeedItem(feedItem.server);
-                case 'review':
-                  return renderReviewFeedItem(850)(feedItem);
-              }
-            },
-          ),
-        ),
+        feed: renderFeed(feedItemsByDateDescending),
       })),
     )),
   ),

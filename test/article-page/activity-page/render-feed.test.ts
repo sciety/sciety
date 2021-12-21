@@ -1,11 +1,12 @@
 import { URL } from 'url';
+import { pipe } from 'fp-ts/function';
 import * as RFI from './review-feed-item.helper';
 import { renderFeed } from '../../../src/article-page/activity-page/render-feed';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 
 describe('render-feed', () => {
-  it('returns a list', () => {
-    const feedItems = [
+  const rendered = pipe(
+    [
       RFI.arbitrary(),
       {
         type: 'article-version',
@@ -18,10 +19,11 @@ describe('render-feed', () => {
         type: 'article-version-error',
         server: 'biorxiv',
       },
-    ] as const;
+    ],
+    renderFeed,
+  );
 
-    const rendered = renderFeed(() => toHtmlFragment(''))(feedItems);
-
+  it('returns a list', () => {
     expect(rendered).toContain('<ol');
   });
 });
