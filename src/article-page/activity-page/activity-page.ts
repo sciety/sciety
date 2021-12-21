@@ -9,11 +9,8 @@ import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from 
 import { FetchReview } from './get-feed-events-content';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
-import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
-import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
-import { renderReviewFeedItem } from './render-review-feed-item';
 import { DomainEvent } from '../../domain-events';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';

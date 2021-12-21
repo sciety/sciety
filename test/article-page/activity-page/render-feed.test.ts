@@ -2,7 +2,6 @@ import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
 import * as RFI from './review-feed-item.helper';
 import { renderFeed } from '../../../src/article-page/activity-page/render-feed';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
 
 describe('render-feed', () => {
   const rendered = pipe(
