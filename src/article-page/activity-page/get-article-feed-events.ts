@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
 import {
@@ -17,7 +16,6 @@ import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
 import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { ArticleServer } from '../../types/article-server';
-import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { UserId } from '../../types/user-id';
 
