@@ -1,49 +1,44 @@
-import { toHtmlFragment } from '../../types/html-fragment';
+import { pipe } from 'fp-ts/function';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-export const biorxivArticleVersionErrorFeedItem = toHtmlFragment(`
-  <div class="activity-feed__item_contents">
+type ServerInfo = {
+  name: string,
+  avatarUrl: string,
+  versionsSupported: boolean,
+};
+
+const renderVersionErrorFeedItem = (server: ServerInfo): HtmlFragment => pipe(
+  `<div class="activity-feed__item_contents">
     <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/biorxiv.jpg" alt="">
+      <img class="activity-feed__item__avatar" src="${server.avatarUrl}" alt="">
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
-          Published on bioRxiv
+          Published on ${server.name}
         </div>
       </div>
     </header>
     <p>
-      We couldn't get version information from bioRxiv. Please try refreshing this page.
+      We couldn't get version information from ${server.name}.
+      ${server.versionsSupported ? 'Please try refreshing this page.' : ''}
     </p>
-  </div>
-`);
+  </div>`,
+  toHtmlFragment,
+);
 
-export const medrxivArticleVersionErrorFeedItem = toHtmlFragment(`
-  <div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/medrxiv.jpg" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
-          Published on medRxiv
-        </div>
-      </div>
-    </header>
-    <p>
-      We couldn't get version information from medRxiv. Please try refreshing this page.
-    </p>
-  </div>
-`);
+export const biorxivArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
+  name: 'bioRxiv',
+  avatarUrl: '/static/images/biorxiv.jpg',
+  versionsSupported: true,
+});
 
-export const researchsquareArticleVersionErrorFeedItem = toHtmlFragment(`
-  <div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
-      <img class="activity-feed__item__avatar" src="/static/images/researchsquare.png" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
-          Published on Research Square
-        </div>
-      </div>
-    </header>
-    <p>
-      We couldn't get version information from Research Square.
-    </p>
-  </div>
-`);
+export const medrxivArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
+  name: 'medRxiv',
+  avatarUrl: '/static/images/medrxiv.jpg',
+  versionsSupported: true,
+});
+
+export const researchsquareArticleVersionErrorFeedItem = renderVersionErrorFeedItem({
+  name: 'Research Square',
+  avatarUrl: '/static/images/researchsquare.png',
+  versionsSupported: false,
+});
