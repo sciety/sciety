@@ -1,9 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
-import { getUsersFollowing } from './get-users-following';
 import { DomainEvent } from '../../domain-events';
-import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
+import { getGroupIdsFollowedBy, getUsersFollowing } from '../../shared-read-models/followings';
 import { GroupId } from '../../types/group-id';
 
 type FindFollowers = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;

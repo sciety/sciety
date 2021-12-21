@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
-import { getUsersFollowing } from '../../../src/group-page/followers/get-users-following';
+import { getUsersFollowing } from '../../../src/shared-read-models/followings';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
