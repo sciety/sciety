@@ -72,12 +72,13 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       ),
     },
     sequenceS(TE.ApplyPar),
-    TE.chain(({ articleDetails, hasUserSavedArticle }) => pipe(
+    TE.chainW(({ articleDetails, hasUserSavedArticle }) => pipe(
       articleDetails.server,
       (server) => getArticleFeedEventsByDateDescending({
         ...ports,
         getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
       })(doi, server, userId),
+      TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
         doi,
         tweetThis,
