@@ -107,30 +107,24 @@ const reviewToFeedItem = (
   })),
 );
 
-type Dependencies = {
+type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-type GetFeedEventsContent = (r: Dependencies) => (
-  feedEvents: ReadonlyArray<FeedEvent>,
-  server: ArticleServer,
-  userId: O.Option<UserId>,
-) => T.Task<ReadonlyArray<FeedItem>>;
+type GetFeedEventsContent = (ports: Ports, server: ArticleServer, userId: O.Option<UserId>)
+=> (feedEvents: ReadonlyArray<FeedEvent>)
+=> T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = ({
-  fetchReview,
-  getAllEvents,
-  getUserReviewResponse,
-}) => (feedEvents, server, userId) => {
+export const getFeedEventsContent: GetFeedEventsContent = (ports, server, userId) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
         return reviewToFeedItem(
-          fetchReview, getAllEvents, getUserReviewResponse, feedEvent, userId,
+          ports.fetchReview, ports.getAllEvents, ports.getUserReviewResponse, feedEvent, userId,
         );
     }
   };

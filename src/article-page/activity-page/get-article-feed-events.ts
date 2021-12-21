@@ -63,6 +63,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     ),
   ] as const,
   mergeFeeds,
-  T.chain((feedEvents) => getFeedEventsContent(ports)(feedEvents, server, userId)),
-  T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
+  T.chain(getFeedEventsContent(ports, server, userId)),
+  T.map(handleArticleVersionErrors(server)),
 );

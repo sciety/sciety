@@ -5,12 +5,11 @@ import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../../types/article-server';
 
-type HandleArticleVersionErrors = (
-  feedItems: ReadonlyArray<FeedItem>,
-  server: ArticleServer,
-) => RNEA.ReadonlyNonEmptyArray<FeedItem>;
+type HandleArticleVersionErrors = (server: ArticleServer)
+=> (feedItems: ReadonlyArray<FeedItem>)
+=> RNEA.ReadonlyNonEmptyArray<FeedItem>;
 
-export const handleArticleVersionErrors: HandleArticleVersionErrors = (items, server) => pipe(
+export const handleArticleVersionErrors: HandleArticleVersionErrors = (server) => (items) => pipe(
   items,
   E.fromPredicate(
     RA.some((feedItem) => feedItem.type === 'article-version'),
