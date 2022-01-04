@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
@@ -118,36 +118,36 @@ const getSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<Fin
 
 let cache: Promise<E.Either<DE.DataError, ReadonlyArray<FindableNcrcReview>>>;
 
-const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
-  if (cache === undefined || E.isLeft(await cache)) {
-    cache = getSheet(logger)();
-  }
-  return cache;
-};
-
 const refreshSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
   cache = getSheet(logger)();
   return cache;
 };
 
+const getCachedSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
+  if (cache === undefined || E.isLeft(await cache)) {
+    return refreshSheet(logger)();
+  }
+  return cache;
+};
+
+const lookup = (evaluationUuid: string) => (sheet: ReadonlyArray<FindableNcrcReview>) => pipe(
+  sheet,
+  RA.findFirst((row) => row.uuid === evaluationUuid),
+  E.fromOption(() => DE.notFound),
+);
+
 export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
-  cachedGetSheet(logger),
-  TE.chainEitherKW(flow(
-    RA.findFirst((row) => row.uuid === evaluationUuid),
-    E.fromOption(() => {
-      logger('error', 'NCRC evaluation id not found in cached sheet', { evaluationUuid });
-      return DE.notFound;
-    }),
-  )),
+  getCachedSheet(logger),
+  TE.chainEitherKW(lookup(evaluationUuid)),
   TE.alt(() => pipe(
     refreshSheet(logger),
-    TE.chainEitherKW(flow(
-      RA.findFirst((row) => row.uuid === evaluationUuid),
-      E.fromOption(() => {
-        logger('error', 'NCRC evaluation id not found in updated sheet', { evaluationUuid });
-        return DE.notFound;
-      }),
-    )),
+    TE.chainEitherKW(lookup(evaluationUuid)),
   )),
-  TE.map(constructNcrcReview),
+  TE.bimap(
+    () => {
+      logger('error', 'NCRC evaluation id not found in sheet', { evaluationUuid });
+      return DE.notFound;
+    },
+    constructNcrcReview,
+  ),
 );
