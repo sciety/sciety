@@ -125,6 +125,11 @@ const cachedGetSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArr
   return cache;
 };
 
+const refreshSheet = (logger: Logger): TE.TaskEither<DE.DataError, ReadonlyArray<FindableNcrcReview>> => async () => {
+  cache = getSheet(logger)();
+  return cache;
+};
+
 export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
   cachedGetSheet(logger),
   TE.chainEitherKW(flow(
@@ -133,6 +138,16 @@ export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluatio
       logger('error', 'NCRC evaluation id not found in cached sheet', { evaluationUuid });
       return DE.notFound;
     }),
+  )),
+  TE.alt(() => pipe(
+    refreshSheet(logger),
+    TE.chainEitherKW(flow(
+      RA.findFirst((row) => row.uuid === evaluationUuid),
+      E.fromOption(() => {
+        logger('error', 'NCRC evaluation id not found in updated sheet', { evaluationUuid });
+        return DE.notFound;
+      }),
+    )),
   )),
   TE.map(constructNcrcReview),
 );
