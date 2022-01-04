@@ -129,7 +129,10 @@ export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluatio
   cachedGetSheet(logger),
   TE.chainEitherKW(flow(
     RA.findFirst((row) => row.uuid === evaluationUuid),
-    E.fromOption(() => DE.notFound),
+    E.fromOption(() => {
+      logger('error', 'NCRC evaluation id not found in cached sheet', { evaluationUuid });
+      return DE.notFound;
+    }),
   )),
   TE.map(constructNcrcReview),
 );
