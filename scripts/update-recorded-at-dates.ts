@@ -28,9 +28,13 @@ const parseDate = (candidate: string): E.Either<string, Date> => pipe(
   ),
 );
 
-const runScript = (evaluationLocator: string): TE.TaskEither<string, Date> => pipe(
+const runScript = (evaluationIndex: number, evaluationLocator: string): TE.TaskEither<string, Date> => pipe(
   TE.tryCatch(
-    async () => execSync(`./scripts/first-commit-date-for-evaluation-locator.sh ${evaluationLocator}`),
+    async () => {
+      const output = execSync(`./scripts/first-commit-date-for-evaluation-locator.sh ${evaluationLocator}`);
+      process.stderr.write(`Processed evaluation ${evaluationIndex} (${evaluationLocator})\n`);
+      return output;
+    },
     String,
   ),
   TE.map((buffer) => buffer.toString('utf-8')),
@@ -38,9 +42,11 @@ const runScript = (evaluationLocator: string): TE.TaskEither<string, Date> => pi
   TE.chainEitherK(parseDate),
 );
 
-const updateDate = (partialEvent: { evaluationLocator: string, articleDoi: Doi }) => pipe(
-  partialEvent.evaluationLocator,
-  runScript,
+const updateDate = (
+  evaluationIndex: number,
+  partialEvent: { evaluationLocator: string, articleDoi: Doi },
+) => pipe(
+  runScript(evaluationIndex, partialEvent.evaluationLocator),
   TE.map((newDate) => ({
     ...partialEvent,
     date: newDate,
@@ -56,7 +62,7 @@ const processFile = (filePath: string) => pipe(
     decodeEvaluationsFromJsonl,
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.chainW(TE.traverseArray(updateDate)),
+  TE.chainW(TE.traverseArrayWithIndex(updateDate)),
   TE.bimap(
     (e) => { process.stderr.write(e.toString()); },
     RA.map(
