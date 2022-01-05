@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
 import { Doi } from '../src/types/doi';
 
@@ -18,14 +18,24 @@ const readTextFile = (path: string) => TE.tryCatch(
   E.toError,
 );
 
-const runScript = (evaluationLocator: string): TE.TaskEither<unknown, Date> => pipe(
+const parseDate = (candidate: string): E.Either<string, Date> => pipe(
+  candidate,
+  (string) => new Date(string),
+  E.right,
+  E.filterOrElse(
+    (d) => d.toString() !== 'Invalid Date',
+    () => `Tried to build a Date from an invalid string: "${candidate}"`,
+  ),
+);
+
+const runScript = (evaluationLocator: string): TE.TaskEither<string, Date> => pipe(
   TE.tryCatch(
     async () => execSync(`./scripts/first-commit-date-for-evaluation-locator.sh ${evaluationLocator}`),
     String,
   ),
   TE.map((buffer) => buffer.toString('utf-8')),
   TE.map((string) => string.trim()),
-  TE.map((string) => new Date(string)),
+  TE.chainEitherK(parseDate),
 );
 
 const updateDate = (partialEvent: { evaluationLocator: string, articleDoi: Doi }) => pipe(
@@ -42,11 +52,17 @@ const processFile = (filePath: string) => pipe(
   filePath,
   readTextFile,
   T.map(E.orElse(() => E.right(''))),
-  TE.chainEitherKW(decodeEvaluationsFromJsonl),
-  TE.chainW(TE.traverseArray(updateDate)),
-  TE.map(RA.map(
-    (partialEvent) => process.stdout.write(`${JSON.stringify(partialEvent)}\n`),
+  TE.chainEitherKW(flow(
+    decodeEvaluationsFromJsonl,
+    E.mapLeft((errors) => errors.join('\n')),
   )),
+  TE.chainW(TE.traverseArray(updateDate)),
+  TE.bimap(
+    (e) => { process.stderr.write(e.toString()); },
+    RA.map(
+      (partialEvent) => process.stdout.write(`${JSON.stringify(partialEvent)}\n`),
+    ),
+  ),
 );
 
 void (async (): Promise<unknown> => pipe(
