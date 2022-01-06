@@ -46,49 +46,47 @@ describe('render-article-card', () => {
   });
 
   describe('list membership count', () => {
-    const isListMembershipCountSpan = (span: HTMLSpanElement) => span.textContent?.includes('lists');
-
     describe('when the count is 0', () => {
-      const isListMembershipCountPresent = pipe(
+      const spans = pipe(
         { listMembershipCount: 0 },
         generateArticleViewModel,
         getSpans,
         Array.from,
-        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
       );
 
       it('displays nothing', () => {
-        expect(isListMembershipCountPresent).toBeFalsy();
+        expect(spans).not.toContain('Added to 0 lists');
       });
     });
 
     describe('when the count is 1', () => {
-      const isListMembershipCountPresent = pipe(
+      const spans = pipe(
         { listMembershipCount: 1 },
         generateArticleViewModel,
         getSpans,
         Array.from,
-        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
       );
 
       it('displays the count', () => {
-        expect(isListMembershipCountPresent).toBeTruthy();
+        expect(spans).toContain('Added to 1 lists');
       });
 
       it.todo('does not pluralise lists');
     });
 
     describe('when the count is greater than 1', () => {
-      const isListMembershipCountPresent = pipe(
+      const spans = pipe(
         { listMembershipCount: 42 },
         generateArticleViewModel,
         getSpans,
         Array.from,
-        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
       );
 
       it('displays the count', () => {
-        expect(isListMembershipCountPresent).toBeTruthy();
+        expect(spans).toContain('Added to 42 lists');
       });
 
       it.todo('does pluralise lists');
