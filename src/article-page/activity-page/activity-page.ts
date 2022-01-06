@@ -7,7 +7,6 @@ import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
@@ -73,11 +72,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     },
     sequenceS(TE.ApplyPar),
     TE.chainW(({ articleDetails, hasUserSavedArticle }) => pipe(
-      articleDetails.server,
-      (server) => getArticleFeedEventsByDateDescending({
-        ...ports,
-        getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
-      })(doi, server, userId),
+      getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
         doi,

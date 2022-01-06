@@ -32,7 +32,6 @@ describe('get-feed-events-content', () => {
           fullText: pipe('some text', toHtmlFragment),
           url: new URL('http://example.com'),
         }),
-        getUserReviewResponse: () => T.of(O.none),
       };
       const viewModel = await getFeedEventsContent(ports, 'biorxiv', O.none)(feedEvents)();
 

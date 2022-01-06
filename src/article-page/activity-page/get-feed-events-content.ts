@@ -3,9 +3,9 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { projectReviewResponseCounts } from './project-review-response-counts';
+import { projectUserReviewResponse } from './project-user-review-response';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
@@ -38,8 +38,6 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
   url: URL,
 }>;
 
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
-
 const articleVersionToFeedItem = (
   server: ArticleServer,
   feedEvent: ArticleVersionEvent,
@@ -50,7 +48,6 @@ const articleVersionToFeedItem = (
 export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getUserReviewResponse: GetUserReviewResponse,
 };
 
 const reviewToFeedItem = (
@@ -94,7 +91,7 @@ const reviewToFeedItem = (
       ports.getAllEvents,
       T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
-    userReviewResponse: ports.getUserReviewResponse(feedEvent.reviewId, userId),
+    userReviewResponse: projectUserReviewResponse(ports.getAllEvents)(feedEvent.reviewId, userId),
   },
   sequenceS(T.ApplyPar),
   T.map(({
