@@ -43,6 +43,16 @@ describe('render-article-card', () => {
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
   });
 
+  describe('list membership count', () => {
+    describe('when the count is 0', () => {
+      it.todo('displays nothing');
+    });
+
+    describe('when the count is greater than 0', () => {
+      it.todo('displays the count');
+    });
+  });
+
   describe('latest version', () => {
     const isLatestVersionSpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest version');
 

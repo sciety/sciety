@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
@@ -22,6 +23,17 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   evaluationCount === 1,
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
+);
+
+const renderListMembershipCount = (listMembershipCount: number) => pipe(
+  listMembershipCount === 0,
+  B.fold(
+    () => pipe(
+      `Added to ${listMembershipCount} lists`,
+      wrapInSpan,
+    ),
+    constant(''),
+  ),
 );
 
 const renderArticleVersionDate = O.fold(
@@ -59,7 +71,7 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: A
       ${renderAuthors(model.authors, `article-card-author-list-${model.doi.value}`)}
       <footer class="article-card__footer">
         <div class="article-card__meta">
-          <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
+          <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(0)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
         </div>
       </footer>
     </a>
