@@ -46,9 +46,9 @@ describe('render-article-card', () => {
   });
 
   describe('list membership count', () => {
-    describe('when the count is 0', () => {
-      const isListMembershipCountSpan = (span: HTMLSpanElement) => span.textContent?.includes('lists');
+    const isListMembershipCountSpan = (span: HTMLSpanElement) => span.textContent?.includes('lists');
 
+    describe('when the count is 0', () => {
       const isListMembershipCountPresent = pipe(
         { listMembershipCount: 0 },
         generateArticleViewModel,
@@ -62,8 +62,36 @@ describe('render-article-card', () => {
       });
     });
 
-    describe('when the count is greater than 0', () => {
-      it.todo('displays the count');
+    describe('when the count is 1', () => {
+      const isListMembershipCountPresent = pipe(
+        { listMembershipCount: 1 },
+        generateArticleViewModel,
+        getSpans,
+        Array.from,
+        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+      );
+
+      it('displays the count', () => {
+        expect(isListMembershipCountPresent).toBeTruthy();
+      });
+
+      it.todo('does not pluralise lists');
+    });
+
+    describe('when the count is greater than 1', () => {
+      const isListMembershipCountPresent = pipe(
+        { listMembershipCount: 42 },
+        generateArticleViewModel,
+        getSpans,
+        Array.from,
+        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+      );
+
+      it('displays the count', () => {
+        expect(isListMembershipCountPresent).toBeTruthy();
+      });
+
+      it.todo('does pluralise lists');
     });
   });
 
