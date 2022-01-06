@@ -62,6 +62,19 @@ const updateDate = (
   })),
 );
 
+type LPTTaskEitherWithIndex = <A, B, E>(
+  f: (index: number, a: A) => TE.TaskEither<E, B>, limit: number,
+) => (
+  input: ReadonlyArray<A>,
+) => TE.TaskEither<E, ReadonlyArray<B>>;
+
+const lptTaskEitherWithIndex: LPTTaskEitherWithIndex = (func, limit) => (input) => pipe(
+  input,
+  RA.mapWithIndex(func),
+  (arrayOfTaskEithers) => parallel(arrayOfTaskEithers, limit),
+  T.map(E.sequenceArray),
+);
+
 const processFile = (filePath: string) => pipe(
   filePath,
   readTextFile,
@@ -70,12 +83,7 @@ const processFile = (filePath: string) => pipe(
     decodeEvaluationsFromJsonl,
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.chainW((inputEvents) => pipe(
-    inputEvents,
-    RA.mapWithIndex(updateDate),
-    (arrayOfTaskEithers) => parallel(arrayOfTaskEithers, 14),
-    T.map(E.sequenceArray),
-  )),
+  TE.chainW(lptTaskEitherWithIndex(updateDate, 14)),
   TE.bimap(
     (e) => { process.stderr.write(e.toString()); },
     RA.map(
