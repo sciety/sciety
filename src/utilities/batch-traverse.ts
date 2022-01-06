@@ -15,6 +15,16 @@ export const batchApplyTask: BatchApplyTask = (
   tasks,
 ) => async () => pmap(tasks, async (t) => t(), { concurrency: batchSize });
 
+type BatchTaskTraverse = <A, B>(f: (a: A)
+=> T.Task<B>, limit: number)
+=> (input: ReadonlyArray<A>,) => T.Task<ReadonlyArray<B>>;
+
+export const batchTaskTraverse: BatchTaskTraverse = (func, batchSize) => (input) => pipe(
+  input,
+  RA.map(func),
+  batchApplyTask(batchSize),
+);
+
 type BatchTaskTraverseWithIndex = <A, B>(f: (index: number, a: A)
 => T.Task<B>, limit: number)
 => (input: ReadonlyArray<A>,) => T.Task<ReadonlyArray<B>>;
