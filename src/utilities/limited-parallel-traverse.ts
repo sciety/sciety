@@ -11,6 +11,27 @@ type Task = <A>(limit: number)
 
 export const task: Task = (limit) => (tasks) => async () => pmap(tasks, async (t) => t(), { concurrency: limit });
 
+type TaskWithIndex = <A, B>(f: (index: number, a: A)
+=> T.Task<B>, limit: number)
+=> (input: ReadonlyArray<A>,) => T.Task<ReadonlyArray<B>>;
+
+export const taskWithIndex: TaskWithIndex = (func, limit) => (input) => pipe(
+  input,
+  RA.mapWithIndex(func),
+  task(limit),
+);
+
+type TaskEither = <A, B, E>(f: (a: A)
+=> TE.TaskEither<E, B>, limit: number)
+=> (input: ReadonlyArray<A>,) => TE.TaskEither<E, ReadonlyArray<B>>;
+
+export const taskEither: TaskEither = (func, limit) => (input) => pipe(
+  input,
+  RA.map(func),
+  task(limit),
+  T.map(E.sequenceArray),
+);
+
 type TaskEitherWithIndex = <A, B, E>(f: (index: number, a: A)
 => TE.TaskEither<E, B>, limit: number)
 => (input: ReadonlyArray<A>,) => TE.TaskEither<E, ReadonlyArray<B>>;
