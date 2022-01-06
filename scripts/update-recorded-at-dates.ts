@@ -1,17 +1,25 @@
-import { execSync } from 'child_process';
+import { exec } from 'child_process';
 import fs from 'fs';
 import { promisify } from 'util';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import { Task } from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import pmap from 'p-map';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
 import { Doi } from '../src/types/doi';
+
+export function parallel<A>(tasks: ReadonlyArray<Task<A>>, limit: number): Task<ReadonlyArray<A>> {
+  return async () => pmap(tasks, async (t) => t(), { concurrency: limit });
+}
 
 const filename = process.env.FILENAME ?? '';
 
 const readFromFile = promisify(fs.readFile);
+
+const execTask = promisify(exec);
 
 const readTextFile = (path: string) => TE.tryCatch(
   async () => readFromFile(path, 'utf-8'),
@@ -31,13 +39,13 @@ const parseDate = (evaluationLocator: string) => (candidate: string): E.Either<s
 const runScript = (evaluationIndex: number, evaluationLocator: string): TE.TaskEither<string, Date> => pipe(
   TE.tryCatch(
     async () => {
-      const output = execSync(`./scripts/first-commit-date-for-evaluation-locator.sh ${evaluationLocator}`);
+      const output = execTask(`./scripts/first-commit-date-for-evaluation-locator.sh ${evaluationLocator}`);
       process.stderr.write(`Processed evaluation ${evaluationIndex} (${evaluationLocator})\n`);
       return output;
     },
     String,
   ),
-  TE.map((buffer) => buffer.toString('utf-8')),
+  TE.map((buffer) => buffer.stdout),
   TE.map((string) => string.trim()),
   TE.chainEitherK(parseDate(evaluationLocator)),
 );
@@ -62,7 +70,12 @@ const processFile = (filePath: string) => pipe(
     decodeEvaluationsFromJsonl,
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.chainW(TE.traverseArrayWithIndex(updateDate)),
+  TE.chainW((inputEvents) => pipe(
+    inputEvents,
+    RA.mapWithIndex(updateDate),
+    (arrayOfTaskEithers) => parallel(arrayOfTaskEithers, 14),
+    T.map(E.sequenceArray),
+  )),
   TE.bimap(
     (e) => { process.stderr.write(e.toString()); },
     RA.map(

@@ -37,6 +37,7 @@
     "koa-session": "^6.2.0",
     "monocle-ts": "^2.3.11",
     "newtype-ts": "^0.3.4",
+    "p-map": "^4.0.0",
     "parse-link-header": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
