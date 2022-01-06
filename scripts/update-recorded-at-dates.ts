@@ -18,13 +18,13 @@ const readTextFile = (path: string) => TE.tryCatch(
   E.toError,
 );
 
-const parseDate = (candidate: string): E.Either<string, Date> => pipe(
+const parseDate = (evaluationLocator: string) => (candidate: string): E.Either<string, Date> => pipe(
   candidate,
   (string) => new Date(string),
   E.right,
   E.filterOrElse(
     (d) => d.toString() !== 'Invalid Date',
-    () => `Tried to build a Date from an invalid string: "${candidate}"`,
+    () => `Tried to build a Date for "${evaluationLocator}" from an invalid string: "${candidate}"`,
   ),
 );
 
@@ -39,7 +39,7 @@ const runScript = (evaluationIndex: number, evaluationLocator: string): TE.TaskE
   ),
   TE.map((buffer) => buffer.toString('utf-8')),
   TE.map((string) => string.trim()),
-  TE.chainEitherK(parseDate),
+  TE.chainEitherK(parseDate(evaluationLocator)),
 );
 
 const updateDate = (
