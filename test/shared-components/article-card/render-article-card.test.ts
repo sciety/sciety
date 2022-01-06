@@ -14,7 +14,6 @@ const generateArticleViewModel = ({
   latestActivityDate = O.some(new Date()),
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   listMembershipCount = 0,
 }): ArticleViewModel => ({
   doi,
@@ -23,6 +22,7 @@ const generateArticleViewModel = ({
   latestActivityDate,
   latestVersionDate,
   evaluationCount,
+  listMembershipCount,
 });
 
 const getSpans = (articleViewModel: ArticleViewModel) => pipe(

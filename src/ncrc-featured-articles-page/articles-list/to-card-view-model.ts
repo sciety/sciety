@@ -47,6 +47,7 @@ export const toCardViewModel = (
       ...articleDetails,
       authors: articleDetails.authors,
       latestVersionDate: articleDetails.latestVersionDate,
+      listMembershipCount: 0,
     }),
   ),
 );
