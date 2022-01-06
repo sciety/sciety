@@ -8,7 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
 import { Doi } from '../src/types/doi';
-import * as LPT from '../src/utilities/limited-parallel-traverse';
+import { batchTaskEitherTraverseWithIndex } from '../src/utilities/batch-traverse';
 
 const filename = process.env.FILENAME ?? '';
 
@@ -65,7 +65,7 @@ const processFile = (filePath: string) => pipe(
     decodeEvaluationsFromJsonl,
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.chainW(LPT.taskEitherWithIndex(updateDate, 14)),
+  TE.chainW(batchTaskEitherTraverseWithIndex(updateDate, 14)),
   TE.bimap(
     (e) => { process.stderr.write(e.toString()); },
     RA.map(
