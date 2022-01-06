@@ -14,6 +14,8 @@ const generateArticleViewModel = ({
   latestActivityDate = O.some(new Date()),
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  listMembershipCount = 0,
 }): ArticleViewModel => ({
   doi,
   title,
@@ -45,7 +47,19 @@ describe('render-article-card', () => {
 
   describe('list membership count', () => {
     describe('when the count is 0', () => {
-      it.todo('displays nothing');
+      const isListMembershipCountSpan = (span: HTMLSpanElement) => span.textContent?.includes('lists');
+
+      const isListMembershipCountPresent = pipe(
+        { listMembershipCount: 0 },
+        generateArticleViewModel,
+        getSpans,
+        Array.from,
+        (array: Array<HTMLSpanElement>) => array.some(isListMembershipCountSpan),
+      );
+
+      it('displays nothing', () => {
+        expect(isListMembershipCountPresent).toBeFalsy();
+      });
     });
 
     describe('when the count is greater than 0', () => {
