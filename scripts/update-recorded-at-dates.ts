@@ -4,16 +4,11 @@ import { promisify } from 'util';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { Task } from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import pmap from 'p-map';
 import { decodeEvaluationsFromJsonl } from '../src/infrastructure/evaluations-as-jsonl';
 import { Doi } from '../src/types/doi';
-
-export function parallel<A>(tasks: ReadonlyArray<Task<A>>, limit: number): Task<ReadonlyArray<A>> {
-  return async () => pmap(tasks, async (t) => t(), { concurrency: limit });
-}
+import * as LPT from '../src/utilities/limited-parallel-traverse';
 
 const filename = process.env.FILENAME ?? '';
 
@@ -62,19 +57,6 @@ const updateDate = (
   })),
 );
 
-type LPTTaskEitherWithIndex = <A, B, E>(
-  f: (index: number, a: A) => TE.TaskEither<E, B>, limit: number,
-) => (
-  input: ReadonlyArray<A>,
-) => TE.TaskEither<E, ReadonlyArray<B>>;
-
-const lptTaskEitherWithIndex: LPTTaskEitherWithIndex = (func, limit) => (input) => pipe(
-  input,
-  RA.mapWithIndex(func),
-  (arrayOfTaskEithers) => parallel(arrayOfTaskEithers, limit),
-  T.map(E.sequenceArray),
-);
-
 const processFile = (filePath: string) => pipe(
   filePath,
   readTextFile,
@@ -83,7 +65,7 @@ const processFile = (filePath: string) => pipe(
     decodeEvaluationsFromJsonl,
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.chainW(lptTaskEitherWithIndex(updateDate, 14)),
+  TE.chainW(LPT.taskEitherWithIndex(updateDate, 14)),
   TE.bimap(
     (e) => { process.stderr.write(e.toString()); },
     RA.map(
