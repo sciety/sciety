@@ -70,10 +70,8 @@ describe('render-article-card', () => {
       );
 
       it('displays the count', () => {
-        expect(spans).toContain('Added to 1 lists');
+        expect(spans).toContain('Added to 1 list');
       });
-
-      it.todo('does not pluralise lists');
     });
 
     describe('when the count is greater than 1', () => {
@@ -88,8 +86,6 @@ describe('render-article-card', () => {
       it('displays the count', () => {
         expect(spans).toContain('Added to 42 lists');
       });
-
-      it.todo('does pluralise lists');
     });
   });
 
