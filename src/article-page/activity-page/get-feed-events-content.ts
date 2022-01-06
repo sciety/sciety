@@ -47,7 +47,7 @@ const articleVersionToFeedItem = (
   T.of({ ...feedEvent, server })
 );
 
-type Ports = {
+export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getUserReviewResponse: GetUserReviewResponse,

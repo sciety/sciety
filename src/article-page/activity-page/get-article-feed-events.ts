@@ -5,11 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, pipe } from 'fp-ts/function';
-import {
-  FetchReview,
-  getFeedEventsContent,
-  GetUserReviewResponse,
-} from './get-feed-events-content';
+import { getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
@@ -28,6 +24,11 @@ export type FindVersionsForArticleDoi = (
   version: number,
 }>>;
 
+type Ports = GetFeedEventsContentPorts & {
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+};
+
 type GetArticleFeedEventsByDateDescending = (
   ports: Ports
 ) => (
@@ -35,13 +36,6 @@ type GetArticleFeedEventsByDateDescending = (
   server: ArticleServer,
   userId: O.Option<UserId>,
 ) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
-
-type Ports = {
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  fetchReview: FetchReview,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getUserReviewResponse: GetUserReviewResponse,
-};
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   ports,
