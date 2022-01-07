@@ -56,7 +56,9 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ),
             evaluationCount: entry.evaluationCount + 1,
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
-            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size + entry.savingUsers.size,
+            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size
+              + entry.savingUsers.size
+              + membershipInFeaturedLists(event.articleId),
           }),
         ),
       );

@@ -11,6 +11,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryDoi();
+  const articleIdFromNcrcHighInterestList = new Doi('10.1101/2021.08.30.21262866');
 
   describe('when an article has no evaluations', () => {
     const articleActivity = pipe(
@@ -112,7 +113,6 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and the list is a featured articles list', () => {
-      const articleIdFromNcrcHighInterestList = new Doi('10.1101/2021.08.30.21262866');
       const articleActivity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleIdFromNcrcHighInterestList, arbitraryReviewId()),
@@ -151,6 +151,20 @@ describe('get-activity-for-doi', () => {
 
       it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
+      });
+    });
+
+    describe('first in a group list and then in a featured articles list', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleIdFromNcrcHighInterestList, arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), articleIdFromNcrcHighInterestList, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleIdFromNcrcHighInterestList),
+      );
+
+      it('has a listMemberShipCount of 3', () => {
+        expect(articleActivity.listMembershipCount).toBe(3);
       });
     });
 
