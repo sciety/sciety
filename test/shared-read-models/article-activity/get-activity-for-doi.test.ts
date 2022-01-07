@@ -95,9 +95,11 @@ describe('get-activity-for-doi', () => {
 
   describe('when an article appears in one list', () => {
     describe('and the list is Evaluated Articles list', () => {
+      const groupId = arbitraryGroupId();
       const articleActivity = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
         ],
         getActivityForDoi(articleId),
       );
@@ -113,6 +115,22 @@ describe('get-activity-for-doi', () => {
 
     describe('and the list is user list', () => {
       it.todo('has a listMemberShipCount of 1');
+    });
+  });
+
+  describe('when an article appears in multiple lists', () => {
+    describe('and the lists are Evaluated Articles lists', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.skip('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
     });
   });
 
