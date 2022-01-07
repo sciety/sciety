@@ -10,7 +10,6 @@ import {
   DomainEvent, EvaluationRecordedEvent,
   isEvaluationRecordedEvent,
 } from '../../domain-events';
-import { getActivityForDoi } from '../../shared-read-models/article-activity';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
@@ -99,10 +98,6 @@ export const evaluatedArticles = (groupId: GroupId) => (
   RA.map((activity) => ({
     ...activity,
     latestActivityDate: O.some(activity.latestActivityDate),
-    listMembershipCount: pipe(
-      events,
-      getActivityForDoi(activity.doi),
-      (act) => act.listMembershipCount,
-    ),
+    listMembershipCount: 0,
   })),
 );
