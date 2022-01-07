@@ -96,4 +96,28 @@ describe('get-activity-for-doi', () => {
       });
     });
   });
+
+  describe('when an article appears in one list', () => {
+    describe('and the list is Evaluated Articles list', () => {
+      it.todo('has a listMemberShipCount of 1');
+    });
+
+    describe('and the list is a featured articles list', () => {
+      it.todo('has a listMemberShipCount of 1');
+    });
+
+    describe('and the list is user list', () => {
+      it.todo('has a listMemberShipCount of 1');
+    });
+  });
+
+  describe('when an article does not appear in any list', () => {
+    describe('because it was never added to a list', () => {
+      it.todo('has a listMemberShipCount of 0');
+    });
+
+    describe('because it has been Saved and Unsaved in a user list', () => {
+      it.todo('has a listMemberShipCount of 0');
+    });
+  });
 });
