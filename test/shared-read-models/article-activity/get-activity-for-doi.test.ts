@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
+import { Doi } from '../../../src/types/doi';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -111,7 +112,17 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and the list is a featured articles list', () => {
-      it.todo('has a listMemberShipCount of 1');
+      const articleIdFromNcrcHighInterestList = new Doi('10.1101/2021.08.30.21262866');
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleIdFromNcrcHighInterestList, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleIdFromNcrcHighInterestList),
+      );
+
+      it('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
     });
 
     describe('and the list is user list', () => {

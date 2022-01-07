@@ -1,8 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
+import { lists } from '../../ncrc-featured-articles-page/lists';
 import { ArticleActivity } from '../../types/article-activity';
+import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
@@ -20,6 +23,16 @@ const deleteFromSet = (set: Set<UserId>, element: UserId) => {
   return set;
 };
 
+const membershipInFeaturedLists = (articleId: Doi) => pipe(
+  lists,
+  R.filter((list) => pipe(
+    list,
+    RA.map((doi) => doi.value),
+    (values) => values.includes(articleId.value),
+  )),
+  R.size,
+);
+
 const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainEvent) => {
   switch (event.type) {
     case 'EvaluationRecorded':
@@ -33,7 +46,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
             savingUsers: new Set(),
-            listMembershipCount: 1,
+            listMembershipCount: 1 + membershipInFeaturedLists(event.articleId),
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
