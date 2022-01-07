@@ -94,5 +94,6 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
   RA.map((activity) => ({
     ...activity,
     latestActivityDate: O.some(activity.latestArticleActivityDate),
+    listMembershipCount: 0,
   })),
 );

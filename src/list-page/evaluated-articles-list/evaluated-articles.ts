@@ -98,5 +98,6 @@ export const evaluatedArticles = (groupId: GroupId) => (
   RA.map((activity) => ({
     ...activity,
     latestActivityDate: O.some(activity.latestActivityDate),
+    listMembershipCount: 0,
   })),
 );

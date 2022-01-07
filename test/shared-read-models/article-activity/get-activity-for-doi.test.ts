@@ -21,6 +21,7 @@ describe('get-activity-for-doi', () => {
         doi: articleId,
         latestActivityDate: O.none,
         evaluationCount: 0,
+        listMembershipCount: 0,
       });
     });
   });
@@ -57,6 +58,7 @@ describe('get-activity-for-doi', () => {
           doi: articleId,
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
+          listMembershipCount: 0,
         });
       });
     });
@@ -89,6 +91,7 @@ describe('get-activity-for-doi', () => {
           doi: articleId,
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
+          listMembershipCount: 0,
         });
       });
     });

@@ -19,5 +19,6 @@ export const getActivityForDoi = (
     doi,
     latestActivityDate: O.none,
     evaluationCount: 0,
+    listMembershipCount: 0,
   })),
 );

@@ -42,7 +42,7 @@ export const populateArticleViewModel = (
     latestVersionDate,
     latestActivityDate: articleActivity.latestActivityDate,
     evaluationCount: articleActivity.evaluationCount,
-    listMembershipCount: 0,
+    listMembershipCount: articleActivity.listMembershipCount,
   })),
   TE.rightTask,
 );

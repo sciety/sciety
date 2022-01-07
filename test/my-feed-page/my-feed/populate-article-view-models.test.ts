@@ -16,11 +16,13 @@ describe('populate-article-view-models', () => {
           doi: new Doi('10.1101/11111'),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
+          listMembershipCount: 0,
         },
         {
           doi: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
+          listMembershipCount: 0,
         },
       ];
       const fetchArticleDetails = (doi: Doi) => TE.right({
@@ -46,6 +48,7 @@ describe('populate-article-view-models', () => {
           doi: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
+          listMembershipCount: 0,
         },
       ];
       const fetchArticleDetails = () => TE.right({
@@ -71,11 +74,13 @@ describe('populate-article-view-models', () => {
         doi: successDoi,
         evaluationCount: 1,
         latestActivityDate: O.some(new Date()),
+        listMembershipCount: 0,
       },
       {
         doi: failingDoi,
         evaluationCount: 1,
         latestActivityDate: O.some(new Date()),
+        listMembershipCount: 0,
       },
     ];
     const fetchArticleDetails = (doi: Doi) => (eqDoi.equals(doi, successDoi)

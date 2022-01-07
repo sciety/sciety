@@ -16,6 +16,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: Evaluat
       doi: event.articleId,
       latestActivityDate: O.some(event.publishedAt),
       evaluationCount: 1,
+      listMembershipCount: 0,
     }),
     (entry) => state.set(event.articleId.value, {
       ...entry,

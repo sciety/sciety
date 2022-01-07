@@ -5,4 +5,5 @@ export type ArticleActivity = {
   doi: Doi,
   latestActivityDate: O.Option<Date>,
   evaluationCount: number,
+  listMembershipCount: number,
 };
