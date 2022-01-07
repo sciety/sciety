@@ -1,11 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../../src/domain-events';
+import { evaluationRecorded, userSavedArticle } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryDoi();
@@ -114,7 +115,16 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and the list is user list', () => {
-      it.todo('has a listMemberShipCount of 1');
+      const articleActivity = pipe(
+        [
+          userSavedArticle(arbitraryUserId(), articleId),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it('has a listMemberShipCount of 1', () => {
+        expect(articleActivity.listMembershipCount).toBe(1);
+      });
     });
   });
 
