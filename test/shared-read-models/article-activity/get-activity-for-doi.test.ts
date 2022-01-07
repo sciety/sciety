@@ -129,18 +129,17 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article appears in multiple lists', () => {
-    describe('and the lists are Evaluated Articles lists', () => {
-      const articleActivity = pipe(
-        [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        ],
-        getActivityForDoi(articleId),
-      );
+    const articleActivity = pipe(
+      [
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        userSavedArticle(arbitraryUserId(), articleId),
+      ],
+      getActivityForDoi(articleId),
+    );
 
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
-      });
+    it('has a listMemberShipCount of 3', () => {
+      expect(articleActivity.listMembershipCount).toBe(3);
     });
   });
 

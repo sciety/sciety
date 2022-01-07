@@ -50,7 +50,10 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             evaluatingGroups: new Set(),
             listMembershipCount: 1,
           }),
-          () => state,
+          (entry) => state.set(event.articleId.value, {
+            ...entry,
+            listMembershipCount: entry.listMembershipCount + 1,
+          }),
         ),
       );
 
