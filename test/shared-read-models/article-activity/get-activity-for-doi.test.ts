@@ -129,17 +129,60 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article appears in multiple lists', () => {
-    const articleActivity = pipe(
-      [
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        userSavedArticle(arbitraryUserId(), articleId),
-      ],
-      getActivityForDoi(articleId),
-    );
+    describe('first in a group list and then in a user list', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          userSavedArticle(arbitraryUserId(), articleId),
+        ],
+        getActivityForDoi(articleId),
+      );
 
-    it('has a listMemberShipCount of 3', () => {
-      expect(articleActivity.listMembershipCount).toBe(3);
+      it('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
+    });
+
+    describe('first in a user list and then in a group list', () => {
+      const articleActivity = pipe(
+        [
+          userSavedArticle(arbitraryUserId(), articleId),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.skip('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
+    });
+
+    describe('multiple users', () => {
+      const articleActivity = pipe(
+        [
+          userSavedArticle(arbitraryUserId(), articleId),
+          userSavedArticle(arbitraryUserId(), articleId),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.skip('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
+    });
+
+    describe('multiple groups', () => {
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.skip('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
     });
   });
 
