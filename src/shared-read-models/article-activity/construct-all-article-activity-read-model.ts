@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { GroupId } from '../../types/group-id';
-import {UserId} from '../../types/user-id';
+import { UserId } from '../../types/user-id';
 
 const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
 
@@ -14,6 +14,11 @@ type ArticleState = ArticleActivity & {
 };
 
 type AllArticleActivityReadModel = Map<string, ArticleState>;
+
+const deleteFromSet = (set: Set<UserId>, element: UserId) => {
+  set.delete(element);
+  return set;
+};
 
 const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainEvent) => {
   switch (event.type) {
@@ -60,6 +65,20 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ...entry,
             savingUsers: entry.savingUsers.add(event.userId),
             listMembershipCount: entry.savingUsers.add(event.userId).size + entry.evaluatingGroups.size,
+          }),
+        ),
+      );
+
+    case 'UserUnsavedArticle':
+      return pipe(
+        state.get(event.articleId.value),
+        O.fromNullable,
+        O.fold(
+          () => state,
+          (entry) => state.set(event.articleId.value, {
+            ...entry,
+            savingUsers: deleteFromSet(entry.savingUsers, event.userId),
+            listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size + entry.evaluatingGroups.size,
           }),
         ),
       );
