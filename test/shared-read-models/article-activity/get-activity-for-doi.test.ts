@@ -113,7 +113,14 @@ describe('get-activity-for-doi', () => {
 
   describe('when an article does not appear in any list', () => {
     describe('because it was never added to a list', () => {
-      it.todo('has a listMemberShipCount of 0');
+      const articleActivity = pipe(
+        [],
+        getActivityForDoi(articleId),
+      );
+
+      it('has a listMemberShipCount of 0', () => {
+        expect(articleActivity.listMembershipCount).toBe(0);
+      });
     });
 
     describe('because it has been Saved and Unsaved in a user list', () => {
