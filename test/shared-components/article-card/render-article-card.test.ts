@@ -56,7 +56,7 @@ describe('render-article-card', () => {
       );
 
       it('displays nothing', () => {
-        expect(spans).not.toContain('Added to 0 lists');
+        expect(spans).not.toContain('Appears in 0 lists');
       });
     });
 
@@ -70,7 +70,7 @@ describe('render-article-card', () => {
       );
 
       it('displays the count', () => {
-        expect(spans).toContain('Added to 1 list');
+        expect(spans).toContain('Appears in 1 list');
       });
     });
 
@@ -84,7 +84,7 @@ describe('render-article-card', () => {
       );
 
       it('displays the count', () => {
-        expect(spans).toContain('Added to 42 lists');
+        expect(spans).toContain('Appears in 42 lists');
       });
     });
   });

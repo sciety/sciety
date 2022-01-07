@@ -31,7 +31,7 @@ const renderListMembershipCount = (listMembershipCount: number) => pipe(
   B.fold(
     () => pipe(
       listMembershipCount === 1,
-      (singular) => `Added to ${listMembershipCount} ${singular ? 'list' : 'lists'}`,
+      (singular) => `Appears in ${listMembershipCount} ${singular ? 'list' : 'lists'}`,
       wrapInSpan,
     ),
     constant(''),
