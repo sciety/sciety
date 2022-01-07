@@ -31,7 +31,7 @@ describe('save-article', () => {
     });
 
     it('saves the article to the list', async () => {
-      await goto('localhost:8080/articles/10.1101/862755');
+      await goto('localhost:8080/articles/10.1101/265348');
       await click('Save to my list');
       const result = await text('Saved to my list').exists();
 
