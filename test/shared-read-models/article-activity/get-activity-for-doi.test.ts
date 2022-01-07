@@ -128,7 +128,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
