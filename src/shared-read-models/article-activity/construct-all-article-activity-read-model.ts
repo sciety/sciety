@@ -95,7 +95,9 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
           (entry) => state.set(event.articleId.value, {
             ...entry,
             savingUsers: deleteFromSet(entry.savingUsers, event.userId),
-            listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size + entry.evaluatingGroups.size,
+            listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size
+              + entry.evaluatingGroups.size
+              + membershipInFeaturedLists(event.articleId),
           }),
         ),
       );

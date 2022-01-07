@@ -125,6 +125,21 @@ describe('get-activity-for-doi', () => {
       });
     });
 
+    describe('and the list is a featured articles list and it was saved and unsaved by a user', () => {
+      const userId = arbitraryUserId();
+      const articleActivity = pipe(
+        [
+          userSavedArticle(userId, articleIdFromNcrcHighInterestList),
+          userUnsavedArticle(userId, articleIdFromNcrcHighInterestList),
+        ],
+        getActivityForDoi(articleIdFromNcrcHighInterestList),
+      );
+
+      it('has a listMemberShipCount of 1', () => {
+        expect(articleActivity.listMembershipCount).toBe(1);
+      });
+    });
+
     describe('and the list is user list', () => {
       const articleActivity = pipe(
         [
