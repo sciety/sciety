@@ -51,7 +51,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/clownface": "^1.2.5",
+    "@types/clownface": "^1.2.6",
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^16.2.14",
     "@types/koa": "^2.13.4",
