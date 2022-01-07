@@ -54,12 +54,10 @@ describe('get-activity-for-doi', () => {
       );
 
       it('returns the activity for that article', () => {
-        expect(articleActivity).toStrictEqual({
-          doi: articleId,
+        expect(articleActivity).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
-          listMembershipCount: 0,
-        });
+        }));
       });
     });
 
@@ -87,19 +85,26 @@ describe('get-activity-for-doi', () => {
       );
 
       it('returns the activity for that article', () => {
-        expect(articleActivity).toStrictEqual({
-          doi: articleId,
+        expect(articleActivity).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
-          listMembershipCount: 0,
-        });
+        }));
       });
     });
   });
 
   describe('when an article appears in one list', () => {
     describe('and the list is Evaluated Articles list', () => {
-      it.todo('has a listMemberShipCount of 1');
+      const articleActivity = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it('has a listMemberShipCount of 1', () => {
+        expect(articleActivity.listMembershipCount).toBe(1);
+      });
     });
 
     describe('and the list is a featured articles list', () => {
