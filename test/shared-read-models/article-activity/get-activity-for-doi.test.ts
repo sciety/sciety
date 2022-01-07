@@ -182,6 +182,19 @@ describe('get-activity-for-doi', () => {
       });
     });
 
+    describe('first in a user list and then in a featured articles list', () => {
+      const articleActivity = pipe(
+        [
+          userSavedArticle(arbitraryUserId(), articleIdFromNcrcHighInterestList),
+        ],
+        getActivityForDoi(articleIdFromNcrcHighInterestList),
+      );
+
+      it('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
+      });
+    });
+
     describe('multiple lists from different users', () => {
       const articleActivity = pipe(
         [

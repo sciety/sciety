@@ -74,7 +74,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             evaluationCount: 0,
             evaluatingGroups: new Set(),
             savingUsers: new Set([event.userId]),
-            listMembershipCount: 1,
+            listMembershipCount: 1 + membershipInFeaturedLists(event.articleId),
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
