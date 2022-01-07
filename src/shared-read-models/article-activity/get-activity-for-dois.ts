@@ -12,6 +12,7 @@ type GetActivityForDois = (dois: ReadonlyArray<Doi>)
 => (events: ReadonlyArray<DomainEvent>)
 => ReadonlyArray<ArticleActivity>;
 
+// ts-unused-exports:disable-next-line
 export const getActivityForDois: GetActivityForDois = (dois) => (events) => pipe(
   events,
   constructAllArticleActivityReadModel,
