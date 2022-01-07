@@ -79,7 +79,9 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
           (entry) => state.set(event.articleId.value, {
             ...entry,
             savingUsers: entry.savingUsers.add(event.userId),
-            listMembershipCount: entry.savingUsers.add(event.userId).size + entry.evaluatingGroups.size,
+            listMembershipCount: entry.savingUsers.add(event.userId).size
+              + entry.evaluatingGroups.size
+              + membershipInFeaturedLists(event.articleId),
           }),
         ),
       );
