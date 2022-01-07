@@ -40,6 +40,21 @@ describe('get-activity-for-dois', () => {
   });
 
   describe('when a doi is not in the read model', () => {
-    it.todo('returns empty activity for that article');
+    it('returns empty activity for that article', () => {
+      const articleId = arbitraryDoi();
+      const activity = pipe(
+        [],
+        getActivityForDois([articleId]),
+      );
+
+      expect(activity).toStrictEqual([
+        {
+          doi: articleId,
+          latestActivityDate: O.none,
+          evaluationCount: 0,
+          listMembershipCount: 0,
+        },
+      ]);
+    });
   });
 });
