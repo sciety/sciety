@@ -152,12 +152,12 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
 
-    describe('multiple users', () => {
+    describe('multiple lists from different users', () => {
       const articleActivity = pipe(
         [
           userSavedArticle(arbitraryUserId(), articleId),
@@ -166,12 +166,12 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
 
-    describe('multiple groups', () => {
+    describe('multiple lists from different groups', () => {
       const articleActivity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
@@ -180,7 +180,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });

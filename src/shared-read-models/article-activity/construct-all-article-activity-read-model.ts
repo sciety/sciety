@@ -4,10 +4,14 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { GroupId } from '../../types/group-id';
+import {UserId} from '../../types/user-id';
 
 const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
 
-type ArticleState = ArticleActivity & { evaluatingGroups: Set<GroupId> };
+type ArticleState = ArticleActivity & {
+  evaluatingGroups: Set<GroupId>,
+  savingUsers: Set<UserId>,
+};
 
 type AllArticleActivityReadModel = Map<string, ArticleState>;
 
@@ -23,6 +27,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.some(event.publishedAt),
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
+            savingUsers: new Set(),
             listMembershipCount: 1,
           }),
           (entry) => state.set(event.articleId.value, {
@@ -33,7 +38,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ),
             evaluationCount: entry.evaluationCount + 1,
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
-            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size,
+            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size + entry.savingUsers.size,
           }),
         ),
       );
@@ -48,11 +53,13 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.none,
             evaluationCount: 0,
             evaluatingGroups: new Set(),
+            savingUsers: new Set([event.userId]),
             listMembershipCount: 1,
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
-            listMembershipCount: entry.listMembershipCount + 1,
+            savingUsers: entry.savingUsers.add(event.userId),
+            listMembershipCount: entry.savingUsers.add(event.userId).size + entry.evaluatingGroups.size,
           }),
         ),
       );
