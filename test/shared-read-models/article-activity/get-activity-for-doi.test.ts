@@ -121,7 +121,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
@@ -137,7 +137,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
@@ -180,7 +180,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
@@ -208,7 +208,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
@@ -223,7 +223,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.skip('has a listMemberShipCount of 3', () => {
+      it('has a listMemberShipCount of 3', () => {
         expect(articleActivity.listMembershipCount).toBe(3);
       });
     });
