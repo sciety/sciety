@@ -5,7 +5,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
-import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
@@ -52,20 +51,24 @@ const addNcrcListCardViewModelOnNcrcPage = (groupSlug: string) => (cardViewModel
   : E.right(cardViewModels)
 );
 
-const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (
-  groupSlug: string,
-) => (
-  cardViewModels: ReadonlyArray<ListCardViewModel>,
-) => ((groupSlug === 'biophysics-colab')
-  ? [{
-    href: '/lists/5ac3a439-e5c6-4b15-b109-92928a740812',
-    title: 'Endorsed articles',
-    articleCountLabel: 'This list contains',
-    description: 'Articles that have been endorsed by Biophysics Colab.',
-    articleCount: listsData['5ac3a439-e5c6-4b15-b109-92928a740812'].length,
-    lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
-  }, ...cardViewModels]
-  : cardViewModels);
+const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'biophysics-colab')
+  ? pipe(
+    events,
+    selectArticlesBelongingToList('5ac3a439-e5c6-4b15-b109-92928a740812'),
+    E.map((articleIds) => [
+      {
+        href: '/lists/5ac3a439-e5c6-4b15-b109-92928a740812',
+        title: 'Endorsed articles',
+        articleCountLabel: 'This list contains',
+        description: 'Articles that have been endorsed by Biophysics Colab.',
+        lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
+        articleCount: articleIds.length,
+      },
+      ...cardViewModels,
+    ]),
+  )
+  : E.right(cardViewModels)
+);
 
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
@@ -83,7 +86,10 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
     ports.getAllEvents,
     T.map(addNcrcListCardViewModelOnNcrcPage(group.slug)(cardViewModels)),
   )),
-  TE.map(addBiophysicsColabListCardViewModelOnBiophysicsColabPage(group.slug)),
+  TE.chain((cardViewModels) => pipe(
+    ports.getAllEvents,
+    T.map(addBiophysicsColabListCardViewModelOnBiophysicsColabPage(group.slug)(cardViewModels)),
+  )),
   TE.map(RA.map(renderListCard)),
   TE.map(renderCards),
 );
