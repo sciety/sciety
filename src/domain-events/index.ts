@@ -1,5 +1,6 @@
 export { DomainEvent } from './domain-event';
 export { RuntimeGeneratedEvent } from './runtime-generated-event';
+export { ArticleAddedToListEvent, articleAddedToList } from './article-added-to-list-event';
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';

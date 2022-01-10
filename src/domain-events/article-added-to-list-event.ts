@@ -8,7 +8,6 @@ export type ArticleAddedToListEvent = Readonly<{
   listId: ListId,
 }>;
 
-// ts-unused-exports:disable-next-line
 export const articleAddedToList = (
   articleId: Doi,
   listId: ListId,
