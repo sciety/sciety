@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -7,6 +8,7 @@ import { DomainEvent } from '../../domain-events';
 import { lists as listsData } from '../../ncrc-featured-articles-page/lists';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
+import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import { selectAllListsOwnedBy } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
@@ -31,20 +33,24 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   toHtmlFragment,
 );
 
-const addNcrcListCardViewModelOnNcrcPage = (
-  groupSlug: string,
-) => (
-  cardViewModels: ReadonlyArray<ListCardViewModel>,
-) => ((groupSlug === 'ncrc')
-  ? [{
-    href: '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
-    title: 'High interest articles',
-    articleCountLabel: 'This list contains',
-    description: 'Articles that have been identified as high interest by NCRC editors.',
-    articleCount: listsData['cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'].length,
-    lastUpdated: O.some(new Date('2021-11-24')),
-  }, ...cardViewModels]
-  : cardViewModels);
+const addNcrcListCardViewModelOnNcrcPage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'ncrc')
+  ? pipe(
+    events,
+    selectArticlesBelongingToList('cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'),
+    E.map((articleIds) => [
+      {
+        href: '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
+        title: 'High interest articles',
+        articleCountLabel: 'This list contains',
+        description: 'Articles that have been identified as high interest by NCRC editors.',
+        lastUpdated: O.some(new Date('2021-11-24')),
+        articleCount: articleIds.length,
+      },
+      ...cardViewModels,
+    ]),
+  )
+  : E.right(cardViewModels)
+);
 
 const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (
   groupSlug: string,
@@ -73,7 +79,10 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
     articleCountLabel: 'This group has evaluated',
   })),
   TE.map((cardViewModel) => [cardViewModel]),
-  TE.map(addNcrcListCardViewModelOnNcrcPage(group.slug)),
+  TE.chain((cardViewModels) => pipe(
+    ports.getAllEvents,
+    T.map(addNcrcListCardViewModelOnNcrcPage(group.slug)(cardViewModels)),
+  )),
   TE.map(addBiophysicsColabListCardViewModelOnBiophysicsColabPage(group.slug)),
   TE.map(RA.map(renderListCard)),
   TE.map(renderCards),
