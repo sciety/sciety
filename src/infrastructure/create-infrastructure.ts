@@ -26,6 +26,7 @@ import {
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { evaluationRecorded } from '../domain-events';
+import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -38,7 +39,6 @@ import {
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
 import { ReviewId } from '../types/review-id';
-import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 
 type Dependencies = {
   prettyLog: boolean,

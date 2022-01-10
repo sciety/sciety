@@ -1,11 +1,14 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
+import {
+  articleAddedToList, evaluationRecorded, userSavedArticle, userUnsavedArticle,
+} from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { Doi } from '../../../src/types/doi';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -115,13 +118,13 @@ describe('get-activity-for-doi', () => {
     describe('and the list is a featured articles list', () => {
       const articleActivity = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleIdFromNcrcHighInterestList, arbitraryReviewId()),
+          articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoi(articleIdFromNcrcHighInterestList),
+        getActivityForDoi(articleId),
       );
 
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
+      it.skip('has a listMemberShipCount of 1', () => {
+        expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
 
