@@ -14,6 +14,8 @@ export { UserUnfollowedEditorialCommunityEvent, userUnfollowedEditorialCommunity
 export { userUnsavedArticle, UserUnsavedArticleEvent } from './user-unsaved-article-event';
 export { userCreatedAccount } from './user-created-account-event';
 export {
+  isArticleAddedToListEvent,
+  isListCreatedEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
   isEvaluationRecordedEvent,

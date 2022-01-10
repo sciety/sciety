@@ -1,6 +1,8 @@
+import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { DomainEvent } from './domain-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
+import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
@@ -11,6 +13,11 @@ import { UserSavedArticleEvent } from './user-saved-article-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
+export const isArticleAddedToListEvent = (event: DomainEvent):
+  event is ArticleAddedToListEvent => (
+  event.type === 'ArticleAddedToList'
+);
+
 export const isGroupCreatedEvent = (event: DomainEvent):
   event is GroupCreatedEvent => (
   event.type === 'GroupCreated'
@@ -19,6 +26,11 @@ export const isGroupCreatedEvent = (event: DomainEvent):
 export const isEvaluationRecordedEvent = (event: DomainEvent):
   event is EvaluationRecordedEvent => (
   event.type === 'EvaluationRecorded'
+);
+
+export const isListCreatedEvent = (event: DomainEvent):
+event is ListCreatedEvent => (
+  event.type === 'ListCreated'
 );
 
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):

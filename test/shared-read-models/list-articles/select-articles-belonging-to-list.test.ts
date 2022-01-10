@@ -24,7 +24,7 @@ describe('select-articles-belonging-to-list', () => {
         selectArticlesBelongingToList(listId),
       );
 
-      it.skip('returns the articleIds, sorted by date added, descending', () => {
+      it('returns the articleIds, sorted by date added, descending', () => {
         expect(result).toStrictEqual(E.right([articleId2, articleId1]));
       });
     });
@@ -37,7 +37,7 @@ describe('select-articles-belonging-to-list', () => {
         selectArticlesBelongingToList(listId),
       );
 
-      it.skip('returns an empty array', () => {
+      it('returns an empty array', () => {
         expect(result).toStrictEqual(E.right([]));
       });
     });
