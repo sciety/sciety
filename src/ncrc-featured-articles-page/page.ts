@@ -8,16 +8,17 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports } from './articles-list/articlesList';
-import { lists } from './lists';
+import { DomainEvent } from '../domain-events';
 import { renderComponent } from '../list-page/header/render-component';
 import { renderErrorPage } from '../list-page/render-page';
+import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { ListId } from '../types/list-id';
 
-const headers = (listId: ListId) => pipe(
+const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   {
     'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': {
       name: 'High interest articles',
@@ -25,7 +26,6 @@ const headers = (listId: ListId) => pipe(
       ownerName: 'NCRC',
       ownerHref: '/groups/ncrc',
       ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
-      articleCount: lists['cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'].length,
       lastUpdated: O.some(new Date('2021-11-24')),
     },
     '5ac3a439-e5c6-4b15-b109-92928a740812': {
@@ -34,12 +34,19 @@ const headers = (listId: ListId) => pipe(
       ownerName: 'Biophysics Colab',
       ownerHref: '/groups/biophysics-colab',
       ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
-      articleCount: lists['5ac3a439-e5c6-4b15-b109-92928a740812'].length,
       lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
     },
   },
   R.lookup(listId),
   E.fromOption(() => DE.notFound),
+  E.chain((partial) => pipe(
+    events,
+    selectArticlesBelongingToList(listId),
+    E.map((articleIds) => ({
+      ...partial,
+      articleCount: articleIds.length,
+    })),
+  )),
 );
 
 type Components = {
@@ -68,15 +75,15 @@ type Params = t.TypeOf<typeof paramsCodec>;
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   {
     header: pipe(
-      headers(params.id),
-      E.map(renderComponent),
-      T.of,
+      ports.getAllEvents,
+      T.map(headers(params.id)),
+      TE.map(renderComponent),
     ),
     articlesList: articlesList(ports, params.id, params.page),
     title: pipe(
-      headers(params.id),
-      E.map((header) => header.name),
-      T.of,
+      ports.getAllEvents,
+      T.map(headers(params.id)),
+      TE.map((header) => header.name),
     ),
   },
   sequenceS(TE.ApplyPar),
