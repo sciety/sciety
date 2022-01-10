@@ -1,8 +1,7 @@
 import { articleAddedToList, ArticleAddedToListEvent } from '../../domain-events';
 import { Doi } from '../../types/doi';
 
-// ts-unused-exports:disable-next-line
-export const articleAddedToListData: ReadonlyArray<ArticleAddedToListEvent> = [
+export const articleAddedToListEvents: ReadonlyArray<ArticleAddedToListEvent> = [
   articleAddedToList(new Doi('10.1101/2021.11.04.467308'), 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7', new Date('2021-11-25T12:00:00Z')),
   articleAddedToList(new Doi('10.1101/2021.09.15.21263613'), 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7', new Date('2021-11-25T12:00:01Z')),
   articleAddedToList(new Doi('10.1101/2021.08.30.21262866'), 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7', new Date('2021-11-25T12:00:02Z')),

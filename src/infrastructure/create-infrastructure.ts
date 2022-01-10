@@ -38,6 +38,7 @@ import {
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
 import { ReviewId } from '../types/review-id';
+import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -92,6 +93,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...eventsFromDatabase,
             ...groupEvents,
             ...listCreationEvents,
+            ...articleAddedToListEvents,
             evaluationRecorded(
               Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
               new Doi('10.21203/rs.3.rs-955726/v1'),
