@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { selectArticlesBelongingToList } from '../../../src/shared-read-models/list-articles';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import * as DE from '../../../src/types/data-error';
 
 describe('select-articles-belonging-to-list', () => {
   const listId = arbitraryListId();
