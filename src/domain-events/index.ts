@@ -3,6 +3,7 @@ export { RuntimeGeneratedEvent } from './runtime-generated-event';
 export { ArticleAddedToListEvent, articleAddedToList } from './article-added-to-list-event';
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
+export { listCreated } from './list-created-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
