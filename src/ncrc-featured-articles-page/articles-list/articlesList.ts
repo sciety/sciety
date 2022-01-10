@@ -10,6 +10,7 @@ import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-l
 import { paginate } from '../../shared-components/paginate';
 import { getActivityForDoi } from '../../shared-read-models/article-activity';
 import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
 import { lists } from '../lists';
 
@@ -17,13 +18,14 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const selectArticlesBelongingToList = (
-  listId: string,
-) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type SelectArticlesBelongingToList = (listId: string)
+=> (events: ReadonlyArray<DomainEvent>)
+=> E.Either<DE.DataError, ReadonlyArray<Doi>>;
+
+const selectArticlesBelongingToList: SelectArticlesBelongingToList = (listId) => () => pipe(
   lists,
   R.lookup(listId),
   E.fromOption(() => DE.notFound),
-  E.map(RA.map((doi) => getActivityForDoi(doi)(events))),
 );
 
 export const articlesList = (
@@ -33,6 +35,10 @@ export const articlesList = (
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(selectArticlesBelongingToList(listId)),
+  TE.chainTaskK((dois) => pipe(
+    ports.getAllEvents,
+    T.map((events) => RA.map((doi: Doi) => getActivityForDoi(doi)(events))(dois)),
+  )),
   TE.chain(RA.match(
     () => TE.right(noEvaluatedArticlesMessage),
     flow(
