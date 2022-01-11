@@ -1,14 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import { shouldDisplayRefereedBadge } from '../../src/article-page/should-display-refereed-badge';
-import { evaluationRecorded } from '../../src/domain-events';
+import { evaluationRecorded, groupCreated } from '../../src/domain-events';
 import { fromValidatedString } from '../../src/types/group-id';
 import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('should-display-refereed-badge', () => {
   const articleId = arbitraryDoi();
   const screenItId = fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65');
+  const humanGroup = arbitraryGroup();
 
   describe('when there are no evaluations', () => {
     const result = pipe(
@@ -38,7 +39,8 @@ describe('should-display-refereed-badge', () => {
     describe('none are by ScreenIT', () => {
       const result = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          groupCreated(humanGroup),
+          evaluationRecorded(humanGroup.id, articleId, arbitraryReviewId()),
         ],
         shouldDisplayRefereedBadge(articleId),
       );
@@ -51,8 +53,9 @@ describe('should-display-refereed-badge', () => {
     describe('some by ScreenIT, some by other groups', () => {
       const result = pipe(
         [
+          groupCreated(humanGroup),
           evaluationRecorded(screenItId, articleId, arbitraryReviewId()),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(humanGroup.id, articleId, arbitraryReviewId()),
         ],
         shouldDisplayRefereedBadge(articleId),
       );

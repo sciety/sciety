@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
+import { getGroup } from '../shared-read-models/groups';
 import { Doi } from '../types/doi';
 import { fromValidatedString } from '../types/group-id';
 
@@ -12,5 +13,8 @@ export const shouldDisplayRefereedBadge: ShouldDisplayRefereedBadge = (articleId
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.filter((event) => event.articleId.value === articleId.value),
-  RA.some((event) => event.groupId !== screenItId),
+  RA.map((event) => event.groupId),
+  RA.map((groupId) => getGroup(groupId)(events)),
+  RA.rights,
+  RA.some((group) => group.id !== screenItId),
 );
