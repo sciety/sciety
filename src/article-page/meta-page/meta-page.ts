@@ -47,7 +47,7 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const renderBadge = () => toHtmlFragment(process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : '');
+const badgeHtml = '<div class="badge">Refereed preprint</div>';
 
 export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
   {
@@ -70,10 +70,7 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
         ports.getAllEvents,
         T.map(flow(
           shouldDisplayRefereedBadge(doi),
-          B.fold(
-            () => '',
-            () => renderBadge(),
-          ),
+          B.fold(() => '', () => badgeHtml),
           toHtmlFragment,
         )),
         TE.rightTask,
