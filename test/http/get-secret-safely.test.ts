@@ -15,7 +15,7 @@ describe('get-secret-safely', () => {
       [undefined],
       [''],
     ])('returns a non empty string', (input) => {
-      expect(getSecretSafely(input).length).toBeGreaterThanOrEqual(12);
+      expect(getSecretSafely(input).length).toBeGreaterThanOrEqual(48);
     });
   });
 });
