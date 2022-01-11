@@ -19,6 +19,7 @@ export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
 }): HtmlFragment => pipe(
   `
+    <div class="article-meta-wrapper">
       <section class="article-meta">
         ${renderAuthors(components.articleDetails.authors)}
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
@@ -35,6 +36,7 @@ export const renderMetaPage = (components: {
       <a href="https://doi.org/${components.doi.value}" class="full-article-button" target="_blank">
         Read the full article
       </a>
+    </div>
   `,
   toHtmlFragment,
   tabs({
@@ -43,7 +45,7 @@ export const renderMetaPage = (components: {
   }),
   (mainContent) => toHtmlFragment(`
     ${components.header}
-    <div class="main-content main-content--meta">
+    <div class="main-content">
       ${mainContent}
     </div>
   `),

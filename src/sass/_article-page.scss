@@ -3,6 +3,7 @@
 @use 'button';
 @use 'functions';
 @use 'layout';
+@use 'card';
 @use 'list';
 @use 'settings';
 @use 'typography';
@@ -97,4 +98,10 @@
 
 .saved-to-list__icon {
   margin-right: functions.px-to-rem(3px);
+}
+
+.article-meta-wrapper {
+  @include card.basics();
+
+  margin-bottom: baseline.increments(6);
 }
