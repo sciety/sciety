@@ -12,32 +12,36 @@ type ArticleDetails = {
   authors: ArticleAuthors,
 };
 
-export const renderMetaPage = (components: {
-  doi: Doi,
-  header: HtmlFragment,
-  articleDetails: ArticleDetails,
-}): HtmlFragment => pipe(
+const renderMetaContent = (articleDetails: ArticleDetails, doi: Doi) => pipe(
   `
     <div class="article-meta-wrapper">
       <section class="article-meta">
-        ${renderAuthors(components.articleDetails.authors)}
+        ${renderAuthors(articleDetails.authors)}
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>
-            <a href="https://doi.org/${components.doi.value}" target="_blank">https://doi.org/${components.doi.value}</a>
+            <a href="https://doi.org/${doi.value}" target="_blank">https://doi.org/${doi.value}</a>
           </li>
         </ul>
       </section>
 
       <section class="article-abstract" role="doc-abstract">
-        ${components.articleDetails.abstract}
+        ${articleDetails.abstract}
       </section>
 
-      <a href="https://doi.org/${components.doi.value}" class="full-article-button" target="_blank">
+      <a href="https://doi.org/${doi.value}" class="full-article-button" target="_blank">
         Read the full article
       </a>
     </div>
   `,
   toHtmlFragment,
+);
+
+export const renderMetaPage = (components: {
+  doi: Doi,
+  header: HtmlFragment,
+  articleDetails: ArticleDetails,
+}): HtmlFragment => pipe(
+  renderMetaContent(components.articleDetails, components.doi),
   tabs({
     tabList: tabList(components.doi),
     activeTabIndex: 0,
