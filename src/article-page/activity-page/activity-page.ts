@@ -20,10 +20,11 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
-import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
+import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
+import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -54,8 +55,6 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const badgeHtml = '<div class="badge">Refereed preprint</div>';
-
 export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   {
     doi: params.doi,
@@ -77,7 +76,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         ports.getAllEvents,
         T.map(flow(
           shouldDisplayRefereedBadge(doi),
-          B.fold(() => '', () => badgeHtml),
+          B.fold(() => '', () => refereedPreprintBadge),
           toHtmlFragment,
         )),
         TE.rightTask,

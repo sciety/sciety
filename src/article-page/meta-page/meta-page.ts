@@ -16,6 +16,7 @@ import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
+import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
@@ -47,8 +48,6 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const badgeHtml = '<div class="badge">Refereed preprint</div>';
-
 export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
   {
     doi: params.doi,
@@ -70,7 +69,7 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
         ports.getAllEvents,
         T.map(flow(
           shouldDisplayRefereedBadge(doi),
-          B.fold(() => '', () => badgeHtml),
+          B.fold(() => '', () => refereedPreprintBadge),
           toHtmlFragment,
         )),
         TE.rightTask,
