@@ -14,6 +14,7 @@ export const renderActivityPage = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,
   feed: string,
+  badge: HtmlFragment,
   saveArticle: string,
   tweetThis: string,
 }): HtmlFragment => pipe(
@@ -25,6 +26,7 @@ export const renderActivityPage = (components: {
   }),
   (mainContent) => `
     <header class="page-header page-header--article">
+      ${components.badge}
       <h1>${components.articleDetails.title}</h1>
       <div class="article-actions">
         ${components.tweetThis}
