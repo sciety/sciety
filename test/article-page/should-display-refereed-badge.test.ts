@@ -8,8 +8,11 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('should-display-refereed-badge', () => {
   const articleId = arbitraryDoi();
-  const screenItId = fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65');
   const humanGroup = arbitraryGroup();
+  const automatedGroup = {
+    ...arbitraryGroup(),
+    isAutomated: true,
+  };
 
   describe('when there are no evaluations', () => {
     const result = pipe(
@@ -23,10 +26,11 @@ describe('should-display-refereed-badge', () => {
   });
 
   describe('when there are evaluations', () => {
-    describe('only by ScreenIT', () => {
+    describe('only by automated groups', () => {
       const result = pipe(
         [
-          evaluationRecorded(screenItId, articleId, arbitraryReviewId()),
+          groupCreated(automatedGroup),
+          evaluationRecorded(automatedGroup.id, articleId, arbitraryReviewId()),
         ],
         shouldDisplayRefereedBadge(articleId),
       );
@@ -36,7 +40,7 @@ describe('should-display-refereed-badge', () => {
       });
     });
 
-    describe('none are by ScreenIT', () => {
+    describe('none are by automated groups', () => {
       const result = pipe(
         [
           groupCreated(humanGroup),
@@ -50,11 +54,12 @@ describe('should-display-refereed-badge', () => {
       });
     });
 
-    describe('some by ScreenIT, some by other groups', () => {
+    describe('some by automated groups, some by other groups', () => {
       const result = pipe(
         [
           groupCreated(humanGroup),
-          evaluationRecorded(screenItId, articleId, arbitraryReviewId()),
+          groupCreated(automatedGroup),
+          evaluationRecorded(automatedGroup.id, articleId, arbitraryReviewId()),
           evaluationRecorded(humanGroup.id, articleId, arbitraryReviewId()),
         ],
         shouldDisplayRefereedBadge(articleId),
