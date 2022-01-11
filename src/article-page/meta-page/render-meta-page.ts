@@ -16,6 +16,7 @@ type ArticleDetails = {
 export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,
+  badge: HtmlFragment,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
 }): HtmlFragment => pipe(
@@ -44,7 +45,7 @@ export const renderMetaPage = (components: {
   }),
   (mainContent) => toHtmlFragment(`
     <header class="page-header page-header--article">
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : ''}
+      ${components.badge}
       <h1>${components.articleDetails.title}</h1>
       <div class="article-actions">
         ${components.tweetThis}

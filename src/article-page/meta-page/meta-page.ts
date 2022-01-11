@@ -45,6 +45,8 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
+const renderBadge = () => toHtmlFragment(process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : '');
+
 export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
   {
     doi: params.doi,
@@ -69,6 +71,7 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
       tweetThis,
       articleDetails,
       saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+      badge: renderBadge(),
     })),
   ),
   TE.bimap(
