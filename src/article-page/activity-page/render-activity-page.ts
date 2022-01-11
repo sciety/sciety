@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { tabs } from '../../shared-components/tabs';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderHeader } from '../render-header';
 import { tabList } from '../tab-list';
 
 // TODO: title should be HtmlFragment and sanitized outside of here
@@ -15,8 +16,8 @@ export const renderActivityPage = (components: {
   doi: Doi,
   feed: string,
   badge: HtmlFragment,
-  saveArticle: string,
-  tweetThis: string,
+  saveArticle: HtmlFragment,
+  tweetThis: HtmlFragment,
 }): HtmlFragment => pipe(
   components.feed,
   toHtmlFragment,
@@ -25,14 +26,7 @@ export const renderActivityPage = (components: {
     activeTabIndex: 1,
   }),
   (mainContent) => `
-    <header class="page-header page-header--article">
-      ${components.badge}
-      <h1>${components.articleDetails.title}</h1>
-      <div class="article-actions">
-        ${components.tweetThis}
-        ${components.saveArticle}
-      </div>
-    </header>
+    ${renderHeader(components)}
 
     <div class="main-content">
       ${mainContent}
