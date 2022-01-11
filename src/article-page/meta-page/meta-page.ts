@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
+import { renderMetaContent } from './render-meta-content';
 import { renderMetaPage } from './render-meta-page';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
@@ -86,6 +87,7 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
         tweetThis,
       }),
       articleDetails,
+      mainContent: renderMetaContent(articleDetails, doi),
     })),
   ),
   TE.bimap(

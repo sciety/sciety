@@ -8,9 +8,9 @@ import { tabList } from '../tab-list';
 export const renderActivityPage = (components: {
   doi: Doi,
   header: HtmlFragment,
-  feed: HtmlFragment,
+  mainContent: HtmlFragment,
 }): HtmlFragment => pipe(
-  components.feed,
+  components.mainContent,
   tabs({
     tabList: tabList(components.doi),
     activeTabIndex: 1,

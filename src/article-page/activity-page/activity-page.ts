@@ -97,7 +97,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
           tweetThis,
         }),
-        feed: renderFeed(feedItemsByDateDescending),
+        mainContent: renderFeed(feedItemsByDateDescending),
       })),
     )),
   ),

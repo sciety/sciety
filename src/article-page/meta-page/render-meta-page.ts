@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { renderMetaContent } from './render-meta-content';
 import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
@@ -16,8 +15,9 @@ export const renderMetaPage = (components: {
   doi: Doi,
   header: HtmlFragment,
   articleDetails: ArticleDetails,
+  mainContent: HtmlFragment,
 }): HtmlFragment => pipe(
-  renderMetaContent(components.articleDetails, components.doi),
+  components.mainContent,
   tabs({
     tabList: tabList(components.doi),
     activeTabIndex: 0,
