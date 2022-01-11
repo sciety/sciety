@@ -11,6 +11,7 @@ export type GroupCreatedEvent = Readonly<{
   shortDescription: string,
   homepage: string,
   slug: string,
+  isAutomated: boolean,
 }>;
 
 export const groupCreated = (group: Group): GroupCreatedEvent => ({
@@ -23,4 +24,5 @@ export const groupCreated = (group: Group): GroupCreatedEvent => ({
   shortDescription: group.shortDescription,
   homepage: group.homepage,
   slug: group.slug,
+  isAutomated: group.isAutomated,
 });
