@@ -7,9 +7,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { renderPage } from '../render-page';
 import { tabList } from '../tab-list';
 
-// TODO: title should be HtmlFragment and sanitized outside of here
 type ArticleDetails = {
-  title: string,
   abstract: HtmlFragment,
   authors: ArticleAuthors,
 };
