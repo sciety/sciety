@@ -331,7 +331,7 @@ describe('user-page', () => {
       )();
       const link = page.querySelector('.tab-panel a');
 
-      expect(link?.getAttribute('href')).toStrictEqual(`/users/${params.handle}/lists/saved-articles`);
+      expect(link?.getAttribute('href')).toBe(`/users/${params.handle}/lists/saved-articles`);
     });
   });
 });

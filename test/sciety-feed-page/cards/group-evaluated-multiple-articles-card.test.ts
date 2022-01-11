@@ -35,7 +35,7 @@ describe('group-evaluated-multiple-articles-card', () => {
     });
 
     it('links to the groups evaluated articles list page', () => {
-      expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/evaluated-articles`);
+      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}/evaluated-articles`);
     });
   });
 

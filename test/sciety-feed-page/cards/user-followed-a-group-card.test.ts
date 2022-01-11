@@ -48,7 +48,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('links to the group page about tab', async () => {
-      expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
+      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}/about`);
     });
 
     it('includes the group\'s name in the details title', () => {
@@ -85,7 +85,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('links to the group page about tab', async () => {
-      expect(viewModel.linkUrl).toStrictEqual(`/groups/${group.slug}/about`);
+      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}/about`);
     });
 
     it('includes the group\'s name in the details title', () => {

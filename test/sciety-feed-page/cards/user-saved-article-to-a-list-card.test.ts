@@ -47,7 +47,7 @@ describe('user-saved-article-to-a-list-card', () => {
     });
 
     it('includes the link to the list page', async () => {
-      expect(viewModel.linkUrl).toStrictEqual(`/users/${handle}/lists/saved-articles`);
+      expect(viewModel.linkUrl).toBe(`/users/${handle}/lists/saved-articles`);
     });
   });
 
@@ -73,7 +73,7 @@ describe('user-saved-article-to-a-list-card', () => {
     });
 
     it('links to the list page', async () => {
-      expect(viewModel.linkUrl).toStrictEqual(`/users/${userId}/lists/saved-articles`);
+      expect(viewModel.linkUrl).toBe(`/users/${userId}/lists/saved-articles`);
     });
   });
 });
