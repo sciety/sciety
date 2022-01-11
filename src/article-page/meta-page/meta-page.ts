@@ -6,6 +6,7 @@ import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
+import { shouldDisplayRefereedBadge } from './should-display-refereed-badge';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
@@ -46,8 +47,6 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const shouldDisplayRefereedBadge = () => true;
-
 const renderBadge = () => toHtmlFragment(process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : '');
 
 export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
@@ -70,7 +69,7 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
       badge: pipe(
         ports.getAllEvents,
         T.map(flow(
-          shouldDisplayRefereedBadge,
+          shouldDisplayRefereedBadge(doi),
           B.fold(
             () => '',
             () => renderBadge(),
