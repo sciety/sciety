@@ -16,7 +16,7 @@ describe('should-display-refereed-badge', () => {
       shouldDisplayRefereedBadge(articleId),
     );
 
-    it.skip('should not show badge', () => {
+    it('should not show badge', () => {
       expect(result).toBe(false);
     });
   });
@@ -30,7 +30,7 @@ describe('should-display-refereed-badge', () => {
         shouldDisplayRefereedBadge(articleId),
       );
 
-      it.skip('should not show badge', () => {
+      it('should not show badge', () => {
         expect(result).toBe(false);
       });
     });
