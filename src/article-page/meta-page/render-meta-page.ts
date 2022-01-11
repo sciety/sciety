@@ -44,6 +44,7 @@ export const renderMetaPage = (components: {
   }),
   (mainContent) => toHtmlFragment(`
     <header class="page-header page-header--article">
+      ${process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : ''}
       <h1>${components.articleDetails.title}</h1>
       <div class="article-actions">
         ${components.tweetThis}

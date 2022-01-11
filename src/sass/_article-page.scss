@@ -12,6 +12,17 @@
   margin-bottom: baseline.increments(3);
 }
 
+.badge {
+  font-size: functions.px-to-rem(16px);
+  background-color: settings.$colour-accent;
+  color: settings.$colour-white;
+  display: inline-block;
+  font-weight: bold;
+  padding: functions.px-to-rem(2px) functions.px-to-rem(12px);
+  margin-bottom: functions.px-to-rem(16px);
+  border-radius: 50px;
+}
+
 .article-actions {
   display: flex;
   align-items: center;
