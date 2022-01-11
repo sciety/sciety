@@ -6,8 +6,8 @@ import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaContent } from './render-meta-content';
-import { renderMetaPage } from './render-meta-page';
 import { DomainEvent } from '../../domain-events';
+import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -19,9 +19,11 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
+import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
+import { tabList } from '../tab-list';
 
 type MetaPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -93,7 +95,14 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
   TE.bimap(
     toErrorPage,
     (components) => ({
-      content: renderMetaPage(components),
+      content: pipe(
+        components.mainContent,
+        tabs({
+          tabList: tabList(components.doi),
+          activeTabIndex: 0,
+        }),
+        renderPage(components.header),
+      ),
       title: striptags(components.articleDetails.title),
       description: striptags(components.articleDetails.abstract),
       openGraph: {

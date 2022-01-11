@@ -8,10 +8,10 @@ import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { renderActivityPage } from './render-activity-page';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
 import { DomainEvent } from '../../domain-events';
+import { tabs } from '../../shared-components/tabs';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -23,9 +23,11 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
+import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
+import { tabList } from '../tab-list';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -104,7 +106,14 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   TE.bimap(
     toErrorPage,
     (components) => ({
-      content: renderActivityPage(components),
+      content: pipe(
+        components.mainContent,
+        tabs({
+          tabList: tabList(components.doi),
+          activeTabIndex: 1,
+        }),
+        renderPage(components.header),
+      ),
       title: striptags(components.articleDetails.title),
       description: pipe(
         articleMetaTagContent(components.feedItemsByDateDescending),
