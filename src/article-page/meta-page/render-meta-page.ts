@@ -4,7 +4,6 @@ import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { renderHeader } from '../render-header';
 import { tabList } from '../tab-list';
 
 // TODO: title should be HtmlFragment and sanitized outside of here
@@ -20,6 +19,7 @@ export const renderMetaPage = (components: {
   badge: HtmlFragment,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
+  header: HtmlFragment,
 }): HtmlFragment => pipe(
   `
       <section class="article-meta">
@@ -45,8 +45,7 @@ export const renderMetaPage = (components: {
     activeTabIndex: 0,
   }),
   (mainContent) => toHtmlFragment(`
-    ${renderHeader(components)}
-
+    ${components.header}
     <div class="main-content main-content--meta">
       ${mainContent}
     </div>

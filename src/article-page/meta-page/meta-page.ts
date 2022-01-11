@@ -17,6 +17,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
+import { renderHeader } from '../render-header';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
@@ -81,6 +82,12 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
       tweetThis,
       articleDetails,
       badge,
+      header: renderHeader({
+        articleDetails,
+        badge,
+        saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+        tweetThis,
+      }),
       saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
     })),
   ),
