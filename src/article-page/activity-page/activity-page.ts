@@ -20,7 +20,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
-import { shouldDisplayRefereedBadge } from '../meta-page/should-display-refereed-badge';
+import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';

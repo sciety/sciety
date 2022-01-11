@@ -6,7 +6,6 @@ import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
-import { shouldDisplayRefereedBadge } from './should-display-refereed-badge';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
@@ -19,6 +18,7 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
+import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
 
 type MetaPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 

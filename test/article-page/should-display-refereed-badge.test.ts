@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
-import { shouldDisplayRefereedBadge } from '../../../src/article-page/meta-page/should-display-refereed-badge';
-import { evaluationRecorded } from '../../../src/domain-events';
-import { fromValidatedString } from '../../../src/types/group-id';
-import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { shouldDisplayRefereedBadge } from '../../src/article-page/should-display-refereed-badge';
+import { evaluationRecorded } from '../../src/domain-events';
+import { fromValidatedString } from '../../src/types/group-id';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('should-display-refereed-badge', () => {
   const articleId = arbitraryDoi();
