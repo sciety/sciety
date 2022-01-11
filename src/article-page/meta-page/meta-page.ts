@@ -2,7 +2,8 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import * as B from 'fp-ts/boolean';
+import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
 import { DomainEvent } from '../../domain-events';
@@ -45,6 +46,8 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
+const shouldDisplayRefereedBadge = () => true;
+
 const renderBadge = () => toHtmlFragment(process.env.EXPERIMENT_ENABLED === 'true' ? '<div class="badge">Refereed preprint</div>' : '');
 
 export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
@@ -64,14 +67,26 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
         O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
         TE.rightTask,
       ),
+      badge: pipe(
+        ports.getAllEvents,
+        T.map(flow(
+          shouldDisplayRefereedBadge,
+          B.fold(
+            () => '',
+            () => renderBadge(),
+          ),
+          toHtmlFragment,
+        )),
+        TE.rightTask,
+      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.map(({ articleDetails, hasUserSavedArticle }) => ({
+    TE.map(({ articleDetails, badge, hasUserSavedArticle }) => ({
       doi,
       tweetThis,
       articleDetails,
+      badge,
       saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-      badge: renderBadge(),
     })),
   ),
   TE.bimap(
