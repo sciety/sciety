@@ -2,8 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as B from 'fp-ts/boolean';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
@@ -26,7 +25,6 @@ import { renderHeader } from '../render-header';
 import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
-import { shouldDisplayRefereedBadge } from '../should-display-refereed-badge';
 import { tabList } from '../tab-list';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
@@ -77,11 +75,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       ),
       badge: pipe(
         ports.getAllEvents,
-        T.map(flow(
-          shouldDisplayRefereedBadge(doi),
-          B.fold(() => '', () => refereedPreprintBadge),
-          toHtmlFragment,
-        )),
+        T.map(refereedPreprintBadge(doi)),
         TE.rightTask,
       ),
     },
