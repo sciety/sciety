@@ -4,6 +4,7 @@ import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderPage } from '../render-page';
 import { tabList } from '../tab-list';
 
 // TODO: title should be HtmlFragment and sanitized outside of here
@@ -43,10 +44,5 @@ export const renderMetaPage = (components: {
     tabList: tabList(components.doi),
     activeTabIndex: 0,
   }),
-  (mainContent) => toHtmlFragment(`
-    ${components.header}
-    <div class="main-content">
-      ${mainContent}
-    </div>
-  `),
+  renderPage(components.header),
 );
