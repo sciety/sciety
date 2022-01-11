@@ -89,9 +89,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
         doi,
-        tweetThis,
         articleDetails,
-        badge,
         feedItemsByDateDescending,
         header: renderHeader({
           articleDetails,
@@ -99,7 +97,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
           tweetThis,
         }),
-        saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
         feed: renderFeed(feedItemsByDateDescending),
       })),
     )),

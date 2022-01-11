@@ -14,12 +14,9 @@ type ArticleDetails = {
 };
 
 export const renderMetaPage = (components: {
-  articleDetails: ArticleDetails,
   doi: Doi,
-  badge: HtmlFragment,
-  saveArticle: HtmlFragment,
-  tweetThis: HtmlFragment,
   header: HtmlFragment,
+  articleDetails: ArticleDetails,
 }): HtmlFragment => pipe(
   `
       <section class="article-meta">

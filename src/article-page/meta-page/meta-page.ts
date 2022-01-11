@@ -79,16 +79,13 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
     sequenceS(TE.ApplyPar),
     TE.map(({ articleDetails, badge, hasUserSavedArticle }) => ({
       doi,
-      tweetThis,
-      articleDetails,
-      badge,
       header: renderHeader({
         articleDetails,
         badge,
         saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
         tweetThis,
       }),
-      saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+      articleDetails,
     })),
   ),
   TE.bimap(
