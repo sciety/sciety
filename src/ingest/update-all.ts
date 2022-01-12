@@ -72,7 +72,12 @@ const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
     },
     timeout: 10000,
   }),
-  (error) => `Failed to post evaluation command: ${String(error)}`,
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      return `Failed to post evaluation command: ${String(error)}. Response data is: "${String(error.response?.data)}"`;
+    }
+    return `Failed to post evaluation command: ${String(error)}`;
+  },
 );
 
 const countUniques = (accumulator: Record<string, number>, errorMessage: string) => pipe(
