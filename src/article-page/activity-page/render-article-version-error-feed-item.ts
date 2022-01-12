@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { retryLater } from './static-messages';
 import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
@@ -40,7 +41,7 @@ export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment 
       </header>
       <p>
         We couldn't get version information from ${viewModel.name}.
-        ${viewModel.versionsSupported ? 'Please try refreshing this page, or try again later.' : ''}
+        ${viewModel.versionsSupported ? retryLater : ''}
       </p>
     </div>
   `,
