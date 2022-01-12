@@ -40,7 +40,7 @@ export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment 
       </header>
       <p>
         We couldn't get version information from ${viewModel.name}.
-        ${viewModel.versionsSupported ? 'Please try refreshing this page.' : ''}
+        ${viewModel.versionsSupported ? 'Please try refreshing this page, or try again later.' : ''}
       </p>
     </div>
   `,
