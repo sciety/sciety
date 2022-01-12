@@ -91,6 +91,12 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   `;
 };
 
+const renderSourceLinkWhenFulltextMissing = (review: ReviewFeedItem) => pipe(
+  review,
+  sourceLink,
+  O.getOrElse(constant('We are unable to display this evaluation right now. Please try refreshing this page, or try again later.')),
+);
+
 const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFragment) => pipe(
   review.fullText,
   O.fold(
@@ -102,7 +108,7 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
         </header>
         <div class="activity-feed__item_body">
           <div>
-            ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+            ${renderSourceLinkWhenFulltextMissing(review)}
           </div>
         </div>
       </article>
