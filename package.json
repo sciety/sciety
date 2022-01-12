@@ -71,7 +71,7 @@
     "@types/rdfjs__parser-n3": "^1.1.5",
     "@types/rdfjs__sink-map": "^1.0.2",
     "@types/redis": "2.8.32",
-    "@types/sanitize-html": "^2.6.1",
+    "@types/sanitize-html": "^2.6.2",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
