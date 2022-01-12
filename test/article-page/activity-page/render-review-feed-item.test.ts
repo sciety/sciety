@@ -2,7 +2,9 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
 import { renderReviewFeedItem } from '../../../src/article-page/activity-page/render-review-feed-item';
+import { missingFullTextAndSourceLink } from '../../../src/article-page/activity-page/static-messages';
 import { reviewIdCodec } from '../../../src/types/review-id';
+import { arbitraryNumber } from '../../helpers';
 import * as t from '../../helpers';
 
 describe('render-review-feed-item', () => {
@@ -74,32 +76,55 @@ describe('render-review-feed-item', () => {
   });
 
   describe('when the review has no full text', () => {
-    const source = 'http://example.com/source';
-    let rendered: DocumentFragment;
-    const item = pipe(
-      RFI.arbitrary(),
-      RFI.withNoFullText,
-      RFI.withSource(source),
-    );
-
-    beforeEach(() => {
-      rendered = pipe(
-        item,
-        renderReviewFeedItem(6),
-        JSDOM.fragment,
+    describe('when there is a source link URL', () => {
+      const source = 'http://example.com/source';
+      let rendered: DocumentFragment;
+      const item = pipe(
+        RFI.arbitrary(),
+        RFI.withNoFullText,
+        RFI.withSource(source),
       );
+
+      beforeEach(() => {
+        rendered = pipe(
+          item,
+          renderReviewFeedItem(6),
+          JSDOM.fragment,
+        );
+      });
+
+      it('renders without a teaser', async () => {
+        const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
+        const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_more')?.getAttribute('href');
+
+        expect(toggleableContent).toBeNull();
+        expect(sourceLinkUrl).toStrictEqual(source);
+      });
+
+      it('renders an id tag with the correct value', async () => {
+        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+      });
     });
 
-    it('renders without a teaser', async () => {
-      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-      const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_more')?.getAttribute('href');
+    describe('when there is no source link URL', () => {
+      let rendered: DocumentFragment;
+      const item = pipe(
+        RFI.arbitrary(),
+        RFI.withNoFullText,
+        RFI.withNoSource,
+      );
 
-      expect(toggleableContent).toBeNull();
-      expect(sourceLinkUrl).toStrictEqual(source);
-    });
+      beforeEach(() => {
+        rendered = pipe(
+          item,
+          renderReviewFeedItem(arbitraryNumber(6, 10)),
+          JSDOM.fragment,
+        );
+      });
 
-    it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+      it('displays a message that the evaluation is unavailable', () => {
+        expect(rendered.textContent).toContain(missingFullTextAndSourceLink);
+      });
     });
   });
 });

@@ -39,6 +39,11 @@ export const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem
   source: O.some(new URL(uri)),
 });
 
+export const withNoSource = (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  source: O.none,
+});
+
 export const withDate = (publishedAt: Date) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
   ...rfi,
   publishedAt,
