@@ -35,8 +35,8 @@ export const processServer = (
   owner: string,
   startDate: Date,
   fetchData: FetchData,
-) => (server: string): TE.TaskEither<string, ReadonlyArray<Annotation>> => {
+): TE.TaskEither<string, ReadonlyArray<Annotation>> => {
   const latestDate = encodeURIComponent(startDate.toISOString());
-  const baseUrl = `https://api.hypothes.is/api/search?${owner}&uri.parts=${server}&limit=200&sort=created&order=asc&search_after=`;
+  const baseUrl = `https://api.hypothes.is/api/search?${owner}&limit=200&sort=created&order=asc&search_after=`;
   return fetchPaginatedData(fetchData, baseUrl, latestDate);
 };
