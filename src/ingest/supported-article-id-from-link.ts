@@ -13,7 +13,7 @@ const extractDoiSuffix = (link: string) => {
   return E.right(doiSuffix);
 };
 
-export const medrxivOrBiorxivLinkToDoi = (link: string): E.Either<string, string> => pipe(
+export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => pipe(
   link,
   extractDoiSuffix,
   E.bimap(

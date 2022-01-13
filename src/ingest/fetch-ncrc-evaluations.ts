@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
-import { medrxivOrBiorxivLinkToDoi } from './medrxiv-or-biorxiv-link-to-doi';
+import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import { FetchEvaluations } from './update-all';
 import { sheetId } from '../third-parties/ncrc/sheet-id';
 
@@ -43,7 +43,7 @@ const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
     (r) => ({ item: r.id, reason: 'not a biorxiv | medrxiv article' }),
   ),
   E.chain((r) => pipe(
-    medrxivOrBiorxivLinkToDoi(r.link),
+    supportedArticleIdFromLink(r.link),
     E.bimap(
       (reason) => ({ item: r.id, reason }),
       (articleDoi) => ({

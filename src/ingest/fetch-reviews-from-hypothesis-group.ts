@@ -4,14 +4,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
-import { medrxivOrBiorxivLinkToDoi } from './medrxiv-or-biorxiv-link-to-doi';
+import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
 import * as Hyp from '../third-parties/hypothesis';
 
 export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
   row.uri,
-  medrxivOrBiorxivLinkToDoi,
+  supportedArticleIdFromLink,
   E.bimap(
     (reason) => ({ item: row.uri, reason }),
     (articleDoi) => ({
