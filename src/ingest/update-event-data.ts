@@ -89,7 +89,7 @@ const allGroups: Array<Group> = [
   {
     id: '4bbf0c12-629b-4bb8-91d6-974f4df8efb2',
     name: 'Biophysics Colab',
-    fetchFeed: fetchReviewsFromHypothesisGroup('e277wiod'),
+    fetchFeed: fetchReviewsFromHypothesisUser('biophysics_sciencecolab'),
   },
   {
     id: '50401e46-b764-47b7-8557-6bb35444b7c8',
