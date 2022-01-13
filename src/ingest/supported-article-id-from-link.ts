@@ -32,7 +32,10 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
           ),
         ),
       );
-    case 'researchsquare':
+    case 'researchsquare': {
+      const [, suffix] = /rs-(.*)$/.exec(link) ?? [];
+      return E.right(`10.21203/rs.3.rs-${suffix}`);
+    }
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
   }

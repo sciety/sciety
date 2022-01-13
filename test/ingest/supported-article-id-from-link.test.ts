@@ -11,7 +11,7 @@ describe('supported-article-id-from-link', () => {
       ['biorxiv link', 'https://biorxiv.org/content/10.1101/2021.11.04.467308v1', '10.1101/2021.11.04.467308'],
       ['research square link', 'https://www.researchsquare.com/article/rs-955726/v1', '10.21203/rs.3.rs-955726/v1'],
     ])('%s', (_, input, expectedDoi) => {
-      it.skip('extracts the doi from the input', () => {
+      it('extracts the doi from the input', () => {
         const result = supportedArticleIdFromLink(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
