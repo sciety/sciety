@@ -13,14 +13,27 @@ const extractDoiSuffix = (link: string) => {
   return E.right(doiSuffix);
 };
 
-export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => pipe(
-  link,
-  extractDoiSuffix,
-  E.bimap(
-    () => `link not parseable for DOI: "${link}"`,
-    flow(
-      stripTrailingDot,
-      addMedrxivOrBiorxivPrefix,
-    ),
-  ),
-);
+export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
+  const [, server] = /([a-z]+)\.(com|org)/.exec(link) ?? [];
+  if (!server) {
+    return E.left(`server not found in "${link}"`);
+  }
+  switch (server) {
+    case 'biorxiv':
+    case 'medrxiv':
+      return pipe(
+        link,
+        extractDoiSuffix,
+        E.bimap(
+          () => `link not parseable for DOI: "${link}"`,
+          flow(
+            stripTrailingDot,
+            addMedrxivOrBiorxivPrefix,
+          ),
+        ),
+      );
+    case 'researchsquare':
+    default:
+      return E.left(`server "${server}" not supported in "${link}"`);
+  }
+};

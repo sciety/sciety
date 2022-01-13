@@ -27,7 +27,7 @@ describe('supported-article-id-from-link', () => {
       it('returns a left', () => {
         const result = supportedArticleIdFromLink(input);
 
-        expect(result).toStrictEqual(E.left(`link not parseable for DOI: "${input}"`));
+        expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
       });
     });
   });
