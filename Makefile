@@ -99,7 +99,11 @@ stop:
 
 ingest-events: export TARGET = dev
 ingest-events: build
-	$(DOCKER_COMPOSE) run --name ingest --rm -e INGEST_DEBUG=${INGEST_DEBUG} -e INGEST_ONLY=${INGEST_ONLY} app \
+	$(DOCKER_COMPOSE) run --name ingest --rm \
+	-e INGEST_DEBUG=${INGEST_DEBUG} \
+	-e INGEST_ONLY=${INGEST_ONLY} \
+	-e INGEST_DAYS=${INGEST_DAYS} \
+	app \
 	npx ts-node src/ingest/update-event-data
 
 update-event-data: ingest-events backstop-test

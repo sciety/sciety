@@ -19,6 +19,7 @@ services:
       INGESTION_AUTH_BEARER_TOKEN:
       INGEST_DEBUG:
       INGEST_ONLY:
+      INGEST_DAYS:
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db
