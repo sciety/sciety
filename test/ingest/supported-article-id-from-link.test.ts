@@ -23,6 +23,8 @@ describe('supported-article-id-from-link', () => {
     describe.each([
       ['empty', ''],
       ['research square DOI link', 'https://doi.org/10.21203/rs.3.rs-885194/v1'],
+      ['other DOI link', 'https://doi.org/10.444444/555555'],
+      ['other DOI link with version', 'https://doi.org/10.444444/555555/v1'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
         const result = supportedArticleIdFromLink(input);
