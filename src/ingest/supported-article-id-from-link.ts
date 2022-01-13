@@ -19,6 +19,16 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
     return E.left(`server not found in "${link}"`);
   }
   switch (server) {
+    case 'doi': {
+      const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
+      switch (prefix) {
+        case '10.1101':
+        case '10.21203':
+          return E.right(`${prefix}/${suffix}`);
+        default:
+          return E.left(`link "${link}" not a supported server`);
+      }
+    }
     case 'biorxiv':
     case 'medrxiv':
       return pipe(
