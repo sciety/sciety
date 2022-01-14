@@ -10,10 +10,9 @@ import * as tt from 'io-ts-types';
 import { articlesList, Ports } from './articles-list/articlesList';
 import { DomainEvent } from '../domain-events';
 import { renderComponent } from '../list-page/header/render-component';
-import { render, renderErrorPage } from '../list-page/render-page';
+import { renderErrorPage, renderPage } from '../list-page/render-page';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import * as DE from '../types/data-error';
-import { HtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -48,17 +47,6 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
     })),
   )),
 );
-
-type Components = {
-  header: HtmlFragment,
-  content: HtmlFragment,
-  title: string,
-};
-
-const renderPage = (components: Components) => ({
-  content: render(components),
-  title: components.title,
-});
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

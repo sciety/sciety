@@ -8,7 +8,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
-import { render } from '../list-page/render-page';
+import { renderPage } from '../list-page/render-page';
 import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
@@ -115,6 +115,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
   }) => pipe(
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
+      title: `${handle} | Saved articles`,
       header: renderHeader(userDetails),
       content: renderContent(
         content,
@@ -132,9 +133,6 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    (components) => ({
-      title: `${handle} | Saved articles`,
-      content: render(components),
-    }),
+    renderPage,
   ),
 );
