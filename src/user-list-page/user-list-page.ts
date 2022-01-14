@@ -61,11 +61,11 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const render = (
-  header: HtmlFragment,
-  content: HtmlFragment,
-  supplementary: HtmlFragment = toHtmlFragment(''),
-) => toHtmlFragment(`
+type Components = { header: HtmlFragment, content: HtmlFragment, supplementary?: HtmlFragment };
+
+type Render = (components: Components) => HtmlFragment;
+
+const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
   ${header}
   <section>
     ${content}
@@ -127,7 +127,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
       header: renderHeader(userDetails),
-      renderedContent: renderContent(
+      content: renderContent(
         content,
         handle,
         nextPage,
@@ -143,9 +143,9 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({ header, renderedContent, supplementary }) => ({
+    (components) => ({
       title: `${handle} | Saved articles`,
-      content: render(header, renderedContent, supplementary),
+      content: render(components),
     }),
   ),
 );
