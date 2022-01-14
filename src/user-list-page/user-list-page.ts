@@ -1,10 +1,12 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
+import { paginate } from '../shared-components/paginate';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
@@ -74,8 +76,14 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
     },
     sequenceS(TE.ApplyPar),
   )),
-  TE.chainTaskK(({ dois, userDetails, listOwnerId }) => pipe(
-    savedArticles(ports)(dois, pipe(user, O.map((u) => u.id)), listOwnerId),
+  TE.map((data) => pipe(
+    data.dois,
+    paginate(150, 1),
+    E.getOrElseW(() => ({ items: [] })),
+    (paginated) => ({ ...data, ...paginated }),
+  )),
+  TE.chainTaskK(({ items, userDetails, listOwnerId }) => pipe(
+    savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
       content,
       userDetails,
@@ -84,7 +92,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
   TE.bimap(
     (dataError) => ({
       type: dataError,
-      message: toHtmlFragment('User not found.'),
+      message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
     ({ content, userDetails }) => ({
       title: `${handle} | Saved articles`,
