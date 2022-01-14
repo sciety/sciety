@@ -64,12 +64,13 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 const render = (
   header: HtmlFragment,
   content: HtmlFragment,
+  supplementary: HtmlFragment = toHtmlFragment(''),
 ) => toHtmlFragment(`
   ${header}
   <section>
     ${content}
   </section>
-  ${supplementaryInfo(supplementaryItems)}
+  ${supplementary}
 `);
 
 const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
@@ -134,6 +135,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
         articleCount,
         numberOfPages,
       ),
+      supplementary: supplementaryInfo(supplementaryItems),
     })),
   )),
   TE.bimap(
@@ -141,9 +143,9 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({ header, renderedContent }) => ({
+    ({ header, renderedContent, supplementary }) => ({
       title: `${handle} | Saved articles`,
-      content: render(header, renderedContent),
+      content: render(header, renderedContent, supplementary),
     }),
   ),
 );
