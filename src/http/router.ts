@@ -57,7 +57,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { userListPage } from '../user-list-page';
+import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
 const toNotFound = () => ({
@@ -222,7 +222,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
     pageHandler(createPageFromParams(
-      userPageParams,
+      userListPageParams,
       userListPage(adapters),
     )),
   );

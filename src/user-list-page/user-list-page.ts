@@ -4,24 +4,31 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
 import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 import { defaultUserListDescription } from '../user-page/static-messages';
 
-type Params = {
-  handle: string,
-  user: O.Option<User>,
-};
+export const paramsCodec = t.type({
+  handle: t.string,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+  page: tt.withFallback(tt.NumberFromString, 1),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
 
 type UserDetails = {
   avatarUrl: string,
@@ -64,7 +71,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
   ${supplementaryInfo(supplementaryItems)}
 `);
 
-export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
+export const userListPage = (ports: Ports): UserListPage => ({ handle, user, page }) => pipe(
   {
     userId: ports.getUserId(handle),
     events: TE.rightTask(ports.getAllEvents),
@@ -80,7 +87,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
   )),
   TE.map((data) => pipe(
     data.dois,
-    paginate(150, 1),
+    paginate(20, page),
     E.getOrElseW(() => ({ items: [], nextPage: O.none })),
     (paginated) => ({ ...data, ...paginated }),
   )),
