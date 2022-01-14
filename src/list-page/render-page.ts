@@ -12,7 +12,7 @@ type Components = {
 
 const render = (components: Components) => `
   ${components.header}
-  <section class="evaluated-articles">
+  <section>
     ${components.evaluatedArticlesList}
   </section>
 `;

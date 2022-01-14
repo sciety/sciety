@@ -58,7 +58,7 @@ type Components = {
 const renderPage = (components: Components) => ({
   content: toHtmlFragment(`
     ${components.header}
-    <section class="evaluated-articles">
+    <section>
       ${components.articlesList}
     </section>
   `),
