@@ -53,7 +53,22 @@ const supplementaryItems = [
   ),
 ];
 
-const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails, nextPage: O.Option<number>) => toHtmlFragment(`
+const renderPageNumbers = (page: number, articleCount: number, numberOfPages: number) => (
+  articleCount > 0
+    ? `<p class="evaluated-articles__page_count">
+        Showing page ${page} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span>
+      </p>`
+    : ''
+);
+
+const render = (
+  savedArticlesList: HtmlFragment,
+  { handle, avatarUrl }: UserDetails,
+  nextPage: O.Option<number>,
+  page: number,
+  articleCount: number,
+  numberOfPages: number,
+) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
       Saved Articles
@@ -66,8 +81,11 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe</a>' : ''}
   </header>
-  ${savedArticlesList}
-  ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
+  <section>
+    ${renderPageNumbers(page, articleCount, numberOfPages)}
+    ${savedArticlesList}
+    ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
+  </section>
   ${supplementaryInfo(supplementaryItems)}
 `);
 
@@ -88,17 +106,19 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
   TE.map((data) => pipe(
     data.dois,
     paginate(20, page),
-    E.getOrElseW(() => ({ items: [], nextPage: O.none })),
-    (paginated) => ({ ...data, ...paginated }),
+    E.getOrElseW(() => ({ items: [], nextPage: O.none, numberOfPages: 1 })),
+    (paginated) => ({ ...data, ...paginated, articleCount: data.dois.length }),
   )),
   TE.chainTaskK(({
-    items, nextPage, userDetails, listOwnerId,
+    items, nextPage, userDetails, listOwnerId, articleCount, numberOfPages,
   }) => pipe(
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
       content,
       userDetails,
       nextPage,
+      articleCount,
+      numberOfPages,
     })),
   )),
   TE.bimap(
@@ -106,9 +126,18 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({ content, userDetails, nextPage }) => ({
+    ({
+      content, userDetails, nextPage, articleCount, numberOfPages,
+    }) => ({
       title: `${handle} | Saved articles`,
-      content: render(content, userDetails, nextPage),
+      content: render(
+        content,
+        userDetails,
+        nextPage,
+        page,
+        articleCount,
+        numberOfPages,
+      ),
     }),
   ),
 );
