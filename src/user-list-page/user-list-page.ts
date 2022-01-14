@@ -8,6 +8,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
+import { render } from '../list-page/render-page';
 import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
@@ -60,18 +61,6 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
       </p>`
     : ''
 );
-
-type Components = { header: HtmlFragment, content: HtmlFragment, supplementary?: HtmlFragment };
-
-type Render = (components: Components) => HtmlFragment;
-
-const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
-  ${header}
-  <section>
-    ${content}
-  </section>
-  ${supplementary}
-`);
 
 const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
   <header class="page-header page-header--user-list">

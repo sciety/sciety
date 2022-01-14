@@ -10,10 +10,10 @@ import * as tt from 'io-ts-types';
 import { articlesList, Ports } from './articles-list/articlesList';
 import { DomainEvent } from '../domain-events';
 import { renderComponent } from '../list-page/header/render-component';
-import { renderErrorPage } from '../list-page/render-page';
+import { render, renderErrorPage } from '../list-page/render-page';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -51,17 +51,12 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
 
 type Components = {
   header: HtmlFragment,
-  articlesList: HtmlFragment,
+  content: HtmlFragment,
   title: string,
 };
 
 const renderPage = (components: Components) => ({
-  content: toHtmlFragment(`
-    ${components.header}
-    <section>
-      ${components.articlesList}
-    </section>
-  `),
+  content: render(components),
   title: components.title,
 });
 
@@ -79,7 +74,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       T.map(headers(params.id)),
       TE.map(renderComponent),
     ),
-    articlesList: articlesList(ports, params.id, params.page),
+    content: articlesList(ports, params.id, params.page),
     title: pipe(
       ports.getAllEvents,
       T.map(headers(params.id)),

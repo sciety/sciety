@@ -7,15 +7,19 @@ import { RenderPageError } from '../types/render-page-error';
 
 type Components = {
   header: HtmlFragment,
-  evaluatedArticlesList: HtmlFragment,
+  content: HtmlFragment,
+  supplementary?: HtmlFragment,
 };
 
-const render = (components: Components) => `
-  ${components.header}
+type Render = (components: Components) => HtmlFragment;
+
+export const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
+  ${header}
   <section>
-    ${components.evaluatedArticlesList}
+    ${content}
   </section>
-`;
+  ${supplementary}
+`);
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,

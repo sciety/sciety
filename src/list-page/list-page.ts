@@ -53,7 +53,7 @@ export const groupEvaluationsPage = (ports: Ports): ListPage => ({ slug, page })
   TE.chain((group) => pipe(
     {
       header: header(ports, group),
-      evaluatedArticlesList: evaluatedArticlesList(ports, group, toPageNumber(page)),
+      content: evaluatedArticlesList(ports, group, toPageNumber(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
