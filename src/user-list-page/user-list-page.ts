@@ -62,13 +62,24 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 );
 
 const render = (
+  header: HtmlFragment,
   savedArticlesList: HtmlFragment,
-  { handle, avatarUrl }: UserDetails,
+  { handle }: UserDetails,
   nextPage: O.Option<number>,
   page: number,
   articleCount: number,
   numberOfPages: number,
 ) => toHtmlFragment(`
+  ${header}
+  <section>
+    ${renderPageNumbers(page, articleCount, numberOfPages)}
+    ${savedArticlesList}
+    ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
+  </section>
+  ${supplementaryInfo(supplementaryItems)}
+`);
+
+const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
       Saved Articles
@@ -81,12 +92,6 @@ const render = (
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe</a>' : ''}
   </header>
-  <section>
-    ${renderPageNumbers(page, articleCount, numberOfPages)}
-    ${savedArticlesList}
-    ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
-  </section>
-  ${supplementaryInfo(supplementaryItems)}
 `);
 
 export const userListPage = (ports: Ports): UserListPage => ({ handle, user, page }) => pipe(
@@ -131,6 +136,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
     }) => ({
       title: `${handle} | Saved articles`,
       content: render(
+        renderHeader(userDetails),
         content,
         userDetails,
         nextPage,
