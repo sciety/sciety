@@ -7,6 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
 import { paginate } from '../shared-components/paginate';
+import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
 import * as DE from '../types/data-error';
@@ -45,7 +46,7 @@ const supplementaryItems = [
   ),
 ];
 
-const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
+const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails, nextPage: O.Option<number>) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
       Saved Articles
@@ -59,6 +60,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe</a>' : ''}
   </header>
   ${savedArticlesList}
+  ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
   ${supplementaryInfo(supplementaryItems)}
 `);
 
@@ -79,14 +81,17 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
   TE.map((data) => pipe(
     data.dois,
     paginate(150, 1),
-    E.getOrElseW(() => ({ items: [] })),
+    E.getOrElseW(() => ({ items: [], nextPage: O.none })),
     (paginated) => ({ ...data, ...paginated }),
   )),
-  TE.chainTaskK(({ items, userDetails, listOwnerId }) => pipe(
+  TE.chainTaskK(({
+    items, nextPage, userDetails, listOwnerId,
+  }) => pipe(
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
       content,
       userDetails,
+      nextPage,
     })),
   )),
   TE.bimap(
@@ -94,9 +99,9 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({ content, userDetails }) => ({
+    ({ content, userDetails, nextPage }) => ({
       title: `${handle} | Saved articles`,
-      content: render(content, userDetails),
+      content: render(content, userDetails, nextPage),
     }),
   ),
 );
