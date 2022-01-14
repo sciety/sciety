@@ -87,7 +87,7 @@ const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
   </header>
 `);
 
-const renderPageOfContent = (
+const renderContent = (
   content: HtmlFragment,
   handle: string,
   nextPage: O.Option<number>,
@@ -125,11 +125,15 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
   }) => pipe(
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
-      content,
-      userDetails,
-      nextPage,
-      articleCount,
-      numberOfPages,
+      header: renderHeader(userDetails),
+      renderedContent: renderContent(
+        content,
+        handle,
+        nextPage,
+        page,
+        articleCount,
+        numberOfPages,
+      ),
     })),
   )),
   TE.bimap(
@@ -137,21 +141,9 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       type: dataError,
       message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({
-      content, userDetails, nextPage, articleCount, numberOfPages,
-    }) => ({
+    ({ header, renderedContent }) => ({
       title: `${handle} | Saved articles`,
-      content: render(
-        renderHeader(userDetails),
-        renderPageOfContent(
-          content,
-          handle,
-          nextPage,
-          page,
-          articleCount,
-          numberOfPages,
-        ),
-      ),
+      content: render(header, renderedContent),
     }),
   ),
 );
