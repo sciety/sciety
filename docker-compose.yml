@@ -58,7 +58,7 @@ services:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=secret
       - AWS_DEFAULT_REGION=us-east-1
-      - SERVICES=sns
+      - 'SERVICES=sns,sqs'
       - DEBUG=0
       - DATA_DIR=${DATA_DIR-}
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
