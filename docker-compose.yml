@@ -11,6 +11,8 @@ services:
       APP_SECRET: "secret"
       APP_CACHE: '${APP_CACHE:-in-memory}'
       AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY:-twitter}'
+      AWS_ACCESS_KEY_ID: 'foo'
+      AWS_SECRET_ACCESS_KEY: 'secret'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
       EXPERIMENT_ENABLED: "true"
