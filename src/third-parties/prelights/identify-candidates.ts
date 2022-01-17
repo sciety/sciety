@@ -1,4 +1,4 @@
-import parser from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
@@ -40,8 +40,12 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => (
   }))
 );
 
+const parser = new XMLParser({
+  isArray: (name) => name === 'item' || name === 'preprint',
+});
+
 export const identifyCandidates = (responseBody: string): E.Either<string, ReadonlyArray<Prelight>> => pipe(
-  parser.parse(responseBody, { arrayMode: /item$|preprint$/ }) as JSON,
+  parser.parse(responseBody) as JSON,
   prelightsFeedCodec.decode,
   E.bimap(
     (errors) => PR.failure(errors).join('\n'),
