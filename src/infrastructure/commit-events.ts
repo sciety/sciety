@@ -19,7 +19,7 @@ const publishToSNSTopic = () => {
   // Set the parameters
   const params = {
     Message: 'MESSAGE_TEXT', // MESSAGE_TEXT
-    TopicArn: 'TOPIC_ARN', // TOPIC_ARN
+    TopicArn: 'arn:aws:sns:us-east-1:000000000000:topic56789', // TOPIC_ARN
   };
 
   const run = async () => {
