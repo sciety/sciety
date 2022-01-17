@@ -1,3 +1,4 @@
+import { PublishCommand, SNSClient } from '@aws-sdk/client-sns';
 import * as IO from 'fp-ts/IO';
 import * as T from 'fp-ts/Task';
 import { constVoid, flow, pipe } from 'fp-ts/function';
@@ -12,7 +13,27 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
-const publishToSNSTopic = () => T.of('');
+const publishToSNSTopic = () => {
+  const snsClient = new SNSClient({ region: 'us-east-1' });
+
+  // Set the parameters
+  const params = {
+    Message: 'MESSAGE_TEXT', // MESSAGE_TEXT
+    TopicArn: 'TOPIC_ARN', // TOPIC_ARN
+  };
+
+  const run = async () => {
+    try {
+      const data = await snsClient.send(new PublishCommand(params));
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Success.', data);
+      return data; // For unit tests.
+    } catch (err: unknown) {
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Error', err);
+    }
+  };
+
+  return run;
+};
 
 // TODO: should return a TaskEither
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
