@@ -13,12 +13,12 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
-const publishToSNSTopic = () => {
+const publishToSNSTopic = (encodedEvent: string) => {
   const snsClient = new SNSClient({ region: 'us-east-1', endpoint: 'http://localstack:4566' });
 
   // Set the parameters
   const params = {
-    Message: 'MESSAGE_TEXT', // MESSAGE_TEXT
+    Message: encodedEvent, // MESSAGE_TEXT
     TopicArn: 'arn:aws:sns:us-east-1:000000000000:topic56789', // TOPIC_ARN
   };
 
@@ -60,6 +60,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
     T.chainFirst(flow(
       domainEvent.encode,
+      JSON.stringify,
       publishToSNSTopic,
     )),
   )),
