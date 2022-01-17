@@ -12,6 +12,8 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
+const publishToSNSTopic = () => T.of('');
+
 // TODO: should return a TaskEither
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
@@ -35,6 +37,10 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
       IO.chain(logger),
     )),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
+    T.chainFirst(flow(
+      domainEvent.encode,
+      publishToSNSTopic,
+    )),
   )),
   T.map(constVoid),
 );
