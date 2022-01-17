@@ -50,7 +50,6 @@ services:
   localstack:
     container_name: sciety_localstack
     image: localstack/localstack
-    network_mode: bridge
     ports:
       - "127.0.0.1:4566:4566"
       - "127.0.0.1:4571:4571"

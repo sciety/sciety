@@ -14,7 +14,7 @@ type Dependencies = {
 };
 
 const publishToSNSTopic = () => {
-  const snsClient = new SNSClient({ region: 'us-east-1' });
+  const snsClient = new SNSClient({ region: 'us-east-1', endpoint: 'http://localstack:4566' });
 
   // Set the parameters
   const params = {
