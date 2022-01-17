@@ -13,6 +13,7 @@ services:
       AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY:-twitter}'
       AWS_ACCESS_KEY_ID: 'foo'
       AWS_SECRET_ACCESS_KEY: 'secret'
+      AWS_DEFAULT_REGION: 'us-east-1'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
       EXPERIMENT_ENABLED: "true"
@@ -54,8 +55,11 @@ services:
       - "127.0.0.1:4566:4566"
       - "127.0.0.1:4571:4571"
     environment:
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=secret
+      - AWS_DEFAULT_REGION=us-east-1
       - SERVICES=sns
-      - DEBUG=1
+      - DEBUG=0
       - DATA_DIR=${DATA_DIR-}
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
       - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
@@ -63,3 +67,4 @@ services:
     volumes:
       - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./scripts/localstack-setup.sh:/docker-entrypoint-initaws.d/localstack-setup.sh"
