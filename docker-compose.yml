@@ -47,3 +47,20 @@ services:
   cache:
     container_name: sciety_cache
     image: redis:6.2-alpine
+  localstack:
+    container_name: sciety_localstack
+    image: localstack/localstack
+    network_mode: bridge
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4571:4571"
+    environment:
+      - SERVICES=sns
+      - DEBUG=1
+      - DATA_DIR=${DATA_DIR-}
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
