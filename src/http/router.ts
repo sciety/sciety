@@ -13,6 +13,7 @@ import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
+import { logCommand } from './log-command';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
@@ -438,9 +439,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.post(
     '/record-evaluation',
     bodyParser({ enableTypes: ['json'] }),
+    logCommand(adapters.logger),
     requireBearerToken,
     async (context) => {
-      adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
       await pipe(
         context.request.body,
         recordEvaluation(adapters),
@@ -461,9 +462,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.post(
     '/add-article-to-list',
     bodyParser({ enableTypes: ['json'] }),
+    logCommand(adapters.logger),
     requireBearerToken,
     async (context) => {
-      adapters.logger('debug', 'Received Add Article To List Command', { body: context.request.body });
       await pipe(
         context.request.body,
         addArticleToList(adapters),
