@@ -24,6 +24,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { requireBearerToken } from './require-bearer-token';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
+import { addArticleToList } from '../add-article-to-list';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -463,8 +464,20 @@ export const createRouter = (adapters: Adapters): Router => {
     requireBearerToken,
     async (context) => {
       adapters.logger('debug', 'Received Add Article To List Command', { body: context.request.body });
-      context.response.status = StatusCodes.OK;
-      context.response.body = '';
+      await pipe(
+        context.request.body,
+        addArticleToList(adapters),
+        TE.match(
+          (error) => {
+            context.response.status = StatusCodes.BAD_REQUEST;
+            context.response.body = error;
+          },
+          () => {
+            context.response.status = StatusCodes.OK;
+            context.response.body = '';
+          },
+        ),
+      )();
     },
   );
 
