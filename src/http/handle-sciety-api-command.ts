@@ -7,8 +7,9 @@ import compose from 'koa-compose';
 import { logCommand } from './log-command';
 import { requireBearerToken } from './require-bearer-token';
 import { Adapters } from '../infrastructure';
+import { CommandResult } from '../types/command-result';
 
-type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, void>;
+type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
 export const handleScietyApiCommand = (adapters: Adapters, handler: ScietyApiCommandHandler): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
@@ -23,8 +24,8 @@ export const handleScietyApiCommand = (adapters: Adapters, handler: ScietyApiCom
           context.response.status = StatusCodes.BAD_REQUEST;
           context.response.body = error;
         },
-        () => {
-          context.response.status = StatusCodes.OK;
+        (eventsCreated) => {
+          context.response.status = eventsCreated === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
           context.response.body = '';
         },
       ),
