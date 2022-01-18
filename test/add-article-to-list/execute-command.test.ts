@@ -30,7 +30,7 @@ describe('execute-command', () => {
       });
     });
 
-    describe('and the article is not on the list', () => {
+    describe('and the article was never on the list', () => {
       const result = pipe(
         [
           listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
@@ -48,6 +48,10 @@ describe('execute-command', () => {
           listId,
         })]));
       });
+    });
+
+    describe('and the article used to be on the list and was removed', () => {
+      it.todo('succeeds and raises an event');
     });
   });
 
