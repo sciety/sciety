@@ -12,8 +12,8 @@ import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
+import { handleScietyApiCommand } from './handle-sciety-api-command';
 import { loadStaticFile } from './load-static-file';
-import { logCommand } from './log-command';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
@@ -22,7 +22,6 @@ import { redirectBack } from './redirect-back';
 import { redirectGroupIdToSlug } from './redirects/redirect-group-id-to-slug';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
-import { requireBearerToken } from './require-bearer-token';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { addArticleToList } from '../add-article-to-list';
@@ -436,51 +435,9 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
-  router.post(
-    '/record-evaluation',
-    bodyParser({ enableTypes: ['json'] }),
-    logCommand(adapters.logger),
-    requireBearerToken,
-    async (context) => {
-      await pipe(
-        context.request.body,
-        recordEvaluation(adapters),
-        TE.match(
-          (error) => {
-            context.response.status = StatusCodes.BAD_REQUEST;
-            context.response.body = error;
-          },
-          () => {
-            context.response.status = StatusCodes.OK;
-            context.response.body = '';
-          },
-        ),
-      )();
-    },
-  );
+  router.post('/record-evaluation', handleScietyApiCommand(adapters, recordEvaluation));
 
-  router.post(
-    '/add-article-to-list',
-    bodyParser({ enableTypes: ['json'] }),
-    logCommand(adapters.logger),
-    requireBearerToken,
-    async (context) => {
-      await pipe(
-        context.request.body,
-        addArticleToList(adapters),
-        TE.match(
-          (error) => {
-            context.response.status = StatusCodes.BAD_REQUEST;
-            context.response.body = error;
-          },
-          () => {
-            context.response.status = StatusCodes.OK;
-            context.response.body = '';
-          },
-        ),
-      )();
-    },
-  );
+  router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToList));
 
   // AUTHENTICATION
 
