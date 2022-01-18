@@ -9,6 +9,7 @@ import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../domain-events';
+import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
 
@@ -16,7 +17,7 @@ const isCommand = (command: string): command is 'save-article' => command === 's
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<void>,
+  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<CommandResult>,
 };
 
 export const finishSaveArticleCommand = (

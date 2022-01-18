@@ -25,7 +25,7 @@ describe('finish-save-article-command', () => {
       } as unknown) as RouterContext<{ user: User }>;
 
       const getAllEvents = T.of([]);
-      const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
+      const commitEvents = jest.fn().mockImplementation(() => T.of('events-created' as const));
 
       await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
 
@@ -56,7 +56,7 @@ describe('finish-save-article-command', () => {
       const getAllEvents = T.of([
         userSavedArticle(userId, articleId),
       ]);
-      const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
+      const commitEvents = jest.fn().mockImplementation(() => T.of('no-events-created' as const));
 
       await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
 
@@ -81,7 +81,7 @@ describe('finish-save-article-command', () => {
       } as unknown) as ParameterizedContext;
 
       await finishSaveArticleCommand({
-        commitEvents: () => T.of(undefined),
+        commitEvents: () => T.of('no-events-created' as const),
         getAllEvents: async () => [],
       })(context, jest.fn());
 

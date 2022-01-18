@@ -59,7 +59,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
     getAllEvents: T.of([]),
-    commitEvents: () => T.of(undefined),
+    commitEvents: () => T.of('events-created'),
     logger: dummyLogger,
     getUserDetails: () => TE.right({
       avatarUrl: '',
