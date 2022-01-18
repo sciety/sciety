@@ -1,26 +1,26 @@
 export const card1 = {
-  articleId: '10.1101/2021.10.23.465567',
-  articleTitle: 'SARS-CoV-2 Infection Impacts Carbon Metabolism and Depends on Glutamine for Replication in Syrian Hamster Astrocytes',
-  date: new Date('2021-11-21'),
-  groupSlug: 'rapid-reviews-covid-19',
-  groupName: 'Rapid Reviews COVID-19',
-  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
+  articleId: '10.1101/2022.01.10.475747',
+  articleTitle: 'Cell type-specific aging clocks to quantify aging and rejuvenation in regenerative regions of the brain',
+  date: new Date('2022-01-17'),
+  groupSlug: 'prereview',
+  groupName: 'PREreview',
+  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
 };
 
 export const card2 = {
-  articleId: '10.1101/2020.10.30.360289',
-  articleTitle: 'Metabarcoding faecal samples to investigate spatiotemporal variation in the diet of the endangered Westland petrel (<i>Procellaria westlandica</i>)',
-  date: new Date('2021-12-02'),
-  groupSlug: 'pci-ecology',
-  groupName: 'Peer Community in Ecology',
-  avatarPath: '/static/groups/pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.jpg',
+  articleId: '10.1101/2022.01.13.22269151',
+  articleTitle: 'The mental health of staff working on Intensive Care Units over the COVID-19 winter surge of 2020 in England: a cross sectional survey',
+  date: new Date('2022-01-16'),
+  groupSlug: 'screenit',
+  groupName: 'ScreenIT',
+  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.png',
 };
 
 export const card3 = {
-  articleId: '10.1101/2021.11.09.467796',
-  articleTitle: 'Gender Imbalance in the Editorial Activities of a Researcher-led Journal',
-  date: new Date('2021-11-30'),
-  groupSlug: 'prelights',
-  groupName: 'preLights',
-  avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
+  articleId: '10.21203/rs.3.rs-955726/v1',
+  articleTitle: 'TMEM16 scramblases thin the membrane to enable lipid scrambling',
+  date: new Date('2022-01-10'),
+  groupSlug: 'biophysics-colab',
+  groupName: 'Biophysics Colab',
+  avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
 };
