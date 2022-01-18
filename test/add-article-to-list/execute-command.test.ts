@@ -41,7 +41,7 @@ describe('execute-command', () => {
         }),
       );
 
-      it.skip('succeeds and raises an event', () => {
+      it('succeeds and raises an event', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
           type: 'ArticleAddedToList',
           articleId,

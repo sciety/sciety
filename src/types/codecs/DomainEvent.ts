@@ -6,6 +6,14 @@ import { GroupIdFromString } from './GroupIdFromString';
 import { UserIdFromString } from './UserIdFromString';
 import { reviewIdCodec } from '../review-id';
 
+const articleAddedToListEvent = t.type({
+  id: EventIdFromString,
+  type: t.literal('ArticleAddedToList'),
+  date: DateFromISOString,
+  articleId: DoiFromString,
+  listId: t.string,
+});
+
 const evaluationRecordedEvent = t.type({
   id: EventIdFromString,
   type: t.literal('EvaluationRecorded'),
@@ -92,6 +100,7 @@ const userCreatedAccountEvent = t.type({
 });
 
 export const domainEvent = t.union([
+  articleAddedToListEvent,
   evaluationRecordedEvent,
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
