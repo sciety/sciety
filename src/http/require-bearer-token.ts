@@ -3,7 +3,7 @@ import { Middleware } from 'koa';
 import { getSecretSafely } from './get-secret-safely';
 
 export const requireBearerToken: Middleware = async (context, next) => {
-  const expectedToken = getSecretSafely(process.env.INGESTION_AUTH_BEARER_TOKEN);
+  const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
   if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
     await next();
   } else {
