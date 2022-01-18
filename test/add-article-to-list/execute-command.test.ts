@@ -65,8 +65,8 @@ describe('execute-command', () => {
       }),
     );
 
-    it.skip('fails with no events raised', () => {
-      expect(result).toStrictEqual(E.left(expect.anything));
+    it('fails with no events raised', () => {
+      expect(result).toStrictEqual(E.left(undefined));
     });
   });
 });
