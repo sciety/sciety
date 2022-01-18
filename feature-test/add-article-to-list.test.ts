@@ -4,9 +4,6 @@ import {
   $, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
-import * as RI from '../src/types/review-id';
-import { arbitraryDate, arbitraryString } from '../test/helpers';
-import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {
@@ -17,7 +14,7 @@ describe('add an article to a list', () => {
   afterEach(screenshotTeardown);
 
   describe('when an article is added to a list via the API', () => {
-    const articleId = '10.1101/2021.07.23.453070';
+    const articleId = '10.1101/813451';
     const listId = '5ac3a439-e5c6-4b15-b109-92928a740812';
 
     beforeEach(async () => {
@@ -37,7 +34,7 @@ describe('add an article to a list', () => {
       );
     });
 
-    it.skip('displays the article', async () => {
+    it('displays the article', async () => {
       await goto(`localhost:8080/lists/${listId}`);
       const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
 

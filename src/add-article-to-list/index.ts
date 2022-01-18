@@ -22,5 +22,5 @@ export const addArticleToList: AddArticleToList = (ports) => (input) => pipe(
     ports.getAllEvents,
     T.map(executeCommand(command)),
   )),
-  TE.map(() => undefined),
+  TE.chainTaskK(ports.commitEvents),
 );
