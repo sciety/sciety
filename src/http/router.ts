@@ -7,12 +7,11 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Middleware, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
-import { getSecretSafely } from './get-secret-safely';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
@@ -59,6 +58,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
+import { requireBearerToken } from './require-bearer-token';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -434,20 +434,10 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
-  const requireIngestionAuthentication: Middleware = async (context, next) => {
-    const expectedToken = getSecretSafely(process.env.INGESTION_AUTH_BEARER_TOKEN);
-    if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
-      await next();
-    } else {
-      context.response.body = 'Unauthorized';
-      context.response.status = StatusCodes.FORBIDDEN;
-    }
-  };
-
   router.post(
     '/record-evaluation',
     bodyParser({ enableTypes: ['json'] }),
-    requireIngestionAuthentication,
+    requireBearerToken,
     async (context) => {
       adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
       await pipe(
@@ -470,7 +460,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.post(
     '/add-article-to-list',
     bodyParser({ enableTypes: ['json'] }),
-    requireIngestionAuthentication,
+    requireBearerToken,
     async (context) => {
       adapters.logger('debug', 'Received Add Article To List Command', { body: context.request.body });
       context.response.status = StatusCodes.OK;
