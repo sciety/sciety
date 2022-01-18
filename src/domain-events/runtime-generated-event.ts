@@ -1,4 +1,4 @@
-import { ArticleAddedToListEvent } from '.';
+import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
