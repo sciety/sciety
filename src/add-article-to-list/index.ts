@@ -12,7 +12,7 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type AddArticleToList = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, void>;
+type AddArticleToList = (ports: Ports) => (input: unknown) => TE.TaskEither<string, void>;
 
 export const addArticleToList: AddArticleToList = (ports) => (input) => pipe(
   input,

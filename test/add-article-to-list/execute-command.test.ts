@@ -66,7 +66,7 @@ describe('execute-command', () => {
     );
 
     it('fails with no events raised', () => {
-      expect(result).toStrictEqual(E.left(undefined));
+      expect(result).toStrictEqual(E.left(expect.stringContaining(listId)));
     });
   });
 });

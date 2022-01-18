@@ -12,7 +12,7 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type RecordEvaluation = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, void>;
+type RecordEvaluation = (ports: Ports) => (input: unknown) => TE.TaskEither<string, void>;
 
 export const recordEvaluation: RecordEvaluation = (ports) => (input) => pipe(
   input,

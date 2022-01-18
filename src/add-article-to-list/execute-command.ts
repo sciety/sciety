@@ -29,14 +29,14 @@ const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent
   RA.filter(isListCreatedEvent),
   RA.some((event) => event.listId === listId),
   B.fold(
-    () => E.left(undefined),
+    () => E.left(`List "${listId}" not found`),
     () => E.right(undefined),
   ),
 );
 
 type ExecuteCommand = (command: Command)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<unknown, ReadonlyArray<RuntimeGeneratedEvent>>;
+=> E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,

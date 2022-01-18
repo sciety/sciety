@@ -8,7 +8,7 @@ import { logCommand } from './log-command';
 import { requireBearerToken } from './require-bearer-token';
 import { Adapters } from '../infrastructure';
 
-type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.TaskEither<unknown, void>;
+type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, void>;
 
 export const handleScietyApiCommand = (adapters: Adapters, handler: ScietyApiCommandHandler): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
