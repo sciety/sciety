@@ -470,6 +470,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.post(
     '/add-article-to-list',
     bodyParser({ enableTypes: ['json'] }),
+    requireIngestionAuthentication,
     async (context) => {
       adapters.logger('debug', 'Received Add Article To List Command', { body: context.request.body });
       context.response.status = StatusCodes.OK;
