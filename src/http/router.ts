@@ -21,6 +21,7 @@ import { redirectBack } from './redirect-back';
 import { redirectGroupIdToSlug } from './redirects/redirect-group-id-to-slug';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
+import { requireBearerToken } from './require-bearer-token';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
@@ -58,7 +59,6 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
-import { requireBearerToken } from './require-bearer-token';
 
 const toNotFound = () => ({
   type: DE.notFound,
