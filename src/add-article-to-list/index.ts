@@ -1,6 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { executeCommand } from './execute-command';
 import { validateInputShape } from './validate-input-shape';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 
@@ -13,9 +14,13 @@ type Ports = {
 
 type AddArticleToList = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, void>;
 
-export const addArticleToList: AddArticleToList = () => (input) => pipe(
+export const addArticleToList: AddArticleToList = (ports) => (input) => pipe(
   input,
   validateInputShape,
-  T.of,
+  TE.fromEither,
+  TE.chainW((command) => pipe(
+    ports.getAllEvents,
+    T.map(executeCommand(command)),
+  )),
   TE.map(() => undefined),
 );
