@@ -6,8 +6,9 @@ import { evaluatedArticles } from './evaluated-articles';
 import { noEvaluatedArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
-import { paginate } from '../../shared-components/paginate';
+import { PageOfItems, paginate } from '../../shared-components/paginate';
 import { getActivityForDoi } from '../../shared-read-models/article-activity';
+import { ArticleActivity } from '../../types/article-activity';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -15,6 +16,22 @@ import { HtmlFragment } from '../../types/html-fragment';
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
+
+const overrideListMembershipCount = (ports: Ports) => (pageOfItems: PageOfItems<ArticleActivity>) => pipe(
+  pageOfItems.items,
+  T.traverseArray((item) => pipe(
+    ports.getAllEvents,
+    T.map(getActivityForDoi(item.doi)),
+    T.map((activity) => ({
+      ...item,
+      listMembershipCount: activity.listMembershipCount,
+    })),
+  )),
+  T.map((items) => ({
+    ...pageOfItems,
+    items,
+  })),
+);
 
 export const component = (
   ports: Ports,
@@ -29,21 +46,7 @@ export const component = (
     flow(
       paginate(20, pageNumber),
       TE.fromEither,
-      TE.chainTaskK((pageOfItems) => pipe(
-        pageOfItems.items,
-        T.traverseArray((item) => pipe(
-          ports.getAllEvents,
-          T.map(getActivityForDoi(item.doi)),
-          T.map((activity) => ({
-            ...item,
-            listMembershipCount: activity.listMembershipCount,
-          })),
-        )),
-        T.map((items) => ({
-          ...pageOfItems,
-          items,
-        })),
-      )),
+      TE.chainTaskK(overrideListMembershipCount(ports)),
       TE.chainTaskK(toPageOfCards(ports, group)),
     ),
   )),
