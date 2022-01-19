@@ -7,7 +7,7 @@ import { noEvaluatedArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { PageOfItems, paginate } from '../../shared-components/paginate';
-import { getActivityForDoi } from '../../shared-read-models/article-activity';
+import { getActivityForDois } from '../../shared-read-models/article-activity/get-activity-for-dois';
 import { ArticleActivity } from '../../types/article-activity';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
@@ -19,14 +19,11 @@ export type Ports = ToPageOfCardsPorts & {
 
 const overrideListMembershipCount = (ports: Ports) => (pageOfItems: PageOfItems<ArticleActivity>) => pipe(
   pageOfItems.items,
-  T.traverseArray((item) => pipe(
+  RA.map((item) => item.doi),
+  (dois) => pipe(
     ports.getAllEvents,
-    T.map(getActivityForDoi(item.doi)),
-    T.map((activity) => ({
-      ...item,
-      listMembershipCount: activity.listMembershipCount,
-    })),
-  )),
+    T.map(getActivityForDois(dois)),
+  ),
   T.map((items) => ({
     ...pageOfItems,
     items,
