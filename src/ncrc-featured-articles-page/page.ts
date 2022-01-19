@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articlesList, Ports } from './articles-list/articlesList';
+import { articlesList, Ports } from './articles-list/articles-list';
 import { DomainEvent } from '../domain-events';
 import { renderComponent } from '../list-page/header/render-component';
 import { renderErrorPage, renderPage } from '../list-page/render-page';
