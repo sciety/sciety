@@ -31,7 +31,7 @@ export const component = (
       paginate(20, pageNumber),
       TE.fromEither,
       TE.chainTaskK(populateArticleActivities(ports)),
-      TE.chainTaskK(toPageOfCards(ports, group)),
+      TE.chainTaskK(toPageOfCards(ports, `/groups/${group.slug}/evaluated-articles`)),
     ),
   )),
 );
