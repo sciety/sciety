@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -29,18 +28,22 @@ export const component = (
     () => TE.right(noEvaluatedArticlesMessage),
     flow(
       paginate(20, pageNumber),
-      E.map((pageOfItems) => ({
-        ...pageOfItems,
-        items: pipe(
-          pageOfItems.items,
-          RA.map((item) => pipe(
-            [],
-            getActivityForDoi(item.doi),
-            (activity) => ({ ...item, listMembershipCount: activity.listMembershipCount }),
-          )),
-        ),
-      })),
       TE.fromEither,
+      TE.chainTaskK((pageOfItems) => pipe(
+        pageOfItems.items,
+        T.traverseArray((item) => pipe(
+          ports.getAllEvents,
+          T.map(getActivityForDoi(item.doi)),
+          T.map((activity) => ({
+            ...item,
+            listMembershipCount: activity.listMembershipCount,
+          })),
+        )),
+        T.map((items) => ({
+          ...pageOfItems,
+          items,
+        })),
+      )),
       TE.chainTaskK(toPageOfCards(ports, group)),
     ),
   )),
