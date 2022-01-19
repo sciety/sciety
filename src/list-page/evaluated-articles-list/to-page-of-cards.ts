@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
-import { toCardViewModel, Ports as ToCardViewModelPorts } from '../../ncrc-featured-articles-page/articles-list/to-card-view-model';
+import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';

@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel } from '../../list-page/evaluated-articles-list/render-article-error-card';
+import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ArticleViewModel, FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { ArticleActivity } from '../../types/article-activity';
