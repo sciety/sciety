@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,6 +8,7 @@ import { noEvaluatedArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
+import { getActivityForDoi } from '../../shared-read-models/article-activity';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -27,6 +29,17 @@ export const component = (
     () => TE.right(noEvaluatedArticlesMessage),
     flow(
       paginate(20, pageNumber),
+      E.map((pageOfItems) => ({
+        ...pageOfItems,
+        items: pipe(
+          pageOfItems.items,
+          RA.map((item) => pipe(
+            [],
+            getActivityForDoi(item.doi),
+            (activity) => ({ ...item, listMembershipCount: activity.listMembershipCount }),
+          )),
+        ),
+      })),
       TE.fromEither,
       TE.chainTaskK(toPageOfCards(ports, group)),
     ),
