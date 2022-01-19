@@ -27,7 +27,6 @@ export const component = (
   TE.chain(RA.match(
     () => TE.right(noEvaluatedArticlesMessage),
     flow(
-      RA.map((item) => item.doi),
       paginate(20, pageNumber),
       TE.fromEither,
       TE.chainTaskK(populateArticleActivities(ports)),

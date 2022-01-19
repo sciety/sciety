@@ -10,7 +10,6 @@ import {
   DomainEvent, EvaluationRecordedEvent,
   isEvaluationRecordedEvent,
 } from '../../domain-events';
-import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 
@@ -86,7 +85,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 
 export const evaluatedArticles = (groupId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<ArticleActivity> => pipe(
+): ReadonlyArray<Doi> => pipe(
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
@@ -100,4 +99,5 @@ export const evaluatedArticles = (groupId: GroupId) => (
     latestActivityDate: O.some(activity.latestActivityDate),
     listMembershipCount: 0,
   })),
+  RA.map((item) => item.doi),
 );
