@@ -17,7 +17,7 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const overrideListMembershipCount = (ports: Ports) => (pageOfItems: PageOfItems<ArticleActivity>) => pipe(
+const overrideArticleActivities = (ports: Ports) => (pageOfItems: PageOfItems<ArticleActivity>) => pipe(
   pageOfItems.items,
   RA.map((item) => item.doi),
   (dois) => pipe(
@@ -43,7 +43,7 @@ export const component = (
     flow(
       paginate(20, pageNumber),
       TE.fromEither,
-      TE.chainTaskK(overrideListMembershipCount(ports)),
+      TE.chainTaskK(overrideArticleActivities(ports)),
       TE.chainTaskK(toPageOfCards(ports, group)),
     ),
   )),
