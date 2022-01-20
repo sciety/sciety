@@ -36,7 +36,7 @@ describe('create-account-if-necessary', () => {
           userAccount.displayName,
         ),
       ]);
-      const commitEvents = jest.fn(() => T.of(undefined));
+      const commitEvents = jest.fn(() => T.of('no-events-created' as const));
 
       beforeEach(async () => {
         await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
@@ -61,7 +61,7 @@ describe('create-account-if-necessary', () => {
         ['UserRevokedFindingReviewNotHelpfulEvent', userRevokedFindingReviewNotHelpful(userAccount.id, arbitraryReviewId())],
       ])('when the existing event is %s', (_, event) => {
         const getAllEvents = T.of([event]);
-        const commitEvents = jest.fn(() => T.of(undefined));
+        const commitEvents = jest.fn(() => T.of('no-events-created' as const));
 
         beforeEach(async () => {
           await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
@@ -77,7 +77,7 @@ describe('create-account-if-necessary', () => {
   describe('when the user has not already created an account', () => {
     const userAccount = arbitraryUserAccount();
     const getAllEvents = T.of([]);
-    const commitEvents = jest.fn(() => T.of(undefined));
+    const commitEvents = jest.fn(() => T.of('events-created' as const));
 
     beforeEach(async () => {
       await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();
@@ -104,7 +104,7 @@ describe('create-account-if-necessary', () => {
         anotherUserAccount.displayName,
       ),
     ]);
-    const commitEvents = jest.fn(() => T.of(undefined));
+    const commitEvents = jest.fn(() => T.of('events-created' as const));
 
     beforeEach(async () => {
       await createAccountIfNecessary({ getAllEvents, commitEvents })(userAccount)();

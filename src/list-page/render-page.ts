@@ -1,21 +1,25 @@
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
-import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 type Components = {
+  title: string,
   header: HtmlFragment,
-  evaluatedArticlesList: HtmlFragment,
+  content: HtmlFragment,
+  supplementary?: HtmlFragment,
 };
 
-const render = (components: Components) => `
-  ${components.header}
-  <section class="evaluated-articles">
-    ${components.evaluatedArticlesList}
+type Render = (components: Components) => HtmlFragment;
+
+const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
+  ${header}
+  <section>
+    ${content}
   </section>
-`;
+  ${supplementary}
+`);
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,
@@ -30,7 +34,7 @@ export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   }),
 );
 
-export const renderPage = (group: Group) => (components: Components): Page => ({
-  title: group.name,
+export const renderPage = (components: Components): Page => ({
+  title: components.title,
   content: pipe(components, render, toHtmlFragment),
 });

@@ -7,12 +7,13 @@ import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { CommandResult } from '../types/command-result';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
+export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 const commands = {
   'respond-helpful': respondHelpful,
@@ -30,7 +31,7 @@ export const toCommand = flow(
   O.filter(isCommand),
 );
 
-type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<void>;
+type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<CommandResult>;
 
 export const commandHandler = (
   commitEvents: CommitEvents,

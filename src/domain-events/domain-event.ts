@@ -1,3 +1,4 @@
+import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
 import { ListCreatedEvent } from './list-created-event';
@@ -12,6 +13,7 @@ import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editori
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export type DomainEvent =
+  ArticleAddedToListEvent |
   GroupCreatedEvent |
   EvaluationRecordedEvent |
   ListCreatedEvent |

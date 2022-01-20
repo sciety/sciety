@@ -6,20 +6,19 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
-import { toCardViewModel, Ports as ToCardViewModelPorts } from '../../ncrc-featured-articles-page/articles-list/to-card-view-model';
+import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
-import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type Ports = ToCardViewModelPorts;
 
-const addPaginationControls = (nextPageNumber: O.Option<number>, group: Group) => flow(
+const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${paginationControls(`/groups/${group.slug}/evaluated-articles?`, nextPageNumber)}
+      ${paginationControls(`${basePath}?`, nextPageNumber)}
     </div>
   `,
   toHtmlFragment,
@@ -35,14 +34,14 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 
 export const toPageOfCards = (
   ports: Ports,
-  group: Group,
+  basePath: string,
 ) => (pageOfArticles: PageOfItems<ArticleActivity>): T.Task<HtmlFragment> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(flow(
     renderComponent,
-    addPaginationControls(pageOfArticles.nextPage, group),
+    addPaginationControls(pageOfArticles.nextPage, basePath),
     (content) => `
       ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
       ${content}

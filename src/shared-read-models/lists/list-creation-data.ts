@@ -139,4 +139,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
     new Date('2021-12-02T10:28:00Z'),
   ),
+  listCreated(
+    'c5cf299c-2097-4f3d-b362-2475d7bd35cd',
+    'Evaluated articles',
+    'Articles that have been evaluated by PeerRef.',
+    GID.fromValidatedString('b5f31635-d32b-4df9-92a5-0325a1524343'),
+    new Date('2022-01-20T09:41:01Z'),
+  ),
 ];

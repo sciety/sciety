@@ -13,6 +13,7 @@ const toGroup = (event: GroupCreatedEvent) => ({
   shortDescription: event.shortDescription,
   homepage: event.homepage,
   slug: event.slug,
+  isAutomated: event.isAutomated,
 });
 
 type ReadModel = Map<GroupId, Group>;

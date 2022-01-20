@@ -26,7 +26,7 @@ describe('index', () => {
     } as unknown) as ParameterizedContext<{ user: User }, RouterParamContext<{ user: User }>>;
     const ports = {
       getAllEvents: async () => [],
-      commitEvents: () => T.of(undefined),
+      commitEvents: () => T.of('events-created' as const),
     };
     const respond = respondHandler(ports);
     await respond(context, async () => {});

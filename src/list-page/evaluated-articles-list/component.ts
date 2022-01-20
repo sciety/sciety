@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { evaluatedArticles } from './evaluated-articles';
+import { populateArticleActivities } from './populate-article-activities';
 import { noEvaluatedArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
@@ -28,7 +29,8 @@ export const component = (
     flow(
       paginate(20, pageNumber),
       TE.fromEither,
-      TE.chainTaskK(toPageOfCards(ports, group)),
+      TE.chainTaskK(populateArticleActivities(ports)),
+      TE.chainTaskK(toPageOfCards(ports, `/groups/${group.slug}/evaluated-articles`)),
     ),
   )),
 );

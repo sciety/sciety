@@ -4,15 +4,50 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { GroupId } from '../../types/group-id';
+import { ListId } from '../../types/list-id';
+import { UserId } from '../../types/user-id';
 
 const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
 
-type ArticleState = ArticleActivity & { evaluatingGroups: Set<GroupId> };
+type ArticleState = ArticleActivity & {
+  evaluatingGroups: Set<GroupId>,
+  savingUsers: Set<UserId>,
+  lists: Set<ListId>,
+};
 
 type AllArticleActivityReadModel = Map<string, ArticleState>;
 
+const deleteFromSet = (set: Set<UserId>, element: UserId) => {
+  set.delete(element);
+  return set;
+};
+
 const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainEvent) => {
   switch (event.type) {
+    case 'ArticleAddedToList':
+      return pipe(
+        state.get(event.articleId.value),
+        O.fromNullable,
+        O.fold(
+          () => state.set(event.articleId.value, {
+            doi: event.articleId,
+            latestActivityDate: O.none,
+            evaluationCount: 0,
+            evaluatingGroups: new Set(),
+            savingUsers: new Set(),
+            lists: new Set([event.listId]),
+            listMembershipCount: 1,
+          }),
+          (entry) => state.set(event.articleId.value, {
+            ...entry,
+            lists: entry.lists.add(event.listId),
+            listMembershipCount: entry.evaluatingGroups.size
+              + entry.savingUsers.size
+              + entry.lists.add(event.listId).size,
+          }),
+        ),
+      );
+
     case 'EvaluationRecorded':
       return pipe(
         state.get(event.articleId.value),
@@ -23,6 +58,8 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.some(event.publishedAt),
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
+            savingUsers: new Set(),
+            lists: new Set(),
             listMembershipCount: 1,
           }),
           (entry) => state.set(event.articleId.value, {
@@ -33,7 +70,9 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ),
             evaluationCount: entry.evaluationCount + 1,
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
-            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size,
+            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size
+              + entry.savingUsers.size
+              + entry.lists.size,
           }),
         ),
       );
@@ -48,11 +87,32 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.none,
             evaluationCount: 0,
             evaluatingGroups: new Set(),
+            savingUsers: new Set([event.userId]),
+            lists: new Set(),
             listMembershipCount: 1,
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
-            listMembershipCount: entry.listMembershipCount + 1,
+            savingUsers: entry.savingUsers.add(event.userId),
+            listMembershipCount: entry.savingUsers.add(event.userId).size
+              + entry.evaluatingGroups.size
+              + entry.lists.size,
+          }),
+        ),
+      );
+
+    case 'UserUnsavedArticle':
+      return pipe(
+        state.get(event.articleId.value),
+        O.fromNullable,
+        O.fold(
+          () => state,
+          (entry) => state.set(event.articleId.value, {
+            ...entry,
+            savingUsers: deleteFromSet(entry.savingUsers, event.userId),
+            listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size
+              + entry.evaluatingGroups.size
+              + entry.lists.size,
           }),
         ),
       );

@@ -52,10 +52,11 @@ export const groupEvaluationsPage = (ports: Ports): ListPage => ({ slug, page })
   TE.mapLeft(notFoundResponse),
   TE.chain((group) => pipe(
     {
+      title: TE.right(group.name),
       header: header(ports, group),
-      evaluatedArticlesList: evaluatedArticlesList(ports, group, toPageNumber(page)),
+      content: evaluatedArticlesList(ports, group, toPageNumber(page)),
     },
     sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderPage(group)),
+    TE.bimap(renderErrorPage, renderPage),
   )),
 );

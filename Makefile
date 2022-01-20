@@ -99,7 +99,11 @@ stop:
 
 ingest-events: export TARGET = dev
 ingest-events: build
-	$(DOCKER_COMPOSE) run --name ingest --rm -e INGEST_DEBUG=${INGEST_DEBUG} -e INGEST_ONLY=${INGEST_ONLY} app \
+	$(DOCKER_COMPOSE) run --name ingest --rm \
+	-e INGEST_DEBUG=${INGEST_DEBUG} \
+	-e INGEST_ONLY=${INGEST_ONLY} \
+	-e INGEST_DAYS=${INGEST_DAYS} \
+	app \
 	npx ts-node src/ingest/update-event-data
 
 update-event-data: ingest-events backstop-test
@@ -135,7 +139,7 @@ update-db-dump:
 
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
-taiko: export INGESTION_AUTH_BEARER_TOKEN = secret
+taiko: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 taiko: node_modules clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh

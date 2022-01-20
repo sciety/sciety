@@ -8,7 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './BiorxivArticleDetails';
-import { Logger } from '../../infrastructure/logger';
+import { Logger } from '../../infrastructure';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 

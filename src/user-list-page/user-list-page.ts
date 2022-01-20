@@ -1,24 +1,35 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
+import { renderPage } from '../list-page/render-page';
+import { paginate } from '../shared-components/paginate';
+import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 import { defaultUserListDescription } from '../user-page/static-messages';
 
-type Params = {
-  handle: string,
-  user: O.Option<User>,
-};
+export const paramsCodec = t.type({
+  handle: t.string,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+  page: tt.withFallback(tt.NumberFromString, 1),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
 
 type UserDetails = {
   avatarUrl: string,
@@ -43,7 +54,15 @@ const supplementaryItems = [
   ),
 ];
 
-const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
+const renderPageNumbers = (page: number, articleCount: number, numberOfPages: number) => (
+  articleCount > 0
+    ? `<p class="evaluated-articles__page_count">
+        Showing page ${page} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span>
+      </p>`
+    : ''
+);
+
+const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
       Saved Articles
@@ -56,11 +75,22 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe</a>' : ''}
   </header>
-  ${savedArticlesList}
-  ${supplementaryInfo(supplementaryItems)}
 `);
 
-export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
+const renderContent = (
+  content: HtmlFragment,
+  handle: string,
+  nextPage: O.Option<number>,
+  page: number,
+  articleCount: number,
+  numberOfPages: number,
+) => toHtmlFragment(`
+  ${renderPageNumbers(page, articleCount, numberOfPages)}
+  ${content}
+  ${paginationControls(`/users/${handle}/lists/saved-articles?`, nextPage)}
+`);
+
+export const userListPage = (ports: Ports): UserListPage => ({ handle, user, page }) => pipe(
   {
     userId: ports.getUserId(handle),
     events: TE.rightTask(ports.getAllEvents),
@@ -74,21 +104,35 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
     },
     sequenceS(TE.ApplyPar),
   )),
-  TE.chainTaskK(({ dois, userDetails, listOwnerId }) => pipe(
-    savedArticles(ports)(dois, pipe(user, O.map((u) => u.id)), listOwnerId),
+  TE.map((data) => pipe(
+    data.dois,
+    paginate(20, page),
+    E.getOrElseW(() => ({ items: [], nextPage: O.none, numberOfPages: 1 })),
+    (paginated) => ({ ...data, ...paginated, articleCount: data.dois.length }),
+  )),
+  TE.chainTaskK(({
+    items, nextPage, userDetails, listOwnerId, articleCount, numberOfPages,
+  }) => pipe(
+    savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
-      content,
-      userDetails,
+      title: `${handle} | Saved articles`,
+      header: renderHeader(userDetails),
+      content: renderContent(
+        content,
+        handle,
+        nextPage,
+        page,
+        articleCount,
+        numberOfPages,
+      ),
+      supplementary: supplementaryInfo(supplementaryItems),
     })),
   )),
   TE.bimap(
     (dataError) => ({
       type: dataError,
-      message: toHtmlFragment('User not found.'),
+      message: toHtmlFragment('Page of paginated data, or user, not found.'),
     }),
-    ({ content, userDetails }) => ({
-      title: `${handle} | Saved articles`,
-      content: render(content, userDetails),
-    }),
+    renderPage,
   ),
 );

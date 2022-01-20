@@ -4,8 +4,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import { renderMetaPage } from './render-meta-page';
+import { renderMetaContent } from './render-meta-content';
 import { DomainEvent } from '../../domain-events';
+import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -15,8 +16,12 @@ import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
+import { refereedPreprintBadge } from '../refereed-preprint-badge';
+import { renderHeader } from '../render-header';
+import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
+import { tabList } from '../tab-list';
 
 type MetaPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -62,19 +67,36 @@ export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
         O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
         TE.rightTask,
       ),
+      badge: pipe(
+        ports.getAllEvents,
+        T.map(refereedPreprintBadge(doi)),
+        TE.rightTask,
+      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.map(({ articleDetails, hasUserSavedArticle }) => ({
+    TE.map(({ articleDetails, badge, hasUserSavedArticle }) => ({
       doi,
-      tweetThis,
+      header: renderHeader({
+        articleDetails,
+        badge,
+        saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+        tweetThis,
+      }),
       articleDetails,
-      saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+      mainContent: renderMetaContent(articleDetails, doi),
     })),
   ),
   TE.bimap(
     toErrorPage,
     (components) => ({
-      content: renderMetaPage(components),
+      content: pipe(
+        components.mainContent,
+        tabs({
+          tabList: tabList(components.doi),
+          activeTabIndex: 0,
+        }),
+        renderPage(components.header),
+      ),
       title: striptags(components.articleDetails.title),
       description: striptags(components.articleDetails.abstract),
       openGraph: {

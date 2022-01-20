@@ -7,10 +7,10 @@ import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { renderActivityPage } from './render-activity-page';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
 import { DomainEvent } from '../../domain-events';
+import { tabs } from '../../shared-components/tabs';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -20,8 +20,12 @@ import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
+import { refereedPreprintBadge } from '../refereed-preprint-badge';
+import { renderHeader } from '../render-header';
+import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
+import { tabList } from '../tab-list';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -69,25 +73,41 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
         TE.rightTask,
       ),
+      badge: pipe(
+        ports.getAllEvents,
+        T.map(refereedPreprintBadge(doi)),
+        TE.rightTask,
+      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.chainW(({ articleDetails, hasUserSavedArticle }) => pipe(
+    TE.chainW(({ articleDetails, badge, hasUserSavedArticle }) => pipe(
       getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
         doi,
-        tweetThis,
         articleDetails,
         feedItemsByDateDescending,
-        saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-        feed: renderFeed(feedItemsByDateDescending),
+        header: renderHeader({
+          articleDetails,
+          badge,
+          saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
+          tweetThis,
+        }),
+        mainContent: renderFeed(feedItemsByDateDescending),
       })),
     )),
   ),
   TE.bimap(
     toErrorPage,
     (components) => ({
-      content: renderActivityPage(components),
+      content: pipe(
+        components.mainContent,
+        tabs({
+          tabList: tabList(components.doi),
+          activeTabIndex: 1,
+        }),
+        renderPage(components.header),
+      ),
       title: striptags(components.articleDetails.title),
       description: pipe(
         articleMetaTagContent(components.feedItemsByDateDescending),

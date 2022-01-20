@@ -30,10 +30,10 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
           ports.getAllEvents,
           userId,
         ),
-        T.map((task) => {
+        T.map(() => {
           delete context.session.command;
           delete context.session.reviewId;
-          return task;
+          return undefined;
         }),
       ),
     ),

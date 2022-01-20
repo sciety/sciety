@@ -24,7 +24,7 @@ spec:
             env:
               - name: CROSSREF_API_BEARER_TOKEN
                 value: {{ .Values.crossrefApiBearerToken }}
-              - name: INGESTION_AUTH_BEARER_TOKEN
+              - name: SCIETY_TEAM_API_BEARER_TOKEN
                 value: {{ .Values.ingestionAuthBearerToken }}
               - name: INGESTION_TARGET_APP
                 value: "https://{{ .Values.hostname }}"

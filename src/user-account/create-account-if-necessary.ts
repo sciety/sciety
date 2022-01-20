@@ -16,11 +16,12 @@ import {
   RuntimeGeneratedEvent,
 } from '../domain-events';
 import { userCreatedAccount } from '../domain-events/user-created-account-event';
+import { CommandResult } from '../types/command-result';
 import { UserId } from '../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
+type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -35,7 +36,7 @@ export type UserAccount = {
   displayName: string,
 };
 
-type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<void>;
+type CreateAccountIfNecessary = (ports: Ports) => (userAccount: UserAccount) => T.Task<CommandResult>;
 
 const isBreadcrumbInitiatedBy = (userId: UserId) => (event: DomainEvent) => (
   isUserFollowedEditorialCommunityEvent(event)

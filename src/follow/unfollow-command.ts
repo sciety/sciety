@@ -3,17 +3,18 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
 import { DomainEvent, userUnfollowedEditorialCommunity, UserUnfollowedEditorialCommunityEvent } from '../domain-events';
+import { CommandResult } from '../types/command-result';
 import { GroupId } from '../types/group-id';
 import { User } from '../types/user';
 
-type CommitEvents = (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => T.Task<void>;
+type CommitEvents = (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => T.Task<CommandResult>;
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
 };
 
-type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
+type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<CommandResult>;
 
 export const unfollowCommand = (ports: Ports): UnfollowCommand => (user, groupId) => pipe(
   ports.getAllEvents,

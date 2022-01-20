@@ -10,4 +10,5 @@ export const arbitraryGroup = (): Group => ({
   shortDescription: arbitraryString(),
   homepage: arbitraryUri(),
   slug: arbitraryWord(),
+  isAutomated: false,
 });

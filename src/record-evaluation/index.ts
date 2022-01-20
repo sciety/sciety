@@ -4,15 +4,16 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { validateInputShape } from './validate-input-shape';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { CommandResult } from '../types/command-result';
 
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
+type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
 };
 
-type RecordEvaluation = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, void>;
+type RecordEvaluation = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
 export const recordEvaluation: RecordEvaluation = (ports) => (input) => pipe(
   input,

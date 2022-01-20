@@ -31,7 +31,6 @@ const populateArticleViewModel = (
     latestVersionDate: articleDetails.latestVersionDate,
     authors: articleDetails.authors,
     title: articleDetails.title,
-    listMembershipCount: 0,
   })),
 );
 

@@ -7,12 +7,12 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Middleware, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
-import { getSecretSafely } from './get-secret-safely';
+import { handleScietyApiCommand } from './handle-sciety-api-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
@@ -24,9 +24,11 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
+import { addArticleToList } from '../add-article-to-list';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
+import { paramsCodec as featuredArticlesListPageParams, page as featuresArticlesListPage } from '../featured-articles-list-page/page';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
@@ -40,7 +42,6 @@ import { legalPage } from '../legal-page';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../list-page/list-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
-import { page as ncrcFeaturedArticlesPage, paramsCodec as ncrcFeaturedArticlesPageParams } from '../ncrc-featured-articles-page/page';
 import { recordEvaluation } from '../record-evaluation';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -57,7 +58,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { userListPage } from '../user-list-page';
+import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
 const toNotFound = () => ({
@@ -222,7 +223,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
     pageHandler(createPageFromParams(
-      userPageParams,
+      userListPageParams,
       userListPage(adapters),
     )),
   );
@@ -370,8 +371,8 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
-      ncrcFeaturedArticlesPageParams,
-      ncrcFeaturedArticlesPage(adapters),
+      featuredArticlesListPageParams,
+      featuresArticlesListPage(adapters),
     )),
   );
 
@@ -434,38 +435,9 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
-  const requireIngestionAuthentication: Middleware = async (context, next) => {
-    const expectedToken = getSecretSafely(process.env.INGESTION_AUTH_BEARER_TOKEN);
-    if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
-      await next();
-    } else {
-      context.response.body = 'Unauthorized';
-      context.response.status = StatusCodes.FORBIDDEN;
-    }
-  };
+  router.post('/record-evaluation', handleScietyApiCommand(adapters, recordEvaluation));
 
-  router.post(
-    '/record-evaluation',
-    bodyParser({ enableTypes: ['json'] }),
-    requireIngestionAuthentication,
-    async (context) => {
-      adapters.logger('debug', 'Received Record Evaluation Command', { body: context.request.body });
-      await pipe(
-        context.request.body,
-        recordEvaluation(adapters),
-        TE.match(
-          (error) => {
-            context.response.status = StatusCodes.BAD_REQUEST;
-            context.response.body = error;
-          },
-          () => {
-            context.response.status = StatusCodes.OK;
-            context.response.body = '';
-          },
-        ),
-      )();
-    },
-  );
+  router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToList));
 
   // AUTHENTICATION
 

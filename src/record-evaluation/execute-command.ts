@@ -7,18 +7,21 @@ import { GroupId } from '../types/group-id';
 
 type ExecuteCommand = (command: Command)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<unknown, ReadonlyArray<RuntimeGeneratedEvent>>;
+=> E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
 type ConfirmGroupExists = (groupId: GroupId)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<void, void>;
+=> E.Either<string, void>;
 
 const ignoreResult = () => undefined;
 
 const confirmGroupExists: ConfirmGroupExists = (groupId) => (events) => pipe(
   events,
   getGroup(groupId),
-  E.bimap(ignoreResult, ignoreResult),
+  E.bimap(
+    () => `Group "${groupId}" not found`,
+    ignoreResult,
+  ),
 );
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(

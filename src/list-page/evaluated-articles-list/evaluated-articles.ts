@@ -5,37 +5,29 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
-import * as N from 'fp-ts/number';
 import {
   DomainEvent, EvaluationRecordedEvent,
   isEvaluationRecordedEvent,
 } from '../../domain-events';
-import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 
 type ActivityDetails = {
-  latestActivityDate: Date,
   latestActivityByGroup: O.Option<Date>,
-  evaluationCount: number,
 };
 
 const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
-  latestActivityDate: S.max(D.Ord),
   latestActivityByGroup: O.getMonoid(S.max(D.Ord)),
-  evaluationCount: N.SemigroupSum,
 });
 
 const eventToActivityDetails = (
   event: EvaluationRecordedEvent,
   groupId: GroupId,
 ): ActivityDetails => ({
-  latestActivityDate: event.publishedAt,
   latestActivityByGroup: pipe(
     event.date,
     O.fromPredicate(() => event.groupId === groupId),
   ),
-  evaluationCount: 1,
 });
 
 const combineActivityDetails = (a: ActivityDetails) => O.fold(
@@ -65,8 +57,6 @@ const addEventToActivities = (
 
 const byLatestActivityDateByGroupDesc: Ord.Ord<{
   doi: Doi,
-  latestActivityDate: Date,
-  evaluationCount: number,
   latestActivityByGroup: Date,
 }> = pipe(
   D.Ord,
@@ -86,7 +76,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 
 export const evaluatedArticles = (groupId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<ArticleActivity> => pipe(
+): ReadonlyArray<Doi> => pipe(
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
@@ -95,9 +85,5 @@ export const evaluatedArticles = (groupId: GroupId) => (
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
-  RA.map((activity) => ({
-    ...activity,
-    latestActivityDate: O.some(activity.latestActivityDate),
-    listMembershipCount: 0,
-  })),
+  RA.map((item) => item.doi),
 );

@@ -26,6 +26,7 @@ import {
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { evaluationRecorded } from '../domain-events';
+import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -92,6 +93,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...eventsFromDatabase,
             ...groupEvents,
             ...listCreationEvents,
+            ...articleAddedToListEvents,
             evaluationRecorded(
               Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
               new Doi('10.21203/rs.3.rs-955726/v1'),
@@ -104,14 +106,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
               new Doi('10.21203/rs.3.rs-885194/v1'),
               'ncrc:671d41ca-c8cd-44a3-afd5-c2ebe40a1316' as ReviewId,
-              [],
-              new Date('2021-11-15 00:00Z'),
-              new Date('2021-12-21 13:53Z'),
-            ),
-            evaluationRecorded(
-              Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
-              new Doi('10.21203/rs.3.rs-871965/v1'),
-              'ncrc:31f1797b-2835-4e00-81cd-3978ae770359' as ReviewId,
               [],
               new Date('2021-11-15 00:00Z'),
               new Date('2021-12-21 13:53Z'),

@@ -57,9 +57,3 @@
 .tab--active {
   @include tab-heading();
 }
-
-.main-content--meta .tab-panel {
-  @include card.basics();
-
-  margin-bottom: baseline.increments(6);
-}

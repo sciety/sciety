@@ -1,1 +1,1 @@
-export { userListPage } from './user-list-page';
+export { userListPage, paramsCodec } from './user-list-page';

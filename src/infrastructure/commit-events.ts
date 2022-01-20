@@ -1,10 +1,12 @@
 import * as IO from 'fp-ts/IO';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { constVoid, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { domainEvent } from '../types/codecs/DomainEvent';
+import { CommandResult } from '../types/command-result';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
@@ -12,8 +14,7 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
-// TODO: should return a TaskEither
-export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
+export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,
@@ -36,5 +37,8 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
     )),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
-  T.map(constVoid),
+  T.map(RA.match(
+    () => 'no-events-created',
+    () => 'events-created',
+  )),
 );

@@ -62,7 +62,7 @@ describe('user-list-page', () => {
       findVersionsForArticleDoi: shouldNotBeCalled,
       getUserId: () => TE.right(arbitraryUserId()),
     };
-    const params = { handle, user: O.none };
+    const params = { handle, user: O.none, page: 1 };
     const page = await pipe(
       params,
       userListPage(ports),
@@ -98,7 +98,7 @@ describe('user-list-page', () => {
         findVersionsForArticleDoi: () => TO.none,
         getUserId: () => TE.right(userId),
       };
-      const params = { handle: arbitraryWord(), user: O.none };
+      const params = { handle: arbitraryWord(), user: O.none, page: 1 };
 
       const page = await pipe(
         params,
@@ -123,7 +123,7 @@ describe('user-list-page', () => {
           fetchArticle: () => TE.left('unavailable'),
           getUserId: () => TE.right(userId),
         };
-        const params = { handle: arbitraryWord(), user: O.none };
+        const params = { handle: arbitraryWord(), user: O.none, page: 1 };
 
         const pageContent = await pipe(
           params,
@@ -167,7 +167,7 @@ describe('user-list-page', () => {
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(userId),
         };
-        const params = { handle: arbitraryWord(), user: O.none };
+        const params = { handle: arbitraryWord(), user: O.none, page: 1 };
 
         const page = await pipe(
           params,
@@ -204,7 +204,7 @@ describe('user-list-page', () => {
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(owningUserId),
         };
-        const params = { handle: arbitraryWord(), user: O.some({ id: owningUserId }) };
+        const params = { handle: arbitraryWord(), user: O.some({ id: owningUserId }), page: 1 };
 
         const page = await pipe(
           params,
@@ -242,7 +242,7 @@ describe('user-list-page', () => {
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(owningUserId),
         };
-        const params = { handle: arbitraryWord(), user: O.some({ id: loggedInUserId }) };
+        const params = { handle: arbitraryWord(), user: O.some({ id: loggedInUserId }), page: 1 };
 
         const page = await pipe(
           params,
@@ -261,7 +261,7 @@ describe('user-list-page', () => {
     let page: DocumentFragment;
 
     beforeAll(async () => {
-      const params = { handle: arbitraryWord(), user: O.none };
+      const params = { handle: arbitraryWord(), user: O.none, page: 1 };
 
       page = await pipe(
         params,

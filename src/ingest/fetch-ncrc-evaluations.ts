@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
-import { medrxivOrBiorxivLinkToDoi } from './medrxiv-or-biorxiv-link-to-doi';
+import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import { FetchEvaluations } from './update-all';
 import { sheetId } from '../third-parties/ncrc/sheet-id';
 
@@ -17,7 +17,6 @@ type NcrcReview = {
   date: string,
   articleDoi: string,
   id: string,
-  journal: string,
 };
 
 const toEvaluation = (ncrcReview: NcrcReview) => ({
@@ -34,16 +33,11 @@ const isValidEvaluation = (i: number, data: ReadonlyArray<unknown>) => pipe(
     date: RA.lookup(18)(row),
     link: RA.lookup(6)(row),
     id: RA.lookup(0)(row),
-    journal: RA.lookup(14)(row),
   }),
   sequenceS(O.Apply),
   E.fromOption(() => ({ item: `row ${i}`, reason: 'missing data' })),
-  E.filterOrElse(
-    (r) => /(biorxiv|medrxiv)/i.test(r.journal),
-    (r) => ({ item: r.id, reason: 'not a biorxiv | medrxiv article' }),
-  ),
   E.chain((r) => pipe(
-    medrxivOrBiorxivLinkToDoi(r.link),
+    supportedArticleIdFromLink(r.link),
     E.bimap(
       (reason) => ({ item: r.id, reason }),
       (articleDoi) => ({

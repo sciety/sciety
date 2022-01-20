@@ -3,6 +3,7 @@
 @use 'button';
 @use 'functions';
 @use 'layout';
+@use 'card';
 @use 'list';
 @use 'settings';
 @use 'typography';
@@ -10,6 +11,17 @@
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: baseline.increments(3);
+}
+
+.badge {
+  font-size: functions.px-to-rem(16px);
+  background-color: settings.$colour-accent;
+  color: settings.$colour-white;
+  display: inline-block;
+  font-weight: bold;
+  padding: functions.px-to-rem(2px) functions.px-to-rem(12px);
+  margin-bottom: functions.px-to-rem(16px);
+  border-radius: 50px;
 }
 
 .article-actions {
@@ -86,4 +98,10 @@
 
 .saved-to-list__icon {
   margin-right: functions.px-to-rem(3px);
+}
+
+.article-meta-wrapper {
+  @include card.basics();
+
+  margin-bottom: baseline.increments(6);
 }
