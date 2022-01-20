@@ -42,18 +42,18 @@ describe('content-component', () => {
   });
 
   describe('the lists tab', () => {
-    const listCreatedEvents = [
-      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), group.id),
+    const events = [
       listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), group.id),
     ];
+
     const ports = {
       fetchStaticFile: () => TE.right(''),
       getUserDetailsBatch: () => TE.right([]),
-      getAllEvents: T.of(listCreatedEvents),
+      getAllEvents: T.of(events),
       getGroup: () => TE.right(group),
     };
 
-    it.skip('when loading tab index 1 displays the lists count on the lists tab label', async () => {
+    it('when loading tab index 1 displays the lists count on the lists tab label', async () => {
       const content = await pipe(
         contentComponent(ports)(group, 1, 1),
         TE.getOrElse(shouldNotBeCalled),
@@ -61,7 +61,7 @@ describe('content-component', () => {
       )();
       const followersTabLabel = content.querySelector('.tab:first-child')?.textContent;
 
-      expect(followersTabLabel).toContain(`(${listCreatedEvents.length})`);
+      expect(followersTabLabel).toContain('(1)');
     });
   });
 });

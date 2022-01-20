@@ -8,6 +8,7 @@ import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { Tab, tabs } from '../shared-components/tabs';
+import { selectAllListsOwnedBy } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -57,7 +58,13 @@ export const contentComponent: ContentComponent = (
 ) => pipe(
   {
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
-    listCount: TE.right((group.slug === 'ncrc' || group.slug === 'biophysics-colab') ? 2 : 1),
+    listCount: pipe(
+      ports.getAllEvents,
+      T.map(selectAllListsOwnedBy(group.id)),
+      T.map(RA.size),
+      TE.rightTask,
+      TE.map((listCount) => ((group.slug === 'ncrc' || group.slug === 'biophysics-colab') ? listCount + 1 : listCount)),
+    ),
     followerCount: pipe(
       ports.getAllEvents,
       T.map(findFollowers(group.id)),
