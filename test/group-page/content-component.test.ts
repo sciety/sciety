@@ -2,10 +2,12 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { userFollowedEditorialCommunity } from '../../src/domain-events';
+import { listCreated, userFollowedEditorialCommunity } from '../../src/domain-events';
 import { contentComponent } from '../../src/group-page/content-component';
+import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('content-component', () => {
@@ -40,6 +42,26 @@ describe('content-component', () => {
   });
 
   describe('the lists tab', () => {
-    it.todo('when loading tab index 1 displays the lists count on the lists tab label');
+    const listCreatedEvents = [
+      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), group.id),
+      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), group.id),
+    ];
+    const ports = {
+      fetchStaticFile: () => TE.right(''),
+      getUserDetailsBatch: () => TE.right([]),
+      getAllEvents: T.of(listCreatedEvents),
+      getGroup: () => TE.right(group),
+    };
+
+    it.skip('when loading tab index 1 displays the lists count on the lists tab label', async () => {
+      const content = await pipe(
+        contentComponent(ports)(group, 1, 1),
+        TE.getOrElse(shouldNotBeCalled),
+        T.map(JSDOM.fragment),
+      )();
+      const followersTabLabel = content.querySelector('.tab:first-child')?.textContent;
+
+      expect(followersTabLabel).toContain(`(${listCreatedEvents.length})`);
+    });
   });
 });
