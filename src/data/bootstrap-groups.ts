@@ -20,6 +20,7 @@ import * as Gid from '../types/group-id';
 // b560187e-f2fb-4ff9-a861-a204f3fc0fb0 new Date('2020-08-12T13:59:31Z'),
 // b90854bf-795c-42ba-8664-8257b9c68b0c new Date('2021-06-29T08:13:16Z'),
 // f97bd177-5cb6-4296-8573-078318755bf2 new Date('2021-01-05T11:43:07Z'),
+// b5f31635-d32b-4df9-92a5-0325a1524343 new Date('2022-01-20T09:41:00Z'),
 
 const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
@@ -190,6 +191,16 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Neuroscience',
     homepage: 'https://neuro.peercommunityin.org/',
     slug: 'pci-neuroscience',
+    isAutomated: false,
+  },
+  {
+    id: Gid.fromValidatedString('b5f31635-d32b-4df9-92a5-0325a1524343'),
+    name: 'PeerRef',
+    avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
+    descriptionPath: 'peerref--b5f31635-d32b-4df9-92a5-0325a1524343.md',
+    shortDescription: 'PeerRef organizes journal-independent open peer review for all research',
+    homepage: 'https://www.peerref.com/',
+    slug: 'peerref',
     isAutomated: false,
   },
 ];
