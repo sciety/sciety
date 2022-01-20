@@ -96,6 +96,11 @@ const allGroups: Array<Group> = [
     name: 'ASAPbio crowd review',
     fetchFeed: fetchReviewsFromHypothesisGroup('EBy1rZMX'),
   },
+  {
+    id: 'b5f31635-d32b-4df9-92a5-0325a1524343',
+    name: 'PeerRef',
+    fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j'),
+  },
 ];
 
 const shouldUpdate = (group: Group) => {
