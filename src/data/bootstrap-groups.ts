@@ -198,7 +198,7 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     name: 'PeerRef',
     avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
     descriptionPath: 'peerref--b5f31635-d32b-4df9-92a5-0325a1524343.md',
-    shortDescription: 'PeerRef organizes journal-independent open peer review for all research',
+    shortDescription: 'PeerRef organizes journal-independent open peer review for all research.',
     homepage: 'https://www.peerref.com/',
     slug: 'peerref',
     isAutomated: false,
