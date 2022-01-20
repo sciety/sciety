@@ -99,7 +99,7 @@ const allGroups: Array<Group> = [
   {
     id: 'b5f31635-d32b-4df9-92a5-0325a1524343',
     name: 'PeerRef',
-    fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j'),
+    fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j', 150),
   },
 ];
 

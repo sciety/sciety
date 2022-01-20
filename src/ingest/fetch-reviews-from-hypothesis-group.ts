@@ -27,9 +27,12 @@ type Ports = {
   fetchData: FetchData,
 };
 
-export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => (ports: Ports) => pipe(
+export const fetchReviewsFromHypothesisGroup = (
+  publisherGroupId: string,
+  daysToLookBack = 5,
+): FetchEvaluations => (ports: Ports) => pipe(
   publisherGroupId,
-  Hyp.fetchEvaluationsByGroupSince(daysAgo(5), ports.fetchData),
+  Hyp.fetchEvaluationsByGroupSince(daysAgo(daysToLookBack), ports.fetchData),
   TE.map(RA.map(toEvaluation)),
   TE.map((parts) => ({
     evaluations: RA.rights(parts),
