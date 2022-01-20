@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
@@ -74,14 +74,19 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   ports.getAllEvents,
   TE.rightTask,
   TE.map(selectAllListsOwnedBy(group.id)),
-  TE.map((l) => l[0]),
-  TE.map((details) => ({
-    ...details,
-    href: `/groups/${group.slug}/evaluated-articles`,
-    title: details.name,
-    articleCountLabel: 'This group has evaluated',
-  })),
-  TE.map((cardViewModel) => [cardViewModel]),
+  TE.map(RA.match(
+    () => [],
+    (l) => pipe(
+      l[0],
+      (details) => ({
+        ...details,
+        href: `/groups/${group.slug}/evaluated-articles`,
+        title: details.name,
+        articleCountLabel: 'This group has evaluated',
+      }),
+      ((cardViewModel) => [cardViewModel]),
+    ),
+  )),
   TE.chain((cardViewModels) => pipe(
     ports.getAllEvents,
     T.map(addNcrcListCardViewModelOnNcrcPage(group.slug)(cardViewModels)),
@@ -90,6 +95,11 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
     ports.getAllEvents,
     T.map(addBiophysicsColabListCardViewModelOnBiophysicsColabPage(group.slug)(cardViewModels)),
   )),
-  TE.map(RA.map(renderListCard)),
-  TE.map(renderCards),
+  TE.map(RA.match(
+    () => toHtmlFragment('<p class="static-message">This group doesn\'t have any lists yet.</p>'),
+    flow(
+      RA.map(renderListCard),
+      renderCards,
+    ),
+  )),
 );

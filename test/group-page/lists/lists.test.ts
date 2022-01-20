@@ -7,7 +7,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroup } from '../../types/group.helper';
 
 describe('lists', () => {
-  describe.skip('when the group owns no lists', () => {
+  describe('when the group owns no lists', () => {
     let rendered: HtmlFragment;
 
     beforeEach(async () => {
