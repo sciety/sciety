@@ -4,11 +4,11 @@ import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from 
 
 type AddEventIfNotAlreadyPresent = (
   existingEvents: ReadonlyArray<DomainEvent>,
-  eventToAdd: EvaluationRecordedEvent) => ReadonlyArray<EvaluationRecordedEvent>;
+  eventToAdd: EvaluationRecordedEvent) => boolean;
 
 export const addEventIfNotAlreadyPresent: AddEventIfNotAlreadyPresent = (existingEvents, eventToAdd) => pipe(
   existingEvents,
   RA.filter(isEvaluationRecordedEvent),
   RA.some((event) => event.evaluationLocator === eventToAdd.evaluationLocator),
-  (isAlreadyPresent) => (isAlreadyPresent ? [] : [eventToAdd]),
+  (isAlreadyPresent) => !isAlreadyPresent,
 );

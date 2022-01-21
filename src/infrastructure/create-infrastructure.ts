@@ -95,7 +95,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainTaskK((events) => pipe(
           researchSquareArticlesEvaluations,
-          RA.chain((hardcodedEvent) => addEventIfNotAlreadyPresent(events, hardcodedEvent)),
+          RA.filter((hardcodedEvent) => addEventIfNotAlreadyPresent(events, hardcodedEvent)),
           T.of,
           T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
           T.map((eventsToAdd) => [

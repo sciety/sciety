@@ -14,16 +14,16 @@ describe('add-events-if-not-already-present', () => {
     ];
     const result = addEventIfNotAlreadyPresent(existingEvents, eventToAdd);
 
-    it('returns an empty array', () => {
-      expect(result).toStrictEqual([]);
+    it('returns false', () => {
+      expect(result).toBe(false);
     });
   });
 
   describe('when the event to be added is not an existing event', () => {
     const result = addEventIfNotAlreadyPresent([], eventToAdd);
 
-    it('returns an the event in an array', () => {
-      expect(result).toStrictEqual([eventToAdd]);
+    it('returns true', () => {
+      expect(result).toBe(true);
     });
   });
 });
