@@ -14,9 +14,9 @@ export type GroupCreatedEvent = Readonly<{
   isAutomated: boolean,
 }>;
 
-export const groupCreated = (group: Group): GroupCreatedEvent => ({
+export const groupCreated = (group: Group, date: Date = new Date()): GroupCreatedEvent => ({
   type: 'GroupCreated',
-  date: new Date(),
+  date,
   groupId: group.id,
   name: group.name,
   avatarPath: group.avatarPath,

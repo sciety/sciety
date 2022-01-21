@@ -1,31 +1,9 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { pipe } from 'fp-ts/function';
 import * as DomainEvent from '../domain-events';
-import { Group } from '../types/group';
 import * as Gid from '../types/group-id';
 
-// Group creation times:
-//
-// 10360d97-bf52-4aef-b2fa-2f60d319edd7 new Date('2020-08-12T13:59:31Z'),
-// 19b7464a-edbe-42e8-b7cc-04d1eb1f7332 new Date('2020-08-17T13:07:08Z'),
-// 316db7d9-88cc-4c26-b386-f067e0f56334 new Date('2020-08-12T13:59:31Z'),
-// 32025f28-0506-480e-84a0-b47ef1e92ec5 new Date('2020-08-17T13:56:40Z'),
-// 4bbf0c12-629b-4bb8-91d6-974f4df8efb2 new Date('2021-06-29T08:13:16Z'),
-// 4eebcec9-a4bb-44e1-bde3-2ae11e65daaa new Date('2020-08-17T13:56:40Z'),
-// 50401e46-b764-47b7-8557-6bb35444b7c8 new Date('2021-06-29T08:13:16Z'),
-// 5142a5bc-6b18-42b1-9a8d-7342d7d17e94 new Date('2021-05-13T14:33:27Z'),
-// 53ed5364-a016-11ea-bb37-0242ac130002 new Date('2020-08-12T13:53:54Z'),
-// 62f9b0d0-8d43-4766-a52a-ce02af61bc6a new Date('2021-02-18T10:28:53Z'),
-// 74fd66e9-3b90-4b5a-a4ab-5be83db4c5de new Date('2020-08-12T13:59:31Z'),
-// 7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84 new Date('2020-08-17T13:56:40Z'),
-// 8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65 new Date('2021-05-13T10:39:42Z'),
-// b560187e-f2fb-4ff9-a861-a204f3fc0fb0 new Date('2020-08-12T13:59:31Z'),
-// b90854bf-795c-42ba-8664-8257b9c68b0c new Date('2021-06-29T08:13:16Z'),
-// f97bd177-5cb6-4296-8573-078318755bf2 new Date('2021-01-05T11:43:07Z'),
-// b5f31635-d32b-4df9-92a5-0325a1524343 new Date('2022-01-20T09:41:00Z'),
-
-const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
-  {
+export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreatedEvent> = [
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     name: 'Biophysics Colab',
     avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
@@ -34,8 +12,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://biophysics.sciencecolab.org',
     slug: 'biophysics-colab',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-06-29T08:13:16Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
     name: 'ASAPbio crowd review',
     avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
@@ -44,8 +22,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://asapbio.org/about-us',
     slug: 'asapbio-crowd-review',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-06-29T08:13:16Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     name: 'NCRC',
     avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
@@ -54,8 +32,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://ncrc.jhsph.edu/',
     slug: 'ncrc',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-02-18T10:28:53Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
     name: 'Rapid Reviews COVID-19',
     avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
@@ -64,8 +42,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://rapidreviewscovid19.mitpress.mit.edu/',
     slug: 'rapid-reviews-covid-19',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-05-13T14:33:27Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     name: 'eLife',
     avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
@@ -74,8 +52,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://elifesciences.org/',
     slug: 'elife',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-12T13:59:31Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
     name: 'ScreenIT',
     avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.png',
@@ -84,8 +62,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://sciscore.com/',
     slug: 'screenit',
     isAutomated: true,
-  },
-  {
+  }, new Date('2021-05-13T10:39:42Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
     name: 'preLights',
     avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
@@ -94,8 +72,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://prelights.biologists.com/',
     slug: 'prelights',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-01-05T11:43:07Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
     avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
@@ -104,8 +82,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://prereview.org/',
     slug: 'prereview',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-12T13:59:31Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
     avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
@@ -114,8 +92,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://peerj.com/',
     slug: 'peerj',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-12T13:53:54Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
     name: 'Review Commons',
     avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
@@ -124,8 +102,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://www.reviewcommons.org/',
     slug: 'review-commons',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-12T13:59:31Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     name: 'Peer Community In Zoology',
     avatarPath: '/static/groups/pci-zoology--74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.jpg',
@@ -134,8 +112,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://zool.peercommunityin.org/',
     slug: 'pci-zoology',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-12T13:59:31Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
     name: 'Peer Community in Evolutionary Biology',
     avatarPath: '/static/groups/pci-evolutionary-biology--19b7464a-edbe-42e8-b7cc-04d1eb1f7332.jpg',
@@ -144,8 +122,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://evolbiol.peercommunityin.org/',
     slug: 'pci-evolutionary-biology',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-17T13:07:08Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
     name: 'Peer Community in Ecology',
     avatarPath: '/static/groups/pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.jpg',
@@ -154,8 +132,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://ecology.peercommunityin.org/',
     slug: 'pci-ecology',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-17T13:56:40Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     name: 'Peer Community in Animal Science',
     avatarPath: '/static/groups/pci-animal-science--4eebcec9-a4bb-44e1-bde3-2ae11e65daaa.png',
@@ -164,8 +142,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://animsci.peercommunityin.org/',
     slug: 'pci-animal-science',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-17T13:56:40Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     name: 'Peer Community in Archaeology',
     avatarPath: '/static/groups/pci-archaeology--b90854bf-795c-42ba-8664-8257b9c68b0c.jpg',
@@ -174,8 +152,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://archaeo.peercommunityin.org/',
     slug: 'pci-archaeology',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-06-29T08:13:16Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
     name: 'Peer Community in Paleontology',
     avatarPath: '/static/groups/pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jpg',
@@ -184,8 +162,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://paleo.peercommunityin.org/',
     slug: 'pci-paleontology',
     isAutomated: false,
-  },
-  {
+  }, new Date('2020-08-17T13:56:40Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
     name: 'Peer Community in Neuroscience',
     avatarPath: '/static/groups/pci-neuroscience--af792cd3-1600-465c-89e5-250c48f793aa.png',
@@ -194,8 +172,8 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://neuro.peercommunityin.org/',
     slug: 'pci-neuroscience',
     isAutomated: false,
-  },
-  {
+  }, new Date('2021-12-02T10:06:41Z')),
+  DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b5f31635-d32b-4df9-92a5-0325a1524343'),
     name: 'PeerRef',
     avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
@@ -204,10 +182,5 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     homepage: 'https://www.peerref.com/',
     slug: 'peerref',
     isAutomated: false,
-  },
+  }, new Date('2022-01-20T09:41:00Z')),
 ];
-
-export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreatedEvent> = pipe(
-  groups,
-  RNEA.map((group) => DomainEvent.groupCreated(group)),
-);
