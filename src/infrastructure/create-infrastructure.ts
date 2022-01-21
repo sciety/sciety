@@ -8,6 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
+import { addEventIfNotAlreadyPresent } from './add-event-if-not-already-present';
 import { commitEvents } from './commit-events';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -64,11 +65,6 @@ evaluationRecorded(
   new Date('2021-12-21 13:53Z'),
 )];
 
-const addEventsIfNotAlreadyPresent = (
-  existingEvents: ReadonlyArray<DomainEvent.DomainEvent>,
-  eventsToAdd: ReadonlyArray<DomainEvent.DomainEvent>,
-) => eventsToAdd;
-
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
     logger: pipe(
@@ -118,7 +114,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           ],
           (events) => [
             ...events,
-            ...addEventsIfNotAlreadyPresent(events, researchSquareArticlesEvaluations),
+            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[0]),
+            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[1]),
           ],
           A.sort(DomainEvent.byDate),
         ),
