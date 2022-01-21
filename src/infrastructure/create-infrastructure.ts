@@ -47,6 +47,28 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
+const researchSquareArticlesEvaluations = [evaluationRecorded(
+  Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+  new Doi('10.21203/rs.3.rs-955726/v1'),
+  'hypothesis:iDLPjF9BEeyhWi89_nqmpA' as ReviewId,
+  [],
+  new Date('2021-12-17 13:59Z'),
+  new Date('2021-12-21 10:31Z'),
+),
+evaluationRecorded(
+  Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
+  new Doi('10.21203/rs.3.rs-885194/v1'),
+  'ncrc:671d41ca-c8cd-44a3-afd5-c2ebe40a1316' as ReviewId,
+  [],
+  new Date('2021-11-15 00:00Z'),
+  new Date('2021-12-21 13:53Z'),
+)];
+
+const addEventsIfNotAlreadyPresent = (
+  existingEvents: ReadonlyArray<DomainEvent.DomainEvent>,
+  eventsToAdd: ReadonlyArray<DomainEvent.DomainEvent>,
+) => eventsToAdd;
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
     logger: pipe(
@@ -93,22 +115,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...groupEvents,
             ...listCreationEvents,
             ...articleAddedToListEvents,
-            evaluationRecorded(
-              Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
-              new Doi('10.21203/rs.3.rs-955726/v1'),
-              'hypothesis:iDLPjF9BEeyhWi89_nqmpA' as ReviewId,
-              [],
-              new Date('2021-12-17 13:59Z'),
-              new Date('2021-12-21 10:31Z'),
-            ),
-            evaluationRecorded(
-              Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
-              new Doi('10.21203/rs.3.rs-885194/v1'),
-              'ncrc:671d41ca-c8cd-44a3-afd5-c2ebe40a1316' as ReviewId,
-              [],
-              new Date('2021-11-15 00:00Z'),
-              new Date('2021-12-21 13:53Z'),
-            ),
+          ],
+          (events) => [
+            ...events,
+            ...addEventsIfNotAlreadyPresent(events, researchSquareArticlesEvaluations),
           ],
           A.sort(DomainEvent.byDate),
         ),
