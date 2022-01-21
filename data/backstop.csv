@@ -2,3 +2,4 @@
 7a66afef-4e9c-4c20-a978-be3a1770f93c,UserSavedArticle,2021-03-18 11:42:58.046,"{""userId"": ""1295307136415735808"", ""articleId"": ""doi:10.1101/2021.02.26.21252482""}"
 12cedd73-5f46-4bd3-acab-7662ebcfc7be,UserSavedArticle,2021-03-18 11:43:01.028,"{""userId"": ""1295307136415735808"", ""articleId"": ""doi:10.1101/2020.12.21.20248619""}"
 7e8c1a49-82d0-427d-b2bc-e4861867d382,UserFollowedEditorialCommunity,2021-03-18 11:43:08.778,"{""userId"": ""1295307136415735808"", ""editorialCommunityId"": ""b90854bf-795c-42ba-8664-8257b9c68b0c""}"
+252d9623-fcd6-408e-b318-76236cbbf5c5,EvaluationRecorded,2021-12-21 10:31:00.000,"{""groupId"": ""4bbf0c12-629b-4bb8-91d6-974f4df8efb2"", ""articleId"": ""doi:10.21203/rs.3.rs-955726/v1"", ""evaluationLocator"": ""hypothesis:iDLPjF9BEeyhWi89_nqmpA"", ""authors"": [], ""publishedAt"": ""2021-12-17 13:59:00.000""}"
