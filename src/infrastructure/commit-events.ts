@@ -14,7 +14,7 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
-const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
+export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
   event,
   domainEvent.encode,
   ({

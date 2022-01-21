@@ -9,7 +9,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { addEventIfNotAlreadyPresent } from './add-event-if-not-already-present';
-import { commitEvents } from './commit-events';
+import { commitEvents, writeEventToDatabase } from './commit-events';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
@@ -90,7 +90,19 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   )),
   TE.chain(({ pool, logger }) => pipe(
     {
-      eventsFromDatabase: getEventsFromDatabase(pool, loggerIO(logger)),
+      eventsFromDatabase: pipe(
+        getEventsFromDatabase(pool, loggerIO(logger)),
+        TE.chainTaskK((events) => pipe(
+          addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[1]),
+          T.of,
+          T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
+          T.map((eventsToAdd) => [
+            ...events,
+            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[0]),
+            ...eventsToAdd,
+          ]),
+        )),
+      ),
       eventsFromDataFiles: pipe(
         bootstrapGroups,
         RNEA.map(({ groupId }) => groupId),
@@ -111,11 +123,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...groupEvents,
             ...listCreationEvents,
             ...articleAddedToListEvents,
-          ],
-          (events) => [
-            ...events,
-            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[0]),
-            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[1]),
           ],
           A.sort(DomainEvent.byDate),
         ),
