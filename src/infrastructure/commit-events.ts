@@ -14,22 +14,26 @@ type Dependencies = {
   logger: L.LoggerIO,
 };
 
+const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
+  event,
+  domainEvent.encode,
+  ({
+    id, type, date, ...payload
+  }) => [id, type, date, payload],
+  (values) => async () => pool.query(
+    'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+    values,
+  ),
+  T.map(() => undefined),
+);
+
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,
   T.traverseArray(flow(
     T.of,
-    T.chainFirst(flow(
-      domainEvent.encode,
-      ({
-        id, type, date, ...payload
-      }) => [id, type, date, payload],
-      (values) => async () => pool.query(
-        'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-        values,
-      ),
-    )),
+    T.chainFirst(writeEventToDatabase(pool)),
     T.chainFirstIOK(flow(
       (event) => ({ event }),
       L.info('Event committed'),
