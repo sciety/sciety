@@ -22,7 +22,7 @@ import * as Gid from '../types/group-id';
 // f97bd177-5cb6-4296-8573-078318755bf2 new Date('2021-01-05T11:43:07Z'),
 // b5f31635-d32b-4df9-92a5-0325a1524343 new Date('2022-01-20T09:41:00Z'),
 
-const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
+export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
     id: Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     name: 'Biophysics Colab',
@@ -204,12 +204,3 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     isAutomated: false,
   },
 ];
-
-let downplayedPotentialGroups: ReadonlyArray<Group> = [];
-
-if (process.env.EXPERIMENT_ENABLED === 'true') {
-  downplayedPotentialGroups = [
-  ];
-}
-
-export const bootstrapGroups = RNEA.concat(groups, downplayedPotentialGroups);
