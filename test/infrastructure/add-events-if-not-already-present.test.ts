@@ -1,5 +1,6 @@
+import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
-import { addEventIfNotAlreadyPresent } from '../../src/infrastructure/add-event-if-not-already-present';
+import { needsToBeAdded } from '../../src/infrastructure/needs-to-be-added';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -12,7 +13,10 @@ describe('add-events-if-not-already-present', () => {
     const existingEvents = [
       evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), evaluationLocator),
     ];
-    const result = addEventIfNotAlreadyPresent(existingEvents, eventToAdd);
+    const result = pipe(
+      eventToAdd,
+      needsToBeAdded(existingEvents),
+    );
 
     it('returns false', () => {
       expect(result).toBe(false);
@@ -20,7 +24,10 @@ describe('add-events-if-not-already-present', () => {
   });
 
   describe('when the event to be added is not an existing event', () => {
-    const result = addEventIfNotAlreadyPresent([], eventToAdd);
+    const result = pipe(
+      eventToAdd,
+      needsToBeAdded([]),
+    );
 
     it('returns true', () => {
       expect(result).toBe(true);

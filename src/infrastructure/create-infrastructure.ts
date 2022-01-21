@@ -9,7 +9,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
-import { addEventIfNotAlreadyPresent } from './add-event-if-not-already-present';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -25,6 +24,7 @@ import { getHtml } from './get-html';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
+import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { evaluationRecorded } from '../domain-events';
@@ -95,7 +95,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainTaskK((events) => pipe(
           researchSquareArticlesEvaluations,
-          RA.filter((hardcodedEvent) => addEventIfNotAlreadyPresent(events, hardcodedEvent)),
+          RA.filter(needsToBeAdded(events)),
           T.of,
           T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
           T.map((eventsToAdd) => [
