@@ -14,7 +14,7 @@ describe('add-events-if-not-already-present', () => {
     ];
     const result = addEventIfNotAlreadyPresent(existingEvents, eventToAdd);
 
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       expect(result).toStrictEqual([]);
     });
   });
