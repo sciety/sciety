@@ -75,12 +75,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: getEventsFromDatabase(pool, loggerIO(logger)),
       eventsFromDataFiles: pipe(
         bootstrapGroups,
-        RNEA.map(({ id }) => id),
+        RNEA.map(({ groupId }) => groupId),
         getEventsFromDataFiles,
       ),
       groupEvents: pipe(
         bootstrapGroups,
-        RNEA.map((group) => DomainEvent.groupCreated(group)),
         TE.right,
       ),
     },
