@@ -2,6 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as A from 'fp-ts/Array';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -93,12 +94,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainTaskK((events) => pipe(
-          addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[1]),
+          researchSquareArticlesEvaluations,
+          RA.map((hardcodedEvent) => addEventIfNotAlreadyPresent(events, hardcodedEvent)),
+          RA.flatten,
           T.of,
           T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
           T.map((eventsToAdd) => [
             ...events,
-            ...addEventIfNotAlreadyPresent(events, researchSquareArticlesEvaluations[0]),
             ...eventsToAdd,
           ]),
         )),
