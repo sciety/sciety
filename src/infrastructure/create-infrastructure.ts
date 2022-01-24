@@ -27,7 +27,6 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
-import { evaluationRecorded } from '../domain-events';
 import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -38,9 +37,6 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
-import { Doi } from '../types/doi';
-import * as Gid from '../types/group-id';
-import { ReviewId } from '../types/review-id';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -48,23 +44,6 @@ type Dependencies = {
   crossrefApiBearerToken: O.Option<string>,
   twitterApiBearerToken: string,
 };
-
-const researchSquareArticlesEvaluations = [evaluationRecorded(
-  Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
-  new Doi('10.21203/rs.3.rs-955726/v1'),
-  'hypothesis:iDLPjF9BEeyhWi89_nqmpA' as ReviewId,
-  [],
-  new Date('2021-12-17 13:59Z'),
-  new Date('2021-12-21 10:31Z'),
-),
-evaluationRecorded(
-  Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
-  new Doi('10.21203/rs.3.rs-885194/v1'),
-  'ncrc:671d41ca-c8cd-44a3-afd5-c2ebe40a1316' as ReviewId,
-  [],
-  new Date('2021-11-15 00:00Z'),
-  new Date('2021-12-21 13:53Z'),
-)];
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
@@ -94,7 +73,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainTaskK((events) => pipe(
-          researchSquareArticlesEvaluations,
+          [],
           RA.filter(needsToBeAdded(events)),
           T.of,
           T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
