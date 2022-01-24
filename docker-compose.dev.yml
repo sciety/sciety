@@ -23,5 +23,6 @@ services:
   db:
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
+      - './data/taiko.csv:/data/taiko.csv'
       - './data/exploratory-test.csv:/data/exploratory-test.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
