@@ -41,12 +41,19 @@ import * as Gid from '../types/group-id';
 
 const pciPaleontologyGroupId = Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84');
 const pciArchaeologyGroupId = Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c');
+const pciNeuroscienceGroupId = Gid.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa');
+const pciZoologyGroupId = Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de');
 
-const groupIdsCurrentlyBeingPortedToDatabase = [] as ReadonlyArray<Gid.GroupId>;
+const groupIdsCurrentlyBeingPortedToDatabase = [
+  pciNeuroscienceGroupId,
+  pciZoologyGroupId,
+] as ReadonlyArray<Gid.GroupId>;
 
 const groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles = [
   pciPaleontologyGroupId,
   pciArchaeologyGroupId,
+  pciNeuroscienceGroupId,
+  pciZoologyGroupId,
 ];
 
 type Dependencies = {
