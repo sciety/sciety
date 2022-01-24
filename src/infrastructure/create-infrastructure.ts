@@ -40,10 +40,14 @@ import {
 import * as Gid from '../types/group-id';
 
 const pciPaleontologyGroupId = Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84');
+const pciArchaeologyGroupId = Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c');
 
 const groupIdsCurrentlyBeingPortedToDatabase = [] as ReadonlyArray<Gid.GroupId>;
 
-const groupIdsAlreadyPortedToDatabase = [pciPaleontologyGroupId];
+const groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles = [
+  pciPaleontologyGroupId,
+  pciArchaeologyGroupId,
+];
 
 type Dependencies = {
   prettyLog: boolean,
@@ -94,7 +98,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDataFiles: pipe(
         bootstrapGroups,
         RA.map(({ groupId }) => groupId),
-        RA.filter((groupId) => !groupIdsAlreadyPortedToDatabase.includes(groupId)),
+        RA.filter((groupId) => !groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles.includes(groupId)),
         getEventsFromDataFiles,
       ),
       groupEvents: pipe(
