@@ -27,6 +27,7 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { isEvaluationRecordedEvent } from '../domain-events/type-guards';
 import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -37,6 +38,9 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
+import * as Gid from '../types/group-id';
+
+const pciPaleontologyGroupId = Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84');
 
 type Dependencies = {
   prettyLog: boolean,
@@ -72,12 +76,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     {
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
-        TE.chainTaskK((events) => pipe(
-          [],
-          RA.filter(needsToBeAdded(events)),
-          T.of,
-          T.chainFirst(T.traverseArray(writeEventToDatabase(pool))),
-          T.map((eventsToAdd) => [
+        TE.chain((events) => pipe(
+          pciPaleontologyGroupId,
+          (groupId) => [groupId] as RNEA.ReadonlyNonEmptyArray<Gid.GroupId>,
+          getEventsFromDataFiles,
+          TE.map(RA.filter(isEvaluationRecordedEvent)),
+          TE.map(RA.filter(needsToBeAdded(events))),
+          TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
+          TE.map((eventsToAdd) => [
             ...events,
             ...eventsToAdd,
           ]),
@@ -86,7 +92,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDataFiles: pipe(
         bootstrapGroups,
         RNEA.map(({ groupId }) => groupId),
-        getEventsFromDataFiles,
+        RNEA.filter((groupId) => groupId !== pciPaleontologyGroupId),
+        TE.fromOption(() => 'No groups to load events from files for'),
+        TE.chain(getEventsFromDataFiles),
       ),
       groupEvents: pipe(
         bootstrapGroups,
