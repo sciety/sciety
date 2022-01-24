@@ -42,6 +42,8 @@ import * as Gid from '../types/group-id';
 
 const pciPaleontologyGroupId = Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84');
 
+const groupIdsCurrentlyBeingPortedToDatabase = [pciPaleontologyGroupId] as RNEA.ReadonlyNonEmptyArray<Gid.GroupId>;
+
 type Dependencies = {
   prettyLog: boolean,
   logLevel: string, // TODO: Make this a level name
@@ -77,8 +79,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chain((events) => pipe(
-          pciPaleontologyGroupId,
-          (groupId) => [groupId] as RNEA.ReadonlyNonEmptyArray<Gid.GroupId>,
+          groupIdsCurrentlyBeingPortedToDatabase,
           getEventsFromDataFiles,
           TE.map(RA.filter(isEvaluationRecordedEvent)),
           TE.map(RA.filter(needsToBeAdded(events))),
@@ -92,7 +93,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDataFiles: pipe(
         bootstrapGroups,
         RNEA.map(({ groupId }) => groupId),
-        RNEA.filter((groupId) => groupId !== pciPaleontologyGroupId),
+        RNEA.filter((groupId) => !groupIdsCurrentlyBeingPortedToDatabase.includes(groupId)),
         TE.fromOption(() => 'No groups to load events from files for'),
         TE.chain(getEventsFromDataFiles),
       ),
