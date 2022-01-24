@@ -3,7 +3,6 @@ import * as A from 'fp-ts/Array';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
@@ -42,7 +41,9 @@ import * as Gid from '../types/group-id';
 
 const pciPaleontologyGroupId = Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84');
 
-const groupIdsCurrentlyBeingPortedToDatabase = [pciPaleontologyGroupId] as RNEA.ReadonlyNonEmptyArray<Gid.GroupId>;
+const groupIdsCurrentlyBeingPortedToDatabase = [] as ReadonlyArray<Gid.GroupId>;
+
+const groupIdsAlreadyPortedToDatabase = [pciPaleontologyGroupId];
 
 type Dependencies = {
   prettyLog: boolean,
@@ -92,10 +93,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       ),
       eventsFromDataFiles: pipe(
         bootstrapGroups,
-        RNEA.map(({ groupId }) => groupId),
-        RNEA.filter((groupId) => !groupIdsCurrentlyBeingPortedToDatabase.includes(groupId)),
-        TE.fromOption(() => 'No groups to load events from files for'),
-        TE.chain(getEventsFromDataFiles),
+        RA.map(({ groupId }) => groupId),
+        RA.filter((groupId) => !groupIdsAlreadyPortedToDatabase.includes(groupId)),
+        getEventsFromDataFiles,
       ),
       groupEvents: pipe(
         bootstrapGroups,
