@@ -46,25 +46,8 @@
     },
     {
       "label": "An article activity page (expanded reviews)",
-      "url": "http://sciety_app/articles/activity/10.1101/2021.06.11.21258690",
-      "clickSelector": ".activity-feed__item-toggle",
-      "viewports": [
-        {
-          "label": "phone",
-          "width": 360,
-          "height": 3000
-        },
-        {
-          "label": "tablet",
-          "width": 1024,
-          "height": 2000
-        },
-        {
-          "label": "desktop",
-          "width": 1920,
-          "height": 1080
-        }
-      ]
+      "url": "http://sciety_app/articles/activity/10.1101/646810",
+      "clickSelector": ".activity-feed__item-toggle"
     },
     {
       "label": "Article search",
