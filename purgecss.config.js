@@ -1,5 +1,9 @@
 module.exports = {
-  content: ['src/**/*.ts', 'static/behaviour.js'],
+  content: [
+    'src/**/*.ts',
+    'static/behaviour.js', 
+    'static/groups/*.md',
+  ],
   safelist: [
     'blockquote',
     'h5',
