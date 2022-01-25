@@ -39,3 +39,19 @@
     margin-right: 1rem;
   }
 }
+
+.group-page-pref {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: functions.px-to-rem(14px);
+  border-top: 1px solid settings.$colour-furniture;
+  border-bottom: 1px solid settings.$colour-furniture;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 0;
+  }
+}

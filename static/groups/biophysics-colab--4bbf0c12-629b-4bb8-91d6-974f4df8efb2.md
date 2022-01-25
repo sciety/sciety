@@ -18,7 +18,7 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 Sciety uses the PReF (preprint review features) taxonomy to define each Group's evaluation process to help readers interpret and compare their evaluations.
 [Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
 
-<dl>
+<dl class="group-page-pref">
     <dt>Review requested by</dt>
     <dd>Non-authors, Authors</dd>
     <dt>Reviewer selected by</dt>
