@@ -45,10 +45,6 @@ const pciNeuroscienceGroupId = Gid.fromValidatedString('af792cd3-1600-465c-89e5-
 const pciZoologyGroupId = Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de');
 
 const groupIdsCurrentlyBeingPortedToDatabase = [
-  Gid.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
-  Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
-  Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
-  Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
 ] as ReadonlyArray<Gid.GroupId>;
 
 const groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles = [
