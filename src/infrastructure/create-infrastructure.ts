@@ -84,6 +84,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     `),
     identity,
   )),
+  TE.chainFirst(({ pool }) => TE.tryCatch(
+    async () => pool.query(`
+    DELETE FROM events WHERE payload->>'evaluationLocator'='ncrc:671d41ca-c8cd-44a3-afd5-c2ebe40a1316';
+    `),
+    identity,
+  )),
   TE.chain(({ pool, logger }) => pipe(
     {
       eventsFromDatabase: pipe(
