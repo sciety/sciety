@@ -45,6 +45,12 @@ const pciNeuroscienceGroupId = Gid.fromValidatedString('af792cd3-1600-465c-89e5-
 const pciZoologyGroupId = Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de');
 
 const groupIdsCurrentlyBeingPortedToDatabase = [
+  Gid.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
+  Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
+  Gid.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
+  Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
+  Gid.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
+  Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
 ] as ReadonlyArray<Gid.GroupId>;
 
 const groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles = [
@@ -56,6 +62,12 @@ const groupIdsToSkipWhenLoadingEventsDirectlyFromDataFiles = [
   Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
   Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
   Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
+  Gid.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
+  Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
+  Gid.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
+  Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
+  Gid.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
+  Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
 ];
 
 type Dependencies = {
