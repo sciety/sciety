@@ -13,6 +13,47 @@ Further information can be obtained from Lesley Anson ([lesley@sciencecolab.org]
 
 Biophysics Colab provide collaborative, community-based and journal-agnostic peer review of publicly available preprints. Reviewers do not pass judgement on the significance of a study, but instead highlight its strengths and weaknesses, and provide constructive feedback to tighten the interpretation of the available data. A consolidated report is shared with authors, who are then offered the opportunity to post it on bioRxiv and Sciety.
 
+## PReF
+
+<table>
+  <tr>
+    <th>Review requested by</th>
+    <td>Non-authors, Authors</td>
+  </tr>
+  <tr>
+    <th>Reviewer selected by</th>
+    <td>Editor, service, or community</td>
+  </tr>
+  <tr>
+    <th>Public interaction</th>
+    <td>Not included</td>
+  </tr>
+  <tr>
+    <th>Inclusion of author response</th>
+    <td>???</td>
+  </tr>
+  <tr>
+    <th>Decision</th>
+    <td>???</td>
+  </tr>
+  <tr>
+    <th>Review coverage</th>
+    <td>Complete paper</td>
+  </tr>
+  <tr>
+    <th>Reviewer selected by</th>
+    <td>Editor, service, or community</td>
+  </tr>
+  <tr>
+    <th>Reviewer identity known to</th>
+    <td>Editor or service</td>
+  </tr>
+  <tr>
+    <th>Competing interests</th>
+    <td>Checked</td>
+  </tr>
+</table>
+
 ## People
 
 - Kenton J Swartz (Curator-in-Chief)
