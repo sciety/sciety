@@ -15,6 +15,9 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 
 ## PReF
 
+Sciety uses the PReF (preprint review features) taxonomy to define each Group's evaluation process to help readers interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
 <table>
   <tr>
     <th>Review requested by</th>
@@ -26,23 +29,19 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
   </tr>
   <tr>
     <th>Public interaction</th>
-    <td>Not included</td>
+    <td>No</td>
   </tr>
   <tr>
     <th>Inclusion of author response</th>
-    <td>???</td>
+    <td>Yes</td>
   </tr>
   <tr>
     <th>Decision</th>
-    <td>???</td>
+    <td>Binary decision</td>
   </tr>
   <tr>
     <th>Review coverage</th>
     <td>Complete paper</td>
-  </tr>
-  <tr>
-    <th>Reviewer selected by</th>
-    <td>Editor, service, or community</td>
   </tr>
   <tr>
     <th>Reviewer identity known to</th>
