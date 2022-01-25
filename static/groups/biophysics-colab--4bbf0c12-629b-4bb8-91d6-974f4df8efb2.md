@@ -18,40 +18,24 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 Sciety uses the PReF (preprint review features) taxonomy to define each Group's evaluation process to help readers interpret and compare their evaluations.
 [Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
 
-<table>
-  <tr>
-    <th>Review requested by</th>
-    <td>Non-authors, Authors</td>
-  </tr>
-  <tr>
-    <th>Reviewer selected by</th>
-    <td>Editor, service, or community</td>
-  </tr>
-  <tr>
-    <th>Public interaction</th>
-    <td>No</td>
-  </tr>
-  <tr>
-    <th>Inclusion of author response</th>
-    <td>Yes</td>
-  </tr>
-  <tr>
-    <th>Decision</th>
-    <td>Binary decision</td>
-  </tr>
-  <tr>
-    <th>Review coverage</th>
-    <td>Complete paper</td>
-  </tr>
-  <tr>
-    <th>Reviewer identity known to</th>
-    <td>Editor or service</td>
-  </tr>
-  <tr>
-    <th>Competing interests</th>
-    <td>Checked</td>
-  </tr>
-</table>
+<dl>
+    <dt>Review requested by</dt>
+    <dd>Non-authors, Authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Editor, service, or community</dd>
+    <dt>Public interaction</dt>
+    <dd>No</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Yes</dd>
+    <dt>Decision</dt>
+    <dd>Binary decision</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or service</dd>
+    <dt>Competing interests</dt>
+    <dd>Checked</dd>
+</dl>
 
 ## People
 
