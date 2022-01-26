@@ -48,6 +48,7 @@
   border-top: 1px solid settings.$colour-furniture;
   border-bottom: 1px solid settings.$colour-furniture;
   padding: functions.px-to-rem(12px) 0;
+  margin-bottom: #{baseline.increments(3)};
 
   dt {
     font-weight: bold;
