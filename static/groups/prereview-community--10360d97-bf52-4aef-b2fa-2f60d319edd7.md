@@ -42,6 +42,30 @@ In the interest of fostering an open and welcoming environment we, as contributo
 
 Read more about the PREreview platform [here](https://content.prereview.org/about-the-platform).
 
+## PReF
+
+Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Authors, Non-authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Self-nominated</dd>
+    <dt>Public interaction</dt>
+    <dd>Yes</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>No</dd>
+    <dt>Decision</dt>
+    <dd>Other scale or rating</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or service</dd>
+    <dt>Competing interests</dt>
+    <dd>Not included</dd>
+</dl>
+
 ## People
 
 PREreview is led by a small team of women scientists, all PhDs, all immigrants, all first generation, passionate about making science and scholarship more equitable, transparent, and accessible to all. 
