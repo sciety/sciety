@@ -13,30 +13,6 @@ Further information can be obtained from Lesley Anson ([lesley@sciencecolab.org]
 
 Biophysics Colab provide collaborative, community-based and journal-agnostic peer review of publicly available preprints. Reviewers do not pass judgement on the significance of a study, but instead highlight its strengths and weaknesses, and provide constructive feedback to tighten the interpretation of the available data. A consolidated report is shared with authors, who are then offered the opportunity to post it on bioRxiv and Sciety.
 
-## PReF
-
-Sciety uses the PReF (preprint review features) taxonomy to define each Group's evaluation process to help readers interpret and compare their evaluations.
-[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
-
-<dl class="group-page-pref">
-    <dt>Review requested by</dt>
-    <dd>Non-authors, Authors</dd>
-    <dt>Reviewer selected by</dt>
-    <dd>Editor, service, or community</dd>
-    <dt>Public interaction</dt>
-    <dd>No</dd>
-    <dt>Inclusion of author response</dt>
-    <dd>Yes</dd>
-    <dt>Decision</dt>
-    <dd>Binary decision</dd>
-    <dt>Review coverage</dt>
-    <dd>Complete paper</dd>
-    <dt>Reviewer identity known to</dt>
-    <dd>Editor or service</dd>
-    <dt>Competing interests</dt>
-    <dd>Checked</dd>
-</dl>
-
 ## People
 
 - Kenton J Swartz (Curator-in-Chief)
