@@ -6,8 +6,7 @@ By combining the knowledge and expertise of the biophysics community with the pr
 
 Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add value and credibility to the scientific literature in a way that supports and benefits the scientific community. Their vision is of a publishing ecosystem in which research is judged by its intrinsic significance and not the venue in which it’s published.
 
-Further information can be obtained from Lesley Anson ([lesley@sciencecolab.org](mailto:lesley@sciencecolab.org)). 
-
+The curators at Biophysics Colab receive support for their operations from Lesley Anson ([lesley@sciencecolab.org](mailto:lesley@sciencecolab.org)) and Marie E Sweet ([marie@sciencecolab.org](mailto:marie@sciencecolab.org)).
 
 ## Evaluation model
 
@@ -26,6 +25,7 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 - Teresa Giraldez
 - Sharona E Gordon
 - Inga Hänelt
+- Alexander S Hauser
 - Merritt Maduke
 - Medha M Pathak
 - Stephan A Pless
