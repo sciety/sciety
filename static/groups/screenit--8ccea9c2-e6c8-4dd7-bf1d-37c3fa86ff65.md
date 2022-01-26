@@ -24,6 +24,30 @@ Papers are screened by seven automated screening tools, which are described in t
 
 Abbreviations: RRID, research resource identifier
 
+## PReF
+
+Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Non-authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Not applicable</dd>
+    <dt>Public interaction</dt>
+    <dd>No</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Yes</dd>
+    <dt>Decision</dt>
+    <dd>None</dd>
+    <dt>Review coverage</dt>
+    <dd>Specific aspects</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Not applicable</dd>
+    <dt>Competing interests</dt>
+    <dd>Not included</dd>
+</dl>
+
 ### Learn more about our tools
 
 [SciScore](https://www.cell.com/iscience/fulltext/S2589-0042(20)30890-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2589004220308907%3Fshowall%3Dtrue) 
