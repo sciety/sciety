@@ -24,6 +24,30 @@ Peer Community in Neuroscience (PCI Neuro) is a community of neuroscientists  wh
 - Communicates regularly with the authors to ensure that the revision process is performed correctly and in a timely manner.
 - Allows the authors as much time as they need to revise their article.
 
+## PReF
+
+Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Editor, service, or community</dd>
+    <dt>Public interaction</dt>
+    <dd>No</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Yes</dd>
+    <dt>Decision</dt>
+    <dd>Binary decision</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or service</dd>
+    <dt>Competing interests</dt>
+    <dd>Checked</dd>
+</dl>
+
 ## People
 ### Managing board
 - Mahesh Karnani (CNCR, VU Amsterdam, Netherlands)

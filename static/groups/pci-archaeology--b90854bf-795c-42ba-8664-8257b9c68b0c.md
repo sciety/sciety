@@ -21,6 +21,30 @@ PCI Archaeology welcomes anonymous submissions.
 
 * PCI Archaeology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
+## PReF
+
+Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Editor, service, or community</dd>
+    <dt>Public interaction</dt>
+    <dd>No</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Yes</dd>
+    <dt>Decision</dt>
+    <dd>Binary decision</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or service</dd>
+    <dt>Competing interests</dt>
+    <dd>Checked</dd>
+</dl>
+
 ## People
 
 ### Co-founders

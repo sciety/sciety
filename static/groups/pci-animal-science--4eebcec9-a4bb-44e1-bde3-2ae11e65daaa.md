@@ -44,6 +44,30 @@ Welcomes preregistration submissions and preprint submissions based on preregist
 
 PCI Animal Science does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent PCI editor (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the editor, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Animal Science has a large number of editors, ensuring a considerable diversity of interests. The recommendations published by PCI Animal Science are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.
 
+## PReF
+
+Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
+[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Editor, service, or community</dd>
+    <dt>Public interaction</dt>
+    <dd>No</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Yes</dd>
+    <dt>Decision</dt>
+    <dd>Binary decision</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or service</dd>
+    <dt>Competing interests</dt>
+    <dd>Checked</dd>
+</dl>
+
 ## People
 
 * Mohammed Gagaoua (Teagasc, Ireland)
