@@ -26,7 +26,6 @@ import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
 import { isArticleAddedToListEvent } from '../domain-events/type-guards';
-import { articleAddedToListEvents } from '../shared-read-models/lists/article-added-to-list-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -72,7 +71,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainW((events) => pipe(
-          articleAddedToListEvents,
+          [],
           TE.right,
           TE.map(RA.filter(isArticleAddedToListEvent)),
           TE.map(RA.filter(needsToBeAdded(events))),
