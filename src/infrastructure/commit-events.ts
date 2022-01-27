@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import PubSub from 'pubsub-js';
 import * as L from './logger';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { domainEvent } from '../types/codecs/DomainEvent';
@@ -28,17 +29,17 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
-const publishEvent = (pubsub: PubSubJS.Base) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
+const publishEvent = (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
   event,
   domainEvent.encode,
-  (payload) => async () => pubsub.publish('events', payload),
+  (payload) => async () => PubSub.publish('events', payload),
   T.map(() => undefined), // publish returns 'false' if there are now subscribers, otherwise 'true'
 );
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({
-  inMemoryEvents, pool, logger, pubsub,
+  inMemoryEvents, pool, logger,
 }: Dependencies): CommitEvents => (events) => pipe(
   events,
   T.traverseArray(flow(
@@ -50,7 +51,7 @@ export const commitEvents = ({
       IO.chain(logger),
     )),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
-    T.chainFirst(publishEvent(pubsub)),
+    T.chainFirst(publishEvent),
   )),
   T.map(RA.match(
     () => 'no-events-created',
