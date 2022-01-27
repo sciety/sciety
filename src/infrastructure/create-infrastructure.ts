@@ -72,7 +72,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
         TE.chainW((events) => pipe(
-          TE.right([]),
+          articleAddedToListEvents,
+          TE.right,
           TE.map(RA.filter(isArticleAddedToListEvent)),
           TE.map(RA.filter(needsToBeAdded(events))),
           TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
@@ -95,7 +96,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...eventsFromDatabase,
             ...groupEvents,
             ...listCreationEvents,
-            ...articleAddedToListEvents,
           ],
           A.sort(DomainEvent.byDate),
         ),
