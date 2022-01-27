@@ -217,7 +217,6 @@ get-error-logs:
 		"gs://sciety-data/events/events.jsonl"
 
 update-datastudio: update-db-dump .bq-update-events
-	./scripts/upload-evaluations-from-local-files-to-bigquery.sh
 	./scripts/upload-ingress-logs-from-cloudwatch-to-bigquery.sh
 
 crossref-response:
