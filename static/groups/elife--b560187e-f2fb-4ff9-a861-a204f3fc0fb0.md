@@ -1,6 +1,6 @@
 ## Summary
 
-eLife is a selective journal that publishes promising research in all areas of biology and medicine.
+eLife reviews selected preprints in all areas of biology and medicine.
 
 ## Evaluation model
 

@@ -48,7 +48,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     name: 'eLife',
     avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
     descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
-    shortDescription: 'eLife is a selective journal that publishes promising research in all areas of biology and medicine.',
+    shortDescription: 'eLife reviews selected preprints in all areas of biology and medicine.',
     homepage: 'https://elifesciences.org/',
     slug: 'elife',
     isAutomated: false,
