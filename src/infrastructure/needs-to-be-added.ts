@@ -10,6 +10,6 @@ type NeedsToBeAdded = (existingEvents: ReadonlyArray<DomainEvent>,)
 export const needsToBeAdded: NeedsToBeAdded = (existingEvents) => (eventToAdd) => pipe(
   existingEvents,
   RA.filter(isArticleAddedToListEvent),
-  RA.map((event) => event.articleId),
-  (articleIds) => !articleIds.includes(eventToAdd.articleId),
+  RA.map((event) => event.articleId.value),
+  (articleIds) => !articleIds.includes(eventToAdd.articleId.value),
 );
