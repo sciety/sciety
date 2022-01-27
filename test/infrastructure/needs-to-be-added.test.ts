@@ -29,7 +29,7 @@ describe('needs-to-be-added', () => {
       needsToBeAdded([]),
     );
 
-    it.skip('returns true', () => {
+    it('returns true', () => {
       expect(result).toBe(true);
     });
   });
