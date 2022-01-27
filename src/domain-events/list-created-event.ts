@@ -1,7 +1,9 @@
+import { EventId, generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 
 export type ListCreatedEvent = Readonly<{
+  id: EventId,
   type: 'ListCreated',
   date: Date,
   listId: ListId,
@@ -17,6 +19,7 @@ export const listCreated = (
   ownerId: GroupId,
   date = new Date(),
 ): ListCreatedEvent => ({
+  id: generate(),
   type: 'ListCreated',
   date,
   listId,

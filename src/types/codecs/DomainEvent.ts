@@ -25,6 +25,16 @@ const evaluationRecordedEvent = t.type({
   authors: t.readonlyArray(t.string),
 });
 
+const listCreatedEvent = t.type({
+  id: EventIdFromString,
+  type: t.literal('ListCreated'),
+  date: DateFromISOString,
+  listId: t.string,
+  name: t.string,
+  description: t.string,
+  ownerId: GroupIdFromString,
+});
+
 const userFollowedEditorialCommunityEvent = t.type({
   id: EventIdFromString,
   type: t.literal('UserFollowedEditorialCommunity'),
@@ -102,6 +112,7 @@ const userCreatedAccountEvent = t.type({
 export const domainEvent = t.union([
   articleAddedToListEvent,
   evaluationRecordedEvent,
+  listCreatedEvent,
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
   userFoundReviewHelpfulEvent,
