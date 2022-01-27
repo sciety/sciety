@@ -5,7 +5,7 @@ import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
-describe('add-events-if-not-already-present', () => {
+describe('needs-to-be-added', () => {
   const evaluationLocator = arbitraryReviewId();
   const eventToAdd = evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), evaluationLocator);
 
