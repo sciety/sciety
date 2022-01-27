@@ -7,6 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import PubSub from 'pubsub-js';
 import { Adapters } from './adapters';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { fetchDataset } from './fetch-dataset';
@@ -123,6 +124,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
+      const logData = (topic: PubSubJS.Message, data: string) => {
+        logger('debug', 'Received message', { topic, data });
+      };
+
+      PubSub.subscribe('events', logData);
+
       return {
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
@@ -133,7 +140,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
+        commitEvents: commitEvents({
+          inMemoryEvents: events, pool, logger: loggerIO(logger), pubsub: PubSub,
+        }),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

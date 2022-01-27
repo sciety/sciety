@@ -12,6 +12,7 @@ type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
   logger: L.LoggerIO,
+  pubsub: PubSubJS.Base,
 };
 
 export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
@@ -27,9 +28,18 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
+const publishEvent = (pubsub: PubSubJS.Base) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
+  event,
+  domainEvent.encode,
+  (payload) => async () => pubsub.publish('events', payload),
+  T.map(() => undefined), // publish returns 'false' if there are now subscribers, otherwise 'true'
+);
+
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
-export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
+export const commitEvents = ({
+  inMemoryEvents, pool, logger, pubsub,
+}: Dependencies): CommitEvents => (events) => pipe(
   events,
   T.traverseArray(flow(
     T.of,
@@ -40,6 +50,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
       IO.chain(logger),
     )),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
+    T.chainFirst(publishEvent(pubsub)),
   )),
   T.map(RA.match(
     () => 'no-events-created',
