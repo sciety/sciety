@@ -16,8 +16,6 @@ const readableEvaluations = t.readonlyArray(t.type({
   publishedAt: DateFromISOString,
 }));
 
-export type ReadableEvaluations = t.TypeOf<typeof readableEvaluations>;
-
 export const decodeEvaluationsFromJsonl = flow(
   (fileContents: string) => fileContents.split('\n'),
   RA.filter((line) => line !== ''),

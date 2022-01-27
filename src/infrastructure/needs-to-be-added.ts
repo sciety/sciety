@@ -6,9 +6,13 @@ type NeedsToBeAdded = (existingEvents: ReadonlyArray<DomainEvent>,)
 => (eventToAdd: EvaluationRecordedEvent)
 => boolean;
 
-export const needsToBeAdded: NeedsToBeAdded = (existingEvents) => (eventToAdd) => pipe(
+export const needsToBeAdded: NeedsToBeAdded = (existingEvents) => pipe(
   existingEvents,
   RA.filter(isEvaluationRecordedEvent),
-  RA.some((event) => event.evaluationLocator === eventToAdd.evaluationLocator),
-  (isAlreadyPresent) => !isAlreadyPresent,
+  RA.map((event) => event.evaluationLocator),
+  (evaluationLocators) => new Set(evaluationLocators),
+  (evaluationLocators) => (eventToAdd) => pipe(
+    evaluationLocators.has(eventToAdd.evaluationLocator),
+    (isAlreadyPresent) => !isAlreadyPresent,
+  ),
 );

@@ -21,8 +21,7 @@ describe('unfollow a group', () => {
 
     describe('from the ScreenIT group page', () => {
       it('removes the group from my profile page', async () => {
-        await goto('localhost:8080/groups');
-        await click('ScreenIT');
+        await goto('localhost:8080/groups/screenit');
         await click('Follow');
         await click('Unfollow');
         await click('My profile');
