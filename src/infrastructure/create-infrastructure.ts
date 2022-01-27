@@ -52,9 +52,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
       rTracerLogger,
     ),
-    pool: new Pool({
-      max: 20,
-    }),
+    pool: new Pool(),
   },
   TE.right,
   TE.chainFirst(({ pool }) => TE.tryCatch(
