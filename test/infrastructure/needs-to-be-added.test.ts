@@ -24,6 +24,20 @@ describe('needs-to-be-added', () => {
     });
   });
 
+  describe('when the event to be added pertains to the same article in a different list', () => {
+    const existingEvents = [
+      articleAddedToList(new Doi(articleId.value), arbitraryListId()),
+    ];
+    const result = pipe(
+      eventToAdd,
+      needsToBeAdded(existingEvents),
+    );
+
+    it('returns true', () => {
+      expect(result).toBe(true);
+    });
+  });
+
   describe('when the event to be added is not an existing event', () => {
     const result = pipe(
       eventToAdd,
