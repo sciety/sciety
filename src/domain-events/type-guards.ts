@@ -5,7 +5,6 @@ import { GroupCreatedEvent } from './group-created-event';
 import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
-import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export const isArticleAddedToListEvent = (event: DomainEvent):
@@ -31,11 +30,6 @@ event is ListCreatedEvent => (
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserFollowedEditorialCommunityEvent => (
   event.type === 'UserFollowedEditorialCommunity'
-);
-
-export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
-  event is UserUnfollowedEditorialCommunityEvent => (
-  event.type === 'UserUnfollowedEditorialCommunity'
 );
 
 export const isUserUnsavedArticleEvent = (event: DomainEvent):

@@ -33,7 +33,12 @@ export {
   isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
   userSavedArticleEventCodec,
 } from './user-saved-article-event';
-export { UserUnfollowedEditorialCommunityEvent, userUnfollowedEditorialCommunity } from './user-unfollowed-editorial-community-event';
+export {
+  isUserUnfollowedEditorialCommunityEvent,
+  UserUnfollowedEditorialCommunityEvent,
+  userUnfollowedEditorialCommunity,
+  userUnfollowedEditorialCommunityEventCodec,
+} from './user-unfollowed-editorial-community-event';
 export {
   userUnsavedArticle, UserUnsavedArticleEvent,
   userUnsavedArticleEventCodec,
@@ -44,7 +49,6 @@ export {
   isGroupCreatedEvent,
   isListCreatedEvent,
   isUserFollowedEditorialCommunityEvent,
-  isUserUnfollowedEditorialCommunityEvent,
   isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
   isUserCreatedAccountEvent,

@@ -11,6 +11,7 @@ import {
   userRevokedFindingReviewHelpfulEventCodec,
   userRevokedFindingReviewNotHelpfulEventCodec,
   userSavedArticleEventCodec,
+  userUnfollowedEditorialCommunityEventCodec,
   userUnsavedArticleEventCodec,
 } from '../../domain-events';
 import { reviewIdCodec } from '../review-id';
@@ -52,21 +53,13 @@ const userFollowedEditorialCommunityEvent = t.type({
   editorialCommunityId: GroupIdFromString,
 });
 
-const userUnfollowedEditorialCommunityEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('UserUnfollowedEditorialCommunity'),
-  date: DateFromISOString,
-  userId: UserIdFromString,
-  editorialCommunityId: GroupIdFromString,
-});
-
 export const domainEvent = t.union([
   articleAddedToListEvent,
   evaluationRecordedEvent,
   listCreatedEvent,
   userCreatedAccountEventCodec,
   userFollowedEditorialCommunityEvent,
-  userUnfollowedEditorialCommunityEvent,
+  userUnfollowedEditorialCommunityEventCodec,
   userFoundReviewHelpfulEventCodec,
   userFoundReviewNotHelpfulEventCodec,
   userRevokedFindingReviewHelpfulEventCodec,
