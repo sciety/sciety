@@ -26,7 +26,7 @@ The technology, workflow and policies of Review Commons are expected to evolve w
 ## PReF
 
 Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
-[Learn more](https://asapbio.org/developing-a-taxonomy-to-describe-preprint-review-processes).
+[Learn more](https://osf.io/8zj9w/).
 
 <dl class="group-page-pref">
     <dt>Review requested by</dt>
