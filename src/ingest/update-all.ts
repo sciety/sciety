@@ -6,6 +6,7 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { batchTaskTraverse } from './batch-traverse';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
@@ -90,6 +91,8 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
   (count) => R.upsertAt(errorMessage, count)(accumulator),
 );
 
+const ingestionCommandsBatchSize = 3;
+
 const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
@@ -99,7 +102,7 @@ const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => p
     publishedAt: evaluation.date,
     authors: evaluation.authors,
   })),
-  T.traverseArray(send),
+  batchTaskTraverse(send, ingestionCommandsBatchSize),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
