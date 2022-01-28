@@ -18,7 +18,7 @@ export {
   userUnsavedArticle, UserUnsavedArticleEvent,
   userUnsavedArticleEventCodec,
 } from './user-unsaved-article-event';
-export { userCreatedAccount } from './user-created-account-event';
+export { userCreatedAccount, userCreatedAccountEventCodec } from './user-created-account-event';
 export {
   isArticleAddedToListEvent,
   isListCreatedEvent,
