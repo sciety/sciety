@@ -17,7 +17,8 @@ export const userSavedArticleEventCodec = t.type({
 
 export type UserSavedArticleEvent = t.TypeOf<typeof userSavedArticleEventCodec>;
 
-export const isUserSavedArticleEvent = userSavedArticleEventCodec.is;
+export const isUserSavedArticleEvent = (event: { type: string }):
+  event is UserSavedArticleEvent => event.type === 'UserSavedArticle';
 
 export const userSavedArticle = (
   userId: UserId,

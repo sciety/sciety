@@ -18,7 +18,8 @@ export const listCreatedEventCodec = t.type({
 
 export type ListCreatedEvent = t.TypeOf<typeof listCreatedEventCodec>;
 
-export const isListCreatedEvent = listCreatedEventCodec.is;
+export const isListCreatedEvent = (event: { type: string }):
+  event is ListCreatedEvent => event.type === 'ListCreated';
 
 export const listCreated = (
   listId: ListId,

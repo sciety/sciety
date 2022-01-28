@@ -16,7 +16,8 @@ export const userFoundReviewNotHelpfulEventCodec = t.type({
 
 export type UserFoundReviewNotHelpfulEvent = t.TypeOf<typeof userFoundReviewNotHelpfulEventCodec>;
 
-export const isUserFoundReviewNotHelpfulEvent = userFoundReviewNotHelpfulEventCodec.is;
+export const isUserFoundReviewNotHelpfulEvent = (event: { type: string }):
+  event is UserFoundReviewNotHelpfulEvent => event.type === 'UserFoundReviewNotHelpful';
 
 export const userFoundReviewNotHelpful = (
   userId: UserId,

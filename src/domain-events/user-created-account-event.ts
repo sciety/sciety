@@ -17,7 +17,8 @@ export const userCreatedAccountEventCodec = t.type({
 
 export type UserCreatedAccountEvent = t.TypeOf<typeof userCreatedAccountEventCodec>;
 
-export const isUserCreatedAccountEvent = userCreatedAccountEventCodec.is;
+export const isUserCreatedAccountEvent = (event: { type: string }):
+  event is UserCreatedAccountEvent => event.type === 'UserCreatedAccount';
 
 // ts-unused-exports:disable-next-line
 export const userCreatedAccount = (

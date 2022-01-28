@@ -21,7 +21,8 @@ const groupCreatedEventCodec = t.type({
 
 export type GroupCreatedEvent = t.TypeOf<typeof groupCreatedEventCodec>;
 
-export const isGroupCreatedEvent = groupCreatedEventCodec.is;
+export const isGroupCreatedEvent = (event: { type: string }):
+  event is GroupCreatedEvent => event.type === 'GroupCreated';
 
 export const groupCreated = (group: Group, date: Date = new Date()): GroupCreatedEvent => ({
   id: generate(),
