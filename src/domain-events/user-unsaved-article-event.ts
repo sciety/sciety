@@ -17,6 +17,8 @@ export const userUnsavedArticleEventCodec = t.type({
 
 export type UserUnsavedArticleEvent = t.TypeOf<typeof userUnsavedArticleEventCodec>;
 
+export const isUserUnsavedArticleEvent = userUnsavedArticleEventCodec.is;
+
 export const userUnsavedArticle = (
   userId: UserId,
   doi: Doi,

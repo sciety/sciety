@@ -20,6 +20,11 @@ export {
   listCreatedEventCodec,
 } from './list-created-event';
 export {
+  isUserCreatedAccountEvent,
+  userCreatedAccount,
+  userCreatedAccountEventCodec,
+} from './user-created-account-event';
+export {
   isUserFollowedEditorialCommunityEvent,
   userFollowedEditorialCommunity,
   UserFollowedEditorialCommunityEvent,
@@ -60,14 +65,13 @@ export {
   userUnfollowedEditorialCommunityEventCodec,
 } from './user-unfollowed-editorial-community-event';
 export {
-  userUnsavedArticle, UserUnsavedArticleEvent,
+  isUserUnsavedArticleEvent,
+  userUnsavedArticle,
+  UserUnsavedArticleEvent,
   userUnsavedArticleEventCodec,
 } from './user-unsaved-article-event';
-export { userCreatedAccount, userCreatedAccountEventCodec } from './user-created-account-event';
 
 export {
   isGroupCreatedEvent,
-  isUserUnsavedArticleEvent,
-  isUserCreatedAccountEvent,
 } from './type-guards';
 export { byDate } from './utils';
