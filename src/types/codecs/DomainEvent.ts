@@ -14,7 +14,7 @@ import {
   userUnsavedArticleEventCodec,
 } from '../../domain-events';
 
-export const domainEvent = t.union([
+export const domainEventCodec = t.union([
   articleAddedToListEventCodec,
   evaluationRecordedEventCodec,
   listCreatedEventCodec,
@@ -28,5 +28,3 @@ export const domainEvent = t.union([
   userSavedArticleEventCodec,
   userUnsavedArticleEventCodec,
 ], 'type');
-
-export const domainEvents = t.readonlyArray(domainEvent);

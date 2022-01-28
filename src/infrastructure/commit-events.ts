@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
-import { domainEvent } from '../types/codecs/DomainEvent';
+import { domainEventCodec } from '../types/codecs/DomainEvent';
 import { CommandResult } from '../types/command-result';
 
 type Dependencies = {
@@ -16,7 +16,7 @@ type Dependencies = {
 
 export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
   event,
-  domainEvent.encode,
+  domainEventCodec.encode,
   ({
     id, type, date, ...payload
   }) => [id, type, date, payload],

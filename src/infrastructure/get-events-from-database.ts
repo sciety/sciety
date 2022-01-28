@@ -4,11 +4,12 @@ import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { RuntimeGeneratedEvent } from '../domain-events';
-import { domainEvents } from '../types/codecs/DomainEvent';
+import { domainEventCodec } from '../types/codecs/DomainEvent';
 
 type EventRow = {
   id: string,
@@ -16,6 +17,8 @@ type EventRow = {
   date: string,
   payload: JsonRecord,
 };
+
+const domainEventsCodec = t.readonlyArray(domainEventCodec);
 
 export const getEventsFromDatabase = (
   pool: Pool,
@@ -30,7 +33,7 @@ export const getEventsFromDatabase = (
   )),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),
-    domainEvents.decode,
+    domainEventsCodec.decode,
     E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
 );
