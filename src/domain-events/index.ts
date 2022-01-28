@@ -7,7 +7,12 @@ export { listCreated, ListCreatedEvent } from './list-created-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
-export { UserRevokedFindingReviewHelpfulEvent, userRevokedFindingReviewHelpful } from './user-revoked-finding-review-helpful-event';
+export {
+  isUserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  userRevokedFindingReviewHelpful,
+  userRevokedFindingReviewHelpfulEventCodec,
+} from './user-revoked-finding-review-helpful-event';
 export {
   isUserRevokedFindingReviewNotHelpfulEvent,
   userRevokedFindingReviewNotHelpful,
@@ -35,6 +40,5 @@ export {
   isUserCreatedAccountEvent,
   isUserFoundReviewHelpfulEvent,
   isUserFoundReviewNotHelpfulEvent,
-  isUserRevokedFindingReviewHelpfulEvent,
 } from './type-guards';
 export { byDate } from './utils';
