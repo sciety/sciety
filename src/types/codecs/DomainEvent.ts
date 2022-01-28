@@ -4,7 +4,7 @@ import { DoiFromString } from './DoiFromString';
 import { EventIdFromString } from './EventIdFromString';
 import { GroupIdFromString } from './GroupIdFromString';
 import { UserIdFromString } from './UserIdFromString';
-import { userSavedArticleEventCodec } from '../../domain-events';
+import { userSavedArticleEventCodec, userUnsavedArticleEventCodec } from '../../domain-events';
 import { reviewIdCodec } from '../review-id';
 
 const articleAddedToListEvent = t.type({
@@ -84,14 +84,6 @@ const userRevokedFindingReviewNotHelpfulEvent = t.type({
   reviewId: reviewIdCodec,
 });
 
-const userUnsavedArticleEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('UserUnsavedArticle'),
-  date: DateFromISOString,
-  userId: UserIdFromString,
-  articleId: DoiFromString,
-});
-
 const userCreatedAccountEvent = t.type({
   id: EventIdFromString,
   type: t.literal('UserCreatedAccount'),
@@ -113,7 +105,7 @@ export const domainEvent = t.union([
   userRevokedFindingReviewHelpfulEvent,
   userRevokedFindingReviewNotHelpfulEvent,
   userSavedArticleEventCodec,
-  userUnsavedArticleEvent,
+  userUnsavedArticleEventCodec,
   userCreatedAccountEvent,
 ], 'type');
 
