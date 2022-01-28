@@ -14,8 +14,8 @@ import {
   isUserUnfollowedEditorialCommunityEvent,
   isUserUnsavedArticleEvent,
   RuntimeGeneratedEvent,
+  userCreatedAccount,
 } from '../domain-events';
-import { userCreatedAccount } from '../domain-events/user-created-account-event';
 import { CommandResult } from '../types/command-result';
 import { UserId } from '../types/user-id';
 

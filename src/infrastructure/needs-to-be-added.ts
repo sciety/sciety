@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isArticleAddedToListEvent } from '../domain-events';
-import { ArticleAddedToListEvent } from '../domain-events/article-added-to-list-event';
+import { ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent } from '../domain-events';
 
 type NeedsToBeAdded = (existingEvents: ReadonlyArray<DomainEvent>,)
 => (eventToAdd: ArticleAddedToListEvent)

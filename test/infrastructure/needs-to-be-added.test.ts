@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../src/domain-events/article-added-to-list-event';
+import { articleAddedToList } from '../../src/domain-events';
 import { needsToBeAdded } from '../../src/infrastructure/needs-to-be-added';
 import { Doi } from '../../src/types/doi';
 import { arbitraryDoi } from '../types/doi.helper';

@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, GroupCreatedEvent } from '../../domain-events';
-import { isGroupCreatedEvent } from '../../domain-events/type-guards';
+import { DomainEvent, GroupCreatedEvent, isGroupCreatedEvent } from '../../domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 

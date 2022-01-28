@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { DomainEvent } from '../../domain-events/domain-event';
+import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';

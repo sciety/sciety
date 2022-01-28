@@ -1,8 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-article-to-list/execute-command';
-import { articleAddedToList } from '../../src/domain-events/article-added-to-list-event';
-import { listCreated } from '../../src/domain-events/list-created-event';
+import { articleAddedToList, listCreated } from '../../src/domain-events';
 import { arbitraryString } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';

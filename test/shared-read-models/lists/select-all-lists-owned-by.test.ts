@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../../src/domain-events';
-import { listCreated } from '../../../src/domain-events/list-created-event';
+import { evaluationRecorded, listCreated } from '../../../src/domain-events';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';

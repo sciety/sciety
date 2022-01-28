@@ -1,4 +1,4 @@
-import { listCreated, ListCreatedEvent } from '../../domain-events/list-created-event';
+import { listCreated, ListCreatedEvent } from '../../domain-events';
 import * as GID from '../../types/group-id';
 
 export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
