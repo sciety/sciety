@@ -1,18 +1,27 @@
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { DoiFromString } from '../types/codecs/DoiFromString';
+import { EventIdFromString } from '../types/codecs/EventIdFromString';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { Doi } from '../types/doi';
-import { EventId, generate } from '../types/event-id';
+import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
-import { ReviewId } from '../types/review-id';
+import { ReviewId, reviewIdCodec } from '../types/review-id';
 
-export type EvaluationRecordedEvent = Readonly<{
-  id: EventId,
-  type: 'EvaluationRecorded',
-  date: Date,
-  groupId: GroupId,
-  articleId: Doi,
-  evaluationLocator: ReviewId,
-  publishedAt: Date,
-  authors: ReadonlyArray<string>,
-}>;
+export const evaluationRecordedEventCodec = t.type({
+  id: EventIdFromString,
+  type: t.literal('EvaluationRecorded'),
+  date: tt.DateFromISOString,
+  groupId: GroupIdFromString,
+  evaluationLocator: reviewIdCodec,
+  articleId: DoiFromString,
+  publishedAt: tt.DateFromISOString,
+  authors: t.readonlyArray(t.string),
+});
+
+export type EvaluationRecordedEvent = t.TypeOf<typeof evaluationRecordedEventCodec>;
+
+export const isEvaluationRecordedEvent = evaluationRecordedEventCodec.is;
 
 export const evaluationRecorded = (
   groupId: GroupId,
