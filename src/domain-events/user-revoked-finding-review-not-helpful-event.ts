@@ -1,14 +1,22 @@
-import { EventId, generate } from '../types/event-id';
-import { ReviewId } from '../types/review-id';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { EventIdFromString } from '../types/codecs/EventIdFromString';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { generate } from '../types/event-id';
+import { ReviewId, reviewIdCodec } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
-  id: EventId,
-  type: 'UserRevokedFindingReviewNotHelpful',
-  date: Date,
-  userId: UserId,
-  reviewId: ReviewId,
-}>;
+export const userRevokedFindingReviewNotHelpfulEventCodec = t.type({
+  id: EventIdFromString,
+  type: t.literal('UserRevokedFindingReviewNotHelpful'),
+  date: tt.DateFromISOString,
+  userId: UserIdFromString,
+  reviewId: reviewIdCodec,
+});
+
+export type UserRevokedFindingReviewNotHelpfulEvent = t.TypeOf<typeof userRevokedFindingReviewNotHelpfulEventCodec>;
+
+export const isUserRevokedFindingReviewNotHelpfulEvent = userRevokedFindingReviewNotHelpfulEventCodec.is;
 
 export const userRevokedFindingReviewNotHelpful = (
   userId: UserId,

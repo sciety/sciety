@@ -8,7 +8,6 @@ import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-c
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
 import { UserFoundReviewNotHelpfulEvent } from './user-found-review-not-helpful-event';
 import { UserRevokedFindingReviewHelpfulEvent } from './user-revoked-finding-review-helpful-event';
-import { UserRevokedFindingReviewNotHelpfulEvent } from './user-revoked-finding-review-not-helpful-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
@@ -65,9 +64,4 @@ export const isUserRevokedFindingReviewHelpfulEvent = (event: DomainEvent):
 export const isUserFoundReviewNotHelpfulEvent = (event: DomainEvent):
   event is UserFoundReviewNotHelpfulEvent => (
   event.type === 'UserFoundReviewNotHelpful'
-);
-
-export const isUserRevokedFindingReviewNotHelpfulEvent = (event: DomainEvent):
-  event is UserRevokedFindingReviewNotHelpfulEvent => (
-  event.type === 'UserRevokedFindingReviewNotHelpful'
 );

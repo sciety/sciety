@@ -8,7 +8,12 @@ export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } f
 export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
 export { UserRevokedFindingReviewHelpfulEvent, userRevokedFindingReviewHelpful } from './user-revoked-finding-review-helpful-event';
-export { userRevokedFindingReviewNotHelpful, UserRevokedFindingReviewNotHelpfulEvent } from './user-revoked-finding-review-not-helpful-event';
+export {
+  isUserRevokedFindingReviewNotHelpfulEvent,
+  userRevokedFindingReviewNotHelpful,
+  userRevokedFindingReviewNotHelpfulEventCodec,
+  UserRevokedFindingReviewNotHelpfulEvent,
+} from './user-revoked-finding-review-not-helpful-event';
 export {
   isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
   userSavedArticleEventCodec,
@@ -31,6 +36,5 @@ export {
   isUserFoundReviewHelpfulEvent,
   isUserFoundReviewNotHelpfulEvent,
   isUserRevokedFindingReviewHelpfulEvent,
-  isUserRevokedFindingReviewNotHelpfulEvent,
 } from './type-guards';
 export { byDate } from './utils';
