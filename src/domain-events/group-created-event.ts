@@ -1,20 +1,30 @@
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { EventIdFromString } from '../types/codecs/EventIdFromString';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { generate } from '../types/event-id';
 import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
 
-export type GroupCreatedEvent = Readonly<{
-  type: 'GroupCreated',
-  date: Date,
-  groupId: GroupId,
-  name: string,
-  avatarPath: string,
-  descriptionPath: string,
-  shortDescription: string,
-  homepage: string,
-  slug: string,
-  isAutomated: boolean,
-}>;
+const groupCreatedEventCodec = t.type({
+  id: EventIdFromString,
+  type: t.literal('GroupCreated'),
+  date: tt.DateFromISOString,
+  groupId: GroupIdFromString,
+  name: t.string,
+  avatarPath: t.string,
+  descriptionPath: t.string,
+  shortDescription: t.string,
+  homepage: t.string,
+  slug: t.string,
+  isAutomated: t.boolean,
+});
+
+export type GroupCreatedEvent = t.TypeOf<typeof groupCreatedEventCodec>;
+
+export const isGroupCreatedEvent = groupCreatedEventCodec.is;
 
 export const groupCreated = (group: Group, date: Date = new Date()): GroupCreatedEvent => ({
+  id: generate(),
   type: 'GroupCreated',
   date,
   groupId: group.id,
