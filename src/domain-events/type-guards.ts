@@ -1,13 +1,7 @@
-import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { DomainEvent } from './domain-event';
 import { GroupCreatedEvent } from './group-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
-
-export const isArticleAddedToListEvent = (event: DomainEvent):
-  event is ArticleAddedToListEvent => (
-  event.type === 'ArticleAddedToList'
-);
 
 export const isGroupCreatedEvent = (event: DomainEvent):
   event is GroupCreatedEvent => (

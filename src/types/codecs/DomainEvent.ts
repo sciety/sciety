@@ -1,8 +1,6 @@
 import * as t from 'io-ts';
-import { DateFromISOString } from 'io-ts-types/DateFromISOString';
-import { DoiFromString } from './DoiFromString';
-import { EventIdFromString } from './EventIdFromString';
 import {
+  articleAddedToListEventCodec,
   evaluationRecordedEventCodec,
   listCreatedEventCodec,
   userCreatedAccountEventCodec,
@@ -16,16 +14,8 @@ import {
   userUnsavedArticleEventCodec,
 } from '../../domain-events';
 
-const articleAddedToListEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('ArticleAddedToList'),
-  date: DateFromISOString,
-  articleId: DoiFromString,
-  listId: t.string,
-});
-
 export const domainEvent = t.union([
-  articleAddedToListEvent,
+  articleAddedToListEventCodec,
   evaluationRecordedEventCodec,
   listCreatedEventCodec,
   userCreatedAccountEventCodec,

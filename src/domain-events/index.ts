@@ -1,6 +1,11 @@
 export { DomainEvent } from './domain-event';
 export { RuntimeGeneratedEvent } from './runtime-generated-event';
-export { ArticleAddedToListEvent, articleAddedToList } from './article-added-to-list-event';
+export {
+  isArticleAddedToListEvent,
+  ArticleAddedToListEvent,
+  articleAddedToList,
+  articleAddedToListEventCodec,
+} from './article-added-to-list-event';
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export {
   isEvaluationRecordedEvent,
@@ -59,8 +64,8 @@ export {
   userUnsavedArticleEventCodec,
 } from './user-unsaved-article-event';
 export { userCreatedAccount, userCreatedAccountEventCodec } from './user-created-account-event';
+
 export {
-  isArticleAddedToListEvent,
   isGroupCreatedEvent,
   isUserUnsavedArticleEvent,
   isUserCreatedAccountEvent,

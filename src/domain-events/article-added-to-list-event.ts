@@ -1,14 +1,22 @@
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { DoiFromString } from '../types/codecs/DoiFromString';
+import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { Doi } from '../types/doi';
-import { EventId, generate } from '../types/event-id';
+import { generate } from '../types/event-id';
 import { ListId } from '../types/list-id';
 
-export type ArticleAddedToListEvent = Readonly<{
-  id: EventId,
-  type: 'ArticleAddedToList',
-  date: Date,
-  articleId: Doi,
-  listId: ListId,
-}>;
+export const articleAddedToListEventCodec = t.type({
+  id: EventIdFromString,
+  type: t.literal('ArticleAddedToList'),
+  date: tt.DateFromISOString,
+  articleId: DoiFromString,
+  listId: t.string,
+});
+
+export type ArticleAddedToListEvent = t.TypeOf<typeof articleAddedToListEventCodec>;
+
+export const isArticleAddedToListEvent = articleAddedToListEventCodec.is;
 
 export const articleAddedToList = (
   articleId: Doi,
