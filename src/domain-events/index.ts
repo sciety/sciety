@@ -5,7 +5,12 @@ export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 export { listCreated, ListCreatedEvent } from './list-created-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
-export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
+export {
+  isUserFoundReviewHelpfulEvent,
+  UserFoundReviewHelpfulEvent,
+  userFoundReviewHelpful,
+  userFoundReviewHelpfulEventCodec,
+} from './user-found-review-helpful-event';
 export {
   isUserFoundReviewNotHelpfulEvent,
   UserFoundReviewNotHelpfulEvent,
@@ -43,6 +48,5 @@ export {
   isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
   isUserCreatedAccountEvent,
-  isUserFoundReviewHelpfulEvent,
 } from './type-guards';
 export { byDate } from './utils';
