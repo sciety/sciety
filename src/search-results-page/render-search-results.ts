@@ -10,7 +10,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
-const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
+const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'articleId' in viewModel;
 
 export type SearchResults = PaginationViewModel & PageTabsViewModel & {
   itemsToDisplay: ReadonlyArray<ItemViewModel>,

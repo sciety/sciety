@@ -13,13 +13,13 @@ import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type ArticleItem = {
-  doi: Doi,
+  articleId: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
 };
 
-type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
+type GetLatestArticleVersionDate = (articleId: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
@@ -30,10 +30,10 @@ export const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
   {
-    latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
+    latestVersionDate: ports.getLatestArticleVersionDate(item.articleId, item.server),
     articleActivity: pipe(
       ports.getAllEvents,
-      T.map(getActivityForDoi(item.doi)),
+      T.map(getActivityForDoi(item.articleId)),
     ),
   },
   sequenceS(T.ApplyPar),

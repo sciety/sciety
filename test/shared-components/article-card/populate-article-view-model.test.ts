@@ -30,7 +30,7 @@ describe('populate-article-view-model', () => {
     };
 
     const article = {
-      doi: articleId,
+      articleId,
       server: 'biorxiv' as const,
       title: pipe('', toHtmlFragment, sanitise),
       authors: O.none,

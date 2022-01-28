@@ -9,7 +9,7 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 
 const arbitraryArticleItem = () => ({
   _tag: 'Article' as const,
-  doi: arbitraryDoi(),
+  articleId: arbitraryDoi(),
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),
   authors: O.some([arbitraryString()]),

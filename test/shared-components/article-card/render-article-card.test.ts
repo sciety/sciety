@@ -8,7 +8,7 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 const generateArticleViewModel = ({
-  doi = arbitraryDoi(),
+  articleId = arbitraryDoi(),
   title = sanitise(toHtmlFragment('default title')),
   authors = O.some(['Smith J']),
   latestActivityDate = O.some(new Date()),
@@ -16,7 +16,7 @@ const generateArticleViewModel = ({
   evaluationCount = 0,
   listMembershipCount = 0,
 }): ArticleViewModel => ({
-  doi,
+  articleId,
   title,
   authors,
   latestActivityDate,
@@ -35,7 +35,7 @@ const getSpans = (articleViewModel: ArticleViewModel) => pipe(
 describe('render-article-card', () => {
   it('links to the article page', () => {
     const articleViewModel = generateArticleViewModel({
-      doi: new Doi('10.1101/1234'),
+      articleId: new Doi('10.1101/1234'),
       title: sanitise(toHtmlFragment('The article title')),
     });
 

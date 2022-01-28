@@ -22,7 +22,7 @@ import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-frag
 type GetJson = (uri: string) => Promise<Json>;
 
 type SearchResult = {
-  doi: Doi,
+  articleId: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
@@ -97,14 +97,14 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
 
 const logIfNoAuthors = (logger: Logger, item: Item) => (authors: Authors): Authors => {
   if (O.isNone(authors)) {
-    logger('error', 'No authorList provided by EuropePMC', { doi: item.doi.value });
+    logger('error', 'No authorList provided by EuropePMC', { articleId: item.doi.value });
   }
   return authors;
 };
 
 const constructSearchResults = (logger: Logger, pageSize: number) => (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
-    doi: item.doi,
+    articleId: item.doi,
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
     title: pipe(item.title, toHtmlFragment, sanitise),
     authors: pipe(

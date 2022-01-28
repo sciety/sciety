@@ -30,7 +30,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
         O.fromNullable,
         O.fold(
           () => state.set(event.articleId.value, {
-            doi: event.articleId,
+            articleId: event.articleId,
             latestActivityDate: O.none,
             evaluationCount: 0,
             evaluatingGroups: new Set(),
@@ -54,7 +54,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
         O.fromNullable,
         O.fold(
           () => state.set(event.articleId.value, {
-            doi: event.articleId,
+            articleId: event.articleId,
             latestActivityDate: O.some(event.publishedAt),
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
@@ -83,7 +83,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
         O.fromNullable,
         O.fold(
           () => state.set(event.articleId.value, {
-            doi: event.articleId,
+            articleId: event.articleId,
             latestActivityDate: O.none,
             evaluationCount: 0,
             evaluatingGroups: new Set(),

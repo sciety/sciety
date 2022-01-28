@@ -51,7 +51,7 @@ describe('search-europe-pmc adapter', () => {
       total: 3,
       items: [
         {
-          doi: new Doi('10.1111/1234'),
+          articleId: new Doi('10.1111/1234'),
           server: 'biorxiv',
           title: 'Article title',
           authors: O.some([
@@ -60,7 +60,7 @@ describe('search-europe-pmc adapter', () => {
           ]),
         },
         {
-          doi: new Doi('10.1111/4321'),
+          articleId: new Doi('10.1111/4321'),
           server: 'biorxiv',
           title: 'Another Article title',
           authors: O.some([

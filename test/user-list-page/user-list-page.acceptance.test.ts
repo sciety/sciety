@@ -153,11 +153,11 @@ describe('user-list-page', () => {
             userSavedArticle(userId, failingArticleId),
             userSavedArticle(userId, arbitraryDoi()),
           ]),
-          fetchArticle: (doi: Doi) => (
-            doi.value === failingArticleId.value
+          fetchArticle: (articleId: Doi) => (
+            articleId.value === failingArticleId.value
               ? TE.left(DE.notFound)
               : TE.right({
-                doi,
+                doi: articleId,
                 server: 'biorxiv' as const,
                 title: arbitrarySanitisedHtmlFragment(),
                 authors: O.none,

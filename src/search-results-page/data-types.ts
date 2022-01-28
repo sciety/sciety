@@ -10,13 +10,13 @@ export type GroupItem = {
 };
 
 export type ArticleItem = {
-  doi: Doi,
+  articleId: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
 };
 
-export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;
+export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'articleId' in item;
 
 export type ArticleResults = {
   items: ReadonlyArray<ArticleItem>,

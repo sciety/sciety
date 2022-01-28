@@ -13,23 +13,23 @@ describe('populate-article-view-models', () => {
     it('returns article view models by adding article metadata and version dates', async () => {
       const activities: ReadonlyArray<ArticleActivity> = [
         {
-          doi: new Doi('10.1101/11111'),
+          articleId: new Doi('10.1101/11111'),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
           listMembershipCount: 0,
         },
         {
-          doi: arbitraryDoi(),
+          articleId: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
           listMembershipCount: 0,
         },
       ];
-      const fetchArticleDetails = (doi: Doi) => TE.right({
+      const fetchArticleDetails = (articleId: Doi) => TE.right({
         title: sanitise(toHtmlFragment('')),
         authors: O.none,
         // eslint-disable-next-line jest/no-if
-        latestVersionDate: eqDoi.equals(doi, new Doi('10.1101/11111'))
+        latestVersionDate: eqDoi.equals(articleId, new Doi('10.1101/11111'))
           ? O.some(new Date('2021-01-01'))
           : O.some(new Date('1921-01-01')),
       });
@@ -45,7 +45,7 @@ describe('populate-article-view-models', () => {
     it('returns an article view model without a version date', async () => {
       const activities: ReadonlyArray<ArticleActivity> = [
         {
-          doi: arbitraryDoi(),
+          articleId: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
           listMembershipCount: 0,
@@ -71,19 +71,19 @@ describe('populate-article-view-models', () => {
     const failingDoi = arbitraryDoi();
     const activities: ReadonlyArray<ArticleActivity> = [
       {
-        doi: successDoi,
+        articleId: successDoi,
         evaluationCount: 1,
         latestActivityDate: O.some(new Date()),
         listMembershipCount: 0,
       },
       {
-        doi: failingDoi,
+        articleId: failingDoi,
         evaluationCount: 1,
         latestActivityDate: O.some(new Date()),
         listMembershipCount: 0,
       },
     ];
-    const fetchArticleDetails = (doi: Doi) => (eqDoi.equals(doi, successDoi)
+    const fetchArticleDetails = (articleId: Doi) => (eqDoi.equals(articleId, successDoi)
       ? TE.right({
         title: sanitise(toHtmlFragment('')),
         authors: O.none,
@@ -95,14 +95,14 @@ describe('populate-article-view-models', () => {
       const results = await populateArticleViewModelsSkippingFailures(fetchArticleDetails)(activities)();
 
       expect(results).toHaveLength(1);
-      expect(results[0]).toStrictEqual(expect.objectContaining({ doi: successDoi }));
+      expect(results[0]).toStrictEqual(expect.objectContaining({ articleId: successDoi }));
     });
 
     it('does not return an article view model for the failing article', async () => {
       const results = await populateArticleViewModelsSkippingFailures(fetchArticleDetails)(activities)();
 
       expect(results).toHaveLength(1);
-      expect(results[0]).not.toStrictEqual(expect.objectContaining({ doi: failingDoi }));
+      expect(results[0]).not.toStrictEqual(expect.objectContaining({ articleId: failingDoi }));
     });
   });
 });

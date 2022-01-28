@@ -40,7 +40,7 @@ describe('fetch-extra-details', () => {
         itemsToDisplay: [
           {
             _tag: 'Article' as const,
-            doi: articleId,
+            articleId,
             server: 'biorxiv' as const,
             title: pipe('', toHtmlFragment, sanitise),
             authors: O.some([]),

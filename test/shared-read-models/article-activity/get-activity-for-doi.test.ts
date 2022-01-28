@@ -22,7 +22,7 @@ describe('get-activity-for-doi', () => {
 
     it('article has no activity', () => {
       expect(articleActivity).toStrictEqual({
-        doi: articleId,
+        articleId,
         latestActivityDate: O.none,
         evaluationCount: 0,
         listMembershipCount: 0,

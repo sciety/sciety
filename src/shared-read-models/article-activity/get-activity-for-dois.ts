@@ -8,26 +8,26 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 
-type GetActivityForDois = (dois: ReadonlyArray<Doi>)
+type GetActivityForDois = (articleIds: ReadonlyArray<Doi>)
 => (events: ReadonlyArray<DomainEvent>)
 => ReadonlyArray<ArticleActivity>;
 
-export const getActivityForDois: GetActivityForDois = (dois) => (events) => pipe(
+export const getActivityForDois: GetActivityForDois = (articleIds) => (events) => pipe(
   events,
   constructAllArticleActivityReadModel,
   (readmodel) => pipe(
-    dois,
-    RA.map((doi) => pipe(
+    articleIds,
+    RA.map((articleId) => pipe(
       readmodel,
-      RM.lookup(S.Eq)(doi.value),
+      RM.lookup(S.Eq)(articleId.value),
       O.map((act) => ({
-        doi: act.doi,
+        articleId: act.articleId,
         latestActivityDate: act.latestActivityDate,
         evaluationCount: act.evaluationCount,
         listMembershipCount: act.listMembershipCount,
       })),
       O.getOrElseW(() => ({
-        doi,
+        articleId,
         latestActivityDate: O.none,
         evaluationCount: 0,
         listMembershipCount: 0,

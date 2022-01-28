@@ -9,7 +9,7 @@ import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 
 export type ArticleViewModel = {
-  doi: Doi,
+  articleId: Doi,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
@@ -66,11 +66,11 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
-    <a class="article-card__link" href="/articles/activity/${model.doi.value}">
+    <a class="article-card__link" href="/articles/activity/${model.articleId.value}">
       <h3 class="article-card__title">
         ${model.title}
       </h3>
-      ${renderAuthors(model.authors, `article-card-author-list-${model.doi.value}`)}
+      ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
       <footer class="article-card__footer">
         <div class="article-card__meta">
           <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}

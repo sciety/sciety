@@ -66,7 +66,7 @@ const addEventToActivities = (
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
-  doi: Doi,
+  articleId: Doi,
   mostRecentRecordedEvaluationByFollowedGroups: Date,
   latestArticleActivityDate: Date,
   evaluationCount: number,
@@ -87,7 +87,7 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
   RA.filter(isEvaluationRecordedEvent),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
-    (key, activityDetails) => O.some({ doi: new Doi(key), ...activityDetails }),
+    (key, activityDetails) => O.some({ articleId: new Doi(key), ...activityDetails }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
   RM.values(byMostRecentRecordedEvaluationByFollowedGroups),

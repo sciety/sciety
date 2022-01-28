@@ -14,7 +14,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
 
-type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
+type FetchArticleDetails = (articleId: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
@@ -23,7 +23,7 @@ type FetchArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 const populateArticleViewModel = (
   fetchArticleDetails: FetchArticleDetails,
 ): PopulateArticleViewModel => (articleActivity) => pipe(
-  articleActivity.doi,
+  articleActivity.articleId,
   fetchArticleDetails,
   TO.fromTaskEither,
   TO.map((articleDetails) => ({
@@ -34,7 +34,7 @@ const populateArticleViewModel = (
   })),
 );
 
-export type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+export type GetArticle = (articleId: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   server: ArticleServer,

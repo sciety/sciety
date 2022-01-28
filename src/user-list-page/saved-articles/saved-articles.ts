@@ -19,7 +19,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
 
-type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
+type FetchArticle = (articleId: Doi) => TE.TaskEither<unknown, {
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
@@ -56,6 +56,10 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
       (values) => E.right(values),
     )),
   )),
+  TE.map(RA.map((article) => ({
+    ...article,
+    articleId: article.doi,
+  }))),
   TE.chain(flow(
     TE.traverseArray(populateArticleViewModel({
       ...ports,
@@ -65,7 +69,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   )),
   TE.map(flow(
     RA.map((articleViewModel) => renderArticleCard(
-      controls(loggedInUser, listOwnerId, articleViewModel.doi),
+      controls(loggedInUser, listOwnerId, articleViewModel.articleId),
     )(articleViewModel)),
     renderSavedArticles,
   )),

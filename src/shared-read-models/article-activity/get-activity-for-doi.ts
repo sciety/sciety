@@ -8,15 +8,15 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 
 export const getActivityForDoi = (
-  doi: Doi,
+  articleId: Doi,
 ) => (
   events: ReadonlyArray<DomainEvent>,
 ): ArticleActivity => pipe(
   events,
   constructAllArticleActivityReadModel,
-  RM.lookup(S.Eq)(doi.value),
+  RM.lookup(S.Eq)(articleId.value),
   O.getOrElseW(() => ({
-    doi,
+    articleId,
     latestActivityDate: O.none,
     evaluationCount: 0,
     listMembershipCount: 0,

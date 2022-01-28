@@ -28,7 +28,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleId,
+          articleId,
         }),
       ]);
     });
@@ -82,7 +82,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleId,
+          articleId,
         }),
       ]);
     });
@@ -124,7 +124,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleId,
+          articleId,
           evaluationCount: 4,
         }),
       ]);
@@ -157,10 +157,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: laterArticle,
+          articleId: laterArticle,
         }),
         expect.objectContaining({
-          doi: earlierArticle,
+          articleId: earlierArticle,
         }),
       ]);
     });
@@ -182,10 +182,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleA,
+          articleId: articleA,
         }),
         expect.objectContaining({
-          doi: articleB,
+          articleId: articleB,
         }),
       ]);
     });

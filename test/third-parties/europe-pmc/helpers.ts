@@ -7,7 +7,7 @@ import { arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 export const arbitraryEuropePmcItem = (): ArticleItem => ({
-  doi: arbitraryDoi(),
+  articleId: arbitraryDoi(),
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),
   authors: O.some([arbitraryString()]),

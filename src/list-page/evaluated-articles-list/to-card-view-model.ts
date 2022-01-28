@@ -16,7 +16,7 @@ type Article = {
   authors: ArticleAuthors,
 };
 
-type GetArticle = (id: Doi) => TE.TaskEither<DE.DataError, Article>;
+type GetArticle = (articleId: Doi) => TE.TaskEither<DE.DataError, Article>;
 
 export type Ports = {
   fetchArticle: GetArticle,
@@ -33,12 +33,12 @@ export const toCardViewModel = (
 ) => (
   evaluatedArticle: ArticleActivity,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleViewModel> => pipe(
-  evaluatedArticle.doi,
+  evaluatedArticle.articleId,
   getArticleDetails(ports),
   TE.bimap(
     (error) => ({
       ...evaluatedArticle,
-      href: `/articles/${evaluatedArticle.doi.value}`,
+      href: `/articles/${evaluatedArticle.articleId.value}`,
       error,
     }),
     (articleDetails) => ({
