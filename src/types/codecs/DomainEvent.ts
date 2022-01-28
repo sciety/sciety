@@ -6,6 +6,7 @@ import { GroupIdFromString } from './GroupIdFromString';
 import { UserIdFromString } from './UserIdFromString';
 import {
   userCreatedAccountEventCodec,
+  userFoundReviewNotHelpfulEventCodec,
   userRevokedFindingReviewHelpfulEventCodec,
   userRevokedFindingReviewNotHelpfulEventCodec,
   userSavedArticleEventCodec,
@@ -66,14 +67,6 @@ const userFoundReviewHelpfulEvent = t.type({
   reviewId: reviewIdCodec,
 });
 
-const userFoundReviewNotHelpfulEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('UserFoundReviewNotHelpful'),
-  date: DateFromISOString,
-  userId: UserIdFromString,
-  reviewId: reviewIdCodec,
-});
-
 export const domainEvent = t.union([
   articleAddedToListEvent,
   evaluationRecordedEvent,
@@ -82,7 +75,7 @@ export const domainEvent = t.union([
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
   userFoundReviewHelpfulEvent,
-  userFoundReviewNotHelpfulEvent,
+  userFoundReviewNotHelpfulEventCodec,
   userRevokedFindingReviewHelpfulEventCodec,
   userRevokedFindingReviewNotHelpfulEventCodec,
   userSavedArticleEventCodec,
