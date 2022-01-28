@@ -9,7 +9,6 @@ import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
 import { UserFoundReviewNotHelpfulEvent } from './user-found-review-not-helpful-event';
 import { UserRevokedFindingReviewHelpfulEvent } from './user-revoked-finding-review-helpful-event';
 import { UserRevokedFindingReviewNotHelpfulEvent } from './user-revoked-finding-review-not-helpful-event';
-import { UserSavedArticleEvent } from './user-saved-article-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
@@ -36,11 +35,6 @@ event is ListCreatedEvent => (
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserFollowedEditorialCommunityEvent => (
   event.type === 'UserFollowedEditorialCommunity'
-);
-
-export const isUserSavedArticleEvent = (event: DomainEvent):
-  event is UserSavedArticleEvent => (
-  event.type === 'UserSavedArticle'
 );
 
 export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
