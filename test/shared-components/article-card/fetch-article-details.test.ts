@@ -19,11 +19,11 @@ const getArticle = () => TE.right({
 
 describe('fetch-article-details', () => {
   describe('latest version date', () => {
-    it('returns the latest version date for a doi', async () => {
-      const doi = arbitraryDoi();
+    it('returns the latest version date for an article', async () => {
+      const articleId = arbitraryDoi();
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
-        doi,
+        articleId,
         fetchArticleDetails(() => TO.some(latestDate), getArticle),
       )();
 
@@ -63,10 +63,10 @@ describe('fetch-article-details', () => {
     });
 
     describe('title', () => {
-      it('returns the title for a doi', async () => {
-        const doi = arbitraryDoi();
+      it('returns the title for an article', async () => {
+        const articleId = arbitraryDoi();
         const title = await pipe(
-          doi,
+          articleId,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
           TE.map((article) => article.title),
         )();
@@ -82,10 +82,10 @@ describe('fetch-article-details', () => {
     });
 
     describe('authors', () => {
-      it('returns the authors for a doi', async () => {
-        const doi = arbitraryDoi();
+      it('returns the authors for an article', async () => {
+        const articleId = arbitraryDoi();
         const authors = await pipe(
-          doi,
+          articleId,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
           TE.map((article) => article.authors),
         )();
