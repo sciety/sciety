@@ -3,7 +3,12 @@ export { RuntimeGeneratedEvent } from './runtime-generated-event';
 export { ArticleAddedToListEvent, articleAddedToList } from './article-added-to-list-event';
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
-export { listCreated, ListCreatedEvent } from './list-created-event';
+export {
+  isListCreatedEvent,
+  listCreated,
+  ListCreatedEvent,
+  listCreatedEventCodec,
+} from './list-created-event';
 export {
   isUserFollowedEditorialCommunityEvent,
   userFollowedEditorialCommunity,
@@ -52,7 +57,6 @@ export { userCreatedAccount, userCreatedAccountEventCodec } from './user-created
 export {
   isArticleAddedToListEvent,
   isGroupCreatedEvent,
-  isListCreatedEvent,
   isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
   isUserCreatedAccountEvent,

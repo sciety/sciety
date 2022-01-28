@@ -4,6 +4,7 @@ import { DoiFromString } from './DoiFromString';
 import { EventIdFromString } from './EventIdFromString';
 import { GroupIdFromString } from './GroupIdFromString';
 import {
+  listCreatedEventCodec,
   userCreatedAccountEventCodec,
   userFollowedEditorialCommunityEventCodec,
   userFoundReviewHelpfulEventCodec,
@@ -35,20 +36,10 @@ const evaluationRecordedEvent = t.type({
   authors: t.readonlyArray(t.string),
 });
 
-const listCreatedEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('ListCreated'),
-  date: DateFromISOString,
-  listId: t.string,
-  name: t.string,
-  description: t.string,
-  ownerId: GroupIdFromString,
-});
-
 export const domainEvent = t.union([
   articleAddedToListEvent,
   evaluationRecordedEvent,
-  listCreatedEvent,
+  listCreatedEventCodec,
   userCreatedAccountEventCodec,
   userFollowedEditorialCommunityEventCodec,
   userUnfollowedEditorialCommunityEventCodec,
