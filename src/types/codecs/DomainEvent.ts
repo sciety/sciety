@@ -3,9 +3,9 @@ import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { DoiFromString } from './DoiFromString';
 import { EventIdFromString } from './EventIdFromString';
 import { GroupIdFromString } from './GroupIdFromString';
-import { UserIdFromString } from './UserIdFromString';
 import {
   userCreatedAccountEventCodec,
+  userFollowedEditorialCommunityEventCodec,
   userFoundReviewHelpfulEventCodec,
   userFoundReviewNotHelpfulEventCodec,
   userRevokedFindingReviewHelpfulEventCodec,
@@ -45,20 +45,12 @@ const listCreatedEvent = t.type({
   ownerId: GroupIdFromString,
 });
 
-const userFollowedEditorialCommunityEvent = t.type({
-  id: EventIdFromString,
-  type: t.literal('UserFollowedEditorialCommunity'),
-  date: DateFromISOString,
-  userId: UserIdFromString,
-  editorialCommunityId: GroupIdFromString,
-});
-
 export const domainEvent = t.union([
   articleAddedToListEvent,
   evaluationRecordedEvent,
   listCreatedEvent,
   userCreatedAccountEventCodec,
-  userFollowedEditorialCommunityEvent,
+  userFollowedEditorialCommunityEventCodec,
   userUnfollowedEditorialCommunityEventCodec,
   userFoundReviewHelpfulEventCodec,
   userFoundReviewNotHelpfulEventCodec,

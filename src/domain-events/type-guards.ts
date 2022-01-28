@@ -4,7 +4,6 @@ import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
 import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
-import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export const isArticleAddedToListEvent = (event: DomainEvent):
@@ -25,11 +24,6 @@ export const isEvaluationRecordedEvent = (event: DomainEvent):
 export const isListCreatedEvent = (event: DomainEvent):
 event is ListCreatedEvent => (
   event.type === 'ListCreated'
-);
-
-export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
-  event is UserFollowedEditorialCommunityEvent => (
-  event.type === 'UserFollowedEditorialCommunity'
 );
 
 export const isUserUnsavedArticleEvent = (event: DomainEvent):

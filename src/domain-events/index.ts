@@ -4,7 +4,12 @@ export { ArticleAddedToListEvent, articleAddedToList } from './article-added-to-
 export { GroupCreatedEvent, groupCreated } from './group-created-event';
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 export { listCreated, ListCreatedEvent } from './list-created-event';
-export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
+export {
+  isUserFollowedEditorialCommunityEvent,
+  userFollowedEditorialCommunity,
+  UserFollowedEditorialCommunityEvent,
+  userFollowedEditorialCommunityEventCodec,
+} from './user-followed-editorial-community-event';
 export {
   isUserFoundReviewHelpfulEvent,
   UserFoundReviewHelpfulEvent,
@@ -48,7 +53,6 @@ export {
   isArticleAddedToListEvent,
   isGroupCreatedEvent,
   isListCreatedEvent,
-  isUserFollowedEditorialCommunityEvent,
   isEvaluationRecordedEvent,
   isUserUnsavedArticleEvent,
   isUserCreatedAccountEvent,
