@@ -21,7 +21,8 @@ export const evaluationRecordedEventCodec = t.type({
 
 export type EvaluationRecordedEvent = t.TypeOf<typeof evaluationRecordedEventCodec>;
 
-export const isEvaluationRecordedEvent = evaluationRecordedEventCodec.is;
+export const isEvaluationRecordedEvent = (event: { type: string }):
+  event is EvaluationRecordedEvent => event.type === 'EvaluationRecorded';
 
 export const evaluationRecorded = (
   groupId: GroupId,
