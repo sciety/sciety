@@ -18,5 +18,7 @@ coverage/
 /.purgecss/
 events.json
 events-staging.json
+events.bq-schema.json
 temp-evaluations.jsonl
 /logs/
+/venv/

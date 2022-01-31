@@ -216,11 +216,15 @@ get-error-logs:
 		| jq -c '.[]' \
 		| gsutil cp - "gs://sciety-data/events/events.jsonl" \
 
-.bq-update-events: .gs-events-json-to-jsonl
+.bq-generate-schema: .gs-events-json-to-jsonl
+	gsutil cat "gs://sciety-data/events/events.jsonl" \
+		| venv/bin/generate-schema > events.bq-schema.json
+
+.bq-update-events: .gs-events-json-to-jsonl .bq-generate-schema
 	bq load \
 		--project_id=elife-data-pipeline \
-		--autodetect \
 		--replace \
+		--schema=events.bq-schema.json \
 		--source_format=NEWLINE_DELIMITED_JSON \
 		de_proto.sciety_event_v1 \
 		"gs://sciety-data/events/events.jsonl"
