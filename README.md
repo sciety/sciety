@@ -119,13 +119,6 @@ An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #s
 
 A [CloudWatch user journey by IP] query is available to track a single client across multiple requests (adjust timeframe and IP).
 
-### Updating event data
-
-Run `make -j 4 update-event-data`.
-
-Substitute `4` with the desired concurrency level.
-
-
 ### Dump all data
 
 Run `make prod-sql`.
