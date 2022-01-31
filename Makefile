@@ -131,21 +131,6 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-update-db-dump:
-	kubectl run psql \
-	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
-	--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
-	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
-	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
-	-- sleep 60
-	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events.json
-	kubectl delete --wait=false pod psql
-	gcloud config set project sciety
-	gsutil cp events.json gs://sciety-data/events/events.json
-	gsutil acl set public-read gs://sciety-data/events/events.json
-
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
 taiko: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -209,28 +194,6 @@ get-error-logs:
 	--timezone=UTC \
 	--from="2021-09-10T00:00:00Z" \
 	'{app_kubernetes_io_instance="sciety--prod"} | json | __error__="" | level = "error"'
-
-
-.gs-events-json-to-jsonl:
-	gsutil cat "gs://sciety-data/events/events.json" \
-		| jq -c '.[]' \
-		| gsutil cp - "gs://sciety-data/events/events.jsonl" \
-
-.bq-generate-schema: .gs-events-json-to-jsonl
-	gsutil cat "gs://sciety-data/events/events.jsonl" \
-		| venv/bin/generate-schema > events.bq-schema.json
-
-.bq-update-events: .gs-events-json-to-jsonl .bq-generate-schema
-	bq load \
-		--project_id=elife-data-pipeline \
-		--replace \
-		--schema=events.bq-schema.json \
-		--source_format=NEWLINE_DELIMITED_JSON \
-		de_proto.sciety_event_v1 \
-		"gs://sciety-data/events/events.jsonl"
-
-update-datastudio: update-db-dump .bq-update-events
-	./scripts/upload-ingress-logs-from-cloudwatch-to-bigquery.sh
 
 crossref-response:
 	curl -v \
