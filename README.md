@@ -152,18 +152,6 @@ At the prompt, execute this command:
 \copy (SELECT date, type, payload FROM events ORDER BY date) TO STDOUT WITH CSV;
 ```
 
-### Update Data Studio
-
-The export might take a few minutes.
-
-Requires AWS access to the 540790251273 account. Ensure the AWS credentials point to the Sciety profile, e.g. by setting `AWS_PROFILE` (if needed).
-
-```bash
-make update-datastudio
-```
-
-[Prototype dashboard](https://datastudio.google.com/reporting/bc7fa747-9d10-4272-836d-f40425b93c95) using this data.
-
 License
 -------
 
