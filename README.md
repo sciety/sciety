@@ -5,22 +5,6 @@ Sciety
 [![Open issues][Open issues badge]][Open issues]
 [![License][License badge]][License]
 
-Table of contents
------------------
-
-1. [Development](#development)
-   1. [Running the app](#running-the-app)
-   1. [Running the tests](#running-the-tests)
-   1. [Linting](#linting)
-   1. [Architecture Decision Records](./.adr)
-   1. [Architecture sketch]
-1. [Operations](#operations)
-   1. [Releasing to production](#releasing-to-production)
-   1. [Looking at logs](#looking-at-logs)
-   1. [Updating event data](#updating-event-data)
-   1. [Dump all data to a CSV](#dump-all-data)
-1. [License](#license)
-
 Development
 -----------
 
