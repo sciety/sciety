@@ -23,7 +23,7 @@
     "fast-printf": "1.6.9",
     "fast-xml-parser": "^3.21.1",
     "fp-ts": "^2.11.8",
-    "googleapis": "^92.0.0",
+    "googleapis": "^94.0.0",
     "googleapis-common": "5.0.3",
     "http-status-codes": "^2.2.0",
     "io-ts": "^2.2.16",
