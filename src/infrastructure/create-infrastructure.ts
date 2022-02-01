@@ -131,7 +131,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
+        commitEvents: commitEvents({ inMemoryEvents: events, pool, logger }),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

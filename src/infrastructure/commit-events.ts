@@ -11,7 +11,7 @@ import { CommandResult } from '../types/command-result';
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
-  logger: L.LoggerIO,
+  logger: L.Logger,
 };
 
 export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
@@ -34,11 +34,10 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
   T.traverseArray(flow(
     T.of,
     T.chainFirst(writeEventToDatabase(pool)),
-    T.chainFirstIOK(flow(
-      (event) => ({ event }),
-      L.info('Event committed'),
-      IO.chain(logger),
-    )),
+    T.chainFirst((event) => {
+      logger('info', 'Event committed', { event });
+      return T.of(undefined);
+    }),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(RA.match(
