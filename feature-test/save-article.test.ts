@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser, text,
 } from 'taiko';
-import { authenticateViaTwitter, screenshotTeardown } from './utilities';
+import { screenshotTeardown } from './utilities';
 
 describe('save-article', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
@@ -16,7 +14,6 @@ describe('save-article', () => {
     it('saves the article to the list', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
-      await authenticateViaTwitter();
       const result = await text('Saved to my list').exists();
 
       expect(result).toBe(true);
@@ -27,7 +24,6 @@ describe('save-article', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await authenticateViaTwitter();
     });
 
     it('saves the article to the list', async () => {
@@ -42,7 +38,6 @@ describe('save-article', () => {
 
 describe('unsave article', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
@@ -52,7 +47,6 @@ describe('unsave article', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await authenticateViaTwitter();
     });
 
     it('removes the article from the list', async () => {

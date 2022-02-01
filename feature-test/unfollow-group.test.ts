@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { authenticateViaTwitter, screenshotTeardown } from './utilities';
+import { screenshotTeardown } from './utilities';
 
 describe('unfollow a group', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
@@ -16,7 +14,6 @@ describe('unfollow a group', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await authenticateViaTwitter();
     });
 
     describe('from the ScreenIT group page', () => {

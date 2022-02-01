@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   $, goto, openBrowser, text, within,
 } from 'taiko';
@@ -6,7 +5,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('legacy redirects', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

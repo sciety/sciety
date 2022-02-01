@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser,
 } from 'taiko';
-import { authenticateViaTwitter, screenshotTeardown } from './utilities';
+import { screenshotTeardown } from './utilities';
 
 describe('journey-to-user-list', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
@@ -16,7 +14,6 @@ describe('journey-to-user-list', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await authenticateViaTwitter();
     });
 
     it('navigates to user list page via user page', async () => {
