@@ -63,7 +63,7 @@ export const contentComponent: ContentComponent = (
       T.map(selectAllListsOwnedBy(group.id)),
       T.map(RA.size),
       TE.rightTask,
-      TE.map((listCount) => ((group.slug === 'ncrc' || group.slug === 'biophysics-colab') ? listCount + 1 : listCount)),
+      TE.map((listCount) => ((group.slug === 'ncrc' || group.slug === 'biophysics-colab' || group.slug === 'elife') ? listCount + 1 : listCount)),
     ),
     followerCount: pipe(
       ports.getAllEvents,

@@ -70,6 +70,25 @@ const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (groupSlug: str
   : E.right(cardViewModels)
 );
 
+const addElifeListCardViewModelOnElifePage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'elife')
+  ? pipe(
+    events,
+    selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
+    E.map((articleIds) => [
+      {
+        href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
+        title: 'Medicine',
+        articleCountLabel: 'This list contains',
+        description: 'Medicine articles that have been evaluated by eLife.',
+        lastUpdated: O.some(new Date('2022-02-01T13:14:00Z')),
+        articleCount: articleIds.length,
+      },
+      ...cardViewModels,
+    ]),
+  )
+  : E.right(cardViewModels)
+);
+
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
@@ -94,6 +113,10 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   TE.chain((cardViewModels) => pipe(
     ports.getAllEvents,
     T.map(addBiophysicsColabListCardViewModelOnBiophysicsColabPage(group.slug)(cardViewModels)),
+  )),
+  TE.chain((cardViewModels) => pipe(
+    ports.getAllEvents,
+    T.map(addElifeListCardViewModelOnElifePage(group.slug)(cardViewModels)),
   )),
   TE.map(RA.match(
     () => toHtmlFragment('<p class="static-message">This group doesn\'t have any lists yet.</p>'),
