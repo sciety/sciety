@@ -34,21 +34,12 @@ dev-redis-cache-list-keys:
 .gcp-ncrc-key.json:
 	gcloud iam service-accounts keys create ./.gcp-ncrc-key.json --iam-account ncrc-sheet@sciety.iam.gserviceaccount.com
 
-unused-sass: node_modules find-unused-sass-declarations
-	rm -f .purgecss/{full,purged}.css
-	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
-	npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
-	diff .purgecss/full.css .purgecss/purged.css
-
-find-unused-sass-declarations: node_modules
-	npx sass-unused 'src/**/*.scss'
-
 lint: export TARGET = dev
-lint: build unused-sass
+lint: build
 	${DOCKER_COMPOSE} run --rm app npm run lint
 
 lint\:fix: export TARGET = dev
-lint\:fix: build unused-sass
+lint\:fix: build
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
 
 test: export TARGET = dev
