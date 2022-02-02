@@ -41,7 +41,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerName: 'eLife',
       ownerHref: '/groups/elife',
       ownerAvatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
-      lastUpdated: O.some(new Date('2022-02-01T13:14:00Z')),
+      lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
     },
   },
   R.lookup(listId),

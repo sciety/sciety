@@ -80,7 +80,7 @@ const addElifeListCardViewModelOnElifePage = (groupSlug: string) => (cardViewMod
         title: 'Medicine',
         articleCountLabel: 'This list contains',
         description: 'Medicine articles that have been evaluated by eLife.',
-        lastUpdated: O.some(new Date('2022-02-01T13:14:00Z')),
+        lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
         articleCount: articleIds.length,
       },
       ...cardViewModels,
