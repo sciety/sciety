@@ -1,7 +1,0 @@
-@use '../sass/layout';
-@use '../sass/settings';
-
-.error-page {
-  @include layout.page-content-horizontal-margins();
-  @include layout.page-header-top-space();
-}
