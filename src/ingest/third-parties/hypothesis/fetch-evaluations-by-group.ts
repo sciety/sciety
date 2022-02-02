@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
 import { processServer } from './process-server';
-import { FetchData } from '../../ingest/fetch-data';
+import { FetchData } from '../../fetch-data';
 
 export const fetchEvaluationsByGroupSince = (
   startDate: Date,
