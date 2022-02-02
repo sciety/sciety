@@ -5,9 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
+import * as Hyp from './third-parties/hypothesis';
 import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
-import * as Hyp from './third-parties/hypothesis';
 
 export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
   row.uri,

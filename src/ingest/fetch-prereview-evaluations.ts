@@ -6,10 +6,10 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { DoiFromString } from './DoiFromString';
+import { Doi, isDoi } from './doi';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/codecs/DoiFromString';
-import { Doi, isDoi } from '../types/doi';
 
 type Ports = {
   fetchData: FetchData,

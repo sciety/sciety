@@ -4,10 +4,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { DoiFromString } from './DoiFromString';
 import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/codecs/DoiFromString';
 
 type Candidate = {
   date: string,

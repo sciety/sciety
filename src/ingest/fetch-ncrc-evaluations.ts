@@ -6,8 +6,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
-import { FetchEvaluations } from './update-all';
 import { sheetId } from './third-parties/ncrc/sheet-id';
+import { FetchEvaluations } from './update-all';
 
 type Ports = {
   fetchGoogleSheet: FetchGoogleSheet,
