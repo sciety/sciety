@@ -5,7 +5,7 @@ import { FetchData } from './fetch-data';
 import { toEvaluation } from './fetch-reviews-from-hypothesis-group';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import * as Hyp from '../third-parties/hypothesis';
+import * as Hyp from './third-parties/hypothesis';
 
 type Ports = {
   fetchData: FetchData,
