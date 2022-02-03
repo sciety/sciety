@@ -12,6 +12,7 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
+
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
@@ -32,6 +33,7 @@ export const populateGroupViewModel = (
       ...group,
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
+      listCount: (group.slug === 'ncrc' || group.slug === 'biophysics-colab' || group.slug === 'elife') ? 1 + 1 : 1
     })),
   )),
 );

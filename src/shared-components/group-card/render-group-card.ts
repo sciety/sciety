@@ -12,6 +12,7 @@ export type GroupViewModel = {
   description: SanitisedHtmlFragment,
   avatarPath: string,
   slug: string,
+  listCount: number,
   followerCount: number,
   reviewCount: number,
   latestActivity: O.Option<Date>,
@@ -49,21 +50,21 @@ const renderListCount = flow(
 );
 
 export const renderGroupCard = flow(
-  (result: GroupViewModel) => `
+  (viewModel: GroupViewModel) => `
     <article>
-      <a class="group-card" href="/groups/${result.slug}">
+      <a class="group-card" href="/groups/${viewModel.slug}">
         <div class="group-card__body">
           <h3 class="group-card__title">
-            ${htmlEscape(result.name)}
+            ${htmlEscape(viewModel.name)}
           </h3>
           <div class="group-card__description">
-            ${result.description}
+            ${viewModel.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderListCount((result.slug === 'ncrc' || result.slug === 'biophysics-colab' || result.slug === 'elife') ? 1 + 1 : 1)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.reviewCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivity)}
           </span>
         </div>
-        <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
+        <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />
       </a>
     </article>
   `,
