@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
-import { DomainEvent, isEvaluationRecordedEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { domainEventCodec } from '../types/codecs/DomainEvent';
 import { CommandResult } from '../types/command-result';
 
