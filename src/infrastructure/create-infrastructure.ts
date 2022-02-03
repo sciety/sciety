@@ -20,11 +20,13 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
-import { byDate, isArticleAddedToListEvent } from '../domain-events';
+import {
+  byDate, isArticleAddedToListEvent, isEvaluationRecordedEvent, RuntimeGeneratedEvent,
+} from '../domain-events';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -40,6 +42,13 @@ type Dependencies = {
   logLevel: string, // TODO: Make this a level name
   crossrefApiBearerToken: O.Option<string>,
   twitterApiBearerToken: string,
+};
+
+const executePolicies = (logger: Logger) => (event: RuntimeGeneratedEvent) => {
+  if (isEvaluationRecordedEvent(event)) {
+    logger('info', 'EvaluationRecorded event triggered AddArticleToEvaluatedArticlesList policy', { event });
+  }
+  return T.of(undefined);
 };
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
@@ -131,7 +140,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        commitEvents: commitEvents({ inMemoryEvents: events, pool, logger }),
+        commitEvents: (eventsToCommit) => pipe(
+          eventsToCommit,
+          commitEvents({ inMemoryEvents: events, pool, logger }),
+          T.chainFirst(() => pipe(
+            eventsToCommit,
+            T.traverseArray(executePolicies(logger)),
+          )),
+        ),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

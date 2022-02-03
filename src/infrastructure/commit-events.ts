@@ -27,13 +27,6 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
-const executePolicies = (logger: L.Logger) => (event: RuntimeGeneratedEvent) => {
-  if (isEvaluationRecordedEvent(event)) {
-    logger('info', 'EvaluationRecorded event triggered AddArticleToEvaluatedArticlesList policy', { event });
-  }
-  return T.of(undefined);
-};
-
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
@@ -46,7 +39,6 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
       return T.of(undefined);
     }),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
-    T.chain(executePolicies(logger)),
   )),
   T.map(RA.match(
     () => 'no-events-created',
