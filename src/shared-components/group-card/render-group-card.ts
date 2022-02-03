@@ -43,9 +43,8 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
   ),
 );
 
-const renderListCount = (slug: string) => pipe(
-  (slug === 'ncrc' || slug === 'biophysics-colab' || slug === 'elife') ? 1 + 1 : 1,
-  (listCount) => (listCount === 1 ? `${listCount} list` : `${listCount} lists`),
+const renderListCount = flow(
+  (listCount: number) => (listCount === 1 ? `${listCount} list` : `${listCount} lists`),
   wrapInSpan,
 );
 
@@ -61,7 +60,7 @@ export const renderGroupCard = flow(
             ${result.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderListCount(result.slug)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderListCount((result.slug === 'ncrc' || result.slug === 'biophysics-colab' || result.slug === 'elife') ? 1 + 1 : 1)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
           </span>
         </div>
         <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
