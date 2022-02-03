@@ -13,7 +13,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();
-  const initial = { followerCount: 41, reviewCount: 27, latestActivity: O.some(new Date('1970')) };
+  const initial = { followerCount: 41, evaluationCount: 27, latestActivity: O.some(new Date('1970')) };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
@@ -32,10 +32,10 @@ describe('update-group-meta', () => {
   describe('when passed the first EvaluationRecorded', () => {
     const newerDate = new Date('2020');
     const event = evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], newerDate, arbitraryDate());
-    const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
+    const result = updateGroupMeta(groupId)({ ...initial, evaluationCount: 0, latestActivity: O.none }, event);
 
     it('sets review count to 1', () => {
-      expect(result.reviewCount).toBe(1);
+      expect(result.evaluationCount).toBe(1);
     });
 
     it('sets the latest activity', () => {
@@ -49,7 +49,7 @@ describe('update-group-meta', () => {
     const result = updateGroupMeta(groupId)(initial, event);
 
     it('updates the review count', () => {
-      expect(result.reviewCount).toBe(28);
+      expect(result.evaluationCount).toBe(28);
     });
 
     it('updates the latest activity', () => {
@@ -63,7 +63,7 @@ describe('update-group-meta', () => {
     const result = updateGroupMeta(groupId)(initial, event);
 
     it('updates the review count', () => {
-      expect(result.reviewCount).toBe(28);
+      expect(result.evaluationCount).toBe(28);
     });
 
     it('does not update the latest activity', () => {

@@ -9,7 +9,7 @@ import {
 import { GroupId } from '../../types/group-id';
 
 type GroupMeta = {
-  reviewCount: number,
+  evaluationCount: number,
   followerCount: number,
   latestActivity: O.Option<Date>,
 };
@@ -33,16 +33,16 @@ export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: Do
       O.fold(
         () => ({
           ...meta,
-          reviewCount: meta.reviewCount + 1,
+          evaluationCount: meta.evaluationCount + 1,
           latestActivity: O.some(event.publishedAt),
         }),
         (date) => (event.publishedAt > date ? {
           ...meta,
-          reviewCount: meta.reviewCount + 1,
+          evaluationCount: meta.evaluationCount + 1,
           latestActivity: O.some(event.publishedAt),
         } : {
           ...meta,
-          reviewCount: meta.reviewCount + 1,
+          evaluationCount: meta.evaluationCount + 1,
         }),
       ),
     );

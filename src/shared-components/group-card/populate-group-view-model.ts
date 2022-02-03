@@ -27,7 +27,7 @@ export const populateGroupViewModel = (
   T.map(getGroup(groupId)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
-    T.map(RA.reduce({ reviewCount: 0, followerCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),
+    T.map(RA.reduce({ evaluationCount: 0, followerCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),
     T.map((meta) => ({
       ...group,
       ...meta,

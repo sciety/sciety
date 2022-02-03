@@ -105,7 +105,7 @@ describe('fetch-extra-details', () => {
           availableGroupMatches: 5,
           itemsToDisplay: [
             expect.objectContaining({
-              reviewCount: 0,
+              evaluationCount: 0,
               followerCount: 0,
             }),
           ],
