@@ -117,6 +117,39 @@ jobs:
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
+      - name: Deploy to prod
+        run: |
+          aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm dependency build helm/sciety
+          helm upgrade -i sciety--prod \
+            --set-string allowSiteCrawlers=true \
+            --set images.frontend.tag=${IMAGE_TAG} \
+            --set hostname=sciety.org \
+            --set oldHostname=hive.review \
+            --set fathomSiteId='DBULFPXG' \
+            --set googleTagManagerId='GTM-NX7CQB4' \
+            --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
+            --set appSecret=${APP_SECRET} \
+            --set twitterApiKey=${TWITTER_API_KEY} \
+            --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
+            --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
+            --set postgresqlSecretName=hive-prod-rds-postgres \
+            --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
+            --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --wait \
+            helm/sciety
+        env:
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
+          SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
+          PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
+
       - name: Notify Slack
         if: failure() && github.ref == 'refs/heads/main'
         env:

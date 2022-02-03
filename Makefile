@@ -108,8 +108,8 @@ ingest-events: build
 
 update-event-data: ingest-events backstop-test
 
-release: export TAG = latest/$(shell date +%Y%m%d%H%M)
-release:
+manual-deploy-to-prod: export TAG = latest/$(shell date +%Y%m%d%H%M)
+manual-deploy-to-prod:
 	git tag $$TAG
 	git push origin $$TAG
 
