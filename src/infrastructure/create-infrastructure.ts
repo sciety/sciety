@@ -25,8 +25,9 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
-  byDate, isArticleAddedToListEvent, isEvaluationRecordedEvent, RuntimeGeneratedEvent,
+  byDate, isArticleAddedToListEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
+import { addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -45,9 +46,7 @@ type Dependencies = {
 };
 
 const executePolicies = (logger: Logger) => (event: RuntimeGeneratedEvent) => {
-  if (isEvaluationRecordedEvent(event)) {
-    logger('info', 'EvaluationRecorded event triggered AddArticleToEvaluatedArticlesList policy', { event });
-  }
+  addArticleToEvaluatedArticlesList(logger)(event);
   return T.of(undefined);
 };
 
