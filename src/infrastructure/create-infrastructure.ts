@@ -20,14 +20,14 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
   byDate, isArticleAddedToListEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
-import { addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
+import { Ports as AddArticlePorts, addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -45,10 +45,9 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
-const executePolicies = (logger: Logger) => (event: RuntimeGeneratedEvent) => {
-  addArticleToEvaluatedArticlesList(logger)(event);
-  return T.of(undefined);
-};
+const executePolicies = (ports: AddArticlePorts) => (event: RuntimeGeneratedEvent) => (
+  addArticleToEvaluatedArticlesList(ports)(event)
+);
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
@@ -129,6 +128,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
+      const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
       return {
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
@@ -141,10 +141,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllEvents,
         commitEvents: (eventsToCommit) => pipe(
           eventsToCommit,
-          commitEvents({ inMemoryEvents: events, pool, logger }),
+          commitEventsWithoutListeners,
           T.chainFirst(() => pipe(
             eventsToCommit,
-            T.traverseArray(executePolicies(logger)),
+            T.traverseArray(executePolicies({
+              getAllEvents,
+              logger,
+              commitEvents: commitEventsWithoutListeners,
+            })),
           )),
         ),
         getUserDetails: getTwitterUserDetails(

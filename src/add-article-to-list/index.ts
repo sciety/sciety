@@ -8,7 +8,7 @@ import { CommandResult } from '../types/command-result';
 
 type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
-type Ports = {
+export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
 };
