@@ -1,5 +1,5 @@
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
-import { Logger } from '../infrastructure';
+import { Logger } from '../infrastructure/logger';
 
 export const addArticleToEvaluatedArticlesList = (logger: Logger) => (event: DomainEvent): void => {
   if (isEvaluationRecordedEvent(event)) {
