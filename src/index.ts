@@ -1,11 +1,14 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import { createInfrastructure, Logger, replaceError } from './infrastructure';
+import {
+  Adapters, createInfrastructure, Logger, replaceError,
+} from './infrastructure';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -16,6 +19,10 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   },
   signals: ['SIGINT', 'SIGTERM'],
 });
+
+type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
+
+const executeBackgroundPolicies: ExecuteBackgroundPolicies = () => T.of(undefined);
 
 void pipe(
   createInfrastructure({
@@ -35,6 +42,10 @@ void pipe(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
       (server) => server.on('listening', () => adapters.logger('info', 'Server running')),
     )),
+    E.map((server) => ({
+      server,
+      adapters,
+    })),
   )),
   TE.match(
     (error) => {
@@ -42,6 +53,7 @@ void pipe(
       process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
       return process.exit(1);
     },
-    (server) => server.listen(80),
+    ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
+  T.chain(executeBackgroundPolicies),
 )();
