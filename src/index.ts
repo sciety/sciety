@@ -1,9 +1,11 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
@@ -20,9 +22,18 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   signals: ['SIGINT', 'SIGTERM'],
 });
 
+type NoopPolicy = (event: DomainEvent) => T.Task<void>;
+
+const noopPolicy: NoopPolicy = () => T.of(undefined);
+
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
-const executeBackgroundPolicies: ExecuteBackgroundPolicies = () => T.of(undefined);
+const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => pipe(
+  adapters.getAllEvents,
+  T.map(RA.map(noopPolicy)),
+  T.chain(T.sequenceSeqArray),
+  T.map(() => undefined),
+);
 
 void pipe(
   createInfrastructure({
