@@ -14,12 +14,12 @@ export type Command = {
   listId: ListId,
 };
 
-const createAppropriateEvents = (command: Command) => (events: ReadonlyArray<DomainEvent>) => pipe(
+const createAppropriateEvents = (command: Command, date: Date) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isArticleAddedToListEvent),
   RA.some((event) => event.articleId.value === command.articleId.value && event.listId === command.listId),
   B.fold(
-    () => [articleAddedToList(command.articleId, command.listId)],
+    () => [articleAddedToList(command.articleId, command.listId, date)],
     () => [],
   ),
 );
@@ -34,13 +34,13 @@ const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent
   ),
 );
 
-type ExecuteCommand = (command: Command)
+type ExecuteCommand = (command: Command, date?: Date)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
-export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
+export const executeCommand: ExecuteCommand = (command, date = new Date()) => (events) => pipe(
   events,
   E.right,
   E.chainFirst(confirmListExists(command.listId)),
-  E.map(createAppropriateEvents(command)),
+  E.map(createAppropriateEvents(command, date)),
 );

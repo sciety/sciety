@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-article-to-list/execute-command';
 import { articleAddedToList, listCreated } from '../../src/domain-events';
-import { arbitraryString } from '../helpers';
+import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -51,6 +51,29 @@ describe('execute-command', () => {
 
     describe('and the article used to be on the list and was removed', () => {
       it.todo('succeeds and raises an event');
+    });
+
+    describe('and the article should have been on the list', () => {
+      const backdated = arbitraryDate();
+
+      const result = pipe(
+        [
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+        ],
+        executeCommand({
+          listId,
+          articleId,
+        }, backdated),
+      );
+
+      it('succeeds and raises a backdated event', () => {
+        expect(result).toStrictEqual(E.right([expect.objectContaining({
+          type: 'ArticleAddedToList',
+          articleId,
+          listId,
+          date: backdated,
+        })]));
+      });
     });
   });
 
