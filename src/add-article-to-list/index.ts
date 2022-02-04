@@ -13,15 +13,15 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-type AddArticleToList = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type AddArticleToList = (ports: Ports) => (input: unknown, date?: Date) => TE.TaskEither<string, CommandResult>;
 
-export const addArticleToList: AddArticleToList = (ports) => (input) => pipe(
+export const addArticleToList: AddArticleToList = (ports) => (input, date = new Date()) => pipe(
   input,
   validateInputShape,
   TE.fromEither,
   TE.chainW((command) => pipe(
     ports.getAllEvents,
-    T.map(executeCommand(command)),
+    T.map(executeCommand(command, date)),
   )),
   TE.chainTaskK(ports.commitEvents),
 );
