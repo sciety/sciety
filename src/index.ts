@@ -1,7 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -28,12 +27,13 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
-const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => pipe(
-  adapters.getAllEvents,
-  T.map(RA.map(noopPolicy)),
-  T.chain(T.sequenceSeqArray),
-  T.map(() => undefined),
-);
+const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
+  const events = await adapters.getAllEvents();
+  // eslint-disable-next-line no-loops/no-loops
+  for (let i = 0; i < events.length; i += 1) {
+    await noopPolicy(events[i])();
+  }
+};
 
 void pipe(
   createInfrastructure({
