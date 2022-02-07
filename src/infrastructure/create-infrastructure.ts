@@ -27,6 +27,7 @@ import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
   byDate, isArticleAddedToListEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
+import { addArticleToElifeMedicineList } from '../policies/add-article-to-elife-medicine-list';
 import { Ports as AddArticlePorts, addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -45,8 +46,12 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
-const executePolicies = (ports: AddArticlePorts) => (event: RuntimeGeneratedEvent) => (
-  addArticleToEvaluatedArticlesList(ports)(event)
+const executePolicies = (ports: AddArticlePorts) => (event: RuntimeGeneratedEvent) => pipe(
+  [
+    addArticleToEvaluatedArticlesList(ports)(event),
+    addArticleToElifeMedicineList(ports)(event),
+  ],
+  T.sequenceArray,
 );
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
