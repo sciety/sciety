@@ -16,11 +16,39 @@ describe('add-article-to-elife-medicine-list', () => {
     const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
     describe('and the subject area belongs to the Medicine list', () => {
-      it.todo('calls the AddArticleToList command');
+      const ports = {
+        getAllEvents: T.of([]),
+        commitEvents: jest.fn(() => T.of('no-events-created' as const)),
+        logger: jest.fn(dummyLogger),
+        fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
+      };
+      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+
+      beforeEach(async () => {
+        await addArticleToElifeMedicineList(ports)(event)();
+      });
+
+      it.skip('calls the AddArticleToList command', () => {
+        expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
+      });
     });
 
     describe('and the subject area does not belong to the Medicine list', () => {
-      it.todo('does not call the AddArticleToList command');
+      const ports = {
+        getAllEvents: T.of([]),
+        commitEvents: jest.fn(() => T.of('no-events-created' as const)),
+        logger: jest.fn(dummyLogger),
+        fetchMedrvixSubjectArea: () => TE.right('allergy and immunology'),
+      };
+      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+
+      beforeEach(async () => {
+        await addArticleToElifeMedicineList(ports)(event)();
+      });
+
+      it('does not call the AddArticleToList command', () => {
+        expect(ports.commitEvents).not.toHaveBeenCalled();
+      });
     });
 
     describe('and subject area cannot be retrieved', () => {
