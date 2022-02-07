@@ -3,7 +3,7 @@ import { Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../infrastructure/logger';
 
-export type Ports = AddArticleToListPorts & {
+type Ports = AddArticleToListPorts & {
   logger: Logger,
 };
 
