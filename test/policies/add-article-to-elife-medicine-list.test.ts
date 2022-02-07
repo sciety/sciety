@@ -4,6 +4,7 @@ import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
 import { addArticleToElifeMedicineList } from '../../src/policies/add-article-to-elife-medicine-list';
 import * as DE from '../../src/types/data-error';
 import * as Gid from '../../src/types/group-id';
+import { dummyLogger } from '../dummy-logger';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -26,7 +27,7 @@ describe('add-article-to-elife-medicine-list', () => {
       const ports = {
         getAllEvents: T.of([]),
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
-        logger: shouldNotBeCalled,
+        logger: jest.fn(dummyLogger),
         fetchSubjectArea: () => TE.left(DE.unavailable),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
@@ -39,7 +40,9 @@ describe('add-article-to-elife-medicine-list', () => {
         expect(ports.commitEvents).not.toHaveBeenCalled();
       });
 
-      it.todo('logs an error');
+      it.skip('logs an error', () => {
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
   });
 
