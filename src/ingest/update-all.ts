@@ -91,7 +91,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
   (count) => R.upsertAt(errorMessage, count)(accumulator),
 );
 
-const ingestionCommandsBatchSize = 1;
+const ingestionCommandsBatchSize = 3;
 
 const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
   feedData.evaluations,
