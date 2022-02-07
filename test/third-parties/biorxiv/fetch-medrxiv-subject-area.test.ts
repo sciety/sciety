@@ -5,11 +5,38 @@ import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('fetch-medrxiv-subject-area', () => {
   describe('when one article version is returned', () => {
-    it.todo('returns the subject area');
+    const ports = {
+      getJson: async () => ({ collection: [{ category: 'addiction medicine' }] }),
+    };
+    let result: E.Either<DE.DataError, string>;
+
+    beforeEach(async () => {
+      result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
+    });
+
+    it.skip('returns the subject area', () => {
+      expect(result).toStrictEqual(E.right('addiction medicine'));
+    });
   });
 
   describe('when there are multiple article versions', () => {
-    it.todo('returns the subject area of the most recent version');
+    const ports = {
+      getJson: async () => ({
+        collection: [
+          { category: 'addiction medicine', version: '2' },
+          { category: 'allergy and immunology', version: '1' },
+        ],
+      }),
+    };
+    let result: E.Either<DE.DataError, string>;
+
+    beforeEach(async () => {
+      result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
+    });
+
+    it.skip('returns the subject area of the most recent version', () => {
+      expect(result).toStrictEqual(E.right('addiction medicine'));
+    });
   });
 
   describe('when no article versions are returned', () => {
