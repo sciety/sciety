@@ -8,11 +8,11 @@ import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
 
-type FetchSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+type FetchMedrvixSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
 export type Ports = AddArticleToListPorts & {
   logger: Logger,
-  fetchSubjectArea: FetchSubjectArea,
+  fetchMedrvixSubjectArea: FetchMedrvixSubjectArea,
 };
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
@@ -29,7 +29,7 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
 
   return pipe(
     event.articleId,
-    ports.fetchSubjectArea,
+    ports.fetchMedrvixSubjectArea,
     TE.match(
       () => { ports.logger('info', 'addArticleToElifeMedicineList policy: failed to fetch subject area', { articleId: event.articleId }); },
       () => undefined,

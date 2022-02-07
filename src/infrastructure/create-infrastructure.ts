@@ -156,7 +156,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
-              fetchSubjectArea: () => TE.left(DE.unavailable),
+              fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
             })),
           )),
         ),

@@ -28,7 +28,7 @@ describe('add-article-to-elife-medicine-list', () => {
         getAllEvents: T.of([]),
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        fetchSubjectArea: () => TE.left(DE.unavailable),
+        fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -52,7 +52,7 @@ describe('add-article-to-elife-medicine-list', () => {
       getAllEvents: T.of([]),
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
-      fetchSubjectArea: shouldNotBeCalled,
+      fetchMedrvixSubjectArea: shouldNotBeCalled,
     };
     const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -70,7 +70,7 @@ describe('add-article-to-elife-medicine-list', () => {
       getAllEvents: T.of([]),
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
-      fetchSubjectArea: shouldNotBeCalled,
+      fetchMedrvixSubjectArea: shouldNotBeCalled,
     };
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
 
