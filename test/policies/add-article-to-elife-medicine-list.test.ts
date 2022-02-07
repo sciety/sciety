@@ -1,8 +1,10 @@
 import * as T from 'fp-ts/Task';
-import { userSavedArticle } from '../../src/domain-events';
+import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
 import { addArticleToElifeMedicineList } from '../../src/policies/add-article-to-elife-medicine-list';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add-article-to-elife-medicine-list', () => {
@@ -23,7 +25,21 @@ describe('add-article-to-elife-medicine-list', () => {
   });
 
   describe('when an EvaluationRecorded event by another group is received', () => {
-    it.todo('does not call the AddArticleToList command');
+    const anotherGroupId = arbitraryGroupId();
+    const ports = {
+      getAllEvents: T.of([]),
+      commitEvents: jest.fn(() => T.of('no-events-created' as const)),
+      logger: shouldNotBeCalled,
+    };
+    const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
+
+    beforeEach(async () => {
+      await addArticleToElifeMedicineList(ports)(event)();
+    });
+
+    it('does not call the AddArticleToList command', () => {
+      expect(ports.commitEvents).not.toHaveBeenCalled();
+    });
   });
 
   describe('when any other event is received', () => {
