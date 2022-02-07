@@ -25,10 +25,9 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
-  byDate, isArticleAddedToListEvent, RuntimeGeneratedEvent,
+  byDate, isArticleAddedToListEvent,
 } from '../domain-events';
-import { addArticleToElifeMedicineList, Ports as AddArticleToElifeMedicineListPorts } from '../policies/add-article-to-elife-medicine-list';
-import { Ports as AddArticleToEvaluatedArticlePorts, addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
+import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -46,16 +45,6 @@ type Dependencies = {
   crossrefApiBearerToken: O.Option<string>,
   twitterApiBearerToken: string,
 };
-
-type PoliciesPorts = AddArticleToEvaluatedArticlePorts & AddArticleToElifeMedicineListPorts;
-
-const executePolicies = (ports: PoliciesPorts) => (event: RuntimeGeneratedEvent) => pipe(
-  [
-    addArticleToEvaluatedArticlesList(ports)(event),
-    addArticleToElifeMedicineList(ports)(event),
-  ],
-  T.sequenceArray,
-);
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
