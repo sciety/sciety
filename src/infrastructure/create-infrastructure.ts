@@ -27,8 +27,8 @@ import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
   byDate, isArticleAddedToListEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
-import { addArticleToElifeMedicineList } from '../policies/add-article-to-elife-medicine-list';
-import { Ports as AddArticlePorts, addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
+import { addArticleToElifeMedicineList, Ports as AddArticleToElifeMedicineListPorts } from '../policies/add-article-to-elife-medicine-list';
+import { Ports as AddArticleToEvaluatedArticlePorts, addArticleToEvaluatedArticlesList } from '../policies/add-article-to-evaluated-articles-list';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -38,6 +38,7 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
+import * as DE from '../types/data-error';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -46,7 +47,9 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
-const executePolicies = (ports: AddArticlePorts) => (event: RuntimeGeneratedEvent) => pipe(
+type PoliciesPorts = AddArticleToEvaluatedArticlePorts & AddArticleToElifeMedicineListPorts;
+
+const executePolicies = (ports: PoliciesPorts) => (event: RuntimeGeneratedEvent) => pipe(
   [
     addArticleToEvaluatedArticlesList(ports)(event),
     addArticleToElifeMedicineList(ports)(event),
@@ -153,6 +156,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
+              fetchSubjectArea: () => TE.left(DE.unavailable),
             })),
           )),
         ),
