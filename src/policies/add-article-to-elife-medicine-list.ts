@@ -17,7 +17,7 @@ export type Ports = AddArticleToListPorts & {
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
-const arrayContainingASingleString = [
+const elifeMedicineMedrxivSubjectAreas = [
   'addiction medicine',
   'anesthesia',
   'cardiovascular medicine',
@@ -79,7 +79,7 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
     event.articleId,
     ports.fetchMedrvixSubjectArea,
     TE.chain((subjectArea) => {
-      if (arrayContainingASingleString.includes(subjectArea)) {
+      if (elifeMedicineMedrxivSubjectAreas.includes(subjectArea)) {
         return addArticleToList(ports)({
           articleId: event.articleId.value,
           listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
