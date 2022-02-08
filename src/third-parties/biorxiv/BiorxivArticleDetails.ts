@@ -6,6 +6,7 @@ import { NumberFromString } from 'io-ts-types/NumberFromString';
 const biorxivArticleVersion = t.type({
   date: DateFromISOString,
   version: NumberFromString,
+  category: t.string,
 });
 
 export const biorxivArticleDetails = t.type({

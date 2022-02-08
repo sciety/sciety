@@ -6,6 +6,7 @@ import { Json } from 'io-ts-types';
 import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
+import { arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('get-article-version-events-from-biorxiv', () => {
@@ -18,10 +19,12 @@ describe('get-article-version-events-from-biorxiv', () => {
             {
               date: '2020-01-02',
               version: '2',
+              category: arbitraryString(),
             },
             {
               date: '2019-12-31',
               version: '1',
+              category: arbitraryString(),
             },
           ],
         }));
@@ -57,10 +60,12 @@ describe('get-article-version-events-from-biorxiv', () => {
             {
               date: '2020-01-02',
               version: '2',
+              category: arbitraryString(),
             },
             {
               date: '2019-12-31',
               version: '1',
+              category: arbitraryString(),
             },
           ],
         }));
@@ -119,6 +124,7 @@ describe('get-article-version-events-from-biorxiv', () => {
             {
               date: 'tree',
               version: '2',
+              category: arbitraryString(),
             },
           ],
         });
@@ -136,6 +142,7 @@ describe('get-article-version-events-from-biorxiv', () => {
             {
               date: '2020-01-01',
               version: 'v1',
+              category: arbitraryString(),
             },
           ],
         });

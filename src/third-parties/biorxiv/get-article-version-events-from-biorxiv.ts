@@ -34,7 +34,11 @@ const headers = {
   'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
 };
 
-const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: Dependencies) => pipe(
+type MakeRequest = (doi: Doi, server: ArticleServer)
+=> ({ getJson, logger }: Dependencies)
+=> TE.TaskEither<Error, BiorxivArticleDetails>;
+
+export const makeRequest: MakeRequest = (doi, server) => ({ getJson, logger }) => pipe(
   TE.tryCatch(
     async () => getJson(
       `https://api.biorxiv.org/details/${server}/${doi.value}`,

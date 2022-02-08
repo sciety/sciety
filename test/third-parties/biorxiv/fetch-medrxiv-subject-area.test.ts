@@ -1,12 +1,21 @@
 import * as E from 'fp-ts/Either';
 import { fetchMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/fetch-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('fetch-medrxiv-subject-area', () => {
   describe('when one article version is returned', () => {
     const ports = {
-      getJson: async () => ({ collection: [{ category: 'addiction medicine' }] }),
+      getJson: async () => ({
+        collection: [{
+          category: 'addiction medicine',
+          version: '1',
+          date: arbitraryDate().toISOString(),
+        }],
+      }),
+      logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, string>;
 
@@ -14,7 +23,7 @@ describe('fetch-medrxiv-subject-area', () => {
       result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
-    it.skip('returns the subject area', () => {
+    it('returns the subject area', () => {
       expect(result).toStrictEqual(E.right('addiction medicine'));
     });
   });
@@ -27,6 +36,7 @@ describe('fetch-medrxiv-subject-area', () => {
           { category: 'allergy and immunology', version: '1' },
         ],
       }),
+      logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, string>;
 
@@ -42,6 +52,7 @@ describe('fetch-medrxiv-subject-area', () => {
   describe('when no article versions are returned', () => {
     const ports = {
       getJson: async () => ({}),
+      logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, string>;
 
