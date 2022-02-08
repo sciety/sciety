@@ -12,15 +12,17 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
+const getAllEvents = T.of([
+  listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+]);
+
 describe('add-article-to-elife-medicine-list', () => {
   describe('when an EvaluationRecorded event by eLife is received', () => {
     const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
     describe('and the subject area belongs to the Medicine list', () => {
       const ports = {
-        getAllEvents: T.of([
-          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
-        ]),
+        getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
@@ -38,9 +40,7 @@ describe('add-article-to-elife-medicine-list', () => {
 
     describe('and the subject area does not belong to the Medicine list', () => {
       const ports = {
-        getAllEvents: T.of([
-          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
-        ]),
+        getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.right('allergy and immunology'),
@@ -58,9 +58,7 @@ describe('add-article-to-elife-medicine-list', () => {
 
     describe('and subject area cannot be retrieved', () => {
       const ports = {
-        getAllEvents: T.of([
-          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
-        ]),
+        getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
@@ -84,7 +82,7 @@ describe('add-article-to-elife-medicine-list', () => {
   describe('when an EvaluationRecorded event by another group is received', () => {
     const anotherGroupId = arbitraryGroupId();
     const ports = {
-      getAllEvents: T.of([]),
+      getAllEvents,
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
       fetchMedrvixSubjectArea: shouldNotBeCalled,
@@ -102,7 +100,7 @@ describe('add-article-to-elife-medicine-list', () => {
 
   describe('when any other event is received', () => {
     const ports = {
-      getAllEvents: T.of([]),
+      getAllEvents,
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
       fetchMedrvixSubjectArea: shouldNotBeCalled,
