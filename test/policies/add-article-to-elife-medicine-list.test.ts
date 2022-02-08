@@ -1,10 +1,11 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
+import { evaluationRecorded, listCreated, userSavedArticle } from '../../src/domain-events';
 import { addArticleToElifeMedicineList } from '../../src/policies/add-article-to-elife-medicine-list';
 import * as DE from '../../src/types/data-error';
 import * as Gid from '../../src/types/group-id';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -17,7 +18,9 @@ describe('add-article-to-elife-medicine-list', () => {
 
     describe('and the subject area belongs to the Medicine list', () => {
       const ports = {
-        getAllEvents: T.of([]),
+        getAllEvents: T.of([
+          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+        ]),
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
@@ -28,7 +31,7 @@ describe('add-article-to-elife-medicine-list', () => {
         await addArticleToElifeMedicineList(ports)(event)();
       });
 
-      it.skip('calls the AddArticleToList command', () => {
+      it('calls the AddArticleToList command', () => {
         expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
       });
     });

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Ports as AddArticleToListPorts } from '../add-article-to-list';
+import { addArticleToList, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../infrastructure/logger';
 import * as DE from '../types/data-error';
@@ -30,9 +30,13 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
   return pipe(
     event.articleId,
     ports.fetchMedrvixSubjectArea,
+    TE.chain((subjectArea) => (subjectArea === 'addiction medicine' ? addArticleToList(ports)({
+      articleId: event.articleId.value,
+      listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
+    }) : TE.right(undefined))),
     TE.match(
       () => { ports.logger('info', 'addArticleToElifeMedicineList policy: failed to fetch subject area', { articleId: event.articleId }); },
-      () => undefined,
+      () => {},
     ),
   );
 };
