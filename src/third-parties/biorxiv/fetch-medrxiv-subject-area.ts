@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
-import { makeRequest } from './get-article-version-events-from-biorxiv';
+import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -32,7 +32,7 @@ const mapResponse = flow(
 type FetchMedrvixSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
 export const fetchMedrxivSubjectArea: FetchMedrvixSubjectArea = (ports) => (articleId) => pipe(
-  makeRequest(articleId, 'medrxiv')(ports),
+  fetchArticleDetails(articleId, 'medrxiv')(ports),
   TE.bimap(
     () => DE.unavailable,
     mapResponse,
