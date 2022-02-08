@@ -38,7 +38,9 @@ describe('add-article-to-elife-medicine-list', () => {
 
     describe('and the subject area does not belong to the Medicine list', () => {
       const ports = {
-        getAllEvents: T.of([]),
+        getAllEvents: T.of([
+          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+        ]),
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.right('allergy and immunology'),
@@ -56,7 +58,9 @@ describe('add-article-to-elife-medicine-list', () => {
 
     describe('and subject area cannot be retrieved', () => {
       const ports = {
-        getAllEvents: T.of([]),
+        getAllEvents: T.of([
+          listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+        ]),
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
@@ -71,8 +75,8 @@ describe('add-article-to-elife-medicine-list', () => {
         expect(ports.commitEvents).not.toHaveBeenCalled();
       });
 
-      it.skip('logs an error', () => {
-        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      it('logs', () => {
+        expect(ports.logger).toHaveBeenCalledWith('info', expect.anything(), expect.anything());
       });
     });
   });
