@@ -34,7 +34,7 @@ const arrayContainingASingleString = [
   'health policy',
   'health systems and quality improvement',
   'hematology',
-  'hiv/aids',
+  'hiv aids',
   'infectious diseases',
   'intensive care and critical care medicine',
   'medical education',
