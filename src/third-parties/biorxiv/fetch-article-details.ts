@@ -1,9 +1,5 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
-import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
@@ -18,17 +14,6 @@ type Dependencies = {
   getJson: GetJson,
   logger: Logger,
 };
-
-type ArticleVersion = {
-  source: URL,
-  publishedAt: Date,
-  version: number,
-};
-
-export type GetArticleVersionEventsFromBiorxiv = (
-  doi: Doi,
-  server: ArticleServer,
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
 const headers = {
   'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
