@@ -52,7 +52,7 @@ export const makeRequest: MakeRequest = (doi, server) => ({ getJson, logger }) =
   )),
   TE.mapLeft(
     (error) => {
-      logger('warn', 'Failed to retrieve article versions', { doi, error });
+      logger('warn', 'Failed to retrieve article details from bioRxiv API', { doi, error });
       return error;
     },
   ),

@@ -54,6 +54,10 @@ describe('add-article-to-elife-medicine-list', () => {
       it('does not call the AddArticleToList command', () => {
         expect(ports.commitEvents).not.toHaveBeenCalled();
       });
+
+      it('logs', () => {
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
 
     describe('and subject area cannot be retrieved', () => {
@@ -74,7 +78,7 @@ describe('add-article-to-elife-medicine-list', () => {
       });
 
       it('logs', () => {
-        expect(ports.logger).toHaveBeenCalledWith('info', expect.anything(), expect.anything());
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
       });
     });
   });

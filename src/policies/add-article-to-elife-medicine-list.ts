@@ -17,6 +17,54 @@ export type Ports = AddArticleToListPorts & {
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
+const arrayContainingASingleString = [
+  'addiction medicine',
+  'anesthesia',
+  'cardiovascular medicine',
+  'dentistry and oral medicine',
+  'dermatology',
+  'emergency medicine',
+  'endocrinology',
+  'forensic medicine',
+  'gastroenterology',
+  'genetic and genomic medicine',
+  'geriatric medicine',
+  'health economics',
+  'health informatics',
+  'health policy',
+  'health systems and quality improvement',
+  'hematology',
+  'hiv/aids',
+  'infectious diseases',
+  'intensive care and critical care medicine',
+  'medical education',
+  'medical ethics',
+  'nephrology',
+  'nursing',
+  'nutrition',
+  'obstetrics and gynecology',
+  'occupational and environmental healthoophthalmology',
+  'orthopedics',
+  'otolaryngology',
+  'pain medicine',
+  'palliative medicine',
+  'pathology',
+  'pediatrics',
+  'pharmacology and therapeutics',
+  'primary care research',
+  'psychiatry and clinical psychology',
+  'radiology and imaging',
+  'rehabilitation medicine and physical therapy',
+  'respiratory medicine',
+  'rheumatology',
+  'sexual and reproductive health',
+  'sports medicine',
+  'surgery',
+  'toxicology',
+  'transplantation',
+  'urology',
+];
+
 type AddArticleToElifeMedicineList = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (ports) => (event) => {
@@ -30,12 +78,18 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
   return pipe(
     event.articleId,
     ports.fetchMedrvixSubjectArea,
-    TE.chain((subjectArea) => (subjectArea === 'addiction medicine' ? addArticleToList(ports)({
-      articleId: event.articleId.value,
-      listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
-    }) : TE.right(undefined))),
+    TE.chain((subjectArea) => {
+      if (arrayContainingASingleString.includes(subjectArea)) {
+        return addArticleToList(ports)({
+          articleId: event.articleId.value,
+          listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
+        });
+      }
+      ports.logger('error', 'addArticleToElifeMedicineList policy: unknown subject area', { event, subjectArea });
+      return TE.right(undefined);
+    }),
     TE.match(
-      () => { ports.logger('info', 'addArticleToElifeMedicineList policy: failed to fetch subject area', { articleId: event.articleId }); },
+      () => { ports.logger('error', 'addArticleToElifeMedicineList policy: failed to fetch subject area', { articleId: event.articleId }); },
       () => {},
     ),
   );
