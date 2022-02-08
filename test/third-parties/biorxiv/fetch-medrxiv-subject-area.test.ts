@@ -32,8 +32,16 @@ describe('fetch-medrxiv-subject-area', () => {
     const ports = {
       getJson: async () => ({
         collection: [
-          { category: 'addiction medicine', version: '2' },
-          { category: 'allergy and immunology', version: '1' },
+          {
+            category: 'allergy and immunology',
+            version: '1',
+            date: arbitraryDate().toISOString(),
+          },
+          {
+            category: 'addiction medicine',
+            version: '2',
+            date: arbitraryDate().toISOString(),
+          },
         ],
       }),
       logger: dummyLogger,
@@ -44,7 +52,7 @@ describe('fetch-medrxiv-subject-area', () => {
       result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
-    it.skip('returns the subject area of the most recent version', () => {
+    it('returns the subject area of the most recent version', () => {
       expect(result).toStrictEqual(E.right('addiction medicine'));
     });
   });

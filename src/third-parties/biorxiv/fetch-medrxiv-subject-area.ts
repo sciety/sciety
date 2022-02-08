@@ -1,8 +1,10 @@
 import { Json } from 'fp-ts/Json';
+import * as Ord from 'fp-ts/Ord';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { BiorxivArticleDetails } from './BiorxivArticleDetails';
+import * as N from 'fp-ts/number';
+import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { makeRequest } from './get-article-version-events-from-biorxiv';
 import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
@@ -15,9 +17,15 @@ type Ports = {
   logger: Logger,
 };
 
+const byVersionAscending: Ord.Ord<BiorxivArticleVersion> = pipe(
+  N.Ord,
+  Ord.contramap((articleVersion) => articleVersion.version),
+);
+
 const mapResponse = flow(
   (response: BiorxivArticleDetails) => response.collection,
-  RNEA.head,
+  RNEA.sort(byVersionAscending),
+  RNEA.last,
   ({ category }) => category,
 );
 

@@ -9,6 +9,8 @@ const biorxivArticleVersion = t.type({
   category: t.string,
 });
 
+export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
+
 export const biorxivArticleDetails = t.type({
   collection: tt.readonlyNonEmptyArray(biorxivArticleVersion),
 });
