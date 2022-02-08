@@ -23,7 +23,6 @@ const mapResponse = flow(
 
 type FetchMedrvixSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
-// ts-unused-exports:disable-next-line
 export const fetchMedrxivSubjectArea: FetchMedrvixSubjectArea = (ports) => (articleId) => pipe(
   makeRequest(articleId, 'medrxiv')(ports),
   TE.bimap(

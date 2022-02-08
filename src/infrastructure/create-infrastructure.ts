@@ -30,6 +30,7 @@ import {
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
+import { fetchMedrxivSubjectArea } from '../third-parties/biorxiv/fetch-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
@@ -37,7 +38,6 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
-import * as DE from '../types/data-error';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -145,7 +145,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
-              fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
+              fetchMedrvixSubjectArea: fetchMedrxivSubjectArea({ getJson, logger }),
             })),
           )),
         ),
