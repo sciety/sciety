@@ -14,6 +14,19 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
+export const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: number): number => {
+  switch (groupSlug) {
+    case 'ncrc':
+      return listCount + 1;
+    case 'biophysics-colab':
+      return listCount + 1;
+    case 'elife':
+      return listCount + 2;
+    default:
+      return listCount;
+  }
+};
+
 export type Ports = {
   getAllEvents: GetAllEvents,
 };
@@ -32,7 +45,7 @@ export const populateGroupViewModel = (
       ...group,
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-      listCount: (group.slug === 'ncrc' || group.slug === 'biophysics-colab' || group.slug === 'elife') ? 1 + 1 : 1,
+      listCount: addFeaturedArticlesListsToListCount(group.slug)(1),
     })),
   )),
 );

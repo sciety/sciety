@@ -76,6 +76,14 @@ const addElifeListCardViewModelOnElifePage = (groupSlug: string) => (cardViewMod
     selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
     E.map((articleIds) => [
       {
+        href: '/lists/cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+        title: 'Cell Biology',
+        articleCountLabel: 'This list contains',
+        description: 'Cell Biology articles that have been evaluated by eLife.',
+        lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
+        articleCount: 0,
+      },
+      {
         href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
         title: 'Medicine',
         articleCountLabel: 'This list contains',

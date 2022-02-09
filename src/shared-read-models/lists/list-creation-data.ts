@@ -155,4 +155,13 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0.broken'),
     new Date('2022-02-01T13:14:00Z'),
   ),
+  listCreated(
+    'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+    'Cell Biology',
+    'Cell Biology articles that have been evaluated by eLife.',
+    // this group id is wrong, but if it were right it would trigger a bug
+    // on the selection of the list from its Read Model
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0.broken'),
+    new Date('2022-02-09T09:43:00Z'),
+  ),
 ];
