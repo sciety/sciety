@@ -69,6 +69,22 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     `),
     identity,
   )),
+  TE.chainFirst(({ pool }) => TE.tryCatch(
+    async () => pool.query(`
+      UPDATE events
+      SET date = '2020-08-12T13:59:33Z'::timestamp
+      WHERE id IN (
+        '70ab2ed1-4de3-4871-aae5-da1111bfa631',
+        '914a76da-9205-483a-a627-3af2a6b50e6b',
+        '31bd6478-1980-4f22-84b2-9cfdc47dce66',
+        '14506752-9473-46c4-bf94-4e3064e6ff43',
+        '1c53640b-8d42-4f73-ab01-df538d758574',
+        '2f3f888f-5e86-4f0a-b1f8-f2bc4d198541',
+        '0141876f-2893-4649-9d5c-e7092a6a30c6'
+      );
+    `),
+    identity,
+  )),
   TE.chainW(({ pool, logger }) => pipe(
     {
       eventsFromDatabase: pipe(
