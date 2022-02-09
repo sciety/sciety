@@ -113,6 +113,10 @@ manual-deploy-to-prod:
 	git tag $$TAG
 	git push origin $$TAG
 
+dev-sql: export TARGET = dev
+dev-sql:
+	$(DOCKER_COMPOSE) exec -e PGUSER=user -e PGPASSWORD=secret -e PGDATABASE=sciety db psql
+
 staging-sql:
 	kubectl run psql \
 	--rm -it --image=postgres:12.3 \
