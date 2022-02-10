@@ -33,11 +33,11 @@ type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
   const events = await adapters.getAllEvents();
   // eslint-disable-next-line no-loops/no-loops
-  for (let i = 0; i < 1; i += 1) {
+  for (let i = 0; i < events.length; i += 1) {
     await noopPolicy(events[i])();
     await addArticleToEvaluatedArticlesListWithEvaluationDate(adapters)(events[i])();
     await new Promise((resolve) => {
-      setTimeout(resolve, 1);
+      setTimeout(resolve, 10);
     });
   }
   adapters.logger('info', 'All background policies have completed', { eventsLength: events.length });
