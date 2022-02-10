@@ -36,7 +36,11 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
   for (let i = 0; i < 1; i += 1) {
     await noopPolicy(events[i])();
     await addArticleToEvaluatedArticlesListWithEvaluationDate(adapters)(events[i])();
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1);
+    });
   }
+  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length });
 };
 
 void pipe(
