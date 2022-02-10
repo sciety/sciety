@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -70,32 +71,52 @@ const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (groupSlug: str
   : E.right(cardViewModels)
 );
 
-const addElifeListCardViewModelOnElifePage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'elife')
-  ? pipe(
+const addElifeListCardViewModelOnElifePage = (
+  groupSlug: string,
+) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => {
+  if (groupSlug !== 'elife') {
+    return E.right(cardViewModels);
+  }
+
+  const medicineList = pipe(
     events,
     selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
-    E.map((articleIds) => [
-      {
-        href: '/lists/cb15ef21-944d-44d6-b415-a3d8951e9e8b',
-        title: 'Cell Biology',
-        articleCountLabel: 'This list contains',
-        description: 'Cell Biology articles that have been evaluated by eLife.',
-        lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
-        articleCount: 0,
-      },
-      {
-        href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
-        title: 'Medicine',
-        articleCountLabel: 'This list contains',
-        description: 'Medicine articles that have been evaluated by eLife.',
-        lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
-        articleCount: articleIds.length,
-      },
+    E.map((articleIds) => ({
+      href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
+      title: 'Medicine',
+      articleCountLabel: 'This list contains',
+      description: 'Medicine articles that have been evaluated by eLife.',
+      lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
+      articleCount: articleIds.length,
+    })),
+  );
+
+  const cellBiologyList = pipe(
+    events,
+    selectArticlesBelongingToList('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
+    E.map((articleIds) => ({
+      href: '/lists/cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+      title: 'Cell Biology',
+      articleCountLabel: 'This list contains',
+      description: 'Cell Biology articles that have been evaluated by eLife.',
+      lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
+      articleCount: articleIds.length,
+    })),
+  );
+
+  return pipe(
+    {
+      medicineList,
+      cellBiologyList,
+    },
+    sequenceS(E.Apply),
+    E.map((lists) => [
+      lists.cellBiologyList,
+      lists.medicineList,
       ...cardViewModels,
     ]),
-  )
-  : E.right(cardViewModels)
-);
+  );
+};
 
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
