@@ -118,6 +118,7 @@ jobs:
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Deploy to prod
+        if: github.ref == 'refs/heads/main'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm repo add bitnami https://charts.bitnami.com/bitnami
