@@ -1,10 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../../src/domain-events';
+import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
 import { getActivityForDois } from '../../../src/shared-read-models/article-activity/get-activity-for-dois';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('get-activity-for-dois', () => {
@@ -17,7 +19,9 @@ describe('get-activity-for-dois', () => {
       const activity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId1, arbitraryReviewId(), [], date1),
+          articleAddedToList(articleId1, arbitraryListId()),
           evaluationRecorded(arbitraryGroupId(), articleId2, arbitraryReviewId(), [], date2),
+          articleAddedToList(articleId2, arbitraryListId()),
         ],
         getActivityForDois([articleId1, articleId2]),
       );

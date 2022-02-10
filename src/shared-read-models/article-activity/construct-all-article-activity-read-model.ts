@@ -41,8 +41,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
           (entry) => state.set(event.articleId.value, {
             ...entry,
             lists: entry.lists.add(event.listId),
-            listMembershipCount: entry.evaluatingGroups.size
-              + entry.savingUsers.size
+            listMembershipCount: entry.savingUsers.size
               + entry.lists.add(event.listId).size,
           }),
         ),
@@ -60,7 +59,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             evaluatingGroups: new Set([event.groupId]),
             savingUsers: new Set(),
             lists: new Set(),
-            listMembershipCount: 1,
+            listMembershipCount: 0,
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
@@ -70,9 +69,6 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ),
             evaluationCount: entry.evaluationCount + 1,
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
-            listMembershipCount: entry.evaluatingGroups.add(event.groupId).size
-              + entry.savingUsers.size
-              + entry.lists.size,
           }),
         ),
       );
@@ -95,7 +91,6 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ...entry,
             savingUsers: entry.savingUsers.add(event.userId),
             listMembershipCount: entry.savingUsers.add(event.userId).size
-              + entry.evaluatingGroups.size
               + entry.lists.size,
           }),
         ),
@@ -111,7 +106,6 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             ...entry,
             savingUsers: deleteFromSet(entry.savingUsers, event.userId),
             listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size
-              + entry.evaluatingGroups.size
               + entry.lists.size,
           }),
         ),

@@ -14,7 +14,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryDoi();
 
-  describe('when an article has no evaluations', () => {
+  describe('when an article is not in any list', () => {
     const articleActivity = pipe(
       [],
       getActivityForDoi(articleId),
@@ -98,22 +98,7 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article appears in one list', () => {
-    describe('and the list is Evaluated Articles list', () => {
-      const groupId = arbitraryGroupId();
-      const articleActivity = pipe(
-        [
-          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(groupId, articleId, arbitraryReviewId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 1', () => {
-        expect(articleActivity.listMembershipCount).toBe(1);
-      });
-    });
-
-    describe('and the list is a featured articles list', () => {
+    describe('and the list is a group list', () => {
       const articleActivity = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
@@ -160,7 +145,7 @@ describe('get-activity-for-doi', () => {
     describe('first in a group list and then in a user list', () => {
       const articleActivity = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          articleAddedToList(articleId, arbitraryListId()),
           userSavedArticle(arbitraryUserId(), articleId),
         ],
         getActivityForDoi(articleId),
@@ -171,7 +156,7 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('first in a group list and then in a featured articles list', () => {
+    describe('added to the evaluated articles list by a policy, after being evaluated', () => {
       const articleActivity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
@@ -180,26 +165,12 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
+      it('has a listMemberShipCount of 1', () => {
+        expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
 
     describe('first in a user list and then in a group list', () => {
-      const articleActivity = pipe(
-        [
-          userSavedArticle(arbitraryUserId(), articleId),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
-      });
-    });
-
-    describe('first in a user list and then in a featured articles list', () => {
       const articleActivity = pipe(
         [
           userSavedArticle(arbitraryUserId(), articleId),
@@ -245,8 +216,8 @@ describe('get-activity-for-doi', () => {
     describe('multiple lists from different groups', () => {
       const articleActivity = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          articleAddedToList(articleId, arbitraryListId()),
+          articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
       );
