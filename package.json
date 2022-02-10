@@ -42,7 +42,7 @@
     "parse-link-header": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "pg": "^8.7.1",
+    "pg": "^8.7.3",
     "rdf-dataset-indexed": "^0.4.0",
     "redis": "2.8.0",
     "remarkable": "^2.0.1",
