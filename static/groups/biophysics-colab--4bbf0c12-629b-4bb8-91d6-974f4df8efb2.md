@@ -17,7 +17,8 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
 [Learn more](https://osf.io/8zj9w/).
 
-<dl class="group-page-pref">
+<section>
+  <dl class="group-page-pref">
     <dt>Review requested by</dt>
     <dd>Non-authors, Authors</dd>
     <dt>Reviewer selected by</dt>
@@ -27,14 +28,23 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dt>Inclusion of author response</dt>
     <dd>Yes</dd>
     <dt>Decision</dt>
-    <dd>Other scale or rating<br>(Some preprints receive an endorsement; none are rejected)</dd>
+    <dd>Other scale or rating <sup><a href="#fn1" id="r1">[1]</a></sup></dd>
     <dt>Review coverage</dt>
     <dd>Complete paper</dd>
     <dt>Reviewer identity known to</dt>
-    <dd>Editor or service<br>(Most identities are revealed to authors and some also to the public)</dd>
+    <dd>Editor or service <sup><a href="#fn2" id="r2">[2]</a></sup></dd>
     <dt>Competing interests</dt>
     <dd>Checked</dd>
-</dl>
+  </dl>
+  <footer>
+    <p id="fn1">
+      <a href="#r1">[1]</a> Some preprints receive an endorsement; none are rejected
+    </p>
+    <p id="fn2">
+      <a href="#r2">[2]</a> Most identities are revealed to authors and some also to the public
+    </p>
+  </footer>
+</section>
 
 ## People
 
