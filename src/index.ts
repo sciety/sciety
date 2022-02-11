@@ -10,9 +10,6 @@ import { createApplicationServer } from './http/server';
 import {
   Adapters, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
-import {
-  addArticleToEvaluatedArticlesListWithEvaluationDate,
-} from './policies/add-article-to-evaluated-articles-list-with-evaluation-date';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -35,7 +32,6 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < events.length; i += 1) {
     await noopPolicy(events[i])();
-    await addArticleToEvaluatedArticlesListWithEvaluationDate(adapters)(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 10);
     });
