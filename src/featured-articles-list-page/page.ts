@@ -12,7 +12,6 @@ import { renderErrorPage, renderPage } from '../list-page/render-page';
 import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
-import * as DE from '../types/data-error';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -20,7 +19,6 @@ import { RenderPageError } from '../types/render-page-error';
 const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   getList(listId),
-  E.fromOption(() => DE.notFound),
   E.chain((partial) => pipe(
     events,
     selectArticlesBelongingToList(listId),
