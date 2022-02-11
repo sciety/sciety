@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { authenticateViaTwitter, screenshotTeardown } from './utilities';
+import { screenshotTeardown } from './utilities';
 
 describe('follow a group', () => {
   beforeEach(async () => {
@@ -16,7 +16,6 @@ describe('follow a group', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await authenticateViaTwitter();
     });
 
     it('adds the group to my profile page', async () => {
