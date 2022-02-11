@@ -28,20 +28,20 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dt>Inclusion of author response</dt>
     <dd>Yes</dd>
     <dt>Decision</dt>
-    <dd>Other scale or rating <sup><a href="#fn1" id="r1">[1]</a></sup></dd>
+    <dd>Other scale or rating <sup><a href="#fn1" id="r1" aria-label="link to footnote 1">[1]</a></sup></dd>
     <dt>Review coverage</dt>
     <dd>Complete paper</dd>
     <dt>Reviewer identity known to</dt>
-    <dd>Editor or service <sup><a href="#fn2" id="r2">[2]</a></sup></dd>
+    <dd>Editor or service <sup><a href="#fn2" id="r2" aria-label="link to footnote 2">[2]</a></sup></dd>
     <dt>Competing interests</dt>
     <dd>Checked</dd>
   </dl>
   <footer>
     <p id="fn1">
-      <a href="#r1">[1]</a> Some preprints receive an endorsement; none are rejected
+      <span class="visually-hidden">Footnote 1: </span><a href="#r1" aria-label="link back to PReF table">[1]</a> Some preprints receive an endorsement; none are rejected
     </p>
     <p id="fn2">
-      <a href="#r2">[2]</a> Most identities are revealed to authors and some also to the public
+      <span class="visually-hidden">Footnote 2: </span><a href="#r2" aria-label="link back to PReF table">[2]</a> Most identities are revealed to authors and some also to the public
     </p>
   </footer>
 </section>
