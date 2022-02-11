@@ -26,6 +26,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: '/groups/ncrc',
       ownerAvatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
       lastUpdated: O.some(new Date('2021-11-24')),
+      groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
     },
     '5ac3a439-e5c6-4b15-b109-92928a740812': {
       name: 'Endorsed articles',
@@ -34,6 +35,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: '/groups/biophysics-colab',
       ownerAvatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
       lastUpdated: O.some(new Date('2021-11-22T15:09:00Z')),
+      groupId: '4bbf0c12-629b-4bb8-91d6-974f4df8efb2',
     },
     'c7237468-aac1-4132-9598-06e9ed68f31d': {
       name: 'Medicine',
@@ -42,6 +44,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: '/groups/elife',
       ownerAvatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
       lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
+      groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     },
     'cb15ef21-944d-44d6-b415-a3d8951e9e8b': {
       name: 'Cell Biology',
@@ -50,6 +53,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: '/groups/elife',
       ownerAvatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
       lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
+      groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     },
   },
   R.lookup(listId),
