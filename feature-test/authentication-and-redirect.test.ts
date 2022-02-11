@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   $, click, currentURL, goBack, goto, link, openBrowser,
 } from 'taiko';
@@ -6,7 +5,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('authentication-and-redirect', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

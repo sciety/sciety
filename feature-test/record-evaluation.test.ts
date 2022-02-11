@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import {
   $, goto, openBrowser,
 } from 'taiko';
@@ -10,7 +9,6 @@ import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('record an evaluation', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

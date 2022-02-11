@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser, text,
 } from 'taiko';
@@ -6,7 +5,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('save-article', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
@@ -40,7 +38,6 @@ describe('save-article', () => {
 
 describe('unsave article', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

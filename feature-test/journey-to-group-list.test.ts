@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser,
 } from 'taiko';
@@ -6,7 +5,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('journey-to-group-list', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

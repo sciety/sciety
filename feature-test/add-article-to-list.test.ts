@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import {
   $, goto, openBrowser,
 } from 'taiko';
@@ -7,7 +6,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 

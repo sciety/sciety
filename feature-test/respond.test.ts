@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
@@ -6,7 +5,6 @@ import { screenshotTeardown } from './utilities';
 
 describe('respond', () => {
   beforeEach(async () => {
-    dotenv.config();
     await openBrowser();
   });
 
