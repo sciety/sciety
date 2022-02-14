@@ -65,7 +65,9 @@ const elifeMedicineMedrxivSubjectAreas = [
   'urology',
 ];
 
-const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [];
+const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
+  'cell biology',
+];
 
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 

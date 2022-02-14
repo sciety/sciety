@@ -52,7 +52,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         await addArticleToElifeSubjectAreaLists(ports)(event)();
       });
 
-      it.skip('calls the AddArticleToList command', () => {
+      it('calls the AddArticleToList command', () => {
         expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
       });
     });
