@@ -26,7 +26,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
-    it.skip('returns the subject area', () => {
+    it('returns the subject area', () => {
       expect(result).toStrictEqual(E.right(subjectArea));
     });
   });

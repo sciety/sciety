@@ -1,6 +1,8 @@
 import { Json } from 'fp-ts/Json';
 import * as Ord from 'fp-ts/Ord';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
@@ -32,9 +34,13 @@ const mapResponse = flow(
 type GetBiorxivOrMedrxivSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
 export const getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea = (ports) => (articleId) => pipe(
-  fetchArticleDetails(articleId, 'medrxiv')(ports),
-  TE.bimap(
-    () => DE.unavailable,
-    mapResponse,
-  ),
+  [
+    'biorxiv' as const,
+    'medrxiv' as const,
+  ],
+  T.traverseArray((server) => fetchArticleDetails(articleId, server)(ports)),
+  T.map(RA.rights),
+  T.map(RA.head),
+  TE.fromTaskOption(() => DE.unavailable),
+  TE.map(mapResponse),
 );
