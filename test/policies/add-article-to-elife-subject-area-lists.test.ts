@@ -38,7 +38,11 @@ describe('add-article-to-elife-subject-area-lists', () => {
       });
     });
 
-    describe('and the subject area does not belong to the Medicine list', () => {
+    describe('and the subject area belongs to the Cell Biology list', () => {
+      it.todo('calls the AddArticleToList command');
+    });
+
+    describe('and the subject area does not belong to any configured eLife subject area list', () => {
       const ports = {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
@@ -55,8 +59,8 @@ describe('add-article-to-elife-subject-area-lists', () => {
         expect(ports.commitEvents).not.toHaveBeenCalled();
       });
 
-      it('logs', () => {
-        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      it.skip('logs', () => {
+        expect(ports.logger).toHaveBeenCalledWith('info', expect.anything(), expect.anything());
       });
     });
 
