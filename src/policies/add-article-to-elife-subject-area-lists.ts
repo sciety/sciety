@@ -95,7 +95,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
           listId: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
         });
       }
-      ports.logger('error', 'addArticleToElifeSubjectAreaLists policy: unknown subject area', { event, subjectArea });
+      ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
       return TE.right(undefined);
     }),
     TE.match(

@@ -57,7 +57,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       });
     });
 
-    describe('and the subject area does not belong to any configured eLife subject area list', () => {
+    describe('and the subject area does not belong to any supported eLife subject area list', () => {
       const ports = {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
@@ -74,7 +74,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         expect(ports.commitEvents).not.toHaveBeenCalled();
       });
 
-      it.skip('logs', () => {
+      it('logs', () => {
         expect(ports.logger).toHaveBeenCalledWith('info', expect.anything(), expect.anything());
       });
     });
