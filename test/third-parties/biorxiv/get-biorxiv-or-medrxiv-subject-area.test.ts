@@ -7,7 +7,28 @@ import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('get-biorxiv-or-medrxiv-subject-area', () => {
   describe('when the subject area is available on biorxiv', () => {
-    it.todo('returns the subject area');
+    const subjectArea = 'cell biology';
+    const ports = {
+      getJson: async (url: string) => (url.includes('/biorxiv')
+        ? ({
+          collection: [{
+            category: subjectArea,
+            version: '1',
+            date: arbitraryDate().toISOString(),
+          }],
+        })
+        : ({ collection: [] })),
+      logger: dummyLogger,
+    };
+    let result: E.Either<DE.DataError, string>;
+
+    beforeEach(async () => {
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+    });
+
+    it.skip('returns the subject area', () => {
+      expect(result).toStrictEqual(E.right(subjectArea));
+    });
   });
 
   describe('when the subject area is available on medrxiv', () => {
