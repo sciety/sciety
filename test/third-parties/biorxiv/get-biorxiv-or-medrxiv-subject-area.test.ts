@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
-import { fetchMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/fetch-medrxiv-subject-area';
+import { getBiorxivOrMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
-describe('fetch-medrxiv-subject-area', () => {
+describe('get-biorxiv-or-medrxiv-subject-area', () => {
   describe('when one article version is returned', () => {
     const ports = {
       getJson: async () => ({
@@ -20,7 +20,7 @@ describe('fetch-medrxiv-subject-area', () => {
     let result: E.Either<DE.DataError, string>;
 
     beforeEach(async () => {
-      result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
     it('returns the subject area', () => {
@@ -49,7 +49,7 @@ describe('fetch-medrxiv-subject-area', () => {
     let result: E.Either<DE.DataError, string>;
 
     beforeEach(async () => {
-      result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
     it('returns the subject area of the most recent version', () => {
@@ -65,7 +65,7 @@ describe('fetch-medrxiv-subject-area', () => {
     let result: E.Either<DE.DataError, string>;
 
     beforeEach(async () => {
-      result = await fetchMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
     });
 
     it('returns a left', () => {

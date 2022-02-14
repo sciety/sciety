@@ -29,9 +29,9 @@ const mapResponse = flow(
   ({ category }) => category,
 );
 
-type FetchMedrvixSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+type GetBiorxivOrMedrxivSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
-export const fetchMedrxivSubjectArea: FetchMedrvixSubjectArea = (ports) => (articleId) => pipe(
+export const getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea = (ports) => (articleId) => pipe(
   fetchArticleDetails(articleId, 'medrxiv')(ports),
   TE.bimap(
     () => DE.unavailable,

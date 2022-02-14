@@ -30,7 +30,7 @@ import {
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
-import { fetchMedrxivSubjectArea } from '../third-parties/biorxiv/fetch-medrxiv-subject-area';
+import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
@@ -145,7 +145,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
-              getBiorxivOrMedrxivSubjectArea: fetchMedrxivSubjectArea({ getJson, logger }),
+              getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({ getJson, logger }),
             })),
           )),
         ),
