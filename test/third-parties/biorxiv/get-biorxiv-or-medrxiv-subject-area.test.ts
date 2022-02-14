@@ -57,7 +57,19 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
   });
 
   describe('when the subject area is not available on either server', () => {
-    it.todo('returns a left');
+    const ports = {
+      getJson: async () => ({ collection: [] }),
+      logger: dummyLogger,
+    };
+    let result: E.Either<DE.DataError, string>;
+
+    beforeEach(async () => {
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+    });
+
+    it('returns a left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 
   describe('when one article version is returned', () => {
