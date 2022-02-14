@@ -14,6 +14,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 const getAllEvents = T.of([
   listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+  listCreated('cb15ef21-944d-44d6-b415-a3d8951e9e8b', arbitraryString(), arbitraryString(), arbitraryGroupId()),
 ]);
 
 describe('add-article-to-elife-subject-area-lists', () => {
@@ -39,7 +40,22 @@ describe('add-article-to-elife-subject-area-lists', () => {
     });
 
     describe('and the subject area belongs to the Cell Biology list', () => {
-      it.todo('calls the AddArticleToList command');
+      const ports = {
+        getAllEvents,
+        commitEvents: jest.fn(() => T.of('no-events-created' as const)),
+        logger: jest.fn(dummyLogger),
+        fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
+        getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
+      };
+      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+
+      beforeEach(async () => {
+        await addArticleToElifeSubjectAreaLists(ports)(event)();
+      });
+
+      it.skip('calls the AddArticleToList command', () => {
+        expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
+      });
     });
 
     describe('and the subject area does not belong to any configured eLife subject area list', () => {
