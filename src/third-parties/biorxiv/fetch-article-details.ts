@@ -37,7 +37,7 @@ export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJ
   )),
   TE.mapLeft(
     (error) => {
-      logger('warn', 'Failed to retrieve article details from bioRxiv API', { doi, error });
+      logger('debug', 'Failed to retrieve article details from bioRxiv API', { doi, error });
       return error;
     },
   ),
