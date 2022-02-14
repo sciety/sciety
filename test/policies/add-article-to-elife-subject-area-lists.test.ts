@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { evaluationRecorded, listCreated, userSavedArticle } from '../../src/domain-events';
-import { addArticleToElifeMedicineList } from '../../src/policies/add-article-to-elife-medicine-list';
+import { addArticleToElifeSubjectAreaLists } from '../../src/policies/add-article-to-elife-subject-area-lists';
 import * as DE from '../../src/types/data-error';
 import * as Gid from '../../src/types/group-id';
 import { dummyLogger } from '../dummy-logger';
@@ -16,7 +16,7 @@ const getAllEvents = T.of([
   listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
 ]);
 
-describe('add-article-to-elife-medicine-list', () => {
+describe('add-article-to-elife-subject-area-lists', () => {
   describe('when an EvaluationRecorded event by eLife is received', () => {
     const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
@@ -30,7 +30,7 @@ describe('add-article-to-elife-medicine-list', () => {
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
       beforeEach(async () => {
-        await addArticleToElifeMedicineList(ports)(event)();
+        await addArticleToElifeSubjectAreaLists(ports)(event)();
       });
 
       it('calls the AddArticleToList command', () => {
@@ -48,7 +48,7 @@ describe('add-article-to-elife-medicine-list', () => {
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
       beforeEach(async () => {
-        await addArticleToElifeMedicineList(ports)(event)();
+        await addArticleToElifeSubjectAreaLists(ports)(event)();
       });
 
       it('does not call the AddArticleToList command', () => {
@@ -70,7 +70,7 @@ describe('add-article-to-elife-medicine-list', () => {
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
       beforeEach(async () => {
-        await addArticleToElifeMedicineList(ports)(event)();
+        await addArticleToElifeSubjectAreaLists(ports)(event)();
       });
 
       it('does not call the AddArticleToList command', () => {
@@ -94,7 +94,7 @@ describe('add-article-to-elife-medicine-list', () => {
     const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
 
     beforeEach(async () => {
-      await addArticleToElifeMedicineList(ports)(event)();
+      await addArticleToElifeSubjectAreaLists(ports)(event)();
     });
 
     it('does not call the AddArticleToList command', () => {
@@ -112,7 +112,7 @@ describe('add-article-to-elife-medicine-list', () => {
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
 
     beforeEach(async () => {
-      await addArticleToElifeMedicineList(ports)(event)();
+      await addArticleToElifeSubjectAreaLists(ports)(event)();
     });
 
     it('does not call the AddArticleToList command', () => {

@@ -67,9 +67,9 @@ const elifeMedicineMedrxivSubjectAreas = [
 
 const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [];
 
-type AddArticleToElifeMedicineList = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
+type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
-export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (ports) => (event) => {
+export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
   if (!isEvaluationRecordedEvent(event)) {
     return T.of(undefined);
   }
@@ -93,11 +93,11 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
           listId: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
         });
       }
-      ports.logger('error', 'addArticleToElifeMedicineList policy: unknown subject area', { event, subjectArea });
+      ports.logger('error', 'addArticleToElifeSubjectAreaLists policy: unknown subject area', { event, subjectArea });
       return TE.right(undefined);
     }),
     TE.match(
-      () => { ports.logger('error', 'addArticleToElifeMedicineList policy: failed to fetch subject area', { articleId: event.articleId }); },
+      () => { ports.logger('error', 'addArticleToElifeSubjectAreaLists policy: failed to fetch subject area', { articleId: event.articleId }); },
       () => {},
     ),
   );
