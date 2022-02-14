@@ -6,6 +6,39 @@ import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('get-biorxiv-or-medrxiv-subject-area', () => {
+  describe('when the subject area is available on biorxiv', () => {
+    it.todo('returns the subject area');
+  });
+
+  describe('when the subject area is available on medrxiv', () => {
+    const subjectArea = 'addiction medicine';
+    const ports = {
+      getJson: async (url: string) => (url.includes('/medrxiv')
+        ? ({
+          collection: [{
+            category: subjectArea,
+            version: '1',
+            date: arbitraryDate().toISOString(),
+          }],
+        })
+        : ({ collection: [] })),
+      logger: dummyLogger,
+    };
+    let result: E.Either<DE.DataError, string>;
+
+    beforeEach(async () => {
+      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+    });
+
+    it('returns the subject area', () => {
+      expect(result).toStrictEqual(E.right(subjectArea));
+    });
+  });
+
+  describe('when the subject area is not available on either server', () => {
+    it.todo('returns a left');
+  });
+
   describe('when one article version is returned', () => {
     const ports = {
       getJson: async () => ({
