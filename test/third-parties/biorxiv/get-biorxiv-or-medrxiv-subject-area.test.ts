@@ -74,13 +74,15 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
 
   describe('when one article version is returned', () => {
     const ports = {
-      getJson: async () => ({
-        collection: [{
-          category: 'addiction medicine',
-          version: '1',
-          date: arbitraryDate().toISOString(),
-        }],
-      }),
+      getJson: async (url: string) => (url.includes('/medrxiv')
+        ? ({
+          collection: [{
+            category: 'addiction medicine',
+            version: '1',
+            date: arbitraryDate().toISOString(),
+          }],
+        })
+        : ({ collection: [] })),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, string>;
@@ -96,20 +98,22 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
 
   describe('when there are multiple article versions', () => {
     const ports = {
-      getJson: async () => ({
-        collection: [
-          {
-            category: 'allergy and immunology',
-            version: '1',
-            date: arbitraryDate().toISOString(),
-          },
-          {
-            category: 'addiction medicine',
-            version: '2',
-            date: arbitraryDate().toISOString(),
-          },
-        ],
-      }),
+      getJson: async (url: string) => (url.includes('/medrxiv')
+        ? ({
+          collection: [
+            {
+              category: 'allergy and immunology',
+              version: '1',
+              date: arbitraryDate().toISOString(),
+            },
+            {
+              category: 'addiction medicine',
+              version: '2',
+              date: arbitraryDate().toISOString(),
+            },
+          ],
+        })
+        : ({ collection: [] })),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, string>;
@@ -123,7 +127,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
     });
   });
 
-  describe('when no article versions are returned', () => {
+  describe('when no usable response is decoded', () => {
     const ports = {
       getJson: async () => ({}),
       logger: dummyLogger,
