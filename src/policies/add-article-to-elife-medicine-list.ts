@@ -65,6 +65,8 @@ const elifeMedicineMedrxivSubjectAreas = [
   'urology',
 ];
 
+const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [];
+
 type AddArticleToElifeMedicineList = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (ports) => (event) => {
@@ -83,6 +85,12 @@ export const addArticleToElifeMedicineList: AddArticleToElifeMedicineList = (por
         return addArticleToList(ports)({
           articleId: event.articleId.value,
           listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
+        });
+      }
+      if (elifeCellBiologyBiorxivSubjectAreas.includes(subjectArea)) {
+        return addArticleToList(ports)({
+          articleId: event.articleId.value,
+          listId: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
         });
       }
       ports.logger('error', 'addArticleToElifeMedicineList policy: unknown subject area', { event, subjectArea });
