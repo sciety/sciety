@@ -26,7 +26,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
+        getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -44,7 +44,6 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        fetchMedrvixSubjectArea: () => TE.right('addiction medicine'),
         getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
@@ -63,7 +62,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        fetchMedrvixSubjectArea: () => TE.right('allergy and immunology'),
+        getBiorxivOrMedrxivSubjectArea: () => TE.right('allergy and immunology'),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -85,7 +84,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        fetchMedrvixSubjectArea: () => TE.left(DE.unavailable),
+        getBiorxivOrMedrxivSubjectArea: () => TE.left(DE.unavailable),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -109,7 +108,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       getAllEvents,
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
-      fetchMedrvixSubjectArea: shouldNotBeCalled,
+      getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
     };
     const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -127,7 +126,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       getAllEvents,
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
-      fetchMedrvixSubjectArea: shouldNotBeCalled,
+      getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
     };
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
 
