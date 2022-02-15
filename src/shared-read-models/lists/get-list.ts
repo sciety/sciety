@@ -1,6 +1,6 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { List } from './list';
 import { DomainEvent } from '../../domain-events';
@@ -8,7 +8,7 @@ import * as DE from '../../types/data-error';
 import * as Gid from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
-type GetList = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => E.Either<DE.DataError, List>;
+type GetList = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, List>;
 
 export const getList: GetList = (listId) => () => pipe(
   {
@@ -42,5 +42,5 @@ export const getList: GetList = (listId) => () => pipe(
     },
   },
   R.lookup(listId),
-  E.fromOption(() => DE.notFound),
+  TE.fromOption(() => DE.notFound),
 );

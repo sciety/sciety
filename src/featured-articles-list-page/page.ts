@@ -19,7 +19,7 @@ import { RenderPageError } from '../types/render-page-error';
 const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   getList(listId),
-  E.chain((partial) => pipe(
+  TE.chainEitherK((partial) => pipe(
     events,
     selectArticlesBelongingToList(listId),
     E.map((articleIds) => ({
@@ -27,7 +27,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       articleCount: articleIds.length,
     })),
   )),
-  E.chain((partial) => pipe(
+  TE.chainEitherK((partial) => pipe(
     events,
     getGroup(partial.ownerId),
     E.map((group) => ({
@@ -50,13 +50,13 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   {
     header: pipe(
       ports.getAllEvents,
-      T.map(headers(params.id)),
+      T.chain(headers(params.id)),
       TE.map(renderComponent),
     ),
     content: articlesList(ports, params.id, params.page),
     title: pipe(
       ports.getAllEvents,
-      T.map(headers(params.id)),
+      T.chain(headers(params.id)),
       TE.map((header) => header.name),
     ),
   },
