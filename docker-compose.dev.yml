@@ -20,6 +20,13 @@ services:
       - './test:/app/test'
       - './feature-test:/app/feature-test'
 
+  lists:
+    build:
+      target: dev
+    image: ${IMAGE}:${IMAGE_TAG}-dev
+    volumes:
+      - './src:/app/src'
+
   db:
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
