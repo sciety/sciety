@@ -37,6 +37,11 @@ services:
     container_name: sciety_lists
     build:
       context: ""
+    environment:
+      PGUSER: user
+      PGHOST: db
+      PGPASSWORD: secret
+      PGDATABASE: sciety
     ports:
       - '8081:80'
     command: "npx ts-node src/lists-service/index"
