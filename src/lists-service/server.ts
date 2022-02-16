@@ -39,21 +39,6 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
     await next();
   });
 
-  const requiredEnvironmentVariables = [
-    'APP_ORIGIN',
-    'APP_SECRET',
-    'PGUSER',
-    'PGHOST',
-    'PGPASSWORD',
-    'PGDATABASE',
-  ];
-
-  const missingVariables = requiredEnvironmentVariables.filter((variableName) => !process.env[variableName]);
-  if (missingVariables.length) {
-    logger('error', 'Missing environment variables', { missingVariables });
-    return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
-  }
-
   const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {
