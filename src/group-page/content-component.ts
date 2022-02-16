@@ -61,7 +61,7 @@ export const contentComponent: ContentComponent = (
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
     listCount: pipe(
       ports.getAllEvents,
-      T.map(selectAllListsOwnedBy(group.id)),
+      T.chain(selectAllListsOwnedBy(group.id)),
       T.map(RA.size),
       TE.rightTask,
       TE.map(addFeaturedArticlesListsToListCount(group.slug)),

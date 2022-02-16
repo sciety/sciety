@@ -121,7 +121,7 @@ const addElifeListCardViewModelOnElifePage = (
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.map(selectAllListsOwnedBy(group.id)),
+  TE.chainTaskK(selectAllListsOwnedBy(group.id)),
   TE.map(RA.match(
     () => [],
     (l) => pipe(
