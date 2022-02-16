@@ -1,6 +1,5 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import {
@@ -22,10 +21,8 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
 
 void pipe(
   createInfrastructure({
-    crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
-    twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   }),
   TE.map((adapters) => pipe(
     adapters,

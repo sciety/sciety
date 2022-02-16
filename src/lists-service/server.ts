@@ -3,7 +3,6 @@ import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
 import Koa from 'koa';
-import koaSession from 'koa-session';
 import { Adapters } from './adapters';
 import { routeNotFound } from '../http/route-not-found';
 
@@ -38,23 +37,6 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
 
     await next();
   });
-
-  const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
-  if (isSecure) {
-    app.use(async (ctx, next) => {
-      ctx.cookies.secure = true;
-      await next();
-    });
-  }
-
-  app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
-  app.use(koaSession(
-    {
-      maxAge: 365 * 24 * 60 * 60 * 1000,
-      secure: isSecure,
-    },
-    app,
-  ));
 
   app.use(router.middleware());
   app.use(routeNotFound);
