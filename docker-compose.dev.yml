@@ -24,6 +24,7 @@ services:
     build:
       target: dev
     image: ${IMAGE}:${IMAGE_TAG}-dev
+    command: "npx ts-node src/lists-service/index"
     volumes:
       - './src:/app/src'
 

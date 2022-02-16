@@ -44,7 +44,6 @@ services:
       PGDATABASE: sciety
     ports:
       - '8081:80'
-    command: "npx ts-node src/lists-service/index"
     restart: "no"
 
   db:
