@@ -1,26 +1,26 @@
 export const card1 = {
-  articleId: '10.1101/2022.01.10.475747',
-  articleTitle: 'Cell type-specific aging clocks to quantify aging and rejuvenation in regenerative regions of the brain',
-  date: new Date('2022-01-17'),
-  groupSlug: 'prereview',
-  groupName: 'PREreview',
-  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
+  articleId: '10.1101/2022.01.25.22269238',
+  articleTitle: 'Patients’ satisfaction and quality of clinical laboratory services provision at public health facilities in northeast Ethiopia',
+  date: new Date('2022-02-14'),
+  groupSlug: 'peerref',
+  groupName: 'PeerRef',
+  avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
 };
 
 export const card2 = {
-  articleId: '10.1101/2022.01.13.22269151',
-  articleTitle: 'The mental health of staff working on Intensive Care Units over the COVID-19 winter surge of 2020 in England: a cross sectional survey',
-  date: new Date('2022-01-16'),
-  groupSlug: 'screenit',
-  groupName: 'ScreenIT',
-  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.png',
+  articleId: '10.1101/2021.06.04.447076',
+  articleTitle: 'Tricalbin proteins regulate plasma membrane phospholipid homeostasis',
+  date: new Date('2022-02-14'),
+  groupSlug: 'review-commons',
+  groupName: 'Review Commons',
+  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
 };
 
 export const card3 = {
-  articleId: '10.21203/rs.3.rs-955726/v1',
-  articleTitle: 'TMEM16 scramblases thin the membrane to enable lipid scrambling',
-  date: new Date('2022-01-10'),
-  groupSlug: 'biophysics-colab',
-  groupName: 'Biophysics Colab',
-  avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+  articleId: '10.1101/2021.08.07.455508',
+  articleTitle: 'The initial response of females towards congeneric males matches the propensity to hybridise in <i>Ophthalmotilapia</i>',
+  date: new Date('2022-02-08'),
+  groupSlug: 'pci-zoology',
+  groupName: 'Peer Community In Zoology',
+  avatarPath: '/static/groups/pci-zoology--74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.jpg',
 };
