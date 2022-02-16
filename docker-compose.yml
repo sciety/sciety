@@ -32,6 +32,16 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
+
+  lists:
+    container_name: sciety_lists
+    build:
+      context: ""
+    ports:
+      - '8081:80'
+    command: "npx ts-node src/lists-service/index"
+    restart: "no"
+
   db:
     container_name: sciety_db
     image: postgres:12.3-alpine
