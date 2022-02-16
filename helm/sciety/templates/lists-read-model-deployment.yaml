@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}--lists-read-model
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: lists-read-model
+spec:
+  selector:
+    matchLabels:
+      {{- include "sciety.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: lists-read-model
+  template:
+    metadata:
+      labels:
+        {{- include "sciety.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: lists-read-model
+    spec:
+      containers:
+        - name: nodejs
+          image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+          command: ["node", "./build/lists-service/index"]
+          env:
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.postgresqlSecretName }}"
+                  key: postgresql-database
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.postgresqlSecretName }}"
+                  key: postgresql-username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.postgresqlSecretName }}"
+                  key: postgresql-password
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.postgresqlSecretName }}"
+                  key: postgresql-host
+            - name: PGPORT
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.postgresqlSecretName }}"
+                  key: postgresql-port
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            timeoutSeconds: 5
