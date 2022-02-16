@@ -1,1 +1,1 @@
-console.log('Hello -- lists service starting');
+process.stdout.write('Hello -- lists service starting\n');
