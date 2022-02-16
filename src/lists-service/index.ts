@@ -3,11 +3,12 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { createRouter } from './router';
-import { createApplicationServer } from '../http/server';
 import {
-  createInfrastructure, Logger, replaceError,
-} from '../infrastructure';
+  createInfrastructure,
+} from './create-infrastructure';
+import { createRouter } from './router';
+import { createApplicationServer } from './server';
+import { Logger, replaceError } from '../infrastructure/logger';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
