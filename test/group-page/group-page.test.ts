@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
@@ -20,6 +21,7 @@ describe('group page', () => {
           fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getUserDetailsBatch: shouldNotBeCalled,
+          logger: dummyLogger,
         })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(
