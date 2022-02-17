@@ -9,7 +9,7 @@ import { DomainEvent } from '../../domain-events';
 import { ListCardViewModel, renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
-import { selectAllListsOwnedBy } from '../../shared-read-models/lists';
+import { List, selectAllListsOwnedBy } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -118,11 +118,13 @@ const addElifeListCardViewModelOnElifePage = (
   );
 };
 
-export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  ports.getAllEvents,
-  TE.rightTask,
-  TE.chain(selectAllListsOwnedBy(group.id)),
-  TE.map(RA.match(
+type ToListOfListCards = (ports: Ports, group: Group)
+=> (lists: ReadonlyArray<List>)
+=> TE.TaskEither<DE.DataError, HtmlFragment>;
+
+const toListOfListCards: ToListOfListCards = (ports, group) => (lists) => pipe(
+  lists,
+  RA.match(
     () => [],
     (l) => pipe(
       l[0],
@@ -134,7 +136,8 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       }),
       ((cardViewModel) => [cardViewModel]),
     ),
-  )),
+  ),
+  TE.right,
   TE.chain((cardViewModels) => pipe(
     ports.getAllEvents,
     T.map(addNcrcListCardViewModelOnNcrcPage(group.slug)(cardViewModels)),
@@ -154,4 +157,11 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
       renderCards,
     ),
   )),
+);
+
+export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+  ports.getAllEvents,
+  TE.rightTask,
+  TE.chain(selectAllListsOwnedBy(group.id)),
+  TE.chain(toListOfListCards(ports, group)),
 );
