@@ -30,7 +30,7 @@ export const component = (
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chainTaskK(selectAllListsOwnedBy(group.id)),
+  TE.chain(selectAllListsOwnedBy(group.id)),
   // this should be looking up by list id, not by group id, as it doesn't support
   // multiple lists for a given group
   TE.map((lists) => lists[0]),

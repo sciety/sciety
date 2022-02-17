@@ -1,9 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, listCreated } from '../../../src/domain-events';
 import { List, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -19,6 +21,7 @@ describe('select-all-lists-owned-by', () => {
       result = await pipe(
         [],
         selectAllListsOwnedBy(ownerId),
+        TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
@@ -39,6 +42,7 @@ describe('select-all-lists-owned-by', () => {
           listCreated(arbitraryListId(), listName, listDescription, ownerId, listCreationDate),
         ],
         selectAllListsOwnedBy(ownerId),
+        TE.getOrElse(shouldNotBeCalled),
         T.map((lists) => lists[0]),
       )();
     });
@@ -74,6 +78,7 @@ describe('select-all-lists-owned-by', () => {
           evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), newerDate),
         ],
         selectAllListsOwnedBy(ownerId),
+        TE.getOrElse(shouldNotBeCalled),
         T.map((lists) => lists[0]),
       )();
     });
@@ -108,6 +113,7 @@ describe('select-all-lists-owned-by', () => {
           evaluationRecorded(ownerId, articleId, arbitraryReviewId()),
         ],
         selectAllListsOwnedBy(ownerId),
+        TE.getOrElse(shouldNotBeCalled),
         T.map((lists) => lists[0]),
       )();
     });
@@ -132,6 +138,7 @@ describe('select-all-lists-owned-by', () => {
           evaluationRecorded(anotherOwnerId, arbitraryDoi(), arbitraryReviewId()),
         ],
         selectAllListsOwnedBy(ownerId),
+        TE.getOrElse(shouldNotBeCalled),
       )();
     });
 

@@ -1,6 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
@@ -61,16 +60,16 @@ export const contentComponent: ContentComponent = (
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
     listCount: pipe(
       ports.getAllEvents,
-      T.chain(selectAllListsOwnedBy(group.id)),
-      T.map(RA.size),
       TE.rightTask,
+      TE.chain(selectAllListsOwnedBy(group.id)),
+      TE.map(RA.size),
       TE.map(addFeaturedArticlesListsToListCount(group.slug)),
     ),
     followerCount: pipe(
       ports.getAllEvents,
-      T.map(findFollowers(group.id)),
-      T.map(RA.size),
       TE.rightTask,
+      TE.map(findFollowers(group.id)),
+      TE.map(RA.size),
     ),
   },
   sequenceS(TE.ApplyPar),
