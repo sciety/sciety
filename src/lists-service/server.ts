@@ -4,7 +4,6 @@ import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import { Adapters } from './adapters';
-import { routeNotFound } from '../http/route-not-found';
 
 export const createApplicationServer = (router: Router, adapters: Adapters): E.Either<string, Server> => {
   const app = new Koa();
@@ -39,7 +38,6 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
   });
 
   app.use(router.middleware());
-  app.use(routeNotFound);
 
   app.on('error', (error) => {
     const payload = { error };
