@@ -14,7 +14,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 const callPing = (logger: Logger) => () => pipe(
   TE.tryCatch(
     async () => {
-      const uri = '';
+      const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/ping`;
       const response = await fetchData(logger)<string>(uri);
       return response.data;
     },

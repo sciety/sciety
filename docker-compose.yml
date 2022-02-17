@@ -20,6 +20,7 @@ services:
       INGEST_DEBUG:
       INGEST_ONLY:
       INGEST_DAYS:
+      LISTS_READ_MODEL_HOST: lists
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db
