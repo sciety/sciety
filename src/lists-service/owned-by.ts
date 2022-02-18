@@ -14,8 +14,7 @@ type Ports = {
 
 export const ownedBy = (ports: Ports): Middleware => async ({ params, response }, next) => {
   response.set({ 'Content-Type': 'application/json' });
-  response.status = StatusCodes.OK;
-  const items = await pipe(
+  await pipe(
     ports.getAllEvents,
     TE.chainTaskK(constructListsReadModel),
     TE.map(RM.lookup(S.Eq)(params.groupId)),
@@ -23,8 +22,16 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
       () => [],
       (list) => [list],
     )),
+    TE.match(
+      () => {
+        response.status = StatusCodes.SERVICE_UNAVAILABLE;
+      },
+      (items) => {
+        response.status = StatusCodes.OK;
+        response.body = { items };
+      },
+    ),
   )();
-  response.body = { items };
 
   await next();
 };
