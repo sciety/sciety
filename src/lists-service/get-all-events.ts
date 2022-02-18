@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = TE.TaskEither<Error, ReadonlyArray<DomainEvent>>;

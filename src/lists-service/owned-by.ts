@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RM from 'fp-ts/ReadonlyMap';
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
@@ -17,9 +17,9 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
   response.status = StatusCodes.OK;
   const items = await pipe(
     ports.getAllEvents,
-    T.chain(constructListsReadModel),
-    T.map(RM.lookup(S.Eq)(params.groupId)),
-    T.map(O.fold(
+    TE.chainTaskK(constructListsReadModel),
+    TE.map(RM.lookup(S.Eq)(params.groupId)),
+    TE.map(O.fold(
       () => [],
       (list) => [list],
     )),

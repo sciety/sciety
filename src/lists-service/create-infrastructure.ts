@@ -1,5 +1,4 @@
 import * as A from 'fp-ts/Array';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
@@ -39,7 +38,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...listCreationEvents,
           ],
           A.sort(byDate),
-          T.of,
+          TE.right,
         ),
         pool,
         logger,
