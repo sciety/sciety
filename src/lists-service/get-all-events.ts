@@ -1,5 +1,6 @@
+import * as T from 'fp-ts/Task';
 import { DomainEvent } from '../domain-events';
 
-type GetAllEvents = () => ReadonlyArray<DomainEvent>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const getAllEvents: GetAllEvents = () => [];
+export const getAllEvents: GetAllEvents = T.of([]);

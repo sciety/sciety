@@ -12,8 +12,8 @@ export const ownedBy: Middleware = async ({ params, response }, next) => {
   response.set({ 'Content-Type': 'application/json' });
   response.status = StatusCodes.OK;
   const items = await pipe(
-    getAllEvents(),
-    constructListsReadModel,
+    getAllEvents,
+    T.chain(constructListsReadModel),
     T.map(RM.lookup(S.Eq)(params.groupId)),
     T.map(O.fold(
       () => [],
