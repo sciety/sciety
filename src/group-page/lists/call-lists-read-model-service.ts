@@ -3,22 +3,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchData } from '../../infrastructure/fetchers';
 import { Logger } from '../../infrastructure/logger';
+import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
-type CallListsReadModelService = (logger: Logger, groupId: GroupId) => () => TE.TaskEither<never, void>;
+type CallListsReadModelService = (logger: Logger, groupId: GroupId)
+=> ()
+=> TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
 export const callListsReadModelService: CallListsReadModelService = (logger, groupId) => () => pipe(
   TE.tryCatch(
     async () => {
       const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/owned-by/${groupId}`;
       const response = await fetchData(logger)<string>(uri);
-      return response.data;
+      return response;
     },
     () => DE.unavailable,
   ),
   TE.match(
-    () => E.right(undefined),
-    () => E.right(undefined),
+    () => E.right([]),
+    () => E.right([]),
   ),
 );
