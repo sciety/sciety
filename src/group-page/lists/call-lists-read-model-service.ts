@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { fetchData } from '../../infrastructure/fetchers';
 import { Logger } from '../../infrastructure/logger';
@@ -33,7 +34,10 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
     },
     () => DE.unavailable,
   ),
-  TE.chainEitherKW(stupidCodec.decode),
+  TE.chainEitherKW(flow(
+    stupidCodec.decode,
+    E.mapLeft(formatValidationErrors),
+  )),
   TE.bimap(
     (error) => {
       logger('debug', 'Failed to call lists read model', { error });
