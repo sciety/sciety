@@ -31,7 +31,7 @@ export const getEventsFromDatabase = (
       L.debug('Waiting for events table to exist'),
       IO.chain(logger),
     )();
-    // eslint-disable-next-line no-loops/no-loops
+    // eslint-disable-next-line no-loops/no-loops, no-constant-condition
     while (true) {
       const queryResult = await pool.query<{ exists: boolean }>('SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = \'public\' AND tablename = \'events\')');
       if (queryResult.rows[0].exists) {
