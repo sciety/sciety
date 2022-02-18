@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as A from 'fp-ts/Array';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -30,33 +29,21 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   },
   TE.right,
   TE.chainW(({ pool, logger }) => pipe(
-    {
-      eventsFromDatabase: pipe(
-        getEventsFromDatabase(pool, loggerIO(logger)),
-      ),
-      groupEvents: pipe(
-        bootstrapGroups,
-        TE.right,
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.map(({ eventsFromDatabase, groupEvents }) => (
+    getEventsFromDatabase(pool, loggerIO(logger)),
+    TE.map((eventsFromDatabase) => (
       {
-        events: pipe(
+        getAllEvents: pipe(
           [
             ...eventsFromDatabase,
-            ...groupEvents,
+            ...bootstrapGroups,
             ...listCreationEvents,
           ],
           A.sort(byDate),
+          T.of,
         ),
         pool,
         logger,
       }
     )),
   )),
-  TE.map((adapters) => ({
-    getAllEvents: T.of(adapters.events),
-    ...adapters,
-  })),
 );
