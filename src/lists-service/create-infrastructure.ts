@@ -29,16 +29,16 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.right,
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, loggerIO(logger)),
-    TE.map((eventsFromDatabase) => (
+    TE.map(() => (
       {
         getAllEvents: pipe(
-          [
+          getEventsFromDatabase(pool, loggerIO(logger)),
+          TE.map((eventsFromDatabase) => [
             ...eventsFromDatabase,
             ...bootstrapGroups,
             ...listCreationEvents,
-          ],
-          A.sort(byDate),
-          TE.right,
+          ]),
+          TE.map(A.sort(byDate)),
         ),
         pool,
         logger,
