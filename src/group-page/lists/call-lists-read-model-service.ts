@@ -1,11 +1,24 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { fetchData } from '../../infrastructure/fetchers';
 import { Logger } from '../../infrastructure/logger';
 import { List } from '../../shared-read-models/lists';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
+
+const stupidCodec = t.type({
+  items: t.readonlyArray(t.type({
+    name: t.string,
+    description: t.string,
+    articleCount: t.number,
+    lastUpdated: tt.optionFromNullable(tt.DateFromISOString),
+    ownerId: GroupIdFromString,
+  })),
+});
 
 type CallListsReadModelService = (logger: Logger, groupId: GroupId)
 => ()
@@ -20,8 +33,16 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
     },
     () => DE.unavailable,
   ),
+  TE.chainEitherKW(stupidCodec.decode),
+  TE.bimap(
+    (error) => {
+      logger('debug', 'Failed to call lists read model', { error });
+      return error;
+    },
+    ({ items }) => items,
+  ),
   TE.match(
-    () => E.right([]),
-    () => E.right([]),
+    () => E.right([] as ReadonlyArray<List>),
+    E.right,
   ),
 );
