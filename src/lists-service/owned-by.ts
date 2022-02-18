@@ -5,13 +5,14 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
+import { getAllEvents } from './get-all-events';
 import { constructListsReadModel } from '../shared-read-models/lists/construct-lists-read-model';
 
 export const ownedBy: Middleware = async ({ params, response }, next) => {
   response.set({ 'Content-Type': 'application/json' });
   response.status = StatusCodes.OK;
   const items = await pipe(
-    [],
+    getAllEvents(),
     constructListsReadModel,
     T.map(RM.lookup(S.Eq)(params.groupId)),
     T.map(O.fold(
