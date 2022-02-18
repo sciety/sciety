@@ -16,7 +16,7 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
     async () => {
       const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/owned-by/${groupId}`;
       const response = await fetchData(logger)<string>(uri);
-      return response;
+      return response.data;
     },
     () => DE.unavailable,
   ),
