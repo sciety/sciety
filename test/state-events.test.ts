@@ -1,12 +1,27 @@
+import { pipe } from 'fp-ts/lib/function';
 import * as S from 'fp-ts/State';
 
-type Event = {type: string};
+type Event = {type: string, date: Date};
 
 describe('state-events', () => {
   it('', () => {
-    const getAllEvents: S.State<Date, ReadonlyArray<Event>> = () => [
-      [{type: "EventA"}],
-      new Date("2022-02-21"), 
-    ];
+    let i = 0;
+    const getEventsFrom: S.State<Date, ReadonlyArray<Event>> = (date: Date) => {
+      i++;
+      return [
+        [{type: `Event${i}`, date}],
+        date,
+      ];
+    }
+    //const getAllEvents: S.State<Date, ReadonlyArray<Event>> = () => [
+    //  [{type: "EventA"}],
+    //  new Date("2022-02-21"), 
+    //];
+    const countEventsProjection = (startingDate) => pipe(
+      startingDate,
+      getEventsFrom,
+      ([events, state]) => [events.length, state],
+    );
+    expect(countEventsProjection(new Date("1970-01-01"))[0]).toStrictEqual(1);
   })
 });
