@@ -1,11 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../../src/domain-events';
+import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { getList, List } from '../../../src/shared-read-models/lists';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('get-list', () => {
   describe('when the listId does not exist', () => {
@@ -51,10 +53,31 @@ describe('get-list', () => {
         it.todo('returns the list creation date as the last updated date');
       });
 
-      describe('when the list is non-empty', () => {
-        it.todo('returns the correct List');
+      describe.skip('when the list is non-empty', () => {
+        const name = arbitraryString();
+        const description = arbitraryString();
+        const latestDate = arbitraryDate();
+        const ownerId = arbitraryGroupId();
+        const listId = arbitraryListId();
+        let result: List;
 
-        it.todo('returns the date of the most recent addition to the list as the last updated date');
+        beforeEach(async () => {
+          result = await pipe(
+            [
+              listCreated(listId, name, description, ownerId),
+              articleAddedToList(arbitraryDoi(), listId, arbitraryDate()),
+              articleAddedToList(arbitraryDoi(), listId, latestDate),
+            ],
+            getList(listId),
+            TE.getOrElse(shouldNotBeCalled),
+          )();
+        });
+
+        it('returns the correct List', () => {
+          expect(result).toStrictEqual({
+            name, description, articleCount: 2, lastUpdated: O.some(latestDate), ownerId,
+          });
+        });
       });
     });
   });
