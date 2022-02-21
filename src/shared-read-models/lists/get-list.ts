@@ -33,7 +33,10 @@ const addLastUpdatedFromEvents = (
   ),
 );
 
-const listFromEvents = (events: ReadonlyArray<DomainEvent>, listId: ListId) => (): TE.TaskEither<DE.DataError, List> => pipe(
+const listFromEvents = (
+  events: ReadonlyArray<DomainEvent>,
+  listId: ListId,
+) => (): TE.TaskEither<DE.DataError, List> => pipe(
   events,
   RA.filter(isListCreatedEvent),
   RA.filter((event) => event.listId === listId),
