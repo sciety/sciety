@@ -1,16 +1,29 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { List } from './list';
 import { DomainEvent } from '../../domain-events';
+import { isArticleAddedToListEvent } from '../../domain-events/article-added-to-list-event';
 import * as DE from '../../types/data-error';
 import * as Gid from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
 type GetList = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, List>;
 
-export const getList: GetList = (listId) => () => pipe(
+const updateLastUpdatedFromEvents = (events: ReadonlyArray<DomainEvent>, listId: ListId) => (list: List) => pipe(
+  events,
+  RA.filter(isArticleAddedToListEvent),
+  RA.filter((event) => event.listId === listId),
+  RA.last,
+  O.fold(
+    () => list,
+    (event) => ({ ...list, lastUpdated: O.some(event.date) }),
+  ),
+);
+
+export const getList: GetList = (listId) => (events) => pipe(
   {
     'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': {
       name: 'High interest articles',
@@ -43,4 +56,5 @@ export const getList: GetList = (listId) => () => pipe(
   },
   R.lookup(listId),
   TE.fromOption(() => DE.notFound),
+  TE.map(updateLastUpdatedFromEvents(events, listId)),
 );

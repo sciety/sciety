@@ -32,7 +32,7 @@ describe('get-list', () => {
 
         it.todo('returns the correct List');
 
-        it.skip('with the correct last updated date', () => {
+        it('with the correct last updated date', () => {
           expect(result.lastUpdated).toStrictEqual(O.some(latestDate));
         });
       });
