@@ -69,22 +69,29 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     `),
     identity,
   )),
-  // 456a4f53-1d97-465f-bff0-2694bc5a0a0c
-  // a14f55f7-3d13-48b8-bac1-3f7b756fcdcc
-  // 73b9208d-ea98-4517-8f14-4a96a66006b1
-  // 2b80797d-c436-4552-8153-b5304ecce861
-  // 38d7fa5f-c79e-4b6c-8103-c04bdd336565
-  // 4548ccb0-dbcd-4e61-abbf-f08d4d2faacc
-  // 813976bc-3ed2-4923-9ce0-01d7ea91d3b6
-  // 7dc8e93e-9191-4c92-a431-ddeb26d31059
-  // 671d9df4-87b2-4ffc-876e-feb7f9fa6332
-  // e1449aab-5b95-4295-865c-5baa25aa2d13
-  // e440d3d3-efd7-4964-9c47-c39b5cdb4c00
-  // b56bb43a-1926-4d1a-a61b-ae531803a8d4
-  // 9e770163-f00b-450d-b1f4-d5df273790d0
-  // 141f3e61-b6ee-4fb5-8d9c-53fefb57cc00
-  // 5ea3fd54-2b8b-45fc-8609-cd0162c0c8c4
-  // 7790035c-23c2-4dc6-b23e-ee6b67c8a7cb
+  TE.chainFirst(({ pool }) => TE.tryCatch(
+    async () => pool.query(`
+      DELETE FROM events WHERE id IN (
+        '456a4f53-1d97-465f-bff0-2694bc5a0a0c',
+        'a14f55f7-3d13-48b8-bac1-3f7b756fcdcc',
+        '73b9208d-ea98-4517-8f14-4a96a66006b1',
+        '2b80797d-c436-4552-8153-b5304ecce861',
+        '38d7fa5f-c79e-4b6c-8103-c04bdd336565',
+        '4548ccb0-dbcd-4e61-abbf-f08d4d2faacc',
+        '813976bc-3ed2-4923-9ce0-01d7ea91d3b6',
+        '7dc8e93e-9191-4c92-a431-ddeb26d31059',
+        '671d9df4-87b2-4ffc-876e-feb7f9fa6332',
+        'e1449aab-5b95-4295-865c-5baa25aa2d13',
+        'e440d3d3-efd7-4964-9c47-c39b5cdb4c00',
+        'b56bb43a-1926-4d1a-a61b-ae531803a8d4',
+        '9e770163-f00b-450d-b1f4-d5df273790d0',
+        '141f3e61-b6ee-4fb5-8d9c-53fefb57cc00',
+        '5ea3fd54-2b8b-45fc-8609-cd0162c0c8c4',
+        '7790035c-23c2-4dc6-b23e-ee6b67c8a7cb'
+      );
+    `),
+    identity,
+  )),
   TE.chainW(({ pool, logger }) => pipe(
     {
       eventsFromDatabase: pipe(
