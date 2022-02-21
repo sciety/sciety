@@ -29,14 +29,14 @@ export const getList: GetList = (listId) => () => pipe(
     'c7237468-aac1-4132-9598-06e9ed68f31d': {
       name: 'Medicine',
       description: 'Medicine articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
+      lastUpdated: O.some(new Date('2022-02-17 00:00:00Z')),
       ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: 0,
     },
     'cb15ef21-944d-44d6-b415-a3d8951e9e8b': {
       name: 'Cell Biology',
       description: 'Cell Biology articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
+      lastUpdated: O.some(new Date('2022-02-20 00:00:00Z')),
       ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: 0,
     },
