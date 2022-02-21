@@ -14,6 +14,12 @@ describe('get-list', () => {
 
   describe('when the listId does exist', () => {
     describe('and it refers to a hardcoded list', () => {
+      describe('when the list is empty', () => {
+        it.todo('returns the correct List');
+
+        it.todo('with the correct last updated date');
+      });
+
       describe('when the list is non-empty', () => {
         const latestDate = arbitraryDate();
         const eLifeMedicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
@@ -39,7 +45,17 @@ describe('get-list', () => {
     });
 
     describe('and it refers to a non-hardcoded list', () => {
-      it.todo('returns the correct List');
+      describe('when the list is empty', () => {
+        it.todo('returns the correct List');
+
+        it.todo('returns the list creation date as the last updated date');
+      });
+
+      describe('when the list is non-empty', () => {
+        it.todo('returns the correct List');
+
+        it.todo('returns the date of the most recent addition to the list as the last updated date');
+      });
     });
   });
 });
