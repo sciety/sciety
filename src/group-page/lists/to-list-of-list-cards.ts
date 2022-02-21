@@ -86,7 +86,7 @@ const addElifeListCardViewModelOnElifePage = (
       title: 'Medicine',
       articleCountLabel: 'This list contains',
       description: 'Medicine articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-02 11:49:54.608Z')),
+      lastUpdated: O.some(new Date('2022-02-17 00:00:00Z')),
       articleCount: articleIds.length,
     })),
   );
@@ -99,7 +99,7 @@ const addElifeListCardViewModelOnElifePage = (
       title: 'Cell Biology',
       articleCountLabel: 'This list contains',
       description: 'Cell Biology articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-09 09:43:00Z')),
+      lastUpdated: O.some(new Date('2022-02-20 00:00:00Z')),
       articleCount: articleIds.length,
     })),
   );
