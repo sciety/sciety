@@ -4,7 +4,7 @@ import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { List } from './list';
-import { DomainEvent } from '../../domain-events';
+import { DomainEvent, isListCreatedEvent } from '../../domain-events';
 import { isArticleAddedToListEvent } from '../../domain-events/article-added-to-list-event';
 import * as DE from '../../types/data-error';
 import * as Gid from '../../types/group-id';
@@ -30,6 +30,23 @@ const addLastUpdatedFromEvents = (
   O.fold(
     () => ({ ...list, lastUpdated: O.some(list.createdOn) }),
     (event) => ({ ...list, lastUpdated: O.some(event.date) }),
+  ),
+);
+
+const listFromEvents = (events: ReadonlyArray<DomainEvent>, listId: ListId) => (): TE.TaskEither<DE.DataError, List> => pipe(
+  events,
+  RA.filter(isListCreatedEvent),
+  RA.filter((event) => event.listId === listId),
+  RA.head,
+  O.fold(
+    () => TE.left(DE.notFound),
+    (event) => TE.right({
+      name: event.name,
+      description: event.description,
+      ownerId: event.ownerId,
+      articleCount: -1,
+      lastUpdated: O.some(new Date(1980)),
+    }),
   ),
 );
 
@@ -67,4 +84,5 @@ export const getList: GetList = (listId) => (events) => pipe(
   R.lookup(listId),
   TE.fromOption(() => DE.notFound),
   TE.map(addLastUpdatedFromEvents(events, listId)),
+  TE.alt(listFromEvents(events, listId)),
 );
