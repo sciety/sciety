@@ -34,8 +34,7 @@ describe('state-events', () => {
       S.map((value) => value * interval),
     );
     const autoIncrementAsState2 = (interval: number) => pipe(
-      S.get<number>(),
-      S.map((value) => value * interval),
+      S.gets<number, number>((value) => value * interval),
       S.chain((value) => (state) => [value, state + 1]),
     );
     let createAutoIncrementBy = (interval: number) => {
