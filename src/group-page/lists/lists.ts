@@ -5,7 +5,6 @@ import { callListsReadModelService } from './call-lists-read-model-service';
 import { toListOfListCards } from './to-list-of-list-cards';
 import { DomainEvent } from '../../domain-events';
 import { Logger } from '../../infrastructure/logger';
-import { selectAllListsOwnedBy } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -20,7 +19,6 @@ export type Ports = {
 export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(selectAllListsOwnedBy(group.id)),
-  TE.chainFirstW(callListsReadModelService(ports.logger, group.id)),
+  TE.chain(callListsReadModelService(ports.logger, group.id)),
   TE.chain(toListOfListCards(ports, group)),
 );
