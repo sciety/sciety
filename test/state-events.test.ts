@@ -33,12 +33,17 @@ describe('state-events', () => {
       ],
       S.map((value) => value * interval),
     );
+    const autoIncrementAsState2 = (interval: number) => pipe(
+      S.get<number>(),
+      S.map((value) => value * interval),
+      S.chain((value) => (state) => [value, state + 1]),
+    );
     let createAutoIncrementBy = (interval: number) => {
       let counter = 0;
       const myFunction = () => {
         const [value, newCounter] = pipe(
           counter,
-          autoIncrementAsState(interval),
+          autoIncrementAsState2(interval),
         );
         counter = newCounter;
         return value;
@@ -55,6 +60,12 @@ describe('state-events', () => {
         let result = autoIncrement();
         it('returns 2', () => {
           expect(result).toStrictEqual(2);
+        })
+        describe('when called the third time', () => {
+          let result = autoIncrement();
+          it('returns 4', () => {
+            expect(result).toStrictEqual(4);
+          })
         })
       })
     })
