@@ -1,5 +1,7 @@
 import { flow, identity, pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/State';
+import * as RA from 'fp-ts/ReadonlyArray';
 
 type Event = {type: string, date: Date};
 
@@ -39,13 +41,15 @@ describe('state-events', () => {
     );
     let createAutoIncrementBy = (interval: number) => {
       let counter = 0;
+      const steps = [];
       const myFunction = () => {
-        const [value, newCounter] = pipe(
-          counter,
-          autoIncrementAsState2(interval),
+        steps.push(autoIncrementAsState2(interval));
+        return pipe(
+          S.sequenceArray(steps)(0),
+          (([values, state]) => values),
+          RA.last,
+          O.getOrElse(() => -1)
         );
-        counter = newCounter;
-        return value;
       }
       return myFunction;
     };
