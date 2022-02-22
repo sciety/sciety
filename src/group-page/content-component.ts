@@ -5,10 +5,10 @@ import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
 import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
-import { callListsReadModelService } from './lists/call-lists-read-model-service';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { addFeaturedArticlesListsToListCount } from '../shared-components/group-card/populate-group-view-model';
 import { Tab, tabs } from '../shared-components/tabs';
+import { selectAllListsOwnedBy } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -61,7 +61,7 @@ export const contentComponent: ContentComponent = (
     listCount: pipe(
       ports.getAllEvents,
       TE.rightTask,
-      TE.chain(callListsReadModelService(ports.logger, group.id)),
+      TE.chain(selectAllListsOwnedBy(group.id)),
       TE.map(RA.size),
       TE.map(addFeaturedArticlesListsToListCount(group.slug)),
     ),
