@@ -16,7 +16,7 @@ const stupidCodec = t.type({
     name: t.string,
     description: t.string,
     articleCount: t.number,
-    lastUpdated: tt.optionFromNullable(tt.DateFromISOString),
+    lastUpdated: tt.DateFromISOString,
     ownerId: GroupIdFromString,
   })),
 });

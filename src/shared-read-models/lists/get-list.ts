@@ -28,8 +28,8 @@ const addLastUpdatedFromEvents = (
   RA.filter((event) => event.listId === listId),
   RA.last,
   O.fold(
-    () => ({ ...list, lastUpdated: O.some(list.createdOn) }),
-    (event) => ({ ...list, lastUpdated: O.some(event.date) }),
+    () => ({ ...list, lastUpdated: list.createdOn }),
+    (event) => ({ ...list, lastUpdated: event.date }),
   ),
 );
 
@@ -48,7 +48,7 @@ const listFromEvents = (
       description: event.description,
       ownerId: event.ownerId,
       articleCount: -1,
-      lastUpdated: O.some(new Date(1980)),
+      lastUpdated: new Date(1980),
     }),
   ),
 );

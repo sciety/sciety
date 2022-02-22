@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -42,7 +41,7 @@ describe('to-list-of-list-cards', () => {
             name: listTitle,
             description: arbitraryString(),
             articleCount: 0,
-            lastUpdated: O.some(arbitraryDate()),
+            lastUpdated: arbitraryDate(),
             ownerId: group.id,
           },
         ],

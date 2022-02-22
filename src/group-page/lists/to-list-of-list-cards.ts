@@ -134,6 +134,9 @@ export const toListOfListCards: ToListOfListCards = (ports, group) => (lists) =>
         title: details.name,
         articleCountLabel: 'This group has evaluated',
       }),
+      (unshimmedCardViewModel) => (
+        { ...unshimmedCardViewModel, lastUpdated: O.some(unshimmedCardViewModel.lastUpdated) }
+      ),
       ((cardViewModel) => [cardViewModel]),
     ),
   ),

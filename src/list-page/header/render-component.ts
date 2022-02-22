@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -8,10 +7,7 @@ const renderArticleCount = (articleCount: number) => pipe(
   (singular) => `<span>${articleCount} ${singular ? 'article' : 'articles'}</span>`,
 );
 
-const renderLastUpdated = O.fold(
-  () => '',
-  (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
-);
+const renderLastUpdated = (date: Date) => `<span>Last updated ${templateDate(date)}</span>`;
 
 type ViewModel = {
   name: string,
@@ -20,7 +16,7 @@ type ViewModel = {
   ownerHref: string,
   ownerAvatarPath: string,
   articleCount: number,
-  lastUpdated: O.Option<Date>,
+  lastUpdated: Date,
 };
 
 export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(

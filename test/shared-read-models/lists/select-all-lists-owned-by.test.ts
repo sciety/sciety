@@ -60,7 +60,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the list creation date as last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(listCreationDate));
+      expect(result.lastUpdated).toStrictEqual(listCreationDate);
     });
   });
 
@@ -96,7 +96,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+      expect(result.lastUpdated).toStrictEqual(newerDate);
     });
   });
 

@@ -47,7 +47,6 @@ export const constructListsReadModel = (
       lastUpdated: pipe(
         events,
         calculateLastUpdated(list.ownerId, list.lastUpdated),
-        O.some,
       ),
     })),
   )),

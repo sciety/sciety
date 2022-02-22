@@ -41,7 +41,7 @@ describe('get-list', () => {
         it.todo('returns the correct List');
 
         it('with the correct last updated date', () => {
-          expect(result.lastUpdated).toStrictEqual(O.some(latestDate));
+          expect(result.lastUpdated).toStrictEqual(latestDate);
         });
       });
     });
