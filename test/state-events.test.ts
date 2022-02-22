@@ -37,8 +37,8 @@ describe('state-events', () => {
       const myFunction = () => {
         steps.push(autoIncrementAsState(interval));
         return pipe(
-          S.sequenceArray(steps)(0),
-          (([values, state]) => values),
+          S.sequenceArray(steps),
+          S.evaluate(0),
           RA.last,
           O.getOrElse(() => -1)
         );
