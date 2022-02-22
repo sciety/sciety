@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/lib/function';
+import { flow, identity, pipe } from 'fp-ts/lib/function';
 import * as S from 'fp-ts/State';
 
 type Event = {type: string, date: Date};
@@ -26,14 +26,20 @@ describe('state-events', () => {
   })
 
   describe('auto-increment', () => {
-    const autoIncrementAsState = (toAdd: number): S.State<number, number> => (counter: number) => [
-      counter,
-      counter + toAdd,
-    ];
+    const autoIncrementAsState = (toAdd: number): S.State<number, number> => pipe(
+      (counter: number): [number, number] => [
+        counter,
+        counter + 1,
+      ],
+      S.map((value) => value * 2),
+    );
     let createAutoIncrementBy = (toAdd: number) => {
       let counter = 0;
       const myFunction = () => {
-        const [value, newCounter] = autoIncrementAsState(toAdd)(counter);
+        const [value, newCounter] = pipe(
+          counter,
+          autoIncrementAsState(toAdd),
+        );
         counter = newCounter;
         return value;
       }
