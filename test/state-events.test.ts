@@ -29,21 +29,13 @@ describe('state-events', () => {
 
   describe('auto-increment', () => {
     const autoIncrementAsState = (interval: number): S.State<number, number> => pipe(
-      (counter: number): [number, number] => [
-        counter,
-        counter + 1,
-      ],
-      S.map((value) => value * interval),
-    );
-    const autoIncrementAsState2 = (interval: number) => pipe(
       S.gets<number, number>((value) => value * interval),
       S.chain((value) => (state) => [value, state + 1]),
     );
     let createAutoIncrementBy = (interval: number) => {
-      let counter = 0;
-      const steps = [];
+      const steps: Array<S.State<number, number>> = [];
       const myFunction = () => {
-        steps.push(autoIncrementAsState2(interval));
+        steps.push(autoIncrementAsState(interval));
         return pipe(
           S.sequenceArray(steps)(0),
           (([values, state]) => values),
