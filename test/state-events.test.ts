@@ -26,7 +26,16 @@ describe('state-events', () => {
   })
 
   describe('auto-increment', () => {
-    const autoIncrement = () => 1;
+    let createAutoIncrement = () => {
+      let counter = 1;
+      const myFunction = () => {
+        const value = counter;
+        counter++;
+        return value;
+      }
+      return myFunction;
+    };
+    const autoIncrement = createAutoIncrement();
     describe('when called the first time', () => {
       let result = autoIncrement();
       it('returns 1', () => {
