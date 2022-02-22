@@ -24,4 +24,20 @@ describe('state-events', () => {
     );
     expect(countEventsProjection(new Date("1970-01-01"))[0]).toStrictEqual(1);
   })
+
+  describe('auto-increment', () => {
+    const autoIncrement = () => 1;
+    describe('when called the first time', () => {
+      let result = autoIncrement();
+      it('returns 1', () => {
+        expect(result).toStrictEqual(1);
+      })
+      describe('when called the second time', () => {
+        let result = autoIncrement();
+        it('returns 2', () => {
+          expect(result).toStrictEqual(2);
+        })
+      })
+    })
+  });
 });
