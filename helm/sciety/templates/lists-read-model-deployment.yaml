@@ -6,7 +6,6 @@ metadata:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: lists-read-model
 spec:
-  replicas: 2
   selector:
     matchLabels:
       {{- include "sciety.selectorLabels" . | nindent 6 }}
