@@ -26,11 +26,15 @@ describe('state-events', () => {
   })
 
   describe('auto-increment', () => {
+    const autoIncrementAsState: S.State<number, number> = (counter: number) => [
+      counter,
+      counter + 1,
+    ];
     let createAutoIncrement = () => {
       let counter = 1;
       const myFunction = () => {
-        const value = counter;
-        counter++;
+        const [value, newCounter] = autoIncrementAsState(counter);
+        counter = newCounter;
         return value;
       }
       return myFunction;
