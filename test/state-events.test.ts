@@ -26,24 +26,24 @@ describe('state-events', () => {
   })
 
   describe('auto-increment', () => {
-    const autoIncrementAsState: S.State<number, number> = (counter: number) => [
+    const autoIncrementAsState = (toAdd: number): S.State<number, number> => (counter: number) => [
       counter,
-      counter + 1,
+      counter + toAdd,
     ];
-    let createAutoIncrement = () => {
-      let counter = 1;
+    let createAutoIncrementBy = (toAdd: number) => {
+      let counter = 0;
       const myFunction = () => {
-        const [value, newCounter] = autoIncrementAsState(counter);
+        const [value, newCounter] = autoIncrementAsState(toAdd)(counter);
         counter = newCounter;
         return value;
       }
       return myFunction;
     };
-    const autoIncrement = createAutoIncrement();
+    const autoIncrement = createAutoIncrementBy(2);
     describe('when called the first time', () => {
       let result = autoIncrement();
-      it('returns 1', () => {
-        expect(result).toStrictEqual(1);
+      it('returns 0', () => {
+        expect(result).toStrictEqual(0);
       })
       describe('when called the second time', () => {
         let result = autoIncrement();
