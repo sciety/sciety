@@ -26,19 +26,19 @@ describe('state-events', () => {
   })
 
   describe('auto-increment', () => {
-    const autoIncrementAsState = (toAdd: number): S.State<number, number> => pipe(
+    const autoIncrementAsState = (interval: number): S.State<number, number> => pipe(
       (counter: number): [number, number] => [
         counter,
         counter + 1,
       ],
-      S.map((value) => value * 2),
+      S.map((value) => value * interval),
     );
-    let createAutoIncrementBy = (toAdd: number) => {
+    let createAutoIncrementBy = (interval: number) => {
       let counter = 0;
       const myFunction = () => {
         const [value, newCounter] = pipe(
           counter,
-          autoIncrementAsState(toAdd),
+          autoIncrementAsState(interval),
         );
         counter = newCounter;
         return value;
