@@ -20,6 +20,9 @@ spec:
         - name: nodejs
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           command: ["node", "./build/lists-service/index"]
+          resources:
+            requests:
+              cpu: 1.0
           env:
             - name: PGDATABASE
               valueFrom:
