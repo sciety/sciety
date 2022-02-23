@@ -19,6 +19,9 @@ spec:
       containers:
         - name: app
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+          resources:
+            requests:
+              cpu: 1.0
           env:
             - name: ALLOW_SITE_CRAWLERS
               value: "{{ .Values.allowSiteCrawlers }}"
