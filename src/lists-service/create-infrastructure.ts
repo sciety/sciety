@@ -3,9 +3,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
+import { getEventsFromDatabase } from './get-events-from-database';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import { byDate } from '../domain-events';
-import { getEventsFromDatabase } from '../infrastructure/get-events-from-database';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
