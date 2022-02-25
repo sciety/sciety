@@ -6,6 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
+import Redis from 'ioredis';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { commitEvents, writeEventToDatabase } from './commit-events';
@@ -23,6 +24,7 @@ import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
+import { publishEvents } from './publish-events';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
   byDate, isArticleAddedToListEvent,
@@ -147,6 +149,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               commitEvents: commitEventsWithoutListeners,
               getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({ getJson, logger }),
             })),
+          )),
+          T.chainFirst(() => pipe(
+            eventsToCommit,
+            T.traverseArray(publishEvents(new Redis(6379, 'cache'))),
           )),
         ),
         getUserDetails: getTwitterUserDetails(
