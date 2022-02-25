@@ -3,6 +3,6 @@ import { DomainEvent } from '../domain-events';
 import { Logger } from '../infrastructure/logger';
 
 export type Adapters = {
-  getAllEvents: TE.TaskEither<Error, ReadonlyArray<DomainEvent>>,
+  getListsEvents: TE.TaskEither<Error, ReadonlyArray<DomainEvent>>,
   logger: Logger,
 };

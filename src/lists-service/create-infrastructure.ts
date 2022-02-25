@@ -30,7 +30,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     getEventsFromDatabase(pool, loggerIO(logger)),
     TE.map(() => (
       {
-        getAllEvents: pipe(
+        getListsEvents: pipe(
           getEventsFromDatabase(pool, loggerIO(logger)),
           TE.map((eventsFromDatabase) => [
             ...eventsFromDatabase,

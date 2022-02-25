@@ -5,12 +5,12 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { GetAllEvents } from './get-all-events';
+import { GetListsEvents } from './get-lists-events';
 import { Logger } from '../infrastructure/logger';
 import { constructListsReadModel } from '../shared-read-models/lists/construct-lists-read-model';
 
 type Ports = {
-  getAllEvents: GetAllEvents,
+  getListsEvents: GetListsEvents,
   logger: Logger,
 };
 
@@ -18,9 +18,9 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
   response.set({ 'Content-Type': 'application/json' });
   ports.logger('debug', 'Started ownedBy query');
   await pipe(
-    ports.getAllEvents,
+    ports.getListsEvents,
     TE.chainFirst(() => {
-      ports.logger('debug', 'Loaded all events');
+      ports.logger('debug', 'Loaded lists events');
       return TE.right('everything is ok');
     }),
     TE.chainTaskK(constructListsReadModel),
