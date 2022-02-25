@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { getEventsFromDatabase } from './get-events-from-database';
-import { bootstrapGroups } from '../data/bootstrap-groups';
 import { byDate } from '../domain-events';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
@@ -35,7 +34,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getEventsFromDatabase(pool, loggerIO(logger)),
           TE.map((eventsFromDatabase) => [
             ...eventsFromDatabase,
-            ...bootstrapGroups,
             ...listCreationEvents,
           ]),
           TE.map(A.sort(byDate)),
