@@ -2,8 +2,8 @@ import * as A from 'fp-ts/Array';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { Adapters } from './adapters';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
+import { Ports } from './ports';
 import { byDate } from '../domain-events';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
@@ -15,7 +15,7 @@ type Dependencies = {
   logLevel: string, // TODO: Make this a level name
 };
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
+export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Ports> => pipe(
   {
     logger: pipe(
       dependencies.prettyLog,

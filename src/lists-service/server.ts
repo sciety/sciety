@@ -3,11 +3,15 @@ import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
 import Koa from 'koa';
-import { Adapters } from './adapters';
+import { Logger } from '../infrastructure/logger';
 
-export const createApplicationServer = (router: Router, adapters: Adapters): E.Either<string, Server> => {
+type Ports = {
+  logger: Logger,
+};
+
+export const createApplicationServer = (router: Router, ports: Ports): E.Either<string, Server> => {
   const app = new Koa();
-  const { logger } = adapters;
+  const { logger } = ports;
 
   app.use(rTracer.koaMiddleware());
 
