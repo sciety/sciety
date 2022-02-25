@@ -1,14 +1,12 @@
-import * as A from 'fp-ts/Array';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import { getListsEvents } from './get-lists-events';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
-import { byDate } from '../domain-events';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
-import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -30,14 +28,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     getListsEventsFromDatabase(pool, loggerIO(logger)),
     TE.map(() => (
       {
-        getListsEvents: pipe(
-          getListsEventsFromDatabase(pool, loggerIO(logger)),
-          TE.map((eventsFromDatabase) => [
-            ...eventsFromDatabase,
-            ...listCreationEvents,
-          ]),
-          TE.map(A.sort(byDate)),
-        ),
+        getListsEvents: getListsEvents(pool, logger),
         pool,
         logger,
       }
