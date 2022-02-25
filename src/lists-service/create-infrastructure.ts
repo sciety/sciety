@@ -2,10 +2,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { getListsEvents } from './get-lists-events';
-import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
 import {
-  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
 
 type Dependencies = {
@@ -21,17 +20,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
       rTracerLogger,
     ),
-    pool: new Pool(),
   },
+  ({ logger }) => ({
+    getListsEvents: getListsEvents(new Pool(), logger),
+    logger,
+  }),
   TE.right,
-  TE.chainW(({ pool, logger }) => pipe(
-    getListsEventsFromDatabase(pool, loggerIO(logger)),
-    TE.map(() => (
-      {
-        getListsEvents: getListsEvents(pool, logger),
-        pool,
-        logger,
-      }
-    )),
-  )),
 );

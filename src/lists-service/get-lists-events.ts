@@ -10,7 +10,7 @@ import { listCreationEvents } from '../shared-read-models/lists/list-creation-da
 
 export type GetListsEvents = TE.TaskEither<Error, ReadonlyArray<ListsEvent>>;
 
-export const getListsEvents = (pool: Pool, logger: Logger) => pipe(
+export const getListsEvents = (pool: Pool, logger: Logger): GetListsEvents => pipe(
   getListsEventsFromDatabase(pool, loggerIO(logger)),
   TE.map((eventsFromDatabase) => [
     ...eventsFromDatabase,
