@@ -39,7 +39,11 @@ export const getEventsFromDatabase = (
       }
       await T.delay(1000)(T.of(''))();
     }
-    return pool.query<EventRow>('SELECT id, type, date::text, payload FROM events');
+    return pool.query<EventRow>(`
+      SELECT id, type, date::text, payload 
+      FROM events 
+      WHERE type = 'ListCreated' OR type = 'EvaluationRecorded'
+    `);
   }, E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstIOK(flow(
