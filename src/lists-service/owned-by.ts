@@ -10,7 +10,7 @@ import { GroupId } from '../types/group-id';
 
 type ListsReadModel = Map<GroupId, List>;
 
-type Ports = {
+export type Ports = {
   listsReadModel: TE.TaskEither<Error, ListsReadModel>,
 };
 
