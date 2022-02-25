@@ -28,7 +28,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   }),
   (partial) => ({
     listsReadModel: listsReadModel(partial.getListsEvents, partial.logger),
-    getListsEvents: partial.getListsEvents,
     logger: partial.logger,
   }),
   TE.right,
