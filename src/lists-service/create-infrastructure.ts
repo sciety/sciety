@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { getListsEvents } from './get-lists-events';
+import { listsReadModel } from './lists-read-model';
 import { Ports } from './ports';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
@@ -24,6 +25,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   ({ logger }) => ({
     getListsEvents: getListsEvents(new Pool(), logger),
     logger,
+  }),
+  (partial) => ({
+    listsReadModel: listsReadModel(partial.getListsEvents, partial.logger),
+    getListsEvents: partial.getListsEvents,
+    logger: partial.logger,
   }),
   TE.right,
 );

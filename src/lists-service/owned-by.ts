@@ -5,29 +5,19 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { GetListsEvents } from './get-lists-events';
-import { Logger } from '../infrastructure/logger';
-import { constructListsReadModel } from '../shared-read-models/lists/construct-lists-read-model';
+import { List } from '../shared-read-models/lists';
+import { GroupId } from '../types/group-id';
+
+type ListsReadModel = Map<GroupId, List>;
 
 type Ports = {
-  getListsEvents: GetListsEvents,
-  logger: Logger,
+  listsReadModel: TE.TaskEither<Error, ListsReadModel>,
 };
 
 export const ownedBy = (ports: Ports): Middleware => async ({ params, response }, next) => {
   response.set({ 'Content-Type': 'application/json' });
-  ports.logger('debug', 'Started ownedBy query');
   await pipe(
-    ports.getListsEvents,
-    TE.chainFirst(() => {
-      ports.logger('debug', 'Loaded lists events');
-      return TE.right('everything is ok');
-    }),
-    TE.chainTaskK(constructListsReadModel),
-    TE.chainFirst(() => {
-      ports.logger('debug', 'Constructed read model');
-      return TE.right('everything is ok');
-    }),
+    ports.listsReadModel,
     TE.map(RM.lookup(S.Eq)(params.groupId)),
     TE.map(O.fold(
       () => [],
