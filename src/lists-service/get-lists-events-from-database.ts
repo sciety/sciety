@@ -8,9 +8,9 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
-import { RuntimeGeneratedEvent } from '../domain-events';
+import { ListsEvent } from './lists-event';
+import { evaluationRecordedEventCodec, listCreatedEventCodec } from '../domain-events';
 import * as L from '../infrastructure/logger';
-import { domainEventCodec } from '../types/codecs/DomainEvent';
 
 type EventRow = {
   id: string,
@@ -19,12 +19,17 @@ type EventRow = {
   payload: JsonRecord,
 };
 
-const domainEventsCodec = t.readonlyArray(domainEventCodec);
+const listsEventCodec = t.union([
+  evaluationRecordedEventCodec,
+  listCreatedEventCodec,
+], 'type');
 
-export const getEventsFromDatabase = (
+const listsEventsCodec = t.readonlyArray(listsEventCodec);
+
+export const getListsEventsFromDatabase = (
   pool: Pool,
   logger: L.LoggerIO,
-): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
+): TE.TaskEither<Error, ReadonlyArray<ListsEvent>> => pipe(
   TE.tryCatch(async () => {
     pipe(
       {},
@@ -53,7 +58,7 @@ export const getEventsFromDatabase = (
   )),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),
-    domainEventsCodec.decode,
+    listsEventsCodec.decode,
     E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
 );
