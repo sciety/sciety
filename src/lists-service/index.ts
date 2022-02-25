@@ -1,10 +1,12 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import {
   createInfrastructure,
 } from './create-infrastructure';
+import { listenForNewEvents } from './listen-for-new-events';
 import { createRouter } from './router';
 import { createApplicationServer } from './server';
 import { Logger, replaceError } from '../infrastructure/logger';
@@ -48,4 +50,5 @@ void pipe(
     },
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
+  T.map(() => listenForNewEvents),
 )();

@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
@@ -30,5 +31,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     listsReadModel: listsReadModel(partial.getListsEvents, partial.logger),
     logger: partial.logger,
   }),
-  TE.right,
+  (partial) => ({
+    listsReadModel: TE.right(partial.listsReadModel),
+    logger: TE.right(partial.logger),
+    persisted: partial.listsReadModel,
+  }),
+  sequenceS(TE.ApplyPar),
 );
