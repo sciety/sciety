@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { isString } from 'is-what';
+import * as t from 'io-ts';
 import { respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
@@ -21,14 +21,13 @@ const commands = {
   'revoke-response': revokeResponse,
 };
 
-type Command = keyof typeof commands;
+const commandCodec = t.keyof(commands);
 
-const isCommand = (command: string): command is Command => command in commands;
+type Command = t.TypeOf<typeof commandCodec>;
 
 export const toCommand = flow(
-  O.of,
-  O.filter(isString),
-  O.filter(isCommand),
+  commandCodec.decode,
+  O.fromEither,
 );
 
 type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<CommandResult>;
