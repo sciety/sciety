@@ -29,6 +29,7 @@
     "io-ts": "^2.2.16",
     "io-ts-reporters": "^2.0.1",
     "io-ts-types": "^0.5.16",
+    "ioredis": "^4.28.5",
     "jsdom": "^18.1.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@types/clownface": "^1.2.6",
+    "@types/ioredis": "^4.28.8",
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^16.2.14",
     "@types/koa": "^2.13.4",

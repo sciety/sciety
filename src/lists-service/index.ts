@@ -50,5 +50,5 @@ void pipe(
     },
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
-  T.map(() => listenForNewEvents),
+  T.map((adapters) => listenForNewEvents(adapters.logger, adapters.persisted)),
 )();
