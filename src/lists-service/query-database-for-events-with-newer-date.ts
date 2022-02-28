@@ -1,29 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as IO from 'fp-ts/IO';
-import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
+import { EventRow, listsEventsCodec, selectListsEventsWithNewerDate } from './events-table';
 import { ListsEvent } from './lists-event';
-import { evaluationRecordedEventCodec, listCreatedEventCodec } from '../domain-events';
 import * as L from '../infrastructure/logger';
-
-type EventRow = {
-  id: string,
-  type: string,
-  date: string,
-  payload: JsonRecord,
-};
-
-const listsEventCodec = t.union([
-  evaluationRecordedEventCodec,
-  listCreatedEventCodec,
-], 'type');
-
-const listsEventsCodec = t.readonlyArray(listsEventCodec);
 
 type QueryDatabaseForEventsWithNewerDate = (
   pool: Pool,
@@ -34,13 +18,7 @@ export const queryDatabaseForEventsWithNewerDate: QueryDatabaseForEventsWithNewe
   pool,
   logger,
 ) => (date) => pipe(
-  TE.tryCatch(async () => pool.query<EventRow>(`
-      SELECT id, type, date::text, payload 
-      FROM events 
-      WHERE type = 'ListCreated' OR type = 'EvaluationRecorded'
-      AND date > $1
-    `,
-  [date]), E.toError),
+  TE.tryCatch(async () => pool.query<EventRow>(selectListsEventsWithNewerDate, [date]), E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstIOK(flow(
     (rows) => ({ count: rows.length }),

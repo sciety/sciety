@@ -1,30 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as IO from 'fp-ts/IO';
-import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
+import { EventRow, listsEventsCodec, selectAllListsEvents } from './events-table';
 import { ListsEvent } from './lists-event';
-import { evaluationRecordedEventCodec, listCreatedEventCodec } from '../domain-events';
 import * as L from '../infrastructure/logger';
-
-type EventRow = {
-  id: string,
-  type: string,
-  date: string,
-  payload: JsonRecord,
-};
-
-const listsEventCodec = t.union([
-  evaluationRecordedEventCodec,
-  listCreatedEventCodec,
-], 'type');
-
-const listsEventsCodec = t.readonlyArray(listsEventCodec);
 
 export const getListsEventsFromDatabase = (
   pool: Pool,
@@ -44,11 +28,7 @@ export const getListsEventsFromDatabase = (
       }
       await T.delay(1000)(T.of(''))();
     }
-    return pool.query<EventRow>(`
-      SELECT id, type, date::text, payload 
-      FROM events 
-      WHERE type = 'ListCreated' OR type = 'EvaluationRecorded'
-    `);
+    return pool.query<EventRow>(selectAllListsEvents);
   }, E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstIOK(flow(
