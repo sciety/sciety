@@ -66,7 +66,7 @@ backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
+	${DOCKER_COMPOSE} restart app lists
 	scripts/wait-for-healthy.sh
 	npx backstop --docker test
 	${DOCKER_COMPOSE} down
@@ -142,7 +142,7 @@ taiko: node_modules clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/taiko.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
+	${DOCKER_COMPOSE} restart app lists
 	scripts/wait-for-healthy.sh
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
@@ -168,7 +168,7 @@ exploratory-test-from-prod: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
-	${DOCKER_COMPOSE} restart app
+	${DOCKER_COMPOSE} restart app list
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
@@ -176,7 +176,7 @@ exploratory-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/exploratory-test.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
+	${DOCKER_COMPOSE} restart app list
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
