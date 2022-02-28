@@ -18,5 +18,5 @@ export const getListsEvents = (pool: Pool, logger: Logger): GetListsEvents => pi
     ...listCreationEvents,
   ]),
   TE.map(A.sort(byDate)),
-  TE.chainW(appendNewListsEventsFromDatabase),
+  TE.chainW(appendNewListsEventsFromDatabase(pool, logger)),
 );
