@@ -113,6 +113,7 @@ module.exports = {
         'jest-formatting',
       ],
       rules: {
+        'jest/no-conditional-in-test': 'off',
         'jest/no-disabled-tests': 'off',
         'jest/no-hooks': 'off',
         'jest/prefer-expect-assertions': 'off',
@@ -120,7 +121,6 @@ module.exports = {
         'jest/prefer-expect-resolves': 'off',
         'jest/unbound-method': 'off',
       },
-
     },
   ],
   settings: {
