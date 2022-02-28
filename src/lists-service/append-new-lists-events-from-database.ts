@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { ListsEvent } from './lists-event';
 import { queryDatabaseForEventsWithNewerDate } from './query-database-for-events-with-newer-date';
-import { Logger, loggerIO } from '../infrastructure/logger';
+import { Logger } from '../infrastructure/logger';
 
 const defaultCheckpoint = () => new Date('1970');
 
@@ -19,6 +19,6 @@ export const appendNewListsEventsFromDatabase: AppendNewListsEventsFromDatabase 
   RA.last,
   O.map((event) => event.date),
   O.getOrElse(defaultCheckpoint),
-  queryDatabaseForEventsWithNewerDate(pool, loggerIO(logger)),
+  queryDatabaseForEventsWithNewerDate(pool, logger),
   TE.map((newEvents) => RA.concat(newEvents)(sortedListEvents)),
 );

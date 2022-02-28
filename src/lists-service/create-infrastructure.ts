@@ -8,7 +8,7 @@ import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
 import { byDate } from '../domain-events';
 import {
-  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 
@@ -30,7 +30,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   ({ pool, logger }) => (
     {
       eventsAvailableAtStartup: pipe(
-        getListsEventsFromDatabase(pool, loggerIO(logger)),
+        getListsEventsFromDatabase(pool, logger),
         TE.map((eventsFromDatabase) => [
           ...eventsFromDatabase,
           ...listCreationEvents,

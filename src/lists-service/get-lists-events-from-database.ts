@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as IO from 'fp-ts/IO';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,18 +7,14 @@ import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { EventRow, listsEventsCodec, selectAllListsEvents } from './events-table';
 import { ListsEvent } from './lists-event';
-import * as L from '../infrastructure/logger';
+import { Logger } from '../infrastructure/logger';
 
 export const getListsEventsFromDatabase = (
   pool: Pool,
-  logger: L.LoggerIO,
+  logger: Logger,
 ): TE.TaskEither<Error, ReadonlyArray<ListsEvent>> => pipe(
   TE.tryCatch(async () => {
-    pipe(
-      {},
-      L.debug('Waiting for events table to exist'),
-      IO.chain(logger),
-    )();
+    logger('debug', 'Waiting for events table to exist');
     // eslint-disable-next-line no-loops/no-loops, no-constant-condition
     while (true) {
       const queryResult = await pool.query<{ exists: boolean }>('SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = \'public\' AND tablename = \'events\')');
@@ -30,12 +25,8 @@ export const getListsEventsFromDatabase = (
     }
     return pool.query<EventRow>(selectAllListsEvents);
   }, E.toError),
+  TE.chainFirstTaskK((result) => T.of(logger('debug', 'Reading events from database', { count: result.rows.length }))),
   TE.map((result) => result.rows),
-  TE.chainFirstIOK(flow(
-    (rows) => ({ count: rows.length }),
-    L.debug('Reading events from database'),
-    IO.chain(logger),
-  )),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),
     listsEventsCodec.decode,
