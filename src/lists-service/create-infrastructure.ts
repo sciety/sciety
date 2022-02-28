@@ -1,11 +1,16 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as A from 'fp-ts/Array';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { getListsEvents } from './get-lists-events';
+import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from-database';
+import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
+import { byDate } from '../domain-events';
 import {
-  jsonSerializer, rTracerLogger, streamLogger,
+  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
+import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -14,6 +19,7 @@ type Dependencies = {
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Ports> => pipe(
   {
+    pool: new Pool(),
     logger: pipe(
       dependencies.prettyLog,
       jsonSerializer,
@@ -21,9 +27,26 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       rTracerLogger,
     ),
   },
-  ({ logger }) => ({
-    getListsEvents: getListsEvents(new Pool(), logger),
+  ({ pool, logger }) => (
+    {
+      eventsAvailableAtStartup: pipe(
+        getListsEventsFromDatabase(pool, loggerIO(logger)),
+        TE.map((eventsFromDatabase) => [
+          ...eventsFromDatabase,
+          ...listCreationEvents,
+        ]),
+        TE.map(A.sort(byDate)),
+      ),
+      pool: TE.right(pool),
+      logger: TE.right(logger),
+    }
+  ),
+  sequenceS(TE.ApplyPar),
+  TE.map(({ pool, logger, eventsAvailableAtStartup }) => ({
+    getListsEvents: pipe(
+      eventsAvailableAtStartup,
+      appendNewListsEventsFromDatabase(pool, logger),
+    ),
     logger,
-  }),
-  TE.right,
+  })),
 );
