@@ -106,13 +106,22 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
     E.map((articleIds) => ({
-      href: '/lists/cb15ef21-944d-44d6-b415-a3d8951e9e8b',
-      title: 'Cell Biology',
-      articleCountLabel: 'This list contains',
+      name: 'Cell Biology',
       description: 'Cell Biology articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-20 00:00:00Z')),
+      createdOn: new Date('2022-02-09T09:43:00Z'),
+      ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: articleIds.length,
     })),
+    E.map(addLastUpdatedFromEvents(events, 'cb15ef21-944d-44d6-b415-a3d8951e9e8b')),
+    E.map((list) => (
+      {
+        ...list,
+        href: '/lists/cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+        title: list.name,
+        articleCountLabel: 'This list contains',
+        lastUpdated: O.some(list.lastUpdated),
+      }
+    )),
   );
 
   return pipe(
