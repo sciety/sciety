@@ -20,7 +20,7 @@ type HardcodedList = {
   ownerId: Gid.GroupId,
 };
 
-const addLastUpdatedFromEvents = (
+export const addLastUpdatedFromEvents = (
   events: ReadonlyArray<DomainEvent>, listId: ListId,
 ) => (list: HardcodedList): List => pipe(
   events,

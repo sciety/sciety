@@ -10,8 +10,10 @@ import { ListCardViewModel, renderListCard } from '../../shared-components/list-
 import { templateListItems } from '../../shared-components/list-items';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import { List } from '../../shared-read-models/lists';
+import { addLastUpdatedFromEvents } from '../../shared-read-models/lists/get-list';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
+import * as Gid from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -82,13 +84,22 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
     E.map((articleIds) => ({
-      href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
-      title: 'Medicine',
-      articleCountLabel: 'This list contains',
+      name: 'Medicine',
       description: 'Medicine articles that have been evaluated by eLife.',
-      lastUpdated: O.some(new Date('2022-02-17 00:00:00Z')),
+      createdOn: new Date('2022-02-01T13:14:00Z'),
+      ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: articleIds.length,
     })),
+    E.map(addLastUpdatedFromEvents(events, 'c7237468-aac1-4132-9598-06e9ed68f31d')),
+    E.map((list) => (
+      {
+        ...list,
+        href: '/lists/c7237468-aac1-4132-9598-06e9ed68f31d',
+        title: list.name,
+        articleCountLabel: 'This list contains',
+        lastUpdated: O.some(list.lastUpdated),
+      }
+    )),
   );
 
   const cellBiologyList = pipe(
