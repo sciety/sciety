@@ -62,11 +62,13 @@ describe('get-list', () => {
           )();
         });
 
-        it.todo('returns the correct List');
+        it.todo('returns non dynamic metadata sourced from list creation event');
 
         it('returns the list creation date as the last updated date', () => {
           expect(result.lastUpdated).toStrictEqual(creationDate);
         });
+
+        it.todo('returns an articleCount of 0');
       });
 
       describe('when the list is non-empty', () => {
@@ -88,10 +90,20 @@ describe('get-list', () => {
           )();
         });
 
-        it('returns the correct List', () => {
-          expect(result).toStrictEqual({
-            name, description, articleCount: 2, lastUpdated: latestDate, ownerId,
-          });
+        it('returns non-dynamic metadata sourced from list creation event', () => {
+          expect(result).toStrictEqual(expect.objectContaining({
+            name,
+            description,
+            ownerId,
+          }));
+        });
+
+        it('returns date of last addition to list as the last updated date', () => {
+          expect(result.lastUpdated).toStrictEqual(latestDate);
+        });
+
+        it('returns an articleCount of 2', () => {
+          expect(result.articleCount).toBe(2);
         });
       });
     });
