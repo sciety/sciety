@@ -47,6 +47,9 @@ describe('get-list', () => {
 
     describe('and it refers to a non-hardcoded list', () => {
       const listId = arbitraryListId();
+      const name = arbitraryString();
+      const description = arbitraryString();
+      const ownerId = arbitraryGroupId();
 
       describe('when the list is empty', () => {
         const creationDate = arbitraryDate();
@@ -55,27 +58,32 @@ describe('get-list', () => {
         beforeEach(async () => {
           result = await pipe(
             [
-              listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId(), creationDate),
+              listCreated(listId, name, description, ownerId, creationDate),
             ],
             getList(listId),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
 
-        it.todo('returns non dynamic metadata sourced from list creation event');
+        it('returns non-dynamic metadata sourced from list creation event', () => {
+          expect(result).toStrictEqual(expect.objectContaining({
+            name,
+            description,
+            ownerId,
+          }));
+        });
 
         it('returns the list creation date as the last updated date', () => {
           expect(result.lastUpdated).toStrictEqual(creationDate);
         });
 
-        it.todo('returns an articleCount of 0');
+        it('returns an articleCount of 0', () => {
+          expect(result.articleCount).toBe(0);
+        });
       });
 
       describe('when the list is non-empty', () => {
-        const name = arbitraryString();
-        const description = arbitraryString();
         const latestDate = arbitraryDate();
-        const ownerId = arbitraryGroupId();
         let result: List;
 
         beforeEach(async () => {
