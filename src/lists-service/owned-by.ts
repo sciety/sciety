@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
 import { Logger } from '../infrastructure/logger';
-import { constructListsReadModel } from '../shared-read-models/lists/construct-lists-read-model';
+import { constructListsReadModelKeyedOnGroupId } from '../shared-read-models/lists/construct-lists-read-model-keyed-on-group-id';
 
 type Ports = {
   getListsEvents: GetListsEvents,
@@ -23,7 +23,7 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
       ports.logger('debug', 'Loaded lists events');
       return TE.right('everything is ok');
     }),
-    TE.chainTaskK(constructListsReadModel),
+    TE.chainTaskK(constructListsReadModelKeyedOnGroupId),
     TE.chainFirst(() => {
       ports.logger('debug', 'Constructed read model');
       return TE.right('everything is ok');

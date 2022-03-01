@@ -28,7 +28,7 @@ const calculateLastUpdated = (ownerId: GroupId, listCreationDate: Date) => (even
   O.getOrElse(() => listCreationDate),
 );
 
-export const constructListsReadModel = (
+export const constructListsReadModelKeyedOnGroupId = (
   events: ReadonlyArray<DomainEvent>,
 ): T.Task<ReadModel> => pipe(
   events,

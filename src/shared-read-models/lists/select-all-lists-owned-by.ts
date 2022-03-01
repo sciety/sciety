@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { constructListsReadModel } from './construct-lists-read-model';
+import { constructListsReadModelKeyedOnGroupId } from './construct-lists-read-model-keyed-on-group-id';
 import { List } from './list';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
@@ -16,7 +16,7 @@ type SelectAllListsOwnedBy = (groupId: GroupId)
 
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (groupId) => (events) => pipe(
   events,
-  constructListsReadModel,
+  constructListsReadModelKeyedOnGroupId,
   T.map(RM.lookup(S.Eq)(groupId)),
   T.map(O.fold(
     () => [],
