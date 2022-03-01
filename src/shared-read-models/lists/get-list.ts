@@ -1,8 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RM from 'fp-ts/ReadonlyMap';
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { List } from './list';
 import { DomainEvent, isListCreatedEvent } from '../../domain-events';
 import { isArticleAddedToListEvent } from '../../domain-events/article-added-to-list-event';
@@ -39,18 +41,20 @@ const listFromEvents = (
 ) => (): TE.TaskEither<DE.DataError, List> => pipe(
   events,
   RA.filter(isListCreatedEvent),
-  RA.filter((event) => event.listId === listId),
-  RA.head,
-  O.fold(
-    () => TE.left(DE.notFound),
-    (event) => TE.right({
-      name: event.name,
-      description: event.description,
-      ownerId: event.ownerId,
-      articleCount: -1,
-      lastUpdated: new Date(1980),
-    }),
+  RA.reduce(
+    new Map<ListId, List>(),
+    (state, event) => (
+      state.set(event.listId, {
+        name: event.name,
+        description: event.description,
+        ownerId: event.ownerId,
+        articleCount: -1,
+        lastUpdated: new Date(1980),
+      })
+    ),
   ),
+  RM.lookup(S.Eq)(listId),
+  TE.fromOption(() => DE.notFound),
 );
 
 export const getList: GetList = (listId) => (events) => pipe(
