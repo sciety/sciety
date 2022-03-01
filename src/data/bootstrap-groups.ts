@@ -62,7 +62,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://sciscore.com/',
     slug: 'screenit',
     isAutomated: true,
-  }, new Date('2021-05-13T10:39:42Z')),
+  }, new Date('2020-11-20T09:00:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
     name: 'preLights',
@@ -82,7 +82,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://prereview.org/',
     slug: 'prereview',
     isAutomated: false,
-  }, new Date('2020-08-12T13:59:31Z')),
+  }, new Date('2020-04-27T09:00:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
@@ -122,7 +122,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://evolbiol.peercommunityin.org/',
     slug: 'pci-evolutionary-biology',
     isAutomated: false,
-  }, new Date('2020-08-17T13:07:08Z')),
+  }, new Date('2020-08-17T12:07:08Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
     name: 'Peer Community in Ecology',
@@ -132,7 +132,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://ecology.peercommunityin.org/',
     slug: 'pci-ecology',
     isAutomated: false,
-  }, new Date('2020-08-17T13:56:40Z')),
+  }, new Date('2020-08-17T12:56:40Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     name: 'Peer Community in Animal Science',
@@ -142,7 +142,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://animsci.peercommunityin.org/',
     slug: 'pci-animal-science',
     isAutomated: false,
-  }, new Date('2020-08-17T13:56:40Z')),
+  }, new Date('2020-08-17T12:56:40Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     name: 'Peer Community in Archaeology',
@@ -162,7 +162,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://paleo.peercommunityin.org/',
     slug: 'pci-paleontology',
     isAutomated: false,
-  }, new Date('2020-08-17T13:56:40Z')),
+  }, new Date('2020-08-17T12:56:40Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
     name: 'Peer Community in Neuroscience',

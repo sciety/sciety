@@ -42,7 +42,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by ScreenIT.',
     GID.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
-    new Date('2021-05-13T10:39:43Z'),
+    new Date('2020-11-20T10:00:00Z'),
   ),
   listCreated(
     'f4b96b8b-db49-4b41-9c5b-28d66a83cd70',
@@ -56,7 +56,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by PREreview.',
     GID.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
-    new Date('2020-08-12T13:59:32Z'),
+    new Date('2020-04-27T10:00:00Z'),
   ),
   listCreated(
     'f981342c-bf38-4dc8-9569-acda5878c07b',
@@ -84,21 +84,21 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Evolutionary Biology.',
     GID.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
-    new Date('2020-08-17T13:07:09Z'),
+    new Date('2020-08-17T12:07:09Z'),
   ),
   listCreated(
     '65f661e6-73f9-43e9-9ae6-a84635afb79a',
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Ecology.',
     GID.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
-    new Date('2020-08-17T13:56:41Z'),
+    new Date('2020-08-17T12:56:41Z'),
   ),
   listCreated(
     'e764d90c-ffea-4b0e-a63e-d2b5236aa1ed',
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Animal Science.',
     GID.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
-    new Date('2020-08-17T13:56:41Z'),
+    new Date('2020-08-17T12:56:41Z'),
   ),
   listCreated(
     '24a60cf9-5f45-43f2-beaf-04139e6f0a0e',
@@ -112,7 +112,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Paleontology.',
     GID.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
-    new Date('2020-08-17T13:56:41Z'),
+    new Date('2020-08-17T12:56:41Z'),
   ),
   listCreated(
     'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
