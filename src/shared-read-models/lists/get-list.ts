@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { List } from './list';
-import { DomainEvent, isListCreatedEvent } from '../../domain-events';
+import { DomainEvent } from '../../domain-events';
 import { isArticleAddedToListEvent } from '../../domain-events/article-added-to-list-event';
 import * as DE from '../../types/data-error';
 import * as Gid from '../../types/group-id';
@@ -40,18 +40,33 @@ const listFromEvents = (
   listId: ListId,
 ) => (): TE.TaskEither<DE.DataError, List> => pipe(
   events,
-  RA.filter(isListCreatedEvent),
   RA.reduce(
     new Map<ListId, List>(),
-    (state, event) => (
-      state.set(event.listId, {
-        name: event.name,
-        description: event.description,
-        ownerId: event.ownerId,
-        articleCount: -1,
-        lastUpdated: new Date(1980),
-      })
-    ),
+    (state, event) => {
+      switch (event.type) {
+        case 'ListCreated':
+          return state.set(event.listId, {
+            name: event.name,
+            description: event.description,
+            ownerId: event.ownerId,
+            articleCount: 0,
+            lastUpdated: new Date(1980),
+          });
+        case 'ArticleAddedToList':
+          // eslint-disable-next-line no-case-declarations
+          const existing: List = pipe(
+            state.get(event.listId),
+            O.fromNullable,
+            O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
+          );
+          return state.set(event.listId, {
+            ...existing,
+            articleCount: existing.articleCount + 1,
+          });
+        default:
+          return state;
+      }
+    },
   ),
   RM.lookup(S.Eq)(listId),
   TE.fromOption(() => DE.notFound),
