@@ -18,17 +18,16 @@ const updateReadmodel = (state: ReadModel, event: DomainEvent) => {
         lastUpdated: event.date,
       });
     case 'ArticleAddedToList':
-      // eslint-disable-next-line no-case-declarations
-      const existing: List = pipe(
+      return pipe(
         state.get(event.listId),
         O.fromNullable,
         O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
+        (existing) => state.set(event.listId, {
+          ...existing,
+          articleCount: existing.articleCount + 1,
+          lastUpdated: event.date,
+        }),
       );
-      return state.set(event.listId, {
-        ...existing,
-        articleCount: existing.articleCount + 1,
-        lastUpdated: event.date,
-      });
     default:
       return state;
   }
