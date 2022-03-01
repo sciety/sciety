@@ -19,6 +19,7 @@ import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
+import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evaluated-articles-to-lists-page';
 import { redirectGroupIdToSlug } from './redirects/redirect-group-id-to-slug';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
@@ -39,7 +40,6 @@ import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
 import { Adapters } from '../infrastructure';
 import { legalPage } from '../legal-page';
-import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../list-page/list-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluation } from '../record-evaluation';
@@ -332,10 +332,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
-    pageHandler(createPageFromParams(
-      groupEvaluationsPageParams,
-      groupEvaluationsPage(adapters),
-    )),
+    redirectEvaluatedArticlesToListsPage,
   );
 
   router.get(

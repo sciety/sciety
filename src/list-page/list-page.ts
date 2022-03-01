@@ -27,6 +27,7 @@ type Ports = HeaderPorts & EvaluatedArticlesListPorts & {
   getAllEvents: GetAllEvents,
 };
 
+// ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
   slug: t.string,
   page: tt.optionFromNullable(tt.NumberFromString),
@@ -46,6 +47,7 @@ const toPageNumber = (page: O.Option<number>) => pipe(
   O.getOrElse(() => 1),
 );
 
+// ts-unused-exports:disable-next-line
 export const groupEvaluationsPage = (ports: Ports): ListPage => ({ slug, page }) => pipe(
   ports.getAllEvents,
   T.map(getGroupBySlug(slug)),
