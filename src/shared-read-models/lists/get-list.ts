@@ -62,6 +62,7 @@ const listFromEvents = (
           return state.set(event.listId, {
             ...existing,
             articleCount: existing.articleCount + 1,
+            lastUpdated: event.date,
           });
         default:
           return state;

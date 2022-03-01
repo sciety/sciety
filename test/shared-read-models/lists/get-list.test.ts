@@ -52,7 +52,7 @@ describe('get-list', () => {
         it.todo('returns the list creation date as the last updated date');
       });
 
-      describe.skip('when the list is non-empty', () => {
+      describe('when the list is non-empty', () => {
         const name = arbitraryString();
         const description = arbitraryString();
         const latestDate = arbitraryDate();
