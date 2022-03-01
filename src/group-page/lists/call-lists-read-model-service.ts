@@ -11,7 +11,7 @@ import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
-const stupidCodec = t.type({
+const ownedByQueryCodec = t.type({
   items: t.readonlyArray(t.type({
     name: t.string,
     description: t.string,
@@ -35,7 +35,7 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
     () => DE.unavailable,
   ),
   TE.chainEitherKW(flow(
-    stupidCodec.decode,
+    ownedByQueryCodec.decode,
     E.mapLeft(formatValidationErrors),
   )),
   TE.bimap(
