@@ -50,7 +50,7 @@ const listFromEvents = (
             description: event.description,
             ownerId: event.ownerId,
             articleCount: 0,
-            lastUpdated: new Date(1980),
+            lastUpdated: event.date,
           });
         case 'ArticleAddedToList':
           // eslint-disable-next-line no-case-declarations

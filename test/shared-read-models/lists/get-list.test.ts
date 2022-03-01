@@ -46,10 +46,27 @@ describe('get-list', () => {
     });
 
     describe('and it refers to a non-hardcoded list', () => {
+      const listId = arbitraryListId();
+
       describe('when the list is empty', () => {
+        const creationDate = arbitraryDate();
+        let result: List;
+
+        beforeEach(async () => {
+          result = await pipe(
+            [
+              listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId(), creationDate),
+            ],
+            getList(listId),
+            TE.getOrElse(shouldNotBeCalled),
+          )();
+        });
+
         it.todo('returns the correct List');
 
-        it.todo('returns the list creation date as the last updated date');
+        it('returns the list creation date as the last updated date', () => {
+          expect(result.lastUpdated).toStrictEqual(creationDate);
+        });
       });
 
       describe('when the list is non-empty', () => {
@@ -57,7 +74,6 @@ describe('get-list', () => {
         const description = arbitraryString();
         const latestDate = arbitraryDate();
         const ownerId = arbitraryGroupId();
-        const listId = arbitraryListId();
         let result: List;
 
         beforeEach(async () => {
