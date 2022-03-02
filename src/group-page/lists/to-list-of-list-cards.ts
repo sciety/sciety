@@ -161,7 +161,7 @@ export const toListOfListCards: ToListOfListCards = (ports, group) => (lists) =>
         ...details,
         href: `/lists/${details.id}`,
         title: details.name,
-        articleCountLabel: 'This group has evaluated',
+        articleCountLabel: 'This list contains',
       }),
       (unshimmedCardViewModel) => (
         { ...unshimmedCardViewModel, lastUpdated: O.some(unshimmedCardViewModel.lastUpdated) }
