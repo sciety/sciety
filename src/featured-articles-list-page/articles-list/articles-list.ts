@@ -10,6 +10,7 @@ import { paginate } from '../../shared-components/paginate';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
+import { ListId } from '../../types/list-id';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -17,7 +18,7 @@ export type Ports = ToPageOfCardsPorts & {
 
 export const articlesList = (
   ports: Ports,
-  listId: string,
+  listId: ListId,
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
