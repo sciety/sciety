@@ -4,7 +4,7 @@ services:
   app:
     container_name: sciety_app
     build:
-      context: ""
+      context: .
     environment:
       ALLOW_SITE_CRAWLERS: "true"
       APP_ORIGIN: "http://localhost:8080"
