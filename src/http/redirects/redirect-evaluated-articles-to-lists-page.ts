@@ -3,9 +3,8 @@ import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { ListId } from '../../types/list-id';
 
-const groupSlugToEvaluatedArticlesListId: Record<string, ListId> = {
+const groupSlugToEvaluatedArticlesListId: Record<string, string> = {
   elife: 'f1561c0f-d247-4e03-934d-52ad9e0aed2f',
   'biophysics-colab': 'ee7e738a-a1f1-465b-807c-132d273ca952',
   'asapbio-crowd-review': 'dc83aa3b-1691-4356-b697-4257d31a27dc',
