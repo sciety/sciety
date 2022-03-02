@@ -159,7 +159,7 @@ export const toListOfListCards: ToListOfListCards = (ports, group) => (lists) =>
       l[0],
       (details) => ({
         ...details,
-        href: `/groups/${group.slug}/evaluated-articles`,
+        href: `/lists/${details.id}`,
         title: details.name,
         articleCountLabel: 'This group has evaluated',
       }),
