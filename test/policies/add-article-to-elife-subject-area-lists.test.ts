@@ -4,6 +4,7 @@ import { evaluationRecorded, listCreated, userSavedArticle } from '../../src/dom
 import { addArticleToElifeSubjectAreaLists } from '../../src/policies/add-article-to-elife-subject-area-lists';
 import * as DE from '../../src/types/data-error';
 import * as Gid from '../../src/types/group-id';
+import * as Lid from '../../src/types/list-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -13,8 +14,8 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const getAllEvents = T.of([
-  listCreated('c7237468-aac1-4132-9598-06e9ed68f31d', arbitraryString(), arbitraryString(), arbitraryGroupId()),
-  listCreated('cb15ef21-944d-44d6-b415-a3d8951e9e8b', arbitraryString(), arbitraryString(), arbitraryGroupId()),
+  listCreated(Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'), arbitraryString(), arbitraryString(), arbitraryGroupId()),
+  listCreated(Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'), arbitraryString(), arbitraryString(), arbitraryGroupId()),
 ]);
 
 describe('add-article-to-elife-subject-area-lists', () => {

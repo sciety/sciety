@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { getList, List } from '../../../src/shared-read-models/lists';
+import * as Lid from '../../../src/types/list-id';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -23,7 +24,7 @@ describe('get-list', () => {
 
       describe('when the list is non-empty', () => {
         const latestDate = arbitraryDate();
-        const eLifeMedicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
+        const eLifeMedicineListId = Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d');
         let result: List;
 
         beforeEach(async () => {
