@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
 import { ListId } from '../types/list-id';
@@ -11,7 +12,7 @@ export const articleAddedToListEventCodec = t.type({
   type: t.literal('ArticleAddedToList'),
   date: tt.DateFromISOString,
   articleId: DoiFromString,
-  listId: t.string,
+  listId: ListIdFromString,
 });
 
 export type ArticleAddedToListEvent = t.TypeOf<typeof articleAddedToListEventCodec>;

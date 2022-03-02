@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
@@ -10,7 +11,7 @@ export const listCreatedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('ListCreated'),
   date: tt.DateFromISOString,
-  listId: t.string,
+  listId: ListIdFromString,
   name: t.string,
   description: t.string,
   ownerId: GroupIdFromString,
