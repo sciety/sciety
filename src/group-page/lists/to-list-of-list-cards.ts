@@ -39,7 +39,7 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
 const addNcrcListCardViewModelOnNcrcPage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'ncrc')
   ? pipe(
     events,
-    selectArticlesBelongingToList('cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'),
+    selectArticlesBelongingToList(Lid.fromValidatedString('cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7')),
     E.map((articleIds) => [
       {
         href: '/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
@@ -58,7 +58,7 @@ const addNcrcListCardViewModelOnNcrcPage = (groupSlug: string) => (cardViewModel
 const addBiophysicsColabListCardViewModelOnBiophysicsColabPage = (groupSlug: string) => (cardViewModels: ReadonlyArray<ListCardViewModel>) => (events: ReadonlyArray<DomainEvent>) => ((groupSlug === 'biophysics-colab')
   ? pipe(
     events,
-    selectArticlesBelongingToList('5ac3a439-e5c6-4b15-b109-92928a740812'),
+    selectArticlesBelongingToList(Lid.fromValidatedString('5ac3a439-e5c6-4b15-b109-92928a740812')),
     E.map((articleIds) => [
       {
         href: '/lists/5ac3a439-e5c6-4b15-b109-92928a740812',
@@ -83,7 +83,7 @@ const addElifeListCardViewModelOnElifePage = (
 
   const medicineList = pipe(
     events,
-    selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
+    selectArticlesBelongingToList(Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d')),
     E.map((articleIds) => ({
       id: Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'),
       name: 'Medicine',
@@ -109,7 +109,7 @@ const addElifeListCardViewModelOnElifePage = (
 
   const cellBiologyList = pipe(
     events,
-    selectArticlesBelongingToList('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
+    selectArticlesBelongingToList(Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b')),
     E.map((articleIds) => ({
       id: Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
       name: 'Cell Biology',
