@@ -11,6 +11,7 @@ const updateReadmodel = (state: ReadModel, event: DomainEvent) => {
   switch (event.type) {
     case 'ListCreated':
       return state.set(event.listId, {
+        id: event.listId,
         name: event.name,
         description: event.description,
         ownerId: event.ownerId,

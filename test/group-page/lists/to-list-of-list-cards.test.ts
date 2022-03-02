@@ -6,6 +6,7 @@ import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('to-list-of-list-cards', () => {
   describe('when the group owns no lists', () => {
@@ -38,6 +39,7 @@ describe('to-list-of-list-cards', () => {
       rendered = await pipe(
         [
           {
+            id: arbitraryListId(),
             name: listTitle,
             description: arbitraryString(),
             articleCount: 0,

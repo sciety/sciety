@@ -13,6 +13,7 @@ import { GroupId } from '../../types/group-id';
 
 const ownedByQueryCodec = t.type({
   items: t.readonlyArray(t.type({
+    id: t.string,
     name: t.string,
     description: t.string,
     articleCount: t.number,

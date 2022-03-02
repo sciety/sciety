@@ -16,6 +16,7 @@ import { ListId } from '../../types/list-id';
 type GetList = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, List>;
 
 type HardcodedList = {
+  id: ListId,
   name: string,
   description: string,
   articleCount: number,
@@ -49,6 +50,7 @@ const listFromEvents = (
 export const getList: GetList = (listId) => (events) => pipe(
   {
     'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7': {
+      id: 'cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7',
       name: 'High interest articles',
       description: 'Articles that have been identified as high interest by NCRC editors.',
       createdOn: new Date('2021-11-24'),
@@ -56,6 +58,7 @@ export const getList: GetList = (listId) => (events) => pipe(
       articleCount: 0,
     },
     '5ac3a439-e5c6-4b15-b109-92928a740812': {
+      id: '5ac3a439-e5c6-4b15-b109-92928a740812',
       name: 'Endorsed articles',
       description: 'Articles that have been endorsed by Biophysics Colab.',
       createdOn: new Date('2021-11-22T15:09:00Z'),
@@ -63,6 +66,7 @@ export const getList: GetList = (listId) => (events) => pipe(
       articleCount: 0,
     },
     'c7237468-aac1-4132-9598-06e9ed68f31d': {
+      id: 'c7237468-aac1-4132-9598-06e9ed68f31d',
       name: 'Medicine',
       description: 'Medicine articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-01T13:14:00Z'),
@@ -70,6 +74,7 @@ export const getList: GetList = (listId) => (events) => pipe(
       articleCount: 0,
     },
     'cb15ef21-944d-44d6-b415-a3d8951e9e8b': {
+      id: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
       name: 'Cell Biology',
       description: 'Cell Biology articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-09T09:43:00Z'),

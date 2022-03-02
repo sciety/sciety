@@ -84,6 +84,7 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
     E.map((articleIds) => ({
+      id: 'c7237468-aac1-4132-9598-06e9ed68f31d',
       name: 'Medicine',
       description: 'Medicine articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-01T13:14:00Z'),
@@ -106,6 +107,7 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
     E.map((articleIds) => ({
+      id: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
       name: 'Cell Biology',
       description: 'Cell Biology articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-09T09:43:00Z'),

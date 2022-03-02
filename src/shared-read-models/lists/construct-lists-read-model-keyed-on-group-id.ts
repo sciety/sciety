@@ -33,10 +33,13 @@ export const constructListsReadModelKeyedOnGroupId = (
 ): T.Task<ReadModel> => pipe(
   events,
   RA.filter((event): event is ListCreatedEvent => event.type === 'ListCreated'),
-  RA.map((event) => ({
-    ...event,
+  RA.map((listCreatedEvent) => ({
+    id: listCreatedEvent.listId,
+    name: listCreatedEvent.name,
+    description: listCreatedEvent.description,
     articleCount: 0,
-    lastUpdated: event.date,
+    lastUpdated: listCreatedEvent.date,
+    ownerId: listCreatedEvent.ownerId,
   })),
   T.traverseArray((list) => pipe(
     T.of(undefined),

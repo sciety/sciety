@@ -73,6 +73,10 @@ describe('get-list', () => {
           }));
         });
 
+        it('returns the list id', () => {
+          expect(result.id).toStrictEqual(listId);
+        });
+
         it('returns the list creation date as the last updated date', () => {
           expect(result.lastUpdated).toStrictEqual(creationDate);
         });
@@ -104,6 +108,10 @@ describe('get-list', () => {
             description,
             ownerId,
           }));
+        });
+
+        it('returns the list id', () => {
+          expect(result.id).toStrictEqual(listId);
         });
 
         it('returns date of last addition to list as the last updated date', () => {

@@ -31,6 +31,7 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the group owns an empty list', () => {
+    const listId = arbitraryListId();
     const listName = arbitraryString();
     const listDescription = arbitraryString();
     const listCreationDate = arbitraryDate();
@@ -39,12 +40,16 @@ describe('select-all-lists-owned-by', () => {
     beforeEach(async () => {
       result = await pipe(
         [
-          listCreated(arbitraryListId(), listName, listDescription, ownerId, listCreationDate),
+          listCreated(listId, listName, listDescription, ownerId, listCreationDate),
         ],
         selectAllListsOwnedBy(ownerId),
         TE.getOrElse(shouldNotBeCalled),
         T.map((lists) => lists[0]),
       )();
+    });
+
+    it('returns the list id', () => {
+      expect(result.id).toBe(listId);
     });
 
     it('returns the list name', () => {
@@ -65,6 +70,7 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the group owns a list whose content is determined by evaluation events', () => {
+    const listId = arbitraryListId();
     const listName = 'Evaluated articles';
     const listDescription = arbitraryString();
     const newerDate = new Date('2021-07-08');
@@ -73,7 +79,7 @@ describe('select-all-lists-owned-by', () => {
     beforeEach(async () => {
       result = await pipe(
         [
-          listCreated(arbitraryListId(), listName, listDescription, ownerId),
+          listCreated(listId, listName, listDescription, ownerId),
           evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId()),
           evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), newerDate),
         ],
@@ -81,6 +87,10 @@ describe('select-all-lists-owned-by', () => {
         TE.getOrElse(shouldNotBeCalled),
         T.map((lists) => lists[0]),
       )();
+    });
+
+    it('returns the list id', () => {
+      expect(result.id).toBe(listId);
     });
 
     it('returns the list name', () => {
