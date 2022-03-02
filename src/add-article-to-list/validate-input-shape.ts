@@ -4,10 +4,11 @@ import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Command } from './execute-command';
 import { DoiFromString } from '../types/codecs/DoiFromString';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
 
 const inputCodec = t.type({
   articleId: DoiFromString,
-  listId: t.string,
+  listId: ListIdFromString,
 });
 
 type ValidateInputShape = (input: unknown) => E.Either<string, Command>;

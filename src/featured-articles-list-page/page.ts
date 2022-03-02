@@ -12,6 +12,7 @@ import { renderErrorPage, renderPage } from '../list-page/render-page';
 import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -41,7 +42,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
-  id: t.string,
+  id: ListIdFromString,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
