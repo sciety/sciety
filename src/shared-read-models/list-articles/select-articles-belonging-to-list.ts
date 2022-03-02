@@ -5,8 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, isArticleAddedToListEvent, isListCreatedEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
+import { ListId } from '../../types/list-id';
 
-type SelectArticlesBelongingToList = (listId: string)
+type SelectArticlesBelongingToList = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<DE.DataError, ReadonlyArray<Doi>>;
 
