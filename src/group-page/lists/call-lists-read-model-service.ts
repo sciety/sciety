@@ -8,12 +8,13 @@ import { fetchData } from '../../infrastructure/fetchers';
 import { Logger } from '../../infrastructure/logger';
 import { List } from '../../shared-read-models/lists';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
+import { ListIdFromString } from '../../types/codecs/ListIdFromString';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
 const ownedByQueryCodec = t.type({
   items: t.readonlyArray(t.type({
-    id: t.string,
+    id: ListIdFromString,
     name: t.string,
     description: t.string,
     articleCount: t.number,
