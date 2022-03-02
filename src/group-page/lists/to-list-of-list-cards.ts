@@ -15,6 +15,7 @@ import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import * as Gid from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as Lid from '../../types/list-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -84,14 +85,17 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('c7237468-aac1-4132-9598-06e9ed68f31d'),
     E.map((articleIds) => ({
-      id: 'c7237468-aac1-4132-9598-06e9ed68f31d',
+      id: Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'),
       name: 'Medicine',
       description: 'Medicine articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-01T13:14:00Z'),
       ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: articleIds.length,
     })),
-    E.map(addLastUpdatedFromEvents(events, 'c7237468-aac1-4132-9598-06e9ed68f31d')),
+    E.map(addLastUpdatedFromEvents(
+      events,
+      Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'),
+    )),
     E.map((list) => (
       {
         ...list,
@@ -107,14 +111,17 @@ const addElifeListCardViewModelOnElifePage = (
     events,
     selectArticlesBelongingToList('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
     E.map((articleIds) => ({
-      id: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+      id: Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
       name: 'Cell Biology',
       description: 'Cell Biology articles that have been evaluated by eLife.',
       createdOn: new Date('2022-02-09T09:43:00Z'),
       ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       articleCount: articleIds.length,
     })),
-    E.map(addLastUpdatedFromEvents(events, 'cb15ef21-944d-44d6-b415-a3d8951e9e8b')),
+    E.map(addLastUpdatedFromEvents(
+      events,
+      Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
+    )),
     E.map((list) => (
       {
         ...list,
