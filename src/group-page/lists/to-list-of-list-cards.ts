@@ -133,13 +133,41 @@ const addElifeListCardViewModelOnElifePage = (
     )),
   );
 
+  const neuroscienceList = pipe(
+    events,
+    selectArticlesBelongingToList(Lid.fromValidatedString('3253c905-8083-4f3d-9e1f-0a8085e64ee5')),
+    E.map((articleIds) => ({
+      id: Lid.fromValidatedString('3253c905-8083-4f3d-9e1f-0a8085e64ee5'),
+      name: 'Neuroscience',
+      description: 'Neuroscience articles that have been evaluated by eLife.',
+      createdOn: new Date('2022-03-03T09:25:00Z'),
+      ownerId: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+      articleCount: articleIds.length,
+    })),
+    E.map(addLastUpdatedFromEvents(
+      events,
+      Lid.fromValidatedString('3253c905-8083-4f3d-9e1f-0a8085e64ee5'),
+    )),
+    E.map((list) => (
+      {
+        ...list,
+        href: '/lists/3253c905-8083-4f3d-9e1f-0a8085e64ee5',
+        title: list.name,
+        articleCountLabel: 'This list contains',
+        lastUpdated: O.some(list.lastUpdated),
+      }
+    )),
+  );
+
   return pipe(
     {
       medicineList,
       cellBiologyList,
+      neuroscienceList,
     },
     sequenceS(E.Apply),
     E.map((lists) => [
+      lists.neuroscienceList,
       lists.cellBiologyList,
       lists.medicineList,
       ...cardViewModels,
