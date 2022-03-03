@@ -1,6 +1,6 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
+import { toListCardViewModel } from './to-list-card-view-model';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { List } from '../../shared-read-models/lists';
@@ -24,18 +24,7 @@ type ToListOfListCards = (lists: ReadonlyArray<List>)
 
 export const toListOfListCards: ToListOfListCards = (lists) => pipe(
   lists,
-  RA.map((list) => pipe(
-    list,
-    (details) => ({
-      ...details,
-      href: `/lists/${details.id}`,
-      title: details.name,
-      articleCountLabel: 'This list contains',
-    }),
-    (unshimmedCardViewModel) => (
-      { ...unshimmedCardViewModel, lastUpdated: O.some(unshimmedCardViewModel.lastUpdated) }
-    ),
-  )),
+  RA.map(toListCardViewModel),
   RA.match(
     () => toHtmlFragment('<p class="static-message">This group doesn\'t have any lists yet.</p>'),
     flow(

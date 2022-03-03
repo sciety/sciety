@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { templateDate } from '../date';
 
-type ListCardViewModel = {
+export type ListCardViewModel = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
   href: string,
