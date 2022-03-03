@@ -24,10 +24,9 @@ const ownedByQueryCodec = t.type({
 });
 
 type CallListsReadModelService = (logger: Logger, groupId: GroupId)
-=> ()
 => TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
-export const callListsReadModelService: CallListsReadModelService = (logger, groupId) => () => pipe(
+export const callListsReadModelService: CallListsReadModelService = (logger, groupId) => pipe(
   TE.tryCatch(
     async () => {
       const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/owned-by/${groupId}`;
