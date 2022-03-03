@@ -6,11 +6,11 @@
 @use '../sass/page-header';
 @use '../sass/avatar';
 
-.evaluated-articles-list {
+.articles-list {
   @include card.list();
 }
 
-.evaluated-articles-list__item {
+.articles-list__item {
   @include card.list-item();
 }
 
@@ -41,13 +41,13 @@
   @include typography.list-separator();
 }
 
-.evaluated-articles__page_count {
+.articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.evaluated-articles__static_message {
+.articles-static-message {
   @include layout.page-content-horizontal-margins();
 }

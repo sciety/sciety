@@ -15,9 +15,9 @@ export const renderComponent: RenderArticlesList = flow(
     renderArticleErrorCard,
     renderArticleCard(O.none),
   )),
-  RA.map((activity) => `<li class="evaluated-articles-list__item">${activity}</li>`),
+  RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
   (renderedActivities) => `
-      <ul class="evaluated-articles-list" role="list">${renderedActivities.join('')}</ul>
+      <ul class="articles-list" role="list">${renderedActivities.join('')}</ul>
   `,
   toHtmlFragment,
 );
