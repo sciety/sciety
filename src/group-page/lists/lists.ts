@@ -20,5 +20,5 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(callListsReadModelService(ports.logger, group.id)),
-  TE.chain(toListOfListCards(ports, group)),
+  TE.map(toListOfListCards),
 );

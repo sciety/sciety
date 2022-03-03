@@ -121,7 +121,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Articles that have been identified as high interest by NCRC editors.',
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
-    GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg'),
+    GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     new Date('2021-11-24'),
   ),
   listCreated(
@@ -130,7 +130,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Articles that have been endorsed by Biophysics Colab.',
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
-    GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png'),
+    GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     new Date('2021-11-22T15:09:00Z'),
   ),
   listCreated(
@@ -153,7 +153,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Medicine articles that have been evaluated by eLife.',
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
-    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0.broken'),
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-02-01T13:14:00Z'),
   ),
   listCreated(
@@ -162,7 +162,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Cell Biology articles that have been evaluated by eLife.',
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
-    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0.broken'),
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-02-09T09:43:00Z'),
   ),
   listCreated(
@@ -171,7 +171,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Neuroscience articles that have been evaluated by eLife.',
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
-    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0.broken'),
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-03T09:25:00Z'),
   ),
 ];
