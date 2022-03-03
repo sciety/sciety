@@ -56,7 +56,7 @@ const supplementaryItems = [
 
 const renderPageNumbers = (page: number, articleCount: number, numberOfPages: number) => (
   articleCount > 0
-    ? `<p class="evaluated-articles__page_count">
+    ? `<p class="articles-page-count">
         Showing page ${page} of ${numberOfPages}<span class="visually-hidden"> pages of list content</span>
       </p>`
     : ''
