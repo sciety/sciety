@@ -3,14 +3,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../domain-events';
-import { populateArticleActivities } from '../../list-page/evaluated-articles-list/populate-article-activities';
-import { noEvaluatedArticlesMessage } from '../../list-page/evaluated-articles-list/static-messages';
-import { toPageOfCards, Ports as ToPageOfCardsPorts } from '../../list-page/evaluated-articles-list/to-page-of-cards';
 import { paginate } from '../../shared-components/paginate';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import { populateArticleActivities } from '../evaluated-articles-list/populate-article-activities';
+import { noEvaluatedArticlesMessage } from '../evaluated-articles-list/static-messages';
+import { toPageOfCards, Ports as ToPageOfCardsPorts } from '../evaluated-articles-list/to-page-of-cards';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

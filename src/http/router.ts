@@ -29,7 +29,6 @@ import { addArticleToList } from '../add-article-to-list';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
-import { paramsCodec as featuredArticlesListPageParams, page as featuresArticlesListPage } from '../featured-articles-list-page/page';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
@@ -40,6 +39,7 @@ import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
 import { Adapters } from '../infrastructure';
 import { legalPage } from '../legal-page';
+import { page as listPage, paramsCodec as listPageParams } from '../list-page/page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluation } from '../record-evaluation';
@@ -368,8 +368,8 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
-      featuredArticlesListPageParams,
-      featuresArticlesListPage(adapters),
+      listPageParams,
+      listPage(adapters),
     )),
   );
 
