@@ -32,6 +32,7 @@ import { docmapIndex } from '../docmaps/docmap-index';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
+import { page as groupListPage, paramsCodec as groupListPageParams } from '../group-list-page/page';
 import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../group-page/group-page';
@@ -39,7 +40,6 @@ import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
 import { Adapters } from '../infrastructure';
 import { legalPage } from '../legal-page';
-import { page as listPage, paramsCodec as listPageParams } from '../list-page/page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluation } from '../record-evaluation';
@@ -368,8 +368,8 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
-      listPageParams,
-      listPage(adapters),
+      groupListPageParams,
+      groupListPage(adapters),
     )),
   );
 
