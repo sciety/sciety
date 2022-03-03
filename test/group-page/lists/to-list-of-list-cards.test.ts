@@ -30,9 +30,4 @@ describe('to-list-of-list-cards', () => {
       expect(rendered).toContain(listTitle);
     });
   });
-
-  // TODO: move to /owned-by tests
-  describe('when the group has two lists containing articles', () => {
-    it.todo('displays the most recently updated list at the top');
-  });
 });

@@ -120,4 +120,27 @@ describe('select-all-lists-owned-by', () => {
       expect(result).toStrictEqual([]);
     });
   });
+
+  describe('when the group has two lists containing articles', () => {
+    const earlierDate = new Date('1970');
+    const laterDate = new Date('2000');
+    const listIdA = arbitraryListId();
+    const listIdB = arbitraryListId();
+    const results = pipe(
+      [
+        listCreated(listIdA, arbitraryString(), arbitraryString(), ownerId, earlierDate),
+        listCreated(listIdB, arbitraryString(), arbitraryString(), ownerId, earlierDate),
+        articleAddedToList(arbitraryDoi(), listIdA, earlierDate),
+        articleAddedToList(arbitraryDoi(), listIdB, laterDate),
+      ],
+      selectAllListsOwnedBy(ownerId),
+    );
+
+    it('displays the most recently updated list at the top', () => {
+      expect(results).toStrictEqual([
+        expect.objectContaining({ lastUpdated: laterDate }),
+        expect.objectContaining({ lastUpdated: earlierDate }),
+      ]);
+    });
+  });
 });
