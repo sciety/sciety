@@ -1,3 +1,3 @@
-import { EvaluationRecordedEvent, ListCreatedEvent } from '../domain-events';
+import { ArticleAddedToListEvent, ListCreatedEvent } from '../domain-events';
 
-export type ListsEvent = ListCreatedEvent | EvaluationRecordedEvent;
+export type ListsEvent = ListCreatedEvent | ArticleAddedToListEvent;

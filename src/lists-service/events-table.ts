@@ -1,9 +1,9 @@
 import { JsonRecord } from 'fp-ts/Json';
 import * as t from 'io-ts';
-import { evaluationRecordedEventCodec, listCreatedEventCodec } from '../domain-events';
+import { articleAddedToListEventCodec, listCreatedEventCodec } from '../domain-events';
 
 const listsEventCodec = t.union([
-  evaluationRecordedEventCodec,
+  articleAddedToListEventCodec,
   listCreatedEventCodec,
 ], 'type');
 
@@ -19,12 +19,12 @@ export type EventRow = {
 export const selectAllListsEvents = `
   SELECT id, type, date::text, payload 
   FROM events 
-  WHERE type = 'ListCreated' OR type = 'EvaluationRecorded'
+  WHERE type = 'ListCreated' OR type = 'ArticleAddedToList'
 `;
 
 export const selectListsEventsWithNewerDate = `
   SELECT id, type, date::text, payload 
   FROM events 
-  WHERE type = 'ListCreated' OR type = 'EvaluationRecorded'
+  WHERE type = 'ListCreated' OR type = 'ArticleAddedToList'
   AND date > $1
 `;
