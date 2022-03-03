@@ -31,18 +31,18 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
 export const toCardViewModel = (
   ports: Ports,
 ) => (
-  evaluatedArticle: ArticleActivity,
+  articleActivity: ArticleActivity,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleViewModel> => pipe(
-  evaluatedArticle.articleId,
+  articleActivity.articleId,
   getArticleDetails(ports),
   TE.bimap(
     (error) => ({
-      ...evaluatedArticle,
-      href: `/articles/${evaluatedArticle.articleId.value}`,
+      ...articleActivity,
+      href: `/articles/${articleActivity.articleId.value}`,
       error,
     }),
     (articleDetails) => ({
-      ...evaluatedArticle,
+      ...articleActivity,
       ...articleDetails,
       authors: articleDetails.authors,
       latestVersionDate: articleDetails.latestVersionDate,

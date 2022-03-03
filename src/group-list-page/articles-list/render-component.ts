@@ -6,11 +6,11 @@ import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-arti
 import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type RenderEvaluatedArticlesList = (
+type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleViewModel>>,
 ) => HtmlFragment;
 
-export const renderComponent: RenderEvaluatedArticlesList = flow(
+export const renderComponent: RenderArticlesList = flow(
   RA.map(E.fold(
     renderArticleErrorCard,
     renderArticleCard(O.none),
