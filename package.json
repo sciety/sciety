@@ -21,7 +21,7 @@
     "cls-rtracer": "^2.6.0",
     "escape-goat": "^3.0.0",
     "fast-printf": "1.6.9",
-    "fast-xml-parser": "^4.0.3",
+    "fast-xml-parser": "^4.0.4",
     "fp-ts": "^2.11.8",
     "googleapis": "^95.0.0",
     "googleapis-common": "5.1.0",
