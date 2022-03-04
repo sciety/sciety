@@ -69,6 +69,12 @@ const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
   'cell biology',
 ];
 
+const eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas: ReadonlyArray<string> = [
+  'animal behavior and cognition',
+  'neuroscience',
+  'neurology',
+];
+
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
@@ -93,6 +99,12 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
         return addArticleToList(ports)({
           articleId: event.articleId.value,
           listId: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
+        });
+      }
+      if (eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas.includes(subjectArea)) {
+        return addArticleToList(ports)({
+          articleId: event.articleId.value,
+          listId: '3253c905-8083-4f3d-9e1f-0a8085e64ee5',
         });
       }
       ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
