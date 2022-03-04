@@ -89,22 +89,20 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     event.articleId,
     ports.getBiorxivOrMedrxivSubjectArea,
     TE.chain((subjectArea) => {
+      let listId: string | null = null;
       if (elifeMedicineMedrxivSubjectAreas.includes(subjectArea)) {
-        return addArticleToList(ports)({
-          articleId: event.articleId.value,
-          listId: 'c7237468-aac1-4132-9598-06e9ed68f31d',
-        });
+        listId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
       }
       if (elifeCellBiologyBiorxivSubjectAreas.includes(subjectArea)) {
-        return addArticleToList(ports)({
-          articleId: event.articleId.value,
-          listId: 'cb15ef21-944d-44d6-b415-a3d8951e9e8b',
-        });
+        listId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
       }
       if (eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas.includes(subjectArea)) {
+        listId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
+      }
+      if (listId !== null) {
         return addArticleToList(ports)({
           articleId: event.articleId.value,
-          listId: '3253c905-8083-4f3d-9e1f-0a8085e64ee5',
+          listId,
         });
       }
       ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
