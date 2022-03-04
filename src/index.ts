@@ -1,5 +1,7 @@
+import { performance } from 'perf_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
+import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -10,6 +12,9 @@ import { createApplicationServer } from './http/server';
 import {
   Adapters, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
+import { fetchData } from './infrastructure/fetchers';
+import { addArticleToElifeSubjectAreaLists } from './policies/add-article-to-elife-subject-area-lists';
+import { getBiorxivOrMedrxivSubjectArea } from './third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -28,15 +33,28 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
+  const getJson = async (uri: string) => {
+    const response = await fetchData(adapters.logger)<Json>(uri);
+    return response.data;
+  };
+
   const events = await adapters.getAllEvents();
+  const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
-  for (let i = 0; i < events.length; i += 1) {
+  for (let i = 0; i < Math.min(events.length, 100); i += 1) {
     await noopPolicy(events[i])();
+    await addArticleToElifeSubjectAreaLists(
+      {
+        ...adapters,
+        getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({ getJson, logger: adapters.logger }),
+      },
+    )(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 10);
     });
   }
-  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length });
+  const stop = performance.now();
+  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length, durationInMs: stop - start });
 };
 
 void pipe(
