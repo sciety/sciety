@@ -7,6 +7,7 @@ import { FetchStaticFile } from './fetch-static-file';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
+import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
@@ -19,6 +20,7 @@ export type Adapters = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,

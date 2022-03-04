@@ -31,9 +31,15 @@ const mapResponse = flow(
   ({ category }) => category,
 );
 
-type GetBiorxivOrMedrxivSubjectArea = (ports: Ports) => (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
-export const getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea = (ports) => (articleId) => pipe(
+type ConstructGetBiorxivOrMedrxivSubjectArea = (ports: Ports) => GetBiorxivOrMedrxivSubjectArea;
+
+export const constructGetBiorxivOrMedrxivSubjectArea: ConstructGetBiorxivOrMedrxivSubjectArea = (
+  ports,
+) => (
+  articleId,
+) => pipe(
   [
     'biorxiv' as const,
     'medrxiv' as const,
