@@ -33,13 +33,7 @@ const mapResponse = flow(
 
 export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
-type ConstructGetBiorxivOrMedrxivSubjectArea = (ports: Ports) => GetBiorxivOrMedrxivSubjectArea;
-
-export const constructGetBiorxivOrMedrxivSubjectArea: ConstructGetBiorxivOrMedrxivSubjectArea = (
-  ports,
-) => (
-  articleId,
-) => pipe(
+export const getBiorxivOrMedrxivSubjectArea = (ports: Ports): GetBiorxivOrMedrxivSubjectArea => (articleId) => pipe(
   [
     'biorxiv' as const,
     'medrxiv' as const,

@@ -30,7 +30,7 @@ import {
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
-import { constructGetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
+import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
@@ -125,7 +125,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
-      const getBiorxivOrMedrxivSubjectArea = constructGetBiorxivOrMedrxivSubjectArea({ getJson, logger });
+      const constructedGetBiorxivOrMedrxivSubjectArea = getBiorxivOrMedrxivSubjectArea({ getJson, logger });
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
       return {
         fetchArticle: fetchCrossrefArticle(
@@ -146,11 +146,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
-              getBiorxivOrMedrxivSubjectArea,
+              getBiorxivOrMedrxivSubjectArea: constructedGetBiorxivOrMedrxivSubjectArea,
             })),
           )),
         ),
-        getBiorxivOrMedrxivSubjectArea,
+        getBiorxivOrMedrxivSubjectArea: constructedGetBiorxivOrMedrxivSubjectArea,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
