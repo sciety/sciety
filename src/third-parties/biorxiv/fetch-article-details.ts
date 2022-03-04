@@ -25,7 +25,7 @@ const constructUrl = (doi: Doi, server: ArticleServer) => (
 
 type FetchArticleDetails = (doi: Doi, server: ArticleServer)
 => ({ getJson, logger }: Dependencies)
-=> TE.TaskEither<Error, BiorxivArticleDetails>;
+=> TE.TaskEither<void, BiorxivArticleDetails>;
 
 export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
   TE.tryCatch(
@@ -45,7 +45,7 @@ export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJ
         url: constructUrl(doi, server),
         error: error.message,
       });
-      return error;
+      return undefined;
     },
   ),
 );
