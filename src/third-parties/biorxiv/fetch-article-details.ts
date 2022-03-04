@@ -19,6 +19,10 @@ const headers = {
   'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
 };
 
+const constructUrl = (doi: Doi, server: ArticleServer) => (
+  `https://api.biorxiv.org/details/${server}/${doi.value}`
+);
+
 type FetchArticleDetails = (doi: Doi, server: ArticleServer)
 => ({ getJson, logger }: Dependencies)
 => TE.TaskEither<Error, BiorxivArticleDetails>;
@@ -26,7 +30,7 @@ type FetchArticleDetails = (doi: Doi, server: ArticleServer)
 export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
   TE.tryCatch(
     async () => getJson(
-      `https://api.biorxiv.org/details/${server}/${doi.value}`,
+      constructUrl(doi, server),
       headers,
     ),
     E.toError,
@@ -38,7 +42,7 @@ export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJ
   TE.mapLeft(
     (error) => {
       logger('debug', 'Failed to retrieve article details from bioRxiv API', {
-        url: `https://api.biorxiv.org/details/${server}/${doi.value}`,
+        url: constructUrl(doi, server),
         error: error.message,
       });
       return error;
