@@ -110,11 +110,18 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       }
     )),
   )),
-  TE.chain((adapters) => TE.tryCatch(
+  TE.map((lowLevelAdapters) => ({
+    ...lowLevelAdapters,
+    getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({
+      getJson: lowLevelAdapters.getJson,
+      logger: lowLevelAdapters.logger,
+    }),
+  })),
+  TE.chain((partialAdapters) => TE.tryCatch(
     async () => {
       const {
         events, logger, pool, getJson,
-      } = adapters;
+      } = partialAdapters;
 
       const getAllEvents = T.of(events);
       const fetchFile = fetchStaticFile(loggerIO(logger));
@@ -126,7 +133,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
-      const constructedGetBiorxivOrMedrxivSubjectArea = getBiorxivOrMedrxivSubjectArea({ getJson, logger });
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
       return {
         fetchArticle: fetchCrossrefArticle(
@@ -147,11 +153,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               getAllEvents,
               logger,
               commitEvents: commitEventsWithoutListeners,
-              getBiorxivOrMedrxivSubjectArea: constructedGetBiorxivOrMedrxivSubjectArea,
+              getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
             })),
           )),
         ),
-        getBiorxivOrMedrxivSubjectArea: constructedGetBiorxivOrMedrxivSubjectArea,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
@@ -168,7 +173,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getJson: getCachedAxiosRequest(logger),
           logger,
         }),
-        ...adapters,
+        ...partialAdapters,
       };
     },
     identity,
