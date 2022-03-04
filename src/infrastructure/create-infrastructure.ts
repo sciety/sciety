@@ -103,17 +103,18 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         pool,
         logger,
+        getJson: async (uri: string) => {
+          const response = await fetchData(logger)<Json>(uri);
+          return response.data;
+        },
       }
     )),
   )),
   TE.chain((adapters) => TE.tryCatch(
     async () => {
-      const { events, logger, pool } = adapters;
-
-      const getJson = async (uri: string) => {
-        const response = await fetchData(logger)<Json>(uri);
-        return response.data;
-      };
+      const {
+        events, logger, pool, getJson,
+      } = adapters;
 
       const getAllEvents = T.of(events);
       const fetchFile = fetchStaticFile(loggerIO(logger));
