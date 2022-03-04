@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as PR from 'io-ts/PathReporter';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './BiorxivArticleDetails';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
@@ -33,11 +33,14 @@ export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJ
   ),
   TE.chainEitherK(flow(
     biorxivArticleDetails.decode,
-    E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+    E.mapLeft(flow(formatValidationErrors, (errors) => errors.join('\n'), Error)),
   )),
   TE.mapLeft(
     (error) => {
-      logger('debug', 'Failed to retrieve article details from bioRxiv API', { doi, error });
+      logger('debug', 'Failed to retrieve article details from bioRxiv API', {
+        url: `https://api.biorxiv.org/details/${server}/${doi.value}`,
+        error: error.message,
+      });
       return error;
     },
   ),
