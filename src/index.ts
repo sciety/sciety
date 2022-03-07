@@ -31,9 +31,10 @@ type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
   const events = await adapters.getAllEvents();
+  const amountOfEventsToProcess = Math.min(events.length, 100);
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
-  for (let i = 0; i < Math.min(events.length, 100); i += 1) {
+  for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
     await addArticleToElifeSubjectAreaLists(adapters)(events[i])();
     await new Promise((resolve) => {
@@ -41,7 +42,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
     });
   }
   const stop = performance.now();
-  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length, durationInMs: stop - start });
+  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
 
 void pipe(
