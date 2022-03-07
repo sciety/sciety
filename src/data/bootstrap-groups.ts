@@ -12,7 +12,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://biophysics.sciencecolab.org',
     slug: 'biophysics-colab',
     isAutomated: false,
-  }, new Date('2021-06-29T08:13:16Z')),
+  }, new Date('2021-06-29T08:13:14Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
     name: 'ASAPbio crowd review',
@@ -22,7 +22,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://asapbio.org/about-us',
     slug: 'asapbio-crowd-review',
     isAutomated: false,
-  }, new Date('2021-06-29T08:13:16Z')),
+  }, new Date('2021-06-29T08:13:15Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     name: 'NCRC',
@@ -52,7 +52,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://elifesciences.org/',
     slug: 'elife',
     isAutomated: false,
-  }, new Date('2020-08-12T13:59:31Z')),
+  }, new Date('2020-08-12T13:59:29Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
     name: 'ScreenIT',
@@ -102,7 +102,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://www.reviewcommons.org/',
     slug: 'review-commons',
     isAutomated: false,
-  }, new Date('2020-08-12T13:59:31Z')),
+  }, new Date('2020-08-12T13:59:30Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     name: 'Peer Community In Zoology',
@@ -132,7 +132,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://ecology.peercommunityin.org/',
     slug: 'pci-ecology',
     isAutomated: false,
-  }, new Date('2020-08-17T12:56:40Z')),
+  }, new Date('2020-08-17T12:56:38Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     name: 'Peer Community in Animal Science',
@@ -142,7 +142,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://animsci.peercommunityin.org/',
     slug: 'pci-animal-science',
     isAutomated: false,
-  }, new Date('2020-08-17T12:56:40Z')),
+  }, new Date('2020-08-17T12:56:39Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     name: 'Peer Community in Archaeology',
