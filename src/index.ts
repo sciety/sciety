@@ -37,7 +37,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
     await noopPolicy(events[i])();
     await addArticleToElifeSubjectAreaLists(adapters)(events[i])();
     await new Promise((resolve) => {
-      setTimeout(resolve, 10);
+      setTimeout(resolve, 0);
     });
   }
   const stop = performance.now();
