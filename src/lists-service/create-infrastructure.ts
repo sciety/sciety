@@ -1,12 +1,11 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as A from 'fp-ts/Array';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from-database';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
-import { byDate } from '../domain-events';
+import { sort as sortEvents } from '../domain-events';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
@@ -35,7 +34,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           ...eventsFromDatabase,
           ...listCreationEvents,
         ]),
-        TE.map(A.sort(byDate)),
+        TE.map(sortEvents),
       ),
       pool: TE.right(pool),
       logger: TE.right(logger),

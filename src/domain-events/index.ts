@@ -88,4 +88,4 @@ export {
   userUnsavedArticleEventCodec,
 } from './user-unsaved-article-event';
 
-export { byDate, byUuid } from './domain-event';
+export { sort } from './domain-event';

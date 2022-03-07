@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
@@ -31,12 +32,14 @@ export type DomainEvent =
   UserRevokedFindingReviewNotHelpfulEvent |
   UserCreatedAccountEvent;
 
-export const byDate: Ord.Ord<DomainEvent> = pipe(
+const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
   Ord.contramap((event) => event.date),
 );
 
-export const byUuid: Ord.Ord<DomainEvent> = pipe(
+const byUuid: Ord.Ord<DomainEvent> = pipe(
   S.Ord,
   Ord.contramap((event) => event.id),
 );
+
+export const sort = A.sortBy([byDate, byUuid]);

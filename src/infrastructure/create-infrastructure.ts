@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as A from 'fp-ts/Array';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -25,7 +24,7 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
-  byDate, byUuid, isArticleAddedToListEvent,
+  isArticleAddedToListEvent, sort as sortEvents,
 } from '../domain-events';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
@@ -99,7 +98,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             ...groupEvents,
             ...listCreationEvents,
           ],
-          A.sortBy([byDate, byUuid]),
+          sortEvents,
         ),
         pool,
         logger,
