@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
@@ -45,6 +46,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     getListsEvents: pipe(
       eventsAvailableAtStartup,
       appendNewListsEventsFromDatabase(pool, logger),
+      TE.map(RA.toArray),
+      TE.map(sortEvents),
     ),
     logger,
   })),
