@@ -122,7 +122,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     // this group id is wrong, but if it were right it would trigger a bug
     // on the selection of the list from its Read Model
     GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
-    new Date('2021-11-24'),
+    new Date('2021-11-24T00:00:00Z'),
   ),
   listCreated(
     LID.fromValidatedString('5ac3a439-e5c6-4b15-b109-92928a740812'),
