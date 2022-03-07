@@ -1,3 +1,7 @@
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
+import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
@@ -26,3 +30,13 @@ export type DomainEvent =
   UserFoundReviewNotHelpfulEvent |
   UserRevokedFindingReviewNotHelpfulEvent |
   UserCreatedAccountEvent;
+
+export const byDate: Ord.Ord<DomainEvent> = pipe(
+  D.Ord,
+  Ord.contramap((event) => event.date),
+);
+
+export const byUuid: Ord.Ord<DomainEvent> = pipe(
+  S.Ord,
+  Ord.contramap((event) => event.id),
+);

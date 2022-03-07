@@ -25,9 +25,8 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
-  byDate, isArticleAddedToListEvent,
+  byDate, byUuid, isArticleAddedToListEvent,
 } from '../domain-events';
-import { byUuid } from '../domain-events/utils';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
