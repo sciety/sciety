@@ -8,14 +8,14 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by Biophysics Colab.',
     GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
-    new Date('2021-06-29T08:13:17Z'),
+    new Date('2021-06-29T08:13:15Z'),
   ),
   listCreated(
     LID.fromValidatedString('dc83aa3b-1691-4356-b697-4257d31a27dc'),
     'Evaluated articles',
     'Articles that have been evaluated by ASAPbio crowd review.',
     GID.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
-    new Date('2021-06-29T08:13:17Z'),
+    new Date('2021-06-29T08:13:16Z'),
   ),
   listCreated(
     LID.fromValidatedString('4654fd6e-cb00-458f-967b-348b41804927'),
@@ -36,7 +36,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by eLife.',
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-    new Date('2020-08-12T13:59:32Z'),
+    new Date('2020-08-12T13:59:30Z'),
   ),
   listCreated(
     LID.fromValidatedString('e9606e0e-8fdb-4336-a24a-cc6547d7d950'),
@@ -71,7 +71,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by Review Commons.',
     GID.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
-    new Date('2020-08-12T13:59:32Z'),
+    new Date('2020-08-12T13:59:31Z'),
   ),
   listCreated(
     LID.fromValidatedString('a4d57b30-b41c-4c9d-81f0-dccd4cd1d099'),
@@ -92,14 +92,14 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Ecology.',
     GID.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
-    new Date('2020-08-17T12:56:41Z'),
+    new Date('2020-08-17T12:56:39Z'),
   ),
   listCreated(
     LID.fromValidatedString('e764d90c-ffea-4b0e-a63e-d2b5236aa1ed'),
     'Evaluated articles',
     'Articles that have been evaluated by Peer Community in Animal Science.',
     GID.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
-    new Date('2020-08-17T12:56:41Z'),
+    new Date('2020-08-17T12:56:40Z'),
   ),
   listCreated(
     LID.fromValidatedString('24a60cf9-5f45-43f2-beaf-04139e6f0a0e'),
