@@ -19,7 +19,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { bootstrapGroups } from '../data/bootstrap-groups';
@@ -52,14 +52,10 @@ const createLogger = (dependencies: Dependencies) => pipe(
   rTracerLogger,
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
-  {
-    logger: createLogger(dependencies),
-    pool: new Pool(),
-  },
-  TE.right,
-  TE.chainFirst(({ pool }) => TE.tryCatch(
-    async () => pool.query(`
+type DatabaseConnectionPoolAndLogger = { pool: Pool, logger: Logger };
+
+const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryCatch(
+  async () => pool.query(`
       CREATE TABLE IF NOT EXISTS events (
         id uuid,
         type varchar,
@@ -68,8 +64,16 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         PRIMARY KEY (id)
       );
     `),
-    identity,
-  )),
+  identity,
+);
+
+export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
+  {
+    pool: new Pool(),
+    logger: createLogger(dependencies),
+  },
+  TE.right,
+  TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     {
       eventsFromDatabase: pipe(
