@@ -45,14 +45,16 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
+const createLogger = (dependencies: Dependencies) => pipe(
+  dependencies.prettyLog,
+  jsonSerializer,
+  (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
+  rTracerLogger,
+);
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
-    logger: pipe(
-      dependencies.prettyLog,
-      jsonSerializer,
-      (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
-      rTracerLogger,
-    ),
+    logger: createLogger(dependencies),
     pool: new Pool(),
   },
   TE.right,
