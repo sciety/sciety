@@ -112,7 +112,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
     getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({
-      getJson: lowLevelAdapters.getJson,
+      getJson: async (uri: string) => {
+        const response = await fetchData(lowLevelAdapters.logger, 10000)<Json>(uri);
+        return response.data;
+      },
       logger: lowLevelAdapters.logger,
     }),
   })),
