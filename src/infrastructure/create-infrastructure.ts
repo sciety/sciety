@@ -26,6 +26,7 @@ import { bootstrapGroups } from '../data/bootstrap-groups';
 import {
   isArticleAddedToListEvent, sort as sortEvents,
 } from '../domain-events';
+import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -72,6 +73,22 @@ const createGetJson = (logger: Logger) => async (uri: string) => {
   return response.data;
 };
 
+const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
+  pool: Pool,
+) => (
+  events: ReadonlyArray<RuntimeGeneratedEvent>,
+) => pipe(
+  [],
+  TE.right,
+  TE.map(RA.filter(isArticleAddedToListEvent)),
+  TE.map(RA.filter(needsToBeAdded(events))),
+  TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
+  TE.map((eventsToAdd) => [
+    ...events,
+    ...eventsToAdd,
+  ]),
+);
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
     pool: new Pool(),
@@ -83,17 +100,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     {
       eventsFromDatabase: pipe(
         getEventsFromDatabase(pool, loggerIO(logger)),
-        TE.chainW((events) => pipe(
-          [],
-          TE.right,
-          TE.map(RA.filter(isArticleAddedToListEvent)),
-          TE.map(RA.filter(needsToBeAdded(events))),
-          TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
-          TE.map((eventsToAdd) => [
-            ...events,
-            ...eventsToAdd,
-          ]),
-        )),
+        TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
       ),
       groupEvents: pipe(
         bootstrapGroups,
