@@ -67,6 +67,11 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
   identity,
 );
 
+const createGetJson = (logger: Logger) => async (uri: string) => {
+  const response = await fetchData(logger)<Json>(uri);
+  return response.data;
+};
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   {
     pool: new Pool(),
@@ -108,10 +113,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         pool,
         logger,
-        getJson: async (uri: string) => {
-          const response = await fetchData(logger)<Json>(uri);
-          return response.data;
-        },
+        getJson: createGetJson(logger),
       }
     )),
   )),
