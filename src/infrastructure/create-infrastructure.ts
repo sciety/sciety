@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -22,7 +21,7 @@ import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
-import { bootstrapGroups } from '../data/bootstrap-groups';
+import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
 import {
   isArticleAddedToListEvent, sort as sortEvents,
 } from '../domain-events';
@@ -97,23 +96,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.right,
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
-    {
-      eventsFromDatabase: pipe(
-        getEventsFromDatabase(pool, loggerIO(logger)),
-        TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
-      ),
-      groupEvents: pipe(
-        bootstrapGroups,
-        TE.right,
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.map(({ eventsFromDatabase, groupEvents }) => (
+    getEventsFromDatabase(pool, loggerIO(logger)),
+    TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
+    TE.map((eventsFromDatabase) => (
       {
         events: pipe(
           [
             ...eventsFromDatabase,
-            ...groupEvents,
+            ...groupCreatedEvents,
             ...listCreationEvents,
           ],
           sortEvents,
