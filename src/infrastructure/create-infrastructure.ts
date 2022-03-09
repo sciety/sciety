@@ -72,6 +72,11 @@ const createGetJson = (logger: Logger) => async (uri: string) => {
   return response.data;
 };
 
+const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
+  const response = await fetchData(logger, timeout)<Json>(uri);
+  return response.data;
+};
+
 const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   pool: Pool,
 ) => (
@@ -118,10 +123,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
     getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({
-      getJson: async (uri: string) => {
-        const response = await fetchData(lowLevelAdapters.logger, 10000)<Json>(uri);
-        return response.data;
-      },
+      getJson: createGetJsonWithTimeout(lowLevelAdapters.logger, 10000),
       logger: lowLevelAdapters.logger,
     }),
   })),
