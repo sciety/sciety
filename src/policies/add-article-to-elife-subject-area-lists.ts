@@ -107,7 +107,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
       ),
     )),
     TE.match(
-      () => { ports.logger('error', 'addArticleToElifeSubjectAreaLists policy: failed to fetch subject area', { articleId: event.articleId }); },
+      (errorMessage) => { ports.logger('error', 'addArticleToElifeSubjectAreaLists policy failed', { articleId: event.articleId, errorMessage }); },
       () => {},
     ),
   );
