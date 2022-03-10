@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -75,9 +77,11 @@ const eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas: ReadonlyArray<string> = [
   'neurology',
 ];
 
-const elifeBiochemistryAndChemicalBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
-  'biochemistry',
-];
+const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
+
+const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
+  biochemistry: biochemistryAndChemicalBiologyListId,
+};
 
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
@@ -94,6 +98,11 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     ports.getBiorxivOrMedrxivSubjectArea,
     TE.chain((subjectArea) => {
       let listId: string | null = null;
+      listId = pipe(
+        mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
+        R.lookup(subjectArea),
+        O.getOrElseW(() => null),
+      );
       if (elifeMedicineMedrxivSubjectAreas.includes(subjectArea)) {
         listId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
       }
@@ -102,9 +111,6 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
       }
       if (eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas.includes(subjectArea)) {
         listId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
-      }
-      if (elifeBiochemistryAndChemicalBiologyBiorxivSubjectAreas.includes(subjectArea)) {
-        listId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
       }
       if (listId !== null) {
         return addArticleToList(ports)({
