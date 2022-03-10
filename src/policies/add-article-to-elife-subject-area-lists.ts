@@ -19,54 +19,6 @@ export type Ports = AddArticleToListPorts & {
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
-const elifeMedicineMedrxivSubjectAreas = [
-  'addiction medicine',
-  'anesthesia',
-  'cardiovascular medicine',
-  'dentistry and oral medicine',
-  'dermatology',
-  'emergency medicine',
-  'endocrinology',
-  'forensic medicine',
-  'gastroenterology',
-  'genetic and genomic medicine',
-  'geriatric medicine',
-  'health economics',
-  'health informatics',
-  'health policy',
-  'health systems and quality improvement',
-  'hematology',
-  'hiv aids',
-  'infectious diseases',
-  'intensive care and critical care medicine',
-  'medical education',
-  'medical ethics',
-  'nephrology',
-  'nursing',
-  'nutrition',
-  'obstetrics and gynecology',
-  'occupational and environmental healthoophthalmology',
-  'orthopedics',
-  'otolaryngology',
-  'pain medicine',
-  'palliative medicine',
-  'pathology',
-  'pediatrics',
-  'pharmacology and therapeutics',
-  'primary care research',
-  'psychiatry and clinical psychology',
-  'radiology and imaging',
-  'rehabilitation medicine and physical therapy',
-  'respiratory medicine',
-  'rheumatology',
-  'sexual and reproductive health',
-  'sports medicine',
-  'surgery',
-  'toxicology',
-  'transplantation',
-  'urology',
-];
-
 const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
   'cell biology',
 ];
@@ -78,9 +30,55 @@ const eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas: ReadonlyArray<string> = [
 ];
 
 const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
+const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
   biochemistry: biochemistryAndChemicalBiologyListId,
+  'addiction medicine': medicineListId,
+  anesthesia: medicineListId,
+  'cardiovascular medicine': medicineListId,
+  'dentistry and oral medicine': medicineListId,
+  dermatology: medicineListId,
+  'emergency medicine': medicineListId,
+  endocrinology: medicineListId,
+  'forensic medicine': medicineListId,
+  gastroenterology: medicineListId,
+  'genetic and genomic medicine': medicineListId,
+  'geriatric medicine': medicineListId,
+  'health economics': medicineListId,
+  'health informatics': medicineListId,
+  'health policy': medicineListId,
+  'health systems and quality improvement': medicineListId,
+  hematology: medicineListId,
+  'hiv aids': medicineListId,
+  'infectious diseases': medicineListId,
+  'intensive care and critical care medicine': medicineListId,
+  'medical education': medicineListId,
+  'medical ethics': medicineListId,
+  nephrology: medicineListId,
+  nursing: medicineListId,
+  nutrition: medicineListId,
+  'obstetrics and gynecology': medicineListId,
+  'occupational and environmental healthoophthalmology': medicineListId,
+  orthopedics: medicineListId,
+  otolaryngology: medicineListId,
+  'pain medicine': medicineListId,
+  'palliative medicine': medicineListId,
+  pathology: medicineListId,
+  pediatrics: medicineListId,
+  'pharmacology and therapeutics': medicineListId,
+  'primary care research': medicineListId,
+  'psychiatry and clinical psychology': medicineListId,
+  'radiology and imaging': medicineListId,
+  'rehabilitation medicine and physical therapy': medicineListId,
+  'respiratory medicine': medicineListId,
+  rheumatology: medicineListId,
+  'sexual and reproductive health': medicineListId,
+  'sports medicine': medicineListId,
+  surgery: medicineListId,
+  toxicology: medicineListId,
+  transplantation: medicineListId,
+  urology: medicineListId,
 };
 
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
@@ -103,9 +101,6 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
         R.lookup(subjectArea),
         O.getOrElseW(() => null),
       );
-      if (elifeMedicineMedrxivSubjectAreas.includes(subjectArea)) {
-        listId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
-      }
       if (elifeCellBiologyBiorxivSubjectAreas.includes(subjectArea)) {
         listId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
       }
