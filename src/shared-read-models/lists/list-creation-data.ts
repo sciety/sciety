@@ -119,8 +119,6 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7'),
     'High interest articles',
     'Articles that have been identified as high interest by NCRC editors.',
-    // this group id is wrong, but if it were right it would trigger a bug
-    // on the selection of the list from its Read Model
     GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     new Date('2021-11-24T00:00:00Z'),
   ),
@@ -128,8 +126,6 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('5ac3a439-e5c6-4b15-b109-92928a740812'),
     'Endorsed articles',
     'Articles that have been endorsed by Biophysics Colab.',
-    // this group id is wrong, but if it were right it would trigger a bug
-    // on the selection of the list from its Read Model
     GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     new Date('2021-11-22T15:09:00Z'),
   ),
@@ -151,8 +147,6 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'),
     'Medicine',
     'Medicine articles that have been evaluated by eLife.',
-    // this group id is wrong, but if it were right it would trigger a bug
-    // on the selection of the list from its Read Model
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-02-01T13:14:00Z'),
   ),
@@ -160,8 +154,6 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'),
     'Cell Biology',
     'Cell Biology articles that have been evaluated by eLife.',
-    // this group id is wrong, but if it were right it would trigger a bug
-    // on the selection of the list from its Read Model
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-02-09T09:43:00Z'),
   ),
@@ -169,8 +161,6 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('3253c905-8083-4f3d-9e1f-0a8085e64ee5'),
     'Neuroscience',
     'Neuroscience articles that have been evaluated by eLife.',
-    // this group id is wrong, but if it were right it would trigger a bug
-    // on the selection of the list from its Read Model
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-03T09:25:00Z'),
   ),
