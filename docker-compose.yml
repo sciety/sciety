@@ -37,7 +37,7 @@ services:
   lists:
     container_name: sciety_lists
     build:
-      context: ""
+      context: .
     environment:
       PGUSER: user
       PGHOST: db
