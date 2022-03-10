@@ -75,6 +75,10 @@ const eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas: ReadonlyArray<string> = [
   'neurology',
 ];
 
+const elifeBiochemistryAndChemicalBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
+  'biochemistry',
+];
+
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
@@ -98,6 +102,9 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
       }
       if (eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas.includes(subjectArea)) {
         listId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
+      }
+      if (elifeBiochemistryAndChemicalBiologyBiorxivSubjectAreas.includes(subjectArea)) {
+        listId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
       }
       if (listId !== null) {
         return addArticleToList(ports)({
