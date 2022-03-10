@@ -19,22 +19,17 @@ export type Ports = AddArticleToListPorts & {
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
-const elifeCellBiologyBiorxivSubjectAreas: ReadonlyArray<string> = [
-  'cell biology',
-];
-
-const eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas: ReadonlyArray<string> = [
-  'animal behavior and cognition',
-  'neuroscience',
-  'neurology',
-];
-
 const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
+const cellBiologyListId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
+const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
   // biorxiv
   biochemistry: biochemistryAndChemicalBiologyListId,
+  'cell biology': cellBiologyListId,
+  'animal behavior and cognition': neuroscienceListId,
+  neuroscience: neuroscienceListId,
   // medrxiv
   'addiction medicine': medicineListId,
   anesthesia: medicineListId,
@@ -58,6 +53,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'medical education': medicineListId,
   'medical ethics': medicineListId,
   nephrology: medicineListId,
+  neurology: neuroscienceListId,
   nursing: medicineListId,
   nutrition: medicineListId,
   'obstetrics and gynecology': medicineListId,
@@ -103,12 +99,6 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
         R.lookup(subjectArea),
         O.getOrElseW(() => null),
       );
-      if (elifeCellBiologyBiorxivSubjectAreas.includes(subjectArea)) {
-        listId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
-      }
-      if (eLifeNeuroscienceBiorxivOrMedrxivSubjectAreas.includes(subjectArea)) {
-        listId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
-      }
       if (listId !== null) {
         return addArticleToList(ports)({
           articleId: event.articleId.value,
