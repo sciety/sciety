@@ -101,7 +101,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.right,
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
-    getEventsFromDatabase(pool, loggerIO(logger)),
+    getEventsFromDatabase(pool, logger),
     TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
     TE.map((eventsFromDatabase) => pipe(
       [
