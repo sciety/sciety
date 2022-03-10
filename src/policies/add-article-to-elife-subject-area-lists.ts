@@ -92,22 +92,20 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
   return pipe(
     event.articleId,
     ports.getBiorxivOrMedrxivSubjectArea,
-    TE.chain((subjectArea) => {
-      let listId: string | null = null;
-      listId = pipe(
-        mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
-        R.lookup(subjectArea),
-        O.getOrElseW(() => null),
-      );
-      if (listId !== null) {
-        return addArticleToList(ports)({
+    TE.chain((subjectArea) => pipe(
+      mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
+      R.lookup(subjectArea),
+      O.foldW(
+        () => {
+          ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
+          return TE.right(undefined);
+        },
+        (listId) => addArticleToList(ports)({
           articleId: event.articleId.value,
           listId,
-        });
-      }
-      ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
-      return TE.right(undefined);
-    }),
+        }),
+      ),
+    )),
     TE.match(
       () => { ports.logger('error', 'addArticleToElifeSubjectAreaLists policy: failed to fetch subject area', { articleId: event.articleId }); },
       () => {},
