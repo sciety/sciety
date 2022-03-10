@@ -14,7 +14,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: number): number => {
+const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: number): number => {
   switch (groupSlug) {
     case 'ncrc':
       return listCount + 1;

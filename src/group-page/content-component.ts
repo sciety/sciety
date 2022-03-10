@@ -6,7 +6,6 @@ import { about, Ports as AboutPorts } from './about/about';
 import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
-import { addFeaturedArticlesListsToListCount } from '../shared-components/group-card/populate-group-view-model';
 import { Tab, tabs } from '../shared-components/tabs';
 import { selectAllListsOwnedBy } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
@@ -63,7 +62,6 @@ export const contentComponent: ContentComponent = (
       TE.rightTask,
       TE.chain(selectAllListsOwnedBy(group.id)),
       TE.map(RA.size),
-      TE.map(addFeaturedArticlesListsToListCount(group.slug)),
     ),
     followerCount: pipe(
       ports.getAllEvents,

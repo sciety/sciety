@@ -1,15 +1,13 @@
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, listCreated } from '../../../src/domain-events';
+import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { List, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryGroupId();
@@ -69,9 +67,9 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the group owns a list whose content is determined by evaluation events', () => {
+  describe('when the group owns a non-empty list', () => {
     const listId = arbitraryListId();
-    const listName = 'Evaluated articles';
+    const listName = arbitraryString();
     const listDescription = arbitraryString();
     const newerDate = new Date('2021-07-08');
     let result: List;
@@ -80,8 +78,8 @@ describe('select-all-lists-owned-by', () => {
       result = await pipe(
         [
           listCreated(listId, listName, listDescription, ownerId),
-          evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId()),
-          evaluationRecorded(ownerId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), newerDate),
+          articleAddedToList(arbitraryDoi(), listId),
+          articleAddedToList(arbitraryDoi(), listId, newerDate),
         ],
         selectAllListsOwnedBy(ownerId),
         TE.getOrElse(shouldNotBeCalled),
@@ -110,42 +108,16 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the group owns a list whose content is determined by evaluation events and the group has evaluated one article more than once', () => {
-    const olderDate = new Date('2021-07-08');
-    const articleId = arbitraryDoi();
-    let result: List;
-
-    beforeEach(async () => {
-      result = await pipe(
-        [
-          listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), ownerId),
-          evaluationRecorded(ownerId, articleId, arbitraryReviewId(), [], new Date(), olderDate),
-          evaluationRecorded(ownerId, articleId, arbitraryReviewId()),
-        ],
-        selectAllListsOwnedBy(ownerId),
-        TE.getOrElse(shouldNotBeCalled),
-        T.map((lists) => lists[0]),
-      )();
-    });
-
-    it('returns a count of 1', () => {
-      expect(result.articleCount).toBe(1);
-    });
-
-    it.skip('returns the date of the article first being added to the list', () => {
-      expect(result.lastUpdated).toStrictEqual(O.some(olderDate));
-    });
-  });
-
   describe('when a list with a different owner contains some articles', () => {
     const anotherOwnerId = arbitraryGroupId();
+    const anotherListId = arbitraryListId();
     let result: ReadonlyArray<List>;
 
     beforeEach(async () => {
       result = await pipe(
         [
-          listCreated(arbitraryListId(), 'Evaluated articles', arbitraryString(), anotherOwnerId),
-          evaluationRecorded(anotherOwnerId, arbitraryDoi(), arbitraryReviewId()),
+          listCreated(anotherListId, arbitraryString(), arbitraryString(), anotherOwnerId),
+          articleAddedToList(arbitraryDoi(), anotherListId),
         ],
         selectAllListsOwnedBy(ownerId),
         TE.getOrElse(shouldNotBeCalled),
