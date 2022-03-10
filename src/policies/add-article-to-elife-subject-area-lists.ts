@@ -33,7 +33,9 @@ const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8b
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
+  // biorxiv
   biochemistry: biochemistryAndChemicalBiologyListId,
+  // medrxiv
   'addiction medicine': medicineListId,
   anesthesia: medicineListId,
   'cardiovascular medicine': medicineListId,
