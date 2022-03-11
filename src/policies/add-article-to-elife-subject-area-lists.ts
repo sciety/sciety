@@ -23,13 +23,15 @@ const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8b
 const cellBiologyListId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
+const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
   // biorxiv
+  'animal behavior and cognition': neuroscienceListId,
   biochemistry: biochemistryAndChemicalBiologyListId,
   'cell biology': cellBiologyListId,
-  'animal behavior and cognition': neuroscienceListId,
   neuroscience: neuroscienceListId,
+  biophysics: structuralBiologyAndMolecularBiophysicsListId,
   // medrxiv
   'addiction medicine': medicineListId,
   anesthesia: medicineListId,
