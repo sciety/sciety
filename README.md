@@ -1,10 +1,6 @@
 Sciety
 ======
 
-[![Commit checks][Checks badge]][Checks]
-[![Open issues][Open issues badge]][Open issues]
-[![License][License badge]][License]
-
 Development
 -----------
 
