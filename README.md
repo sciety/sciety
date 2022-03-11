@@ -31,6 +31,10 @@ make dev
 
 You can now access the app at <http://localhost:8080>.
 
+Certain parts of the application require you to have set up credentials for external services on your machine.
+
+Most content will be missing as the database will be empty, see the Operations section below on how to populate it.
+
 <details>
 
 <summary>Rebuilding the container</summary>
