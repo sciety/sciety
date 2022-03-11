@@ -35,20 +35,7 @@ Certain parts of the application require you to have set up credentials for exte
 
 Most content will be missing as the database will be empty, see the Operations section below on how to populate it.
 
-<details>
-
-<summary>Rebuilding the container</summary>
-
-Static content is attached to the containers as volumes so most updates are visible without a need to rebuild the
-container. However, changes to NPM dependencies, for example, require a rebuild. So you may need to execute
-
-```shell
-make dev
-```
-
-again before running further commands.
-
-</details>
+Containers restart automatically on most code changes. If they don't, `ctrl-c` and rerun `make dev`. An example of when this is needed, is changes to `package.json`.
 
 <details>
 
