@@ -31,9 +31,9 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'animal behavior and cognition': neuroscienceListId,
   biochemistry: biochemistryAndChemicalBiologyListId,
   bioinformatics: computationalAndSystemsBiologyListId,
+  biophysics: structuralBiologyAndMolecularBiophysicsListId,
   'cell biology': cellBiologyListId,
   neuroscience: neuroscienceListId,
-  biophysics: structuralBiologyAndMolecularBiophysicsListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
   'addiction medicine': medicineListId,
