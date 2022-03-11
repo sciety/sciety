@@ -17,7 +17,6 @@ Development
 - [GNU Make]
 - [Node.js]
 - [Git LFS]
-- [logcli]
 
 </details>
 
@@ -95,6 +94,14 @@ make lint:fix
 ```
 
 ## Operations
+
+<details>
+
+<summary>Requirements</summary>
+
+- [logcli]
+
+</details>
 
 The application is deployed on a Kubernetes cluster via an Helm chart.
 
