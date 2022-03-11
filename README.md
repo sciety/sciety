@@ -1,6 +1,10 @@
 Sciety
 ======
 
+The repo for [sciety.org](https://sciety.org).
+
+Developed and maintained by Sciety's remote first [ensemble programming](https://en.wikipedia.org/w/index.php?title=Ensemble_programming&redirect=no) team.
+
 Development
 -----------
 
