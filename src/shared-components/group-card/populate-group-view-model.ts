@@ -21,7 +21,7 @@ const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: n
     case 'biophysics-colab':
       return listCount + 1;
     case 'elife':
-      return listCount + 5;
+      return listCount + 6;
     default:
       return listCount;
   }
