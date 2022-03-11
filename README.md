@@ -37,17 +37,17 @@ Most content will be missing as the database will be empty, see the Operations s
 
 Containers restart automatically on most code changes. If they don't, `ctrl-c` and rerun `make dev`. An example of when this is needed, is changes to `package.json`.
 
-<details>
+#### Configuring environment variables and credentials
 
-<summary>Configuring environment variables</summary>
+Environment variables control certain behaviour.
 
-You can use a `.env` file to pass environment variables to the container.
+For the application to be able to interact with external services, credentials need to be provided via the `.env` file as well as dedicated credential files.
 
-After running `make dev` the file will contain a set of instructions to follow.
+Running `make dev` creates a `.env` file based on `.env.example`. This includes instructions on how to populate and use it.
 
-Re-run `make dev` after modifying this file.
+You'll need to re-run `make dev` after modifying the `.env` file.
 
-</details>
+If you've been added to the appropriate `GCP` organisation, you can run `make .gcp-ncrc-key.json` to create the necessary credential file (used for the content of the NCRC group). 
 
 ### Running the tests
 
