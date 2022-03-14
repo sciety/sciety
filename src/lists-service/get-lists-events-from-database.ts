@@ -45,7 +45,8 @@ export const getListsEventsFromDatabase = (
     await waitForTableToExist(pool, logger);
     return pool.query<EventRow>(selectAllListsEvents);
   }, E.toError),
-  TE.chainFirstTaskK((result) => T.of(logger('debug', 'Reading events from database', { count: result.rows.length }))),
   TE.map((result) => result.rows),
+  TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
   TE.chainEitherK(decodeListsEvents),
+  TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully decoded events from database', { count: rows.length }))),
 );
