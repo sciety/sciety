@@ -24,7 +24,11 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
   // eslint-disable-next-line no-loops/no-loops, no-constant-condition
   while (true) {
-    const queryResult = await pool.query<{ exists: boolean }>('SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = \'public\' AND tablename = \'events\')');
+    const queryResult = await pool.query<{ exists: boolean }>(`
+      SELECT EXISTS (
+        SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'events'
+      )
+    `);
     if (queryResult.rows[0].exists) {
       break;
     }
