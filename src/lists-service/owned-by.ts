@@ -13,7 +13,6 @@ type Ports = {
 };
 
 export const ownedBy = (ports: Ports): Middleware => async ({ params, response }, next) => {
-  response.set({ 'Content-Type': 'application/json' });
   ports.logger('debug', 'Started ownedBy query');
   await pipe(
     ports.getListsEvents,
@@ -26,6 +25,7 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
       },
       (items) => {
         response.status = StatusCodes.OK;
+        response.set({ 'Content-Type': 'application/json' });
         response.body = { items };
       },
     ),
