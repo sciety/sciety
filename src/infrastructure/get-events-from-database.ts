@@ -38,7 +38,12 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
 
 const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
   rows,
-  RA.map((row) => ({ ...row, ...row.payload })),
+  RA.map((row) => ({
+    id: row.id,
+    type: row.type,
+    date: row.date,
+    ...row.payload,
+  })),
   domainEventsCodec.decode,
   E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
 );
