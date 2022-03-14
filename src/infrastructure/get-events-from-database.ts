@@ -1,24 +1,13 @@
 import * as E from 'fp-ts/Either';
-import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
+import { domainEventsCodec, EventRow, selectAllEvents } from './events-table';
 import { Logger } from './logger';
 import { RuntimeGeneratedEvent } from '../domain-events';
-import { domainEventCodec } from '../types/codecs/DomainEvent';
-
-type EventRow = {
-  id: string,
-  type: string,
-  date: string,
-  payload: JsonRecord,
-};
-
-const domainEventsCodec = t.readonlyArray(domainEventCodec);
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
@@ -54,7 +43,7 @@ export const getEventsFromDatabase = (
 ): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
   TE.tryCatch(async () => {
     await waitForTableToExist(pool, logger);
-    return pool.query<EventRow>('SELECT id, type, date::text, payload FROM events');
+    return pool.query<EventRow>(selectAllEvents);
   }, E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
