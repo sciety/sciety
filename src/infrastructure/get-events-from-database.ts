@@ -45,10 +45,7 @@ export const getEventsFromDatabase = (
     return pool.query<EventRow>('SELECT id, type, date::text, payload FROM events');
   }, E.toError),
   TE.map((result) => result.rows),
-  TE.map((rows) => {
-    logger('debug', 'Successfully retrieved rows from database', { count: rows.length });
-    return rows;
-  }),
+  TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),
     domainEventsCodec.decode,
