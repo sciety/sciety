@@ -6,11 +6,12 @@ import { Pool } from 'pg';
 import { ListsEvent } from './lists-event';
 import { queryDatabaseForEventsWithNewerDate } from './query-database-for-events-with-newer-date';
 import { Logger } from '../infrastructure/logger';
+import * as DE from '../types/data-error';
 
 const defaultCheckpoint = () => new Date('1970');
 
 type AppendNewListsEventsFromDatabase = (pool: Pool, logger: Logger) => (listEvents: ReadonlyArray<ListsEvent>)
-=> TE.TaskEither<Error, ReadonlyArray<ListsEvent>>;
+=> TE.TaskEither<DE.DataError, ReadonlyArray<ListsEvent>>;
 
 export const appendNewListsEventsFromDatabase: AppendNewListsEventsFromDatabase = (
   pool, logger,
