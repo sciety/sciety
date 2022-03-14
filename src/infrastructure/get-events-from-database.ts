@@ -3,7 +3,7 @@ import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
@@ -36,6 +36,13 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   }
 };
 
+const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
+  rows,
+  RA.map((row) => ({ ...row, ...row.payload })),
+  domainEventsCodec.decode,
+  E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+);
+
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
@@ -46,9 +53,5 @@ export const getEventsFromDatabase = (
   }, E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
-  TE.chainEitherK(flow(
-    RA.map((row) => ({ ...row, ...row.payload })),
-    domainEventsCodec.decode,
-    E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
-  )),
+  TE.chainEitherK(decodeEvents),
 );
