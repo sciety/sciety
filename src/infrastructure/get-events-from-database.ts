@@ -59,4 +59,5 @@ export const getEventsFromDatabase = (
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
   TE.chainEitherK(decodeEvents),
+  TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully decoded events from database', { count: rows.length }))),
 );
