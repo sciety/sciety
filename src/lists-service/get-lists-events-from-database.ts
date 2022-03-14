@@ -2,12 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { EventRow, listsEventsCodec, selectAllListsEvents } from './events-table';
 import { ListsEvent } from './lists-event';
 import { Logger } from '../infrastructure/logger';
+import * as DE from '../types/data-error';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
@@ -40,13 +41,17 @@ const decodeListsEvents = (rows: ReadonlyArray<EventRow>) => pipe(
 export const getListsEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<Error, ReadonlyArray<ListsEvent>> => pipe(
-  TE.tryCatch(async () => {
-    await waitForTableToExist(pool, logger);
-    return pool.query<EventRow>(selectAllListsEvents);
-  }, E.toError),
+): TE.TaskEither<DE.DataError, ReadonlyArray<ListsEvent>> => pipe(
+  TE.tryCatch(
+    async () => {
+      await waitForTableToExist(pool, logger);
+      return pool.query<EventRow>(selectAllListsEvents);
+    },
+    identity,
+  ),
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
-  TE.chainEitherK(decodeListsEvents),
+  TE.chainEitherKW(decodeListsEvents),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully decoded events from database', { count: rows.length }))),
+  TE.mapLeft(() => DE.unavailable),
 );
