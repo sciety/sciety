@@ -46,7 +46,7 @@ export const getEventsFromDatabase = (
   }, E.toError),
   TE.map((result) => result.rows),
   TE.map((rows) => {
-    logger('debug', 'Reading events from database', { count: rows.length });
+    logger('debug', 'Successfully retrieved rows from database', { count: rows.length });
     return rows;
   }),
   TE.chainEitherK(flow(
