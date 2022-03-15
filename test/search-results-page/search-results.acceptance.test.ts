@@ -26,6 +26,7 @@ const dummyAdapters = {
   }),
   findVersionsForArticleDoi: shouldNotBeCalled,
   getAllEvents: T.of([]),
+  getListsOwnedBy: () => TE.right([]),
 };
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(

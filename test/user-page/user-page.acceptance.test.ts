@@ -11,6 +11,7 @@ import { userPage } from '../../src/user-page/user-page';
 import {
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -33,6 +34,7 @@ const defaultPorts = {
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
+  getListsOwnedBy: () => TE.right([]),
 };
 
 describe('user-page', () => {
@@ -246,6 +248,7 @@ describe('user-page', () => {
           getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([]),
           getUserId: () => TE.right(arbitraryUserId()),
+          getListsOwnedBy: shouldNotBeCalled,
         };
         const params = { handle: arbitraryWord() };
         page = await pipe(
@@ -280,6 +283,7 @@ describe('user-page', () => {
         }),
         getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
+        getListsOwnedBy: shouldNotBeCalled,
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
@@ -303,6 +307,7 @@ describe('user-page', () => {
         }),
         getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
+        getListsOwnedBy: shouldNotBeCalled,
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(

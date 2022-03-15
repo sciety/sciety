@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupCreated } from '../../src/domain-events';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
@@ -30,6 +31,7 @@ describe('fetch-extra-details', () => {
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
         ]),
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
+        getListsOwnedBy: shouldNotBeCalled,
       };
 
       const matches = {
@@ -80,6 +82,7 @@ describe('fetch-extra-details', () => {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([groupCreated(group)]),
           getLatestArticleVersionDate: shouldNotBeCalled,
+          getListsOwnedBy: () => TE.right([]),
         };
         const matches = {
           query: '',
@@ -123,6 +126,7 @@ describe('fetch-extra-details', () => {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getLatestArticleVersionDate: shouldNotBeCalled,
+          getListsOwnedBy: shouldNotBeCalled,
         };
         const matches = {
           query: '',

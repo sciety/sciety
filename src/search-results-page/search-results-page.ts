@@ -12,6 +12,7 @@ import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../share
 type Ports = PerformAllSearchesPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: FetchExtraDetailsPorts['getAllEvents'],
+  getListsOwnedBy: FetchExtraDetailsPorts['getListsOwnedBy'],
 };
 
 type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;
