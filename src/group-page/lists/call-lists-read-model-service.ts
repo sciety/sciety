@@ -33,17 +33,20 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
       const response = await fetchData(logger)<string>(uri);
       return response.data;
     },
-    () => DE.unavailable,
+    (error) => {
+      logger('error', 'Failed to call lists read model', { error });
+      return DE.unavailable;
+    },
   ),
   TE.chainEitherKW(flow(
     ownedByQueryCodec.decode,
     E.mapLeft(formatValidationErrors),
-  )),
-  TE.bimap(
-    (error) => {
-      logger('debug', 'Failed to call lists read model', { error });
+    E.mapLeft((error) => {
+      logger('error', 'Failed to decode response from lists read model', { error });
       return DE.unavailable;
-    },
+    }),
+  )),
+  TE.map(
     ({ items }) => items,
   ),
 );
