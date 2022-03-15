@@ -6,6 +6,8 @@ import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import { DomainEvent } from '../../domain-events';
+import { callListsReadModelService } from '../../group-page/lists/call-lists-read-model-service';
+import { Logger } from '../../infrastructure';
 import { getGroup } from '../../shared-read-models/groups';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
@@ -14,21 +16,22 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: number): number => {
+const addFeaturedArticlesListsToListCount = (groupSlug: string) => (listCount: number): TE.TaskEither<never, number> => {
   switch (groupSlug) {
     case 'ncrc':
-      return listCount + 1;
+      return TE.right(listCount + 1);
     case 'biophysics-colab':
-      return listCount + 1;
+      return TE.right(listCount + 1);
     case 'elife':
-      return listCount + 8;
+      return TE.right(listCount + 8);
     default:
-      return listCount;
+      return TE.right(listCount);
   }
 };
 
 export type Ports = {
   getAllEvents: GetAllEvents,
+  logger: Logger,
 };
 
 export const populateGroupViewModel = (
@@ -45,7 +48,15 @@ export const populateGroupViewModel = (
       ...group,
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-      listCount: addFeaturedArticlesListsToListCount(group.slug)(1),
+    })),
+  )),
+  TE.chainW((partial) => pipe(
+    // addFeaturedArticlesListsToListCount(partial.slug)(1),
+    callListsReadModelService(ports.logger, groupId),
+    TE.map((lists) => lists.length),
+    TE.map((listCount) => ({
+      ...partial,
+      listCount,
     })),
   )),
 );
