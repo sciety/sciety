@@ -42,12 +42,8 @@ export const callListsReadModelService: CallListsReadModelService = (logger, gro
   TE.bimap(
     (error) => {
       logger('debug', 'Failed to call lists read model', { error });
-      return error;
+      return DE.unavailable;
     },
     ({ items }) => items,
-  ),
-  TE.match(
-    () => E.right([] as ReadonlyArray<List>),
-    E.right,
   ),
 );
