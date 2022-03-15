@@ -23,17 +23,18 @@ const ownedByQueryCodec = t.type({
   })),
 });
 
-type GetListsOwnedByFromListsReadModelService = (logger: Logger) => (groupId: GroupId)
+type GetListsOwnedByFromListsReadModelService = (logger: Logger, listsReadModelUri: string) => (groupId: GroupId)
 => TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
 export const getListsOwnedByFromListsReadModelService: GetListsOwnedByFromListsReadModelService = (
   logger,
+  listsReadModelUri,
 ) => (
   groupId,
 ) => pipe(
   TE.tryCatch(
     async () => {
-      const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/owned-by/${groupId}`;
+      const uri = `${listsReadModelUri}/owned-by/${groupId}`;
       const response = await fetchData(logger)<string>(uri);
       return response.data;
     },

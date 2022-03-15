@@ -168,7 +168,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             })),
           )),
         ),
-        getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger),
+        getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
