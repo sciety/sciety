@@ -21,6 +21,7 @@ const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0f
 
 const biochemistryAndChemicalBiologyListId = '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4';
 const bioengineeringListId = 'b2b55ddd-c0f2-4406-b304-b744af989e72';
+const cancerBiologyListId = '977cec9b-7ff6-4cf5-a487-30f0cc544cdb';
 const cellBiologyListId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
 const computationalAndSystemsBiologyListId = 'c9efbf2e-8d20-4a9a-b407-c25d185b4939';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
@@ -34,6 +35,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   bioengineering: bioengineeringListId,
   bioinformatics: computationalAndSystemsBiologyListId,
   biophysics: structuralBiologyAndMolecularBiophysicsListId,
+  'cancer biology': cancerBiologyListId,
   'cell biology': cellBiologyListId,
   neuroscience: neuroscienceListId,
   'systems biology': computationalAndSystemsBiologyListId,
@@ -65,6 +67,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   nutrition: medicineListId,
   'obstetrics and gynecology': medicineListId,
   'occupational and environmental health': medicineListId,
+  oncology: cancerBiologyListId,
   ophthalmology: medicineListId,
   orthopedics: medicineListId,
   otolaryngology: medicineListId,
