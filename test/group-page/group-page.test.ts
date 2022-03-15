@@ -20,6 +20,7 @@ describe('group page', () => {
         groupPage({
           fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
+          getListsOwnedBy: shouldNotBeCalled,
           getUserDetailsBatch: shouldNotBeCalled,
           logger: dummyLogger,
         })(groupPageTabs.lists),

@@ -26,6 +26,7 @@ import {
   isArticleAddedToListEvent, sort as sortEvents,
 } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
+import { callListsReadModelService } from '../group-page/lists/call-lists-read-model-service';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -167,6 +168,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             })),
           )),
         ),
+        getListsOwnedBy: (groupId) => callListsReadModelService(logger, groupId),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

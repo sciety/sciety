@@ -62,6 +62,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     commitEvents: () => T.of('events-created'),
     logger: dummyLogger,
     getBiorxivOrMedrxivSubjectArea: () => TE.right(''),
+    getListsOwnedBy: () => TE.left(DE.unavailable),
     getUserDetails: () => TE.right({
       avatarUrl: '',
       displayName: '',
