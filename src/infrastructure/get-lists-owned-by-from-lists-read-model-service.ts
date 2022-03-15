@@ -4,13 +4,13 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
-import { fetchData } from '../../infrastructure/fetchers';
-import { Logger } from '../../infrastructure/logger';
-import { List } from '../../shared-read-models/lists';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { ListIdFromString } from '../../types/codecs/ListIdFromString';
-import * as DE from '../../types/data-error';
-import { GroupId } from '../../types/group-id';
+import { fetchData } from './fetchers';
+import { Logger } from './logger';
+import { List } from '../shared-read-models/lists';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
+import * as DE from '../types/data-error';
+import { GroupId } from '../types/group-id';
 
 const ownedByQueryCodec = t.type({
   items: t.readonlyArray(t.type({
@@ -23,10 +23,14 @@ const ownedByQueryCodec = t.type({
   })),
 });
 
-type CallListsReadModelService = (logger: Logger, groupId: GroupId)
+type GetListsOwnedByFromListsReadModelService = (logger: Logger) => (groupId: GroupId)
 => TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
-export const callListsReadModelService: CallListsReadModelService = (logger, groupId) => pipe(
+export const getListsOwnedByFromListsReadModelService: GetListsOwnedByFromListsReadModelService = (
+  logger,
+) => (
+  groupId,
+) => pipe(
   TE.tryCatch(
     async () => {
       const uri = `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}/owned-by/${groupId}`;

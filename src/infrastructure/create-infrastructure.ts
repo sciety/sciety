@@ -17,6 +17,7 @@ import { fetchData } from './fetchers';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
+import { getListsOwnedByFromListsReadModelService } from './get-lists-owned-by-from-lists-read-model-service';
 import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
@@ -26,7 +27,6 @@ import {
   isArticleAddedToListEvent, sort as sortEvents,
 } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
-import { callListsReadModelService } from '../group-page/lists/call-lists-read-model-service';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -168,7 +168,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             })),
           )),
         ),
-        getListsOwnedBy: (groupId) => callListsReadModelService(logger, groupId),
+        getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
