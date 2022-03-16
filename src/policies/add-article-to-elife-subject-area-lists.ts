@@ -24,6 +24,7 @@ const bioengineeringListId = 'b2b55ddd-c0f2-4406-b304-b744af989e72';
 const cancerBiologyListId = '977cec9b-7ff6-4cf5-a487-30f0cc544cdb';
 const cellBiologyListId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
 const computationalAndSystemsBiologyListId = 'c9efbf2e-8d20-4a9a-b407-c25d185b4939';
+const developmentalBiologyListId = '1008fbbe-9d14-4737-808f-4170640df9cb';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
@@ -37,6 +38,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   biophysics: structuralBiologyAndMolecularBiophysicsListId,
   'cancer biology': cancerBiologyListId,
   'cell biology': cellBiologyListId,
+  'developmental biology': developmentalBiologyListId,
   neuroscience: neuroscienceListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
