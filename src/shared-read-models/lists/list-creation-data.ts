@@ -206,4 +206,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-16T09:13:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('a9f35fb7-c2fe-4fde-af39-f7c79ea0a497'),
+    'Ecology',
+    'Ecology articles that have been evaluated by eLife.',
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    new Date('2022-03-16T10:25:00Z'),
+  ),
 ];
