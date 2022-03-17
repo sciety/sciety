@@ -213,4 +213,18 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-16T10:25:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('0453b3c1-d58e-429f-8c1e-588ccc646113'),
+    'Epidemiology and Global Health',
+    'Epidemiology and Global Health articles that have been evaluated by eLife.',
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    new Date('2022-03-17T09:06:00Z'),
+  ),
+  listCreated(
+    LID.fromValidatedString('5146099b-22e0-4589-9f16-10586e08ca4b'),
+    'Evolutionary Biology',
+    'Evolutionary Biology articles that have been evaluated by eLife.',
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    new Date('2022-03-17T09:07:00Z'),
+  ),
 ];
