@@ -219,4 +219,4 @@ dev-replay-events-for-elife-subject-area-policy: export TARGET = dev
 dev-replay-events-for-elife-subject-area-policy: build
 	$(DOCKER_COMPOSE) run --name elife-subject-area-policy --rm \
 	app \
-	npx ts-node src/policies/run-elife-subject-area-policy
+	npx ts-node --project tsconfig.dev.json --transpile-only src/policies/run-elife-subject-area-policy
