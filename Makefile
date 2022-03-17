@@ -14,7 +14,7 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release stop test* update*
+.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release replay-events-for-elife-subject-area-policy stop test* update*
 
 dev: export TARGET = dev
 dev: .env install build
@@ -210,3 +210,5 @@ crossref-response:
 		-H 'Accept: application/vnd.crossref.unixref+xml' \
 		-H 'User-Agent: Sciety (https://sciety.org; mailto:team@sciety.org)' \
 		'https://api.crossref.org/works/${DOI}/transform'
+
+replay-events-for-elife-subject-area-policy:
