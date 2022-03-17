@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}--elife-subject-area-policy
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: elife-subject-area-policy
+spec:
+  schedule: "@yearly"
+  suspend: true # only execute manually
+  concurrencyPolicy: "Forbid"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "sciety.selectorLabels" . | nindent 12 }}
+            app.kubernetes.io/component: elife-subject-area-policy
+        spec:
+          containers:
+          - name: app
+            image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+            command: ["node", "./build/policies/run-elife-subject-area-policy"]
+          restartPolicy: Never

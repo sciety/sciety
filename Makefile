@@ -212,5 +212,5 @@ crossref-response:
 		'https://api.crossref.org/works/${DOI}/transform'
 
 replay-events-for-elife-subject-area-policy:
-	kubectl delete pod elife-subject-area-policy
-	kubectl apply -f replay-events-for-elife-subject-area-policy-pod.yaml
+	kubectl delete job elife-subject-area-policy
+	kubectl create job --from=cronjob/sciety--prod--elife-subject-area-policy elife-subject-area-policy 
