@@ -26,6 +26,8 @@ const cellBiologyListId = 'cb15ef21-944d-44d6-b415-a3d8951e9e8b';
 const computationalAndSystemsBiologyListId = 'c9efbf2e-8d20-4a9a-b407-c25d185b4939';
 const developmentalBiologyListId = '1008fbbe-9d14-4737-808f-4170640df9cb';
 const ecologyListId = 'a9f35fb7-c2fe-4fde-af39-f7c79ea0a497';
+const epidemiologyListId = '0453b3c1-d58e-429f-8c1e-588ccc646113';
+const evolutionaryBiologyListId = '5146099b-22e0-4589-9f16-10586e08ca4b';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
@@ -41,7 +43,10 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'cell biology': cellBiologyListId,
   'developmental biology': developmentalBiologyListId,
   ecology: ecologyListId,
+  // epidemiology: epidemiologyListId,
+  'evolutionary biology': evolutionaryBiologyListId,
   neuroscience: neuroscienceListId,
+  paleontology: evolutionaryBiologyListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
   'addiction medicine': medicineListId,
@@ -51,6 +56,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   dermatology: medicineListId,
   'emergency medicine': medicineListId,
   endocrinology: medicineListId,
+  epidemiology: epidemiologyListId,
   'forensic medicine': medicineListId,
   gastroenterology: medicineListId,
   'genetic and genomic medicine': medicineListId,
@@ -82,6 +88,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'pharmacology and therapeutics': medicineListId,
   'primary care research': medicineListId,
   'psychiatry and clinical psychology': medicineListId,
+  'public and global health': epidemiologyListId,
   'radiology and imaging': medicineListId,
   'rehabilitation medicine and physical therapy': medicineListId,
   'respiratory medicine': medicineListId,
