@@ -214,3 +214,9 @@ crossref-response:
 replay-events-for-elife-subject-area-policy:
 	kubectl delete job elife-subject-area-policy || true
 	kubectl create job --from=cronjob/sciety--prod--elife-subject-area-policy elife-subject-area-policy 
+
+dev-replay-events-for-elife-subject-area-policy: export TARGET = dev
+dev-replay-events-for-elife-subject-area-policy: build
+	$(DOCKER_COMPOSE) run --name elife-subject-area-policy --rm \
+	app \
+	npx ts-node src/policies/run-elife-subject-area-policy
