@@ -1,26 +1,26 @@
 export const card1 = {
-  articleId: '10.1101/2022.01.25.22269238',
-  articleTitle: 'Patients’ satisfaction and quality of clinical laboratory services provision at public health facilities in northeast Ethiopia',
-  date: new Date('2022-02-14'),
-  groupSlug: 'peerref',
-  groupName: 'PeerRef',
-  avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
+  articleId: '10.1101/2020.09.14.297143',
+  articleTitle: 'Contextual effects in sensorimotor adaptation adhere to associative learning rules',
+  date: new Date('2022-03-15'),
+  groupSlug: 'elife',
+  groupName: 'eLife',
+  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
 };
 
 export const card2 = {
-  articleId: '10.1101/2021.06.04.447076',
-  articleTitle: 'Tricalbin proteins regulate plasma membrane phospholipid homeostasis',
-  date: new Date('2022-02-14'),
-  groupSlug: 'review-commons',
-  groupName: 'Review Commons',
-  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
+  articleId: '10.1101/2021.08.12.456105',
+  articleTitle: 'Microbial colonization of tannin-rich tropical plants: interplay between degradability, methane production and tannin disappearance in the rumen',
+  date: new Date('2022-01-28'),
+  groupSlug: 'pci-animal-science',
+  groupName: 'Peer Community in Animal Science',
+  avatarPath: '/static/groups/pci-animal-science--4eebcec9-a4bb-44e1-bde3-2ae11e65daaa.png',
 };
 
 export const card3 = {
-  articleId: '10.1101/2021.08.07.455508',
-  articleTitle: 'The initial response of females towards congeneric males matches the propensity to hybridise in <i>Ophthalmotilapia</i>',
-  date: new Date('2022-02-08'),
-  groupSlug: 'pci-zoology',
-  groupName: 'Peer Community In Zoology',
-  avatarPath: '/static/groups/pci-zoology--74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.jpg',
+  articleId: '10.1101/2021.10.05.21264567',
+  articleTitle: 'Efficacy and Safety of NVX-CoV2373 in Adults in the United States and Mexico',
+  date: new Date('2022-03-16'),
+  groupSlug: 'rapid-reviews-covid-19',
+  groupName: 'Rapid Reviews COVID-19',
+  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
 };
