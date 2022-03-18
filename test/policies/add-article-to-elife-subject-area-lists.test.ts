@@ -63,7 +63,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
-        getBiorxivOrMedrxivSubjectArea: () => TE.right('allergy and immunology'),
+        getBiorxivOrMedrxivSubjectArea: () => TE.right(arbitraryString()),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
