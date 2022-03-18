@@ -32,6 +32,7 @@ const geneticsAndGenomicsListId = '890bf35a-c3da-413a-8cdb-864b7ce91a51';
 const immunologyAndInflammationListId = 'b4acc6f3-bf15-4add-ab1f-bc72a8a3da7f';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const microbiologyAndInfectiousDiseaseListId = 'db62bf5b-bcd4-42eb-bd99-e7a37283041d';
+const molecularBiologyListId = '708b4836-0adf-4326-844f-fdf8ef816402';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
 
@@ -52,6 +53,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   genomics: geneticsAndGenomicsListId,
   immunology: immunologyAndInflammationListId,
   microbiology: microbiologyAndInfectiousDiseaseListId,
+  'molecular biology': molecularBiologyListId,
   neuroscience: neuroscienceListId,
   paleontology: evolutionaryBiologyListId,
   'systems biology': computationalAndSystemsBiologyListId,
