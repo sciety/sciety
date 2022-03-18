@@ -28,6 +28,7 @@ const developmentalBiologyListId = '1008fbbe-9d14-4737-808f-4170640df9cb';
 const ecologyListId = 'a9f35fb7-c2fe-4fde-af39-f7c79ea0a497';
 const epidemiologyListId = '0453b3c1-d58e-429f-8c1e-588ccc646113';
 const evolutionaryBiologyListId = '5146099b-22e0-4589-9f16-10586e08ca4b';
+const geneticsAndGenomicsListId = '890bf35a-c3da-413a-8cdb-864b7ce91a51';
 const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
@@ -45,6 +46,8 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   ecology: ecologyListId,
   // epidemiology: epidemiologyListId,
   'evolutionary biology': evolutionaryBiologyListId,
+  genetics: geneticsAndGenomicsListId,
+  genomics: geneticsAndGenomicsListId,
   neuroscience: neuroscienceListId,
   paleontology: evolutionaryBiologyListId,
   'systems biology': computationalAndSystemsBiologyListId,
