@@ -3,19 +3,13 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { addArticleToList, Ports as AddArticleToListPorts } from '../add-article-to-list';
+import { Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../infrastructure/logger';
+import { CommandResult } from '../types/command-result';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
-
-type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
-
-export type Ports = AddArticleToListPorts & {
-  logger: Logger,
-  getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
-};
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
@@ -115,18 +109,23 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   urology: medicineListId,
 };
 
+type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+
+type AddArticleToListCommandPayload = {
+  articleId: Doi, listId: string,
+};
+
+type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
+
+export type Ports = AddArticleToListPorts & {
+  logger: Logger,
+  getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
+  callAddArticleToList: CallAddArticleToList,
+};
+
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
-  type AddArticleToListCommandPayload = {
-    articleId: Doi, listId: string,
-  };
-
-  const callAddArticleToList = (payload: AddArticleToListCommandPayload) => addArticleToList(ports)({
-    articleId: payload.articleId.value,
-    listId: payload.listId,
-  });
-
   if (!isEvaluationRecordedEvent(event)) {
     return T.of(undefined);
   }
@@ -145,7 +144,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
           ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
           return TE.right(undefined);
         },
-        (listId) => callAddArticleToList({ articleId: event.articleId, listId }),
+        (listId) => ports.callAddArticleToList({ articleId: event.articleId, listId }),
       ),
     )),
     TE.match(

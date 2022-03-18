@@ -5,6 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { addArticleToList } from './add-article-to-list';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
@@ -12,6 +13,8 @@ import {
   Adapters, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { addArticleToElifeSubjectAreaLists } from './policies/add-article-to-elife-subject-area-lists';
+import { CommandResult } from './types/command-result';
+import { Doi } from './types/doi';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -29,14 +32,25 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
+type AddArticleToListCommandPayload = {
+  articleId: Doi, listId: string,
+};
+
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
+  type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
+
+  const callAddArticleToList: CallAddArticleToList = (payload) => addArticleToList(adapters)({
+    articleId: payload.articleId.value,
+    listId: payload.listId,
+  });
+
   const events = await adapters.getAllEvents();
   const amountOfEventsToProcess = 0;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
-    await addArticleToElifeSubjectAreaLists(adapters)(events[i])();
+    await addArticleToElifeSubjectAreaLists({ callAddArticleToList, ...adapters })(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 0);
     });

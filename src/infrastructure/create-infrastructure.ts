@@ -22,6 +22,7 @@ import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
+import { addArticleToList } from '../add-article-to-list';
 import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
 import {
   isArticleAddedToListEvent, sort as sortEvents,
@@ -38,6 +39,8 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
+import { CommandResult } from '../types/command-result';
+import { Doi } from '../types/doi';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -144,7 +147,21 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
+      type AddArticleToListCommandPayload = {
+        articleId: Doi, listId: string,
+      };
+
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
+
+      type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
+
+      const callAddArticleToList: CallAddArticleToList = (
+        payload,
+      ) => addArticleToList({ getAllEvents, commitEvents: commitEventsWithoutListeners, ...partialAdapters })({
+        articleId: payload.articleId.value,
+        listId: payload.listId,
+      });
+
       return {
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
@@ -165,6 +182,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               logger,
               commitEvents: commitEventsWithoutListeners,
               getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
+              callAddArticleToList,
             })),
           )),
         ),

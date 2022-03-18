@@ -28,6 +28,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
+        callAddArticleToList: jest.fn(() => TE.right('events-created' as const)),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -36,7 +37,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       });
 
       it('calls the AddArticleToList command', () => {
-        expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
+        expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
       });
     });
 
@@ -46,6 +47,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
+        callAddArticleToList: jest.fn(() => TE.right('events-created' as const)),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -54,7 +56,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       });
 
       it('calls the AddArticleToList command', () => {
-        expect(ports.commitEvents).toHaveBeenCalledWith(expect.anything());
+        expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
       });
     });
 
@@ -64,6 +66,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.right(arbitraryString()),
+        callAddArticleToList: jest.fn(shouldNotBeCalled),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -72,7 +75,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       });
 
       it('does not call the AddArticleToList command', () => {
-        expect(ports.commitEvents).not.toHaveBeenCalled();
+        expect(ports.callAddArticleToList).not.toHaveBeenCalled();
       });
 
       it('logs', () => {
@@ -86,6 +89,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.left(DE.unavailable),
+        callAddArticleToList: jest.fn(shouldNotBeCalled),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -110,6 +114,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
       getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
+      callAddArticleToList: jest.fn(shouldNotBeCalled),
     };
     const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -118,7 +123,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
     });
 
     it('does not call the AddArticleToList command', () => {
-      expect(ports.commitEvents).not.toHaveBeenCalled();
+      expect(ports.callAddArticleToList).not.toHaveBeenCalled();
     });
   });
 
@@ -128,6 +133,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       commitEvents: jest.fn(() => T.of('no-events-created' as const)),
       logger: shouldNotBeCalled,
       getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
+      callAddArticleToList: jest.fn(shouldNotBeCalled),
     };
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
 
@@ -136,7 +142,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
     });
 
     it('does not call the AddArticleToList command', () => {
-      expect(ports.commitEvents).not.toHaveBeenCalled();
+      expect(ports.callAddArticleToList).not.toHaveBeenCalled();
     });
   });
 });
