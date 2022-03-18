@@ -34,6 +34,7 @@ const medicineListId = 'c7237468-aac1-4132-9598-06e9ed68f31d';
 const microbiologyAndInfectiousDiseaseListId = 'db62bf5b-bcd4-42eb-bd99-e7a37283041d';
 const molecularBiologyListId = '708b4836-0adf-4326-844f-fdf8ef816402';
 const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
+const pharmacologyAndToxicologyListId = '84577aec-a4ab-4c61-8c2e-b799a3918350';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
@@ -56,6 +57,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'molecular biology': molecularBiologyListId,
   neuroscience: neuroscienceListId,
   paleontology: evolutionaryBiologyListId,
+  'pharmacology and toxicology': pharmacologyAndToxicologyListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
   'addiction medicine': medicineListId,
