@@ -255,4 +255,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-18T10:20:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('84577aec-a4ab-4c61-8c2e-b799a3918350'),
+    'Pharmacology and Toxicology',
+    'Pharmacology and Toxicology articles that have been evaluated by eLife.',
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    new Date('2022-03-18T10:38:00Z'),
+  ),
 ];
