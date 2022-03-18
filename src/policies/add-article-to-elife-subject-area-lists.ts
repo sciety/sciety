@@ -118,6 +118,15 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
+  type AddArticleToListCommandPayload = {
+    articleId: Doi, listId: string,
+  };
+
+  const callAddArticleToList = (payload: AddArticleToListCommandPayload) => addArticleToList(ports)({
+    articleId: payload.articleId.value,
+    listId: payload.listId,
+  });
+
   if (!isEvaluationRecordedEvent(event)) {
     return T.of(undefined);
   }
@@ -136,10 +145,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
           ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
           return TE.right(undefined);
         },
-        (listId) => addArticleToList(ports)({
-          articleId: event.articleId.value,
-          listId,
-        }),
+        (listId) => callAddArticleToList({ articleId: event.articleId, listId }),
       ),
     )),
     TE.match(
