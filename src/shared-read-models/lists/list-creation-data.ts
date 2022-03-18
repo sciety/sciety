@@ -227,4 +227,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-17T09:07:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('890bf35a-c3da-413a-8cdb-864b7ce91a51'),
+    'Genetics and Genomics',
+    'Genetics and Genomics articles that have been evaluated by eLife.',
+    GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    new Date('2022-03-18T09:14:00Z'),
+  ),
 ];
