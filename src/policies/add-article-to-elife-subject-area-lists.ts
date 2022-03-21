@@ -31,6 +31,7 @@ const neuroscienceListId = '3253c905-8083-4f3d-9e1f-0a8085e64ee5';
 const pharmacologyAndToxicologyListId = '84577aec-a4ab-4c61-8c2e-b799a3918350';
 const physiologyListId = '57a4fa09-d9f5-466d-8038-ea9d29603aef';
 const plantBiologyListId = '205415a7-b409-4ded-ada2-3116c953c4c2';
+const scientificCommunicationAndEducationListId = 'd3d30687-62ee-4bb6-8723-f8d49dab7882';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
@@ -56,6 +57,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   'pharmacology and toxicology': pharmacologyAndToxicologyListId,
   physiology: physiologyListId,
   'plant biology': plantBiologyListId,
+  'scientific communication and education': scientificCommunicationAndEducationListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
   'addiction medicine': medicineListId,
