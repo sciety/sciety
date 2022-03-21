@@ -45,7 +45,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
   });
 
   const events = await adapters.getAllEvents();
-  const amountOfEventsToProcess = 0;
+  const amountOfEventsToProcess = events.length;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
