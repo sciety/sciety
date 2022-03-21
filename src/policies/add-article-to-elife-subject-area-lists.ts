@@ -33,6 +33,7 @@ const physiologyListId = '57a4fa09-d9f5-466d-8038-ea9d29603aef';
 const plantBiologyListId = '205415a7-b409-4ded-ada2-3116c953c4c2';
 const scientificCommunicationAndEducationListId = 'd3d30687-62ee-4bb6-8723-f8d49dab7882';
 const structuralBiologyAndMolecularBiophysicsListId = 'a059f20a-366d-4790-b1f2-03bfb9b915b6';
+const syntheticBiologyListId = 'c743bc3d-955a-4e97-b897-5e423ef0d3bc';
 
 const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string> = {
   // biorxiv
@@ -58,6 +59,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
   physiology: physiologyListId,
   'plant biology': plantBiologyListId,
   'scientific communication and education': scientificCommunicationAndEducationListId,
+  'synthetic biology': syntheticBiologyListId,
   'systems biology': computationalAndSystemsBiologyListId,
   // medrxiv
   'addiction medicine': medicineListId,
