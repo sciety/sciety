@@ -24,4 +24,6 @@ spec:
             env:
               - name: SCIETY_API
                 value: "https://{{ .Values.hostname }}"
+              - name: SCIETY_TEAM_API_BEARER_TOKEN
+                value: {{ .Values.ingestionAuthBearerToken }}
           restartPolicy: Never
