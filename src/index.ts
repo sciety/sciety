@@ -15,6 +15,7 @@ import {
 import { addArticleToElifeSubjectAreaLists } from './policies/add-article-to-elife-subject-area-lists';
 import { CommandResult } from './types/command-result';
 import { Doi } from './types/doi';
+import { ListId } from './types/list-id';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -33,7 +34,7 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
 type AddArticleToListCommandPayload = {
-  articleId: Doi, listId: string,
+  articleId: Doi, listId: ListId,
 };
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
@@ -41,7 +42,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async
 
   const callAddArticleToList: CallAddArticleToList = (payload) => addArticleToList(adapters)({
     articleId: payload.articleId.value,
-    listId: payload.listId,
+    listId: payload.listId.toString(),
   });
 
   const events = await adapters.getAllEvents();

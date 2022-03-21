@@ -41,6 +41,7 @@ import {
 } from '../third-parties/twitter';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
+import { ListId } from '../types/list-id';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -148,7 +149,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       type AddArticleToListCommandPayload = {
-        articleId: Doi, listId: string,
+        articleId: Doi, listId: ListId,
       };
 
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
@@ -159,7 +160,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         payload,
       ) => addArticleToList({ getAllEvents, commitEvents: commitEventsWithoutListeners, ...partialAdapters })({
         articleId: payload.articleId.value,
-        listId: payload.listId,
+        listId: payload.listId.toString(),
       });
 
       return {

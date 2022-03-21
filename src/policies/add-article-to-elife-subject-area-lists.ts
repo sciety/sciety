@@ -10,6 +10,7 @@ import { CommandResult } from '../types/command-result';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
+import * as Lid from '../types/list-id';
 
 const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
@@ -120,7 +121,7 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
 type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
 
 type AddArticleToListCommandPayload = {
-  articleId: Doi, listId: string,
+  articleId: Doi, listId: Lid.ListId,
 };
 
 type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
@@ -147,6 +148,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     TE.chain((subjectArea) => pipe(
       mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
       R.lookup(subjectArea),
+      O.map(Lid.fromValidatedString),
       O.foldW(
         () => {
           ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
