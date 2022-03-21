@@ -21,4 +21,7 @@ spec:
           - name: app
             image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
             command: ["node", "./build/policies/run-elife-subject-area-policy"]
+            env:
+              - name: SCIETY_API
+                value: "https://{{ .Values.hostname }}"
           restartPolicy: Never

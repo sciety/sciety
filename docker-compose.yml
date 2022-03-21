@@ -16,6 +16,7 @@ services:
       EXPERIMENT_ENABLED: "true"
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
+      SCIETY_API: "http://app"
       SCIETY_TEAM_API_BEARER_TOKEN:
       INGEST_DEBUG:
       INGEST_ONLY:
