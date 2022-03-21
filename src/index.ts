@@ -13,7 +13,6 @@ import {
   Adapters, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { addArticleToElifeSubjectAreaLists } from './policies/add-article-to-elife-subject-area-lists';
-import { CommandResult } from './types/command-result';
 import { Doi } from './types/doi';
 import { ListId } from './types/list-id';
 
@@ -38,12 +37,16 @@ type AddArticleToListCommandPayload = {
 };
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
-  type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
+  type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
-  const callAddArticleToList: CallAddArticleToList = (payload) => addArticleToList(adapters)({
-    articleId: payload.articleId.value,
-    listId: payload.listId.toString(),
-  });
+  const callAddArticleToList: CallAddArticleToList = (payload) => pipe(
+    {
+      articleId: payload.articleId.value,
+      listId: payload.listId.toString(),
+    },
+    addArticleToList(adapters),
+    TE.map(() => undefined),
+  );
 
   const events = await adapters.getAllEvents();
   const amountOfEventsToProcess = 0;

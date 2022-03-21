@@ -28,7 +28,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
-        callAddArticleToList: jest.fn(() => TE.right('events-created' as const)),
+        callAddArticleToList: jest.fn(() => TE.right(undefined)),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 
@@ -47,7 +47,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
-        callAddArticleToList: jest.fn(() => TE.right('events-created' as const)),
+        callAddArticleToList: jest.fn(() => TE.right(undefined)),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
 

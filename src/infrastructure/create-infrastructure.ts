@@ -39,7 +39,6 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
-import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
@@ -154,14 +153,18 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
 
-      type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, CommandResult>;
+      type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
       const callAddArticleToList: CallAddArticleToList = (
         payload,
-      ) => addArticleToList({ getAllEvents, commitEvents: commitEventsWithoutListeners, ...partialAdapters })({
-        articleId: payload.articleId.value,
-        listId: payload.listId.toString(),
-      });
+      ) => pipe(
+        {
+          articleId: payload.articleId.value,
+          listId: payload.listId.toString(),
+        },
+        addArticleToList({ getAllEvents, commitEvents: commitEventsWithoutListeners, ...partialAdapters }),
+        TE.map(() => undefined),
+      );
 
       return {
         fetchArticle: fetchCrossrefArticle(
