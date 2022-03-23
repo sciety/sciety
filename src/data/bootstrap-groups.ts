@@ -183,4 +183,14 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     slug: 'peerref',
     isAutomated: false,
   }, new Date('2022-01-20T09:41:00Z')),
+  DomainEvent.groupCreated({
+    id: Gid.fromValidatedString('d6e1a913-76f8-40dc-9074-8eac033e1bc8'),
+    name: 'GigaScience',
+    avatarPath: '/static/groups/gigascience--d6e1a913-76f8-40dc-9074-8eac033e1bc8.png',
+    descriptionPath: 'gigascience--d6e1a913-76f8-40dc-9074-8eac033e1bc8.md',
+    shortDescription: 'GigaScience is an open access, open data, open peer-review journal focusing on ‘big data’ research from the life and biomedical sciences.',
+    homepage: 'https://gigasciencejournal.com',
+    slug: 'gigascience',
+    isAutomated: false,
+  }, new Date('2022-03-23T09:40:00Z')),
 ];
