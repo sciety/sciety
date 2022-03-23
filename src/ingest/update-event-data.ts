@@ -101,6 +101,11 @@ const allGroups: Array<Group> = [
     name: 'PeerRef',
     fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j', 150),
   },
+  {
+    id: 'd6e1a913-76f8-40dc-9074-8eac033e1bc8',
+    name: 'GigaScience',
+    fetchFeed: fetchReviewsFromHypothesisGroup('x6WjqQay', 365),
+  },
 ];
 
 const shouldUpdate = (group: Group) => {

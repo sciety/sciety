@@ -297,4 +297,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     new Date('2022-03-21T09:56:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('5498e813-ddad-414d-88df-d1f84696cecd'),
+    'Evaluated articles',
+    'Articles that have been evaluated by GigaScience.',
+    GID.fromValidatedString('d6e1a913-76f8-40dc-9074-8eac033e1bc8'),
+    new Date('2022-03-23T10:21:00Z'),
+  ),
 ];
