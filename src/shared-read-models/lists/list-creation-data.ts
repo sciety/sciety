@@ -304,4 +304,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('d6e1a913-76f8-40dc-9074-8eac033e1bc8'),
     new Date('2022-03-23T10:21:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('794cb0bd-f784-4b58-afde-7427faced494'),
+    'Evaluated articles',
+    'Articles that have been evaluated by GigaByte.',
+    GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
+    new Date('2022-03-24T10:19:00Z'),
+  ),
 ];

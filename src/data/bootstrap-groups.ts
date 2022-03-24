@@ -193,4 +193,14 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     slug: 'gigascience',
     isAutomated: false,
   }, new Date('2022-03-23T09:40:00Z')),
+  DomainEvent.groupCreated({
+    id: Gid.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
+    name: 'GigaByte',
+    avatarPath: '/static/groups/gigabyte--f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58.png',
+    descriptionPath: 'gigabyte--f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58.md',
+    shortDescription: 'GigaByte is an open access and open science journal published by GigaScience Press, BGI\'s Open Access and Open Data Publishing division. As with our sister-journal GigaScience— we publish ALL reusable and shareable research objects, such as data, software tools and workflows, from data-driven research.',
+    homepage: 'https://gigabytejournal.com/',
+    slug: 'gigabyte',
+    isAutomated: false,
+  }, new Date('2022-03-24T10:03:00Z')),
 ];
