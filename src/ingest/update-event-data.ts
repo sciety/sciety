@@ -106,6 +106,11 @@ const allGroups: Array<Group> = [
     name: 'GigaScience',
     fetchFeed: fetchReviewsFromHypothesisGroup('x6WjqQay', 365),
   },
+  {
+    id: 'f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58',
+    name: 'GigaByte',
+    fetchFeed: fetchReviewsFromHypothesisGroup('z4oRbDWY', 365),
+  },
 ];
 
 const shouldUpdate = (group: Group) => {
