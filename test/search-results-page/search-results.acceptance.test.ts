@@ -297,7 +297,7 @@ describe('search-results-page acceptance', () => {
           );
           await contentOf(page)();
 
-          expect(searchEuropePmcMock).toHaveBeenCalledWith(query, cursor);
+          expect(searchEuropePmcMock).toHaveBeenCalledWith(query, cursor, false);
         });
 
         it('only displays article results', async () => {
