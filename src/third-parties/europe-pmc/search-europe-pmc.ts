@@ -75,9 +75,15 @@ type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
 type EuropePmcPublisher = t.TypeOf<typeof europePmcPublisher>;
 
-const constructQueryParams = (pageSize: number) => (query: string, cursor: O.Option<string>) => (
+const constructQueryParams = (
+  pageSize: number,
+) => (
+  query: string,
+  cursor: O.Option<string>,
+  evaluatedOnly: boolean,
+) => (
   new URLSearchParams({
-    query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
+    query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
     format: 'json',
     pageSize: pageSize.toString(),
     resultType: 'core',
@@ -150,11 +156,15 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
 
 type SearchEuropePmc = (dependencies: Dependencies)
 => (pageSize: number)
-=> (query: string, cursor: O.Option<string>, evaluatedOnly?: boolean)
+=> (
+  query: string,
+  cursor: O.Option<string>,
+  evaluatedOnly?: boolean
+)
 => TE.TaskEither<DE.DataError, SearchResults>;
 
-export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (query, cursor) => pipe(
-  [query, cursor],
+export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (query, cursor, evaluatedOnly = false) => pipe(
+  [query, cursor, evaluatedOnly],
   tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
   getFromUrl(dependencies),

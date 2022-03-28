@@ -191,8 +191,8 @@ describe('search-europe-pmc adapter', () => {
       [uri] = firstCall;
     });
 
-    it.skip('adds the correct LABS_PUBS filter to the query', () => {
-      expect(uri).toContain('(LABS_PUBS%3A"2112")');
+    it('adds the correct LABS_PUBS filter to the query', () => {
+      expect(uri).toContain('%28LABS_PUBS%3A%222112%22%29');
     });
   });
 
