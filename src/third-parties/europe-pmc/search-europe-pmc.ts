@@ -163,7 +163,11 @@ type SearchEuropePmc = (dependencies: Dependencies)
 )
 => TE.TaskEither<DE.DataError, SearchResults>;
 
-export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (query, cursor, evaluatedOnly = false) => pipe(
+export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (
+  query,
+  cursor,
+  evaluatedOnly = false,
+) => pipe(
   [query, cursor, evaluatedOnly],
   tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
