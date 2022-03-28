@@ -193,8 +193,8 @@ describe('search-europe-pmc adapter', () => {
       queryString = (new URL(uri)).searchParams;
     });
 
-    it('adds the correct LABS_PUBS filter to the query', () => {
-      expect(queryString.get('query')).toContain('(LABS_PUBS:"2112")');
+    it('adds the correct LABS_PUBS filter to the query, surrounded by spaces', () => {
+      expect(queryString.get('query')).toContain(' (LABS_PUBS:"2112") ');
     });
   });
 
