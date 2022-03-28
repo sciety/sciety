@@ -567,7 +567,26 @@ describe('search-results-page acceptance', () => {
     });
 
     describe('when onlyEvaluated is provided', () => {
-      it.todo('passes it to the EuropePMC port');
+      const searchEuropePmcMock = jest.fn(() => TE.left(DE.unavailable));
+      const page = pipe(
+        {
+          query,
+          category: O.some('articles' as const),
+          cursor: O.none,
+          page: O.none,
+          evaluatedOnly: O.some(arbitraryWord()),
+        },
+        searchResultsPage({
+          ...dummyAdapters,
+          searchEuropePmc: () => searchEuropePmcMock,
+        })(pageSize),
+      );
+
+      it.skip('passes it to the EuropePMC port', async () => {
+        await contentOf(page)();
+
+        expect(searchEuropePmcMock).toHaveBeenCalledWith(query, O.none, true);
+      });
     });
   });
 });
