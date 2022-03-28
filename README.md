@@ -71,7 +71,7 @@ make taiko TEST=[file-name].ts
 
 ### Linting
 
-We lint the app with [ESLint]. You can run it by:
+The following target runs all static code checks:
 
 ```shell
 make lint
@@ -82,6 +82,15 @@ You can fix problems, where possible, by executing:
 ```shell
 make lint:fix
 ```
+
+The above is quite heavy weight and can take a while.
+To increase feedback speed you can gain partial coverage:
+
+```shell
+npm run watch:typescript
+```
+
+In our team we also rely on eslint feedback from our IDEs.
 
 ## Operations
 
