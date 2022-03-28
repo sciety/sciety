@@ -150,7 +150,7 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
 
 type SearchEuropePmc = (dependencies: Dependencies)
 => (pageSize: number)
-=> (query: string, cursor: O.Option<string>)
+=> (query: string, cursor: O.Option<string>, evaluatedOnly?: boolean)
 => TE.TaskEither<DE.DataError, SearchResults>;
 
 export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (query, cursor) => pipe(

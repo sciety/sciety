@@ -170,6 +170,32 @@ describe('search-europe-pmc adapter', () => {
     expect(uri).toContain('?query=Structural+basis+of+%CE%B1E%26+%28PUBLISHER%3A%22bioRxiv%22+OR+PUBLISHER%3A%22medRxiv%22%29+sort_date%3Ay&');
   });
 
+  describe('when evaluatedOnly is set', () => {
+    let uri: string;
+
+    beforeEach(async () => {
+      const pageSize = arbitraryNumber(1, 10);
+      const evaluatedOnly = true;
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const getJson = async (url: string): Promise<Json> => ({});
+      const getJsonSpy = jest.fn(getJson);
+
+      await searchEuropePmc({
+        getJson: getJsonSpy,
+        logger: dummyLogger,
+      })(pageSize)(arbitraryString(), O.none, evaluatedOnly)();
+
+      const [firstCall] = getJsonSpy.mock.calls;
+
+      [uri] = firstCall;
+    });
+
+    it.skip('adds the correct LABS_PUBS filter to the query', () => {
+      expect(uri).toContain('(LABS_PUBS%3A"2112")');
+    });
+  });
+
   it('passes the cursorMark query parameter', async () => {
     const getJson = jest.fn();
 
