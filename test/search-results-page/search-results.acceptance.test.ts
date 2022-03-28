@@ -46,6 +46,7 @@ describe('search-results-page acceptance', () => {
       category: O.none,
       cursor: O.none,
       page: O.none,
+      evaluatedOnly: O.none,
     };
 
     it('displays the query inside the search form', async () => {
@@ -89,6 +90,7 @@ describe('search-results-page acceptance', () => {
             category: O.none,
             cursor: O.none,
             page: O.none,
+            evaluatedOnly: O.none,
           },
           searchResultsPage(dummyAdapters)(pageSize),
         );
@@ -109,6 +111,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -136,6 +139,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -163,6 +167,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.some(arbitraryString()),
               page: O.some(pageNumber),
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -189,6 +194,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -218,6 +224,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -246,6 +253,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -273,6 +281,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -298,6 +307,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -316,6 +326,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -337,6 +348,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -359,6 +371,7 @@ describe('search-results-page acceptance', () => {
                 category: O.some('articles' as const),
                 cursor: O.none,
                 page: O.none,
+                evaluatedOnly: O.none,
               },
               searchResultsPage({
                 ...dummyAdapters,
@@ -385,6 +398,7 @@ describe('search-results-page acceptance', () => {
                 category: O.some('articles' as const),
                 cursor: O.none,
                 page: O.none,
+                evaluatedOnly: O.none,
               },
               searchResultsPage({
                 ...dummyAdapters,
@@ -420,6 +434,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -443,6 +458,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -464,6 +480,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage(dummyAdapters)(pageSize),
           );
@@ -480,6 +497,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage(dummyAdapters)(pageSize),
           );
@@ -496,6 +514,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage(dummyAdapters)(pageSize),
           );
@@ -516,6 +535,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage(dummyAdapters)(pageSize),
           );
@@ -534,6 +554,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
               page: O.none,
+              evaluatedOnly: O.none,
             },
             searchResultsPage(dummyAdapters)(pageSize),
           );

@@ -31,6 +31,7 @@ export const paramsCodec = t.type({
   ),
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
+  evaluatedOnly: tt.optionFromNullable(t.unknown),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
