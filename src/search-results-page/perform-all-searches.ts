@@ -14,7 +14,7 @@ import * as DE from '../types/data-error';
 
 type FindArticles = (
   pageSize: number,
-) => (query: string, cursor: O.Option<string>) => TE.TaskEither<DE.DataError, ArticleResults>;
+) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, ArticleResults>;
 
 export type Ports = FindGroupsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -47,7 +47,14 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
     pageNumber: TE.right(params.page),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
-      [params.query, params.cursor],
+      [
+        params.query,
+        params.cursor,
+        pipe(
+          params.evaluatedOnly,
+          O.isSome,
+        ),
+      ],
       tupled(ports.searchEuropePmc(pageSize)),
     ),
     groups: pipe(

@@ -582,7 +582,7 @@ describe('search-results-page acceptance', () => {
         })(pageSize),
       );
 
-      it.skip('passes it to the EuropePMC port', async () => {
+      it('passes it to the EuropePMC port', async () => {
         await contentOf(page)();
 
         expect(searchEuropePmcMock).toHaveBeenCalledWith(query, O.none, true);
