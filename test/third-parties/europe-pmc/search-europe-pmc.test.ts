@@ -46,7 +46,7 @@ describe('search-europe-pmc adapter', () => {
         },
       }),
       logger: dummyLogger,
-    })(2)('some query', O.none)();
+    })(2)('some query', O.none, false)();
 
     const expected = E.right({
       total: 3,
@@ -100,7 +100,7 @@ describe('search-europe-pmc adapter', () => {
         },
       }),
       logger: dummyLogger,
-    })(10)('some query', O.none)();
+    })(10)('some query', O.none, false)();
 
     const expected = E.right(expect.objectContaining({
       items: [
@@ -137,7 +137,7 @@ describe('search-europe-pmc adapter', () => {
           },
         }),
         logger: dummyLogger,
-      })(10)('some query', O.none)();
+      })(10)('some query', O.none, false)();
     });
 
     it('returns a result with None as authors', async () => {
@@ -161,7 +161,7 @@ describe('search-europe-pmc adapter', () => {
     });
     const spy = jest.fn(getJson);
 
-    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)('Structural basis of αE&', O.none)();
+    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)('Structural basis of αE&', O.none, false)();
 
     expect(spy).toHaveBeenCalledTimes(1);
 
@@ -204,7 +204,7 @@ describe('search-europe-pmc adapter', () => {
     const unencodedCursor = 'AoJwgP+ir/YCKDQyNzg1Mjky';
     const encodedCursor = 'AoJwgP%2Bir%2FYCKDQyNzg1Mjky';
 
-    await searchEuropePmc({ getJson, logger: dummyLogger })(10)(arbitraryString(), O.some(unencodedCursor))();
+    await searchEuropePmc({ getJson, logger: dummyLogger })(10)(arbitraryString(), O.some(unencodedCursor), false)();
 
     expect(getJson).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${encodedCursor}`));
   });
@@ -222,7 +222,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })(10)('some query', O.none)();
+        })(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -249,7 +249,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })(10)('some query', O.none)();
+        })(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -278,7 +278,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })(10)('some query', O.none)();
+        })(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -325,7 +325,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })(2)('some query', O.none)();
+        })(2)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.some(nextCursor),

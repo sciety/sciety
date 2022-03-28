@@ -30,5 +30,5 @@ export type Adapters = {
   logger: Logger,
   searchEuropePmc: (
     pageSize: number,
-  ) => (query: string, cursor: O.Option<string>) => TE.TaskEither<DE.DataError, SearchResults>,
+  ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>,
 };

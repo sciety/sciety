@@ -159,14 +159,14 @@ type SearchEuropePmc = (dependencies: Dependencies)
 => (
   query: string,
   cursor: O.Option<string>,
-  evaluatedOnly?: boolean
+  evaluatedOnly: boolean
 )
 => TE.TaskEither<DE.DataError, SearchResults>;
 
 export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (
   query,
   cursor,
-  evaluatedOnly = false,
+  evaluatedOnly,
 ) => pipe(
   [query, cursor, evaluatedOnly],
   tupled(constructQueryParams(pageSize)),
