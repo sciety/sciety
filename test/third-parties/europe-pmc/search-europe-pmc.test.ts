@@ -1,3 +1,4 @@
+import { URL, URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { Json } from 'io-ts-types';
@@ -171,7 +172,7 @@ describe('search-europe-pmc adapter', () => {
   });
 
   describe('when evaluatedOnly is set', () => {
-    let uri: string;
+    let queryString: URLSearchParams;
 
     beforeEach(async () => {
       const pageSize = arbitraryNumber(1, 10);
@@ -188,11 +189,12 @@ describe('search-europe-pmc adapter', () => {
 
       const [firstCall] = getJsonSpy.mock.calls;
 
-      [uri] = firstCall;
+      const [uri] = firstCall;
+      queryString = (new URL(uri)).searchParams;
     });
 
     it('adds the correct LABS_PUBS filter to the query', () => {
-      expect(uri).toContain('%28LABS_PUBS%3A%222112%22%29');
+      expect(queryString.get('query')).toContain('(LABS_PUBS:"2112")');
     });
   });
 
