@@ -14,7 +14,7 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release replay-events-for-elife-subject-area-policy stop test* update*
+.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 dev: export TARGET = dev
 dev: .env install build
@@ -42,6 +42,9 @@ unused-sass: node_modules find-unused-sass-declarations
 
 find-unused-sass-declarations: node_modules
 	npx sass-unused 'src/**/*.scss'
+
+watch\:typescript: node_modules
+	npm run watch:typescript
 
 lint: export TARGET = dev
 lint: build unused-sass

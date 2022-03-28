@@ -87,7 +87,7 @@ The above is quite heavy weight and can take a while.
 To increase feedback speed you can gain partial coverage:
 
 ```shell
-npm run watch:typescript
+make watch:typescript
 ```
 
 In our team we also rely on eslint feedback from our IDEs.
