@@ -565,5 +565,9 @@ describe('search-results-page acceptance', () => {
         });
       });
     });
+
+    describe('when onlyEvaluated is provided', () => {
+      it.todo('passes it to the EuropePMC port');
+    });
   });
 });
