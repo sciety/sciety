@@ -4,6 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type PageTabsViewModel = {
   query: string,
+  evaluatedOnly: boolean,
   availableArticleMatches: number,
   availableGroupMatches: number,
   category: string,
@@ -15,11 +16,11 @@ export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
   tabList: [
     {
       label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=articles`,
+      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=articles${pageTabsViewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}`,
     },
     {
       label: toHtmlFragment(`Groups (${pageTabsViewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=groups`,
+      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=groups${pageTabsViewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}`,
     },
   ],
   activeTabIndex: pageTabsViewModel.category === 'groups' ? 1 : 0,

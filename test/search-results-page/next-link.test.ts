@@ -8,6 +8,7 @@ describe('next-link', () => {
       pageNumber: 2,
       category: 'articles',
       query: 'bats',
+      evaluatedOnly: false,
       nextCursor: O.some('foo+/bar'),
     });
 
@@ -24,6 +25,7 @@ describe('next-link', () => {
       pageNumber: 2,
       category: 'articles',
       query: 'bats+bugs',
+      evaluatedOnly: false,
       nextCursor: O.some('foo'),
     });
 

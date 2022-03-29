@@ -43,6 +43,12 @@ type PerformAllSearches = (
 export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (params) => pipe(
   {
     query: TE.right(params.query),
+    evaluatedOnly: TE.right(
+      pipe(
+        params.evaluatedOnly,
+        O.isSome,
+      ),
+    ),
     pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),

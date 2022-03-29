@@ -26,6 +26,7 @@ describe('select-subset-to-display', () => {
       const articleItem = arbitraryArticleItem();
       const state = {
         query: '',
+        evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
         category: 'articles',
@@ -47,6 +48,7 @@ describe('select-subset-to-display', () => {
       const groupItem = arbitraryGroupItem();
       const state = {
         query: '',
+        evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
         category: 'groups',
@@ -65,6 +67,7 @@ describe('select-subset-to-display', () => {
     it('nextCursor should be none', () => {
       const state = {
         query: '',
+        evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
         category: 'groups',
@@ -85,6 +88,7 @@ describe('select-subset-to-display', () => {
     const numberOfMatchingArticles = arbitraryNumber(2, 1000);
     const state = {
       query: '',
+      evaluatedOnly: false,
       pageSize: 2,
       pageNumber: O.none,
       category: 'articles',

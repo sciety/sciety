@@ -36,6 +36,7 @@ describe('fetch-extra-details', () => {
 
       const matches = {
         query: '',
+        evaluatedOnly: false,
         category: 'articles',
         availableArticleMatches: 5,
         availableGroupMatches: 0,
@@ -56,6 +57,7 @@ describe('fetch-extra-details', () => {
 
       expect(viewModel).toStrictEqual({
         query: '',
+        evaluatedOnly: false,
         category: 'articles',
         availableArticleMatches: 5,
         availableGroupMatches: 0,
@@ -86,6 +88,7 @@ describe('fetch-extra-details', () => {
         };
         const matches = {
           query: '',
+          evaluatedOnly: false,
           category: 'groups',
           availableArticleMatches: 0,
           availableGroupMatches: 5,
@@ -103,6 +106,7 @@ describe('fetch-extra-details', () => {
 
         expect(viewModel).toStrictEqual({
           query: '',
+          evaluatedOnly: false,
           category: 'groups',
           availableArticleMatches: 0,
           availableGroupMatches: 5,
@@ -130,6 +134,7 @@ describe('fetch-extra-details', () => {
         };
         const matches = {
           query: '',
+          evaluatedOnly: false,
           category: 'groups',
           availableArticleMatches: 0,
           availableGroupMatches: 0,

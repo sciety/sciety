@@ -4,6 +4,7 @@ import { LimitedSet } from './fetch-extra-details';
 
 export type Matches = {
   query: string,
+  evaluatedOnly: boolean,
   pageNumber: O.Option<number>,
   pageSize: number,
   category: string,

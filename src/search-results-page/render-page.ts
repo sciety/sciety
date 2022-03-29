@@ -19,7 +19,7 @@ export const renderPage = (searchResults: SearchResults): Page => ({
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
-    ${renderSearchForm(searchResults.query)}
+    ${renderSearchForm(searchResults.query, searchResults.evaluatedOnly)}
     <section class="search-results">
       ${renderSearchResults(searchResults)}
     </section>

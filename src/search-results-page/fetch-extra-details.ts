@@ -27,6 +27,7 @@ const fetchItemDetails = (
 
 export type LimitedSet = {
   query: string,
+  evaluatedOnly: boolean,
   category: string,
   availableArticleMatches: number,
   availableGroupMatches: number,

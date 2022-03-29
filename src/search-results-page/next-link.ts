@@ -5,16 +5,17 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type SearchParameters = {
   query: string,
+  evaluatedOnly: boolean,
   category: string,
   nextCursor: O.Option<string>,
   pageNumber: number,
 };
 
 export const nextLink = ({
-  category, query, nextCursor, pageNumber,
+  category, query, evaluatedOnly, nextCursor, pageNumber,
 }: SearchParameters): HtmlFragment => pipe(
   nextCursor,
-  O.map((cursor) => `/search?query=${encodeURIComponent(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}&`),
+  O.map((cursor) => `/search?query=${encodeURIComponent(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}${evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
   O.fold(
     () => '',
     (basePath) => paginationControls(basePath, O.some(pageNumber)),
