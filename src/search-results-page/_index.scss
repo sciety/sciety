@@ -52,6 +52,10 @@ $_clear-button-inline-size: 48px;
   opacity: 0.6;
 }
 
+.search-form__label {
+  @include typography.body-2();
+}
+
 .search-form__clear {
   position: absolute;
   right: 0;
