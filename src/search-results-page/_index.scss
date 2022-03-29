@@ -44,6 +44,7 @@ $_clear-button-inline-size: 48px;
   padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
+  margin-bottom: baseline.increments(1);
   color: settings.$colour-text-primary;
 }
 
