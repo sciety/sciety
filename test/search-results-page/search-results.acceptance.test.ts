@@ -412,8 +412,6 @@ describe('search-results-page acceptance', () => {
           });
 
           it.todo('displays the article tab with an error message');
-
-          it.todo('links to the Groups tab');
         });
       });
 
