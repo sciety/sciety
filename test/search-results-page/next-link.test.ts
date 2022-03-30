@@ -36,4 +36,23 @@ describe('next-link', () => {
 
     expect(linkHref).toStrictEqual(expectedHref);
   });
+
+  describe('when the evaluatedOnly filter is set', () => {
+    const nextLinkAnchor = nextLink({
+      pageNumber: 2,
+      category: 'articles',
+      query: 'bats',
+      evaluatedOnly: true,
+      nextCursor: O.some('foo'),
+    });
+
+    const rendered = JSDOM.fragment(nextLinkAnchor);
+    const linkHref = rendered.querySelector('a')?.getAttribute('href');
+    
+    it('includes the filter in the href', () => {
+      const expectedHref = '/search?query=bats&category=articles&cursor=foo&evaluatedOnly=true&page=2';
+
+      expect(linkHref).toStrictEqual(expectedHref);
+    });
+  });
 });
