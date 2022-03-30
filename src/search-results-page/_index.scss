@@ -9,6 +9,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 
+$_search-form-vertical-spacing: baseline.increments(1);
 $_search-form-text-height: baseline.increments(6);
 $_search-form-text-inline-padding: 12px;
 $_inline-margin: settings.$base-font-measure;
@@ -31,7 +32,7 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form__form {
-  margin-bottom: baseline.increments(1);
+  margin-bottom: $_search-form-vertical-spacing;
   position: relative;
 }
 
@@ -44,7 +45,7 @@ $_clear-button-inline-size: 48px;
   padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
-  margin-bottom: baseline.increments(1);
+  margin-bottom: $_search-form-vertical-spacing;
   color: settings.$colour-text-primary;
 }
 
