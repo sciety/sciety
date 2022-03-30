@@ -70,6 +70,8 @@ export const hero: Hero = (ports) => pipe(
           <input type="hidden" name="category" value="articles">
           <label for="searchText" class="visually-hidden">Search term</label>
           <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
+          <label for="searchEvaluatedOnlyFilter" class="home-page-hero__search_form_label">Search only evaluated articles</label>
+          <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
           <button type="submit" class="home-page-hero__search_button">Search</button>
           <button type="reset" class="visually-hidden">Reset</button>
         </form>
