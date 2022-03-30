@@ -48,7 +48,7 @@ describe('next-link', () => {
 
     const rendered = JSDOM.fragment(nextLinkAnchor);
     const linkHref = rendered.querySelector('a')?.getAttribute('href');
-    
+
     it('includes the filter in the href', () => {
       const expectedHref = '/search?query=bats&category=articles&cursor=foo&evaluatedOnly=true&page=2';
 
