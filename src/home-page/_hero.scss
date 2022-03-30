@@ -11,7 +11,7 @@
 @use '../sass/list';
 @use 'common';
 
-
+$_search-form-text-input-height: baseline.increments(6);
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(70px);
 
@@ -30,7 +30,7 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .home-page-hero__search_text {
   width: 100%;
-  height: baseline.increments(6);
+  height: $_search-form-text-input-height;
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
   padding-top: baseline.increments(math.div(17, 8));
@@ -45,9 +45,9 @@ $_search-button-width: functions.px-to-rem(70px);
   @include button.button();
   position: absolute;
   top: $_search-form-gutter;
-  bottom: $_search-form-gutter;
   right: $_search-form-gutter;
   width: $_search-button-width;
+  height: calc(#{$_search-form-text-input-height} - 2 * #{$_search-form-gutter});
 }
 
 .home-page-hero__content {
