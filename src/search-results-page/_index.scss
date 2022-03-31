@@ -2,6 +2,7 @@
 
 @use '../sass/baseline';
 @use '../sass/breakpoints';
+@use '../sass/button';
 @use '../sass/card';
 @use '../sass/functions';
 @use '../sass/layout';
@@ -56,6 +57,8 @@ $_clear-button-inline-size: 48px;
 
 .search-form__label {
   @include typography.body-2();
+  display: inline-block;
+  margin-bottom: $_search-form-vertical-spacing;
 }
 
 .search-form__clear {
@@ -73,6 +76,11 @@ $_clear-button-inline-size: 48px;
 .search-form__clear_icon {
   display: block;
   margin: 0 auto;
+}
+
+.search-form__submit {
+  @include button.button();
+  display: block;
 }
 
 .search-results__page_count {

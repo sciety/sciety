@@ -13,7 +13,7 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
       <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
         <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
       </button>
-      <button type="submit" class="visually-hidden">Search</button>
+      <button type="submit" class="search-form__submit">Search</button>
     </form>
     ${renderExampleSearches()}
   </div>
