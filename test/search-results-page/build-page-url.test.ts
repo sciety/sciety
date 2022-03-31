@@ -70,7 +70,7 @@ describe('build-page-url', () => {
         cursor: O.some('12+34'),
       });
 
-      expect(result).toBe('cursor=12%2B34');
+      expect(result).toContain('cursor=12%2B34');
     });
   });
 
