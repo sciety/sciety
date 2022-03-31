@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 
 type UrlParams = {
   query: string,
-  category: string,
+  category: 'articles' | 'groups',
   evaluatedOnly: boolean,
 };
 
