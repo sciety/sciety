@@ -1,4 +1,4 @@
-import { htmlEscape } from 'escape-goat';
+import { buildPageUrl } from './build-page-url';
 import { tabs } from '../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -10,23 +10,13 @@ export type PageTabsViewModel = {
   category: string,
 };
 
-type UrlParams = {
-  query: string,
-  category: string,
-  evaluatedOnly: boolean,
-};
-
-type BuildUrl = (urlParams: UrlParams) => string;
-
-const buildUrl: BuildUrl = ({ query, category, evaluatedOnly }) => `/search?query=${htmlEscape(query)}&category=${category}${evaluatedOnly ? '&evaluatedOnly=true' : ''}`;
-
 type PageTabs = (pageTabsViewModel: PageTabsViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
 export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
   tabList: [
     {
       label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
-      url: buildUrl({
+      url: buildPageUrl({
         category: 'articles',
         query: pageTabsViewModel.query,
         evaluatedOnly: pageTabsViewModel.evaluatedOnly,
@@ -34,7 +24,7 @@ export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
     },
     {
       label: toHtmlFragment(`Groups (${pageTabsViewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
-      url: buildUrl({
+      url: buildPageUrl({
         category: 'groups',
         query: pageTabsViewModel.query,
         evaluatedOnly: pageTabsViewModel.evaluatedOnly,
