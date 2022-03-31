@@ -64,7 +64,14 @@ describe('build-page-url', () => {
   });
 
   describe('when there is a cursor', () => {
-    it.todo('includes the encoded cursor as part of the URL');
+    it.skip('includes the encoded cursor as part of the URL', () => {
+      const result = buildPageUrl({
+        ...defaultParams,
+        cursor: O.some('12+34'),
+      });
+
+      expect(result).toBe('cursor=12%2B34');
+    });
   });
 
   describe('when there is no cursor', () => {

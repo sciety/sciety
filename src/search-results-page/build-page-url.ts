@@ -1,7 +1,10 @@
+import * as O from 'fp-ts/Option';
+
 type UrlParams = {
   query: string,
   category: 'articles' | 'groups',
   evaluatedOnly: boolean,
+  cursor: O.Option<string>,
 };
 
 type BuildPageUrl = (urlParams: UrlParams) => string;
