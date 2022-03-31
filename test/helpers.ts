@@ -38,3 +38,5 @@ export const arbitraryTextLongerThan = (min: number): string => 'xy '.repeat(min
 export const arbitraryDate = (): Date => (
   new Date(`${arbitraryNumber(2000, 2021)}-${arbitraryNumber(1, 12)}-${arbitraryNumber(1, 28)}`)
 );
+
+export const arbitraryBoolean = (): boolean => arbitraryNumber(0, 1) === 1;
