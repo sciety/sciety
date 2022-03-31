@@ -10,17 +10,35 @@ export type PageTabsViewModel = {
   category: string,
 };
 
+type UrlParams = {
+  query: string,
+  category: string,
+  evaluatedOnly: boolean,
+};
+
+type BuildUrl = (urlParams: UrlParams) => string;
+
+const buildUrl: BuildUrl = ({ query, category, evaluatedOnly }) => `/search?query=${htmlEscape(query)}&category=${category}${evaluatedOnly ? '&evaluatedOnly=true' : ''}`;
+
 type PageTabs = (pageTabsViewModel: PageTabsViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
 export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
   tabList: [
     {
       label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=articles${pageTabsViewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}`,
+      url: buildUrl({
+        category: 'articles',
+        query: pageTabsViewModel.query,
+        evaluatedOnly: pageTabsViewModel.evaluatedOnly,
+      }),
     },
     {
       label: toHtmlFragment(`Groups (${pageTabsViewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
-      url: `/search?query=${htmlEscape(pageTabsViewModel.query)}&category=groups${pageTabsViewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}`,
+      url: buildUrl({
+        category: 'groups',
+        query: pageTabsViewModel.query,
+        evaluatedOnly: pageTabsViewModel.evaluatedOnly,
+      }),
     },
   ],
   activeTabIndex: pageTabsViewModel.category === 'groups' ? 1 : 0,
