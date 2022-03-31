@@ -26,7 +26,17 @@ describe('build-page-url', () => {
       query,
     });
 
-    expect(result).toContain(`query=${query}`);
+    expect(result).toContain('query=a%20search%20term');
+  });
+
+  it('builds the URL with a query with special characters', () => {
+    const query = 'covid&cells';
+    const result = buildPageUrl({
+      ...defaultParams,
+      query,
+    });
+
+    expect(result).toContain('query=covid%26cells');
   });
 
   describe('when evaluatedOnly is true', () => {
