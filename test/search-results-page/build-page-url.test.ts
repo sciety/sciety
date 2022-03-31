@@ -26,10 +26,26 @@ describe('build-page-url', () => {
   });
 
   describe('when evaluatedOnly is true', () => {
-    it.todo('builds the URL with the evaluatedOnly filter set');
+    it('builds the URL with the evaluatedOnly filter set', () => {
+      const result = buildPageUrl({
+        evaluatedOnly: true,
+        query: arbitraryString(),
+        category: arbitraryCategory(),
+      });
+
+      expect(result).toContain('evaluatedOnly=true');
+    });
   });
 
   describe('when evaluatedOnly is false', () => {
-    it.todo('builds the URL without the evaluatedOnly filter set');
+    it('builds the URL without the evaluatedOnly filter set', () => {
+      const result = buildPageUrl({
+        evaluatedOnly: false,
+        query: arbitraryString(),
+        category: arbitraryCategory(),
+      });
+
+      expect(result).not.toContain('evaluatedOnly');
+    });
   });
 });
