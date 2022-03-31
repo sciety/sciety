@@ -83,7 +83,7 @@ const constructQueryParams = (
   evaluatedOnly: boolean,
 ) => (
   new URLSearchParams({
-    query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
+    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
     format: 'json',
     pageSize: pageSize.toString(),
     resultType: 'core',

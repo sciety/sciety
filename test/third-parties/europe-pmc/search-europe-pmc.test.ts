@@ -168,7 +168,7 @@ describe('search-europe-pmc adapter', () => {
     const uri = spy.mock.calls[0][0];
 
     // Tests special character encoding, biorxiv publisher or medrxiv publisher, sort date, and parameter order.
-    expect(uri).toContain('?query=Structural+basis+of+%CE%B1E%26+%28PUBLISHER%3A%22bioRxiv%22+OR+PUBLISHER%3A%22medRxiv%22%29+sort_date%3Ay&');
+    expect(uri).toContain('?query=%28Structural+basis+of+%CE%B1E%26%29+%28PUBLISHER%3A%22bioRxiv%22+OR+PUBLISHER%3A%22medRxiv%22%29+sort_date%3Ay&');
   });
 
   describe('when evaluatedOnly is set', () => {
