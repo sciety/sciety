@@ -105,6 +105,25 @@ In our team we also rely on eslint feedback from our IDEs.
 
 ## Operations
 
+The application is deployed on a Kubernetes cluster via an Helm chart.
+
+A [staging environment] and [production environment] are updated with every new commit on `main` that passes CI.
+
+There is a `#sciety-errors` Slack channel.
+
+### Looking at logs
+
+Logs from all kubernetes pods from the last 30 days are viewable on Grafana Cloud.
+
+Authentication is based on elifesciences Google account.
+
+Example queries:
+
+- [production-error-logs]
+- [production-ingress-logs]
+
+### Local exploratory testing with copy of production DB
+
 <details>
 
 <summary>Requirements</summary>
@@ -114,37 +133,9 @@ In our team we also rely on eslint feedback from our IDEs.
 
 </details>
 
-The application is deployed on a Kubernetes cluster via an Helm chart.
-
-A [staging environment] is updated with every new commit on `main` that passes tests.
-
-A [production environment] is [updated][production deployments] manually by pushing a tag.
-
-### Releasing to production
-
-Ensure your current reference is [green in CI][build].
-
-Run `make release`.
-
-### Looking at logs
-
-Logs of all Pods are streamed to [AWS CloudWatch][AWS CloudWatch logs] for persistence and searchability.
-
-A [CloudWatch dashboard] graphs log lines representing errors and shows the state of the alarm.
-
-An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #sciety-general channel][monitoring
- lambda].
-
-A [CloudWatch user journey by IP] query is available to track a single client across multiple requests (adjust timeframe and IP).
-
-### Dump all data
-
-Run `make prod-sql`.
-
-At the prompt, execute this command:
-
-```sql
-\copy (SELECT date, type, payload FROM events ORDER BY date) TO STDOUT WITH CSV;
+```shell
+make download-exploratory-test-from-prod
+make exploratory-test-from-prod
 ```
 
 License
@@ -155,7 +146,6 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 [Architecture sketch]: https://miro.com/app/board/o9J_ksK0wlg=/
 [aws-cli]: https://aws.amazon.com/cli/
 [AWS CloudWatch logs]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logs-insights:queryDetail=~(end~0~start~-900~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*3d*22prc--prod*22*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*2020~isLiveTail~false~queryId~'89133ab9-5bb4-4770-b3e9-96052e8300ef~source~(~'*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication));tab=logs
-[Build]: https://github.com/sciety/sciety/actions?query=workflow%3ACI
 [CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
 [CloudWatch user journey by IP]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D$257E$2528end$257E0$257Estart$257E-1800$257EtimeType$257E$2527RELATIVE$257Eunit$257E$2527seconds$257EeditorString$257E$2527fields*20*40timestamp*2c*20app_request*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*20*3d*3d*20*27ingress-nginx*27*20and*20app_remote_addr*20*3d*3d*20*2778.105.99.80*27*20and*20app_request*20not*20like*20*2fstatic*2f*0a*7c*20filter*20app_ingress_name*20*3d*3d*20*27sciety--prod--frontend*27*0a*7c*20sort*20*40timestamp*20asc*0a*7c*20limit*20200$257EisLiveTail$257Efalse$257EqueryId$257E$2527e3086054-9d14-4384-bca5-a9c12b181c87$257Esource$257E$2528$257E$2527*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication$2529$2529
 [Docker]: https://www.docker.com/
@@ -173,7 +163,8 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 [Monitoring SNS topic]: https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topic/arn:aws:sns:us-east-1:540790251273:prc-logging
 [Monitoring lambda]: https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/notifySlackFromSnsTopicError
 [Node.js]: https://nodejs.org/
-[Production deployments]: https://github.com/sciety/sciety/actions?query=workflow%3AProduction
 [Production environment]: https://sciety.org
+[production-error-logs]: https://sciety.grafana.net/explore?orgId=1&left=%7B%22datasource%22:%22grafanacloud-sciety-logs%22,%22queries%22:%5B%7B%22expr%22:%22%7Bapp_kubernetes_io_name%3D%5C%22sciety%5C%22,app_kubernetes_io_instance%3D%5C%22sciety--prod%5C%22%7D%5Cn%7C%20json%20%7C%20__error__%3D%5C%22%5C%22%5Cn%7C%20level%20%3D%20%5C%22error%5C%22%22,%22refId%22:%22A%22%7D%5D,%22range%22:%7B%22from%22:%22now-2d%22,%22to%22:%22now%22%7D%7D
+[production-ingress-logs]: https://sciety.grafana.net/explore?orgId=1&left=%7B%22datasource%22:%22grafanacloud-sciety-logs%22,%22queries%22:%5B%7B%22refId%22:%22B%22,%22expr%22:%22%7Bapp_kubernetes_io_name%3D%5C%22ingress-nginx%5C%22%7D%5Cn%7C%20json%5Cn%7C%20__error__%3D%5C%22%5C%22%5Cn%7C%20ingress_name%3D%5C%22sciety--prod--frontend%5C%22%22%7D%5D,%22range%22:%7B%22from%22:%22now-2d%22,%22to%22:%22now%22%7D%7D
 [Staging environment]: https://staging.sciety.org
 [sciety.org]: https://sciety.org
