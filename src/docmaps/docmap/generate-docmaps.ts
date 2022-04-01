@@ -38,6 +38,11 @@ const getDocmapViewModels = (ports: Ports) => (articleId: Doi) => pipe(
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
 );
 
+const errorOnEmpty = E.fromPredicate(
+  RA.isNonEmpty,
+  () => ({ status: StatusCodes.NOT_FOUND, message: 'No Docmaps available for requested DOI' }),
+);
+
 type Ports = {
   getAllEvents: GetAllEvents,
 } & DocmapPorts;
@@ -52,8 +57,5 @@ export const generateDocmaps = (
   TE.fromEither,
   TE.chainW(getDocmapViewModels(ports)),
   TE.map(RA.map(toDocmap)),
-  TE.chainEitherKW(RA.match(
-    () => E.left({ status: StatusCodes.NOT_FOUND, message: 'No Docmaps available for requested DOI' }),
-    E.right,
-  )),
+  TE.chainEitherKW(errorOnEmpty),
 );
