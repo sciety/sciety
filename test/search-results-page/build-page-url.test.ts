@@ -64,7 +64,7 @@ describe('build-page-url', () => {
   });
 
   describe('when there is a cursor', () => {
-    it.skip('includes the encoded cursor as part of the URL', () => {
+    it('includes the encoded cursor as part of the URL', () => {
       const result = buildPageUrl({
         ...defaultParams,
         cursor: O.some('12+34'),
