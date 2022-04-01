@@ -75,6 +75,13 @@ describe('build-page-url', () => {
   });
 
   describe('when there is no cursor', () => {
-    it.todo('builds the URL without a cursor');
+    it('builds the URL without a cursor', () => {
+      const result = buildPageUrl({
+        ...defaultParams,
+        cursor: O.none,
+      });
+
+      expect(result).not.toContain('cursor');
+    });
   });
 });
