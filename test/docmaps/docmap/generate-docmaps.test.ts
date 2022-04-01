@@ -63,11 +63,11 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns a 404 http status code', () => {
+    it('returns a 404 http status code', () => {
       expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.NOT_FOUND })));
     });
 
-    it.skip('returns an error message', () => {
+    it('returns an error message', () => {
       expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'No Docmaps available for requested DOI' })));
     });
   });
@@ -93,11 +93,11 @@ describe('generate-docmaps', () => {
       )();
     });
 
-    it.skip('returns a 404 http status code', () => {
+    it('returns a 404 http status code', () => {
       expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.NOT_FOUND })));
     });
 
-    it.skip('returns an error message', () => {
+    it('returns an error message', () => {
       expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'No Docmaps available for requested DOI' })));
     });
   });

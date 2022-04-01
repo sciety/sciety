@@ -46,4 +46,8 @@ export const generateDocmaps = (
     TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
   )),
   TE.map(RA.map(toDocmap)),
+  TE.chainEitherKW(RA.match(
+    () => E.left({ status: StatusCodes.NOT_FOUND, message: 'No Docmaps available for requested DOI' }),
+    E.right,
+  )),
 );
