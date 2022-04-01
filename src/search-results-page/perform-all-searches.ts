@@ -51,7 +51,7 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
     ),
     pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
-    category: TE.right(O.getOrElse(constant('articles'))(params.category)),
+    category: TE.right(O.getOrElseW(constant('articles' as const))(params.category)),
     articles: pipe(
       [
         params.query,

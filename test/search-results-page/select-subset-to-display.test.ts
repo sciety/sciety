@@ -29,7 +29,7 @@ describe('select-subset-to-display', () => {
         evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
-        category: 'articles',
+        category: 'articles' as const,
         groups: [arbitraryGroupItem()],
         articles: {
           items: [articleItem],
@@ -51,7 +51,7 @@ describe('select-subset-to-display', () => {
         evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
-        category: 'groups',
+        category: 'groups' as const,
         groups: [groupItem],
         articles: {
           items: [arbitraryArticleItem()],
@@ -70,7 +70,7 @@ describe('select-subset-to-display', () => {
         evaluatedOnly: false,
         pageSize: 2,
         pageNumber: O.none,
-        category: 'groups',
+        category: 'groups' as const,
         groups: [arbitraryGroupItem()],
         articles: {
           items: [],
@@ -91,7 +91,7 @@ describe('select-subset-to-display', () => {
       evaluatedOnly: false,
       pageSize: 2,
       pageNumber: O.none,
-      category: 'articles',
+      category: 'articles' as const,
       groups: [arbitraryGroupItem()],
       articles: {
         items: [arbitraryArticleItem()],

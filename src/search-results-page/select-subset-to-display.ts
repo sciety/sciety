@@ -7,7 +7,7 @@ export type Matches = {
   evaluatedOnly: boolean,
   pageNumber: O.Option<number>,
   pageSize: number,
-  category: string,
+  category: 'articles' | 'groups',
   groups: ReadonlyArray<GroupItem>,
   articles: ArticleResults,
 };

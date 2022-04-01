@@ -37,7 +37,7 @@ describe('fetch-extra-details', () => {
       const matches = {
         query: '',
         evaluatedOnly: false,
-        category: 'articles',
+        category: 'articles' as const,
         availableArticleMatches: 5,
         availableGroupMatches: 0,
         itemsToDisplay: [
@@ -89,7 +89,7 @@ describe('fetch-extra-details', () => {
         const matches = {
           query: '',
           evaluatedOnly: false,
-          category: 'groups',
+          category: 'groups' as const,
           availableArticleMatches: 0,
           availableGroupMatches: 5,
           itemsToDisplay: [
@@ -135,7 +135,7 @@ describe('fetch-extra-details', () => {
         const matches = {
           query: '',
           evaluatedOnly: false,
-          category: 'groups',
+          category: 'groups' as const,
           availableArticleMatches: 0,
           availableGroupMatches: 0,
           itemsToDisplay: [

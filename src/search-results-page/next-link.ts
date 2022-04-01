@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 export type SearchParameters = {
   query: string,
   evaluatedOnly: boolean,
-  category: string,
+  category: 'articles' | 'groups',
   nextCursor: O.Option<string>,
   pageNumber: number,
 };
