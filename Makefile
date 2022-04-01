@@ -201,13 +201,6 @@ download-db-dump-staging:
 	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events-staging.json
 	kubectl delete --wait=false pod psql
 
-get-error-logs:
-	@export $$(cat .env | grep LOKI | xargs) && \
-	logcli query -q -o raw --limit 600000 --batch 5000 \
-	--timezone=UTC \
-	--from="2021-09-10T00:00:00Z" \
-	'{app_kubernetes_io_instance="sciety--prod"} | json | __error__="" | level = "error"'
-
 crossref-response:
 	curl -v \
 		-H 'Accept: application/vnd.crossref.unixref+xml' \

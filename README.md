@@ -109,7 +109,6 @@ In our team we also rely on eslint feedback from our IDEs.
 
 <summary>Requirements</summary>
 
-- [logcli]
 - [kubectl]
 - [aws-cli]
 
@@ -170,7 +169,6 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 [Jest]: https://jestjs.io/
 [kubectl]: https://kubernetes.io/docs/tasks/tools/
 [License]: LICENSE.md
-[logcli]: https://github.com/grafana/loki/releases
 [Makefile]: Makefile
 [Monitoring SNS topic]: https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topic/arn:aws:sns:us-east-1:540790251273:prc-logging
 [Monitoring lambda]: https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/notifySlackFromSnsTopicError
