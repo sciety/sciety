@@ -44,7 +44,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^8.7.3",
     "rdf-dataset-indexed": "^0.4.0",
-    "redis": "2.8.0",
+    "redis": "4.0.6",
     "remarkable": "^2.0.1",
     "sanitize-html": "^2.7.0",
     "serialize-error": "^8.1.0",
