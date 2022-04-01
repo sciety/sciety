@@ -1,3 +1,4 @@
+import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -9,6 +10,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
+import send from 'koa-send';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
@@ -495,6 +497,13 @@ export const createRouter = (adapters: Adapters): Router => {
 
     context.response.status = response.status;
     context.response.body = response.body;
+    await next();
+  });
+
+  router.get('/docmaps/v1', async (context, next) => {
+    const staticFolder = path.resolve(__dirname, '../../static');
+    await send(context, 'docmaps-v1-api-docs.html', { root: staticFolder });
+
     await next();
   });
 
