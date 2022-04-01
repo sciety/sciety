@@ -75,21 +75,30 @@ describe('generate-docmaps', () => {
   describe('when the article has been reviewed only by unsupported groups', () => {
     const group1 = arbitraryGroup();
     const group2 = arbitraryGroup();
-    let docmaps: ReadonlyArray<Docmap>;
+
+    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      docmaps = await generateDocmapsTestHelper({
-        getAllEvents: T.of([
-          groupCreated(group1),
-          groupCreated(group2),
-          evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
-          evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
-        ]),
-      });
+      response = await pipe(
+        articleId.value,
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupCreated(group1),
+            groupCreated(group2),
+            evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
+            evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
+          ]),
+        }),
+      )();
     });
 
-    it('returns an empty array', () => {
-      expect(docmaps).toStrictEqual([]);
+    it.skip('returns a 404 http status code', () => {
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.NOT_FOUND })));
+    });
+
+    it.skip('returns an error message', () => {
+      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'No Docmaps available for requested DOI' })));
     });
   });
 
