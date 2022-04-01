@@ -51,22 +51,33 @@ If you've been added to the appropriate `GCP` organisation, you can run `make .g
 
 ### Running the tests
 
-We use [Jest] to test the app. You can run it by executing: 
+#### Fast tests
+
+These tests live in `test/` and use [Jest]. You can run them by executing:
 
 ```shell
 make test
 ```
 
-To run all the regression tests, execute:
+#### Slow tests
+
+Browser-based tests live in `feature-test/` and use Taiko. We use them for user journeys.
 
 ```shell
 make taiko
 ```
 
-To run just one regression test file, execute:
+To run just one test file, execute:
 
 ```shell
 make taiko TEST=[file-name].ts
+```
+
+Visual regression tests are defined in `backstop.json`. They rely on approved screenshots in `backstop_data/` stored with Git LFS.
+
+```shell
+make backstop-test
+make backstop-approve
 ```
 
 ### Linting
