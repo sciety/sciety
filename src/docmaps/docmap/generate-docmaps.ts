@@ -31,12 +31,12 @@ const validateDoi = flow(
 );
 
 const getDocmapViewModels = (ports: Ports) => (articleId: Doi) => pipe(
-    articleId,
-    getEvaluatingGroupIds(ports.getAllEvents),
-    TE.rightTask,
-    TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(ports)({ articleId, groupId }))),
-    TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
-  );
+  articleId,
+  getEvaluatingGroupIds(ports.getAllEvents),
+  TE.rightTask,
+  TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(ports)({ articleId, groupId }))),
+  TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
+);
 
 type Ports = {
   getAllEvents: GetAllEvents,
