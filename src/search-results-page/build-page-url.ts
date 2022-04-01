@@ -17,8 +17,16 @@ const renderCursor = (cursor: O.Option<string>) => pipe(
   ),
 );
 
+const renderEvaluatedOnly = (evaluatedOnly: boolean) => (evaluatedOnly ? '&evaluatedOnly=true' : '');
+
+const renderQuery = (query: string) => pipe(
+  query,
+  encodeURIComponent,
+  (encoded) => `query=${encoded}`,
+);
+
 type BuildPageUrl = (urlParams: UrlParams) => string;
 
 export const buildPageUrl: BuildPageUrl = ({
   query, category, evaluatedOnly, cursor,
-}) => `/search?query=${encodeURIComponent(query)}&category=${category}${evaluatedOnly ? '&evaluatedOnly=true' : ''}${renderCursor(cursor)}`;
+}) => `/search?${renderQuery(query)}&category=${category}${renderEvaluatedOnly(evaluatedOnly)}${renderCursor(cursor)}`;
