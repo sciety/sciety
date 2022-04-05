@@ -44,7 +44,11 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, article
   O.map(() => renderUnsaveForm(articleId)),
 );
 
-const getAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId) => {
+type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId)
+ => (events: ReadonlyArray<DomainEvent>)
+  => string | undefined;
+
+const getAnnotationContentByUserListTarget: GetAnnotationContentByUserListTarget = (articleId, listOwnerId) => () => {
   if (listOwnerId !== '1412019815619911685') {
     return undefined;
   }
@@ -87,12 +91,16 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     })),
     TE.mapLeft(() => informationUnavailable),
   )),
-  TE.map(flow(
-    RA.map((articleViewModel) => renderArticleCard(
-      controls(loggedInUser, listOwnerId, articleViewModel.articleId),
-      getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId),
-    )(articleViewModel)),
-    renderSavedArticles,
+  TE.chainTaskK(flow(
+    T.traverseArray((articleViewModel) => pipe(
+      ports.getAllEvents,
+      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId)),
+      T.map((annotationContent) => renderArticleCard(
+        controls(loggedInUser, listOwnerId, articleViewModel.articleId),
+        annotationContent,
+      )(articleViewModel)),
+    )),
+    T.map(renderSavedArticles),
   )),
   TE.toUnion,
 );
