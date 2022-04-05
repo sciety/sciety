@@ -38,7 +38,7 @@ type SavedArticles = (ports: Ports) => (
   listOwnerId: UserId,
 ) => T.Task<HtmlFragment>;
 
-const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, articleId: Doi) => pipe(
+const getArticleCardControls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, articleId: Doi) => pipe(
   loggedInUserId,
   O.filter((userId) => userId === listOwnerId),
   O.map(() => renderUnsaveForm(articleId)),
@@ -91,14 +91,18 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     })),
     TE.mapLeft(() => informationUnavailable),
   )),
+  TE.map(RA.map((articleViewModel) => ({
+    articleViewModel,
+    controls: getArticleCardControls(loggedInUser, listOwnerId, articleViewModel.articleId),
+  }))),
   TE.chainTaskK(flow(
-    T.traverseArray((articleViewModel) => pipe(
+    T.traverseArray(({ articleViewModel, controls }) => pipe(
       ports.getAllEvents,
       T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId)),
       T.map((annotationContent) => pipe(
         articleViewModel,
         renderArticleCard(
-          controls(loggedInUser, listOwnerId, articleViewModel.articleId),
+          controls,
           annotationContent,
         ),
       )),
