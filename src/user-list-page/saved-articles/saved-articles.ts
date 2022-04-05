@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -91,10 +92,13 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     })),
     TE.mapLeft(() => informationUnavailable),
   )),
-  TE.map(RA.map((articleViewModel) => ({
-    articleViewModel,
-    controls: getArticleCardControls(loggedInUser, listOwnerId, articleViewModel.articleId),
-  }))),
+  TE.chainTaskK(T.traverseArray((articleViewModel) => pipe(
+    {
+      articleViewModel: T.of(articleViewModel),
+      controls: T.of(getArticleCardControls(loggedInUser, listOwnerId, articleViewModel.articleId)),
+    },
+    sequenceS(T.ApplyPar),
+  ))),
   TE.chainTaskK(flow(
     T.traverseArray(({ articleViewModel, controls }) => pipe(
       ports.getAllEvents,
