@@ -65,7 +65,7 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 );
 
 const renderAnnotation = (annotation: undefined | string) => (
-  annotation !== undefined && process.env.EXPERIMENT_ENABLED === 'true'
+  annotation !== undefined
     ? `
       <div class="article-card__annotation">
         ${annotation}

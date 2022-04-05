@@ -55,6 +55,12 @@ const getAnnotation = (articleId: Doi, listOwnerId: UserId) => {
   if (articleId.value === '10.1101/2021.05.26.445751') {
     annotation = 'Truly exquisite characterization of kinesins in the malaria parasite. Check out the spectacular expansion microscopy images in figure 7A!';
   }
+  if (articleId.value === '10.1101/2022.03.31.486578') {
+    annotation = 'This is a beautiful characterization of caveolae. In addition to platinum replica EM of these plasma membrane invaginations in various cell types, this work includes molecular identification of proteins associated with caveolae of different curvatures by STED-CLEM (very high-resolution correlative light electron microscopy).';
+  }
+  if (articleId.value === '10.1101/2022.03.31.486371') {
+    annotation = 'Whoa! Successful ID of early endosomal cargoes via pull-down of an early endosomal marker followed by proteomics.';
+  }
   return annotation;
 };
 
