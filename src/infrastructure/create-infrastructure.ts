@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { AxiosCacheInstance, buildStorage, setupCache } from 'axios-cache-interceptor';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -5,6 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import { createClient } from 'redis';
 import { Adapters } from './adapters';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { fetchDataset } from './fetch-dataset';
@@ -166,9 +169,39 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         TE.map(() => undefined),
       );
 
+      let cachedAxios: AxiosCacheInstance;
+
+      if (process.env.APP_CACHE === 'redis') {
+        const client = createClient({
+          socket: { host: 'sciety_cache' },
+        });
+
+        await client.connect();
+
+        const redisStorage = buildStorage({
+          async find(key) {
+            const result = await client.get(`axios-cache:${key}`);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return (result !== null ? JSON.parse(result) : undefined);
+          },
+
+          async set(key, value) {
+            await client.set(`axios-cache:${key}`, JSON.stringify(value));
+          },
+
+          async remove(key) {
+            await client.del(`axios-cache:${key}`);
+          },
+        });
+
+        cachedAxios = setupCache(axios, { storage: redisStorage });
+      } else {
+        cachedAxios = setupCache(axios);
+      }
+
       return {
         fetchArticle: fetchCrossrefArticle(
-          getCachedAxiosRequest(logger),
+          getCachedAxiosRequest(logger, cachedAxios),
           logger,
           dependencies.crossrefApiBearerToken,
         ),
@@ -204,7 +237,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         ),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedAxiosRequest(logger),
+          getJson: getCachedAxiosRequest(logger, cachedAxios),
           logger,
         }),
         ...partialAdapters,

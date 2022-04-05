@@ -1,11 +1,8 @@
-import Axios from 'axios';
-import { setupCache } from 'axios-cache-interceptor';
+import { AxiosCacheInstance } from 'axios-cache-interceptor';
 import { Logger } from './logger';
 
-const cachedAxios = setupCache(Axios.create());
-
 export const getCachedAxiosRequest = (
-  logger: Logger,
+  logger: Logger, cachedAxios: AxiosCacheInstance,
 ) => async <U>(url: string, headers: Record<string, string>): Promise<U> => {
   const startTime = new Date();
   const response = await cachedAxios.get<U>(url, { headers });
