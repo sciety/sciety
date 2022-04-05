@@ -45,8 +45,8 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, article
 );
 
 type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId)
- => (events: ReadonlyArray<DomainEvent>)
-  => string | undefined;
+=> (events: ReadonlyArray<DomainEvent>)
+=> string | undefined;
 
 const getAnnotationContentByUserListTarget: GetAnnotationContentByUserListTarget = (articleId, listOwnerId) => () => {
   if (listOwnerId !== '1412019815619911685') {
@@ -95,10 +95,13 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     T.traverseArray((articleViewModel) => pipe(
       ports.getAllEvents,
       T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId)),
-      T.map((annotationContent) => renderArticleCard(
-        controls(loggedInUser, listOwnerId, articleViewModel.articleId),
-        annotationContent,
-      )(articleViewModel)),
+      T.map((annotationContent) => pipe(
+        articleViewModel,
+        renderArticleCard(
+          controls(loggedInUser, listOwnerId, articleViewModel.articleId),
+          annotationContent,
+        ),
+      )),
     )),
     T.map(renderSavedArticles),
   )),
