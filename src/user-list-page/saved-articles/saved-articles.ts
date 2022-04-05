@@ -44,7 +44,7 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, article
   O.map(() => renderUnsaveForm(articleId)),
 );
 
-const getAnnotationContent = (articleId: Doi, listOwnerId: UserId) => {
+const getAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId) => {
   if (listOwnerId !== '1412019815619911685') {
     return undefined;
   }
@@ -90,7 +90,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   TE.map(flow(
     RA.map((articleViewModel) => renderArticleCard(
       controls(loggedInUser, listOwnerId, articleViewModel.articleId),
-      getAnnotationContent(articleViewModel.articleId, listOwnerId),
+      getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId),
     )(articleViewModel)),
     renderSavedArticles,
   )),
