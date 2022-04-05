@@ -67,26 +67,28 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 const renderAnnotation = (annotation: undefined | string) => (
   annotation !== undefined
     ? `
-      <div class="article-card__annotation">
+      <section class="article-card__annotation">
         ${annotation}
-      </div>
+      </section>
     `
     : '');
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotation?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
-    <a class="article-card__link" href="/articles/activity/${model.articleId.value}">
-      <h3 class="article-card__title">
-        ${model.title}
-      </h3>
-      ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
-      <footer class="article-card__footer">
-        <div class="article-card__meta">
-          <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
-        </div>
-      </footer>
-    </a>
-    ${renderControls(controls)}
+    <section>
+      <a class="article-card__link" href="/articles/activity/${model.articleId.value}">
+        <h3 class="article-card__title">
+          ${model.title}
+        </h3>
+        ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
+        <footer class="article-card__footer">
+          <div class="article-card__meta">
+            <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
+          </div>
+        </footer>
+      </a>
+      ${renderControls(controls)}
+    </section>
     ${renderAnnotation(annotation)}
   </article>
 `);
