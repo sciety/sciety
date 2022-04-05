@@ -96,22 +96,19 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     {
       articleViewModel: T.of(articleViewModel),
       controls: T.of(getArticleCardControls(loggedInUser, listOwnerId, articleViewModel.articleId)),
+      annotationContent: pipe(
+        ports.getAllEvents,
+        T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId)),
+      ),
     },
     sequenceS(T.ApplyPar),
   ))),
-  TE.chainTaskK(flow(
-    T.traverseArray(({ articleViewModel, controls }) => pipe(
-      ports.getAllEvents,
-      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId)),
-      T.map((annotationContent) => pipe(
-        articleViewModel,
-        renderArticleCard(
-          controls,
-          annotationContent,
-        ),
-      )),
+  TE.map(flow(
+    RA.map(({ articleViewModel, controls, annotationContent }) => pipe(
+      articleViewModel,
+      renderArticleCard(controls, annotationContent),
     )),
-    T.map(renderSavedArticles),
+    renderSavedArticles,
   )),
   TE.toUnion,
 );
