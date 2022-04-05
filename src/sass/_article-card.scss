@@ -49,3 +49,14 @@ $_card-padding: 16px;
   bottom: functions.px-to-rem(12px);
   right: functions.px-to-rem($_card-padding);
 }
+
+.article-card__annotation {
+  padding: functions.px-to-rem($_card-padding);
+  margin-left: functions.px-to-rem($_card-padding);
+  margin-right: settings.$border-radius;
+  background-color: rgb(239, 242, 243);
+  border: 1px solid rgb(207, 216, 220);
+  border-top: none;
+  border-bottom-left-radius: settings.$border-radius;
+  border-bottom-right-radius: settings.$border-radius;
+}

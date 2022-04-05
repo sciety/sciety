@@ -44,6 +44,12 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, article
   O.map(() => renderUnsaveForm(articleId)),
 );
 
+const annotation = (articleId: Doi, listOwnerId: UserId) => (
+  articleId.value === '10.1101/2022.03.29.486216' && listOwnerId === '1412019815619911685'
+    ? 'A 2.2 angstrom resolution structures of muscle actin filaments in ATP, ADP-Pi and ADP states. Many new insights here about the surprising stability of ADP actin, mechanism of ATP hydrolysis, cofilin binding and more.'
+    : undefined
+);
+
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId) => pipe(
   dois,
   RNEA.fromReadonlyArray,
@@ -70,6 +76,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   TE.map(flow(
     RA.map((articleViewModel) => renderArticleCard(
       controls(loggedInUser, listOwnerId, articleViewModel.articleId),
+      annotation(articleViewModel.articleId, listOwnerId),
     )(articleViewModel)),
     renderSavedArticles,
   )),
