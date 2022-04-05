@@ -44,24 +44,24 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, article
   O.map(() => renderUnsaveForm(articleId)),
 );
 
-const getAnnotation = (articleId: Doi, listOwnerId: UserId) => {
+const getAnnotationContent = (articleId: Doi, listOwnerId: UserId) => {
   if (listOwnerId !== '1412019815619911685') {
     return undefined;
   }
-  let annotation: string | undefined;
+  let content: string | undefined;
   if (articleId.value === '10.1101/2022.03.29.486216') {
-    annotation = 'A 2.2 angstrom resolution structures of muscle actin filaments in ATP, ADP-Pi and ADP states. Many new insights here about the surprising stability of ADP actin, mechanism of ATP hydrolysis, cofilin binding and more.';
+    content = 'A 2.2 angstrom resolution structures of muscle actin filaments in ATP, ADP-Pi and ADP states. Many new insights here about the surprising stability of ADP actin, mechanism of ATP hydrolysis, cofilin binding and more.';
   }
   if (articleId.value === '10.1101/2021.05.26.445751') {
-    annotation = 'Truly exquisite characterization of kinesins in the malaria parasite. Check out the spectacular expansion microscopy images in figure 7A!';
+    content = 'Truly exquisite characterization of kinesins in the malaria parasite. Check out the spectacular expansion microscopy images in figure 7A!';
   }
   if (articleId.value === '10.1101/2022.03.31.486578') {
-    annotation = 'This is a beautiful characterization of caveolae. In addition to platinum replica EM of these plasma membrane invaginations in various cell types, this work includes molecular identification of proteins associated with caveolae of different curvatures by STED-CLEM (very high-resolution correlative light electron microscopy).';
+    content = 'This is a beautiful characterization of caveolae. In addition to platinum replica EM of these plasma membrane invaginations in various cell types, this work includes molecular identification of proteins associated with caveolae of different curvatures by STED-CLEM (very high-resolution correlative light electron microscopy).';
   }
   if (articleId.value === '10.1101/2022.03.31.486371') {
-    annotation = 'Whoa! Successful ID of early endosomal cargoes via pull-down of an early endosomal marker followed by proteomics.';
+    content = 'Whoa! Successful ID of early endosomal cargoes via pull-down of an early endosomal marker followed by proteomics.';
   }
-  return annotation;
+  return content;
 };
 
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId) => pipe(
@@ -90,7 +90,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   TE.map(flow(
     RA.map((articleViewModel) => renderArticleCard(
       controls(loggedInUser, listOwnerId, articleViewModel.articleId),
-      getAnnotation(articleViewModel.articleId, listOwnerId),
+      getAnnotationContent(articleViewModel.articleId, listOwnerId),
     )(articleViewModel)),
     renderSavedArticles,
   )),

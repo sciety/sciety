@@ -64,16 +64,16 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
   ),
 );
 
-const renderAnnotation = (annotation: undefined | string) => (
-  annotation !== undefined
+const renderAnnotationContent = (content: undefined | string) => (
+  content !== undefined
     ? `
       <section class="article-card__annotation">
-        ${annotation}
+        ${content}
       </section>
     `
     : '');
 
-export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotation?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
     <section>
       <a class="article-card__link" href="/articles/activity/${model.articleId.value}">
@@ -89,6 +89,6 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotation?:
       </a>
       ${renderControls(controls)}
     </section>
-    ${renderAnnotation(annotation)}
+    ${renderAnnotationContent(annotationContent)}
   </article>
 `);
