@@ -377,7 +377,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/annotations/annotation-form',
+    '/annotations/create-annotation-form-avasthi-reading',
     pageHandler(createAnnotationFormPage),
   );
 
