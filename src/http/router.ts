@@ -375,6 +375,14 @@ export const createRouter = (adapters: Adapters): Router => {
     )),
   );
 
+  router.get(
+    '/annotations/annotation-form',
+    async (context, next) => {
+      context.response.status = StatusCodes.OK;
+      await next();
+    },
+  );
+
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
   router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
