@@ -391,8 +391,8 @@ export const createRouter = (adapters: Adapters): Router => {
             <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801">
           </div>
           <div>
-            <button>Create annotation</button>
-            <button type="reset">Reset</button>
+            <button class="annotation-form-submit">Create annotation</button>
+            <button type="reset" class="annotation-form-reset">Reset</button>
           </div>
         </form>
         `),

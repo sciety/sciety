@@ -1,0 +1,9 @@
+@use '../sass/button';
+
+.annotation-form-submit {
+  @include button.button();
+}
+
+.annotation-form-reset {
+  @include button.button-secondary();
+}
