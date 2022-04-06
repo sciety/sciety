@@ -1,4 +1,9 @@
+@use '../sass/baseline';
 @use '../sass/button';
+
+.annotation-form-row {
+  margin-bottom: baseline.increments(1);
+}
 
 .annotation-form-submit {
   @include button.button();
