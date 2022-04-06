@@ -1,8 +1,18 @@
 @use '../sass/baseline';
 @use '../sass/button';
 
-.annotation-form-row {
+.annotation-form-content {
+  width: 100%;
   margin-bottom: baseline.increments(1);
+}
+
+.annotation-form-article-id {
+  display: block;
+  margin-bottom: baseline.increments(1);
+}
+
+.annotation-form-controls {
+  display: flex;
 }
 
 .annotation-form-submit {
@@ -11,4 +21,5 @@
 
 .annotation-form-reset {
   @include button.button-secondary();
+  margin-left: auto;
 }
