@@ -1,3 +1,4 @@
+@use '../sass/settings';
 @use '../sass/baseline';
 @use '../sass/button';
 
@@ -17,6 +18,11 @@
 
 .annotation-form-submit {
   @include button.button();
+
+  &[disabled]:hover {
+    cursor: not-allowed;
+    background-color: settings.$colour-text-secondary;
+  }
 }
 
 .annotation-form-reset {

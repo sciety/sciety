@@ -15,7 +15,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = () => TE.right
       <label for="articleId">Article DOI</label>
       <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id">
       <div class="annotation-form-controls">
-        <button class="annotation-form-submit">Create annotation</button>
+        <button class="annotation-form-submit" disabled>Create annotation</button>
         <button type="reset" class="annotation-form-reset">Reset</button>
       </div>
     </form>
