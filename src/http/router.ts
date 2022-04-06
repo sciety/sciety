@@ -28,6 +28,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { addArticleToList } from '../add-article-to-list';
+import { createAnnotationFormPage } from '../annotations/create-annotation-form-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -377,22 +378,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/annotations/annotation-form',
-    pageHandler(() => TE.right({
-      title: 'Create an annotation',
-      content: toHtmlFragment(`
-        <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReading/lists/saved-articles">Prachee's list</a></h1>
-        <form>
-          <label for="annotationContent">Annotation content</label>
-          <textarea id="annotationContent" name="annotationContent" rows="10" class="annotation-form-content"></textarea>
-          <label for="articleId">Article DOI</label>
-          <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id">
-          <div class="annotation-form-controls">
-            <button class="annotation-form-submit">Create annotation</button>
-            <button type="reset" class="annotation-form-reset">Reset</button>
-          </div>
-        </form>
-        `),
-    })),
+    pageHandler(createAnnotationFormPage),
   );
 
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
