@@ -377,28 +377,26 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/annotations/annotation-form',
-    async (context, next) => {
-      context.response.status = StatusCodes.OK;
-      context.response.body = `
-      <!DOCTYPE html>
-      <title>Create an annotation</title>
-      <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReading/lists/saved-articles">Prachee's list</a></h1>
-      <form>
-        <div>
-          <label for="annotationContent">Annotation content</label>
-          <textarea id="annotationContent" name="annotationContent" cols="100" rows="10"></textarea>
-        </div>
-        <div>
-          <label for="articleId">Article DOI</label>
-          <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801">
-        </div>
-        <div>
-          <button>Create annotation</button>
-          <button type="reset">Reset</button>
-        </div>
-      </form>`;
-      await next();
-    },
+    pageHandler(() => TE.right({
+      title: 'Create an annotation',
+      content: toHtmlFragment(`
+        <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReading/lists/saved-articles">Prachee's list</a></h1>
+        <form>
+          <div>
+            <label for="annotationContent">Annotation content</label>
+            <textarea id="annotationContent" name="annotationContent" cols="100" rows="10"></textarea>
+          </div>
+          <div>
+            <label for="articleId">Article DOI</label>
+            <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801">
+          </div>
+          <div>
+            <button>Create annotation</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+        `),
+    })),
   );
 
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
