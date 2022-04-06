@@ -8,7 +8,7 @@ type CreateAnnotationFormPage = () => TE.TaskEither<RenderPageError, Page>;
 export const createAnnotationFormPage: CreateAnnotationFormPage = () => TE.right({
   title: 'Create an annotation',
   content: toHtmlFragment(`
-    <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReaßding/lists/saved-articles">Prachee's list</a></h1>
+    <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReading/lists/saved-articles">Prachee's list</a></h1>
     <form>
       <label for="annotationContent">Annotation content</label>
       <textarea id="annotationContent" name="annotationContent" rows="10" class="annotation-form-content"></textarea>
