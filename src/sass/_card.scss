@@ -7,7 +7,10 @@
 @use 'avatar';
 
 
-@mixin basics () {
+@mixin basics ($is-entire-card-linked: false) {
+  @if ($is-entire-card-linked == true) {
+    position: relative;
+  }
   background-color: settings.$colour-white;
   padding: baseline.increments(2) functions.px-to-rem(16px);
 
@@ -38,6 +41,26 @@
     &:hover {
       color: settings.$colour-text-primary;
     }
+  }
+}
+
+@mixin entire-card-link() {
+  @include link();
+
+  &:hover {
+    &::after {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: settings.$border-radius;
   }
 }
 
