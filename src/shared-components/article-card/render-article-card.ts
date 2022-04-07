@@ -68,6 +68,7 @@ const renderAnnotationContent = (content: undefined | string) => (
   content !== undefined
     ? `
       <section class="article-card__annotation">
+      <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
         ${content}
       </section>
     `
