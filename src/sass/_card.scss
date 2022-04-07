@@ -6,6 +6,7 @@
 @use 'typography';
 @use 'avatar';
 
+$_card-border-radius: settings.$border-radius;
 
 @mixin basics ($is-entire-card-linked: false) {
   @if ($is-entire-card-linked == true) {
@@ -19,7 +20,7 @@
   border-right-width: 0;
 
   @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
+    border-radius: $_card-border-radius;
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
   }
@@ -60,7 +61,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    border-radius: settings.$border-radius;
+    border-radius: $_card-border-radius;
   }
 }
 
