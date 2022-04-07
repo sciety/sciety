@@ -17,17 +17,26 @@ $_card-padding: 16px;
 
 .article-card__main_content {
   @include card.basics();
+  position: relative;
 }
 
 .article-card__link {
   @include card.link();
 
-  &:link,
-  &:visited {
-    &:active,
-    &:hover {
-      color: settings.$colour-accent;
+  &:hover {
+    &::after {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: settings.$border-radius;
   }
 }
 
