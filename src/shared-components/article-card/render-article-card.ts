@@ -56,7 +56,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
+const renderArticleCardControls = (controls: O.Option<HtmlFragment>) => pipe(
   controls,
   O.fold(
     () => '',
@@ -74,19 +74,27 @@ const renderAnnotationContent = (content: undefined | string) => (
     `
     : '');
 
-export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+  <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
+  ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
+  <footer class="article-card__footer">
+    <div class="article-card__meta">
+      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
+    </div>
+  </footer>
+`);
+
+export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+  <section class="article-card">
+    ${renderArticleCardContents(model)}
+  </section>
+`);
+
+export const renderArticleCardWithControlsAndOptionalAnnotation = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
-        <h3 class="article-card__title">
-          <a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a>
-        </h3>
-        ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
-        <footer class="article-card__footer">
-          <div class="article-card__meta">
-            <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
-          </div>
-        </footer>
-      ${renderControls(controls)}
+      ${renderArticleCardContents(model)}
+      ${renderArticleCardControls(controls)}
     </section>
     ${renderAnnotationContent(annotationContent)}
   </article>

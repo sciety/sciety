@@ -10,7 +10,7 @@ import { renderSavedArticles } from './render-saved-articles';
 import { informationUnavailable, noSavedArticles } from './static-messages';
 import { DomainEvent } from '../../domain-events';
 import { renderUnsaveForm } from '../../save-article/render-unsave-form';
-import { renderArticleCard } from '../../shared-components/article-card';
+import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { populateArticleViewModel } from '../../shared-components/article-card/populate-article-view-model';
 import { ArticleAuthors } from '../../types/article-authors';
@@ -106,7 +106,7 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   TE.map(flow(
     RA.map(({ articleViewModel, controls, annotationContent }) => pipe(
       articleViewModel,
-      renderArticleCard(controls, annotationContent),
+      renderArticleCardWithControlsAndOptionalAnnotation(controls, annotationContent),
     )),
     renderSavedArticles,
   )),

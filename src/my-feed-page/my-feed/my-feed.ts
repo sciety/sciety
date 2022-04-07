@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -69,7 +68,7 @@ const constructArticleViewModels = (ports: Ports) => flow(
 );
 
 const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
-  RNEA.map(renderArticleCard(O.none)),
+  RNEA.map(renderArticleCard),
   RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
   (cards) => `
     <p class="my-feed-page-numbers">

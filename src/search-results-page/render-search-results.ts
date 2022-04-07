@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { pageTabs, PageTabsViewModel } from './page-tabs';
@@ -17,7 +16,7 @@ export type SearchResults = PaginationViewModel & PageTabsViewModel & {
 };
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
-  isArticleViewModel(viewModel) ? renderArticleCard(O.none)(viewModel) : renderGroupCard(viewModel)
+  isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
