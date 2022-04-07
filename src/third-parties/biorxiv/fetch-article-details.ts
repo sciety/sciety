@@ -10,7 +10,7 @@ import { Doi } from '../../types/doi';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 
-type Dependencies = {
+type Ports = {
   getJson: GetJson,
   logger: Logger,
 };
@@ -24,12 +24,12 @@ const constructUrl = (doi: Doi, server: ArticleServer) => (
 );
 
 type FetchArticleDetails = (doi: Doi, server: ArticleServer)
-=> ({ getJson, logger }: Dependencies)
-=> TE.TaskEither<void, BiorxivArticleDetails>;
+=> (ports: Ports)
+=> TE.TaskEither<unknown, BiorxivArticleDetails>;
 
-export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
+export const fetchArticleDetails: FetchArticleDetails = (doi, server) => (ports) => pipe(
   TE.tryCatch(
-    async () => getJson(
+    async () => ports.getJson(
       constructUrl(doi, server),
       headers,
     ),
@@ -41,7 +41,7 @@ export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJ
   )),
   TE.mapLeft(
     (error) => {
-      logger('debug', 'Failed to retrieve article details from bioRxiv API', {
+      ports.logger('debug', 'Failed to retrieve article details from bioRxiv API', {
         url: constructUrl(doi, server),
         error: error.message,
       });
