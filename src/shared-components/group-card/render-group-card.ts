@@ -51,11 +51,10 @@ const renderListCount = flow(
 
 export const renderGroupCard = flow(
   (viewModel: GroupViewModel) => `
-    <article>
-      <a class="group-card" href="/groups/${viewModel.slug}">
+    <article class="group-card">
         <div class="group-card__body">
           <h3 class="group-card__title">
-            ${htmlEscape(viewModel.name)}
+            <a class="group-card__link" href="/groups/${viewModel.slug}">${htmlEscape(viewModel.name)}</a>
           </h3>
           <div class="group-card__description">
             ${viewModel.description}
@@ -65,7 +64,6 @@ export const renderGroupCard = flow(
           </span>
         </div>
         <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />
-      </a>
     </article>
   `,
   toHtmlFragment,
