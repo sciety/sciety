@@ -75,10 +75,9 @@ const renderAnnotationContent = (content: undefined | string) => (
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
-    <section>
-      <a class="article-card__link" href="/articles/activity/${model.articleId.value}">
+    <section class="article-card__main_content">
         <h3 class="article-card__title">
-          ${model.title}
+          <a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a>
         </h3>
         ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
         <footer class="article-card__footer">
@@ -86,7 +85,6 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotationCo
             <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
           </div>
         </footer>
-      </a>
       ${renderControls(controls)}
     </section>
     ${renderAnnotationContent(annotationContent)}

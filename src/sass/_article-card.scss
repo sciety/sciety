@@ -15,13 +15,19 @@ $_card-padding: 16px;
   position: relative;
 }
 
-.article-card__link {
+.article-card__main_content {
   @include card.basics();
-  @include card.link();
-  display: block;
+}
 
-  &:hover {
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+.article-card__link {
+  @include card.link();
+
+  &:link,
+  &:visited {
+    &:active,
+    &:hover {
+      color: settings.$colour-accent;
+    }
   }
 }
 
