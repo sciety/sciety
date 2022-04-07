@@ -67,7 +67,7 @@ const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
 const renderAnnotationContent = (content: undefined | string) => (
   content !== undefined
     ? `
-      <section class="article-card__annotation">
+      <section class="article-card-annotation">
       <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
         ${content}
       </section>
@@ -75,8 +75,8 @@ const renderAnnotationContent = (content: undefined | string) => (
     : '');
 
 export const renderArticleCard = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
-  <article class="article-card">
-    <section class="article-card__main_content">
+  <article>
+    <section class="article-card">
         <h3 class="article-card__title">
           <a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a>
         </h3>

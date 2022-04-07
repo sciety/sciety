@@ -12,10 +12,6 @@ $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
 .article-card {
-  position: relative;
-}
-
-.article-card__main_content {
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
 }
@@ -49,7 +45,7 @@ $_card-padding: 16px;
   right: functions.px-to-rem($_card-padding);
 }
 
-.article-card__annotation {
+.article-card-annotation {
   padding: functions.px-to-rem($_card-padding);
   margin-left: functions.px-to-rem($_card-padding);
   margin-right: settings.$border-radius;
