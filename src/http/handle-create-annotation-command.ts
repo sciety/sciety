@@ -49,8 +49,14 @@ const translateAndLogCommand = (logger: Logger): Middleware => async (context, n
   await next();
 };
 
-export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => compose([
+export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters, handler) => compose([
   bodyParser({ enableTypes: ['form'] }),
   translateAndLogCommand(adapters.logger),
+  async (context) => {
+    await pipe(
+      context.request.body,
+      handler(adapters),
+    )();
+  },
   redirectBack,
 ]);
