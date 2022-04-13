@@ -6,9 +6,9 @@ import compose from 'koa-compose';
 import { redirectBack } from './redirect-back';
 import { CommandResult } from '../types/command-result';
 
-type ScietyApiCommandHandler = (input: unknown) => TE.TaskEither<string, CommandResult>;
+type CommandHandler = (input: unknown) => TE.TaskEither<string, CommandResult>;
 
-type HandleCreateAnnotationCommand = (handler: ScietyApiCommandHandler) => Middleware;
+type HandleCreateAnnotationCommand = (handler: CommandHandler) => Middleware;
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (handler) => compose([
   bodyParser({ enableTypes: ['form'] }),
