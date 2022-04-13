@@ -14,7 +14,7 @@ import send from 'koa-send';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
-import { handleCreateAnnotationCommand } from './handle-create-annotation-command';
+import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { handleScietyApiCommand } from './handle-sciety-api-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
