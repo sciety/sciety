@@ -27,15 +27,22 @@ const logCommand = (logger: Logger, url: string) => (command: CreateAnnotationCo
   },
 );
 
+type Body = {
+  annotationContent: string,
+  articleId: string,
+};
+
+const translateCommand = ({ annotationContent, articleId }: Body): CreateAnnotationCommand => ({
+  content: annotationContent,
+  target: {
+    articleId,
+  },
+});
+
 const translateAndLogCommand = (logger: Logger): Middleware => async (context, next) => {
   pipe(
     context.request.body,
-    (body) => ({
-      content: body.annotationContent,
-      target: {
-        articleId: body.articleId,
-      },
-    }),
+    translateCommand,
     logCommand(logger, context.request.url),
   );
 
