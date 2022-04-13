@@ -448,10 +448,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post(
     '/annotations/create-annotation',
-    handleCreateAnnotationCommand(
-      adapters,
-      createAnnotation,
-    ),
+    handleCreateAnnotationCommand(createAnnotation(adapters)),
   );
 
   // AUTHENTICATION
