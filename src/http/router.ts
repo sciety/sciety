@@ -29,6 +29,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { addArticleToList } from '../add-article-to-list';
+import { createAnnotation } from '../annotations/create-annotation';
 import { createAnnotationFormPage } from '../annotations/create-annotation-form-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -449,7 +450,7 @@ export const createRouter = (adapters: Adapters): Router => {
     '/annotations/create-annotation',
     handleCreateAnnotationCommand(
       adapters,
-      () => () => TE.left(''),
+      createAnnotation,
     ),
   );
 
