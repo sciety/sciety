@@ -11,7 +11,23 @@ type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.Ta
 
 type HandleCreateAnnotationCommand = (adapters: Adapters, handler: ScietyApiCommandHandler) => Middleware;
 
-const logCommand = (logger: Logger): Middleware => async (context, next) => {
+type CreateAnnotationCommand = {
+  content: string,
+  target: {
+    articleId: string,
+  },
+};
+
+const logCommand = (logger: Logger, url: string) => (command: CreateAnnotationCommand) => logger(
+  'debug',
+  'Received command',
+  {
+    command,
+    url,
+  },
+);
+
+const translateAndLogCommand = (logger: Logger): Middleware => async (context, next) => {
   pipe(
     context.request.body,
     (body) => ({
@@ -20,14 +36,7 @@ const logCommand = (logger: Logger): Middleware => async (context, next) => {
         articleId: body.articleId,
       },
     }),
-    (command) => logger(
-      'debug',
-      'Received command',
-      {
-        command,
-        url: context.request.url,
-      },
-    ),
+    logCommand(logger, context.request.url),
   );
 
   await next();
@@ -35,6 +44,6 @@ const logCommand = (logger: Logger): Middleware => async (context, next) => {
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => compose([
   bodyParser({ enableTypes: ['form'] }),
-  logCommand(adapters.logger),
+  translateAndLogCommand(adapters.logger),
   redirectBack,
 ]);
