@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import { Logger } from '../infrastructure';
 
-export const logCommand = (logger: Logger): Middleware => async (context, next) => {
+export const logRequestBody = (logger: Logger): Middleware => async (context, next) => {
   logger(
     'debug',
     'Received command',

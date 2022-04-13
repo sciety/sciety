@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { logCommand } from './log-command';
+import { logRequestBody } from './log-request-body';
 import { redirectBack } from './redirect-back';
 import { Adapters } from '../infrastructure';
 import { CommandResult } from '../types/command-result';
@@ -13,6 +13,6 @@ type HandleCreateAnnotationCommand = (adapters: Adapters, handler: ScietyApiComm
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => compose([
   bodyParser({ enableTypes: ['form'] }),
-  logCommand(adapters.logger),
+  logRequestBody(adapters.logger),
   redirectBack,
 ]);

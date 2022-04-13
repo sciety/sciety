@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { logCommand } from './log-command';
+import { logRequestBody } from './log-request-body';
 import { requireBearerToken } from './require-bearer-token';
 import { Adapters } from '../infrastructure';
 import { CommandResult } from '../types/command-result';
@@ -13,7 +13,7 @@ type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.Ta
 
 export const handleScietyApiCommand = (adapters: Adapters, handler: ScietyApiCommandHandler): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
-  logCommand(adapters.logger),
+  logRequestBody(adapters.logger),
   requireBearerToken,
   async (context) => {
     await pipe(
