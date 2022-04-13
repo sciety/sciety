@@ -444,6 +444,8 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToList));
 
+  router.post('/annotations/create-annotation', redirectBack);
+
   // AUTHENTICATION
 
   router.get(
