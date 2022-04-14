@@ -2,6 +2,7 @@ import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-m
 import { Doi } from '../../../src/types/doi';
 import { toUserId } from '../../../src/types/user-id';
 import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-annotation-content-by-user-list-target', () => {
   const avasthiReadingUserId = toUserId('1412019815619911685');
@@ -30,6 +31,13 @@ describe('get-annotation-content-by-user-list-target', () => {
   });
 
   describe('when an article in any other list is the target', () => {
-    it.todo('returns undefined');
+    const result = getAnnotationContentByUserListTarget(
+      arbitraryDoi(),
+      arbitraryUserId(),
+    )([]);
+
+    it('returns undefined', () => {
+      expect(result).toBeUndefined();
+    });
   });
 });
