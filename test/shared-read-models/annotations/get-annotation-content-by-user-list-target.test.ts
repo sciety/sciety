@@ -32,7 +32,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       });
     });
 
-    describe('when an article in any other list is the target', () => {
+    describe('when an article in any other user list is the target', () => {
       const result = getAnnotationContentByUserListTarget(
         arbitraryDoi(),
         arbitraryUserId(),
@@ -51,6 +51,20 @@ describe('get-annotation-content-by-user-list-target', () => {
         getAnnotationContentByUserListTarget(
           arbitraryDoi(),
           avasthiReadingUserId,
+        ),
+      );
+
+      it('returns undefined', () => {
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('when the target refers to a user list that doesn\'t support annotations', () => {
+      const result = pipe(
+        [],
+        getAnnotationContentByUserListTarget(
+          arbitraryDoi(),
+          arbitraryUserId(),
         ),
       );
 
