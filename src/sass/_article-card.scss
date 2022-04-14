@@ -54,4 +54,8 @@ $_card-padding: 16px;
   border-top: 0;
   border-bottom-left-radius: settings.$border-radius;
   border-bottom-right-radius: settings.$border-radius;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }

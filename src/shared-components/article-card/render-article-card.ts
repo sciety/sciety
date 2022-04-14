@@ -68,8 +68,8 @@ const renderAnnotationContent = (content: undefined | HtmlFragment) => (
   content !== undefined
     ? `
       <section class="article-card-annotation">
-      <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
-        ${content}
+        <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
+        <p>${content}</p>
       </section>
     `
     : '');
