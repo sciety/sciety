@@ -3,6 +3,7 @@ import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { AnnotationCreatedEvent } from './annotation-created-event';
 import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupCreatedEvent } from './group-created-event';
@@ -18,6 +19,7 @@ import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editori
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export type DomainEvent =
+  AnnotationCreatedEvent |
   ArticleAddedToListEvent |
   GroupCreatedEvent |
   EvaluationRecordedEvent |

@@ -2,6 +2,12 @@ export { DomainEvent } from './domain-event';
 export { RuntimeGeneratedEvent } from './runtime-generated-event';
 
 export {
+  isAnnotationCreatedEvent,
+  AnnotationCreatedEvent,
+  annotationCreated,
+} from './annotation-created-event';
+
+export {
   isArticleAddedToListEvent,
   ArticleAddedToListEvent,
   articleAddedToList,

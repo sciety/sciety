@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { annotationCreated } from '../../../src/domain-events';
 import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations';
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -57,7 +58,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       const annotationContent = arbitraryHtmlFragment();
       const result = pipe(
         [
-          // annotationCreated(target, annotationContent),
+          annotationCreated(target, annotationContent),
         ],
         getAnnotationContentByUserListTarget(
           target.articleId,
