@@ -64,7 +64,7 @@ const renderArticleCardControls = (controls: O.Option<HtmlFragment>) => pipe(
   ),
 );
 
-const renderAnnotationContent = (content: undefined | string) => (
+const renderAnnotationContent = (content: undefined | HtmlFragment) => (
   content !== undefined
     ? `
       <section class="article-card-annotation">
@@ -90,7 +90,7 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (controls: O.Option<HtmlFragment>, annotationContent?: string) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (controls: O.Option<HtmlFragment>, annotationContent?: HtmlFragment) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}

@@ -16,7 +16,7 @@ import { populateArticleViewModel } from '../../shared-components/article-card/p
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
 
@@ -47,7 +47,7 @@ const getArticleCardControls = (loggedInUserId: O.Option<UserId>, listOwnerId: U
 
 type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId)
 => (events: ReadonlyArray<DomainEvent>)
-=> string | undefined;
+=> HtmlFragment | undefined;
 
 const getAnnotationContentByUserListTarget: GetAnnotationContentByUserListTarget = (articleId, listOwnerId) => () => {
   if (listOwnerId !== '1412019815619911685') {
@@ -82,7 +82,10 @@ const getAnnotationContentByUserListTarget: GetAnnotationContentByUserListTarget
   if (articleId.value === '10.1101/2022.04.06.487340') {
     content = 'This polarity of actin networks and myosin traffic is interesting in light of the parallels between cilium biogenesis and the immune synapse function.';
   }
-  return content;
+  if (!content) {
+    return undefined;
+  }
+  return toHtmlFragment(content);
 };
 
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId) => pipe(
