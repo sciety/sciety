@@ -382,7 +382,8 @@ export const createRouter = (adapters: Adapters): Router => {
     '/annotations/create-annotation-form-avasthi-reading',
     pageHandler(createPageFromParams(
       paramsCodec,
-      createAnnotationFormPage)),
+      createAnnotationFormPage,
+    )),
   );
 
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
