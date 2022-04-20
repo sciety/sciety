@@ -2,6 +2,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import * as t from 'io-ts';
+
+export const paramsCodec = t.type({
+  articleId: t.string
+});
 
 type CreateAnnotationFormPage = (queryParams: { articleId: string }) => TE.TaskEither<RenderPageError, Page>;
 
