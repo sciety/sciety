@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import { shouldDisplayRefereedBadge } from '../../src/article-page/should-display-refereed-badge';
 import { evaluationRecorded, groupCreated } from '../../src/domain-events';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('should-display-refereed-badge', () => {
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
   const humanGroup = arbitraryGroup();
   const automatedGroup = {
     ...arbitraryGroup(),

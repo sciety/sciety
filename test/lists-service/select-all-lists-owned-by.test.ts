@@ -3,7 +3,7 @@ import { articleAddedToList, listCreated } from '../../src/domain-events';
 import { selectAllListsOwnedBy } from '../../src/lists-service/select-all-lists-owned-by';
 import { List } from '../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
@@ -74,8 +74,8 @@ describe('select-all-lists-owned-by', () => {
       result = pipe(
         [
           listCreated(listId, listName, listDescription, ownerId),
-          articleAddedToList(arbitraryDoi(), listId),
-          articleAddedToList(arbitraryDoi(), listId, dateOfLatestEvent),
+          articleAddedToList(arbitraryArticleId(), listId),
+          articleAddedToList(arbitraryArticleId(), listId, dateOfLatestEvent),
         ],
         selectAllListsOwnedBy(ownerId),
         (lists) => lists[0],
@@ -130,8 +130,8 @@ describe('select-all-lists-owned-by', () => {
       [
         listCreated(listIdA, arbitraryString(), arbitraryString(), ownerId, earlierDate),
         listCreated(listIdB, arbitraryString(), arbitraryString(), ownerId, earlierDate),
-        articleAddedToList(arbitraryDoi(), listIdA, earlierDate),
-        articleAddedToList(arbitraryDoi(), listIdB, laterDate),
+        articleAddedToList(arbitraryArticleId(), listIdA, earlierDate),
+        articleAddedToList(arbitraryArticleId(), listIdB, laterDate),
       ],
       selectAllListsOwnedBy(ownerId),
     );

@@ -3,13 +3,13 @@ import * as O from 'fp-ts/Option';
 import { evaluationRecorded } from '../../../src/domain-events';
 import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
 import { arbitraryDate } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const latestEvaluationPublishedDate = new Date('2020-12-15T00:00:00.000Z');
     const events = [
@@ -59,7 +59,7 @@ describe('followed-groups-activities', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
-        evaluationRecorded(notFollowedGroupId, arbitraryDoi(), arbitraryReviewId(), [], new Date(), new Date('2021-03-10T00:00:00.000Z')),
+        evaluationRecorded(notFollowedGroupId, arbitraryArticleId(), arbitraryReviewId(), [], new Date(), new Date('2021-03-10T00:00:00.000Z')),
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
@@ -70,7 +70,7 @@ describe('followed-groups-activities', () => {
 
   describe('when only a single group has evaluated an article more than once', () => {
     const groupId = arbitraryGroupId();
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const latestEvaluationPublishedDate = new Date('2020-01-01');
     const events = [
       evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('1980-01-01'), arbitraryDate()),
@@ -111,7 +111,7 @@ describe('followed-groups-activities', () => {
   describe('when multiple groups have evaluated an article', () => {
     const groupId = arbitraryGroupId();
     const otherGroupId = arbitraryGroupId();
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const events = [
       evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
       evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
@@ -145,8 +145,8 @@ describe('followed-groups-activities', () => {
     const groupId = arbitraryGroupId();
 
     it('returns the article with the most recently recorded evaluation first', () => {
-      const earlierArticle = arbitraryDoi();
-      const laterArticle = arbitraryDoi();
+      const earlierArticle = arbitraryArticleId();
+      const laterArticle = arbitraryArticleId();
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
@@ -170,8 +170,8 @@ describe('followed-groups-activities', () => {
     it('orders by the most recently recorded evaluation by a followed group', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
-      const articleA = arbitraryDoi();
-      const articleB = arbitraryDoi();
+      const articleA = arbitraryArticleId();
+      const articleB = arbitraryArticleId();
       const events = [
         evaluationRecorded(followedGroupId, articleB, arbitraryReviewId(), [], new Date(), new Date('1980-01-01')),
         evaluationRecorded(followedGroupId, articleA, arbitraryReviewId(), [], new Date(), new Date('2000-01-01')),
@@ -197,7 +197,7 @@ describe('followed-groups-activities', () => {
     const events = (
       [...Array(numberOfEvents)].map(() => evaluationRecorded(
         arbitraryGroupId(),
-        arbitraryDoi(),
+        arbitraryArticleId(),
         arbitraryReviewId(),
         [],
         new Date(),

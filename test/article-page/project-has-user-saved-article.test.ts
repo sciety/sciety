@@ -3,7 +3,7 @@ import { projectHasUserSavedArticle } from '../../src/article-page/project-has-u
 import { userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
 import { Doi } from '../../src/types/doi';
 
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('project-has-user-saved-article', () => {
@@ -26,7 +26,7 @@ describe('project-has-user-saved-article', () => {
     it('returns false', async () => {
       const getEvents = T.of([]);
       const result = await projectHasUserSavedArticle(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         arbitraryUserId(),
       )(getEvents)();
 
@@ -37,7 +37,7 @@ describe('project-has-user-saved-article', () => {
   describe('when the user has saved and unsaved the article', () => {
     it('returns false', async () => {
       const userId = arbitraryUserId();
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
       const getEvents = T.of([
         userSavedArticle(userId, articleId),
         userUnsavedArticle(userId, articleId),
@@ -55,10 +55,10 @@ describe('project-has-user-saved-article', () => {
     it('returns false', async () => {
       const userId = arbitraryUserId();
       const getEvents = T.of([
-        userSavedArticle(userId, arbitraryDoi()),
+        userSavedArticle(userId, arbitraryArticleId()),
       ]);
       const result = await projectHasUserSavedArticle(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         userId,
       )(getEvents)();
 

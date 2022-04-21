@@ -12,7 +12,7 @@ import {
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -29,8 +29,8 @@ describe('identify-all-possible-index-entries', () => {
   };
 
   describe('when there are evaluated events by a supported group', () => {
-    const articleId1 = arbitraryDoi();
-    const articleId2 = arbitraryDoi();
+    const articleId1 = arbitraryArticleId();
+    const articleId2 = arbitraryArticleId();
     const earlierDate = new Date('1990');
     const laterDate = new Date('2000');
     const events = [
@@ -69,7 +69,7 @@ describe('identify-all-possible-index-entries', () => {
     const earlierDate = new Date('1990');
     const middleDate = new Date('2012');
     const latestDate = new Date('2021');
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const events = [
       evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), earlierDate),
       evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), latestDate),
@@ -100,12 +100,12 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when there are evaluated events by both supported and unsupported groups', () => {
-    const articleId1 = arbitraryDoi();
-    const articleId2 = arbitraryDoi();
+    const articleId1 = arbitraryArticleId();
+    const articleId2 = arbitraryArticleId();
     const events = [
       evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId()),
       evaluationRecorded(supportedGroupIds[1], articleId2, arbitraryReviewId()),
-      evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
     ];
 
     let result: ReadonlyArray<DocmapIndexEntryModel>;
@@ -137,7 +137,7 @@ describe('identify-all-possible-index-entries', () => {
 
   describe('when a supported group cannot be fetched', () => {
     const events = [
-      evaluationRecorded(supportedGroupIds[0], arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(supportedGroupIds[0], arbitraryArticleId(), arbitraryReviewId()),
     ];
     let result: unknown;
 

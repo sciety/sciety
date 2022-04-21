@@ -15,6 +15,7 @@ import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -80,7 +81,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
         };
         const html = await myFeed(adapters)(userId, 20, 1)();
@@ -99,9 +100,9 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
-            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
-            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
         };
         const pageSize = 2;
@@ -129,7 +130,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
         };
         const html = await myFeed(adapters)(userId, 20, 1)();
@@ -154,7 +155,7 @@ describe('my-feed acceptance', () => {
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               evaluationRecorded(groupId, failingDoi, arbitraryReviewId()),
-              evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
             ]),
           };
 
@@ -174,7 +175,7 @@ describe('my-feed acceptance', () => {
             findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
             ]),
           };
           const html = await myFeed(adapters)(userId, 20, 1)();

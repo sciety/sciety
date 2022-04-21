@@ -6,11 +6,11 @@ import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const articleId = arbitraryDoi();
+const articleId = arbitraryArticleId();
 
 describe('to-docmap', () => {
   describe('docmap meta data', () => {

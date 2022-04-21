@@ -2,11 +2,11 @@ import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../src/domain-events';
 import { needsToBeAdded } from '../../src/infrastructure/needs-to-be-added';
 import { Doi } from '../../src/types/doi';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
 describe('needs-to-be-added', () => {
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
   const eventToAdd = articleAddedToList(new Doi(articleId.value), listId);
 

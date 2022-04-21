@@ -15,14 +15,14 @@ import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl, ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewDoi, arbitraryReviewId } from '../../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
-const articleId = arbitraryDoi();
+const articleId = arbitraryArticleId();
 
 const defaultPorts: Ports = {
   fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),

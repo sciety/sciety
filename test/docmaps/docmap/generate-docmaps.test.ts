@@ -15,14 +15,14 @@ import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmaps', () => {
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   const review = (groupId: GroupId, recordedAt: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
@@ -55,7 +55,7 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       response = await pipe(
-        arbitraryDoi().value,
+        arbitraryArticleId().value,
         generateDocmaps({
           ...defaultPorts,
           getAllEvents: T.of([]),

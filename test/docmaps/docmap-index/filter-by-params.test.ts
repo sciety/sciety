@@ -5,7 +5,7 @@ import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-para
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 
@@ -13,13 +13,13 @@ describe('filter-by-params', () => {
   describe('when no params are given', () => {
     const input = [
       {
-        articleId: arbitraryDoi(),
+        articleId: arbitraryArticleId(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
         publisherAccountId: arbitraryUri(),
       },
       {
-        articleId: arbitraryDoi(),
+        articleId: arbitraryArticleId(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
         publisherAccountId: arbitraryUri(),
@@ -51,13 +51,13 @@ describe('filter-by-params', () => {
     const requestedGroup = arbitraryGroup();
     const allIndexEntries = [
       {
-        articleId: arbitraryDoi(),
+        articleId: arbitraryArticleId(),
         groupId: requestedGroup.id,
         updated: arbitraryDate(),
         publisherAccountId: publisherAccountId(requestedGroup),
       },
       {
-        articleId: arbitraryDoi(),
+        articleId: arbitraryArticleId(),
         groupId: arbitraryGroupId(),
         updated: arbitraryDate(),
         publisherAccountId: arbitraryUri(),
@@ -88,13 +88,13 @@ describe('filter-by-params', () => {
       const afterSpecifiedDate = new Date('2020');
       const input = [
         {
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
           publisherAccountId: arbitraryUri(),
         },
         {
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           groupId: arbitraryGroupId(),
           updated: afterSpecifiedDate,
           publisherAccountId: arbitraryUri(),
@@ -120,7 +120,7 @@ describe('filter-by-params', () => {
       const specifiedDate = new Date('1999');
       const input = [
         {
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           groupId: arbitraryGroupId(),
           updated: beforeSpecifiedDate,
           publisherAccountId: arbitraryUri(),

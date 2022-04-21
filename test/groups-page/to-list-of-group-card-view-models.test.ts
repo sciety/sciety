@@ -6,7 +6,7 @@ import { evaluationRecorded, groupCreated } from '../../src/domain-events';
 import { Ports, toListOfGroupCardViewModels } from '../../src/groups-page/to-list-of-group-card-view-models';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
@@ -19,8 +19,8 @@ describe('to-list-of-group-card-view-models', () => {
       groupCreated(inactiveGroup),
       groupCreated(leastActiveGroup),
       groupCreated(mostActiveGroup),
-      evaluationRecorded(leastActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
-      evaluationRecorded(mostActiveGroup.id, arbitraryDoi(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
+      evaluationRecorded(leastActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
+      evaluationRecorded(mostActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
     ]),
     getListsOwnedBy: () => TE.right([]),
   };
