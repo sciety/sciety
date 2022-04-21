@@ -11,11 +11,15 @@ export const paramsCodec = t.type({
   articleId: tt.optionFromNullable(t.string),
 });
 
-const renderArticleIdInput = (articleId: O.Option<string>) => `<input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${pipe(articleId, O.fold(
-  () => '',
-  (id) => id,
-))}">
-`;
+const renderArticleIdInput = (articleId: O.Option<string>) => pipe(
+  articleId,
+  O.fold(
+    () => '',
+    (id) => id,
+  ),
+  (value) => `<input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${value}">
+`,
+);
 
 type CreateAnnotationFormPage = (params: { articleId: O.Option<string> }) => TE.TaskEither<RenderPageError, Page>;
 
