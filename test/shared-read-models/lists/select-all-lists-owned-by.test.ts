@@ -5,7 +5,7 @@ import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { List, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
@@ -78,8 +78,8 @@ describe('select-all-lists-owned-by', () => {
       result = await pipe(
         [
           listCreated(listId, listName, listDescription, ownerId),
-          articleAddedToList(arbitraryDoi(), listId),
-          articleAddedToList(arbitraryDoi(), listId, newerDate),
+          articleAddedToList(arbitraryArticleId(), listId),
+          articleAddedToList(arbitraryArticleId(), listId, newerDate),
         ],
         selectAllListsOwnedBy(ownerId),
         TE.getOrElse(shouldNotBeCalled),
@@ -117,7 +117,7 @@ describe('select-all-lists-owned-by', () => {
       result = await pipe(
         [
           listCreated(anotherListId, arbitraryString(), arbitraryString(), anotherOwnerId),
-          articleAddedToList(arbitraryDoi(), anotherListId),
+          articleAddedToList(arbitraryArticleId(), anotherListId),
         ],
         selectAllListsOwnedBy(ownerId),
         TE.getOrElse(shouldNotBeCalled),

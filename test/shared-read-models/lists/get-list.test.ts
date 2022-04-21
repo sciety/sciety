@@ -5,7 +5,7 @@ import { getList, List } from '../../../src/shared-read-models/lists';
 import * as Lid from '../../../src/types/list-id';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
@@ -30,8 +30,8 @@ describe('get-list', () => {
         beforeEach(async () => {
           result = await pipe(
             [
-              articleAddedToList(arbitraryDoi(), eLifeMedicineListId, arbitraryDate()),
-              articleAddedToList(arbitraryDoi(), eLifeMedicineListId, latestDate),
+              articleAddedToList(arbitraryArticleId(), eLifeMedicineListId, arbitraryDate()),
+              articleAddedToList(arbitraryArticleId(), eLifeMedicineListId, latestDate),
             ],
             getList(eLifeMedicineListId),
             TE.getOrElse(shouldNotBeCalled),
@@ -95,8 +95,8 @@ describe('get-list', () => {
           result = await pipe(
             [
               listCreated(listId, name, description, ownerId),
-              articleAddedToList(arbitraryDoi(), listId, arbitraryDate()),
-              articleAddedToList(arbitraryDoi(), listId, latestDate),
+              articleAddedToList(arbitraryArticleId(), listId, arbitraryDate()),
+              articleAddedToList(arbitraryArticleId(), listId, latestDate),
             ],
             getList(listId),
             TE.getOrElse(shouldNotBeCalled),

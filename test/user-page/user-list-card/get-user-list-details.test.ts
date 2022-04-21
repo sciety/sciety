@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
 import { getUserListDetails } from '../../../src/user-page/user-list-card/get-user-list-details';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-user-list-details', () => {
@@ -28,8 +28,8 @@ describe('get-user-list-details', () => {
     const laterDate = new Date('2020');
     const details = pipe(
       [
-        userSavedArticle(userId, arbitraryDoi(), earlierDate),
-        userSavedArticle(userId, arbitraryDoi(), laterDate),
+        userSavedArticle(userId, arbitraryArticleId(), earlierDate),
+        userSavedArticle(userId, arbitraryArticleId(), laterDate),
       ],
       getUserListDetails(userId),
     );
@@ -47,10 +47,10 @@ describe('get-user-list-details', () => {
     const userId = arbitraryUserId();
     const earlierDate = new Date('1970');
     const laterDate = new Date('2020');
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const details = pipe(
       [
-        userSavedArticle(userId, arbitraryDoi(), new Date(1950)),
+        userSavedArticle(userId, arbitraryArticleId(), new Date(1950)),
         userSavedArticle(userId, articleId, earlierDate),
         userUnsavedArticle(userId, articleId, laterDate),
       ],
@@ -71,7 +71,7 @@ describe('get-user-list-details', () => {
     const differentUserId = arbitraryUserId();
     const details = pipe(
       [
-        userSavedArticle(differentUserId, arbitraryDoi()),
+        userSavedArticle(differentUserId, arbitraryArticleId()),
       ],
       getUserListDetails(userId),
     );

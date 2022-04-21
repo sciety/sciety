@@ -4,12 +4,12 @@ import { selectSubsetToDisplay } from '../../src/search-results-page/select-subs
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 const arbitraryArticleItem = () => ({
   _tag: 'Article' as const,
-  articleId: arbitraryDoi(),
+  articleId: arbitraryArticleId(),
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),
   authors: O.some([arbitraryString()]),

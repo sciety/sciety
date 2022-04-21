@@ -12,7 +12,7 @@ import {
 } from '../../src/domain-events';
 import { createAccountIfNecessary, UserAccount } from '../../src/user-account/create-account-if-necessary';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -53,8 +53,8 @@ describe('create-account-if-necessary', () => {
       describe.each([
         ['UserFollowedEditorialCommunityEvent', userFollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
         ['UserUnfollowedEditorialCommunityEvent', userUnfollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
-        ['UserSavedArticleEvent', userSavedArticle(userAccount.id, arbitraryDoi())],
-        ['UserUnsavedArticleEvent', userUnsavedArticle(userAccount.id, arbitraryDoi())],
+        ['UserSavedArticleEvent', userSavedArticle(userAccount.id, arbitraryArticleId())],
+        ['UserUnsavedArticleEvent', userUnsavedArticle(userAccount.id, arbitraryArticleId())],
         ['UserFoundReviewHelpfulEvent', userFoundReviewHelpful(userAccount.id, arbitraryReviewId())],
         ['UserRevokedFindingReviewHelpfulEvent', userRevokedFindingReviewHelpful(userAccount.id, arbitraryReviewId())],
         ['UserFoundReviewNotHelpfulEvent', userFoundReviewNotHelpful(userAccount.id, arbitraryReviewId())],

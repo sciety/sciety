@@ -7,6 +7,7 @@ import { fetchArticleDetails } from '../../../src/shared-components/article-card
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
@@ -20,7 +21,7 @@ const getArticle = () => TE.right({
 describe('fetch-article-details', () => {
   describe('latest version date', () => {
     it('returns the latest version date for an article', async () => {
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
         articleId,
@@ -64,7 +65,7 @@ describe('fetch-article-details', () => {
 
     describe('title', () => {
       it('returns the title for an article', async () => {
-        const articleId = arbitraryDoi();
+        const articleId = arbitraryArticleId();
         const title = await pipe(
           articleId,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
@@ -83,7 +84,7 @@ describe('fetch-article-details', () => {
 
     describe('authors', () => {
       it('returns the authors for an article', async () => {
-        const articleId = arbitraryDoi();
+        const articleId = arbitraryArticleId();
         const authors = await pipe(
           articleId,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),

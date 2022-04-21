@@ -1,6 +1,6 @@
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
 import { getGroupIdsFollowedBy } from '../../../src/shared-read-models/followings';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -78,7 +78,7 @@ describe('project-followed-group-ids', () => {
     const group1 = arbitraryGroupId();
     const followed = getGroupIdsFollowedBy(importantUser)([
       userFollowedEditorialCommunity(importantUser, group1),
-      userSavedArticle(importantUser, arbitraryDoi()),
+      userSavedArticle(importantUser, arbitraryArticleId()),
     ]);
 
     it('they are ignored', () => {

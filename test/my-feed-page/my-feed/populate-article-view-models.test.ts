@@ -6,6 +6,7 @@ import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('populate-article-view-models', () => {
@@ -19,7 +20,7 @@ describe('populate-article-view-models', () => {
           listMembershipCount: 0,
         },
         {
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
           listMembershipCount: 0,
@@ -45,7 +46,7 @@ describe('populate-article-view-models', () => {
     it('returns an article view model without a version date', async () => {
       const activities: ReadonlyArray<ArticleActivity> = [
         {
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           evaluationCount: 1,
           latestActivityDate: O.some(new Date()),
           listMembershipCount: 0,

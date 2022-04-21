@@ -8,7 +8,7 @@ import * as Lid from '../../src/types/list-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -30,7 +30,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
         callAddArticleToList: jest.fn(() => TE.right(undefined)),
       };
-      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+      const event = evaluationRecorded(elifeGroupId, arbitraryArticleId(), arbitraryReviewId());
 
       beforeEach(async () => {
         await addArticleToElifeSubjectAreaLists(ports)(event)();
@@ -49,7 +49,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
         callAddArticleToList: jest.fn(() => TE.right(undefined)),
       };
-      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+      const event = evaluationRecorded(elifeGroupId, arbitraryArticleId(), arbitraryReviewId());
 
       beforeEach(async () => {
         await addArticleToElifeSubjectAreaLists(ports)(event)();
@@ -68,7 +68,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getBiorxivOrMedrxivSubjectArea: () => TE.right(arbitraryString()),
         callAddArticleToList: jest.fn(shouldNotBeCalled),
       };
-      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+      const event = evaluationRecorded(elifeGroupId, arbitraryArticleId(), arbitraryReviewId());
 
       beforeEach(async () => {
         await addArticleToElifeSubjectAreaLists(ports)(event)();
@@ -91,7 +91,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
         getBiorxivOrMedrxivSubjectArea: () => TE.left(DE.unavailable),
         callAddArticleToList: jest.fn(shouldNotBeCalled),
       };
-      const event = evaluationRecorded(elifeGroupId, arbitraryDoi(), arbitraryReviewId());
+      const event = evaluationRecorded(elifeGroupId, arbitraryArticleId(), arbitraryReviewId());
 
       beforeEach(async () => {
         await addArticleToElifeSubjectAreaLists(ports)(event)();
@@ -116,7 +116,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
       callAddArticleToList: jest.fn(shouldNotBeCalled),
     };
-    const event = evaluationRecorded(anotherGroupId, arbitraryDoi(), arbitraryReviewId());
+    const event = evaluationRecorded(anotherGroupId, arbitraryArticleId(), arbitraryReviewId());
 
     beforeEach(async () => {
       await addArticleToElifeSubjectAreaLists(ports)(event)();
@@ -135,7 +135,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
       getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
       callAddArticleToList: jest.fn(shouldNotBeCalled),
     };
-    const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
+    const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
 
     beforeEach(async () => {
       await addArticleToElifeSubjectAreaLists(ports)(event)();

@@ -5,10 +5,10 @@ import { ArticleViewModel, renderArticleCard } from '../../../src/shared-compone
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const generateArticleViewModel = ({
-  articleId = arbitraryDoi(),
+  articleId = arbitraryArticleId(),
   title = sanitise(toHtmlFragment('default title')),
   authors = O.some(['Smith J']),
   latestActivityDate = O.some(new Date()),

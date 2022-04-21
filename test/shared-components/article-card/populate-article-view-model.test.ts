@@ -9,14 +9,14 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('populate-article-view-model', () => {
   it('returns a correct view model', async () => {
     const group = arbitraryGroup();
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const latestVersionDate = new Date();
     const earlierPublicationDate = new Date('1970');
     const laterPublicationDate = new Date('2020');

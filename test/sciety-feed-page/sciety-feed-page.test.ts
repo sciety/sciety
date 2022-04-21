@@ -20,6 +20,7 @@ import {
   arbitraryHtmlFragment, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
@@ -44,7 +45,7 @@ describe('sciety-feed-page', () => {
   };
 
   it('renders collapsed single article evaluated events as a single card', async () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
@@ -67,8 +68,8 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
-        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -85,7 +86,7 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -101,7 +102,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        userSavedArticle(arbitraryUserId(), arbitraryDoi()),
+        userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
       ]),
     };
     const renderedPage = await pipe(
@@ -158,8 +159,8 @@ describe('sciety-feed-page', () => {
       ...defaultPorts,
       getAllEvents: T.of([
         groupCreated(group),
-        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
-        userUnsavedArticle(arbitraryUserId(), arbitraryDoi()),
+        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
+        userUnsavedArticle(arbitraryUserId(), arbitraryArticleId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userFoundReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),

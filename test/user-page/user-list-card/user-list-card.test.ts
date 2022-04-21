@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import { userSavedArticle } from '../../../src/domain-events';
 import { userListCard } from '../../../src/user-page/user-list-card';
 import { arbitraryWord } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-list-card', () => {
@@ -33,8 +33,8 @@ describe('user-list-card', () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
       const events = [
-        userSavedArticle(userId, arbitraryDoi(), new Date('2021-01-01')),
-        userSavedArticle(userId, arbitraryDoi(), new Date('2021-07-23')),
+        userSavedArticle(userId, arbitraryArticleId(), new Date('2021-01-01')),
+        userSavedArticle(userId, arbitraryArticleId(), new Date('2021-07-23')),
       ];
       const rendered = await pipe(
         userListCard(T.of(events))(handle, userId),
@@ -49,8 +49,8 @@ describe('user-list-card', () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
       const events = [
-        userSavedArticle(userId, arbitraryDoi()),
-        userSavedArticle(userId, arbitraryDoi()),
+        userSavedArticle(userId, arbitraryArticleId()),
+        userSavedArticle(userId, arbitraryArticleId()),
       ];
       const rendered = await pipe(
         userListCard(T.of(events))(handle, userId),

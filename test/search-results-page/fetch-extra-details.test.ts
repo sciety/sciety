@@ -8,7 +8,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryDate, arbitraryNumber } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -19,7 +19,7 @@ describe('fetch-extra-details', () => {
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
       const group = arbitraryGroup();
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
       const pageNumber = arbitraryNumber(2, 5);
       const latestVersionDate = new Date();
       const earlierPublicationDate = new Date('1970');

@@ -1,12 +1,12 @@
 import { commandHandler } from '../../src/save-article/command-handler';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('command-handler', () => {
   describe('article is saved', () => {
     describe('and a UnsaveArticle Command is issued', () => {
       it('creates an UserUnsavedArticle Event', () => {
-        const articleId = arbitraryDoi();
+        const articleId = arbitraryArticleId();
         const userId = arbitraryUserId();
         const saveState = 'saved';
         const unsaveArticle = {
@@ -26,7 +26,7 @@ describe('command-handler', () => {
 
     describe('and a SaveArticle Command is issued', () => {
       it('creates no events', () => {
-        const articleId = arbitraryDoi();
+        const articleId = arbitraryArticleId();
         const userId = arbitraryUserId();
         const saveState = 'saved';
         const saveArticle = {
@@ -47,7 +47,7 @@ describe('command-handler', () => {
         const saveState = 'not-saved';
         const unsaveArticle = {
           type: 'UnsaveArticle' as const,
-          articleId: arbitraryDoi(),
+          articleId: arbitraryArticleId(),
           userId: arbitraryUserId(),
         };
         const createdEvents = commandHandler(unsaveArticle)(saveState);
@@ -58,7 +58,7 @@ describe('command-handler', () => {
 
     describe('and a SaveArticle Command is issued', () => {
       it('creates a UserSavedArticle Event', () => {
-        const articleId = arbitraryDoi();
+        const articleId = arbitraryArticleId();
         const userId = arbitraryUserId();
         const saveState = 'not-saved';
         const saveArticle = {

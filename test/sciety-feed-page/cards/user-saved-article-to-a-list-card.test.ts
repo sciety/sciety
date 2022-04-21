@@ -6,13 +6,13 @@ import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-
 import * as DE from '../../../src/types/data-error';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-saved-article-to-a-list-card', () => {
   const userId = arbitraryUserId();
   const date = new Date('2021-09-15');
-  const event = userSavedArticle(userId, arbitraryDoi(), date);
+  const event = userSavedArticle(userId, arbitraryArticleId(), date);
 
   describe('when user details are available', () => {
     const avatarUrl = arbitraryUri();

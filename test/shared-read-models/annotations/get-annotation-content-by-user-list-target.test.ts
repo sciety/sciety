@@ -6,7 +6,7 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import * as LID from '../../../src/types/list-id';
 import { toUserId } from '../../../src/types/user-id';
 import { arbitraryHtmlFragment } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-annotation-content-by-user-list-target', () => {
@@ -27,7 +27,7 @@ describe('get-annotation-content-by-user-list-target', () => {
 
     describe('when an article in the AvasthiReading list has not been annotated', () => {
       const result = getAnnotationContentByUserListTarget(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         avasthiReadingUserId,
       )([]);
 
@@ -38,7 +38,7 @@ describe('get-annotation-content-by-user-list-target', () => {
 
     describe('when an article in any other user list is the target', () => {
       const result = getAnnotationContentByUserListTarget(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         arbitraryUserId(),
       )([]);
 
@@ -52,7 +52,7 @@ describe('get-annotation-content-by-user-list-target', () => {
     describe('when an article in the AvasthiReading list has been annotated', () => {
       const avasthiReadingUserListId = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
       const target = {
-        articleId: arbitraryDoi(),
+        articleId: arbitraryArticleId(),
         listId: avasthiReadingUserListId,
       };
       const annotationContent = arbitraryHtmlFragment();
@@ -75,7 +75,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       const result = pipe(
         [],
         getAnnotationContentByUserListTarget(
-          arbitraryDoi(),
+          arbitraryArticleId(),
           avasthiReadingUserId,
         ),
       );
@@ -89,7 +89,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       const result = pipe(
         [],
         getAnnotationContentByUserListTarget(
-          arbitraryDoi(),
+          arbitraryArticleId(),
           arbitraryUserId(),
         ),
       );

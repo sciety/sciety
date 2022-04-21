@@ -16,6 +16,7 @@ import {
   arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -85,8 +86,8 @@ describe('user-list-page', () => {
           handle: arbitraryWord(),
         }),
         getAllEvents: T.of([
-          userSavedArticle(userId, arbitraryDoi()),
-          userSavedArticle(userId, arbitraryDoi()),
+          userSavedArticle(userId, arbitraryArticleId()),
+          userSavedArticle(userId, arbitraryArticleId()),
         ]),
         fetchArticle: () => TE.right({
           doi: arbitraryDoi(),
@@ -117,8 +118,8 @@ describe('user-list-page', () => {
         const ports = {
           ...defaultPorts,
           getAllEvents: T.of([
-            userSavedArticle(userId, arbitraryDoi()),
-            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryArticleId()),
+            userSavedArticle(userId, arbitraryArticleId()),
           ]),
           fetchArticle: () => TE.left('unavailable'),
           getUserId: () => TE.right(userId),
@@ -149,9 +150,9 @@ describe('user-list-page', () => {
             handle: arbitraryWord(),
           }),
           getAllEvents: T.of([
-            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryArticleId()),
             userSavedArticle(userId, failingArticleId),
-            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryArticleId()),
           ]),
           fetchArticle: (articleId: Doi) => (
             articleId.value === failingArticleId.value
@@ -191,8 +192,8 @@ describe('user-list-page', () => {
             handle: arbitraryWord(),
           }),
           getAllEvents: T.of([
-            userSavedArticle(owningUserId, arbitraryDoi()),
-            userSavedArticle(owningUserId, arbitraryDoi()),
+            userSavedArticle(owningUserId, arbitraryArticleId()),
+            userSavedArticle(owningUserId, arbitraryArticleId()),
           ]),
           fetchArticle: () => TE.right({
             doi: arbitraryDoi(),
@@ -229,8 +230,8 @@ describe('user-list-page', () => {
             handle: arbitraryWord(),
           }),
           getAllEvents: T.of([
-            userSavedArticle(owningUserId, arbitraryDoi()),
-            userSavedArticle(owningUserId, arbitraryDoi()),
+            userSavedArticle(owningUserId, arbitraryArticleId()),
+            userSavedArticle(owningUserId, arbitraryArticleId()),
           ]),
           fetchArticle: () => TE.right({
             doi: arbitraryDoi(),

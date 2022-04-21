@@ -4,7 +4,7 @@ import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { selectArticlesBelongingToList } from '../../../src/shared-read-models/list-articles';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
@@ -13,8 +13,8 @@ describe('select-articles-belonging-to-list', () => {
 
   describe('when the list exists', () => {
     describe('and contains articles', () => {
-      const articleId1 = arbitraryDoi();
-      const articleId2 = arbitraryDoi();
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
       const result = pipe(
         [
           listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),

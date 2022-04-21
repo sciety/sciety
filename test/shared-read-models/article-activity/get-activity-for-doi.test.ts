@@ -5,14 +5,14 @@ import {
 } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDate } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-activity-for-doi', () => {
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
 
   describe('when an article is not in any list', () => {
     const articleActivity = pipe(

@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../src/domain-events';
 import { createAppropriateEvents } from '../../src/record-evaluation/create-appropriate-events';
 import { arbitraryDate, arbitraryString } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
@@ -10,7 +10,7 @@ describe('create-appropriate-events', () => {
   const evaluationLocator = arbitraryReviewId();
   const input = {
     groupId: arbitraryGroupId(),
-    articleId: arbitraryDoi(),
+    articleId: arbitraryArticleId(),
     evaluationLocator,
     publishedAt: arbitraryDate(),
     authors: [arbitraryString(), arbitraryString()],
@@ -37,7 +37,7 @@ describe('create-appropriate-events', () => {
   describe('when the evaluation locator has already been recorded', () => {
     const events = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), evaluationLocator),
+        evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator),
       ],
       createAppropriateEvents(input),
     );

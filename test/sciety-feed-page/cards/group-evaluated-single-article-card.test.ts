@@ -9,6 +9,7 @@ import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-
 import * as DE from '../../../src/types/data-error';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -27,7 +28,7 @@ describe('group-evaluated-article-card', () => {
     beforeEach(async () => {
       const fetchArticle = () => TE.right(article);
       const createCard = pipe(
-        evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
+        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
         groupEvaluatedSingleArticleCard({
           getAllEvents: T.of([groupCreated(group)]),
           fetchArticle,
@@ -49,7 +50,7 @@ describe('group-evaluated-article-card', () => {
   describe('when the article cannot be fetched', () => {
     const fetchArticle = () => TE.left(DE.unavailable);
     const createCard = pipe(
-      evaluationRecorded(group.id, arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       groupEvaluatedSingleArticleCard({
         getAllEvents: T.of([groupCreated(group)]),
         fetchArticle,

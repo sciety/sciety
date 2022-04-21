@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
 import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDate } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -12,7 +12,7 @@ describe('collapse-close-events', () => {
     const date = new Date('2021-09-14 12:00');
     const result = pipe(
       [
-        userSavedArticle(arbitraryUserId(), arbitraryDoi(), date),
+        userSavedArticle(arbitraryUserId(), arbitraryArticleId(), date),
       ],
       collapseCloseEvents,
     );
@@ -28,7 +28,14 @@ describe('collapse-close-events', () => {
     const publishedDate = new Date('2021-09-14 12:00');
     const result = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId(), [], publishedDate, arbitraryDate()),
+        evaluationRecorded(
+          arbitraryGroupId(),
+          arbitraryArticleId(),
+          arbitraryReviewId(),
+          [],
+          publishedDate,
+          arbitraryDate(),
+        ),
       ],
       collapseCloseEvents,
     );
@@ -43,7 +50,7 @@ describe('collapse-close-events', () => {
   describe('given consecutive events in which the same group evaluated an article', () => {
     describe('when there are two evaluations', () => {
       const groupId = arbitraryGroupId();
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
       const laterDate = new Date('2021-09-14 12:00');
       const earlierDate = new Date('2021-09-14 11:00');
 
@@ -80,7 +87,7 @@ describe('collapse-close-events', () => {
 
     describe('when there are three evaluations', () => {
       const groupId = arbitraryGroupId();
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
 
       const result = pipe(
         [
@@ -113,9 +120,9 @@ describe('collapse-close-events', () => {
     const groupId = arbitraryGroupId();
 
     const events = [
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], laterDate, arbitraryDate()),
-      evaluationRecorded(groupId, arbitraryDoi(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+      evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+      evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], laterDate, arbitraryDate()),
+      evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], earlierDate, arbitraryDate()),
     ];
     const result = pipe(
       events,
@@ -145,8 +152,8 @@ describe('collapse-close-events', () => {
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
     const groupId = arbitraryGroupId();
-    const firstArticleId = arbitraryDoi();
-    const secondArticleId = arbitraryDoi();
+    const firstArticleId = arbitraryArticleId();
+    const secondArticleId = arbitraryArticleId();
     const laterDate = new Date('2021-09-14 12:00');
     const earlierDate = new Date('2021-09-14 11:00');
 
@@ -183,8 +190,8 @@ describe('collapse-close-events', () => {
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
     const groupId = arbitraryGroupId();
-    const firstArticleId = arbitraryDoi();
-    const secondArticleId = arbitraryDoi();
+    const firstArticleId = arbitraryArticleId();
+    const secondArticleId = arbitraryArticleId();
 
     const result = pipe(
       [
@@ -210,7 +217,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given consecutive events in which different groups evaluated an article', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
 
     const events = [
       evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
@@ -231,9 +238,9 @@ describe('collapse-close-events', () => {
     const groupTwo = arbitraryGroupId();
 
     const events = [
-      evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
-      evaluationRecorded(groupTwo, arbitraryDoi(), arbitraryReviewId()),
-      evaluationRecorded(groupOne, arbitraryDoi(), arbitraryReviewId()),
+      evaluationRecorded(groupOne, arbitraryArticleId(), arbitraryReviewId()),
+      evaluationRecorded(groupTwo, arbitraryArticleId(), arbitraryReviewId()),
+      evaluationRecorded(groupOne, arbitraryArticleId(), arbitraryReviewId()),
     ];
     const result = pipe(
       events,

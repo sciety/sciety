@@ -1,7 +1,7 @@
 import { userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
 import { Doi } from '../../../src/types/doi';
 import { savedArticleDois } from '../../../src/user-list-page/saved-articles/saved-article-dois';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('saved-article-dois', () => {
@@ -57,7 +57,7 @@ describe('saved-article-dois', () => {
   describe('when another user has saved articles and the current user has not', () => {
     it('returns an empty array', async () => {
       const events = [
-        userSavedArticle(arbitraryUserId(), arbitraryDoi()),
+        userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
       ];
 
       const output = savedArticleDois(events)(arbitraryUserId());

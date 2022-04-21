@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { validateInputShape } from '../../src/record-evaluation/validate-input-shape';
 import * as RI from '../../src/types/review-id';
 import { arbitraryDate, arbitraryString } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
@@ -10,7 +10,7 @@ describe('validate-input-shape', () => {
   const groupId = arbitraryGroupId();
   const publishedAt = arbitraryDate();
   const evaluationLocator = arbitraryReviewId();
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
   const authors = [arbitraryString(), arbitraryString()];
 
   describe('when the input is valid', () => {
