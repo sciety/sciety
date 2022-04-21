@@ -11,6 +11,12 @@ export const paramsCodec = t.type({
   articleId: tt.optionFromNullable(t.string),
 });
 
+const renderArticleIdInput = (articleId: O.Option<string>) => `<input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${pipe(articleId, O.fold(
+  () => '',
+  (id) => id,
+))}">
+`;
+
 type CreateAnnotationFormPage = (params: { articleId: O.Option<string> }) => TE.TaskEither<RenderPageError, Page>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = ({ articleId }) => TE.right({
@@ -21,10 +27,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = ({ articleId }
       <label for="annotationContent">Annotation content</label>
       <textarea id="annotationContent" name="annotationContent" rows="10" class="annotation-form-content"></textarea>
       <label for="articleId">Article DOI</label>
-      <input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${pipe(articleId, O.fold(
-        () => '',
-        (id) => id,
-      ))}">
+      ${renderArticleIdInput(articleId)}
       <div class="annotation-form-controls">
         <button class="annotation-form-submit">Create annotation</button>
         <button type="reset" class="annotation-form-reset">Reset</button>
