@@ -3,13 +3,13 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-article-to-list/execute-command';
 import { articleAddedToList, listCreated } from '../../src/domain-events';
 import { arbitraryDate, arbitraryString } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
-  const articleId = arbitraryDoi();
+  const articleId = arbitraryArticleId();
 
   describe('when the list exists', () => {
     describe('and the article is already on the list', () => {
