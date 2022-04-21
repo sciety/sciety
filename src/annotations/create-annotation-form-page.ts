@@ -8,7 +8,7 @@ export const paramsCodec = t.type({
   articleId: t.union([t.string, t.undefined]),
 });
 
-type CreateAnnotationFormPage = (queryParams: { articleId?: string }) => TE.TaskEither<RenderPageError, Page>;
+type CreateAnnotationFormPage = (params: { articleId?: string }) => TE.TaskEither<RenderPageError, Page>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = ({ articleId }) => TE.right({
   title: 'Create an annotation',
