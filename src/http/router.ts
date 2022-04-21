@@ -29,7 +29,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { addArticleToList } from '../add-article-to-list';
 import { createAnnotation } from '../annotations/create-annotation';
-import { createAnnotationFormPage, paramsCodec } from '../annotations/create-annotation-form-page';
+import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -381,7 +381,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/annotations/create-annotation-form-avasthi-reading',
     pageHandler(createPageFromParams(
-      paramsCodec,
+      createAnnotationFormPageParamsCodec,
       createAnnotationFormPage,
     )),
   );
