@@ -43,6 +43,15 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
   if (articleId.value === '10.1101/2022.04.06.487340') {
     content = 'This polarity of actin networks and myosin traffic is interesting in light of the parallels between cilium biogenesis and the immune synapse function.';
   }
+  if (articleId.value === '10.1101/2022.04.15.488437') {
+    content = 'Do yourself a favor and check out this exquisite characterization of vaccinia viron transport towards microtubule plus ends. In-cell deletion and microscopy, in vitro reconstitution, quantification of motor complexes associated with virons and viron speed … really beautiful work!';
+  }
+  if (articleId.value === '10.1101/2022.04.13.488127') {
+    content = 'I love resources like this. A comprehensive look at expression levels and localization data for all 38 mitotic regulators in fission yeast during division.';
+  }
+  if (articleId.value === '10.1101/2022.04.15.488517') {
+    content = 'Huh clever. Leveraging incomplete dissociation in scRNA-seq experiments to infer tissue architecture/cell-cell interactions.';
+  }
   if (!content) {
     return undefined;
   }
