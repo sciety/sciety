@@ -3,16 +3,17 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Adapters } from '../infrastructure';
 import { CommandResult } from '../types/command-result';
+import { HtmlFragment } from '../types/html-fragment';
 
 type CreateAnnotationCommand = {
-  content: string,
+  content: HtmlFragment,
   target: {
     articleId: string,
   },
 };
 
 type Body = {
-  annotationContent: string,
+  annotationContent: HtmlFragment,
   articleId: string,
 };
 
