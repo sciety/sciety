@@ -6,7 +6,7 @@ import compose from 'koa-compose';
 import { redirectBack } from '../http/redirect-back';
 import { CommandResult } from '../types/command-result';
 
-type CommandHandler = (input: unknown) => TE.TaskEither<string, CommandResult>;
+type CommandHandler = (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
 type SupplyFormSubmissionTo = (handler: CommandHandler) => Middleware;
 

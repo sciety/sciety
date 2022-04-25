@@ -6,7 +6,7 @@ type HtmlFragmentBrand = {
   readonly HtmlFragment: unique symbol,
 };
 
-const htmlFragmentCodec = t.brand(
+export const htmlFragmentCodec = t.brand(
   t.string,
   (input): input is t.Branded<string, HtmlFragmentBrand> => true,
   'HtmlFragment',
