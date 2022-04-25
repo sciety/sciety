@@ -1,0 +1,20 @@
+import { AnnotationCreatedEvent, DomainEvent } from '../domain-events';
+import { Doi } from '../types/doi';
+import { HtmlFragment } from '../types/html-fragment';
+import { ListId } from '../types/list-id';
+
+type Command = {
+  content: HtmlFragment,
+  target: {
+    articleId: Doi,
+    listId: ListId,
+  },
+
+};
+
+type ExecuteCreateAnnotationCommand = (command: Command)
+=> (events: ReadonlyArray<DomainEvent>)
+=> AnnotationCreatedEvent | void;
+
+// ts-unused-exports:disable-next-line
+export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = () => () => {};
