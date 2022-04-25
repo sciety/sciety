@@ -17,7 +17,7 @@ type Body = {
   articleId: string,
 };
 
-const translateCommand = ({ annotationContent, articleId }: Body): CreateAnnotationCommand => ({
+const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnotationCommand => ({
   content: annotationContent,
   target: {
     articleId,
@@ -28,7 +28,7 @@ type HandleCreateAnnotationCommand = (adapters: Adapters) => (input: unknown) =>
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => (input) => pipe(
   input as Body,
-  translateCommand,
+  transformToCommand,
   TE.right,
   TE.chainFirstTaskK(
     (command) => T.of(
