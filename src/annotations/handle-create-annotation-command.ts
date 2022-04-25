@@ -24,9 +24,9 @@ const translateCommand = ({ annotationContent, articleId }: Body): CreateAnnotat
   },
 });
 
-type CreateAnnotation = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type HandleCreateAnnotationCommand = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
-export const createAnnotation: CreateAnnotation = (adapters) => (input) => pipe(
+export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => (input) => pipe(
   input as Body,
   translateCommand,
   TE.right,
