@@ -1,3 +1,15 @@
-export type HtmlFragment = string & { readonly HtmlFragment: unique symbol };
+import * as t from 'io-ts';
 
 export const toHtmlFragment = (value: string): HtmlFragment => value as HtmlFragment;
+
+type HtmlFragmentBrand = {
+  readonly HtmlFragment: unique symbol,
+};
+
+const htmlFragmentCodec = t.brand(
+  t.string,
+  (input): input is t.Branded<string, HtmlFragmentBrand> => true,
+  'HtmlFragment',
+);
+
+export type HtmlFragment = t.TypeOf<typeof htmlFragmentCodec>;
