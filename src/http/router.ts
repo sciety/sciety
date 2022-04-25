@@ -30,7 +30,7 @@ import { aboutPage } from '../about-page';
 import { addArticleToList } from '../add-article-to-list';
 import { createAnnotation } from '../annotations/create-annotation';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
-import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
+import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -451,7 +451,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post(
     '/annotations/create-annotation',
-    handleCreateAnnotationCommand(createAnnotation(adapters)),
+    supplyFormSubmissionTo(createAnnotation(adapters)),
   );
 
   // AUTHENTICATION

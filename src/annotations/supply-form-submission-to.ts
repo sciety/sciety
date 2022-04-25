@@ -8,9 +8,9 @@ import { CommandResult } from '../types/command-result';
 
 type CommandHandler = (input: unknown) => TE.TaskEither<string, CommandResult>;
 
-type HandleCreateAnnotationCommand = (handler: CommandHandler) => Middleware;
+type SupplyFormSubmissionTo = (handler: CommandHandler) => Middleware;
 
-export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (handler) => compose([
+export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (handler) => compose([
   bodyParser({ enableTypes: ['form'] }),
   async (context, next) => {
     await pipe(
