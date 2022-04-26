@@ -10,14 +10,7 @@ export type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, 
 
 const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
 
-const renderAsSection = (desc: string) => `
-  <section>
-    ${desc}
-  </section>
-`;
-
 export const renderDescription: RenderDescription = flow(
   convertMarkdownToHtml,
-  renderAsSection,
   toHtmlFragment,
 );
