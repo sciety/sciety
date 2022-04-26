@@ -10,7 +10,7 @@ export type Ports = {
 };
 
 const renderAbout = (description: HtmlFragment) => toHtmlFragment(`
-  <div class="group-page-description">
+  <div class="group-page-about">
     ${description}
   </div>
 `);
