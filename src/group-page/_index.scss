@@ -8,6 +8,7 @@
 @use '../sass/list';
 @use '../sass/avatar';
 
+@use './about';
 @use './followers';
 @use './lists';
 
@@ -20,16 +21,6 @@
   margin-bottom: baseline.increments(6);
 }
 
-.group-page-description {
-  margin-bottom: baseline.increments(3);
-  padding: 1rem;
-  background-color: settings.$colour-white;
-
-  @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-  }
-}
-
 .page-header--group {
   .page-header__avatar {
     @include avatar.border();
@@ -38,27 +29,4 @@
     flex: 0 0 avatar.$size--large;
     margin-right: 1rem;
   }
-}
-
-.group-page-pref {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: functions.px-to-rem(6px);
-  font-size: functions.px-to-rem(14px);
-  border-top: 1px solid settings.$colour-furniture;
-  border-bottom: 1px solid settings.$colour-furniture;
-  padding: functions.px-to-rem(12px) 0;
-  margin-bottom: #{baseline.increments(3)};
-
-  dt {
-    font-weight: bold;
-  }
-
-  dd {
-    margin-left: 0;
-  }
-}
-
-.group-page-target-fragment {
-  scroll-margin-top: settings.$site-header-plus-shadow-height;
 }
