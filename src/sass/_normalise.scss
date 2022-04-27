@@ -5,6 +5,8 @@
 
 html {
   font-size: unset;
+  // Pads the top of every scroll container, a bit of a sledgehammer
+  scroll-padding-top: settings.$site-header-plus-shadow-height;
 }
 
 body {
