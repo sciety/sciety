@@ -1,1 +1,1 @@
-export { fetchDataciteReview } from './fetch-datacite-review';
+export { fetchZenodoReview } from './fetch-zenodo-review';

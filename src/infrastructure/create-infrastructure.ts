@@ -33,7 +33,7 @@ import { listCreationEvents } from '../shared-read-models/lists/list-creation-da
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
-import { fetchDataciteReview } from '../third-parties/datacite';
+import { fetchZenodoReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
@@ -140,7 +140,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const getAllEvents = T.of(events);
       const fetchFile = fetchStaticFile(loggerIO(logger));
       const fetchers = {
-        doi: fetchDataciteReview(fetchDataset(logger), logger),
+        doi: fetchZenodoReview(fetchDataset(logger), logger),
         hypothesis: fetchHypothesisAnnotation(getJson, logger),
         ncrc: fetchNcrcReview(logger),
         prelights: fetchPrelightsHighlight(getHtml(logger)),
