@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Evaluation } from '../../src/infrastructure/evaluation';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
@@ -13,14 +15,19 @@ describe('fetch-zenodo-record', () => {
           description: '<p>Very good</p>',
         },
       });
-      let evaluation: Evaluation;
+      let evaluation: E.Either<unknown, Evaluation>;
 
       beforeEach(async () => {
         evaluation = await fetchZenodoRecord(getJson, dummyLogger)(key)();
       });
 
       it.skip('returns the metadata description as full text', () => {
-        expect(evaluation.fullText).toBe('<p>Very good</p>');
+        expect(
+          pipe(
+            evaluation,
+            E.map((ev) => ev.fullText),
+          ),
+        ).toBe(E.right('<p>Very good</p>'));
       });
 
       it.todo('returns the Doi.org url as url');
