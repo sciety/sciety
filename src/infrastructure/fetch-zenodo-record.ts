@@ -10,4 +10,4 @@ type FetchZenodoRecord = (getJson: unknown, logger: unknown)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
 // ts-unused-exports:disable-next-line
-export const fetchZenodoRecord: FetchZenodoRecord = () => () => T.of(E.right({ fullText: toHtmlFragment(''), url: new URL('') }));
+export const fetchZenodoRecord: FetchZenodoRecord = () => () => T.of(E.right({ fullText: toHtmlFragment('<p>Very good</p>'), url: new URL('https://sciety.org') }));

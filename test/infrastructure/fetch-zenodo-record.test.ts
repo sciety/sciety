@@ -21,13 +21,13 @@ describe('fetch-zenodo-record', () => {
         evaluation = await fetchZenodoRecord(getJson, dummyLogger)(key)();
       });
 
-      it.skip('returns the metadata description as full text', () => {
+      it('returns the metadata description as full text', () => {
         expect(
           pipe(
             evaluation,
             E.map((ev) => ev.fullText),
           ),
-        ).toBe(E.right('<p>Very good</p>'));
+        ).toStrictEqual(E.right('<p>Very good</p>'));
       });
 
       it.todo('returns the Doi.org url as url');
