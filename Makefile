@@ -63,6 +63,9 @@ test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
+jest-test:
+	npx jest ${TEST}
+
 backstop-test: export TARGET = dev
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
