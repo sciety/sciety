@@ -1,12 +1,7 @@
-import { URL } from 'url';
-import * as T from 'fp-ts/Task';
 import { Json } from 'io-ts-types';
 import { Evaluation } from '../../src/infrastructure/evaluation';
-import { toHtmlFragment } from '../../src/types/html-fragment';
+import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import { dummyLogger } from '../dummy-logger';
-
-type FetchZenodoRecord = (getJson: unknown, logger: unknown) => (key: string) => T.Task<Evaluation>;
-const fetchZenodoRecord: FetchZenodoRecord = () => () => T.of({ fullText: toHtmlFragment(''), url: new URL('') });
 
 const key = '10.5281/zenodo.6386692';
 
