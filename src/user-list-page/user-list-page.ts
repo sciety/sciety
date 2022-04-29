@@ -72,8 +72,8 @@ const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
       <span>A list by <a href="/users/${handle}">${handle}</a></span>
     </p>
     <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}</p>
-    ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
-    ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe</a>' : ''}
+    ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
+    ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
   </header>
 `);
 
