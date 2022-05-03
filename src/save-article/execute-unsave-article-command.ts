@@ -6,15 +6,14 @@ import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
 import {
   DomainEvent,
-  UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../domain-events';
-import { CommandResult } from '../types/command-result';
+import { CommitEvents } from '../shared-ports';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<CommandResult>,
+  commitEvents: CommitEvents,
 };
 
 export const articleIdFieldName = 'articleid';

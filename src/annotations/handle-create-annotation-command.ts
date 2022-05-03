@@ -4,9 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
-import { RuntimeGeneratedEvent } from '../domain-events';
 import { Logger } from '../infrastructure';
-import { GetAllEvents } from '../shared-ports';
+import { CommitEvents, GetAllEvents } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
@@ -30,8 +29,6 @@ const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnot
     listId: fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7'),
   },
 });
-
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 type Ports = {
   logger: Logger,

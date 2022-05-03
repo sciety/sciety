@@ -3,10 +3,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { validateInputShape } from './validate-input-shape';
-import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
+import { CommitEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
-
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

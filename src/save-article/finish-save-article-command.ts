@@ -5,11 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
-import {
-  UserSavedArticleEvent, UserUnsavedArticleEvent,
-} from '../domain-events';
-import { GetAllEvents } from '../shared-ports';
-import { CommandResult } from '../types/command-result';
+import { CommitEvents, GetAllEvents } from '../shared-ports';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
 
@@ -17,7 +13,7 @@ const isCommand = (command: string): command is 'save-article' => command === 's
 
 type Ports = {
   getAllEvents: GetAllEvents,
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<CommandResult>,
+  commitEvents: CommitEvents,
 };
 
 export const finishSaveArticleCommand = (

@@ -13,15 +13,13 @@ import {
   isUserSavedArticleEvent,
   isUserUnfollowedEditorialCommunityEvent,
   isUserUnsavedArticleEvent,
-  RuntimeGeneratedEvent,
   userCreatedAccount,
 } from '../domain-events';
+import { CommitEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import { UserId } from '../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 type Ports = {
   getAllEvents: GetAllEvents,
