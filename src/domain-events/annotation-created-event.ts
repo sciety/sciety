@@ -1,24 +1,16 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DoiFromString } from '../types/codecs/DoiFromString';
+import { AnnotationTarget, annotationTargetCodec } from '../types/annotation-target';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { generate } from '../types/event-id';
 import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
-
-const targetCodec = t.type({
-  articleId: DoiFromString,
-  listId: ListIdFromString,
-});
-
-type Target = t.TypeOf<typeof targetCodec>;
 
 export const annotationCreatedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('AnnotationCreated'),
   date: tt.DateFromISOString,
   content: htmlFragmentCodec,
-  target: targetCodec,
+  target: annotationTargetCodec,
 });
 
 export type AnnotationCreatedEvent = t.TypeOf<typeof annotationCreatedEventCodec>;
@@ -27,7 +19,7 @@ export const isAnnotationCreatedEvent = (event: { type: string }):
   event is AnnotationCreatedEvent => event.type === 'AnnotationCreated';
 
 export const annotationCreated = (
-  target: Target,
+  target: AnnotationTarget,
   content: HtmlFragment,
   date = new Date(),
 ): AnnotationCreatedEvent => ({
