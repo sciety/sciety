@@ -4,7 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
-import { Adapters } from '../infrastructure';
+import { DomainEvent } from '../domain-events';
+import { Logger } from '../infrastructure';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
@@ -29,20 +30,25 @@ const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnot
   },
 });
 
-type HandleCreateAnnotationCommand = (adapters: Adapters) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
+type Ports = {
+  logger: Logger,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+};
 
-export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => (input) => pipe(
+type HandleCreateAnnotationCommand = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
+
+export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (ports) => (input) => pipe(
   input,
   bodyCodec.decode,
   E.map(transformToCommand),
   TE.fromEither,
   TE.chainFirstTaskK(
     (command) => T.of(
-      adapters.logger('debug', 'Received CreateAnnotation command', { command }),
+      ports.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
   TE.chainTaskK((command) => pipe(
-    adapters.getAllEvents,
+    ports.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
   )),
   TE.map(() => 'no-events-created'),
