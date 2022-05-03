@@ -3,20 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { CreateAnnotationCommand } from './execute-create-annotation-command';
 import { Adapters } from '../infrastructure';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
 import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
-import { fromValidatedString, ListId } from '../types/list-id';
-
-type CreateAnnotationCommand = {
-  content: HtmlFragment,
-  target: {
-    articleId: Doi,
-    listId: ListId,
-  },
-};
+import { fromValidatedString } from '../types/list-id';
 
 type Body = {
   annotationContent: HtmlFragment,

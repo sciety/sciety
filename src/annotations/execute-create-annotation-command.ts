@@ -3,7 +3,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 
-type Command = {
+export type CreateAnnotationCommand = {
   content: HtmlFragment,
   target: {
     articleId: Doi,
@@ -12,7 +12,7 @@ type Command = {
 
 };
 
-type ExecuteCreateAnnotationCommand = (command: Command)
+type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent>)
 => AnnotationCreatedEvent | void;
 
