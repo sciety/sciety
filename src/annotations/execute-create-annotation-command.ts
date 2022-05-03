@@ -16,5 +16,4 @@ type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent>)
 => AnnotationCreatedEvent | void;
 
-// ts-unused-exports:disable-next-line
 export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = () => () => {};

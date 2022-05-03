@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { CreateAnnotationCommand } from './execute-create-annotation-command';
+import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
 import { Adapters } from '../infrastructure';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
@@ -41,5 +41,9 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (ada
       adapters.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
+  TE.chainTaskK((command) => pipe(
+    adapters.getAllEvents,
+    T.map(executeCreateAnnotationCommand(command)),
+  )),
   TE.map(() => 'no-events-created'),
 );
