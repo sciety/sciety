@@ -22,8 +22,11 @@ describe('execute-create-annotation-command', () => {
       executeCreateAnnotationCommand(command),
     );
 
-    it.skip('returns an AnnotationCreated event', () => {
-      expect(result).toStrictEqual([annotationCreated(target, content)]);
+    it('returns an AnnotationCreated event that matches the intent of the command', () => {
+      expect(result).toStrictEqual([expect.objectContaining({
+        target,
+        content,
+      })]);
     });
   });
 
