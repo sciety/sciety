@@ -6,9 +6,9 @@ import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
 import {
-  DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../domain-events';
+import { GetAllEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
@@ -16,7 +16,7 @@ import { User } from '../types/user';
 const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
 type Ports = {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<CommandResult>,
 };
 

@@ -4,8 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
-import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { RuntimeGeneratedEvent } from '../domain-events';
 import { Logger } from '../infrastructure';
+import { GetAllEvents } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
@@ -34,7 +35,7 @@ type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<Comm
 
 type Ports = {
   logger: Logger,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
 
