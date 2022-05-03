@@ -13,7 +13,7 @@ const targetCodec = t.type({
 
 type Target = t.TypeOf<typeof targetCodec>;
 
-const annotationCreatedEventCodec = t.type({
+export const annotationCreatedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('AnnotationCreated'),
   date: tt.DateFromISOString,

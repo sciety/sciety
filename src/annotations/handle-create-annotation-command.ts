@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
-import { DomainEvent } from '../domain-events';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { Logger } from '../infrastructure';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
@@ -30,9 +30,12 @@ const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnot
   },
 });
 
+type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
+
 type Ports = {
   logger: Logger,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  commitEvents: CommitEvents,
 };
 
 type HandleCreateAnnotationCommand = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
@@ -51,5 +54,6 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (por
     ports.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
   )),
+  TE.chainTaskK(ports.commitEvents),
   TE.map(() => 'no-events-created'),
 );

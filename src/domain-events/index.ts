@@ -5,6 +5,7 @@ export {
   isAnnotationCreatedEvent,
   AnnotationCreatedEvent,
   annotationCreated,
+  annotationCreatedEventCodec,
 } from './annotation-created-event';
 
 export {
