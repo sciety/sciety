@@ -8,11 +8,13 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
 import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
+import { fromValidatedString, ListId } from '../types/list-id';
 
 type CreateAnnotationCommand = {
   content: HtmlFragment,
   target: {
     articleId: Doi,
+    listId: ListId,
   },
 };
 
@@ -30,6 +32,7 @@ const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnot
   content: annotationContent,
   target: {
     articleId,
+    listId: fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7'),
   },
 });
 
