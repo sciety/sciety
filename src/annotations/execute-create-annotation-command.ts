@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { AnnotationTarget, eqAnnotationTarget } from '../types/annotation-target';
 import { AnnotationCreatedEvent, DomainEvent } from '../domain-events';
 import { annotationCreated, isAnnotationCreatedEvent } from '../domain-events/annotation-created-event';
+import { AnnotationTarget, eqAnnotationTarget } from '../types/annotation-target';
 import { HtmlFragment } from '../types/html-fragment';
 
 export type CreateAnnotationCommand = {
