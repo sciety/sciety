@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
-import { Logger } from '../infrastructure/logger';
+import { Logger } from '../shared-ports';
 
 type Ports = {
   getListsEvents: GetListsEvents,

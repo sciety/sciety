@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticleToList, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
-import { Logger } from '../infrastructure/logger';
+import { Logger } from '../shared-ports';
 import * as Gid from '../types/group-id';
 
 export type Ports = AddArticleToListPorts & {

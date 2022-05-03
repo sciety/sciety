@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
-import { Logger } from '../infrastructure/logger';
+import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';

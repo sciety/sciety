@@ -3,7 +3,7 @@ import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
 import Koa from 'koa';
-import { Logger } from '../infrastructure/logger';
+import { Logger } from '../shared-ports';
 
 type Ports = {
   logger: Logger,
