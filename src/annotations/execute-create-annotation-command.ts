@@ -14,6 +14,6 @@ export type CreateAnnotationCommand = {
 
 type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent>)
-=> AnnotationCreatedEvent | void;
+=> ReadonlyArray<AnnotationCreatedEvent>;
 
-export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = () => () => {};
+export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = () => () => [];

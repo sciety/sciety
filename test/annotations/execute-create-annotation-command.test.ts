@@ -35,7 +35,7 @@ describe('execute-create-annotation-command', () => {
       executeCreateAnnotationCommand(command),
     );
 
-    it.skip('returns no events', () => {
+    it('returns no events', () => {
       expect(result).toStrictEqual([]);
     });
   });
