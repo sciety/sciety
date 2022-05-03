@@ -11,12 +11,11 @@ import { DomainEvent } from '../domain-events';
 import { renderErrorPage } from '../http/render-error-page';
 import { constructRedirectUrl } from '../http/require-authentication';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { Logger } from '../shared-ports';
 import { getGroup } from '../shared-read-models/groups';
 import * as DE from '../types/data-error';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
-
-type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
 type Ports = FollowCommandPorts & {
   logger: Logger,
