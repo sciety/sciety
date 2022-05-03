@@ -7,6 +7,7 @@ import compose from 'koa-compose';
 import { redirectBack } from '../http/redirect-back';
 import { CommandResult } from '../types/command-result';
 import { User } from '../types/user';
+import { toUserId } from '../types/user-id';
 
 type CommandHandler = (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
@@ -14,8 +15,10 @@ type State = {
   user?: User,
 };
 
+const avasthiReadingUserId = toUserId('1412019815619911685');
+
 const requireUserToBeAvasthiReading: Middleware<State> = async (context, next) => {
-  if (context.state.user?.id !== '1412019815619911685') {
+  if (context.state.user?.id !== avasthiReadingUserId) {
     context.response.status = StatusCodes.FORBIDDEN;
     context.response.body = 'Only @AvasthiReading is allowed to annotate their list.';
     return;
