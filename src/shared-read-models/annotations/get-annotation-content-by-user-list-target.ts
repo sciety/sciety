@@ -24,18 +24,15 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
   if (listOwnerId !== '1412019815619911685') {
     return undefined;
   }
-  let content: string | undefined;
-  if (!content) {
-    return pipe(
-      events,
-      RA.filter(isAnnotationCreatedEvent),
-      RA.filter((event) => eqAnnotationTarget.equals(event.target, queryTarget(articleId))),
-      RA.head,
-      O.fold(
-        () => undefined,
-        (event) => toHtmlFragment(event.content),
-      ),
-    );
-  }
-  return toHtmlFragment(content);
+
+  return pipe(
+    events,
+    RA.filter(isAnnotationCreatedEvent),
+    RA.filter((event) => eqAnnotationTarget.equals(event.target, queryTarget(articleId))),
+    RA.head,
+    O.fold(
+      () => undefined,
+      (event) => toHtmlFragment(event.content),
+    ),
+  );
 };
