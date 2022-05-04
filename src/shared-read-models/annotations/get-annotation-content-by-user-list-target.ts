@@ -41,9 +41,6 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
   if (articleId.value === '10.1101/2022.04.06.487275') {
     content = 'How interesting! A peptide screen to identify degrons with E3 ubiquitin ligase specificity in yeast followed by extraction of conserved properties identifies transmembrane domain containing peptides as likely degrons.';
   }
-  if (articleId.value === '10.1101/2022.04.05.487209') {
-    content = 'Recognizing the utility of not using <strong>exclusively</strong> cutting edge methods for everything, this important study combines bulk RNAseq (high sensitivity due to capturing more low expression and noncoding RNAs) and single cell RNAseq (high specificity) for a more comprehensive transcriptomic picture.';
-  }
   if (articleId.value === '10.1101/2021.05.19.444861') {
     content = 'This is wild! Chlamydomonas flagella were isolated, demembranated, attached to polystyrene beads and reactivated to reconstitute flagellar movement. This yields some interesting insights through experimentation and simulation: Increased calcium concentration affects flagellar waveform and trajectory of bead movement and surprisingly, larger beads have increased rather than decreased velocity.';
   }
