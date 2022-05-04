@@ -15,6 +15,8 @@ type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId
 
 const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
 
+const queryTarget = (articleId: Doi) => ({ listId: listIdForAvasthiReadingUser, articleId });
+
 export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserListTarget = (
   articleId,
   listOwnerId,
@@ -64,7 +66,7 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
     return pipe(
       events,
       RA.filter(isAnnotationCreatedEvent),
-      RA.filter((event) => eqAnnotationTarget.equals(event.target, { listId: listIdForAvasthiReadingUser, articleId })),
+      RA.filter((event) => eqAnnotationTarget.equals(event.target, queryTarget(articleId))),
       RA.head,
       O.fold(
         () => undefined,
