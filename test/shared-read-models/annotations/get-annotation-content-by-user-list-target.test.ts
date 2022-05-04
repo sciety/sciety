@@ -49,17 +49,17 @@ describe('get-annotation-content-by-user-list-target', () => {
   });
 
   describe('hardcoded knowledge of user ids and user list ids, but content from events', () => {
+    const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
+    const target = {
+      articleId: arbitraryArticleId(),
+      listId: listIdForAvasthiReadingUser,
+    };
+    const annotationContent = arbitraryHtmlFragment();
+    const events = [annotationCreated(target, annotationContent)];
+
     describe('when an article in the AvasthiReading list has been annotated', () => {
-      const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
-      const target = {
-        articleId: arbitraryArticleId(),
-        listId: listIdForAvasthiReadingUser,
-      };
-      const annotationContent = arbitraryHtmlFragment();
       const result = pipe(
-        [
-          annotationCreated(target, annotationContent),
-        ],
+        events,
         getAnnotationContentByUserListTarget(
           target.articleId,
           avasthiReadingUserId,
@@ -73,7 +73,7 @@ describe('get-annotation-content-by-user-list-target', () => {
 
     describe('when an article in the AvasthiReading list has not been annotated', () => {
       const result = pipe(
-        [],
+        events,
         getAnnotationContentByUserListTarget(
           arbitraryArticleId(),
           avasthiReadingUserId,
@@ -87,9 +87,9 @@ describe('get-annotation-content-by-user-list-target', () => {
 
     describe('when the target refers to a user list that doesn\'t support annotations', () => {
       const result = pipe(
-        [],
+        events,
         getAnnotationContentByUserListTarget(
-          arbitraryArticleId(),
+          target.articleId,
           arbitraryUserId(),
         ),
       );
