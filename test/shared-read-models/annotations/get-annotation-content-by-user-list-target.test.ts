@@ -66,7 +66,7 @@ describe('get-annotation-content-by-user-list-target', () => {
         ),
       );
 
-      it.skip('returns the annotation content as HTML', () => {
+      it('returns the annotation content as HTML', () => {
         expect(result).toBe(annotationContent);
       });
     });
