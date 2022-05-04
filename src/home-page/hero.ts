@@ -18,13 +18,13 @@ const renderStatistics = (listCount: number) => toHtmlFragment(`
     </li>
     <li class="home-page-hero__statistic">
       <a href="/groups" class="home-page-hero__statistic_link">
-        <span class="home-page-hero__statistic_number">20k</span><span class="home-page-hero__statistic_title"> evaluations</span>
+        <span class="home-page-hero__statistic_number">30k</span><span class="home-page-hero__statistic_title"> evaluations</span>
         <span class="visually-hidden">. Find out more about the groups producing them.</span>
       </a>
     </li>
     <li class="home-page-hero__statistic">
       <a href="/groups" class="home-page-hero__statistic_link">
-        <span class="home-page-hero__statistic_number">15k</span><span class="home-page-hero__statistic_title"> evaluated articles</span>
+        <span class="home-page-hero__statistic_number">20k</span><span class="home-page-hero__statistic_title"> evaluated articles</span>
         <span class="visually-hidden">. Find out more about the groups evaluating them.</span>
       </a>
     </li>
