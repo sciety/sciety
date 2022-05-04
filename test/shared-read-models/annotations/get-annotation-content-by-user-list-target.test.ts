@@ -50,10 +50,10 @@ describe('get-annotation-content-by-user-list-target', () => {
 
   describe('hardcoded knowledge of user ids and user list ids, but content from events', () => {
     describe('when an article in the AvasthiReading list has been annotated', () => {
-      const avasthiReadingUserListId = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
+      const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
       const target = {
         articleId: arbitraryArticleId(),
-        listId: avasthiReadingUserListId,
+        listId: listIdForAvasthiReadingUser,
       };
       const annotationContent = arbitraryHtmlFragment();
       const result = pipe(
