@@ -3,9 +3,14 @@
 @use 'button';
 @use 'card';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'typography';
+
+.activity-feed__header {
+  @include layout.page-content-horizontal-margins();
+}
 
 .activity-feed__list {
   @include card.list();

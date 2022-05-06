@@ -27,6 +27,7 @@ export const renderFeed: RenderFeed = flow(
   RNEA.map(renderFeedItem),
   (items) => `
     <section class="activity-feed">
+      <h2 class="activity-feed__header">Article activity feed</h2>
       <ol role="list" class="activity-feed__list">
         ${templateListItems(items, 'activity-feed__item')}
       </ol>

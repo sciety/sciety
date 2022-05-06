@@ -106,10 +106,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     (components) => ({
       content: pipe(
         components.mainContent,
-        tabs({
-          tabList: tabList(components.doi),
-          activeTabIndex: 1,
-        }),
         renderPage(components.header, components.authorsAndAbstractAndLink),
       ),
       title: striptags(components.articleDetails.title),
