@@ -10,39 +10,41 @@ import { arbitraryHtmlFragment, arbitrarySanitisedHtmlFragment, arbitraryUri } f
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('activity page acceptance criteria', () => {
-  it('allows the full article and evaluations to be viewed side by side on desktop', async () => {
-    const params = {
-      doi: arbitraryDoi(),
-      user: O.none,
-    };
-    const adapters = {
-      fetchArticle: () => TE.right({
-        title: arbitrarySanitisedHtmlFragment(),
-        authors: O.none,
-        server: 'biorxiv' as const,
-        abstract: arbitrarySanitisedHtmlFragment(),
-      }),
-      getAllEvents: T.of([]),
-      fetchReview: () => TE.right({
-        fullText: arbitraryHtmlFragment(),
-        url: new URL(arbitraryUri()),
-      }),
-      findVersionsForArticleDoi: () => TO.none,
-    };
-    const page = await pipe(
-      articleActivityPage(adapters)(params),
-      TE.getOrElse(() => { throw new Error('cannot happen'); }),
-    )();
+  describe('when the user navigates to the full article', () => {
+    it('allows the full article and evaluations to be viewed side by side on desktop by opening link in new tab', async () => {
+      const params = {
+        doi: arbitraryDoi(),
+        user: O.none,
+      };
+      const adapters = {
+        fetchArticle: () => TE.right({
+          title: arbitrarySanitisedHtmlFragment(),
+          authors: O.none,
+          server: 'biorxiv' as const,
+          abstract: arbitrarySanitisedHtmlFragment(),
+        }),
+        getAllEvents: T.of([]),
+        fetchReview: () => TE.right({
+          fullText: arbitraryHtmlFragment(),
+          url: new URL(arbitraryUri()),
+        }),
+        findVersionsForArticleDoi: () => TO.none,
+      };
+      const page = await pipe(
+        articleActivityPage(adapters)(params),
+        TE.getOrElse(() => { throw new Error('cannot happen'); }),
+      )();
 
-    const doc = JSDOM.fragment(page.content);
+      const doc = JSDOM.fragment(page.content);
 
-    const doiLink = doc.querySelector('.article-meta-data-list a');
-    const readFullArticleLink = doc.querySelector('.full-article-button');
+      const doiLink = doc.querySelector('.article-meta-data-list a');
+      const readFullArticleLink = doc.querySelector('.full-article-button');
 
-    const doiLinkTarget = doiLink?.getAttribute('target');
-    const readFullArticleLinkTarget = readFullArticleLink?.getAttribute('target');
+      const doiLinkTarget = doiLink?.getAttribute('target');
+      const readFullArticleLinkTarget = readFullArticleLink?.getAttribute('target');
 
-    expect(doiLinkTarget).toBe('_blank');
-    expect(readFullArticleLinkTarget).toBe('_blank');
+      expect(doiLinkTarget).toBe('_blank');
+      expect(readFullArticleLinkTarget).toBe('_blank');
+    });
   });
 });
