@@ -6,7 +6,7 @@
 @use 'settings';
 @use 'typography';
 
-.article-meta-wrapper {
+.article-authors-and-abstract-and-link {
   @include card.basics();
 
   margin-bottom: baseline.increments(6);
@@ -34,7 +34,7 @@
   font-weight: bold;
 }
 
-.article-meta-data-list {
+.article-publication-details-list {
   @include list.basics();
 }
 

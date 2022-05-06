@@ -11,10 +11,10 @@ type ArticleDetails = {
 
 export const renderAuthorsAndAbstractAndLink = (articleDetails: ArticleDetails, doi: Doi): HtmlFragment => pipe(
   `
-    <div class="article-meta-wrapper">
-      <section class="article-meta">
+    <div class="article-authors-and-abstract-and-link">
+      <section>
         ${renderAuthors(articleDetails.authors)}
-        <ul aria-label="Publication details" class="article-meta-data-list" role="list">
+        <ul aria-label="Publication details" class="article-publication-details-list" role="list">
           <li>
             <a href="https://doi.org/${doi.value}" target="_blank">https://doi.org/${doi.value}</a>
           </li>
