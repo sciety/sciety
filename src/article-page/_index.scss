@@ -1,12 +1,12 @@
-@use 'baseline';
-@use 'breakpoints';
-@use 'button';
-@use 'functions';
-@use 'layout';
-@use 'card';
-@use 'list';
-@use 'settings';
-@use 'typography';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/button';
+@use '../sass/functions';
+@use '../sass/layout';
+@use '../sass/card';
+@use '../sass/list';
+@use '../sass/settings';
+@use '../sass/typography';
 
 .page-header.page-header--article {
   margin-top: 0;
