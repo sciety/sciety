@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as RFI from './review-feed-item.helper';
+import * as RFI from './activity-feed/review-feed-item.helper';
 import { handleArticleVersionErrors } from '../../../src/article-page/activity-page/handle-article-version-errors';
 import { FeedItem } from '../../../src/article-page/activity-page/render-feed';
 

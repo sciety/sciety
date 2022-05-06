@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
-import { templateDate } from '../../shared-components/date';
-import { ArticleServer } from '../../types/article-server';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../../../shared-components/date';
+import { ArticleServer } from '../../../types/article-server';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type ArticleVersionFeedItem = {
   type: 'article-version',

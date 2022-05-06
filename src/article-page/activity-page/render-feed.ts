@@ -1,8 +1,8 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
-import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
-import { ArticleVersionFeedItem, renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { renderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
+import { renderVersionErrorFeedItem } from './activity-feed/render-article-version-error-feed-item';
+import { ArticleVersionFeedItem, renderArticleVersionFeedItem } from './activity-feed/render-article-version-feed-item';
+import { renderReviewFeedItem, ReviewFeedItem } from './activity-feed/render-review-feed-item';
 import { templateListItems } from '../../shared-components/list-items';
 import { ArticleServer } from '../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
