@@ -99,9 +99,3 @@
 .saved-to-list__icon {
   margin-right: functions.px-to-rem(3px);
 }
-
-.article-meta-wrapper {
-  @include card.basics();
-
-  margin-bottom: baseline.increments(6);
-}

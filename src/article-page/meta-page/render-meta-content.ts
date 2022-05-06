@@ -12,7 +12,7 @@ type ArticleDetails = {
 export const renderMetaContent = (articleDetails: ArticleDetails, doi: Doi): HtmlFragment => pipe(
   `
     <div class="article-meta-wrapper">
-      <section class="article-meta">
+      <section>
         ${renderAuthors(articleDetails.authors)}
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>

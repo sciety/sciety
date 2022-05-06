@@ -1,9 +1,16 @@
 @use 'baseline';
 @use 'breakpoints';
+@use 'card';
 @use 'functions';
 @use 'list';
 @use 'settings';
 @use 'typography';
+
+.article-meta-wrapper {
+  @include card.basics();
+
+  margin-bottom: baseline.increments(6);
+}
 
 .article-author-list {
   @include list.basics();
