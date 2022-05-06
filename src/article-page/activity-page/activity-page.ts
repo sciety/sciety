@@ -9,6 +9,7 @@ import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from 
 import { FetchReview } from './get-feed-events-content';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
+import { renderPage } from './render-page';
 import { DomainEvent } from '../../domain-events';
 import { tabs } from '../../shared-components/tabs';
 import { ArticleServer } from '../../types/article-server';
@@ -22,7 +23,6 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
-import { renderPage } from '../render-page';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 import { tabList } from '../tab-list';
