@@ -11,7 +11,6 @@ import { renderDescriptionMetaTagContent } from './render-description-meta-tag-c
 import { renderFeed } from './render-feed';
 import { renderPage } from './render-page';
 import { DomainEvent } from '../../domain-events';
-import { tabs } from '../../shared-components/tabs';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -27,7 +26,6 @@ import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
-import { tabList } from '../tab-list';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
