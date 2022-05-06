@@ -31,7 +31,7 @@ import { addArticleToList } from '../add-article-to-list';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
-import { articleActivityPage, articleMetaPage } from '../article-page';
+import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import {
@@ -275,12 +275,12 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/articles/meta/:doi(.+)',
-    pageHandler(flow(
-      articlePageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(articleMetaPage(adapters)),
-    )),
+    async (context, next) => {
+      context.status = StatusCodes.TEMPORARY_REDIRECT;
+      context.redirect(`/articles/activity/${context.params.doi}`);
+
+      await next();
+    },
   );
 
   router.get(

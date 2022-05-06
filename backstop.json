@@ -37,10 +37,6 @@
       "url": "http://sciety_app/menu"
     },
     {
-      "label": "An article meta page",
-      "url": "http://sciety_app/articles/meta/10.1101/646810"
-    },
-    {
       "label": "An article activity page",
       "url": "http://sciety_app/articles/activity/10.1101/646810"
     },

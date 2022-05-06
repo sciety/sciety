@@ -1,10 +1,12 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { articleMetaPage } from '../../../src/article-page/meta-page/meta-page';
-import { arbitrarySanitisedHtmlFragment } from '../../helpers';
+import { articleActivityPage } from '../../../src/article-page/activity-page/activity-page';
+import { arbitraryHtmlFragment, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('meta page acceptance criteria', () => {
@@ -21,9 +23,14 @@ describe('meta page acceptance criteria', () => {
         abstract: arbitrarySanitisedHtmlFragment(),
       }),
       getAllEvents: T.of([]),
+      fetchReview: () => TE.right({
+        fullText: arbitraryHtmlFragment(),
+        url: new URL(arbitraryUri()),
+      }),
+      findVersionsForArticleDoi: () => TO.none,
     };
     const page = await pipe(
-      articleMetaPage(adapters)(params),
+      articleActivityPage(adapters)(params),
       TE.getOrElse(() => { throw new Error('cannot happen'); }),
     )();
 
