@@ -12,6 +12,7 @@ import { renderFeed } from './render-feed';
 import { renderPage } from './render-page';
 import { DomainEvent } from '../../domain-events';
 import { tabs } from '../../shared-components/tabs';
+import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -20,6 +21,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
+import { renderMetaContent } from '../meta-page/render-meta-content';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
@@ -38,6 +40,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   server: ArticleServer,
+  authors: ArticleAuthors,
 }>;
 
 type Ports = {
@@ -94,6 +97,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           tweetThis,
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
+        authorsAndAbstractAndLink: renderMetaContent(articleDetails, doi),
       })),
     )),
   ),
@@ -106,7 +110,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           tabList: tabList(components.doi),
           activeTabIndex: 1,
         }),
-        renderPage(components.header),
+        renderPage(components.header, components.authorsAndAbstractAndLink),
       ),
       title: striptags(components.articleDetails.title),
       description: pipe(
