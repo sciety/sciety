@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersionFeedItem } from './activity-feed/render-article-version-feed-item';
+import { ReviewFeedItem } from './activity-feed/render-review-feed-item';
 import { MetaDescription } from './render-description-meta-tag-content';
 import { FeedItem } from './render-feed';
-import { ReviewFeedItem } from './activity-feed/render-review-feed-item';
 
 export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaDescription => ({
   evaluationCount: feedItems.filter((item) => item.type === 'review').length,
