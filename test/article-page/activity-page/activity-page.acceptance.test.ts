@@ -9,7 +9,7 @@ import { articleActivityPage } from '../../../src/article-page/activity-page/act
 import { arbitraryHtmlFragment, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
-describe('meta page acceptance criteria', () => {
+describe('activity page acceptance criteria', () => {
   it('allows the full article and evaluations to be viewed side by side on desktop', async () => {
     const params = {
       doi: arbitraryDoi(),
