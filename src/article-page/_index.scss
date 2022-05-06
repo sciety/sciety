@@ -8,6 +8,9 @@
 @use '../sass/settings';
 @use '../sass/typography';
 
+@use 'activity-feed';
+@use 'authors-and-abstract-and-link';
+
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: baseline.increments(3);

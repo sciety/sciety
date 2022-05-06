@@ -1,12 +1,12 @@
-@use 'baseline';
-@use 'breakpoints';
-@use 'button';
-@use 'card';
-@use 'functions';
-@use 'layout';
-@use 'list';
-@use 'settings';
-@use 'typography';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/button';
+@use '../sass/card';
+@use '../sass/functions';
+@use '../sass/layout';
+@use '../sass/list';
+@use '../sass/settings';
+@use '../sass/typography';
 
 .activity-feed__header {
   @include layout.page-content-horizontal-margins();
