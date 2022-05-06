@@ -37,7 +37,7 @@ describe('activity page acceptance criteria', () => {
 
       const doc = JSDOM.fragment(page.content);
 
-      const doiLink = doc.querySelector('.article-meta-data-list a');
+      const doiLink = doc.querySelector('.article-publication-details-list a');
       const readFullArticleLink = doc.querySelector('.full-article-button');
 
       const doiLinkTarget = doiLink?.getAttribute('target');
