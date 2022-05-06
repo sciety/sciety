@@ -9,6 +9,7 @@ import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from 
 import { FetchReview } from './get-feed-events-content';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
+import { renderAuthorsAndAbstractAndLink } from './render-authors-and-abstract-and-link';
 import { renderPage } from './render-page';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
@@ -20,7 +21,6 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
-import { renderMetaContent } from '../meta-page/render-meta-content';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { refereedPreprintBadge } from '../refereed-preprint-badge';
 import { renderHeader } from '../render-header';
@@ -95,7 +95,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           tweetThis,
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
-        authorsAndAbstractAndLink: renderMetaContent(articleDetails, doi),
+        authorsAndAbstractAndLink: renderAuthorsAndAbstractAndLink(articleDetails, doi),
       })),
     )),
   ),
