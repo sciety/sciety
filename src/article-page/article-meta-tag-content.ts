@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleVersionFeedItem } from './activity-feed/render-article-version-feed-item';
-import { FeedItem } from './activity-feed/render-feed';
-import { ReviewFeedItem } from './activity-feed/render-review-feed-item';
-import { MetaDescription } from '../render-description-meta-tag-content';
+import { ArticleVersionFeedItem } from './activity-page/activity-feed/render-article-version-feed-item';
+import { FeedItem } from './activity-page/activity-feed/render-feed';
+import { ReviewFeedItem } from './activity-page/activity-feed/render-review-feed-item';
+import { MetaDescription } from './render-description-meta-tag-content';
 
 export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaDescription => ({
   evaluationCount: feedItems.filter((item) => item.type === 'review').length,

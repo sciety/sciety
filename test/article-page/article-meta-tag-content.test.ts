@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as RFI from './activity-feed/review-feed-item.helper';
-import { articleMetaTagContent } from '../../../src/article-page/activity-page/article-meta-tag-content';
-import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../helpers';
+import * as RFI from './activity-page/activity-feed/review-feed-item.helper';
+import { articleMetaTagContent } from '../../src/article-page/article-meta-tag-content';
+import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../helpers';
 
 const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) => ({
   type: 'article-version' as const,

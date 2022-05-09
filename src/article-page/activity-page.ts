@@ -7,7 +7,7 @@ import striptags from 'striptags';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './activity-page/activity-feed/get-article-feed-events';
 import { FetchReview } from './activity-page/activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-page/activity-feed/render-feed';
-import { articleMetaTagContent } from './activity-page/article-meta-tag-content';
+import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { refereedPreprintBadge } from './refereed-preprint-badge';
 import { renderAuthorsAndAbstract } from './render-authors-and-abstract';
