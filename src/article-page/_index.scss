@@ -16,6 +16,12 @@
   margin-bottom: baseline.increments(3);
 }
 
+.full-article-button {
+  @include button.button-link();
+  display: inline-block;
+  margin-bottom: baseline.increments(2);
+}
+
 .badge {
   font-size: functions.px-to-rem(16px);
   background-color: settings.$colour-accent;

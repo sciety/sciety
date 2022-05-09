@@ -1,6 +1,5 @@
 @use '../sass/baseline';
 @use '../sass/breakpoints';
-@use '../sass/button';
 @use '../sass/card';
 @use '../sass/functions';
 @use '../sass/list';
@@ -33,10 +32,4 @@
   @include list.author-separator-terminator();
   float: left;
   font-weight: bold;
-}
-
-.full-article-button {
-  @include button.button-link();
-  display: inline-block;
-  margin-bottom: baseline.increments(2);
 }
