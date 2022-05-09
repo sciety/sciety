@@ -96,7 +96,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           tweetThis,
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
-        authorsAndAbstractAndLink: renderAuthorsAndAbstractAndLink(articleDetails, doi),
+        authorsAndAbstractAndLink: renderAuthorsAndAbstractAndLink(articleDetails),
       })),
     )),
   ),

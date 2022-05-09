@@ -34,14 +34,6 @@
   font-weight: bold;
 }
 
-.article-publication-details-list {
-  @include list.basics();
-}
-
-.article-abstract {
-  margin-bottom: baseline.increments(4);
-}
-
 .full-article-button,
 .full-article-button:link,
 .full-article-button:visited {
