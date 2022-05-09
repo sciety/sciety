@@ -7,7 +7,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 
-.article-authors-and-abstract-and-link {
+.article-authors-and-abstract {
   @include card.basics();
 
   margin-bottom: baseline.increments(6);

@@ -1,8 +1,8 @@
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-export const renderPage = (header: HtmlFragment, authorsAndAbstractAndLink: HtmlFragment) => (mainContent: HtmlFragment): HtmlFragment => toHtmlFragment(`
+export const renderPage = (header: HtmlFragment, authorsAndAbstract: HtmlFragment) => (mainContent: HtmlFragment): HtmlFragment => toHtmlFragment(`
   ${header}
-  ${authorsAndAbstractAndLink}
+  ${authorsAndAbstract}
   <div class="main-content">
     ${mainContent}
   </div>

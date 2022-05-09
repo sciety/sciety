@@ -7,7 +7,7 @@ import striptags from 'striptags';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { renderAuthorsAndAbstractAndLink } from './render-authors-and-abstract-and-link';
+import { renderAuthorsAndAbstract } from './render-authors-and-abstract';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
 import { renderPage } from './render-page';
@@ -96,7 +96,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           tweetThis,
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
-        authorsAndAbstractAndLink: renderAuthorsAndAbstractAndLink(articleDetails),
+        authorsAndAbstract: renderAuthorsAndAbstract(articleDetails),
       })),
     )),
   ),
@@ -105,7 +105,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     (components) => ({
       content: pipe(
         components.mainContent,
-        renderPage(components.header, components.authorsAndAbstractAndLink),
+        renderPage(components.header, components.authorsAndAbstract),
       ),
       title: striptags(components.articleDetails.title),
       description: pipe(

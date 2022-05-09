@@ -8,9 +8,9 @@ type ArticleDetails = {
   authors: ArticleAuthors,
 };
 
-export const renderAuthorsAndAbstractAndLink = (articleDetails: ArticleDetails): HtmlFragment => pipe(
+export const renderAuthorsAndAbstract = (articleDetails: ArticleDetails): HtmlFragment => pipe(
   `
-    <div class="article-authors-and-abstract-and-link">
+    <div class="article-authors-and-abstract">
       <section>
         ${renderAuthors(articleDetails.authors)}
       </section>
