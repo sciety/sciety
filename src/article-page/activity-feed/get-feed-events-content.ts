@@ -7,15 +7,15 @@ import { pipe } from 'fp-ts/function';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { FeedItem } from './render-feed';
-import { DomainEvent } from '../../../domain-events';
-import { getGroup } from '../../../shared-read-models/groups';
-import { ArticleServer } from '../../../types/article-server';
-import { GroupId } from '../../../types/group-id';
-import { HtmlFragment } from '../../../types/html-fragment';
-import { ReviewId } from '../../../types/review-id';
-import * as RI from '../../../types/review-id';
-import { sanitise } from '../../../types/sanitised-html-fragment';
-import { UserId } from '../../../types/user-id';
+import { DomainEvent } from '../../domain-events';
+import { getGroup } from '../../shared-read-models/groups';
+import { ArticleServer } from '../../types/article-server';
+import { GroupId } from '../../types/group-id';
+import { HtmlFragment } from '../../types/html-fragment';
+import { ReviewId } from '../../types/review-id';
+import * as RI from '../../types/review-id';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { UserId } from '../../types/user-id';
 
 type ReviewEvent = {
   type: 'review',

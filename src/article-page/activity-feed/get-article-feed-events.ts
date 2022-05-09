@@ -9,11 +9,11 @@ import { getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
-import { DomainEvent } from '../../../domain-events';
-import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations';
-import { ArticleServer } from '../../../types/article-server';
-import { Doi } from '../../../types/doi';
-import { UserId } from '../../../types/user-id';
+import { DomainEvent } from '../../domain-events';
+import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
+import { UserId } from '../../types/user-id';
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,

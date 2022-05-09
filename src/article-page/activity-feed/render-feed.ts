@@ -3,9 +3,9 @@ import { flow } from 'fp-ts/function';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
-import { templateListItems } from '../../../shared-components/list-items';
-import { ArticleServer } from '../../../types/article-server';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { templateListItems } from '../../shared-components/list-items';
+import { ArticleServer } from '../../types/article-server';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: ArticleServer };
 

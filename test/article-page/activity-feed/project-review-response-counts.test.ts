@@ -1,12 +1,12 @@
-import { projectReviewResponseCounts } from '../../../../src/article-page/activity-page/activity-feed/project-review-response-counts';
+import { projectReviewResponseCounts } from '../../../src/article-page/activity-feed/project-review-response-counts';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
-} from '../../../../src/domain-events';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
+} from '../../../src/domain-events';
+import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const reviewId = arbitraryReviewId();
 

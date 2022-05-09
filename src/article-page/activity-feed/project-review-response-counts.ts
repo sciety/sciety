@@ -6,8 +6,8 @@ import {
   UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
-} from '../../../domain-events';
-import * as ReviewId from '../../../types/review-id';
+} from '../../domain-events';
+import * as ReviewId from '../../types/review-id';
 
 const projectHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
   RA.filter((event: DomainEvent): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (

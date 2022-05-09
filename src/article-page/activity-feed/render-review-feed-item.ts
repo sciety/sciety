@@ -5,10 +5,10 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { renderReviewResponses } from './render-review-responses';
 import { missingFullTextAndSourceLink } from './static-messages';
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as RI from '../../../types/review-id';
-import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
+import { templateDate } from '../../shared-components/date';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as RI from '../../types/review-id';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
 

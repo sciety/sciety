@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { retryLater } from './static-messages';
-import { ArticleServer } from '../../../types/article-server';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ArticleServer } from '../../types/article-server';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ServerInfo = {
   name: string,
