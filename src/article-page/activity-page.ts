@@ -8,12 +8,12 @@ import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from 
 import { FetchReview } from './activity-page/activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-page/activity-feed/render-feed';
 import { articleMetaTagContent } from './activity-page/article-meta-tag-content';
-import { renderAuthorsAndAbstract } from './activity-page/render-authors-and-abstract';
-import { renderDescriptionMetaTagContent } from './activity-page/render-description-meta-tag-content';
-import { renderPage } from './activity-page/render-page';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { refereedPreprintBadge } from './refereed-preprint-badge';
+import { renderAuthorsAndAbstract } from './render-authors-and-abstract';
+import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderHeader } from './render-header';
+import { renderPage } from './render-page';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { DomainEvent } from '../domain-events';

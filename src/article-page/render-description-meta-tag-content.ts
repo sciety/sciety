@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
-import { toDisplayString } from '../../shared-components/date';
+import { toDisplayString } from '../shared-components/date';
 
 export type MetaDescription = {
   evaluationCount: number,
