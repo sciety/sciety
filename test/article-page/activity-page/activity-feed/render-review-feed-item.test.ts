@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
 import { renderReviewFeedItem } from '../../../../src/article-page/activity-page/activity-feed/render-review-feed-item';
-import { missingFullTextAndSourceLink } from '../../../../src/article-page/activity-page/static-messages';
+import { missingFullTextAndSourceLink } from '../../../../src/article-page/activity-page/activity-feed/static-messages';
 import { reviewIdCodec } from '../../../../src/types/review-id';
 import { arbitraryNumber } from '../../../helpers';
 import * as t from '../../../helpers';
