@@ -1,5 +1,6 @@
 @use '../sass/baseline';
 @use '../sass/breakpoints';
+@use '../sass/button';
 @use '../sass/card';
 @use '../sass/functions';
 @use '../sass/list';
@@ -34,23 +35,8 @@
   font-weight: bold;
 }
 
-.full-article-button,
-.full-article-button:link,
-.full-article-button:visited {
-  @include typography.button();
-  border-radius: settings.$border-radius;
-  cursor: pointer;
-  padding: functions.px-to-rem(8px);
-  display: block;
-  text-align: center;
-  color: settings.$colour-text-primary;
-  border: settings.$border-width solid currentColor;
+.full-article-button {
+  @include button.button-link();
+  display: inline-block;
   margin-bottom: baseline.increments(2);
-
-  &:hover,
-  &:active {
-    background-color: settings.$colour-primary;
-    color: settings.$colour-white;
-    border-color: settings.$colour-primary;
-  }
 }
