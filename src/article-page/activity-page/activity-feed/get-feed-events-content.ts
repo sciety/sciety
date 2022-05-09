@@ -4,18 +4,18 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { projectReviewResponseCounts } from './activity-feed/project-review-response-counts';
-import { projectUserReviewResponse } from './activity-feed/project-user-review-response';
-import { FeedItem } from './activity-feed/render-feed';
-import { DomainEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/groups';
-import { ArticleServer } from '../../types/article-server';
-import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
-import { ReviewId } from '../../types/review-id';
-import * as RI from '../../types/review-id';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { UserId } from '../../types/user-id';
+import { projectReviewResponseCounts } from './project-review-response-counts';
+import { projectUserReviewResponse } from './project-user-review-response';
+import { FeedItem } from './render-feed';
+import { DomainEvent } from '../../../domain-events';
+import { getGroup } from '../../../shared-read-models/groups';
+import { ArticleServer } from '../../../types/article-server';
+import { GroupId } from '../../../types/group-id';
+import { HtmlFragment } from '../../../types/html-fragment';
+import { ReviewId } from '../../../types/review-id';
+import * as RI from '../../../types/review-id';
+import { sanitise } from '../../../types/sanitised-html-fragment';
+import { UserId } from '../../../types/user-id';
 
 type ReviewEvent = {
   type: 'review',

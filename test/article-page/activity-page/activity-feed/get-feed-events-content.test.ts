@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FeedEvent, getFeedEventsContent } from '../../../src/article-page/activity-page/get-feed-events-content';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { FeedEvent, getFeedEventsContent } from '../../../../src/article-page/activity-page/activity-feed/get-feed-events-content';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryReviewId } from '../../../types/review-id.helper';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {

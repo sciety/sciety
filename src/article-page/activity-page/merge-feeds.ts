@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { FeedEvent } from './get-feed-events-content';
+import { FeedEvent } from './activity-feed/get-feed-events-content';
 
 type Feed = T.Task<ReadonlyArray<FeedEvent>>;
 
