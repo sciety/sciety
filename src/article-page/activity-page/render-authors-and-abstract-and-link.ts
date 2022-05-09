@@ -16,7 +16,7 @@ export const renderAuthorsAndAbstractAndLink = (articleDetails: ArticleDetails, 
         ${renderAuthors(articleDetails.authors)}
         <ul aria-label="Publication details" class="article-publication-details-list" role="list">
           <li>
-            <a href="https://doi.org/${doi.value}" target="_blank">https://doi.org/${doi.value}</a>
+            <a href="https://doi.org/${doi.value}">https://doi.org/${doi.value}</a>
           </li>
         </ul>
       </section>
@@ -25,7 +25,7 @@ export const renderAuthorsAndAbstractAndLink = (articleDetails: ArticleDetails, 
         ${articleDetails.abstract}
       </section>
 
-      <a href="https://doi.org/${doi.value}" class="full-article-button" target="_blank">
+      <a href="https://doi.org/${doi.value}" class="full-article-button">
         Read the full article
       </a>
     </div>

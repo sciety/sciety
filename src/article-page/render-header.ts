@@ -17,7 +17,7 @@ export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtml
   <header class="page-header page-header--article">
     ${viewModel.badge}
     <h1>${viewModel.articleDetails.title}</h1>
-    <a href="https://doi.org/${viewModel.articleDetails.doi.value}" class="full-article-button" target="_blank">
+    <a href="https://doi.org/${viewModel.articleDetails.doi.value}" class="full-article-button">
       Read the full article
     </a>
     <div class="article-actions">
