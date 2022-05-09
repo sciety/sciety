@@ -53,6 +53,7 @@
   text-align: center;
   color: settings.$colour-text-primary;
   border: settings.$border-width solid currentColor;
+  margin-bottom: baseline.increments(2);
 
   &:hover,
   &:active {

@@ -35,6 +35,7 @@ type Params = {
 };
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
+  doi: Doi,
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   server: ArticleServer,
