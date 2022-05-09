@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { mergeFeeds } from '../../../src/article-page/activity-page/merge-feeds';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { mergeFeeds } from '../../../../src/article-page/activity-page/activity-feed/merge-feeds';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryReviewId } from '../../../types/review-id.helper';
 
 describe('merge-feeds', () => {
   const firstDate = new Date('2020-09-03');
