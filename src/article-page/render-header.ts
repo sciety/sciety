@@ -8,14 +8,12 @@ type ArticleDetails = {
 
 type HeaderViewModel = {
   articleDetails: ArticleDetails,
-  badge: HtmlFragment,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
 };
 
 export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
-    ${viewModel.badge}
     <h1>${viewModel.articleDetails.title}</h1>
     <a href="https://doi.org/${viewModel.articleDetails.doi.value}" class="full-article-button">
       Read the full article

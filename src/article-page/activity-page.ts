@@ -9,7 +9,6 @@ import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { refereedPreprintBadge } from './refereed-preprint-badge';
 import { renderAuthorsAndAbstract } from './render-authors-and-abstract';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderHeader } from './render-header';
@@ -75,14 +74,9 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
         TE.rightTask,
       ),
-      badge: pipe(
-        ports.getAllEvents,
-        T.map(refereedPreprintBadge(doi)),
-        TE.rightTask,
-      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.chainW(({ articleDetails, badge, hasUserSavedArticle }) => pipe(
+    TE.chainW(({ articleDetails, hasUserSavedArticle }) => pipe(
       getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
@@ -91,7 +85,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         feedItemsByDateDescending,
         header: renderHeader({
           articleDetails,
-          badge,
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
           tweetThis,
         }),
