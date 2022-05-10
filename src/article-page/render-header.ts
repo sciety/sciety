@@ -16,11 +16,7 @@ type HeaderViewModel = {
   tweetThis: HtmlFragment,
 };
 
-export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
-  <header class="page-header page-header--article">
-    <h1>${viewModel.articleDetails.title}</h1>
-  </header>
-
+const renderArticleActions = (viewModel: HeaderViewModel) => `
   <div class="article-actions">
     ${renderFullArticleButton(viewModel.articleDetails.doi)}
     <div class="tweet-and-save-buttons">
@@ -28,4 +24,11 @@ export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtml
       ${viewModel.saveArticle}
     </div>
   </div>
+`;
+
+export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
+  <header class="page-header page-header--article">
+    <h1>${viewModel.articleDetails.title}</h1>
+  </header>
+  ${renderArticleActions(viewModel)}
 `);
