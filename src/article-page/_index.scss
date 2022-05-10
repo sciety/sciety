@@ -19,6 +19,11 @@
 .article-actions {
   @include layout.page-content-horizontal-margins();
   margin-bottom: baseline.increments(3);
+
+  @include breakpoints.two-column-display {
+    @include layout.page-header-top-space();
+    grid-column: 9 / 13;
+  }
 }
 
 .full-article-button {
@@ -30,6 +35,10 @@
 .tweet-and-save-buttons {
   display: flex;
   align-items: center;
+
+  @include breakpoints.two-column-display {
+    display: block;
+  }
 }
 
 .tweet-button {
