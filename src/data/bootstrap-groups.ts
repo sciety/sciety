@@ -11,7 +11,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Biophysics Colab is a collaboration of biophysicists who are working in partnership with eLife to improve the way in which original research is evaluated. We aim to drive forward the principles of open science by providing an equitable, inclusive, and transparent environment for peer review. Our ambition is to facilitate a publishing ecosystem in which the significance of research is recognised independently of publication venue.',
     homepage: 'https://biophysics.sciencecolab.org',
     slug: 'biophysics-colab',
-    isAutomated: false,
   }, new Date('2021-06-29T08:13:14Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
@@ -21,7 +20,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'We promote the productive use of preprints for research dissemination and transparent peer review and feedback on all research outputs.',
     homepage: 'https://asapbio.org/about-us',
     slug: 'asapbio-crowd-review',
-    isAutomated: false,
   }, new Date('2021-06-29T08:13:15Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
@@ -31,7 +29,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'The 2019 Novel Coronavirus Research Compendium (NCRC) is a centralized, publicly available resource that rapidly curates and reviews the emerging scientific evidence about SARS-CoV-2 and COVID-19. Our goal is to provide accurate, relevant information for global public health action by clinicians, public health practitioners, and policy makers.',
     homepage: 'https://ncrc.jhsph.edu/',
     slug: 'ncrc',
-    isAutomated: false,
   }, new Date('2021-02-18T10:28:53Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
@@ -41,7 +38,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Rapid Reviews: COVID-19 is an open-access overlay journal that seeks to accelerate peer review of COVID-19-related research and prevent the dissemination of false or misleading scientific news.',
     homepage: 'https://rapidreviewscovid19.mitpress.mit.edu/',
     slug: 'rapid-reviews-covid-19',
-    isAutomated: false,
   }, new Date('2021-05-13T14:33:27Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
@@ -51,7 +47,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'eLife reviews selected preprints in all areas of biology and medicine.',
     homepage: 'https://elifesciences.org/',
     slug: 'elife',
-    isAutomated: false,
   }, new Date('2020-08-12T13:59:29Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
@@ -61,7 +56,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'The Automated Screening Working Groups is a group of software engineers and biologists passionate about improving scientific manuscripts on a large scale. Our members have created tools that check for common problems in scientific manuscripts, including information needed to improve transparency and reproducibility. We have combined our tools into a single pipeline, called ScreenIT. We\'re currently using our tools to screen COVID preprints.',
     homepage: 'https://sciscore.com/',
     slug: 'screenit',
-    isAutomated: true,
   }, new Date('2020-11-20T09:00:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
@@ -71,7 +65,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
     homepage: 'https://prelights.biologists.com/',
     slug: 'prelights',
-    isAutomated: false,
   }, new Date('2021-01-05T11:43:07Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
@@ -81,7 +74,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'PREreview\'s mission is to bring more diversity to scholarly peer review by supporting and empowering community of researchers, particularly those at early stages of their career (ECRs) to review preprints.',
     homepage: 'https://prereview.org/',
     slug: 'prereview',
-    isAutomated: false,
   }, new Date('2020-04-27T09:00:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('53ed5364-a016-11ea-bb37-0242ac130002'),
@@ -91,7 +83,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'PeerJ is an open access publisher of 7 peer-reviewed journals, and an editorial community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.',
     homepage: 'https://peerj.com/',
     slug: 'peerj',
-    isAutomated: false,
   }, new Date('2020-08-12T13:53:54Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334'),
@@ -101,7 +92,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Review Commons is a platform for high-quality journal-independent peer-review in the life sciences.',
     homepage: 'https://www.reviewcommons.org/',
     slug: 'review-commons',
-    isAutomated: false,
   }, new Date('2020-08-12T13:59:30Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
@@ -111,7 +101,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Zoology.',
     homepage: 'https://zool.peercommunityin.org/',
     slug: 'pci-zoology',
-    isAutomated: false,
   }, new Date('2020-08-12T13:59:31Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
@@ -121,7 +110,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Evolutionary Biology.',
     homepage: 'https://evolbiol.peercommunityin.org/',
     slug: 'pci-evolutionary-biology',
-    isAutomated: false,
   }, new Date('2020-08-17T12:07:08Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('32025f28-0506-480e-84a0-b47ef1e92ec5'),
@@ -131,7 +119,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Ecology.',
     homepage: 'https://ecology.peercommunityin.org/',
     slug: 'pci-ecology',
-    isAutomated: false,
   }, new Date('2020-08-17T12:56:38Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
@@ -141,7 +128,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Animal Science.',
     homepage: 'https://animsci.peercommunityin.org/',
     slug: 'pci-animal-science',
-    isAutomated: false,
   }, new Date('2020-08-17T12:56:39Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c'),
@@ -151,7 +137,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Archaeology.',
     homepage: 'https://archaeo.peercommunityin.org/',
     slug: 'pci-archaeology',
-    isAutomated: false,
   }, new Date('2021-06-29T08:13:16Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
@@ -161,7 +146,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Paleontology.',
     homepage: 'https://paleo.peercommunityin.org/',
     slug: 'pci-paleontology',
-    isAutomated: false,
   }, new Date('2020-08-17T12:56:40Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('af792cd3-1600-465c-89e5-250c48f793aa'),
@@ -171,7 +155,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'Free and transparent preprint peer-review and recommendation by and for researchers in Neuroscience.',
     homepage: 'https://neuro.peercommunityin.org/',
     slug: 'pci-neuroscience',
-    isAutomated: false,
   }, new Date('2021-12-02T10:06:41Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('b5f31635-d32b-4df9-92a5-0325a1524343'),
@@ -181,7 +164,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'PeerRef organizes journal-independent open peer review for all research.',
     homepage: 'https://www.peerref.com/',
     slug: 'peerref',
-    isAutomated: false,
   }, new Date('2022-01-20T09:41:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('d6e1a913-76f8-40dc-9074-8eac033e1bc8'),
@@ -191,7 +173,6 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'GigaScience is an open access, open data, open peer-review journal focusing on ‘big data’ research from the life and biomedical sciences.',
     homepage: 'https://gigasciencejournal.com',
     slug: 'gigascience',
-    isAutomated: false,
   }, new Date('2022-03-23T09:40:00Z')),
   DomainEvent.groupCreated({
     id: Gid.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
@@ -201,6 +182,5 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     shortDescription: 'GigaByte is an open access and open science journal published by GigaScience Press, BGI\'s Open Access and Open Data Publishing division. As with our sister-journal GigaScience— we publish ALL reusable and shareable research objects, such as data, software tools and workflows, from data-driven research.',
     homepage: 'https://gigabytejournal.com/',
     slug: 'gigabyte',
-    isAutomated: false,
   }, new Date('2022-03-24T10:03:00Z')),
 ];

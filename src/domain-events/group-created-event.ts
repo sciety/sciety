@@ -16,7 +16,6 @@ const groupCreatedEventCodec = t.type({
   shortDescription: t.string,
   homepage: t.string,
   slug: t.string,
-  isAutomated: t.boolean,
 });
 
 export type GroupCreatedEvent = t.TypeOf<typeof groupCreatedEventCodec>;
@@ -35,5 +34,4 @@ export const groupCreated = (group: Group, date: Date = new Date()): GroupCreate
   shortDescription: group.shortDescription,
   homepage: group.homepage,
   slug: group.slug,
-  isAutomated: group.isAutomated,
 });

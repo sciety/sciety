@@ -8,5 +8,4 @@ export type Group = {
   shortDescription: string,
   homepage: string,
   slug: string,
-  isAutomated: boolean,
 };
