@@ -1,4 +1,13 @@
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: 0;
+  
+  @supports (display: grid) {
+    @include breakpoints.two-column-display {
+      margin-bottom: baseline.increments(1);
+    }
+  }
 }
