@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
