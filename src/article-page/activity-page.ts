@@ -62,12 +62,8 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   {
     doi: params.doi,
     userId: pipe(params.user, O.map((u) => u.id)),
-    tweetThis: pipe(
-      params.doi,
-      renderTweetThis,
-    ),
   },
-  ({ doi, userId, tweetThis }) => pipe(
+  ({ doi, userId }) => pipe(
     {
       articleDetails: ports.fetchArticle(doi),
       hasUserSavedArticle: pipe(
@@ -90,7 +86,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         articleActions: renderArticleActions({
           articleId: doi,
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-          tweetThis,
+          tweetThis: renderTweetThis(doi),
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
         authorsAndAbstract: renderAuthorsAndAbstract(articleDetails),
