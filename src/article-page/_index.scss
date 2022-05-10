@@ -20,9 +20,11 @@
   @include layout.page-content-horizontal-margins();
   margin-bottom: baseline.increments(3);
 
-  @include breakpoints.two-column-display {
-    @include layout.page-header-top-space();
-    grid-column: 9 / 13;
+  @supports (display: grid) {
+    @include breakpoints.two-column-display {
+      @include layout.page-header-top-space();
+      grid-column: 9 / 13;
+    }
   }
 }
 
