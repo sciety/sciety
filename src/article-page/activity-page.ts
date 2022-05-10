@@ -96,10 +96,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   TE.bimap(
     toErrorPage,
     (components) => ({
-      content: pipe(
-        components.mainContent,
-        renderPage(components.header, components.articleActions, components.authorsAndAbstract),
-      ),
+      content: renderPage(components),
       title: striptags(components.articleDetails.title),
       description: pipe(
         articleMetaTagContent(components.feedItemsByDateDescending),
