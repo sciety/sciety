@@ -1,22 +1,22 @@
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-const renderFullArticleButton = (doi: Doi) => `
+export const renderFullArticleLink = (doi: Doi): HtmlFragment => toHtmlFragment(`
   <a href="https://doi.org/${doi.value}" class="full-article-button">Read the full article</a>
-`;
+`);
 
-type ArticleActionsViewModel = {
-  articleId: Doi,
+type ArticleActionsComponents = {
+  fullArticleLink: HtmlFragment,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
 };
 
-export const renderArticleActions = (viewModel: ArticleActionsViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleActions = (components: ArticleActionsComponents): HtmlFragment => toHtmlFragment(`
   <div class="article-actions">
-    ${renderFullArticleButton(viewModel.articleId)}
+    ${components.fullArticleLink}
     <div class="tweet-and-save-buttons">
-      ${viewModel.tweetThis}
-      ${viewModel.saveArticle}
+      ${components.tweetThis}
+      ${components.saveArticle}
     </div>
   </div>
 `);

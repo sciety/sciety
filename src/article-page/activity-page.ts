@@ -9,7 +9,7 @@ import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderArticleActions } from './render-article-actions';
+import { renderArticleActions, renderFullArticleLink } from './render-article-actions';
 import { renderAuthorsAndAbstract } from './render-authors-and-abstract';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderHeader } from './render-header';
@@ -84,7 +84,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           title: articleDetails.title,
         }),
         articleActions: renderArticleActions({
-          articleId: doi,
+          fullArticleLink: renderFullArticleLink(doi),
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
           tweetThis: renderTweetThis(doi),
         }),
