@@ -1,0 +1,105 @@
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/button';
+@use '../sass/functions';
+@use '../sass/layout';
+@use '../sass/settings';
+@use '../sass/typography';
+
+.article-actions {
+  @include layout.page-content-horizontal-margins();
+  margin-bottom: baseline.increments(3);
+
+  @supports (display: grid) {
+    @include breakpoints.two-column-display {
+      @include layout.page-header-top-space();
+      grid-column: 9 / 13;
+    }
+  }
+}
+
+.full-article-button {
+  @include button.button-link();
+  display: inline-block;
+  margin-bottom: baseline.increments(2);
+}
+
+.tweet-and-save-buttons {
+  display: flex;
+  align-items: center;
+
+  @include breakpoints.two-column-display {
+    display: block;
+  }
+}
+
+.tweet-button {
+  @include button.basics();
+  @include typography.button();
+  display: inline-flex;
+  align-items: center;
+  padding-right: functions.px-to-rem(5px);
+  margin-right: 2em;
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-teal;
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: settings.$colour-ui-default;
+      color: settings.$colour-white;
+    }
+  }
+
+}
+
+.tweet-button__icon {
+  width: functions.px-to-rem(24px);
+  height: functions.px-to-rem(24px);
+  border-radius: 5px;
+}
+
+.save-article-form {
+  display: inline-flex;
+}
+
+.save-article-button {
+  @include button.basics();
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2em;
+  background-color: settings.$colour-teal;
+  color: settings.$colour-white;
+  padding-right: functions.px-to-rem(5px);
+  padding-top: 0;
+  padding-bottom: 0;
+
+  &:hover,
+  &:active {
+    background-color: settings.$colour-ui-default;
+    color: settings.$colour-white;
+  }
+}
+
+.save-article-button__icon {
+  width: functions.px-to-rem(24px);
+  height: functions.px-to-rem(24px);
+  border-radius: 5px;
+}
+
+.saved-to-list {
+  @include typography.button();
+  display: flex;
+  align-items: center;
+}
+
+.saved-to-list:link,
+.saved-to-list:visited {
+  @include typography.subtle-link();
+}
+
+.saved-to-list__icon {
+  margin-right: functions.px-to-rem(3px);
+}
