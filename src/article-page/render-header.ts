@@ -14,13 +14,13 @@ type HeaderViewModel = {
 
 export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
-    <h1>${viewModel.articleDetails.title}</h1>
-    <a href="https://doi.org/${viewModel.articleDetails.doi.value}" class="full-article-button">
-      Read the full article
-    </a>
+    <h1 class="page-header__title">${viewModel.articleDetails.title}</h1>
     <div class="article-actions">
-      ${viewModel.tweetThis}
-      ${viewModel.saveArticle}
+      <a href="https://doi.org/${viewModel.articleDetails.doi.value}" class="full-article-button">
+        Read the full article
+      </a>
+        <div>${viewModel.tweetThis}</div>
+        <div>${viewModel.saveArticle}</div>
     </div>
   </header>
 `);

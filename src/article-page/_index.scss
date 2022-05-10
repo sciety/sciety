@@ -14,6 +14,19 @@
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: baseline.increments(3);
+  grid-column: 1 / -1;
+
+  @include breakpoints.two-column-display {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 20px;
+  }
+}
+
+.page-header__title {
+  @include breakpoints.two-column-display() {
+    grid-column: 1 / 9;
+  }
 }
 
 .full-article-button {
@@ -23,8 +36,8 @@
 }
 
 .article-actions {
-  display: flex;
-  align-items: center;
+  max-width: max-content;
+  grid-column: 9 / 13;
 }
 
 .tweet-button {
