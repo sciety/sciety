@@ -4,18 +4,13 @@
 
 .page-header.page-header--article {
   margin-top: 0;
-  margin-bottom: 0;
-  
-  @supports (display: grid) {
-    @include breakpoints.two-column-display {
-      margin-bottom: baseline.increments(1);
-    }
-  }
+  margin-bottom: baseline.increments(3);
 }
 
 .article-author-list {
   @include list.basics();
   margin-top: 0;
+  margin-bottom: 0;
   
   + * {
     clear: left;
