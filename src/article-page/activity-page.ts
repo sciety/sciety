@@ -80,10 +80,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         doi,
         articleDetails,
         feedItemsByDateDescending,
-        header: renderHeader({
-          title: articleDetails.title,
-          authors: articleDetails.authors,
-        }),
+        header: renderHeader(articleDetails),
         articleActions: renderArticleActions({
           fullArticleLink: renderFullArticleLink(doi),
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),

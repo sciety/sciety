@@ -1,13 +1,11 @@
 import { pipe } from 'fp-ts/function';
-import { ArticleAuthors } from '../types/article-authors';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type ArticleDetails = {
+type ArticleAbstractViewModel = {
   abstract: HtmlFragment,
-  authors: ArticleAuthors,
 };
 
-export const renderArticleAbstract = (articleDetails: ArticleDetails): HtmlFragment => pipe(
+export const renderArticleAbstract = (articleDetails: ArticleAbstractViewModel): HtmlFragment => pipe(
   `
     <section role="doc-abstract" class="article-abstract">
       ${articleDetails.abstract}
