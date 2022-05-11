@@ -14,7 +14,8 @@
 
 .article-author-list {
   @include list.basics();
-
+  margin-top: 0;
+  
   + * {
     clear: left;
   }
