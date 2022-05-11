@@ -6,9 +6,11 @@
 @use '../sass/settings';
 @use '../sass/typography';
 
+@use 'local-settings';
+
 .article-actions {
   @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(3);
+  margin-bottom: local-settings.$component-vertical-spacing;
 
   @supports (display: grid) {
     @include breakpoints.two-column-display {

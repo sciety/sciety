@@ -2,9 +2,11 @@
 @use '../sass/breakpoints';
 @use '../sass/list';
 
+@use 'local-settings';
+
 .page-header.page-header--article {
   margin-top: 0;
-  margin-bottom: baseline.increments(3);
+  margin-bottom: local-settings.$component-vertical-spacing;
 }
 
 .article-author-list {
