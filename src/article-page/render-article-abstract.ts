@@ -9,13 +9,9 @@ type ArticleDetails = {
 
 export const renderArticleAbstract = (articleDetails: ArticleDetails): HtmlFragment => pipe(
   `
-    <div class="article-abstract">
-
-
-      <section role="doc-abstract">
-        ${articleDetails.abstract}
-      </section>
-    </div>
+    <section role="doc-abstract" class="article-abstract">
+      ${articleDetails.abstract}
+    </section>
   `,
   toHtmlFragment,
 );
