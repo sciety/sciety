@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { renderAuthors } from './render-authors';
 import { ArticleAuthors } from '../types/article-authors';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -11,9 +10,7 @@ type ArticleDetails = {
 export const renderAuthorsAndAbstract = (articleDetails: ArticleDetails): HtmlFragment => pipe(
   `
     <div class="article-authors-and-abstract">
-      <section>
-        ${renderAuthors(articleDetails.authors)}
-      </section>
+
 
       <section role="doc-abstract">
         ${articleDetails.abstract}
