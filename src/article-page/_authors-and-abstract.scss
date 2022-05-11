@@ -6,7 +6,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 
-.article-authors-and-abstract {
+.article-abstract {
   @include card.basics();
 
   margin-bottom: baseline.increments(6);
