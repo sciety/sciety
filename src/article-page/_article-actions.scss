@@ -36,34 +36,6 @@
   }
 }
 
-.tweet-button {
-  @include button.basics();
-  @include typography.button();
-  display: inline-flex;
-  align-items: center;
-  padding-right: functions.px-to-rem(5px);
-  margin-right: 2em;
-
-  &:link,
-  &:visited {
-    background-color: settings.$colour-teal;
-    color: settings.$colour-white;
-
-    &:hover,
-    &:active {
-      background-color: settings.$colour-ui-default;
-      color: settings.$colour-white;
-    }
-  }
-
-}
-
-.tweet-button__icon {
-  width: functions.px-to-rem(24px);
-  height: functions.px-to-rem(24px);
-  border-radius: 5px;
-}
-
 .save-article-form {
   display: inline-flex;
 }

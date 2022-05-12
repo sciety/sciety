@@ -15,7 +15,6 @@ import { renderDescriptionMetaTagContent } from './render-description-meta-tag-c
 import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { renderSaveArticle } from './render-save-article';
-import { renderTweetThis } from './render-tweet-this';
 import { DomainEvent } from '../domain-events';
 import { ArticleAuthors } from '../types/article-authors';
 import { ArticleServer } from '../types/article-server';
@@ -84,7 +83,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         articleActions: renderArticleActions({
           fullArticleLink: renderFullArticleLink(doi),
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-          tweetThis: renderTweetThis(doi),
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
         articleAbstract: renderArticleAbstract(articleDetails),

@@ -8,7 +8,6 @@ export const renderFullArticleLink = (doi: Doi): HtmlFragment => toHtmlFragment(
 type ArticleActionsComponents = {
   fullArticleLink: HtmlFragment,
   saveArticle: HtmlFragment,
-  tweetThis: HtmlFragment,
 };
 
 export const renderArticleActions = (components: ArticleActionsComponents): HtmlFragment => toHtmlFragment(`
