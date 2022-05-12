@@ -15,7 +15,6 @@ export const renderArticleActions = (components: ArticleActionsComponents): Html
   <div class="article-actions">
     ${components.fullArticleLink}
     <div class="tweet-and-save-buttons">
-      ${components.tweetThis}
       ${components.saveArticle}
     </div>
   </div>
