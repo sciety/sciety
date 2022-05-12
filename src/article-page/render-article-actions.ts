@@ -13,8 +13,6 @@ type ArticleActionsComponents = {
 export const renderArticleActions = (components: ArticleActionsComponents): HtmlFragment => toHtmlFragment(`
   <div class="article-actions">
     ${components.fullArticleLink}
-    <div class="tweet-and-save-buttons">
-      ${components.saveArticle}
-    </div>
+    ${components.saveArticle}
   </div>
 `);

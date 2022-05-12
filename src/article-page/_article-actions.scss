@@ -27,22 +27,9 @@
   margin-bottom: baseline.increments(2);
 }
 
-.tweet-and-save-buttons {
-  display: flex;
-  align-items: center;
-
-  @include breakpoints.two-column-display {
-    display: block;
-  }
-}
-
-.save-article-form {
-  display: inline-flex;
-}
-
 .save-article-button {
   @include button.basics();
-  display: inline-flex;
+  display: flex;
   align-items: center;
   margin-right: 2em;
   background-color: settings.$colour-teal;
