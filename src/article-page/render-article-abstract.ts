@@ -7,7 +7,8 @@ type ArticleAbstractViewModel = {
 
 export const renderArticleAbstract = (articleDetails: ArticleAbstractViewModel): HtmlFragment => pipe(
   `
-    <section role="doc-abstract" class="article-abstract">
+    <section role="doc-abstract" class="article-abstract"> 
+      <h2>Abstract</h2>
       ${articleDetails.abstract}
     </section>
   `,
