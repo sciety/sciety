@@ -15,7 +15,7 @@
   @supports (display: grid) {
     @include breakpoints.two-column-display {
       @include layout.page-header-top-space();
-      grid-column: 9 / 13;
+      grid-column: 10 / 13;
       grid-row: 1 / 3;
     }
   }
