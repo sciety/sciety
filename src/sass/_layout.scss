@@ -42,7 +42,7 @@ $_column-gap: functions.px-to-rem(20px);
 @supports (display: grid) {
   .sciety-grid-two-columns {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-column-gap: $_column-gap;
     grid-auto-rows: min-content;
     grid-auto-flow: column;

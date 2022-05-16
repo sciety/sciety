@@ -46,6 +46,10 @@
       "clickSelector": ".activity-feed__item-toggle"
     },
     {
+      "label": "An article page (challenging markdown under our control)",
+      "url": "http://sciety_app/articles/10.1101/002303"
+    },
+    {
       "label": "Article search",
       "url": "http://sciety_app/search?query=elephant+shark"
     },
