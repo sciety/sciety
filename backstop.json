@@ -37,12 +37,12 @@
       "url": "http://sciety_app/menu"
     },
     {
-      "label": "An article activity page",
-      "url": "http://sciety_app/articles/activity/10.1101/646810"
+      "label": "An article page",
+      "url": "http://sciety_app/articles/10.1101/646810"
     },
     {
-      "label": "An article activity page (expanded reviews)",
-      "url": "http://sciety_app/articles/activity/10.1101/646810",
+      "label": "An article page (expanded reviews)",
+      "url": "http://sciety_app/articles/10.1101/646810",
       "clickSelector": ".activity-feed__item-toggle"
     },
     {
