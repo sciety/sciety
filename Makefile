@@ -84,6 +84,7 @@ backstop-dev: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
 	${DOCKER_COMPOSE} restart app lists
+	${DOCKER_COMPOSE} up
 
 backstop-approve: export LATEST_TEST_PNG_FOLDER=$(shell ls -1 backstop_data/bitmaps_test/ | sort | tail -n 1)
 backstop-approve: node_modules
