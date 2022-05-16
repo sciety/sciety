@@ -77,6 +77,14 @@ backstop-test: node_modules clean-db build
 	npx backstop --docker test
 	${DOCKER_COMPOSE} down
 
+backstop-dev: export TARGET = dev
+backstop-dev: export DISABLE_COOKIEBOT = true
+backstop-dev: node_modules clean-db build
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
+	${DOCKER_COMPOSE} restart app lists
+
 backstop-approve: export LATEST_TEST_PNG_FOLDER=$(shell ls -1 backstop_data/bitmaps_test/ | sort | tail -n 1)
 backstop-approve: node_modules
 	cp backstop_data/bitmaps_test/$$LATEST_TEST_PNG_FOLDER/backstop_default*.png backstop_data/bitmaps_reference/
