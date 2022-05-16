@@ -1,7 +1,7 @@
 module.exports = {
   content: [
     'src/**/*.ts',
-    'static/behaviour.js', 
+    'static/behaviour.js',
     'static/groups/*.md',
   ],
   safelist: [
@@ -14,5 +14,6 @@ module.exports = {
     'td',
     'th',
     'tr',
+    'pre',
   ],
 };
