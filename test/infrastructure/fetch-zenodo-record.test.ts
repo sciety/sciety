@@ -9,11 +9,26 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryHtmlFragment } from '../helpers';
 
 const notZenodoKey = '10.1234/zenodo/123';
-const key = '10.5281/zenodo.6386692';
-const url = 'https://doi.org/10.5281/zenodo.6386692';
+const zenodoKey = '10.5281/zenodo.6386692';
+const doiUrl = 'https://doi.org/10.5281/zenodo.6386692';
+const zenodoApiUrl = 'https://zenodo.org/api/records/6386692';
 
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
+    describe('on all requests', () => {
+      let getJson: (uri: string) => Promise<Json>;
+
+      beforeEach(async () => {
+        getJson = jest.fn();
+        await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+      });
+
+      it('calls Zenodo API url', () => {
+        expect(getJson).toHaveBeenCalledTimes(1);
+        expect(getJson).toHaveBeenCalledWith(zenodoApiUrl);
+      });
+    });
+
     describe('when the request succeeds', () => {
       const description = arbitraryHtmlFragment();
       const getJson = async (): Promise<Json> => ({
@@ -24,7 +39,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, Evaluation>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(key)();
+        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
       });
 
       it('returns the metadata description as full text', () => {
@@ -42,7 +57,7 @@ describe('fetch-zenodo-record', () => {
             evaluation,
             E.map((ev) => ev.url),
           ),
-        ).toStrictEqual(E.right(new URL(url)));
+        ).toStrictEqual(E.right(new URL(doiUrl)));
       });
     });
 
@@ -51,7 +66,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, Evaluation>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(key)();
+        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
       });
 
       it('returns a left', () => {
