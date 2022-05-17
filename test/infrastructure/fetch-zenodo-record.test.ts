@@ -7,7 +7,6 @@ import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record'
 import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryHtmlFragment } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
 
 const notZenodoKey = '10.1234/123';
 const key = '10.5281/zenodo.6386692';
@@ -62,15 +61,20 @@ describe('fetch-zenodo-record', () => {
   });
 
   describe('when the DOI is not from Zenodo', () => {
-    const getJson = shouldNotBeCalled;
     let evaluation: E.Either<unknown, Evaluation>;
+    let getJson: (uri: string) => Promise<Json>;
 
     beforeEach(async () => {
+      getJson = jest.fn();
       evaluation = await fetchZenodoRecord(getJson, dummyLogger)(notZenodoKey)();
     });
 
     it('returns a left', () => {
       expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+    });
+
+    it.skip('does not make unnecessary external api calls', () => {
+      expect(getJson).not.toHaveBeenCalled();
     });
   });
 });
