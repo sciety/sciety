@@ -73,6 +73,24 @@ describe('fetch-zenodo-record', () => {
         expect(evaluation).toStrictEqual(E.left(DE.unavailable));
       });
     });
+
+    describe('when the returned JSON value is unexpected', () => {
+      const wrongProperty = arbitraryHtmlFragment();
+      const getJson = async (): Promise<Json> => ({
+        metadata: {
+          wrongProperty,
+        },
+      });
+      let evaluation: E.Either<unknown, Evaluation>;
+
+      beforeEach(async () => {
+        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+      });
+
+      it('returns a left', () => {
+        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+      });
+    });
   });
 
   describe('when the DOI is not from Zenodo', () => {
