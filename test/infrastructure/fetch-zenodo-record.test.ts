@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Evaluation } from '../../src/infrastructure/evaluation';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
+import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryHtmlFragment } from '../helpers';
 
@@ -45,7 +46,16 @@ describe('fetch-zenodo-record', () => {
     });
 
     describe('when the request fails', () => {
-      it.todo('returns a left');
+      const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
+      let evaluation: E.Either<unknown, Evaluation>;
+
+      beforeEach(async () => {
+        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(key)();
+      });
+
+      it('returns a left', () => {
+        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+      });
     });
   });
 
