@@ -23,7 +23,9 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   TE.tryCatch(
     async () => {
       if (key.startsWith('10.5281/')) {
-        return getJson(key);
+        const cleanKey = key.split('.')[2];
+
+        return getJson(`https://zenodo.org/api/records/${cleanKey}`);
       }
       throw new Error();
     },
