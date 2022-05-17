@@ -7,12 +7,12 @@ import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { commitEvents, writeEventToDatabase } from './commit-events';
-import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
+import { fetchZenodoRecord } from './fetch-zenodo-record';
 import { fetchData } from './fetchers';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
@@ -33,7 +33,6 @@ import { listCreationEvents } from '../shared-read-models/lists/list-creation-da
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
-import { fetchDataciteReview } from '../third-parties/datacite';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
@@ -140,7 +139,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const getAllEvents = T.of(events);
       const fetchFile = fetchStaticFile(loggerIO(logger));
       const fetchers = {
-        doi: fetchDataciteReview(fetchDataset(logger), logger),
+        doi: fetchZenodoRecord(getJson, logger),
         hypothesis: fetchHypothesisAnnotation(getJson, logger),
         ncrc: fetchNcrcReview(logger),
         prelights: fetchPrelightsHighlight(getHtml(logger)),
