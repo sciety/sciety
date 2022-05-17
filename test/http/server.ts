@@ -1,21 +1,16 @@
 import { Server } from 'http';
-import { literal, namedNode } from '@rdfjs/data-model';
-import { schema } from '@tpluscode/rdf-ns-builders';
-import clownface from 'clownface';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import datasetFactory from 'rdf-dataset-indexed';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure';
-import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
+import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import { FetchCrossrefArticle } from '../../src/third-parties/crossref';
-import { fetchDataciteReview } from '../../src/third-parties/datacite';
 import * as DE from '../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
@@ -30,12 +25,6 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const fetchDataCiteDataset: FetchDataset = async () => (
-    clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
-      .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
-      .addOut(schema.description, 'The full text')
-      .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
-  );
   const fetchArticle: FetchCrossrefArticle = (doi) => TE.right({
     abstract: 'Article abstract.' as SanitisedHtmlFragment,
     authors: O.none,
@@ -46,7 +35,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   });
 
   const fetchers = {
-    doi: fetchDataciteReview(fetchDataCiteDataset, dummyLogger),
+    doi: fetchZenodoRecord(async () => ({}), dummyLogger),
     hypothesis: fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
     ncrc: () => TE.left(DE.unavailable),
     prelights: () => TE.left(DE.unavailable),
