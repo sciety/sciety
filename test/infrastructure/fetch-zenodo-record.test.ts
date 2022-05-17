@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
@@ -7,6 +8,7 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryHtmlFragment } from '../helpers';
 
 const key = '10.5281/zenodo.6386692';
+const url = 'https://doi.org/10.5281/zenodo.6386692';
 
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
@@ -32,7 +34,14 @@ describe('fetch-zenodo-record', () => {
         ).toStrictEqual(E.right(description));
       });
 
-      it.todo('returns the Doi.org url as url');
+      it('returns the Doi.org url as url', () => {
+        expect(
+          pipe(
+            evaluation,
+            E.map((ev) => ev.url),
+          ),
+        ).toStrictEqual(E.right(new URL(url)));
+      });
     });
 
     describe('when the request fails', () => {

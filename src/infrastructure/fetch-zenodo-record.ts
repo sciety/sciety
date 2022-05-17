@@ -31,6 +31,6 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   ),
   TE.map((fullText) => ({
     fullText,
-    url: new URL('https://sciety.org'),
+    url: new URL(`https://doi.org/${key}`),
   })),
 );
