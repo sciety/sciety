@@ -8,7 +8,7 @@ import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryHtmlFragment } from '../helpers';
 
-const notZenodoKey = '10.1234/123';
+const notZenodoKey = '10.1234/zenodo/123';
 const key = '10.5281/zenodo.6386692';
 const url = 'https://doi.org/10.5281/zenodo.6386692';
 

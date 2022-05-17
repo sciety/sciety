@@ -22,7 +22,7 @@ type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   TE.tryCatch(
     async () => {
-      if (key.includes('zenodo')) {
+      if (key.startsWith('10.5281/')) {
         return getJson(key);
       }
       throw new Error();
