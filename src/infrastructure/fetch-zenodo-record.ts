@@ -21,7 +21,12 @@ type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 // ts-unused-exports:disable-next-line
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   TE.tryCatch(
-    async () => getJson(key),
+    async () => {
+      if (key.includes('zenodo')) {
+        return getJson(key);
+      }
+      throw new Error();
+    },
     () => DE.unavailable,
   ),
   TE.chainEitherKW(zenodoRecordCodec.decode),
