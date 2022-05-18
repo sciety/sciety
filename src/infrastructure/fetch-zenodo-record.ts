@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -20,7 +21,12 @@ type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 => TE.TaskEither<DE.DataError, Evaluation>;
 // ts-unused-exports:disable-next-line
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
-  TE.tryCatch(
+  key,
+  E.fromPredicate(
+    (doi) => doi.startsWith('10.5281/'),
+    () => DE.unavailable,
+  ),
+  () => TE.tryCatch(
     async () => {
       if (key.startsWith('10.5281/')) {
         const cleanKey = key.split('.')[2];
