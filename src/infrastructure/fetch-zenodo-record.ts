@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -30,13 +31,9 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     () => DE.unavailable,
   ),
   TE.fromEither,
-  TE.chain((zenodoDoi) => {
-    const matches = zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/);
-    if (!matches) {
-      return TE.left(DE.unavailable);
-    }
-    return TE.right(matches);
-  }),
+  TE.map((zenodoDoi) => zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/)),
+  TE.map(O.fromNullable),
+  TE.chain(TE.fromOption(() => DE.unavailable)),
   TE.map(RA.lookup(1)),
   TE.chain(TE.fromOption(() => DE.unavailable)),
   TE.chain((zenodoId) => TE.tryCatch(
