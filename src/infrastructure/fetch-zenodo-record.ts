@@ -1,6 +1,8 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -30,13 +32,14 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   ),
   TE.fromEither,
   TE.chain((doi) => TE.tryCatch(
-    async () => {
-      const cleanKey = doi.split('.')[2];
-      if (cleanKey) {
-        return getJson(`https://zenodo.org/api/records/${cleanKey}`);
-      }
-      throw new Error();
-    },
+    async () => pipe(
+      doi.split('.'),
+      RA.lookup(2),
+      O.fold(
+        () => { throw new Error(); },
+        async (cleanKey) => getJson(`https://zenodo.org/api/records/${cleanKey}`),
+      ),
+    ),
     () => DE.unavailable,
   )),
   TE.chainEitherKW(zenodoRecordCodec.decode),
