@@ -32,8 +32,10 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   TE.chain((doi) => TE.tryCatch(
     async () => {
       const cleanKey = doi.split('.')[2];
-
-      return getJson(`https://zenodo.org/api/records/${cleanKey}`);
+      if (cleanKey) {
+        return getJson(`https://zenodo.org/api/records/${cleanKey}`);
+      }
+      throw new Error();
     },
     () => DE.unavailable,
   )),

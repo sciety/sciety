@@ -29,7 +29,7 @@ describe('fetch-zenodo-record', () => {
         expect(evaluation).toStrictEqual(E.left(DE.unavailable));
       });
 
-      it.skip('does not make unnecessary external api calls', () => {
+      it('does not make unnecessary external api calls', () => {
         expect(getJson).not.toHaveBeenCalled();
       });
     });
