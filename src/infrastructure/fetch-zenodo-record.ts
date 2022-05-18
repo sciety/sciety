@@ -31,9 +31,10 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     () => DE.unavailable,
   ),
   TE.fromEither,
-  TE.chain((doi) => TE.tryCatch(
+  TE.map((zenodoDoi) => zenodoDoi.split('.')),
+  TE.chain((splitArray) => TE.tryCatch(
     async () => pipe(
-      doi.split('.'),
+      splitArray,
       RA.lookup(2),
       O.fold(
         () => { throw new Error(); },
