@@ -10,6 +10,8 @@ import { htmlFragmentCodec } from '../types/html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
 
+const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
+
 const zenodoRecordCodec = t.type({
   metadata: t.type({
     description: htmlFragmentCodec,
@@ -23,7 +25,7 @@ type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   key,
   E.fromPredicate(
-    (doi) => doi.startsWith('10.5281/'),
+    isDoiFromZenodo,
     () => DE.unavailable,
   ),
   TE.fromEither,
