@@ -26,17 +26,15 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     (doi) => doi.startsWith('10.5281/'),
     () => DE.unavailable,
   ),
-  () => TE.tryCatch(
+  TE.fromEither,
+  TE.chain((doi) => TE.tryCatch(
     async () => {
-      if (key.startsWith('10.5281/')) {
-        const cleanKey = key.split('.')[2];
+      const cleanKey = doi.split('.')[2];
 
-        return getJson(`https://zenodo.org/api/records/${cleanKey}`);
-      }
-      throw new Error();
+      return getJson(`https://zenodo.org/api/records/${cleanKey}`);
     },
     () => DE.unavailable,
-  ),
+  )),
   TE.chainEitherKW(zenodoRecordCodec.decode),
   TE.bimap(
     () => DE.unavailable,
