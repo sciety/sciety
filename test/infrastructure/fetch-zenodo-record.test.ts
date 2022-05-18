@@ -10,11 +10,25 @@ import { arbitraryHtmlFragment } from '../helpers';
 
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';
+const unexpectedSuffixZenodoKey = '10.5281/123';
 const doiUrl = 'https://doi.org/10.5281/zenodo.6386692';
 const zenodoApiUrl = 'https://zenodo.org/api/records/6386692';
 
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
+    describe('and the DOI suffix has an unexpected format', () => {
+      const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
+      let evaluation: E.Either<unknown, Evaluation>;
+
+      beforeEach(async () => {
+        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(unexpectedSuffixZenodoKey)();
+      });
+
+      it('returns a left', () => {
+        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+      });
+    });
+
     describe('on all requests', () => {
       let getJson: (uri: string) => Promise<Json>;
 
