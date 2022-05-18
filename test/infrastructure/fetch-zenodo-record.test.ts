@@ -17,15 +17,20 @@ const zenodoApiUrl = 'https://zenodo.org/api/records/6386692';
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
     describe('and the DOI suffix has an unexpected format', () => {
-      const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
+      let getJson: (uri: string) => Promise<Json>;
       let evaluation: E.Either<unknown, Evaluation>;
 
       beforeEach(async () => {
+        getJson = jest.fn();
         evaluation = await fetchZenodoRecord(getJson, dummyLogger)(unexpectedSuffixZenodoKey)();
       });
 
       it('returns a left', () => {
         expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+      });
+
+      it.skip('does not make unnecessary external api calls', () => {
+        expect(getJson).not.toHaveBeenCalled();
       });
     });
 
