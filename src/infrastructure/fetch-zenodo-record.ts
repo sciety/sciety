@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Evaluation } from './evaluation';
 import * as DE from '../types/data-error';
@@ -16,8 +16,10 @@ const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 const parseZenodoId = (zenodoDoi: string) => pipe(
   zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/),
   E.fromNullable(DE.unavailable),
-  E.map(RA.lookup(1)),
-  E.chain(E.fromOption(() => DE.unavailable)),
+  E.chain(flow(
+    RA.lookup(1),
+    E.fromOption(() => DE.unavailable),
+  )),
 );
 
 const zenodoRecordCodec = t.type({
