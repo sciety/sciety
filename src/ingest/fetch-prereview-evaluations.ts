@@ -77,7 +77,7 @@ const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
 );
 
 const identifyCandidates = (fetchData: FetchData) => pipe(
-  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
+  fetchData<unknown>('https://zenodo.org/api/records/?communities=prereview-reviews'),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
