@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -16,8 +15,7 @@ const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
 const parseZenodoId = (zenodoDoi: string) => pipe(
   zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/),
-  O.fromNullable,
-  E.fromOption(() => DE.unavailable),
+  E.fromNullable(DE.unavailable),
   E.map(RA.lookup(1)),
   E.chain(E.fromOption(() => DE.unavailable)),
 );
