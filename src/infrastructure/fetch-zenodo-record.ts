@@ -18,6 +18,8 @@ const parseZenodoId = (zenodoDoi: string) => pipe(
   zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/),
   O.fromNullable,
   E.fromOption(() => DE.unavailable),
+  E.map(RA.lookup(1)),
+  E.chain(E.fromOption(() => DE.unavailable)),
 );
 
 const zenodoRecordCodec = t.type({
@@ -37,8 +39,6 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     () => DE.unavailable,
   ),
   E.chain(parseZenodoId),
-  E.map(RA.lookup(1)),
-  E.chain(E.fromOption(() => DE.unavailable)),
   TE.fromEither,
   TE.chain((zenodoId) => TE.tryCatch(
     async () => pipe(
