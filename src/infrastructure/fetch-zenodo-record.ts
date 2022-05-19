@@ -39,10 +39,7 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   E.chainOptionK(() => DE.unavailable)(parseZenodoId),
   TE.fromEither,
   TE.chain((zenodoId) => TE.tryCatch(
-    async () => pipe(
-      zenodoId,
-      async (cleanKey) => getJson(`https://zenodo.org/api/records/${cleanKey}`),
-    ),
+    async () => getJson(`https://zenodo.org/api/records/${zenodoId}`),
     () => DE.unavailable,
   )),
   TE.chainEitherKW(zenodoRecordCodec.decode),
