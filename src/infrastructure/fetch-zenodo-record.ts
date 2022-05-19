@@ -4,7 +4,7 @@ import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Evaluation } from './evaluation';
 import * as DE from '../types/data-error';
@@ -36,10 +36,7 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     isDoiFromZenodo,
     () => DE.unavailable,
   ),
-  E.chain(flow(
-    parseZenodoId,
-    E.fromOption(() => DE.unavailable),
-  )),
+  E.chainOptionK(() => DE.unavailable)(parseZenodoId),
   TE.fromEither,
   TE.chain((zenodoId) => TE.tryCatch(
     async () => pipe(
