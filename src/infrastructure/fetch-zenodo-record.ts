@@ -14,7 +14,10 @@ type GetJson = (uri: string) => Promise<Json>;
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
-const parseZenodoId = (zenodoDoi: string) => zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/);
+const parseZenodoId = (zenodoDoi: string) => pipe(
+  zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/),
+  O.fromNullable,
+);
 
 const zenodoRecordCodec = t.type({
   metadata: t.type({
@@ -33,7 +36,6 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     () => DE.unavailable,
   ),
   E.map(parseZenodoId),
-  E.map(O.fromNullable),
   E.chain(E.fromOption(() => DE.unavailable)),
   E.map(RA.lookup(1)),
   E.chain(E.fromOption(() => DE.unavailable)),
