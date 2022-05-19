@@ -30,12 +30,12 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
     isDoiFromZenodo,
     () => DE.unavailable,
   ),
+  E.map((zenodoDoi) => zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/)),
+  E.map(O.fromNullable),
+  E.chain(E.fromOption(() => DE.unavailable)),
+  E.map(RA.lookup(1)),
+  E.chain(E.fromOption(() => DE.unavailable)),
   TE.fromEither,
-  TE.map((zenodoDoi) => zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/)),
-  TE.map(O.fromNullable),
-  TE.chain(TE.fromOption(() => DE.unavailable)),
-  TE.map(RA.lookup(1)),
-  TE.chain(TE.fromOption(() => DE.unavailable)),
   TE.chain((zenodoId) => TE.tryCatch(
     async () => pipe(
       zenodoId,
