@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
 import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ArticleErrorCardViewModel = {
@@ -9,6 +10,7 @@ export type ArticleErrorCardViewModel = {
   href: string,
   latestActivityDate: O.Option<Date>,
   error: DE.DataError,
+  articleId: Doi,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -29,8 +31,8 @@ const renderArticleLatestActivityDate = O.fold(
 );
 
 const renderErrorMessage = DE.fold({
-  notFound: () => 'This article has not been indexed by Crossref yet.',
-  unavailable: () => 'We couldn\'t get details of this article at this time.',
+  notFound: () => 'The title and authors for this article are not available from our external data provider yet:',
+  unavailable: () => 'We couldn\'t get details of this article at this time:',
 });
 
 export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): HtmlFragment => (
@@ -38,7 +40,8 @@ export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): Ht
     <article class="article-card">
       <a class="article-card__link" href="${viewModel.href}">
         <p class="article-card__error_message">
-          ${renderErrorMessage(viewModel.error)}
+          ${renderErrorMessage(viewModel.error)}<br>
+          ${viewModel.articleId.value}
         </p>
         <footer class="article-card__footer">
           <div class="article-card__meta">
