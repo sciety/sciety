@@ -51,9 +51,9 @@ type Ports = {
 const toErrorPage = (error: DE.DataError) => ({
   type: error,
   message: toHtmlFragment(`
-    We’re having trouble finding this information.
-    Ensure you have the correct URL, or try refreshing the page.
-    You may need to come back later.
+    The title and authors for this article are not available from our external data provider. 
+    We will be able to show you this page once the data becomes available.
+    We are sorry for the inconvenience.
   `),
 });
 
