@@ -53,7 +53,7 @@ const toErrorPage = (error: DE.DataError) => ({
   message: toHtmlFragment(`
     The title and authors for this article are not available from our external data provider. 
     We will be able to show you this page once the data becomes available.
-    We are sorry for the inconvenience.
+    We are sorry for the inconvenience. <a href="https://go.sciety.org/rprterrorpg">Report this error to us.</a>
   `),
 });
 
