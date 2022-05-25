@@ -97,6 +97,11 @@ p.activity-feed__item__title {
   ul {
     margin-bottom: baseline.increments(3);
   }
+
+  blockquote {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 }
 
 .responses {
