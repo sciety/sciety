@@ -98,6 +98,15 @@
 
 @mixin heading-1 () {
   @include heading-base();
+  font-size: functions.px-to-rem(26px);
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(32px);
+  }
+}
+
+@mixin heading-2 () {
+  @include heading-base();
   font-size: functions.px-to-rem(20px);
 
   @include breakpoints.not-narrow() {
@@ -105,14 +114,9 @@
   }
 }
 
-@mixin heading-2 () {
-  @include heading-base();
-  font-size: functions.px-to-rem(18px);
-}
-
 @mixin heading-3 () {
   @include heading-base();
-  font-size: functions.px-to-rem(16px);
+  font-size: functions.px-to-rem(18px);
 }
 
 @mixin heading-4 () {
