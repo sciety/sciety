@@ -53,7 +53,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .home-page-hero__search_form_label {
-  @include typography.body-2();
+  @include typography.body();
 }
 
 .home-page-hero__content {
@@ -70,7 +70,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .home-page-hero__content_byline {
-  @include typography.body-1();
+  @include typography.body();
 }
 
 .home-page-hero__picture {
@@ -98,7 +98,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .home-page-hero__statistic {
-  @include typography.body-1();
+  @include typography.body();
 }
 
 .home-page-hero__statistic_link {

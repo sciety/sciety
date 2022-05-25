@@ -56,7 +56,7 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form__label {
-  @include typography.body-2();
+  @include typography.body();
   display: inline-block;
   margin-bottom: $_search-form-vertical-spacing;
 }

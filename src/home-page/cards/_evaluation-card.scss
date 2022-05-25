@@ -17,7 +17,7 @@
 }
 
 .evaluation-card__group {
-  @include typography.body-1();
+  @include typography.body();
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);

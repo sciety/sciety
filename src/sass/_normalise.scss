@@ -16,7 +16,7 @@ body {
 }
 
 p {
-  @include typography.body-2();
+  @include typography.body();
   margin-top: 0;
   margin-bottom: #{baseline.increments(3)};
 }
@@ -72,7 +72,7 @@ ul {
 }
 
 li {
-  @include typography.body-2();
+  @include typography.body();
 }
 
 a:link {
@@ -161,7 +161,7 @@ th {
 }
 
 address {
-  @include typography.body-2();
+  @include typography.body();
   font-style: normal;
   margin-bottom: #{baseline.increments(2)};
 }
