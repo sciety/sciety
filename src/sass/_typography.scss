@@ -55,8 +55,8 @@
 
 @mixin title-2 () {
   font-family: settings.$font-family;
-  font-size: functions.px-to-rem(16px);
-  line-height: 1.2;
+  font-size: functions.px-to-rem(18px);
+  line-height: 1.3;
   font-weight: bold;
 }
 
