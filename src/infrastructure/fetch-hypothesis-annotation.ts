@@ -18,7 +18,7 @@ type GetJson = (uri: string) => Promise<Json>;
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
-const logAndTransformToDataError = (error: unknown, logger: Logger, url: string) => {
+const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown) => {
   if (axios.isAxiosError(error) && error.response?.status === 404) {
     logger('warn', 'Missing hypothesis annotation', { error });
     return DE.notFound;
@@ -50,7 +50,7 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
   return pipe(
     TE.tryCatch(
       async () => getJson(url),
-      (error) => logAndTransformToDataError(error, logger, url),
+      logAndTransformToDataError(logger, url),
     ),
     TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
