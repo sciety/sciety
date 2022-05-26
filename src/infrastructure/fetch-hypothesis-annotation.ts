@@ -18,6 +18,19 @@ type GetJson = (uri: string) => Promise<Json>;
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
+const logAndTransformToDataError = (error: unknown, logger: Logger, url: string) => {
+  if (axios.isAxiosError(error) && error.response?.status === 404) {
+    logger('warn', 'Missing hypothesis annotation', { error });
+    return DE.notFound;
+  }
+  if (axios.isAxiosError(error)) {
+    logger('error', 'Failed to fetch hypothesis evaluation', { error });
+  } else {
+    logger('error', 'Failed to fetch hypothesis evaluation', { url, error });
+  }
+  return DE.unavailable;
+};
+
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const evaluation: Evaluation = {
     fullText: pipe(
@@ -37,18 +50,7 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
   return pipe(
     TE.tryCatch(
       async () => getJson(url),
-      (error) => {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-          logger('warn', 'Missing hypothesis annotation', { error });
-          return DE.notFound;
-        }
-        if (axios.isAxiosError(error)) {
-          logger('error', 'Failed to fetch hypothesis evaluation', { error });
-        } else {
-          logger('error', 'Failed to fetch hypothesis evaluation', { url, error });
-        }
-        return DE.unavailable;
-      },
+      (error) => logAndTransformToDataError(error, logger, url),
     ),
     TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
