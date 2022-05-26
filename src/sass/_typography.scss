@@ -35,7 +35,7 @@
 
 @mixin section() {
   font-family: settings.$font-family;
-  font-size: functions.px-to-rem(24px);
+  font-size: functions.px-to-rem(26px);
   line-height: 1.2;
   font-weight: bold;
 }
