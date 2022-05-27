@@ -14,7 +14,7 @@
 $_search-form-text-input-height: baseline.increments(6);
 $_search-form-vertical-spacing: baseline.increments(1);
 $_search-form-gutter: 4px;
-$_search-button-width: functions.px-to-rem(70px);
+$_search-button-width: functions.px-to-rem(76px);
 
 .home-page-hero {
   @include common.container-horizontal-spacing();
