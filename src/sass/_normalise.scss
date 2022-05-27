@@ -19,6 +19,15 @@ p {
   @include typography.body();
   margin-top: 0;
   margin-bottom: #{baseline.increments(3)};
+
+
+  a:link {
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
 }
 
 h1 {
