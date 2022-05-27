@@ -15,13 +15,12 @@
 @mixin tab() {
   @include typography.button();
   line-height: math.div(20px, 14px);
-  min-width: functions.px-to-rem(111px); // to prevent three tabs wrapping at lowest resolution (360px)
   display: inline-block;
   margin-bottom: -2px;
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
-  padding: functions.px-to-rem(13px) 1rem functions.px-to-rem(15px);
+  padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
 }
 
 @mixin tab-link() {
