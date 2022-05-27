@@ -44,7 +44,6 @@
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();
-  font-weight: bold;
   margin-bottom: 1rem;
 }
 
