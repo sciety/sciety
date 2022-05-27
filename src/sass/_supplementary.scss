@@ -15,6 +15,14 @@
 
 .supplementary-card {
   @include card.basics();
+
+  a:link {
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
 }
 
 .supplementary-card__title {
