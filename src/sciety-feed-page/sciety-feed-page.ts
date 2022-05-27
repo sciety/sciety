@@ -45,7 +45,7 @@ const renderContent = (viewModel: ViewModel) => toHtmlFragment(`
   </header>
   <section>
     <p class="sciety-feed-page-numbers">
-      Showing page ${viewModel.pageNumber} of ${viewModel.numberOfPages}<span class="visually-hidden"> pages of activity</span>
+      Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
     </p>
     <ol class="sciety-feed-list">
       ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
