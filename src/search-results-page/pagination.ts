@@ -17,7 +17,7 @@ export const pagination: Pagination = (paginationViewModel) => (content) => pipe
     (c: HtmlFragment) => (paginationViewModel.category === 'articles'
       ? `
       <h3 class="search-results__page_count">
-        Showing page ${paginationViewModel.pageNumber} of ${paginationViewModel.numberOfPages}<span class="visually-hidden"> pages of search results</span>
+        Showing page <b>${paginationViewModel.pageNumber}</b> of <b>${paginationViewModel.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
       </h3>
       ${c}
       ${nextLink({ ...paginationViewModel, pageNumber: paginationViewModel.pageNumber + 1 })}
