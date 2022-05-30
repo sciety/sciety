@@ -33,7 +33,7 @@
   }
 }
 
-.activity-feed__item_contents {
+.activity-feed__item__contents {
   padding: baseline.increments(2) functions.px-to-rem(16px) 0;
   margin-bottom: baseline.increments(3);
   @include breakpoints.not-narrow {
@@ -42,7 +42,7 @@
   }
 }
 
-.activity-feed__item_header {
+.activity-feed__item__header {
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);
@@ -92,7 +92,7 @@ p.activity-feed__item__title {
   }
 }
 
-.activity-feed__item_body {
+.activity-feed__item__body {
   position: relative;
   width: 100%;
   margin-right: functions.px-to-rem(24px);

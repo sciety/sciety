@@ -15,8 +15,8 @@ export type ArticleVersionFeedItem = {
 type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
 const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, avatarUrl: string) => toHtmlFragment(`
-  <div class="activity-feed__item_contents">
-    <header class="activity-feed__item_header">
+  <div class="activity-feed__item__contents">
+    <header class="activity-feed__item__header">
       <img class="activity-feed__item__avatar" src="${avatarUrl}" alt="">
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">

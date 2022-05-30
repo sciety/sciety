@@ -30,8 +30,8 @@ const servers: Record<ArticleServer, ServerInfo> = {
 export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment => pipe(
   servers[server],
   (viewModel) => `
-    <div class="activity-feed__item_contents">
-      <header class="activity-feed__item_header">
+    <div class="activity-feed__item__contents">
+      <header class="activity-feed__item__header">
         <img class="activity-feed__item__avatar" src="${viewModel.avatarUrl}" alt="">
         <div class="activity-feed__item__meta">
           <div class="activity-feed__item__title">

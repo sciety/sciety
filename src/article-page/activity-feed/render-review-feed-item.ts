@@ -56,12 +56,12 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   const teaserText = clip(fullText, teaserChars, { html: true });
   if (teaserText === fullText) {
     return `
-      <article class="activity-feed__item_contents" id="${RI.reviewIdCodec.encode(review.id)}">
-        <header class="activity-feed__item_header">
+      <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
+        <header class="activity-feed__item__header">
           ${avatar(review)}
           ${eventMetadata(review)}
         </header>
-        <div class="activity-feed__item_body">
+        <div class="activity-feed__item__body">
           <div>
             ${fullText}
             ${pipe(review, sourceLink, O.getOrElse(constant('')))}
@@ -73,12 +73,12 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   }
   // TODO: a review.id containing dodgy chars could break this
   return `
-    <article class="activity-feed__item_contents" id="${RI.reviewIdCodec.encode(review.id)}">
-      <header class="activity-feed__item_header">
+    <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
+      <header class="activity-feed__item__header">
         ${avatar(review)}
         ${eventMetadata(review)}
       </header>
-      <div class="activity-feed__item_body" data-behaviour="collapse_to_teaser">
+      <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
         <div class="hidden" data-teaser>
           ${teaserText}
         </div>
@@ -102,12 +102,12 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
   review.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item_contents" id="${RI.reviewIdCodec.encode(review.id)}">
-        <header class="activity-feed__item_header">
+      <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
+        <header class="activity-feed__item__header">
           ${avatar(review)}
           ${eventMetadata(review)}
         </header>
-        <div class="activity-feed__item_body">
+        <div class="activity-feed__item__body">
           <div>
             ${renderSourceLinkWhenFulltextMissing(review)}
           </div>
