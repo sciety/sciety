@@ -1,5 +1,4 @@
 import { htmlEscape } from 'escape-goat';
-import { renderExampleSearches } from './render-example-searches';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFragment => toHtmlFragment(`
@@ -15,6 +14,5 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
         <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
       </button>
     </form>
-    ${renderExampleSearches()}
   </div>
 `);
