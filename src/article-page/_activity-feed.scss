@@ -86,6 +86,14 @@ p.activity-feed__item__title {
 
 .activity-feed__item__read_more {
   display: block;
+
+  &:link {
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
 }
 
 .activity-feed__item_body {
