@@ -2,7 +2,7 @@
   // for activity page
   function buildToggle() {
     const button = doc.createElement('button');
-    button.classList.add('activity-feed__item-toggle');
+    button.classList.add('activity-feed__item__toggle');
     return button;
   }
   const itemBodies = doc.querySelectorAll('[data-behaviour="collapse_to_teaser"]');
