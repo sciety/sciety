@@ -164,9 +164,6 @@ taiko: node_modules clean-db
 
 regression: taiko
 
-render-sanitised-markdown: node_modules
-	npx ts-node --transpile-only ./scripts/hypothesis-review-render-testbed.ts
-
 download-exploratory-test-from-prod:
 	kubectl run --rm --attach ship-events \
 		--image=amazon/aws-cli:2.4.23 \
