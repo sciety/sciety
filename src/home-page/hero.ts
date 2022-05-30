@@ -3,8 +3,8 @@ import * as RS from 'fp-ts/ReadonlySet';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { renderExampleSearches } from './render-example-searches';
 import { DomainEvent, isUserSavedArticleEvent } from '../domain-events';
-import { renderExampleSearches } from '../shared-components/render-example-searches';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderStatistics = (listCount: number) => toHtmlFragment(`
