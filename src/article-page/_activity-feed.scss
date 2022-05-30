@@ -134,12 +134,12 @@ p.activity-feed__item__title {
 .activity-feed__item__title {
   a:link,
   a:visited {
-    color: inherit;
     font-weight: bold;
 
     &:active,
-    &:hover {
-      color: inherit;
+    &:hover,
+    &:focus  {
+      text-decoration: underline;
     }
   }
 }
