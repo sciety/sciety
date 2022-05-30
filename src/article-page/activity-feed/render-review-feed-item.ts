@@ -44,7 +44,7 @@ const sourceLink = flow(
   (review: ReviewFeedItem) => review.source,
   O.map(flow(
     (source) => `
-      <a href="${source.toString()}" class="activity-feed__item__read_more">
+      <a href="${source.toString()}" class="activity-feed__item__read_original_source">
         Read the original source
       </a>
     `,

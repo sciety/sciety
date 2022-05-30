@@ -62,7 +62,7 @@ describe('render-review-feed-item', () => {
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('.activity-feed__item_body');
       const teaserWrapper = rendered.querySelector('[data-teaser]');
-      const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_more')?.getAttribute('href');
+      const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
 
       expect(toggleableContent).toBeNull();
       expect(teaserWrapper).toBeNull();
@@ -95,7 +95,7 @@ describe('render-review-feed-item', () => {
 
       it('renders without a teaser', async () => {
         const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-        const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_more')?.getAttribute('href');
+        const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
 
         expect(toggleableContent).toBeNull();
         expect(sourceLinkUrl).toStrictEqual(source);

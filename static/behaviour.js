@@ -23,12 +23,12 @@
     const less = buildToggle();
     less.innerHTML = 'Less';
     less.setAttribute('aria-hidden', 'true');
-    const elementBeforeReadSource = fullText.querySelector('.activity-feed__item__read_more')?.previousElementSibling;
+    const elementBeforeReadSource = fullText.querySelector('.activity-feed__item__read_original_source')?.previousElementSibling;
     if(elementBeforeReadSource?.nodeName === 'P') {
       elementBeforeReadSource.appendChild(doc.createTextNode(' '));
       elementBeforeReadSource.appendChild(less);
     } else {
-      fullText.insertBefore(less, fullText.querySelector('.activity-feed__item__read_more'));
+      fullText.insertBefore(less, fullText.querySelector('.activity-feed__item__read_original_source'));
     }
 
     teaser.classList.remove('hidden');
