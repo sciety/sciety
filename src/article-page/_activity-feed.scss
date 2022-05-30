@@ -77,6 +77,11 @@ p.activity-feed__item__title {
   padding: 0;
   border: 0;
   color: settings.$colour-accent;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 }
 
 .activity-feed__item__read_more {
