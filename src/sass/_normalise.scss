@@ -108,6 +108,10 @@ button {
   @include typography.button();
 }
 
+input[type='checkbox'] {
+  margin-left: 0;
+}
+
 /*
 Prevent styling of <a> elements that aren't links
 */

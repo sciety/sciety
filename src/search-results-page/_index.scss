@@ -26,10 +26,6 @@ $_clear-button-inline-size: 48px;
   margin-right: functions.px-to-rem($_inline-margin);
   margin-bottom: baseline.increments(3);
 
-  input[type='checkbox'] {
-    margin-left: 0;
-  }
-
   @include breakpoints.not-narrow {
     margin-left: 0;
     margin-right: 0;
