@@ -2,13 +2,9 @@ import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { drawer } from '../shared-components/drawer';
 import { head } from '../shared-components/head';
+import { utilityBar } from '../shared-components/utility-bar';
 import { Page } from '../types/page';
 import { User } from '../types/user';
-
-const loginButton = O.fold(
-  () => '<a href="/log-in" class="home-page-header__login_button">Log in</a>',
-  () => '<a href="/log-out" class="home-page-header__login_button">Log out</a>',
-);
 
 export const homePageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
@@ -18,11 +14,13 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
   <div class="page-container">
     ${drawer(user)}
 
-    <header class="home-page-header">
-      <a href="/menu" class="home-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
-      <div class="home-page-header__link_container">
-        ${loginButton(user)}
-        <a href="/signup" class="home-page-header__signup_button">Subscribe</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="/menu" class="site-header__menu_link">
+          <img src="/static/images/menu-icon.svg" alt="" />
+        </a>
+
+        ${utilityBar(user)}
       </div>
     </header>
 

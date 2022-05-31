@@ -9,41 +9,6 @@
 @use '../sass/layout';
 @use 'common';
 
-$_header-height-in-px: 60px;
-
-.home-page-header {
-  @include common.container-horizontal-spacing();
-  padding-top: functions.px-to-rem(12px);
-  padding-bottom: functions.px-to-rem(12px);
-  display: flex;
-  height: functions.px-to-rem($_header-height-in-px);
-}
-
-.home-page-header__menu_link {
-  display: inline-block;
-  float: left;
-
-  @supports (display: flex) {
-    display: flex;
-    float: none;
-  }
-
-  @include breakpoints.not-narrow() {
-    display: none;
-  }
-
-  &::before {
-    @include layout.visually-hidden();
-    content: 'Open the menu';
-  }
-
-}
-
-.home-page-header__link_container {
-  margin-left: auto;
-  display: flex;
-}
-
 .home-page-header__follow_link {
   @include typography.button();
 
@@ -59,19 +24,6 @@ $_header-height-in-px: 60px;
       color: settings.$colour-text-primary;
     }
   }
-}
-
-.home-page-header__login_button {
-  @include button.button-link();
-  padding-top: 0.6rem;
-}
-
-.home-page-header__signup_button {
-  @include common.secondary-button();
-  width: 6rem;
-  padding-top: 0.6rem;
-  margin-bottom: 0;
-  margin-right: 0;
 }
 
 .home-page-footer {
