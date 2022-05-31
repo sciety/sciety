@@ -11,12 +11,6 @@
 
 $_header-height-in-px: 60px;
 
-@mixin home-page-media-query() {
-  @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
-    @content;
-  }
-}
-
 .home-page-header {
   @include common.container-horizontal-spacing();
   padding-top: functions.px-to-rem(12px);
@@ -53,9 +47,7 @@ $_header-height-in-px: 60px;
 .home-page-header__follow_link {
   @include typography.button();
 
-  display: none;
-
-  margin-right: functions.px-to-rem(20px);
+  display: inline-flex;
   align-items: center;
 
   &:link,
@@ -66,11 +58,6 @@ $_header-height-in-px: 60px;
     &:active {
       color: settings.$colour-text-primary;
     }
-  }
-
-
-  @include home-page-media-query() {
-    display: inline-flex;
   }
 }
 

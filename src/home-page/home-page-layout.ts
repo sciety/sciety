@@ -21,8 +21,6 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
     <header class="home-page-header">
       <a href="/menu" class="home-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
       <div class="home-page-header__link_container">
-        <a href="https://twitter.com/scietyHQ" class="home-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
-        <a href="https://www.facebook.com/ScietyHQ/" class="home-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>
         ${loginButton(user)}
         <a href="/signup" class="home-page-header__signup_button">Subscribe</a>
       </div>
@@ -37,7 +35,8 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
         <li class="home-page-footer__link"><a href="/about">About</a></li>
         <li class="home-page-footer__link"><a href="/contact-us">Contact us</a></li>
         <li class="home-page-footer__link"><a href="/blog">Blog</a></li>
-        <li class="home-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
+        <li class="home-page-footer__link"><a href="https://twitter.com/scietyHQ" class="home-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a></li>
+        <li class="home-page-footer__link"><a href="https://www.facebook.com/ScietyHQ/" class="home-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a></li>
       </ul>
     </footer>
   </div>
