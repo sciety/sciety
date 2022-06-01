@@ -9,23 +9,6 @@
 @use '../sass/layout';
 @use 'common';
 
-.home-page-header__follow_link {
-  @include typography.button();
-
-  display: inline-flex;
-  align-items: center;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:hover,
-    &:active {
-      color: settings.$colour-text-primary;
-    }
-  }
-}
-
 .home-page-footer {
   grid-column: 2 / -1;
   justify-self: center;
@@ -36,6 +19,7 @@
   @include list.basics();
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 0;
 }
 

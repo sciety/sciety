@@ -33,8 +33,8 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
         <li><a href="/about" class="home-page-footer__link">About</a></li>
         <li><a href="/contact-us" class="home-page-footer__link">Contact us</a></li>
         <li><a href="/blog" class="home-page-footer__link">Blog</a></li>
-        <li><a href="https://twitter.com/scietyHQ" class="home-page-footer__link home-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a></li>
-        <li><a href="https://www.facebook.com/ScietyHQ/" class="home-page-footer__link home-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a></li>
+        <li><a href="https://twitter.com/scietyHQ" class="home-page-footer__link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a></li>
+        <li><a href="https://www.facebook.com/ScietyHQ/" class="home-page-footer__link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a></li>
       </ul>
     </footer>
   </div>
