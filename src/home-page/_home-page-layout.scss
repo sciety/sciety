@@ -42,7 +42,7 @@
 .home-page-footer__link {
   margin-right: 1rem;
 
-  &:last-child {
+  li:last-child > & {
     margin-right: 0;
   }
 }
