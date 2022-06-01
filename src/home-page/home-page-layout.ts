@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { drawer } from '../shared-components/drawer';
 import { head } from '../shared-components/head';
-import { utilityBar } from '../shared-components/utility-bar';
+import { siteHeader } from '../shared-components/site-header';
 import { Page } from '../types/page';
 import { User } from '../types/user';
 
@@ -14,15 +14,7 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
   <div class="page-container">
     ${drawer(user)}
 
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a href="/menu" class="site-header__menu_link">
-          <img src="/static/images/menu-icon.svg" alt="" />
-        </a>
-
-        ${utilityBar(user)}
-      </div>
-    </header>
+    ${siteHeader(user)}
 
     <main>
       ${page.content}
