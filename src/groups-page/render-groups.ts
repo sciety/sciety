@@ -26,6 +26,11 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
       Groups
     </h1>
   </header>
+
+  <form action="">
+    <label for="groupFilter">Filter by group name</label><input type="text" id="groupFilter">
+  </form>
+
   <ol class="group-list" role="list">
     ${templateListItems(groups, 'group-list__item')}
   </ol>
