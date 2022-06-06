@@ -16,7 +16,6 @@
 @use '../user-list-page';
 @use '../my-feed-page';
 @use 'button';
-@use 'site-header';
 @use '../article-page';
 @use '../home-page';
 @use '../follow/follow-toggle';
@@ -35,6 +34,7 @@
 @use '../shared-components/group-card';
 @use '../shared-components/card-authors';
 @use '../shared-components/list-card';
+@use '../shared-components/site-header';
 @use 'supplementary';
 @use '../annotations/create-annotation-form';
 

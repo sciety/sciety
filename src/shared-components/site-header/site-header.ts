@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { utilityBar } from './utility-bar';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { User } from '../types/user';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { User } from '../../types/user';
+import { utilityBar } from '../utility-bar';
 
 export const siteHeader = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`<header class="site-header">
     <div class="site-header__inner">
