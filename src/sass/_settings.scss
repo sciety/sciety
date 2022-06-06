@@ -1,12 +1,20 @@
 $base-font-measure: 16px;
 $base-line-increment: 0.5rem;
 $max-site-width: 1200px;
+
+// Used to normalize links. Should it use accent instead?
 $colour-primary: rgb(207, 69, 0);
 $colour-primary-hover: rgb(181, 56, 24);
-$colour-teal: rgb(49, 73, 82);
+
+// Used in blockquote. Should it use furniture instead?
 $colour-grey-one: rgb(224, 225, 226);
+// Used in table border. Should it use furniture instead?
 $colour-grey-two: rgb(90, 90, 90);
+
+// Only used in article actions. Do not use them in new code.
+$colour-teal: rgb(49, 73, 82);
 $colour-ui-default: rgb(33, 33, 33);
+
 $breakpoint-narrow: 46.25em;
 $border-radius: 6px;
 $border-width: 1px;
