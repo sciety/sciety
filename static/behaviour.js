@@ -74,7 +74,12 @@
       if (e.target.value.length > 2) {
         console.log('groupFilter: ', e.target.value);
         const groups = doc.getElementById('groupList').children;
-        console.log(groups);
+        const groupListStatus = doc.getElementById('groupListStatus');
+        groupListStatus.innerHTML = `Showing ${e.target.value.length} of 20`;
+      } else {
+        if (groupListStatus.innerHTML !== 'Showing all groups') {
+          groupListStatus.innerHTML = `Showing all groups`;
+        }
       }
     });
   }
