@@ -1,5 +1,6 @@
 @use 'layout';
 @use 'card';
+@use 'states';
 
 .supplementary-info {
   @include layout.column-two();
@@ -17,9 +18,7 @@
   @include card.basics();
 
   a:link {
-    &:hover,
-    &:active,
-    &:focus {
+    @include states.link {
       text-decoration: underline;
     }
   }

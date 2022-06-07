@@ -6,6 +6,7 @@
 @use '../sass/layout';
 @use '../sass/list';
 @use '../sass/settings';
+@use '../sass/states';
 @use '../sass/typography';
 
 .activity-feed__header {
@@ -78,16 +79,13 @@ p.activity-feed__item__title {
   border: 0;
   color: settings.$colour-accent;
 
-  &:hover,
-  &:focus {
+  @include states.link {
     text-decoration: underline;
   }
 }
 
 .activity-feed__item__read_original_source:link {
-  &:hover,
-  &:active,
-  &:focus {
+  @include states.link {
     text-decoration: underline;
   }
 }
@@ -132,9 +130,7 @@ p.activity-feed__item__title {
   a:visited {
     font-weight: bold;
 
-    &:active,
-    &:hover,
-    &:focus {
+    @include states.link {
       text-decoration: underline;
     }
   }

@@ -22,9 +22,7 @@ p {
 
 
   a:link {
-    &:hover,
-    &:active,
-    &:focus {
+    @include states.link {
       text-decoration: underline;
     }
   }
