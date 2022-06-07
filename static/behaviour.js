@@ -73,7 +73,11 @@
     groupFilter.addEventListener('input', function(e) {
       if (e.target.value.length > 2) {
         console.log('groupFilter: ', e.target.value);
-        const groups = doc.getElementById('groupList').children;
+        const groups = Array.from(doc.getElementById('groupList').children);
+        groups.forEach(function(item) {
+          console.log(item)
+        })
+
         const groupListStatus = doc.getElementById('groupListStatus');
         groupListStatus.innerHTML = `Showing ${e.target.value.length} of 20<span class="visually-hidden"> groups</span>`;
       } else {
