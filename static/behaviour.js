@@ -66,4 +66,14 @@
       searchInput.focus();
     });
   }
+
+  // for groups page filter
+  const groupFilter = doc.getElementById('groupFilter');
+  if (groupFilter) {
+    groupFilter.addEventListener('input', function(e) {
+      if (e.target.value.length > 2) {
+        console.log('groupFilter: ', e.target.value);
+      }
+    });
+  }
 }(window.document));
