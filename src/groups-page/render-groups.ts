@@ -28,10 +28,10 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
   </header>
 
   <form action="" aria-controls="groupList">
-    <label for="groupFilter">Filter by group name</label><input type="text" id="groupFilter">
+    <label for="groupFilter">Filter by group name</label><input type="text" id="groupFilter" aria-label="Filters list by group name as you type">
   </form>
 
-  <p role="status" aria-live="polite" aria-atomic="true" id="groupListStatus">Showing all groups</p>
+  <p role="status" aria-live="assertive" aria-atomic="true" id="groupListStatus">Showing all groups</p>
   <ol class="group-list" role="list" id="groupList" aria-labelledby="groupListStatus">
     ${templateListItems(groups, 'group-list__item')}
   </ol>
