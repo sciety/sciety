@@ -90,11 +90,11 @@ a:link {
 
 a:link,
 a:visited {
-  color: settings.$colour-primary;
+  color: settings.$colour-accent;
 
   &:hover,
   &:active {
-    color: settings.$colour-primary-hover;
+    color: settings.$colour-accent-hover;
   }
 }
 
