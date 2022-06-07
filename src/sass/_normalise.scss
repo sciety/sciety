@@ -67,7 +67,7 @@ h6 {
 }
 
 blockquote {
-  border-left: 8px solid settings.$colour-grey-one;
+  border-left: 8px solid settings.$colour-furniture;
   margin-left: 1.5rem;
   padding-left: 1rem;
 }
@@ -146,8 +146,8 @@ p:last-child {
 }
 
 table {
-  border-top: settings.$border-width solid settings.$colour-grey-two;
-  border-bottom: settings.$border-width solid settings.$colour-grey-two;
+  border-top: settings.$border-width solid settings.$colour-furniture;
+  border-bottom: settings.$border-width solid settings.$colour-furniture;
   margin-bottom: baseline.increments(3);
 }
 
