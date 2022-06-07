@@ -73,6 +73,8 @@
     groupFilter.addEventListener('input', function(e) {
       if (e.target.value.length > 2) {
         console.log('groupFilter: ', e.target.value);
+        const groups = doc.getElementById('groupList').children;
+        console.log(groups);
       }
     });
   }
