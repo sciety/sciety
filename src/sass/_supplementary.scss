@@ -3,6 +3,9 @@
 
 .supplementary-info {
   @include layout.column-two();
+
+  // SPIKE ONLY: DO NOT DEPLOY TO PROD
+  grid-row: 4 !important;
 }
 
 .supplementary-list {
