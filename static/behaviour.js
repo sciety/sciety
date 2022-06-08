@@ -78,6 +78,8 @@
           console.log(item)
         })
         groups[1].classList.add('hidden');
+        groups[3].classList.add('hidden');
+        groups[4].classList.add('hidden');
 
         const groupListStatus = doc.getElementById('groupListStatus');
         groupListStatus.innerHTML = `Showing ${e.target.value.length} of 20<span class="visually-hidden"> groups</span>`;
