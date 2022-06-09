@@ -35,3 +35,17 @@
     }
   }
 }
+
+.page-footer {
+  background-color: settings.$colour-page-background;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: baseline.increments(4);
+  padding-bottom: baseline.increments(4);
+
+  @include breakpoints.not-narrow() {
+    display: none;
+  }
+}
