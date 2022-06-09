@@ -4,6 +4,7 @@
 @use '../sass/breakpoints';
 @use '../sass/functions';
 @use '../sass/settings';
+@use '../sass/typography';
 
 .page-container {
   min-height: 100vh;
@@ -48,4 +49,8 @@
   @include breakpoints.not-narrow() {
     display: none;
   }
+}
+
+.page-footer__slogan {
+  @include typography.heading-2();
 }
