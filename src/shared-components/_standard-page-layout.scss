@@ -44,7 +44,7 @@
   padding-bottom: baseline.increments(4);
 
   @include breakpoints.not-narrow() {
-    display: none;
+    grid-column: 2;
   }
 }
 
@@ -59,6 +59,10 @@
 
 .pre-footer {
   @include layout.page-content-horizontal-margins();
+  @include breakpoints.not-narrow() {
+    margin-left: functions.px-to-rem(20px);
+    margin-right: functions.px-to-rem(20px);
+  }
 
   border-top: 1px solid settings.$colour-furniture;
   display: flex;
