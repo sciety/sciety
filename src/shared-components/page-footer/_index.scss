@@ -8,7 +8,6 @@
 
 .page-footer {
   background-color: settings.$colour-page-background;
-  padding-bottom: baseline.increments(4);
 
   @include breakpoints.not-narrow() {
     grid-column: 2;
@@ -33,9 +32,15 @@
 
   border-top: 1px solid settings.$colour-furniture;
   padding-top: baseline.increments(4);
+  margin-bottom: baseline.increments(4);
   max-width: functions.px-to-rem(1200px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.main-footer {
+  height: 10rem;
+  background-color: settings.$colour-navigation-menu-background;
 }

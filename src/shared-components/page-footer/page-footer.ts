@@ -6,5 +6,6 @@ export const pageFooter: HtmlFragment = toHtmlFragment(`
       <div class="page-footer__slogan">Stay Updated. Get Involved.</div>
       <a href="https://staging.sciety.org/signup" class="page-footer__call_to_action">Subscribe to Mailing List</a>
     </div>
+    <div class="main-footer"></div>
   </footer>
 `);
