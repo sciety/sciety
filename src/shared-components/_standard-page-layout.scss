@@ -2,6 +2,7 @@
 
 @use '../sass/baseline';
 @use '../sass/breakpoints';
+@use '../sass/button';
 @use '../sass/functions';
 @use '../sass/settings';
 @use '../sass/typography';
@@ -53,4 +54,9 @@
 
 .page-footer__slogan {
   @include typography.heading-2();
+  margin-bottom: baseline.increments(2);
+}
+
+.page-footer__call_to_action {
+  @include button.button-link();
 }
