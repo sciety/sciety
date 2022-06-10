@@ -51,14 +51,15 @@
 .main-footer__navigation {
   @include list.basics();
 
-  display: none;
-  // display: flex;
+  display: flex;
   justify-content: center;
 }
 
 .main-footer__link {
   font-size: functions.px-to-rem(18px);
   font-weight: bold;
+  border-bottom: 2px solid settings.$colour-white;
+  padding-bottom: functions.px-to-rem(4px);
 
   &:link,
   &:visited {
@@ -67,6 +68,7 @@
     &:hover,
     &:active {
       color: rgb(234, 122, 83);
+      border-color: transparent;
     }
   }
 }
