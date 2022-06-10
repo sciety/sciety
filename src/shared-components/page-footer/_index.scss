@@ -5,6 +5,7 @@
 @use '../../sass/settings';
 @use '../../sass/typography';
 @use '../../sass/layout';
+@use '../../sass/list';
 
 .page-footer {
   background-color: settings.$colour-page-background;
@@ -43,4 +44,29 @@
 .main-footer {
   height: 10rem;
   background-color: settings.$colour-navigation-menu-background;
+  padding-top: baseline.increments(4);
+  padding-bottom: baseline.increments(4);
+}
+
+.main-footer__navigation {
+  @include list.basics();
+
+  display: none;
+  // display: flex;
+  justify-content: center;
+}
+
+.main-footer__link {
+  font-size: functions.px-to-rem(18px);
+  font-weight: bold;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      color: rgb(234, 122, 83);
+    }
+  }
 }
