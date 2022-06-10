@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from './analytics';
 import { drawer } from './drawer';
 import { head } from './head';
+import { pageFooter } from './page-footer';
 import { siteHeader } from './site-header';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -23,12 +24,7 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
       </div>
     </main>
 
-    <footer class="page-footer">
-      <div class="pre-footer">
-        <div class="page-footer__slogan">Stay Updated. Get Involved.</div>
-        <a href="https://staging.sciety.org/signup" class="page-footer__call_to_action">Subscribe to Mailing List</a>
-      </div>
-    </footer>
+    ${pageFooter}
   </div>
 
   <script src="/static/behaviour.js"></script>
