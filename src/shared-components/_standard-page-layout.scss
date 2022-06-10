@@ -6,6 +6,7 @@
 @use '../sass/functions';
 @use '../sass/settings';
 @use '../sass/typography';
+@use '../sass/layout';
 
 .page-container {
   min-height: 100vh;
@@ -40,11 +41,6 @@
 
 .page-footer {
   background-color: settings.$colour-page-background;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: baseline.increments(4);
   padding-bottom: baseline.increments(4);
 
   @include breakpoints.not-narrow() {
@@ -59,4 +55,15 @@
 
 .page-footer__call_to_action {
   @include button.button-link();
+}
+
+.pre-footer {
+  @include layout.page-content-horizontal-margins();
+
+  border-top: 1px solid settings.$colour-furniture;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: baseline.increments(4); 
 }

@@ -24,8 +24,10 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
     </main>
 
     <footer class="page-footer">
-      <div class="page-footer__slogan">Stay Updated. Get Involved.</div>
-      <a href="https://staging.sciety.org/signup" class="page-footer__call_to_action">Subscribe to Mailing List</a>
+      <div class="pre-footer">
+        <div class="page-footer__slogan">Stay Updated. Get Involved.</div>
+        <a href="https://staging.sciety.org/signup" class="page-footer__call_to_action">Subscribe to Mailing List</a>
+      </div>
     </footer>
   </div>
 
