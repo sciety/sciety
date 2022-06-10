@@ -1,12 +1,7 @@
-@use 'sass:math';
-
 @use '../sass/baseline';
 @use '../sass/breakpoints';
-@use '../sass/button';
 @use '../sass/functions';
 @use '../sass/settings';
-@use '../sass/typography';
-@use '../sass/layout';
 
 .page-container {
   min-height: 100vh;
@@ -37,37 +32,4 @@
       margin-left: unset;
     }
   }
-}
-
-.page-footer {
-  background-color: settings.$colour-page-background;
-  padding-bottom: baseline.increments(4);
-
-  @include breakpoints.not-narrow() {
-    grid-column: 2;
-  }
-}
-
-.page-footer__slogan {
-  @include typography.heading-2();
-  margin-bottom: baseline.increments(2);
-}
-
-.page-footer__call_to_action {
-  @include button.button-link();
-}
-
-.pre-footer {
-  @include layout.page-content-horizontal-margins();
-  @include breakpoints.not-narrow() {
-    margin-left: functions.px-to-rem(20px);
-    margin-right: functions.px-to-rem(20px);
-  }
-
-  border-top: 1px solid settings.$colour-furniture;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: baseline.increments(4); 
 }
