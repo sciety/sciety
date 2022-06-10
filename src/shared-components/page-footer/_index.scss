@@ -32,9 +32,10 @@
   }
 
   border-top: 1px solid settings.$colour-furniture;
+  padding-top: baseline.increments(4); 
+  max-width: functions.px-to-rem(1200px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: baseline.increments(4); 
 }
