@@ -19,8 +19,8 @@
 .pre-footer {
   @include layout.page-content-horizontal-margins();
   @include breakpoints.not-narrow() {
-    margin-left: functions.px-to-rem(20px);
-    margin-right: functions.px-to-rem(20px);
+    margin-left: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+    margin-right: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
   }
 
   border-top: 1px solid settings.$colour-furniture;

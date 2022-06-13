@@ -3,8 +3,6 @@
 @use 'baseline';
 @use 'breakpoints';
 
-$_column-gap: functions.px-to-rem(20px);
-
 @mixin visually-hidden() {
   border: 0;
   clip: rect(0 0 0 0);
@@ -43,7 +41,7 @@ $_column-gap: functions.px-to-rem(20px);
   .sciety-grid-two-columns {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-column-gap: $_column-gap;
+    grid-column-gap: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
     grid-auto-rows: min-content;
     grid-auto-flow: column;
 
@@ -62,7 +60,7 @@ $_column-gap: functions.px-to-rem(20px);
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
   @include breakpoints.not-narrow {
-    margin: 0 $_column-gap;
+    margin: 0 functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
   }
 }
 
