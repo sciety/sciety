@@ -8,6 +8,8 @@
 @use '../../sass/list';
 @use '../../sass/states';
 
+$_outer-vertical-spacing: baseline.increments(4);
+
 .page-footer {
   background-color: settings.$colour-page-background;
 
@@ -24,8 +26,8 @@
   }
 
   border-top: 1px solid settings.$colour-furniture;
-  padding-top: baseline.increments(4);
-  margin-bottom: baseline.increments(4);
+  padding-top: $_outer-vertical-spacing;
+  margin-bottom: $_outer-vertical-spacing;
   max-width: functions.px-to-rem(1200px);
   display: flex;
   flex-direction: column;
@@ -45,8 +47,8 @@
 .main-footer {
   height: 10rem;
   background-color: settings.$colour-navigation-menu-background;
-  padding-top: baseline.increments(4);
-  padding-bottom: baseline.increments(4);
+  padding-top: $_outer-vertical-spacing;
+  padding-bottom: $_outer-vertical-spacing;
 }
 
 .main-footer__navigation {
