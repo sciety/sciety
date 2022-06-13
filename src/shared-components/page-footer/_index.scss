@@ -15,15 +15,6 @@
   }
 }
 
-.page-footer__slogan {
-  @include typography.heading-2();
-  margin-bottom: baseline.increments(2);
-}
-
-.page-footer__call_to_action {
-  @include button.button-link();
-}
-
 .pre-footer {
   @include layout.page-content-horizontal-margins();
   @include breakpoints.not-narrow() {
@@ -39,6 +30,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.pre-footer__slogan {
+  @include typography.heading-2();
+  margin-bottom: baseline.increments(2);
+}
+
+.pre-footer__call_to_action {
+  @include button.button-link();
 }
 
 .main-footer {
