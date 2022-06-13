@@ -67,7 +67,7 @@
 
     &:hover,
     &:active {
-      color: rgb(234, 122, 83);
+      color: settings.$colour-accent-hover-on-dark-background;
       border-color: transparent;
     }
   }
