@@ -104,6 +104,13 @@
     {
       "label": "Legal information",
       "url": "http://sciety_app/legal"
+    },
+    {
+      "label": "Page footer",
+      "url": "http://sciety_app/about",
+      "selectors": [
+        ".page-footer"
+      ]
     }
   ],
   "paths": {
