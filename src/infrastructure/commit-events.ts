@@ -28,11 +28,13 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
-const teeTask = <A>(fn: (a: A) => void) => (task: T.Task<A>) => async (): Promise<A> => {
-  const value = await task();
-  fn(value);
-  return value;
-};
+const teeTask = <A>(fn: (a: A) => void) => (task: T.Task<A>): T.Task<A> => pipe(
+  task,
+  T.chainFirst(flow(
+    (value) => fn(value),
+    T.of,
+  )),
+);
 
 const logTask = <A>(
   logger: Logger,
