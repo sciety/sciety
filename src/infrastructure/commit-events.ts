@@ -56,6 +56,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
     T.chainFirst(writeEventToDatabase(pool)),
     teeTask((event) => logger('info', 'Event committed', { event })),
     logTask(logger, 'info', 'Event committed', (event) => ({ event })),
+    T.chainFirst(flow((event) => logger('info', 'Event committed', { event }), T.of)),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(RA.match(
