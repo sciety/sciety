@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { match } from 'ts-adt';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -23,7 +24,7 @@ const render: Render = ({ header, content, supplementary = toHtmlFragment('') })
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,
-  DE.fold({
+  match({
     notFound: () => 'We couldn\'t find this information.',
     unavailable: () => 'We couldn\'t retrieve this information. Please try again.',
   }),

@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { match } from 'ts-adt';
 import { templateDate } from '../../shared-components/date';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -30,7 +31,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderErrorMessage = DE.fold({
+const renderErrorMessage = match({
   notFound: () => 'The title and authors for this article are not available from our external data provider yet:',
   unavailable: () => 'We couldn\'t get details of this article at this time:',
 });
