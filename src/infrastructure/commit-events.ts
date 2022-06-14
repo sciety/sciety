@@ -27,6 +27,12 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
+const teeTask = <A>(fn: (a: A) => void) => (task: T.Task<A>) => async (): Promise<A> => {
+  const value = await task();
+  fn(value);
+  return value;
+};
+
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
@@ -34,10 +40,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
   T.traverseArray(flow(
     T.of,
     T.chainFirst(writeEventToDatabase(pool)),
-    T.chainFirst((event) => {
-      logger('info', 'Event committed', { event });
-      return T.of(undefined);
-    }),
+    teeTask((event) => logger('info', 'Event committed', { event })),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(RA.match(
