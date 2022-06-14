@@ -45,7 +45,6 @@ $_outer-vertical-spacing: baseline.increments(4);
 }
 
 .main-footer {
-  height: 10rem;
   background-color: settings.$colour-navigation-menu-background;
   padding-top: $_outer-vertical-spacing;
   padding-bottom: $_outer-vertical-spacing;
@@ -55,6 +54,7 @@ $_outer-vertical-spacing: baseline.increments(4);
 .main-footer__navigation {
   @include list.basics();
 
+  margin-bottom: baseline.increments(6);
   display: flex;
   justify-content: center;
 
