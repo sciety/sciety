@@ -89,7 +89,6 @@ $_outer-vertical-spacing: baseline.increments(4);
   color: settings.$colour-white;
 
   a:link {
-    @include typography.sizing(14px, 2);
     font-weight: normal;
     text-decoration: underline;
   }
