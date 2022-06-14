@@ -56,6 +56,11 @@ $_outer-vertical-spacing: baseline.increments(4);
 
   display: flex;
   justify-content: center;
+
+
+  li:last-child a {
+    margin-right: 0;
+  }
 }
 
 .main-footer__link {
