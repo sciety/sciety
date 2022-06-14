@@ -85,11 +85,11 @@ $_outer-vertical-spacing: baseline.increments(4);
 }
 
 .main-footer__small_print {
-  @include typography.sizing(12px, 2);
+  @include typography.sizing(14px, 2);
   color: settings.$colour-white;
 
   a:link {
-    @include typography.sizing(12px, 2);
+    @include typography.sizing(14px, 2);
     font-weight: normal;
     text-decoration: underline;
   }
