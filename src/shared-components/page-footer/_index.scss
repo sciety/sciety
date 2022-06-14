@@ -63,6 +63,7 @@ $_outer-vertical-spacing: baseline.increments(4);
   font-weight: bold;
   border-bottom: 2px solid settings.$colour-white;
   padding-bottom: functions.px-to-rem(4px);
+  margin-right: functions.px-to-rem(35px);
 
   &:link,
   &:visited {

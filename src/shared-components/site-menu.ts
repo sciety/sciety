@@ -19,7 +19,6 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
     ${O.fold(constant(''), myFeedMenuItem)(user)}
     ${O.fold(constant(''), myProfileMenuItem)(user)}
     <li><a href="/groups" class="site-menu__link site-menu__link--groups"><span class="site-menu__link_text">Groups</span></a></li>
-    <li><a href="/about" class="site-menu__link site-menu__link--about"><span class="site-menu__link_text">About</span></a></li>
     <li><a href="/contact-us" class="site-menu__link site-menu__link--contact-us"><span class="site-menu__link_text">Contact us</span></a></li>
   </ul>
 `);
