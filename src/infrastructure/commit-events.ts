@@ -5,6 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { Logger } from '../shared-ports';
 import { domainEventCodec } from '../types/codecs/DomainEvent';
 import { CommandResult } from '../types/command-result';
 
@@ -33,6 +34,19 @@ const teeTask = <A>(fn: (a: A) => void) => (task: T.Task<A>) => async (): Promis
   return value;
 };
 
+const logTask = <A>(
+  logger: Logger,
+  level: 'info',
+  msg: string,
+  payloadConstructor: (a: A) => Record<string, unknown>,
+) => (task: T.Task<A>) => pipe(
+    task,
+    T.chainFirst(flow(
+      (data) => logger(level, msg, payloadConstructor(data)),
+      T.of,
+    )),
+  );
+
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
@@ -41,6 +55,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
     T.of,
     T.chainFirst(writeEventToDatabase(pool)),
     teeTask((event) => logger('info', 'Event committed', { event })),
+    logTask(logger, 'info', 'Event committed', (event) => ({ event })),
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(RA.match(
