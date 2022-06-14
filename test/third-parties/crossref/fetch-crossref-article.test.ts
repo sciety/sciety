@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
-import { identity, pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
@@ -32,13 +32,16 @@ describe('fetch-crossref-article', () => {
       const result = await pipe(
         doi,
         fetchCrossrefArticle(getXml, dummyLogger, O.none),
-        TE.match(
-          identity,
-          shouldNotBeCalled,
-        ),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isNotFound,
+        )),
       )();
 
-      expect(result).toBe(DE.notFound);
+      expect(result).toBe(true);
     });
   });
 
@@ -48,13 +51,16 @@ describe('fetch-crossref-article', () => {
       const result = await pipe(
         doi,
         fetchCrossrefArticle(getXml, dummyLogger, O.none),
-        TE.match(
-          identity,
-          shouldNotBeCalled,
-        ),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
       )();
 
-      expect(result).toBe(DE.unavailable);
+      expect(result).toBe(true);
     });
   });
 

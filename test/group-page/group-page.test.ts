@@ -1,7 +1,7 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
 import { arbitraryWord } from '../helpers';
@@ -22,13 +22,16 @@ describe('group page', () => {
           getListsOwnedBy: shouldNotBeCalled,
           getUserDetailsBatch: shouldNotBeCalled,
         })(groupPageTabs.lists),
-        TE.match(
-          (res) => res.type,
-          shouldNotBeCalled,
-        ),
+        T.map(flow(
+          E.matchW(
+            (res) => res.type,
+            shouldNotBeCalled,
+          ),
+          DE.isNotFound,
+        )),
       )();
 
-      expect(result).toBe(DE.notFound);
+      expect(result).toBe(true);
     });
   });
 });

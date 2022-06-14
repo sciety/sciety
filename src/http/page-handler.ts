@@ -5,9 +5,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { match } from 'ts-adt';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
+import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
@@ -18,7 +18,7 @@ type ErrorToWebPage = (
   error: RenderPageError
 ) => {
   body: string,
-  status: StatusCodes,
+  status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
 export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
@@ -32,7 +32,7 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
     body,
     status: pipe(
       error.type,
-      match({
+      DE.fold({
         notFound: () => StatusCodes.NOT_FOUND,
         unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
       }),
