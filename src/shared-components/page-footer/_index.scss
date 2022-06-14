@@ -98,9 +98,8 @@ $_outer-vertical-spacing: baseline.increments(4);
   a:visited {
     color: inherit;
 
-    a:hover,
-    a:active {
-      color: inherit;
+    @include states.link() {
+      color: settings.$colour-accent-hover-on-dark-background;
     }
   }
 }
