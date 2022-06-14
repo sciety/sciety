@@ -8,7 +8,7 @@
   @supports (display: grid) {
     display: grid;
   }
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
 
   @include breakpoints.not-narrow() {
     grid-template-columns: functions.px-to-rem(settings.$drawer-width) 1fr;
