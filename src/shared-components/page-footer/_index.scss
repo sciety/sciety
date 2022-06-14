@@ -68,7 +68,7 @@ $_outer-vertical-spacing: baseline.increments(4);
 }
 
 .main-footer__link {
-  font-size: functions.px-to-rem(18px);
+  @include typography.sizing(18px, 2.5);
   font-weight: bold;
   border-bottom: 2px solid settings.$colour-white;
   padding-bottom: functions.px-to-rem(4px);
