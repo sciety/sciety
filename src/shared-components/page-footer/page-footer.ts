@@ -14,6 +14,9 @@ export const pageFooter: HtmlFragment = toHtmlFragment(`
         <li>
           <a href="/about" class="main-footer__link">About Sciety</a>
         </li>   
+        <li>
+          <a href="/contact-us" class="main-footer__link">Contact</a>
+        </li>   
       </ul>
     </div>
   </footer>
