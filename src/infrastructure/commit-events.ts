@@ -1,4 +1,3 @@
-import * as IO from 'fp-ts/IO';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -62,7 +61,7 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
     teeTask((event) => logger('info', 'Event committed', { event })), // using concept of 'tee'
     logTask(logger, 'info', 'Event committed', (event) => ({ event })), // helper purely for logging
 
-    T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
+    teeTask(inMemoryEvents.push),
   )),
   T.map(RA.match(
     () => 'no-events-created',
