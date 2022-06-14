@@ -18,6 +18,10 @@ export const pageFooter: HtmlFragment = toHtmlFragment(`
           <a href="/contact-us" class="main-footer__link">Contact</a>
         </li>   
       </ul>
+      <small class="site-menu__small_print">
+        © 2022 eLife Sciences Publications Ltd.
+        <a href="/legal">Legal information</a>
+      </small>
     </div>
   </footer>
 `);

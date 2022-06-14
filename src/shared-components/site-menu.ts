@@ -24,9 +24,5 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
 
 export const siteMenuFooter = toHtmlFragment(`
   <footer class="site-menu__footer">
-    <small class="site-menu__small_print">
-      © 2022 eLife Sciences Publications Ltd.
-      <a href="/legal">Legal information</a>
-    </small>
   </footer>
 `);

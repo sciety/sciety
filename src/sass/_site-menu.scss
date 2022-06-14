@@ -85,9 +85,10 @@ $_link-min-height: baseline.increments(5);
 
 .site-menu__small_print {
   @include typography.sizing(12px, 2);
+  color: settings.$colour-white;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
 
   a:link {
     @include typography.sizing(12px, 2);
