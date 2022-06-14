@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
 import { CommitEvents, GetAllEvents, Logger } from '../shared-ports';
@@ -35,6 +35,14 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
+const teeTaskEither = <E, A>(fn: (a: A) => void) => (taskEither: TE.TaskEither<E, A>): TE.TaskEither<E, A> => pipe(
+  taskEither,
+  TE.chainFirstW(flow(
+    (value) => fn(value),
+    TE.right,
+  )),
+);
+
 type HandleCreateAnnotationCommand = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (ports) => (input) => pipe(
@@ -42,11 +50,7 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (por
   bodyCodec.decode,
   E.map(transformToCommand),
   TE.fromEither,
-  TE.chainFirstTaskK(
-    (command) => T.of(
-      ports.logger('debug', 'Received CreateAnnotation command', { command }),
-    ),
-  ),
+  teeTaskEither((command) => ports.logger('debug', 'Received CreateAnnotation command', { command })),
   TE.chainTaskK((command) => pipe(
     ports.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
