@@ -12,6 +12,3 @@ const create = (type: DataErrorTypes): DataError => ({ _type: type });
 
 export const notFound = create('notFound');
 export const unavailable = create('unavailable');
-
-export const isNotFound = (de: DataError): boolean => de === notFound;
-export const isUnavailable = (de: DataError): boolean => de === unavailable;

@@ -1,8 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { fetchPrelightsHighlight } from '../../../src/third-parties/prelights';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString, arbitraryUri } from '../../helpers';
@@ -59,16 +58,13 @@ describe('fetch-prelights-highlight', () => {
       const fullText = await pipe(
         guid.toString(),
         fetchPrelightsHighlight(getHtml),
-        T.map(flow(
-          E.matchW(
-            identity,
-            shouldNotBeCalled,
-          ),
-          DE.isUnavailable,
-        )),
+        TE.match(
+          identity,
+          shouldNotBeCalled,
+        ),
       )();
 
-      expect(fullText).toBe(true);
+      expect(fullText).toBe(DE.unavailable);
     });
   });
 });
