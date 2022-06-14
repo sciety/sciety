@@ -82,27 +82,3 @@ $_link-min-height: baseline.increments(5);
   margin-left: functions.px-to-rem($_inline-spacing);
   margin-right: functions.px-to-rem($_inline-spacing);
 }
-
-.site-menu__small_print {
-  @include typography.sizing(12px, 2);
-  color: settings.$colour-white;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-
-  a:link {
-    @include typography.sizing(12px, 2);
-    font-weight: normal;
-    text-decoration: underline;
-  }
-
-  a:link,
-  a:visited {
-    color: inherit;
-
-    a:hover,
-    a:active {
-      color: inherit;
-    }
-  }
-}
