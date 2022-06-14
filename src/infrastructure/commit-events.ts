@@ -56,9 +56,12 @@ export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): Co
   T.traverseArray(flow(
     T.of,
     T.chainFirst(writeEventToDatabase(pool)),
-    teeTask((event) => logger('info', 'Event committed', { event })),
-    logTask(logger, 'info', 'Event committed', (event) => ({ event })),
-    T.chainFirst(flow((event) => logger('info', 'Event committed', { event }), T.of)),
+
+    // Three ways to invoke logger (a 'dead end function') inside our railway
+    T.chainFirst(flow((event) => logger('info', 'Event committed', { event }), T.of)), // how we do it now
+    teeTask((event) => logger('info', 'Event committed', { event })), // using concept of 'tee'
+    logTask(logger, 'info', 'Event committed', (event) => ({ event })), // helper purely for logging
+
     T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(RA.match(
