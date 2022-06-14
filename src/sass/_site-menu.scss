@@ -75,10 +75,3 @@ $_link-min-height: baseline.increments(5);
 .site-menu__link--feed {
   background-image: url('/static/images/feed.svg');
 }
-
-.site-menu__footer {
-  margin-top: auto;
-  margin-bottom: baseline.increments(2);
-  margin-left: functions.px-to-rem($_inline-spacing);
-  margin-right: functions.px-to-rem($_inline-spacing);
-}

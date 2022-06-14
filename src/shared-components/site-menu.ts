@@ -21,8 +21,3 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
     <li><a href="/groups" class="site-menu__link site-menu__link--groups"><span class="site-menu__link_text">Groups</span></a></li>
   </ul>
 `);
-
-export const siteMenuFooter = toHtmlFragment(`
-  <footer class="site-menu__footer">
-  </footer>
-`);
