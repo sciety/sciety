@@ -30,7 +30,7 @@ $_site-header-inline-end-margin: 8px;
   display: flex;
   align-items: center;
 
-  &:nth-last-child(2) {
+  &:first-child {
     margin-left: auto;
   }
 
