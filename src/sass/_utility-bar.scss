@@ -1,6 +1,9 @@
 @use 'functions';
 @use 'list';
 @use 'button';
+@use 'baseline';
+@use 'settings';
+@use 'states';
 @use 'typography';
 
 $_search-icon-size: functions.px-to-rem(28px);
@@ -52,4 +55,26 @@ $_site-header-inline-end-margin: 8px;
 
 .utility-bar__list_link_button {
   @include button.button-link();
+}
+
+.utility-bar__list_link_sign_up_button {
+  @include typography.button();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+
+  &:link,
+  &:visited {
+    color: #34434a;
+
+    &:active,
+    &:hover {
+      background-color: settings.$colour-furniture;
+      color: #34434a;
+    }
+  }
+
+  &:link {
+    @include states.focus();
+  }
 }
