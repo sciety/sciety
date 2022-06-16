@@ -25,12 +25,18 @@
       border-color: settings.$colour-accent-hover;
       background-color: settings.$colour-accent;
       color: settings.$colour-white;
+      text-decoration: none;
     }
 
     &:hover {
       border-color: settings.$colour-accent-hover;
       background-color: settings.$colour-accent-hover;
       color: settings.$colour-white;
+      text-decoration: none;
+    }
+
+    &:focus {
+      text-decoration: none;
     }
   }
 
