@@ -17,7 +17,7 @@ const logOutMenuItem = () => toHtmlFragment(`
 
 const signUpMenuItem = () => toHtmlFragment(`
   <li class="utility-bar__list_item">
-    <a href="/log-in" class="utility-bar__list_link_sign_up_button">Sign up</a>
+    <a href="/sign-up" class="utility-bar__list_link_sign_up_button">Sign up</a>
   </li>
 `);
 
