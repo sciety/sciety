@@ -106,6 +106,13 @@
       "url": "http://sciety_app/legal"
     },
     {
+      "label": "Sign up",
+      "url": "http://sciety_app/sign-up",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Page footer",
       "url": "http://sciety_app/about",
       "selectors": [
