@@ -57,6 +57,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
+import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
@@ -402,6 +403,11 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/legal',
     pageHandler(() => pipe(legalPage, TE.right)),
+  );
+
+  router.get(
+    '/sign-up',
+    pageHandler(() => pipe(signUpPage, TE.right)),
   );
 
   // COMMANDS
