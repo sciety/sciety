@@ -1,14 +1,14 @@
-import { Lazy } from 'fp-ts/function';
+/* eslint-disable @typescript-eslint/ban-types */
+import { ADT } from 'ts-adt';
 
-export const notFound = 'not-found' as const;
-export const unavailable = 'unavailable' as const;
+export type DataError = ADT<{
+  notFound: {},
+  unavailable: {},
+}>;
 
-export type DataError = typeof notFound | typeof unavailable;
+type DataErrorTypes = DataError['_type'];
 
-export const isNotFound = (de: DataError): boolean => de === notFound;
+const create = (type: DataErrorTypes): DataError => ({ _type: type });
 
-export const isUnavailable = (de: DataError): boolean => de === unavailable;
-
-export const fold = <B>(opts: Record<'notFound' | 'unavailable', Lazy<B>>) => (e: DataError): B => (
-  isNotFound(e) ? opts.notFound() : opts.unavailable()
-);
+export const notFound = create('notFound');
+export const unavailable = create('unavailable');

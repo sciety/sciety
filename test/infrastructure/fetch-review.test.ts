@@ -1,8 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/review-id';
@@ -36,16 +35,13 @@ describe('fetch-review', () => {
       const result = await pipe(
         id,
         fetchReview(fetchers),
-        T.map(flow(
-          E.matchW(
-            identity,
-            shouldNotBeCalled,
-          ),
-          DE.isNotFound,
-        )),
+        TE.match(
+          identity,
+          shouldNotBeCalled,
+        ),
       )();
 
-      expect(result).toBe(true);
+      expect(result).toBe(DE.notFound);
     });
   });
 });

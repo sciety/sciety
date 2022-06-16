@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { GetTwitterResponse } from '../../../src/third-parties/twitter/get-twitter-response';
 import { getTwitterUserDetails } from '../../../src/third-parties/twitter/get-twitter-user-details';
 import * as DE from '../../../src/types/data-error';
@@ -68,16 +67,13 @@ describe('get-twitter-user-details', () => {
     const result = await pipe(
       arbitraryUserId(),
       getTwitterUserDetails(getTwitterResponse, dummyLogger),
-      T.map(flow(
-        E.matchW(
-          identity,
-          shouldNotBeCalled,
-        ),
-        DE.isNotFound,
-      )),
+      TE.match(
+        identity,
+        shouldNotBeCalled,
+      ),
     )();
 
-    expect(result).toBe(true);
+    expect(result).toBe(DE.notFound);
   });
 
   it('returns notFound if the Twitter user ID is invalid', async () => {
@@ -85,16 +81,13 @@ describe('get-twitter-user-details', () => {
     const result = await pipe(
       arbitraryUserId(),
       getTwitterUserDetails(getTwitterResponse, dummyLogger),
-      T.map(flow(
-        E.matchW(
-          identity,
-          shouldNotBeCalled,
-        ),
-        DE.isNotFound,
-      )),
+      TE.match(
+        identity,
+        shouldNotBeCalled,
+      ),
     )();
 
-    expect(result).toBe(true);
+    expect(result).toBe(DE.notFound);
   });
 
   it('returns unavailable if the Twitter API is unavailable', async () => {
@@ -102,15 +95,12 @@ describe('get-twitter-user-details', () => {
     const result = await pipe(
       arbitraryUserId(),
       getTwitterUserDetails(getTwitterResponse, dummyLogger),
-      T.map(flow(
-        E.matchW(
-          identity,
-          shouldNotBeCalled,
-        ),
-        DE.isUnavailable,
-      )),
+      TE.match(
+        identity,
+        shouldNotBeCalled,
+      ),
     )();
 
-    expect(result).toBe(true);
+    expect(result).toBe(DE.unavailable);
   });
 });

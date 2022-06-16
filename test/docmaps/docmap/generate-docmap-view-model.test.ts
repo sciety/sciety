@@ -179,7 +179,7 @@ describe('generate-docmap-view-model', () => {
       };
       const result = await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
 
-      expect(result).toStrictEqual(E.left('not-found'));
+      expect(result).toStrictEqual(E.left(DE.notFound));
     });
   });
 
@@ -246,7 +246,7 @@ describe('generate-docmap-view-model', () => {
     });
 
     it('returns not-found', async () => {
-      expect(result).toStrictEqual(E.left('not-found'));
+      expect(result).toStrictEqual(E.left(DE.notFound));
     });
   });
 });

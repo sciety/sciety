@@ -1,8 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
 import * as DE from '../../src/types/data-error';
 import { HtmlFragment } from '../../src/types/html-fragment';
@@ -142,14 +141,11 @@ describe('fetch-rapid-review', () => {
             ['dc.creator', arbitraryString()],
           ]),
           toFullText,
-          T.map(flow(
-            E.matchW(
-              identity,
-              shouldNotBeCalled,
-            ),
-            DE.isNotFound,
-          )),
-        )()).toBe(true);
+          TE.match(
+            identity,
+            shouldNotBeCalled,
+          ),
+        )()).toBe(DE.notFound);
       });
     });
   });
@@ -161,16 +157,13 @@ describe('fetch-rapid-review', () => {
       const fullText = await pipe(
         guid.toString(),
         fetchRapidReview(dummyLogger, getHtml),
-        T.map(flow(
-          E.matchW(
-            identity,
-            shouldNotBeCalled,
-          ),
-          DE.isUnavailable,
-        )),
+        TE.match(
+          identity,
+          shouldNotBeCalled,
+        ),
       )();
 
-      expect(fullText).toBe(true);
+      expect(fullText).toBe(DE.unavailable);
     });
   });
 });
