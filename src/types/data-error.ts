@@ -4,6 +4,7 @@ import { ADT } from 'ts-adt';
 export type DataError = ADT<{
   notFound: {},
   unavailable: {},
+  badRequest: {},
 }>;
 
 type DataErrorTypes = DataError['_type'];
@@ -12,3 +13,4 @@ const create = (type: DataErrorTypes): DataError => ({ _type: type });
 
 export const notFound = create('notFound');
 export const unavailable = create('unavailable');
+export const badRequest = create('badRequest');

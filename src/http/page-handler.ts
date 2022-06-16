@@ -35,6 +35,7 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
       match({
         notFound: () => StatusCodes.NOT_FOUND,
         unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+        badRequest: () => StatusCodes.BAD_REQUEST,
       }),
     ),
   }),

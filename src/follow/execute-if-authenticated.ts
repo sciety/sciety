@@ -34,7 +34,7 @@ export const executeIfAuthenticated = (ports: Ports): Middleware => async (conte
   await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
-    TE.fromOption(() => DE.notFound),
+    TE.fromOption(() => DE.badRequest),
     TE.chain(validate(ports)),
     TE.fold(
       () => {
