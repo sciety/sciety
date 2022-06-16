@@ -5,19 +5,19 @@ import { User } from '../types/user';
 
 const logInMenuItem = () => toHtmlFragment(`
   <li class="utility-bar__list_item">
-    <a href="/log-in" class="utility-bar__list_link_button">Log in</a>
+    <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
   </li>
 `);
 
 const logOutMenuItem = () => toHtmlFragment(`
   <li class="utility-bar__list_item">
-    <a href="/log-out" class="utility-bar__list_link_button">Log out</a>
+    <a href="/log-out" class="utility-bar__list_link_button">Log Out</a>
   </li>
 `);
 
 const signUpMenuItem = () => toHtmlFragment(`
   <li class="utility-bar__list_item">
-    <a href="/sign-up" class="utility-bar__list_link_sign_up_button">Sign up</a>
+    <a href="/sign-up" class="utility-bar__list_link_sign_up_button">Sign Up</a>
   </li>
 `);
 
