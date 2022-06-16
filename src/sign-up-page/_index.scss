@@ -1,4 +1,9 @@
 @use '../sass/button';
+@use '../sass/layout';
+
+.sign-up-page-content {
+  @include layout.page-content-horizontal-margins();
+}
 
 .sign-up-page-call-to-action {
   @include button.button-link();
