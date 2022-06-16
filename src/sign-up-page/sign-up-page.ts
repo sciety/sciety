@@ -8,7 +8,7 @@ export const signUpPage: Page = {
       <h1>Sign Up for Sciety</h1>
     </header>
 
-    <p><a href="/log-in">Sign Up With Your Twitter Account</a></p>
+    <p><a href="/log-in" class="sign-up-page-call-to-action">Sign Up With Your Twitter Account</a></p>
 
     <h2>Don't Have a Twitter Account?</h2>
     <p>You will need to create a twitter account before you can sign up for Sciety.</p>

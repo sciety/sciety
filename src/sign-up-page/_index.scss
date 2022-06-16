@@ -1,0 +1,5 @@
+@use '../sass/button';
+
+.sign-up-page-call-to-action {
+  @include button.button-link();
+}
