@@ -65,12 +65,12 @@ $_site-header-inline-end-margin: 8px;
 
   &:link,
   &:visited {
-    color: #34434a;
+    color: settings.$colour-navigation-menu-background;
 
     &:active,
     &:hover {
       background-color: settings.$colour-furniture;
-      color: #34434a;
+      color: settings.$colour-navigation-menu-background;
     }
   }
 
