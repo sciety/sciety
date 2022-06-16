@@ -34,11 +34,11 @@ export const executeIfAuthenticated = (ports: Ports): Middleware => async (conte
   await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
-    TE.fromOption(() => DE.badRequest),
+    TE.fromOption(() => DE.create('badRequest', 'Could not construct a GroupId from body.groupProperty')),
     TE.chain(validate(ports)),
     TE.fold(
-      () => {
-        ports.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
+      (error) => {
+        ports.logger('error', 'Problem with /follow', { error });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
         context.response.body = standardPageLayout(O.none)({

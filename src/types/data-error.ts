@@ -2,14 +2,14 @@
 import { ADT } from 'ts-adt';
 
 export type DataError = ADT<{
-  notFound: {},
-  unavailable: {},
-  badRequest: {},
+  notFound: { message?: string },
+  unavailable: { message?: string },
+  badRequest: { message?: string },
 }>;
 
 type DataErrorTypes = DataError['_type'];
 
-const create = (type: DataErrorTypes): DataError => ({ _type: type });
+export const create = (type: DataErrorTypes, message?: string): DataError => ({ _type: type, message });
 
 export const notFound = create('notFound');
 export const unavailable = create('unavailable');
