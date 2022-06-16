@@ -473,6 +473,15 @@ export const createRouter = (adapters: Adapters): Router => {
     logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
   );
 
+  router.get(
+    '/sign-up-call-to-action',
+    async (context: ParameterizedContext, next) => {
+      context.session.successRedirect = '/';
+      await next();
+    },
+    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+  );
+
   router.get('/log-out', logOut);
 
   // TODO set commands as an object on the session rather than individual properties
