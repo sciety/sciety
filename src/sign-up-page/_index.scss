@@ -8,3 +8,8 @@
 .sign-up-page-call-to-action {
   @include button.button-link();
 }
+
+.sign-up-page-supplementary {
+  @include layout.column-two();
+  @include layout.page-content-horizontal-margins();
+}
