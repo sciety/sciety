@@ -54,6 +54,10 @@ lint\:fix: export TARGET = dev
 lint\:fix: build unused-sass
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
 
+lint\:sass: export TARGET = dev
+lint\:sass: build unused-sass
+	${DOCKER_COMPOSE} run --rm app npm run lint:stylelint
+
 test: export TARGET = dev
 test: build
 	${DOCKER_COMPOSE} run --rm app npm run test

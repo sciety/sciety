@@ -109,6 +109,11 @@ make watch:typescript
 
 In our team we also rely on eslint feedback from our IDEs.
 
+To check only the SASS code, execute:
+```shell
+make lint:sass
+```
+
 ## Operations
 
 The application is deployed on a Kubernetes cluster via an Helm chart.
