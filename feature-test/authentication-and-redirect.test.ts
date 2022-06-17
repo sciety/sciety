@@ -46,11 +46,14 @@ describe('authentication-and-redirect', () => {
       expect(result).toContain('/groups/pci-animal-science');
     });
 
-    it.skip('completing the sign up journey returns to the home page', async () => {
+    it('completing the sign up journey returns to the home page', async () => {
       await goto('localhost:8080/groups');
       await click('Sign Up');
+      await click('Sign up with your Twitter account');
 
-      expect(true).toBe(false);
+      const result = await currentURL();
+
+      expect(result).toBe('http://localhost:8080/?login_success=twitter');
     });
   });
 
