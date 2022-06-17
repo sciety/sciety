@@ -80,6 +80,12 @@ make backstop-test
 make backstop-approve
 ```
 
+If you want to only run a subset of scenarios, execute:
+
+```shell
+make backstop-test SCENARIO=article
+```
+
 ### Linting
 
 The following target runs all static code checks:
