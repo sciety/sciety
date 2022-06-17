@@ -26,6 +26,15 @@ export const signUpPage: Page = {
       </ul>
   
       <p><a href="/about">Learn more about Sciety</a></p>
+      <aside>
+        <h2>What We Do With Your Data</h2>
+        <h3>Twitter Data</h3>
+        <p>We only use your user name. We never post on your behalf.</p>
+        <h3>Sciety Data</h3>
+        <p>We use website data to inform our improvements.</p>
+        <p>Read more on our <a href="/legal">legal information page</a>.</p>
+      </aside>
     </div>
+  
   `),
 };
