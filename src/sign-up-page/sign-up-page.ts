@@ -15,7 +15,7 @@ export const signUpPage: Page = {
       <p><a href="https://twitter.com/">Create a Twitter account</a></p>
   
       <h3>Don't want to create a Twitter account?</h3>
-      <p>We will be adding other sign-in methods soon. <a href="/signup">Subscribe to our newsletter</a> to be notified when we do.</p>
+      <p>We will be adding other sign-in methods soon. <a href="/subscribe-to-mailing-list">Subscribe to our newsletter</a> to be notified when we do.</p>
   
       <h2>Why should I make a Sciety account?</h2>
       <p>You don't need an account to use Sciety, but having an account unlocks new features.</p>
