@@ -45,6 +45,13 @@ describe('authentication-and-redirect', () => {
 
       expect(result).toContain('/groups/pci-animal-science');
     });
+
+    it.skip('completing the sign up journey returns to the home page', async () => {
+      await goto('localhost:8080/groups');
+      await click('Sign Up');
+
+      expect(true).toBe(false);
+    });
   });
 
   describe('logged in', () => {
