@@ -21,18 +21,19 @@
     background-color: settings.$colour-accent;
     color: settings.$colour-white;
 
-    &:active {
+    &:active,
+    &:hover {
       border-color: settings.$colour-accent-hover;
-      background-color: settings.$colour-accent;
       color: settings.$colour-white;
       text-decoration: none;
     }
 
+    &:active {
+      background-color: settings.$colour-accent;
+    }
+
     &:hover {
-      border-color: settings.$colour-accent-hover;
       background-color: settings.$colour-accent-hover;
-      color: settings.$colour-white;
-      text-decoration: none;
     }
 
     &:focus {
