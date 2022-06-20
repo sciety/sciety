@@ -1,6 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -64,15 +65,15 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 
 type HeaderViewModel = {
   avatarUrl: string,
-  handle: string,
   name: string,
   description: string,
   ownerName: string,
   ownerHref: string,
+  subscribeHref: O.Option<string>,
 };
 
 const renderHeader = ({
-  avatarUrl, handle, name, description, ownerName, ownerHref,
+  avatarUrl, name, description, ownerName, ownerHref, subscribeHref,
 }: HeaderViewModel) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
@@ -83,8 +84,13 @@ const renderHeader = ({
       <span>A list by <a href="${ownerHref}">${ownerName}</a></span>
     </p>
     <p class="page-header__description">${description}</p>
-    ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
-    ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
+    ${pipe(
+    subscribeHref,
+    O.fold(
+      () => '',
+      (href) => `<a class="user-list-subscribe" href="${href}">Subscribe<span class="visually-hidden"> to this list</span></a>`,
+    ),
+  )}
   </header>
 `);
 
@@ -137,6 +143,13 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
             : defaultUserListDescription(`@${partial.handle}`),
           ownerName: partial.handle === 'BiophysicsColab' ? 'Biophysics Colab' : partial.handle,
           ownerHref: partial.handle === 'BiophysicsColab' ? '/groups/biophysics-colab/about' : `/users/${partial.handle}`,
+          subscribeHref: pipe(
+            {
+              AvasthiReading: 'https://xag0lodamyw.typeform.com/to/OPBgQWgb',
+              ZonaPellucida_: 'https://go.sciety.org/ZonaPellucida',
+            },
+            R.lookup(partial.handle),
+          ),
         }),
         renderHeader,
       ),
