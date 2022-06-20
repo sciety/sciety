@@ -94,6 +94,25 @@ const renderHeader = ({
   </header>
 `);
 
+const toHeaderViewModel = ({ avatarUrl, handle }: UserDetails) => ({
+  avatarUrl,
+
+  name: handle === 'BiophysicsColab' ? 'Reading list' : 'Saved Articles',
+  description: handle === 'BiophysicsColab'
+    ? 'Articles that are being read by Biophysics Colab.'
+    : defaultUserListDescription(`@${handle}`),
+  ownerName: handle === 'BiophysicsColab' ? 'Biophysics Colab' : handle,
+  ownerHref: handle === 'BiophysicsColab' ? '/groups/biophysics-colab/about' : `/users/${handle}`,
+
+  subscribeHref: pipe(
+    {
+      AvasthiReading: 'https://xag0lodamyw.typeform.com/to/OPBgQWgb',
+      ZonaPellucida_: 'https://go.sciety.org/ZonaPellucida',
+    },
+    R.lookup(handle),
+  ),
+});
+
 const renderContent = (
   content: HtmlFragment,
   handle: string,
@@ -135,22 +154,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
       title: `${handle} | Saved articles`,
       header: pipe(
         userDetails,
-        (partial) => ({
-          ...partial,
-          name: partial.handle === 'BiophysicsColab' ? 'Reading list' : 'Saved Articles',
-          description: partial.handle === 'BiophysicsColab'
-            ? 'Articles that are being read by Biophysics Colab.'
-            : defaultUserListDescription(`@${partial.handle}`),
-          ownerName: partial.handle === 'BiophysicsColab' ? 'Biophysics Colab' : partial.handle,
-          ownerHref: partial.handle === 'BiophysicsColab' ? '/groups/biophysics-colab/about' : `/users/${partial.handle}`,
-          subscribeHref: pipe(
-            {
-              AvasthiReading: 'https://xag0lodamyw.typeform.com/to/OPBgQWgb',
-              ZonaPellucida_: 'https://go.sciety.org/ZonaPellucida',
-            },
-            R.lookup(partial.handle),
-          ),
-        }),
+        toHeaderViewModel,
         renderHeader,
       ),
       content: renderContent(
