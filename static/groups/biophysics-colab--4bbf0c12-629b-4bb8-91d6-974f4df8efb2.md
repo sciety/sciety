@@ -12,6 +12,10 @@ The curators at Biophysics Colab receive support for their operations from Lesle
 
 Biophysics Colab provide collaborative, community-based and journal-agnostic peer review of publicly available preprints. Reviewers do not pass judgement on the significance of a study, but instead highlight its strengths and weaknesses, and provide constructive feedback to tighten the interpretation of the available data. A consolidated report is shared with authors, who are then offered the opportunity to post it on bioRxiv and Sciety.
 
+## Reading list
+
+[Articles that are being read by Biophysics Colab](/users/BiophysicsColab/lists/saved-articles)
+
 ## PReF
 
 Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
