@@ -62,10 +62,16 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
+type HeaderViewModel = {
+  avatarUrl: string,
+  handle: string,
+  name: string,
+};
+
+const renderHeader = ({ avatarUrl, handle, name }: HeaderViewModel) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
-      ${handle === 'BiophysicsColab' ? 'Reading list' : 'Saved Articles'}
+      ${name}
     </h1>
     <p class="page-header__subheading">
       <img src="${avatarUrl}" alt="" class="page-header__avatar">
@@ -124,7 +130,14 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
     savedArticles(ports)(items, pipe(user, O.map((u) => u.id)), listOwnerId),
     T.map((content) => ({
       title: `${handle} | Saved articles`,
-      header: renderHeader(userDetails),
+      header: pipe(
+        userDetails,
+        (partial) => ({
+          ...partial,
+          name: partial.handle === 'BiophysicsColab' ? 'Reading list' : 'Saved Articles',
+        }),
+        renderHeader,
+      ),
       content: renderContent(
         content,
         handle,
