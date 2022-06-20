@@ -65,13 +65,21 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 const renderHeader = ({ avatarUrl, handle }: UserDetails) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
-      Saved Articles
+      ${handle === 'BiophysicsColab' ? 'Reading list' : 'Saved Articles'}
     </h1>
     <p class="page-header__subheading">
       <img src="${avatarUrl}" alt="" class="page-header__avatar">
-      <span>A list by <a href="/users/${handle}">${handle}</a></span>
+      <span>A list by ${
+  handle === 'BiophysicsColab'
+    ? '<a href="/groups/biophysics-colab/about">Biophysics Colab</a>'
+    : `<a href="/users/${handle}">${handle}</a>`
+}</span>
     </p>
-    <p class="page-header__description">${defaultUserListDescription(`@${handle}`)}</p>
+    <p class="page-header__description">${
+  handle === 'BiophysicsColab'
+    ? 'Articles that are being read by Biophysics Colab.'
+    : defaultUserListDescription(`@${handle}`)
+}</p>
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
     ${handle === 'ZonaPellucida_' ? '<a class="user-list-subscribe" href="https://go.sciety.org/ZonaPellucida">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
   </header>
