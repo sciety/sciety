@@ -67,10 +67,12 @@ type HeaderViewModel = {
   handle: string,
   name: string,
   description: string,
+  ownerName: string,
+  ownerHref: string,
 };
 
 const renderHeader = ({
-  avatarUrl, handle, name, description,
+  avatarUrl, handle, name, description, ownerName, ownerHref,
 }: HeaderViewModel) => toHtmlFragment(`
   <header class="page-header page-header--user-list">
     <h1>
@@ -78,11 +80,7 @@ const renderHeader = ({
     </h1>
     <p class="page-header__subheading">
       <img src="${avatarUrl}" alt="" class="page-header__avatar">
-      <span>A list by ${
-  handle === 'BiophysicsColab'
-    ? '<a href="/groups/biophysics-colab/about">Biophysics Colab</a>'
-    : `<a href="/users/${handle}">${handle}</a>`
-}</span>
+      <span>A list by <a href="${ownerHref}">${ownerName}</a></span>
     </p>
     <p class="page-header__description">${description}</p>
     ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe<span class="visually-hidden"> to this list</span></a>' : ''}
@@ -137,6 +135,8 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user, pag
           description: partial.handle === 'BiophysicsColab'
             ? 'Articles that are being read by Biophysics Colab.'
             : defaultUserListDescription(`@${partial.handle}`),
+          ownerName: partial.handle === 'BiophysicsColab' ? 'Biophysics Colab' : partial.handle,
+          ownerHref: partial.handle === 'BiophysicsColab' ? '/groups/biophysics-colab/about' : `/users/${partial.handle}`,
         }),
         renderHeader,
       ),
