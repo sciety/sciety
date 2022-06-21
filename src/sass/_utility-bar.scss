@@ -44,7 +44,7 @@ $_site-header-inline-end-margin: 8px;
   }
 }
 
-@mixin secondary-button() {
+@mixin secondary-button-link() {
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
@@ -62,7 +62,7 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list__search_link {
-  @include secondary-button();
+  @include secondary-button-link();
 
   display: flex;
   align-items: center;
@@ -94,7 +94,7 @@ $_site-header-inline-end-margin: 8px;
 
 .utility-bar__list_link_sign_up_button {
   @include typography.button();
-  @include secondary-button();
+  @include secondary-button-link();
 
   &:link {
     @include states.focus();
