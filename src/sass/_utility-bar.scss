@@ -47,6 +47,7 @@ $_site-header-inline-end-margin: 8px;
 @mixin secondary-button() {
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
   &:visited {
@@ -65,7 +66,8 @@ $_site-header-inline-end-margin: 8px;
 
   display: flex;
   align-items: center;
-  padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
+  padding-top: baseline.increments(0.5);
+  padding-bottom: baseline.increments(0.5);
 
   @include states.link() {
     background-color: settings.$colour-furniture;
@@ -93,8 +95,6 @@ $_site-header-inline-end-margin: 8px;
 .utility-bar__list_link_sign_up_button {
   @include typography.button();
   @include secondary-button();
-
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
 
   &:link {
     @include states.focus();
