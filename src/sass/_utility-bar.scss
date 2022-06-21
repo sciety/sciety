@@ -51,12 +51,12 @@ $_site-header-inline-end-margin: 8px;
 
   &:link,
   &:visited {
-    color: settings.$colour-navigation-menu-background;
+    color: settings.$colour-text-navigation-link;
 
     &:active,
     &:hover {
       background-color: settings.$colour-furniture;
-      color: settings.$colour-navigation-menu-background;
+      color: settings.$colour-text-navigation-link;
     }
   }
 }
