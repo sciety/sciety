@@ -6,7 +6,7 @@
 @use 'states';
 @use 'typography';
 
-$_search-icon-size: functions.px-to-rem(28px);
+$_search-icon-size: functions.px-to-rem(24px);
 $_site-header-inline-end-margin: 8px;
 
 .utility-bar {
@@ -51,7 +51,21 @@ $_site-header-inline-end-margin: 8px;
 .utility-bar__list__search_link {
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+  padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
+
+  span {
+    display: none;
+  }
+
+  &:link,
+  &:visited {
+    color: settings.$colour-navigation-menu-background;
+
+    &:active,
+    &:hover {
+      color: settings.$colour-navigation-menu-background;
+    }
+  }
 
   @include states.link() {
     background-color: settings.$colour-furniture;

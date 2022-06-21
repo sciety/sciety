@@ -27,7 +27,7 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
       <ul class="utility-bar__list" role="list">
         <li class="utility-bar__list_item utility-bar__list_item--search">
           <a href="/search" class="utility-bar__list__search_link">
-            <img src="/static/images/search-icon.svg" alt="Search" class="utility-bar__list__search_icon">
+            <img src="/static/images/search-icon.svg" alt="" class="utility-bar__list__search_icon"><span>Search</span>
           </a>
         </li>
         ${O.fold(logInMenuItem, logOutMenuItem)(user)}
