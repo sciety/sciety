@@ -5,6 +5,7 @@
 @use 'settings';
 @use 'states';
 @use 'typography';
+@use 'layout';
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_site-header-inline-end-margin: 8px;
@@ -53,10 +54,6 @@ $_site-header-inline-end-margin: 8px;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
 
-  span {
-    display: none;
-  }
-
   &:link,
   &:visited {
     color: settings.$colour-navigation-menu-background;
@@ -75,6 +72,10 @@ $_site-header-inline-end-margin: 8px;
 .utility-bar__list__search_icon {
   width: $_search-icon-size;
   height: $_search-icon-size;
+}
+
+.utility-bar__list__search_label {
+  @include layout.visually-hidden();
 }
 
 .utility-bar__list_link_button {
