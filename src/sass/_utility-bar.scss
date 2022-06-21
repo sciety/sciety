@@ -48,6 +48,16 @@ $_site-header-inline-end-margin: 8px;
   align-items: center;
 }
 
+.utility-bar__list__search_link {
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+
+  @include states.link() {
+    background-color: settings.$colour-furniture;
+  }
+}
+
 .utility-bar__list__search_icon {
   width: $_search-icon-size;
   height: $_search-icon-size;

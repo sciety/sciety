@@ -26,7 +26,7 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
       <div id="application-utilities" class="hidden">Sciety application utilities</div>
       <ul class="utility-bar__list" role="list">
         <li class="utility-bar__list_item utility-bar__list_item--search">
-          <a href="/search">
+          <a href="/search" class="utility-bar__list__search_link">
             <img src="/static/images/search-icon.svg" alt="Search" class="utility-bar__list__search_icon">
           </a>
         </li>
