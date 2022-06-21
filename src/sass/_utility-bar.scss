@@ -44,22 +44,27 @@ $_site-header-inline-end-margin: 8px;
   }
 }
 
-.utility-bar__list__search_link {
-  display: flex;
-  align-items: center;
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
-  padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
-
+@mixin secondary-button() {
   &:link,
   &:visited {
     color: settings.$colour-navigation-menu-background;
 
     &:active,
     &:hover {
+      background-color: settings.$colour-furniture;
       color: settings.$colour-navigation-menu-background;
     }
   }
+}
+
+.utility-bar__list__search_link {
+  @include secondary-button();
+
+  display: flex;
+  align-items: center;
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
 
   @include states.link() {
     background-color: settings.$colour-furniture;
@@ -86,20 +91,11 @@ $_site-header-inline-end-margin: 8px;
 
 .utility-bar__list_link_sign_up_button {
   @include typography.button();
+  @include secondary-button();
+
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
-
-  &:link,
-  &:visited {
-    color: settings.$colour-navigation-menu-background;
-
-    &:active,
-    &:hover {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-navigation-menu-background;
-    }
-  }
 
   &:link {
     @include states.focus();
