@@ -45,6 +45,9 @@ $_site-header-inline-end-margin: 8px;
 }
 
 @mixin secondary-button() {
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+
   &:link,
   &:visited {
     color: settings.$colour-navigation-menu-background;
@@ -62,8 +65,6 @@ $_site-header-inline-end-margin: 8px;
 
   display: flex;
   align-items: center;
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(0.5) functions.px-to-rem(12px - settings.$border-width);
 
   @include states.link() {
@@ -93,8 +94,6 @@ $_site-header-inline-end-margin: 8px;
   @include typography.button();
   @include secondary-button();
 
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
 
   &:link {
