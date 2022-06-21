@@ -6,6 +6,7 @@
 @use 'states';
 @use 'typography';
 @use 'layout';
+@use 'breakpoints';
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_site-header-inline-end-margin: 8px;
@@ -76,6 +77,11 @@ $_site-header-inline-end-margin: 8px;
 
 .utility-bar__list__search_label {
   @include layout.visually-hidden();
+
+  @include breakpoints.not-narrow() {
+    @include layout.visually-unhidden();
+    padding-left: functions.px-to-rem(5px);
+  }
 }
 
 .utility-bar__list_link_button {
