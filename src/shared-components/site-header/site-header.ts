@@ -4,11 +4,12 @@ import { User } from '../../types/user';
 import { utilityBar } from '../utility-bar';
 
 export const siteHeader = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`<header class="site-header">
-    <div class="site-header__grey_box">
-    <a href="/menu" class="site-header__menu_link">
+    <div class="site-header__white_box">
+      <a href="/menu" class="site-header__menu_link">
         <img src="/static/images/menu-icon.svg" alt="" />
-    </a>
-
+      </a>
+    </div>
+    <div class="site-header__grey_box">
     ${utilityBar(user)}
     </div>
 </header>`);

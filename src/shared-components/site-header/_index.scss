@@ -34,8 +34,13 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
-.site-header__grey_box {
+.site-header__white_box {
+  display: flex;
+  align-items: center;
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
+}
+
+.site-header__grey_box {
   padding-top: math.div(functions.px-to-rem(settings.$site-header-height) - $_search-icon-size, 2);
   flex-grow: 1;
 
