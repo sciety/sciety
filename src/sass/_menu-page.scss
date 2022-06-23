@@ -62,6 +62,7 @@ $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page__close_nav {
   align-self: center;
+  margin-right: functions.px-to-rem(16px);
   @supports(display: flex) {
     display: flex;
   }
