@@ -12,6 +12,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 $_site-header-inline-end-margin: 8px;
 
 .utility-bar {
+  display: flex;
   margin-right: functions.px-to-rem($_site-header-inline-end-margin);
   flex-grow: 1;
   align-self: center;
@@ -26,6 +27,7 @@ $_site-header-inline-end-margin: 8px;
   display: flex;
   justify-content: flex-start;
   margin-bottom: 0;
+  margin-left: auto;
 }
 
 .utility-bar__list_item {
@@ -45,6 +47,7 @@ $_site-header-inline-end-margin: 8px;
 }
 
 @mixin secondary-button-link() {
+  @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
@@ -93,7 +96,6 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list_link_sign_up_button {
-  @include typography.button();
   @include secondary-button-link();
 
   &:link {

@@ -10,7 +10,6 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
   display: flex;
-  justify-content: center;
   padding-bottom: baseline.increments(1);
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
@@ -51,6 +50,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 .site-header__menu_link {
   display: inline-block;
   float: left;
+  margin-right: functions.px-to-rem(16px);
   @supports (display: flex) {
     display: flex;
     float: none;
