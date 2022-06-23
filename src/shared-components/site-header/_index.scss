@@ -34,7 +34,7 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
-.site-header__inner {
+.site-header__grey_box {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
   padding-top: math.div(functions.px-to-rem(settings.$site-header-height) - $_search-icon-size, 2);
   flex-grow: 1;
