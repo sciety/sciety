@@ -99,11 +99,17 @@
     },
     {
       "label": "About",
-      "url": "http://sciety_app/about"
+      "url": "http://sciety_app/about",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Legal information",
-      "url": "http://sciety_app/legal"
+      "url": "http://sciety_app/legal",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Sign up",
