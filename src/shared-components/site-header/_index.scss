@@ -10,7 +10,6 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
   display: flex;
-  padding-bottom: baseline.increments(1);
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
@@ -28,9 +27,8 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 
   &:not(.site-header--menu) {
-    background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) 
-    settings.$top-nav-shadow-height - 1, settings.$colour-site-header-background-darker settings.$top-nav-shadow-height);
-    height: functions.px-to-rem(settings.$site-header-plus-shadow-height);
+    box-shadow: 0 8px 11px #cfd8dc6b;
+    height: functions.px-to-rem(settings.$site-header-height);
   }
 }
 
