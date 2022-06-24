@@ -35,7 +35,9 @@ $_search-icon-size: functions.px-to-rem(28px);
 .site-header__white_box {
   display: flex;
   align-items: center;
-  margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
+  padding-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
+  padding-right: functions.px-to-rem(settings.$menu-icons-left-spacing);
+  background-color: settings.$colour-white;
 }
 
 .site-header__grey_box {
