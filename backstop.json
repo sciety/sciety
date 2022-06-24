@@ -113,6 +113,13 @@
       ]
     },
     {
+      "label": "Site header",
+      "url": "http://sciety_app/about",
+      "selectors": [
+        ".site-header"
+      ]
+    },
+    {
       "label": "Page footer",
       "url": "http://sciety_app/about",
       "selectors": [
