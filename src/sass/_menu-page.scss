@@ -26,7 +26,7 @@ $_menu-page-upper-inline-spacing: 26px;
 .menu-page-header {
   display: none;
   @supports(display: grid) {
-    display: unset;
+    display: flex;
   }
   order: 2;
   align-self: center;

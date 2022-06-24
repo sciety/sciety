@@ -24,9 +24,6 @@ const signUpMenuItem = () => toHtmlFragment(`
 export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
-    <a href="/search" class="utility-bar__list__search_link">
-      <img src="/static/images/search-icon.svg" alt="" class="utility-bar__list__search_icon"><span class="utility-bar__list__search_label">Search</span>
-    </a>
     <ul class="utility-bar__list" role="list">
       ${O.fold(logInMenuItem, logOutMenuItem)(user)}
       ${O.fold(signUpMenuItem, constant(''))(user)}

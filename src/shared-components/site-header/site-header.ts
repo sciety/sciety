@@ -8,6 +8,9 @@ export const siteHeader = (user: O.Option<User>): HtmlFragment => toHtmlFragment
       <a href="/menu" class="site-header__menu_link">
         <img src="/static/images/menu-icon.svg" alt="" />
       </a>
+      <a href="/search" class="utility-bar__list__search_link">
+        <img src="/static/images/search-icon.svg" alt="" class="utility-bar__list__search_icon"><span class="utility-bar__list__search_label">Search</span>
+      </a>
     </div>
     <div class="site-header__grey_box">
     ${utilityBar(user)}
