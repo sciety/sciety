@@ -46,6 +46,24 @@ $_site-header-inline-end-margin: 8px;
   }
 }
 
+.utility-bar__list_home_link {
+  display: none;
+
+  @include breakpoints.not-narrow() {
+    display: block;
+  }
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-navigation-link;
+
+    &:active,
+    &:hover {
+      color: settings.$colour-text-primary;
+    }
+  }
+}
+
 @mixin secondary-button-link() {
   @include typography.button();
   border-radius: settings.$border-radius;
