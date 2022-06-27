@@ -53,13 +53,17 @@ $_site-header-inline-end-margin: 8px;
     display: block;
   }
 
+  padding-bottom: functions.px-to-rem(4px);
+  border-bottom: 2px solid transparent;
+  padding-top: 6px;
+
   &:link,
   &:visited {
     color: settings.$colour-text-navigation-link;
 
-    &:active,
-    &:hover {
+    @include states.link() {
       color: settings.$colour-text-primary;
+      border-color: settings.$colour-text-primary;
     }
   }
 }
