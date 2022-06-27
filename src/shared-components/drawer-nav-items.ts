@@ -17,6 +17,5 @@ export const drawerNavItems = (user: O.Option<User>): HtmlFragment => toHtmlFrag
     <li><a href="/sciety-feed" class="site-menu__link site-menu__link--sciety-feed"><span class="site-menu__link_text">Sciety feed</span></a></li>
     ${O.fold(constant(''), myFeedMenuItem)(user)}
     ${O.fold(constant(''), myProfileMenuItem)(user)}
-    <li><a href="/groups" class="site-menu__link site-menu__link--groups"><span class="site-menu__link_text">Groups</span></a></li>
   </ul>
 `);
