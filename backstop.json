@@ -185,6 +185,14 @@
     {
       "label": "Menu page",
       "url": "http://sciety_app/menu"
+    },
+    {
+      "label": "Home page layout, home page",
+      "url": "http://sciety_app"
+    },
+    {
+      "label": "Standard page layout, groups page",
+      "url": "http://sciety_app/groups"
     }
   ],
   "paths": {
