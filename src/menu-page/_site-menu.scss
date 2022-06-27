@@ -1,11 +1,11 @@
 @use 'sass:math';
 
-@use 'settings';
-@use 'functions';
-@use 'baseline';
-@use 'button';
-@use 'typography';
-@use 'list';
+@use '../sass/settings';
+@use '../sass/functions';
+@use '../sass/baseline';
+@use '../sass/button';
+@use '../sass/typography';
+@use '../sass/list';
 
 $_icon-size: 24px;
 $_icon-inline-offset: 12px;

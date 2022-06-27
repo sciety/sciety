@@ -1,11 +1,11 @@
-@use 'baseline';
-@use 'breakpoints';
-@use 'functions';
-@use 'layout';
-@use 'list';
-@use 'settings';
-@use 'states';
-@use 'typography';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/functions';
+@use '../sass/layout';
+@use '../sass/list';
+@use '../sass/settings';
+@use '../sass/states';
+@use '../sass/typography';
 
 $_menu-page-upper-inline-spacing: 26px;
 

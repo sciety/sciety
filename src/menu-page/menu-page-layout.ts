@@ -1,9 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
+import { siteMenuItems } from './site-menu';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
-import { siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
 import { User } from '../types/user';
 

@@ -4,7 +4,6 @@
 @use 'normalise';
 @use 'layout';
 
-@use 'site-menu';
 @use '../about-page';
 @use '../legal-page';
 @use '../sign-up-page';
@@ -21,7 +20,7 @@
 @use '../home-page';
 @use '../follow/follow-toggle';
 @use '../http/error-page';
-@use 'menu-page';
+@use '../menu-page';
 @use '../search-results-page';
 @use 'list';
 @use 'typography';
