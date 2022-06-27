@@ -5,8 +5,28 @@
 @use '../../sass/functions';
 @use '../../sass/layout';
 @use '../../sass/settings';
+@use '../../sass/states';
+@use '../../sass/typography';
 
 $_search-icon-size: functions.px-to-rem(28px);
+
+@mixin secondary-button-link() {
+  @include typography.button();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-navigation-link;
+
+    &:active,
+    &:hover {
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-text-navigation-link;
+    }
+  }
+}
 
 .site-header {
   display: flex;
@@ -68,5 +88,32 @@ $_search-icon-size: functions.px-to-rem(28px);
   &::before {
     @include layout.visually-hidden();
     content: 'Open the menu';
+  }
+}
+
+.site-header__search_link {
+  @include secondary-button-link();
+
+  display: flex;
+  align-items: center;
+  padding-top: baseline.increments(0.5);
+  padding-bottom: baseline.increments(0.5);
+
+  @include states.link() {
+    background-color: settings.$colour-furniture;
+  }
+}
+
+.site-header__search_icon {
+  width: $_search-icon-size;
+  height: $_search-icon-size;
+}
+
+.site-header__search_label {
+  @include layout.visually-hidden();
+
+  @include breakpoints.not-narrow() {
+    @include layout.visually-unhidden();
+    padding-left: functions.px-to-rem(5px);
   }
 }

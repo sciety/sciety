@@ -26,8 +26,8 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
   </main>
 
   <header class="menu-page-header">
-    <a href="/search" class="utility-bar__list__search_link">
-      <img src="/static/images/search-icon.svg" alt="" class="utility-bar__list__search_icon"><span class="utility-bar__list__search_label">Search</span>
+    <a href="/search" class="site-header__search_link">
+      <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>
     </a>
     ${utilityBar(user)}
   </header>
