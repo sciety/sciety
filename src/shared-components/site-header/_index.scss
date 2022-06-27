@@ -20,8 +20,7 @@ $_search-icon-size: functions.px-to-rem(24px);
   &:visited {
     color: settings.$colour-text-navigation-link;
 
-    &:active,
-    &:hover {
+    @include states.link() {
       background-color: settings.$colour-furniture;
       color: settings.$colour-text-navigation-link;
     }
@@ -98,10 +97,6 @@ $_search-icon-size: functions.px-to-rem(24px);
   align-items: center;
   padding-top: baseline.increments(0.5);
   padding-bottom: baseline.increments(0.5);
-
-  @include states.link() {
-    background-color: settings.$colour-furniture;
-  }
 }
 
 .site-header__search_icon {

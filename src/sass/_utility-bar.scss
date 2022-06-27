@@ -70,8 +70,4 @@ $_site-header-inline-end-margin: 8px;
 
 .utility-bar__list_link_sign_up_button {
   @include site-header.secondary-button-link();
-
-  &:link {
-    @include states.focus();
-  }
 }
