@@ -106,9 +106,4 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .site-header__search_label {
   @include layout.visually-hidden();
-
-  @include breakpoints.not-narrow() {
-    @include layout.visually-unhidden();
-    padding-left: functions.px-to-rem(5px);
-  }
 }

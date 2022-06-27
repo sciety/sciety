@@ -15,16 +15,6 @@
   user-select: none;
 }
 
-@mixin visually-unhidden() {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: unset;
-  position: static;
-  width: auto;
-  user-select: unset;
-}
-
 @mixin page-content-horizontal-margins() {
   margin-left: 1rem;
   margin-right: 1rem;
