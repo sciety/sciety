@@ -21,6 +21,12 @@ const signUpMenuItem = () => toHtmlFragment(`
   </li>
 `);
 
+const myFeedMenuItem = () => toHtmlFragment(`
+  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+    <a href="/my-feed" class="utility-bar__list_nav_link">My feed</a>
+  </li>
+`);
+
 export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
@@ -31,6 +37,7 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
       <li class="utility-bar__list_item utility-bar__list_item--wide-only">
         <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
       </li>
+      ${O.fold(constant(''), myFeedMenuItem)(user)}
       ${O.fold(logInMenuItem, logOutMenuItem)(user)}
       ${O.fold(signUpMenuItem, constant(''))(user)}
     </ul>
