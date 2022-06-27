@@ -9,7 +9,6 @@
 @use 'breakpoints';
 @use '../shared-components/site-header';
 
-$_search-icon-size: functions.px-to-rem(24px);
 $_site-header-inline-end-margin: 8px;
 
 .utility-bar {

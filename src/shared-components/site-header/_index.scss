@@ -8,7 +8,7 @@
 @use '../../sass/states';
 @use '../../sass/typography';
 
-$_search-icon-size: functions.px-to-rem(28px);
+$_search-icon-size: functions.px-to-rem(24px);
 
 @mixin secondary-button-link() {
   @include typography.button();
@@ -61,7 +61,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 }
 
 .site-header__grey_box {
-  padding-top: math.div(functions.px-to-rem(settings.$site-header-height) - $_search-icon-size, 2);
+  padding-top: 1rem;
   flex-grow: 1;
 
   @supports (display: flex) {
