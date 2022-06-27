@@ -12,7 +12,7 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
 <body>
   ${googleTagManagerNoScript()}
   <div class="page-container">
-    ${drawer(user)}
+    ${drawer()}
 
     ${siteHeader(user)}
 
