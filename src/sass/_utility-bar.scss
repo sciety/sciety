@@ -46,16 +46,19 @@ $_site-header-inline-end-margin: 8px;
   }
 }
 
-.utility-bar__list_home_link {
+.utility-bar__list_item--wide-only {
   display: none;
 
   @include breakpoints.not-narrow() {
-    display: block;
+    display: flex;
   }
+}
 
+.utility-bar__list_home_link {
   padding-bottom: functions.px-to-rem(4px);
   border-bottom: 2px solid transparent;
   padding-top: 6px;
+  display: block;
 
   &:link,
   &:visited {
@@ -75,3 +78,5 @@ $_site-header-inline-end-margin: 8px;
 .utility-bar__list_link_sign_up_button {
   @include site-header.secondary-button-link();
 }
+
+
