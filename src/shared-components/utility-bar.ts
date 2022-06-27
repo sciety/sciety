@@ -26,10 +26,10 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
       <li class="utility-bar__list_item utility-bar__list_item--wide-only">
-        <a href="/" class="utility-bar__list_home_link">Home</a>
+        <a href="/" class="utility-bar__list_nav_link">Home</a>
       </li>
       <li class="utility-bar__list_item utility-bar__list_item--wide-only">
-        <a href="/groups" class="utility-bar__list_home_link">Groups</a>
+        <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
       </li>
       ${O.fold(logInMenuItem, logOutMenuItem)(user)}
       ${O.fold(signUpMenuItem, constant(''))(user)}
