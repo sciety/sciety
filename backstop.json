@@ -22,56 +22,88 @@
   "scenarios": [
     {
       "label": "Home page",
-      "url": "http://sciety_app"
+      "url": "http://sciety_app",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "My feed (logged out)",
-      "url": "http://sciety_app/my-feed"
+      "url": "http://sciety_app/my-feed",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Sciety feed",
-      "url": "http://sciety_app/sciety-feed"
-    },
-    {
-      "label": "Menu page",
-      "url": "http://sciety_app/menu"
+      "url": "http://sciety_app/sciety-feed",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "An article page",
-      "url": "http://sciety_app/articles/10.1101/646810"
+      "url": "http://sciety_app/articles/10.1101/646810",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "An article page (expanded reviews)",
       "url": "http://sciety_app/articles/10.1101/646810",
-      "clickSelector": ".activity-feed__item__toggle"
+      "clickSelector": ".activity-feed__item__toggle",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "An article page (challenging markdown under our control)",
-      "url": "http://sciety_app/articles/10.1101/002303"
+      "url": "http://sciety_app/articles/10.1101/002303",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Article search",
-      "url": "http://sciety_app/search?query=elephant+shark"
+      "url": "http://sciety_app/search?query=elephant+shark",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Article search results page error",
-      "url": "http://sciety_app/search?query=covid&category=articles&cursor=fake"
+      "url": "http://sciety_app/search?query=covid&category=articles&cursor=fake",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Group search",
-      "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups"
+      "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "ScietyHQ user page lists tab",
-      "url": "http://sciety_app/users/scietyHQ/lists"
+      "url": "http://sciety_app/users/scietyHQ/lists",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "ScietyHQ user page following tab",
-      "url": "http://sciety_app/users/scietyHQ/following"
+      "url": "http://sciety_app/users/scietyHQ/following",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "ScietyHQ saved articles list page",
-      "url": "http://sciety_app/users/scietyHQ/lists/saved-articles"
+      "url": "http://sciety_app/users/scietyHQ/lists/saved-articles",
+      "selectors": [
+        "main"
+      ]
     },
     {
       "label": "Group page, lists tab",
@@ -149,6 +181,10 @@
       "selectors": [
         ".page-footer"
       ]
+    },
+    {
+      "label": "Menu page",
+      "url": "http://sciety_app/menu"
     }
   ],
   "paths": {
