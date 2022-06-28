@@ -93,7 +93,6 @@ jobs:
           helm upgrade -i sciety--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=staging.sciety.org \
-            --set oldHostname=staging.hive.review \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set-string experimentEnabled="true" \
             --set appSecret=${APP_SECRET} \
@@ -127,7 +126,6 @@ jobs:
             --set-string allowSiteCrawlers=true \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=sciety.org \
-            --set oldHostname=hive.review \
             --set fathomSiteId='DBULFPXG' \
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
