@@ -72,7 +72,6 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__menu_link {
-  display: inline-block;
   float: left;
   margin-right: functions.px-to-rem(16px);
   @supports (display: flex) {
