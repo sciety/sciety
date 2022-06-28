@@ -31,7 +31,6 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list_item {
-  @include typography.button();
   padding-right: 1.5rem;
   flex-shrink: 0;
   display: flex;
@@ -55,6 +54,7 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list_nav_link {
+  @include typography.button();
   padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
   border-bottom: settings.$navigation-link-border-width solid transparent;
   padding-top: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
