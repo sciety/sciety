@@ -60,7 +60,8 @@
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
   @include breakpoints.not-narrow {
-    margin: 0 functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+    margin: 0 auto;
+    padding: 0 functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
   }
 }
 
