@@ -84,6 +84,7 @@ If you want to only run a subset of scenarios, execute:
 
 ```shell
 make backstop-test SCENARIO=article
+make backstop-test SCENARIO="header|footer"
 ```
 
 ### Linting
