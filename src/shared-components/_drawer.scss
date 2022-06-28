@@ -24,7 +24,7 @@ $_drawer-logo-left-spacing: 27px;
   padding-top: baseline.increments(math.div(19, 8));
 
   @include breakpoints.not-narrow() {
-    display: flex;
+    display: none;
     flex-direction: column;
     grid-column: 1 / 1;
     grid-row: 1 / -1;

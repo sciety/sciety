@@ -5,13 +5,11 @@
 
 .page-container {
   min-height: 100vh;
-  @supports (display: grid) {
-    display: grid;
-  }
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
 
-  @include breakpoints.not-narrow() {
-    grid-template-columns: functions.px-to-rem(settings.$drawer-width) 1fr;
+  main {
+    flex-grow: 1;
   }
 }
 
