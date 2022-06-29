@@ -29,7 +29,8 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .site-header {
   display: grid;
-  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 92px)) 1fr;
+  //the white box will have the necessary space and the grey box will take up the rest of the width
+  grid-template-columns: auto 1fr;
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
