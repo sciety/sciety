@@ -95,6 +95,6 @@ $_search-icon-size: functions.px-to-rem(24px);
   height: $_search-icon-size;
 }
 
-.site-header__search_label {
-  @include layout.visually-hidden();
+.site-header__logo-link {
+  padding-right: 2.8rem;
 }
