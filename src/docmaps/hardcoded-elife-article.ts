@@ -106,7 +106,7 @@ export const hardcodedElifeArticle = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2022-02-15T09:43:15.348Z',
               content: [
                 {
@@ -130,7 +130,7 @@ export const hardcodedElifeArticle = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'reply',
               published: '2022-02-15T11:24:05.730Z',
               content: [
                 {
