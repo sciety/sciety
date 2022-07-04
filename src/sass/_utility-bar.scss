@@ -9,11 +9,9 @@
 @use 'breakpoints';
 @use '../shared-components/site-header';
 
-$_site-header-inline-end-margin: 8px;
-
 .utility-bar {
   display: flex;
-  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
+  margin-right: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
   flex-grow: 1;
   align-self: center;
   float: right;
