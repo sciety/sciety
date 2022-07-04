@@ -531,6 +531,12 @@ export const createRouter = (adapters: Adapters): Router => {
     await next();
   });
 
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', async (context, next) => {
+    context.response.status = 200;
+    context.response.body = 'Hello';
+    await next();
+  });
+
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
     await send(context, 'docmaps-v1-api-docs.html', { root: staticFolder });
