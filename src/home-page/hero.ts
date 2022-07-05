@@ -42,6 +42,10 @@ const renderHeroImage = () => `
   </picture>
 `;
 
+const renderVideoCallToAction = () => `
+  <div class="home-page-hero__video_call_to_action"><a href="" class="home-page-hero__video_button">Play video</a></div>
+`;
+
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
@@ -83,7 +87,7 @@ export const hero: Hero = (ports) => pipe(
           <button type="reset" class="visually-hidden">Reset</button>
         </form>
         ${renderExampleSearches()}
-        ${process.env.EXPERIMENT_ENABLED === 'true' ? '<div><a href="" class="home-page-hero__video_button">Play video</a></div>' : ''}
+        ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
       </div>
       ${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
     </section>

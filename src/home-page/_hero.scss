@@ -73,6 +73,14 @@ $_search-button-width: functions.px-to-rem(76px);
   @include typography.body();
 }
 
+.home-page-hero__video_call_to_action {
+  background: url('/static/images/scientists-hp-placeholder.png') no-repeat center bottom;
+  background-size: contain;
+  width: 100%;
+  height: 304px;
+  margin-top: functions.px-to-rem(40px);
+}
+
 .home-page-hero__video_button {
   @include button.button-link();
 }
