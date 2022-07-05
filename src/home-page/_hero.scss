@@ -73,6 +73,10 @@ $_search-button-width: functions.px-to-rem(76px);
   @include typography.body();
 }
 
+.home-page-hero__video_button {
+  @include button.button-link();
+}
+
 .home-page-hero__picture {
   max-width: functions.px-to-rem(512px);
   display: flex;

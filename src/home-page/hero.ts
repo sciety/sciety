@@ -83,6 +83,7 @@ export const hero: Hero = (ports) => pipe(
           <button type="reset" class="visually-hidden">Reset</button>
         </form>
         ${renderExampleSearches()}
+        ${process.env.EXPERIMENT_ENABLED === 'true' ? '<div><a href="" class="home-page-hero__video_button">Play video</a></div>' : ''}
       </div>
       ${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
     </section>
