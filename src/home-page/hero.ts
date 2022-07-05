@@ -35,6 +35,13 @@ const renderScietyFeedCTA = (): HtmlFragment => toHtmlFragment(
   '<a class="home-page-hero__sciety_feed_link" href="/sciety-feed">What\'s happening on Sciety?<a/>',
 );
 
+const renderHeroImage = () => `
+  <picture class="home-page-hero__picture">
+    <source srcset="/static/images/home-page-illustration.svg" media="(min-width: 60.25em)">
+    <img src="data:" alt="" class="home-page-hero__image">
+  </picture>
+`;
+
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
@@ -77,11 +84,7 @@ export const hero: Hero = (ports) => pipe(
         </form>
         ${renderExampleSearches()}
       </div>
-
-      <picture class="home-page-hero__picture">
-        <source srcset="/static/images/home-page-illustration.svg" media="(min-width: 60.25em)">
-        <img src="data:" alt="" class="home-page-hero__image">
-      </picture>
+      ${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
     </section>
     `,
     toHtmlFragment,
