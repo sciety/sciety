@@ -85,8 +85,14 @@ $_search-button-width: functions.px-to-rem(76px);
   margin-top: functions.px-to-rem(40px);
 }
 
-.home-page-hero__video_button {
-  @include button.button-link();
+.home-page-hero__video_cta_text_wrapper {
+  text-align: center;
+  margin-top: calc(#{baseline.increments(4)} * -1);
+  margin-left: functions.px-to-rem(18px);
+
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .home-page-hero__picture {

@@ -43,7 +43,11 @@ const renderHeroImage = () => `
 `;
 
 const renderVideoCallToAction = () => `
-  <div class="home-page-hero__video_call_to_action"><a href="" class="home-page-hero__video_button">Play video</a></div>
+  <div class="home-page-hero__video_call_to_action">
+    <div class="home-page-hero__video_cta_text_wrapper">
+      <p>Learn about Sciety.</p>
+      <a href="">Play video</a></div>
+    </div>
 `;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
