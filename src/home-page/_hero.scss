@@ -74,10 +74,14 @@ $_search-button-width: functions.px-to-rem(76px);
 }
 
 .home-page-hero__video_call_to_action {
-  background: url('/static/images/scientists-hp-placeholder.png') no-repeat center bottom;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('images/Home-illustration-mobile.png') no-repeat center bottom;
+  background-color: settings.$colour-container-background;
   background-size: contain;
   width: 100%;
-  height: 240px;
+  height: 361px;
   margin-top: functions.px-to-rem(40px);
 }
 
