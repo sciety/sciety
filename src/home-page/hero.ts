@@ -89,30 +89,30 @@ ${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
 
 const renderHeroWithVideo = (listCount: number) => `
 <section class="home-page-hero-with-video">
-<div class="home-page-hero-with-video__content">
-  <h1 class="home-page-hero-with-video__content_title">
-    Sciety: the home of public preprint evaluation
-  </h1>
-  <p class="home-page-hero-with-video__content_byline">
-    Open evaluation and curation together in one place.
-    <br>
-    Let Sciety help you navigate the preprint landscape.
-  </p>
-  <p class="home-page-hero-with-video__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
-  ${renderStatistics(listCount)}
-  ${renderScietyFeedCTA()}
-  <form class="home-page-hero-with-video__search_form" action="/search" method="get">
-    <input type="hidden" name="category" value="articles">
-    <label for="searchText" class="visually-hidden">Search term</label>
-    <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero-with-video__search_text">
-    <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
-    <label for="searchEvaluatedOnlyFilter" class="home-page-hero-with-video__search_form_label">Search only evaluated articles</label>
-    <button type="submit" class="home-page-hero-with-video__search_button">Search</button>
-    <button type="reset" class="visually-hidden">Reset</button>
-  </form>
-  ${renderExampleSearches()}
-  ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
-</div>
+  <div class="home-page-hero-with-video__content">
+    <h1 class="home-page-hero-with-video__content_title">
+      Sciety: the home of public preprint evaluation
+    </h1>
+    <p class="home-page-hero-with-video__content_byline">
+      Open evaluation and curation together in one place.
+      <br>
+      Let Sciety help you navigate the preprint landscape.
+    </p>
+    <p class="home-page-hero-with-video__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
+    ${renderStatistics(listCount)}
+    ${renderScietyFeedCTA()}
+    <form class="home-page-hero-with-video__search_form" action="/search" method="get">
+      <input type="hidden" name="category" value="articles">
+      <label for="searchText" class="visually-hidden">Search term</label>
+      <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero-with-video__search_text">
+      <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
+      <label for="searchEvaluatedOnlyFilter" class="home-page-hero-with-video__search_form_label">Search only evaluated articles</label>
+      <button type="submit" class="home-page-hero-with-video__search_button">Search</button>
+      <button type="reset" class="visually-hidden">Reset</button>
+    </form>
+    ${renderExampleSearches()}
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
+  </div>
 </section>
 `;
 
