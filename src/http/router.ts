@@ -34,6 +34,7 @@ import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to
 import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
+import { hardcodedElifeArticle } from '../docmaps/hardcoded-elife-article';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
@@ -528,6 +529,12 @@ export const createRouter = (adapters: Adapters): Router => {
 
     context.response.status = response.status;
     context.response.body = response.body;
+    await next();
+  });
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', async (context, next) => {
+    context.response.status = 200;
+    context.response.body = hardcodedElifeArticle;
     await next();
   });
 

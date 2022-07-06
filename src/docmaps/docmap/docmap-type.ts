@@ -7,7 +7,7 @@ export type Participant = {
 };
 
 type Output = {
-  type: 'review-article',
+  type: 'review-article' | 'evaluation-summary' | 'reply',
   published: string,
   content: ReadonlyArray<unknown>,
 };

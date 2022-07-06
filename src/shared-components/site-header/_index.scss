@@ -7,6 +7,7 @@
 @use '../../sass/settings';
 @use '../../sass/states';
 @use '../../sass/typography';
+@use '../../sass/list';
 
 $_search-icon-size: functions.px-to-rem(24px);
 
@@ -44,11 +45,17 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__white_box {
-  display: flex;
-  align-items: center;
   padding-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
   padding-right: functions.px-to-rem(settings.$menu-icons-left-spacing);
   background-color: settings.$colour-white;
+}
+
+.site-header__white_box_list {
+  @include list.basics();
+
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .site-header__grey_box {
@@ -63,16 +70,19 @@ $_search-icon-size: functions.px-to-rem(24px);
   }
 }
 
+.site-header__white_box_list_item--narrow-only {
+  @include breakpoints.not-narrow() {
+    display: none;
+  }
+}
+
 .site-header__menu_link {
-  float: left;
   margin-right: functions.px-to-rem(16px);
+  
+  float: left;
   @supports (display: flex) {
     display: flex;
     float: none;
-  }
-
-  @include breakpoints.not-narrow() {
-    display: none;
   }
 
   &::before {
