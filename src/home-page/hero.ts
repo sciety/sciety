@@ -54,6 +54,64 @@ export type Ports = {
 
 type Hero = (ports: Ports) => T.Task<HtmlFragment>;
 
+const renderHeroWithImage = (listCount: number) => `
+<section class="home-page-hero">
+<div class="home-page-hero__content">
+  <h1 class="home-page-hero__content_title">
+    Sciety: the home of public preprint evaluation
+  </h1>
+  <p class="home-page-hero__content_byline">
+    Open evaluation and curation together in one place.
+    <br>
+    Let Sciety help you navigate the preprint landscape.
+  </p>
+  <p class="home-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
+  ${renderStatistics(listCount)}
+  ${renderScietyFeedCTA()}
+  <form class="home-page-hero__search_form" action="/search" method="get">
+    <input type="hidden" name="category" value="articles">
+    <label for="searchText" class="visually-hidden">Search term</label>
+    <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
+    <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
+    <label for="searchEvaluatedOnlyFilter" class="home-page-hero__search_form_label">Search only evaluated articles</label>
+    <button type="submit" class="home-page-hero__search_button">Search</button>
+    <button type="reset" class="visually-hidden">Reset</button>
+  </form>
+  ${renderExampleSearches()}
+</div>
+${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
+</section>
+`;
+
+const renderHeroWithVideo = (listCount: number) => `
+<section class="home-page-hero">
+<div class="home-page-hero__content">
+  <h1 class="home-page-hero__content_title">
+    Sciety: the home of public preprint evaluation
+  </h1>
+  <p class="home-page-hero__content_byline">
+    Open evaluation and curation together in one place.
+    <br>
+    Let Sciety help you navigate the preprint landscape.
+  </p>
+  <p class="home-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
+  ${renderStatistics(listCount)}
+  ${renderScietyFeedCTA()}
+  <form class="home-page-hero__search_form" action="/search" method="get">
+    <input type="hidden" name="category" value="articles">
+    <label for="searchText" class="visually-hidden">Search term</label>
+    <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
+    <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
+    <label for="searchEvaluatedOnlyFilter" class="home-page-hero__search_form_label">Search only evaluated articles</label>
+    <button type="submit" class="home-page-hero__search_button">Search</button>
+    <button type="reset" class="visually-hidden">Reset</button>
+  </form>
+  ${renderExampleSearches()}
+  ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
+</div>
+</section>
+`;
+
 export const hero: Hero = (ports) => pipe(
   ports.getAllEvents,
   T.map(flow(
@@ -64,33 +122,8 @@ export const hero: Hero = (ports) => pipe(
   )),
   T.map(flow(
     (listCount) => `
-    <section class="home-page-hero">
-      <div class="home-page-hero__content">
-        <h1 class="home-page-hero__content_title">
-          Sciety: the home of public preprint evaluation
-        </h1>
-        <p class="home-page-hero__content_byline">
-          Open evaluation and curation together in one place.
-          <br>
-          Let Sciety help you navigate the preprint landscape.
-        </p>
-        <p class="home-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
-        ${renderStatistics(listCount)}
-        ${renderScietyFeedCTA()}
-        <form class="home-page-hero__search_form" action="/search" method="get">
-          <input type="hidden" name="category" value="articles">
-          <label for="searchText" class="visually-hidden">Search term</label>
-          <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
-          <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
-          <label for="searchEvaluatedOnlyFilter" class="home-page-hero__search_form_label">Search only evaluated articles</label>
-          <button type="submit" class="home-page-hero__search_button">Search</button>
-          <button type="reset" class="visually-hidden">Reset</button>
-        </form>
-        ${renderExampleSearches()}
-        ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
-      </div>
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? '' : renderHeroImage()}
-    </section>
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderHeroWithVideo(listCount) : renderHeroWithImage(listCount)}
+    
     `,
     toHtmlFragment,
   )),
