@@ -245,12 +245,14 @@ $_search-button-width: functions.px-to-rem(76px);
 }
 
 .home-page-hero-with-video__right_wrapper {
-  padding-left: functions.px-to-rem(16px);
+  padding-left: functions.px-to-rem(48px);
   padding-right: functions.px-to-rem(16px);
   background-color: settings.$colour-container-background;
   
   @media screen and (max-width: common.$home-page-breakpoint) {
-    padding-left: functions.px-to-rem(48px);
+    padding-left: functions.px-to-rem(16px);
+    padding-top: common.$section-top-padding;
+    padding-bottom: common.$section-top-padding;
     width: 100%;
   }
 }
