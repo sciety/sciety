@@ -67,6 +67,7 @@ $_search-button-width: functions.px-to-rem(76px);
 
 .home-page-hero__content_title {
   @include typography.headline();
+  margin-top: baseline.increments(2.5);
 }
 
 .home-page-hero__content_byline {
@@ -182,6 +183,7 @@ $_search-button-width: functions.px-to-rem(76px);
 
 .home-page-hero-with-video__content_title {
   @include typography.headline();
+  margin-top: baseline.increments(2.5);
 }
 
 .home-page-hero-with-video__content_byline {
