@@ -235,4 +235,7 @@ $_search-button-width: functions.px-to-rem(76px);
   p {
     margin-bottom: 0;
   }
+  p, a {
+    background-color: rgb(226, 230, 233);
+  }
 }
