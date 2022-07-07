@@ -262,10 +262,6 @@ $_search-button-width: functions.px-to-rem(76px);
   margin-top: calc(#{baseline.increments(3)} * -1);
   margin-left: functions.px-to-rem(18px);
 
-  p {
-    margin-bottom: 0;
-  }
-
   p,
   a {
     background-color: rgb(226, 230, 233);
@@ -275,5 +271,15 @@ $_search-button-width: functions.px-to-rem(76px);
     @include breakpoints.not-narrow() {
       font-size: functions.px-to-rem(20px);
     }
+  }
+  
+  p {
+    margin-bottom: 0;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: functions.px-to-rem(8px);
   }
 }
