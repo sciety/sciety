@@ -10,6 +10,7 @@
 @use '../sass/button';
 @use '../sass/list';
 @use 'common';
+@use '../sass/states';
 
 $_search-form-text-input-height: baseline.increments(6);
 $_search-form-vertical-spacing: baseline.increments(1);
@@ -272,7 +273,7 @@ $_search-button-width: functions.px-to-rem(76px);
       font-size: functions.px-to-rem(20px);
     }
   }
-  
+
   p {
     margin-bottom: 0;
   }
@@ -281,5 +282,9 @@ $_search-button-width: functions.px-to-rem(76px);
     display: inline-flex;
     align-items: center;
     gap: functions.px-to-rem(8px);
+
+    @include states.link() {
+      text-decoration: underline;
+    }
   }
 }
