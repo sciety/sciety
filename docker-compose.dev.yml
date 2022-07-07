@@ -26,10 +26,3 @@ services:
     command: "npx ts-node-dev --transpile-only src/lists-service/index"
     volumes:
       - './src:/app/src'
-
-  db:
-    volumes:
-      - './data/backstop.csv:/data/backstop.csv'
-      - './data/taiko.csv:/data/taiko.csv'
-      - './data/exploratory-test.csv:/data/exploratory-test.csv'
-      - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'

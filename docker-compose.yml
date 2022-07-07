@@ -55,6 +55,11 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: sciety
+    volumes:
+      - './data/backstop.csv:/data/backstop.csv'
+      - './data/taiko.csv:/data/taiko.csv'
+      - './data/exploratory-test.csv:/data/exploratory-test.csv'
+      - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
