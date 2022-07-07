@@ -131,6 +131,8 @@ $_search-button-width: functions.px-to-rem(76px);
 
 .home-page-hero-with-video {
   @include common.container-horizontal-spacing();
+  padding-left: 0;
+  padding-right: 0;
   display: flex;
   justify-content: space-around;
 }
