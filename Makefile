@@ -70,7 +70,7 @@ test\:coverage: build
 jest-test:
 	npx jest ${TEST}
 
-backstop-test: export TARGET = dev
+backstop-test: export TARGET = prod
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
@@ -81,7 +81,7 @@ backstop-test: node_modules clean-db build
 	npx backstop --docker --filter="${SCENARIO}" test
 	${DOCKER_COMPOSE} down
 
-backstop-dev: export TARGET = dev
+backstop-dev: export TARGET = prod
 backstop-dev: export DISABLE_COOKIEBOT = true
 backstop-dev: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
