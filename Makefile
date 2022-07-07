@@ -81,9 +81,9 @@ backstop-test: node_modules clean-db build
 	npx backstop --docker --filter="${SCENARIO}" test
 	${DOCKER_COMPOSE} down
 
-backstop-dev: export TARGET = prod
-backstop-dev: export DISABLE_COOKIEBOT = true
-backstop-dev: node_modules clean-db build
+exploratory-test-backstop: export TARGET = prod
+exploratory-test-backstop: export DISABLE_COOKIEBOT = true
+exploratory-test-backstop: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
