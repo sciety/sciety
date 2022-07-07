@@ -269,5 +269,11 @@ $_search-button-width: functions.px-to-rem(76px);
   p,
   a {
     background-color: rgb(226, 230, 233);
+    font-size: functions.px-to-rem(18px);
+    font-weight: bold;
+
+    @include breakpoints.not-narrow() {
+      font-size: functions.px-to-rem(20px);
+    }
   }
 }
