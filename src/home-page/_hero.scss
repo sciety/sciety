@@ -177,9 +177,33 @@ $_search-button-width: functions.px-to-rem(76px);
   justify-content: space-around;
   max-width: settings.$max-site-width;
   margin: 0 auto;
+  position: relative;
+  background-color: settings.$colour-page-background;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     flex-wrap: nowrap;
+
+    &::before {
+      content: '';
+      border-left: 9000px solid settings.$colour-page-background;
+      position: absolute;
+      bottom: 0;
+      left: -9000px;
+      top: 0;
+      right: 0;
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      border-left: 9000px solid settings.$colour-container-background;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      top: 0;
+      right: -9000px;
+      z-index: -1;
+    }
   }
 }
 
