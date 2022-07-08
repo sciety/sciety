@@ -46,7 +46,7 @@ const renderVideoCallToAction = () => `
   <div class="home-page-hero-with-video__video_call_to_action">
     <div class="home-page-hero-with-video__video_cta_text_wrapper">
       <p>Learn about Sciety.</p>
-      <a href="">Play video<img src="/static/images/Play-Button.svg" alt=""/></a></div>
+      <a href="/learn-about">Play video<img src="/static/images/Play-Button.svg" alt=""/></a></div>
     </div>
 `;
 
