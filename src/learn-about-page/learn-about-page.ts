@@ -12,7 +12,7 @@ export const learnAboutPage: Page = {
       <source src="/static/video/sciety-animation-video.mp4" type="video/mp4"></source>
     </video>
 
-    <section>
+    <section class="learn-about-page-copy">
       <h2>Join Sciety</h2>
       <p>Start a new way of curating and sharing evaluated preprints. <a href="/sign-up">Sign up</a> today.</p>
 

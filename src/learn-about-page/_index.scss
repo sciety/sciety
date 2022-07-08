@@ -1,4 +1,13 @@
+@use '../sass/layout';
+
 .learn-about-page-video {
-  max-width: 60vw;
   object-fit: contain;
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+}
+
+.learn-about-page-copy {
+  @include layout.column-two();
+  @include layout.page-content-horizontal-margins();
 }
