@@ -10,6 +10,7 @@ $_drawer-logo-left-spacing: 27px;
 .drawer {
   max-width: settings.$drawer-width;
   float: left;
+  z-index: 2;
   @supports (display: grid) {
     max-width: none;
     float: none;
