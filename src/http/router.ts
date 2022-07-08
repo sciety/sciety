@@ -45,6 +45,7 @@ import {
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
 import { Adapters } from '../infrastructure';
+import { learnAboutPage } from '../learn-about-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
@@ -167,6 +168,11 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/about',
     pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+  );
+
+  router.get(
+    '/learn-about',
+    pageHandler(() => pipe(learnAboutPage, TE.right)),
   );
 
   router.get(
