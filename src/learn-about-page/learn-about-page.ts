@@ -17,11 +17,12 @@ export const learnAboutPage: Page = {
       <p>Start a new way of curating and sharing evaluated preprints. <a href="/sign-up">Sign up</a> today.</p>
 
       <h2>What Sciety offers</h2>
-      <p>Sciety's changing the landscape of preprint curation.</p>
+      <p>Sciety is changing the landscape of preprint curation.</p>
       <ul>
         <li>Discover evaluated preprints</li>
-        <li>Curate lists of preprints you're interested in</li>
-        <li>Follow trusted groups</li>
+        <li>Organise preprints into shareable lists</li>
+        <li>Follow groups evaluating articles you care about</li>
+        <li>Form a group to share your own evaluations of preprints</li>
       </ul>
     </section>
   `),
