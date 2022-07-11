@@ -15,7 +15,7 @@ export const learnAboutPage: Page = {
 
       <section class="learn-about-page-transcript">
         <h2>Video transcript</h2>
-        <p>Do you work in biomedical and life sciences?</p>
+        <p>Are you a researcher with an interest in preprint literature?</p>
         <p>How do you keep on top of the growing number of preprints now being made available?</p>
         <p>How can you tell if a preprint is worth your time?</p>
         <p>How can you and your peers share the preprints you find interesting or important?</p>
