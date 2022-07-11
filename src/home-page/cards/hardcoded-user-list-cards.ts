@@ -3,7 +3,7 @@ import { toUserId } from '../../types/user-id';
 export const card1 = {
   userId: toUserId('1449681648019255299'),
   description: 'Selected papers from the Global South curated by Stefano Vianello',
-  avatarUrl: 'https://pbs.twimg.com/profile_images/1511695999600844802/MMo-G__X_bigger.jpg',
+  avatarUrl: 'https://pbs.twimg.com/profile_images/1544360429744447488/IHZY2BeW_bigger.jpg',
   handle: 'ZonaPellucida_',
 };
 
