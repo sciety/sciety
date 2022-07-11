@@ -16,6 +16,7 @@ $_search-form-text-input-height: baseline.increments(6);
 $_search-form-vertical-spacing: baseline.increments(1);
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(76px);
+$_arbitrary-large-amount-of-px: 9000px;
 
 .home-page-hero {
   @include common.container-horizontal-spacing();
@@ -186,10 +187,10 @@ $_search-button-width: functions.px-to-rem(76px);
 
     &::before {
       content: '';
-      border-left: 9000px solid settings.$colour-page-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-page-background;
       position: absolute;
       bottom: 0;
-      left: -9000px;
+      left: calc(#{$_arbitrary-large-amount-of-px} * -1);
       top: 0;
       right: 0;
       z-index: -1;
@@ -197,12 +198,12 @@ $_search-button-width: functions.px-to-rem(76px);
 
     &::after {
       content: '';
-      border-left: 9000px solid settings.$colour-container-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-container-background;
       position: absolute;
       bottom: 0;
       left: 0;
       top: 0;
-      right: -9000px;
+      right: calc(#{$_arbitrary-large-amount-of-px} * -1);
       z-index: -1;
     }
   }
