@@ -249,8 +249,8 @@ $_search-button-width: functions.px-to-rem(76px);
   padding-right: functions.px-to-rem(16px);
   padding-left: functions.px-to-rem(16px);
   background-color: settings.$colour-container-background;
-  padding-top: common.$section-top-padding;
-  padding-bottom: common.$section-top-padding;
+  padding-top: common.$section-padding;
+  padding-bottom: common.$section-padding;
   width: 100%;
   
   @media screen and (min-width: common.$home-page-breakpoint) {

@@ -11,7 +11,7 @@
 
 .home-page-cards {
   background-color: settings.$colour-component-background;
-  padding-top: common.$section-top-padding;
+  padding-top: common.$section-padding;
   padding-bottom: baseline.increments(3);
 
   @include breakpoints.not-narrow {

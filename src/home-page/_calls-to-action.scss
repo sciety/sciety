@@ -6,7 +6,7 @@
 
 .home-page-calls-to-action {
   @include common.container-horizontal-spacing();
-  padding-top: common.$section-top-padding;
+  padding-top: common.$section-padding;
   padding-bottom: baseline.increments(3);
   background-color: settings.$colour-component-background;
 
