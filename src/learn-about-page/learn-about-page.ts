@@ -8,7 +8,7 @@ export const learnAboutPage: Page = {
       <h1>Learn about Sciety</h1>
     </header>
 
-    <video controls autoplay preload="metadata" class="learn-about-page-video">
+    <video controls preload="metadata" class="learn-about-page-video">
       <source src="/static/video/sciety-animation-video.mp4" type="video/mp4"></source>
     </video>
 
