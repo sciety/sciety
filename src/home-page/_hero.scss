@@ -219,18 +219,21 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero-with-video__video_call_to_action {
+  $_image-path: 'images/home-page-illustration.png';
+  $_image-height: 722px;
+  $_desired-image-width-on-wide-screens: 396px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('images/home-page-illustration.png') no-repeat center center;
+  background: url($_image-path) no-repeat center center;
   background-size: contain;
   width: 100%;
-  height: 361px;
+  height: calc($_image-height / 2);
 
   @media screen and (min-width: common.$home-page-breakpoint) {
-    width: functions.px-to-rem(396px);
+    width: functions.px-to-rem($_desired-image-width-on-wide-screens);
     height: 100%;
-  }  
+  }
 }
 
 .home-page-hero-with-video__left_wrapper {
