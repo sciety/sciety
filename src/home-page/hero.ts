@@ -37,7 +37,7 @@ const renderScietyFeedCTA = (): HtmlFragment => toHtmlFragment(
 
 const renderHeroImage = () => `
   <picture class="home-page-hero__picture">
-    <source srcset="/static/images/home-page-illustration.svg" media="(min-width: 60.25em)">
+    <source srcset="/static/images/old-home-page-illustration.svg" media="(min-width: 60.25em)">
     <img src="data:" alt="" class="home-page-hero__image">
   </picture>
 `;
@@ -46,7 +46,7 @@ const renderVideoCallToAction = () => `
   <div class="home-page-hero-with-video__video_call_to_action">
     <div class="home-page-hero-with-video__video_cta_text_wrapper">
       <p>Learn about Sciety.</p>
-      <a href="/learn-about">Play video<img src="/static/images/Play-Button.svg" alt=""/></a></div>
+      <a href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
     </div>
 `;
 
