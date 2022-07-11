@@ -10,7 +10,7 @@ export const learnAboutPage: Page = {
 
     <section>
       <video controls preload="metadata" class="learn-about-page-video">
-        <source src="/static/video/sciety-animation-video.mp4" type="video/mp4"></source>
+        <source src="/static/video/sciety-animation-video.mp4" type="video/mp4">
       </video>
 
       <section class="learn-about-page-transcript">
