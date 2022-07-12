@@ -2,7 +2,7 @@ import { Docmap } from './docmap/docmap-type';
 
 export const hardcodedElifeArticle: Docmap = {
   '@context': 'https://w3id.org/docmaps/context.jsonld',
-  id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.06.02.446694/elife.docmap.json',
+  id: 'https://sciety.org/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json',
   type: 'docmap',
   created: '2022-02-15T09:50:29.018Z',
   updated: '2022-02-15T11:30:27.034Z',
