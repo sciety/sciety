@@ -114,11 +114,11 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: { name: 'Ronald L Calabrese', type: 'person' },
+              actor: { name: 'Ronald L Calabrese', type: 'person', relatesToOrganization: 'Emory University, United States' },
               role: 'senior-editor',
             },
             {
-              actor: { name: 'Noah J Cowan', type: 'person' },
+              actor: { name: 'Noah J Cowan', type: 'person', relatesToOrganization: 'Johns Hopkins University, United States' },
               role: 'editor',
             },
           ],

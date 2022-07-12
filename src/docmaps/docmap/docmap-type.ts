@@ -2,6 +2,7 @@ export type Participant = {
   actor: {
     name: string,
     type: 'person',
+    relatesToOrganization?: string,
   },
   role: 'peer-reviewer' | 'senior-editor' | 'editor',
 };
