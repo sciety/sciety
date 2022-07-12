@@ -3,7 +3,7 @@ export type Participant = {
     name: string,
     type: 'person',
   },
-  role: 'peer-reviewer',
+  role: 'peer-reviewer' | 'senior-editor' | 'editor',
 };
 
 type Output = {

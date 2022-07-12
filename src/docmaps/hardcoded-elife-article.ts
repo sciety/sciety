@@ -114,8 +114,12 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: { name: 'anonymous', type: 'person' },
-              role: 'peer-reviewer',
+              actor: { name: 'Ronald L Calabrese', type: 'person' },
+              role: 'senior-editor',
+            },
+            {
+              actor: { name: 'Noah J Cowan', type: 'person' },
+              role: 'editor',
             },
           ],
           outputs: [
