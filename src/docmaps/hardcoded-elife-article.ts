@@ -159,6 +159,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2021.06.02.446694#hypothesis:ySfx9I5REeyOiqtIYslcxA',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-reply.html',
+                },
               ],
             },
           ],
