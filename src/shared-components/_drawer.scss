@@ -6,7 +6,7 @@
 @use '../sass/settings';
 
 .drawer {
-  max-width: settings.$drawer-width;
+  max-width: 0;
   float: left;
   z-index: 2;
   @supports (display: grid) {

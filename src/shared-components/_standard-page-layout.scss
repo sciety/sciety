@@ -11,7 +11,7 @@
   grid-template-rows: auto 1fr auto;
 
   @include breakpoints.not-narrow() {
-    grid-template-columns: functions.px-to-rem(settings.$drawer-width) 1fr;
+    grid-template-columns: 0 1fr;
   }
 }
 
@@ -26,10 +26,5 @@
 
   @include breakpoints.not-narrow() {
     grid-column: 2;
-
-    margin-left: settings.$drawer-width;
-    @supports (display: flex) {
-      margin-left: unset;
-    }
   }
 }
