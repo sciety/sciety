@@ -37,7 +37,7 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
-      <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+      <li class="utility-bar__list_item utility-bar__list_item--wide-only" aria-hidden="true">
         <a href="/" class="utility-bar__list_nav_link">Home</a>
       </li>
       <li class="utility-bar__list_item utility-bar__list_item--wide-only">

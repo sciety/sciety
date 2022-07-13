@@ -7,6 +7,11 @@ export const siteHeader = (user: O.Option<User>): HtmlFragment => toHtmlFragment
   <div class="site-header__white_box_padding"></div>  
   <nav class="site-header__white_box">
     <ul class="site-header__white_box_list">
+      <li class="site-header__white_box_list_item--logo">
+        <a href="/" class="site-header__logo_link">
+          <img src="/static/images/sciety-logo-blue-text.svg " alt="Sciety" class="site-header__logo">
+        </a>
+      </li>
       <li class="site-header__white_box_list_item--narrow-only">
         <a href="/menu" class="site-header__menu_link">
           <img src="/static/images/menu-icon.svg" alt="" />
