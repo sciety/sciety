@@ -5,8 +5,6 @@
 @use '../sass/functions';
 @use '../sass/settings';
 
-$_drawer-logo-left-spacing: 27px;
-
 .drawer {
   max-width: settings.$drawer-width;
   float: left;
@@ -30,14 +28,4 @@ $_drawer-logo-left-spacing: 27px;
     grid-column: 1 / 1;
     grid-row: 1 / -1;
   }
-}
-
-.drawer__logo_link {
-  align-self: flex-start;
-  margin-left: functions.px-to-rem($_drawer-logo-left-spacing);
-  margin-bottom: baseline.increments(4.5);
-}
-
-.drawer__logo {
-  display: block;
 }
