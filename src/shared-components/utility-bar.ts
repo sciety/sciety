@@ -33,6 +33,12 @@ const myProfileMenuItem = (user: User) => toHtmlFragment(`
   </li>
 `);
 
+const scietyFeedMenuItem = () => toHtmlFragment(`
+  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+    <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety feed</a>
+  </li>
+`);
+
 export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
@@ -43,6 +49,7 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
       <li class="utility-bar__list_item utility-bar__list_item--wide-only">
         <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
       </li>
+      ${O.fold(scietyFeedMenuItem, constant(''))(user)}
       ${O.fold(constant(''), myFeedMenuItem)(user)}
       ${O.fold(constant(''), myProfileMenuItem)(user)}
       ${O.fold(logInMenuItem, logOutMenuItem)(user)}
