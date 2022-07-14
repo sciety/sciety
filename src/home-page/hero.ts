@@ -36,8 +36,8 @@ const renderScietyFeedCTA = (): HtmlFragment => toHtmlFragment(
 );
 
 const renderVideoCallToAction = () => `
-  <div class="home-page-hero-with-video__video_call_to_action">
-    <div class="home-page-hero-with-video__video_cta_text_wrapper">
+  <div class="home-page-hero__video_call_to_action">
+    <div class="home-page-hero__video_cta_text_wrapper">
       <p>Learn about Sciety.</p>
       <a href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
     </div>
@@ -52,33 +52,33 @@ export type Ports = {
 type Hero = (ports: Ports) => T.Task<HtmlFragment>;
 
 const renderHeroWithVideo = (listCount: number) => `
-<section class="home-page-hero-with-video">
-  <div class="home-page-hero-with-video__content">
-    <div class="home-page-hero-with-video__left_wrapper">
-      <h1 class="home-page-hero-with-video__content_title">
+<section class="home-page-hero">
+  <div class="home-page-hero__content">
+    <div class="home-page-hero__left_wrapper">
+      <h1 class="home-page-hero__content_title">
         Sciety: the home of public preprint evaluation
       </h1>
-      <p class="home-page-hero-with-video__content_byline">
+      <p class="home-page-hero__content_byline">
         Open evaluation and curation together in one place.
         <br>
         Let Sciety help you navigate the preprint landscape.
       </p>
-      <p class="home-page-hero-with-video__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
+      <p class="home-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
       ${renderStatistics(listCount)}
       ${renderScietyFeedCTA()}
-      <form class="home-page-hero-with-video__search_form" action="/search" method="get">
+      <form class="home-page-hero__search_form" action="/search" method="get">
         <input type="hidden" name="category" value="articles">
         <label for="searchText" class="visually-hidden">Search term</label>
-        <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero-with-video__search_text">
+        <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
         <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter">
-        <label for="searchEvaluatedOnlyFilter" class="home-page-hero-with-video__search_form_label">Search only evaluated articles</label>
-        <button type="submit" class="home-page-hero-with-video__search_button">Search</button>
+        <label for="searchEvaluatedOnlyFilter" class="home-page-hero__search_form_label">Search only evaluated articles</label>
+        <button type="submit" class="home-page-hero__search_button">Search</button>
         <button type="reset" class="visually-hidden">Reset</button>
       </form>
       ${renderExampleSearches()}
     </div>
 
-    <div class="home-page-hero-with-video__right_wrapper">
+    <div class="home-page-hero__right_wrapper">
       ${renderVideoCallToAction()}
     </div>
   </div>
