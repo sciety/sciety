@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from './analytics';
-import { drawer } from './drawer';
 import { head } from './head';
 import { pageFooter } from './page-footer';
 import { siteHeader } from './site-header';
@@ -14,8 +13,6 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
 <body>
   ${googleTagManagerNoScript()}
   <div class="page-container">
-    ${drawer()}
-
     ${siteHeader(user)}
 
     <main class="page-content">

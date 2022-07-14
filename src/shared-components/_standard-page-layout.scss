@@ -5,20 +5,15 @@
 
 .page-container {
   min-height: 100vh;
-  @supports (display: grid) {
-    display: grid;
-  }
-  grid-template-rows: auto 1fr auto;
-
-  @include breakpoints.not-narrow() {
-    grid-template-columns: 0 1fr;
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .page-content {
   background-color: settings.$colour-page-background;
   padding-bottom: baseline.increments(6);
   display: block;
+  flex-grow: 1;
 
   @supports (display: flex) {
     display: flex;
