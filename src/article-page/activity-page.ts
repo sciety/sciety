@@ -67,7 +67,13 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       articleDetails: ports.fetchArticle(doi),
       hasUserSavedArticle: pipe(
         userId,
-        O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
+        O.fold(
+          constant(T.of(false)),
+          (u) => pipe(
+            ports.getAllEvents,
+            projectHasUserSavedArticle(doi, u),
+          ),
+        ),
         TE.rightTask,
       ),
     },
