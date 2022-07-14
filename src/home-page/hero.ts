@@ -58,6 +58,7 @@ export type Ports = {
 
 type Hero = (ports: Ports) => T.Task<HtmlFragment>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderHeroWithImage = (listCount: number) => `
 <section class="home-page-hero">
 <div class="home-page-hero__content">
@@ -115,7 +116,7 @@ const renderHeroWithVideo = (listCount: number) => `
     </div>
 
     <div class="home-page-hero-with-video__right_wrapper">
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? renderVideoCallToAction() : ''}
+      ${renderVideoCallToAction()}
     </div>
   </div>
 </section>
@@ -130,10 +131,7 @@ export const hero: Hero = (ports) => pipe(
     RS.size,
   )),
   T.map(flow(
-    (listCount) => `
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderHeroWithVideo(listCount) : renderHeroWithImage(listCount)}
-    
-    `,
+    (listCount) => renderHeroWithVideo(listCount),
     toHtmlFragment,
   )),
 );
