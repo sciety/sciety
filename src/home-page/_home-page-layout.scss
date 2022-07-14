@@ -10,8 +10,6 @@
 @use 'common';
 
 .home-page-footer {
-  grid-column: 2 / -1;
-  justify-self: center;
   margin-bottom: baseline.increments(2);
 }
 

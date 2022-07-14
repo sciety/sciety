@@ -18,8 +18,4 @@
   @supports (display: flex) {
     display: flex;
   }
-
-  @include breakpoints.not-narrow() {
-    grid-column: 2;
-  }
 }
