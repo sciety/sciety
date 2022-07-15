@@ -1,6 +1,6 @@
 export type Participant = PeerReviewer | SeniorEditor | Editor;
 
-export type PeerReviewer = {
+type PeerReviewer = {
   actor: {
     name: string,
     type: 'person',
@@ -8,7 +8,7 @@ export type PeerReviewer = {
   role: 'peer-reviewer',
 };
 
-export type SeniorEditor = {
+type SeniorEditor = {
   actor: {
     name: string,
     type: 'person',
@@ -17,7 +17,7 @@ export type SeniorEditor = {
   role: 'senior-editor',
 };
 
-export type Editor = {
+type Editor = {
   actor: {
     name: string,
     type: 'person',
