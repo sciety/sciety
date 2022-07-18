@@ -1,6 +1,14 @@
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 
+// The html below generated on Vimeo https://vimeo.com/manage/videos/727774522 (login required)
+const renderVimeoVideo = () => `
+  <div style="padding:56.25% 0 0 0;position:relative;">
+    <iframe src="https://player.vimeo.com/video/727774522?h=6e8839dc6b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Sciety animation video"></iframe>
+  </div>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+`;
+
 export const learnAboutPage: Page = {
   title: 'Learn about Sciety',
   content: toHtmlFragment(`
@@ -15,10 +23,7 @@ export const learnAboutPage: Page = {
         </video>
       </noscript>
 
-      <div style="padding:56.25% 0 0 0;position:relative;">
-        <iframe src="https://player.vimeo.com/video/727774522?h=6e8839dc6b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Sciety animation video"></iframe>
-      </div>
-      <script src="https://player.vimeo.com/api/player.js"></script>
+      ${renderVimeoVideo()}
 
       <section class="learn-about-page-transcript">
         <h2>Video transcript</h2>
