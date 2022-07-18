@@ -1,10 +1,7 @@
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as RS from 'fp-ts/ReadonlySet';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
+import { pipe } from 'fp-ts/function';
 import { renderExampleSearches } from './render-example-searches';
-import { DomainEvent, isUserSavedArticleEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderVideoCallToAction = () => `
@@ -52,16 +49,8 @@ const renderHeroWithVideo = () => `
 </section>
 `;
 
-export const hero: Hero = (ports) => pipe(
-  ports.getAllEvents,
-  T.map(flow(
-    RA.filter(isUserSavedArticleEvent),
-    RA.map(({ userId }) => userId.toString()),
-    RS.fromReadonlyArray(S.Eq),
-    RS.size,
-  )),
-  T.map(flow(
-    () => renderHeroWithVideo(),
-    toHtmlFragment,
-  )),
+export const hero: Hero = () => pipe(
+  renderHeroWithVideo(),
+  toHtmlFragment,
+  T.of,
 );
