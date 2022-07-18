@@ -17,13 +17,15 @@ export const learnAboutPage: Page = {
     </header>
 
     <section>
-      <noscript>
-        <video controls preload="metadata" class="learn-about-page-video">
-          <source src="/static/video/sciety-animation-video.mp4" type="video/mp4">
-        </video>
-      </noscript>
+      <div class="learn-about-page-video-wrapper">
+        <noscript>
+          <video controls preload="metadata" class="learn-about-page-video">
+            <source src="/static/video/sciety-animation-video.mp4" type="video/mp4">
+          </video>
+        </noscript>
 
-      ${renderVimeoVideo()}
+        ${renderVimeoVideo()}
+      </div>
 
       <section class="learn-about-page-transcript">
         <h2>Video transcript</h2>

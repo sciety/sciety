@@ -1,10 +1,13 @@
 @use '../sass/layout';
 
+.learn-about-page-video-wrapper {
+  margin-bottom: 2rem;
+}
+
 .learn-about-page-video {
   object-fit: contain;
   width: 100%;
   height: auto;
-  margin-bottom: 2rem;
 }
 
 .learn-about-page-transcript {
