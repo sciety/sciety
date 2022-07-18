@@ -6,7 +6,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { callsToAction } from './calls-to-action';
 import { cards, Ports as CardsPorts } from './cards';
-import { hero, Ports as HeroPorts } from './hero';
+import { hero } from './hero';
 import { personas } from './personas';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -26,7 +26,7 @@ type Components = {
   callsToAction: HtmlFragment,
 };
 
-type Ports = CardsPorts & HeroPorts;
+type Ports = CardsPorts;
 
 const renderContent = (components: Components) => toHtmlFragment(`
   <div class="home-page">
@@ -39,7 +39,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
 
 export const homePage = (ports: Ports) => (user: O.Option<User>): T.Task<Page> => pipe(
   {
-    hero: hero(ports),
+    hero: T.of(hero),
     cards: cards(ports),
     personas: T.of(personas),
     callsToAction: pipe(user, callsToAction, T.of),
