@@ -18,44 +18,6 @@ $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(76px);
 $_arbitrary-large-amount-of-px: 9000px;
 
-.home-page-hero__statistics {
-  @include list.basics();
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.home-page-hero__statistic {
-  @include typography.body();
-}
-
-.home-page-hero__statistic_link {
-  display: flex;
-  align-items: baseline;
-}
-
-.home-page-hero__statistic_number {
-  @include typography.section();
-  color: settings.$colour-text-primary;
-  margin-right: 4px;
-}
-
-.home-page-hero__statistic_title {
-  color: settings.$colour-text-primary;
-  margin-right: 1rem;
-}
-
-.home-page-hero__sciety_feed_link {
-  @include common.primary-button();
-  width: unset;
-  margin-left: 0;
-  margin-bottom: 1.5rem;
-
-  @media screen and (min-width: common.$button-stacking-breakpoint) {
-    margin-bottom: 1.5rem;
-  }
-}
-
 .home-page-hero {
   @include common.container-horizontal-spacing();
   padding-left: 0;
