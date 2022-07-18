@@ -56,10 +56,6 @@ $_arbitrary-large-amount-of-px: 9000px;
   height: calc(#{$_search-form-text-input-height} - 2 * #{$_search-form-gutter});
 }
 
-.home-page-hero__search_form_label {
-  @include typography.body();
-}
-
 .home-page-hero__content {
   display: flex;
   flex-wrap: wrap;
