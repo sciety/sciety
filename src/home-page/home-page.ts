@@ -5,7 +5,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { cards, Ports as CardsPorts } from './cards';
 import { hero } from './hero';
-import { personas } from './personas';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -19,7 +18,6 @@ export const homePageParams = t.type({
 type Components = {
   hero: HtmlFragment,
   cards: HtmlFragment,
-  personas: HtmlFragment,
 };
 
 type Ports = CardsPorts;
@@ -28,7 +26,6 @@ const renderContent = (components: Components) => toHtmlFragment(`
   <div class="home-page">
     ${components.hero}
     ${components.cards}
-    ${components.personas}
   </div>
 `);
 
@@ -36,7 +33,6 @@ export const homePage = (ports: Ports) => (): T.Task<Page> => pipe(
   {
     hero: T.of(hero),
     cards: cards(ports),
-    personas: T.of(personas),
   },
   sequenceS(T.ApplyPar),
   T.map(renderContent),
