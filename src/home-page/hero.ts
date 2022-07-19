@@ -39,7 +39,7 @@ export const hero: HtmlFragment = toHtmlFragment(`
           <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
         </p>
 
-        <h2>Organize &amp; share with peers</h2>
+        <h2>Organise &amp; share with peers</h2>
         <p>Create an account to start sharing preprints with your community.</p>
         <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
       </div>
