@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import { constant } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -51,17 +50,27 @@ const scietyFeedMenuItem = () => toHtmlFragment(`
   </li>
 `);
 
+const loggedOutMenuItems = () => `
+  ${homeMenuItem()}
+  ${groupsMenuItem()}
+  ${scietyFeedMenuItem()}
+  ${logInMenuItem()}
+  ${signUpMenuItem()}
+`;
+
+const loggedInMenuItems = (user: User) => `
+  ${homeMenuItem()}
+  ${groupsMenuItem()}
+  ${myFeedMenuItem()}
+  ${myProfileMenuItem(user)}
+  ${logOutMenuItem()}
+`;
+
 export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
-      ${homeMenuItem()}
-      ${groupsMenuItem()}
-      ${O.fold(scietyFeedMenuItem, constant(''))(user)}
-      ${O.fold(constant(''), myFeedMenuItem)(user)}
-      ${O.fold(constant(''), myProfileMenuItem)(user)}
-      ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-      ${O.fold(signUpMenuItem, constant(''))(user)}
+      ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
     </ul>
   </nav>
 `);
