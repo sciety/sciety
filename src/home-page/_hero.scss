@@ -93,12 +93,21 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero__content_title {
-  @include typography.headline();
+  @include typography.sizing(32px, 4.75);
+  font-weight: normal;
   margin-top: baseline.increments(2.5);
+
+  @include breakpoints.not-narrow() {
+    @include typography.sizing(36px, 5.25);
+  }
 }
 
 .home-page-hero__content_byline {
-  @include typography.body();
+  @include typography.sizing(20px, 2.75);
+
+  @include breakpoints.not-narrow() {
+    @include typography.sizing(24px, 3.5);
+  }
 }
 
 .home-page-hero__video_call_to_action {
