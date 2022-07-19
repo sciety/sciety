@@ -117,8 +117,8 @@ export const createRouter = (adapters: Adapters): Router => {
         TE.fromEither,
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
-          user,
-          homePage(adapters),
+          adapters,
+          homePage,
           T.map(homePageLayout(user)),
         )),
         TE.match(

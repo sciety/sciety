@@ -29,7 +29,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
   </div>
 `);
 
-export const homePage = (ports: Ports) => (): T.Task<Page> => pipe(
+export const homePage = (ports: Ports): T.Task<Page> => pipe(
   {
     hero: T.of(hero),
     cards: cards(ports),
