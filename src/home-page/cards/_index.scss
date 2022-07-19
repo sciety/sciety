@@ -64,11 +64,3 @@
   padding-left: 16px;
   padding-right: 16px;
 }
-
-.home-page-cards__call_to_action {
-  text-align: center;
-}
-
-.home-page-cards__button {
-  @include common.secondary-button();
-}

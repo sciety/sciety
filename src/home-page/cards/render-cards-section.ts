@@ -78,8 +78,5 @@ export const renderCardsSection = (userLists: E.Either<DE.DataError, Record<stri
   <section class="home-page-cards">
     ${userListCards(userLists)}
     ${evaluationCards(card1, card2, card3)}
-    <div class="home-page-cards__call_to_action">
-      <a href="/groups" class="home-page-cards__button">Discover more groups</a>
-    </div>
   </section>
 `);
