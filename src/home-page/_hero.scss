@@ -150,29 +150,30 @@ $_arbitrary-large-amount-of-px: 9000px;
   text-align: center;
   margin-top: calc(#{baseline.increments(8)} * -1);
   margin-left: functions.px-to-rem(25.6px);
+}
 
-  p,
-  a {
-    background-color: rgb(226, 230, 233);
-    font-size: functions.px-to-rem(18px);
-    font-weight: bold;
+.home-page-hero__video_cta_copy,
+ 
+.home-page-hero__video_cta_link {
+  background-color: rgb(226, 230, 233);
+  font-size: functions.px-to-rem(18px);
+  font-weight: bold;
 
-    @include breakpoints.not-narrow() {
-      font-size: functions.px-to-rem(20px);
-    }
-  }
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(20px);
+  } 
+}
 
-  p {
-    margin-bottom: 0;
-  }
+.home-page-hero__video_cta_copy {
+  margin-bottom: 0; 
+}
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: functions.px-to-rem(8px);
+.home-page-hero__video_cta_link {
+  display: inline-flex;
+  align-items: center;
+  gap: functions.px-to-rem(8px);
 
-    @include states.link() {
-      text-decoration: underline;
-    }
+  @include states.link() {
+    text-decoration: underline;
   }
 }

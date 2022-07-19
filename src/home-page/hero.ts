@@ -3,8 +3,8 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 const renderVideoCallToAction = () => `
   <div class="home-page-hero__video_call_to_action">
     <div class="home-page-hero__video_cta_text_wrapper">
-      <p>Learn about Sciety.</p>
-      <a href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
+      <p class="home-page-hero__video_cta_copy">Learn about Sciety.</p>
+      <a class="home-page-hero__video_cta_link" href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
     </div>
 `;
 
