@@ -115,6 +115,11 @@ To check only the SASS code, execute:
 make lint:sass
 ```
 
+To check only for unused TypeScript exports, execute:
+```shell
+make unused-exports
+```
+
 ## Operations
 
 The application is deployed on a Kubernetes cluster via an Helm chart.

@@ -58,6 +58,10 @@ lint\:sass: export TARGET = dev
 lint\:sass: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint:stylelint
 
+unused-exports: export TARGET = dev
+unused-exports: build
+	${DOCKER_COMPOSE} run --rm app npm run lint:unused-exports
+
 test: export TARGET = dev
 test: build
 	${DOCKER_COMPOSE} run --rm app npm run test
