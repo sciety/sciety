@@ -3,6 +3,18 @@ import { constant } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
+const homeMenuItem = () => toHtmlFragment(`
+  <li class="utility-bar__list_item utility-bar__list_item--wide-only" aria-hidden="true">
+    <a href="/" class="utility-bar__list_nav_link">Home</a>
+  </li>
+`);
+
+const groupsMenuItem = () => toHtmlFragment(`
+  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+    <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
+  </li>
+`);
+
 const logInMenuItem = () => toHtmlFragment(`
   <li class="utility-bar__list_item">
     <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
@@ -43,12 +55,8 @@ export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
-      <li class="utility-bar__list_item utility-bar__list_item--wide-only" aria-hidden="true">
-        <a href="/" class="utility-bar__list_nav_link">Home</a>
-      </li>
-      <li class="utility-bar__list_item utility-bar__list_item--wide-only">
-        <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
-      </li>
+      ${homeMenuItem()}
+      ${groupsMenuItem()}
       ${O.fold(scietyFeedMenuItem, constant(''))(user)}
       ${O.fold(constant(''), myFeedMenuItem)(user)}
       ${O.fold(constant(''), myProfileMenuItem)(user)}
