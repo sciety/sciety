@@ -34,11 +34,7 @@ const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFrag
   E.fold(
     () => '',
     (cards) => `
-        <h2 class="home-page-cards__title">Most actively curated lists</h2>
-        <p class="home-page-cards__explanatory_text">
-          Featured lists curated by users.
-          Log in to save articles to your own list.
-        </p>
+        <h2 class="home-page-cards__title">Most active lists</h2>
         <ul class="home-page-cards__cards">
           <li>
             ${cards.first}
@@ -56,11 +52,7 @@ const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFrag
 );
 
 const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
-  <h2 class="home-page-cards__title">Recent group evaluations</h2>
-  <p class="home-page-cards__explanatory_text">
-    Highlighted evaluations by selected groups of discipline experts.
-    <a href="/groups">View all groups</a>.
-  </p>
+  <h2 class="home-page-cards__title">Most recent evaluations</h2>
   <ul class="home-page-cards__cards">
     <li>
       ${renderEvaluationCard(c1)}
