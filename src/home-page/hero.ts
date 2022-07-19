@@ -27,6 +27,11 @@ export const hero: HtmlFragment = toHtmlFragment(`
           <button type="submit" class="home-page-hero__search_button">Search</button>
           <button type="reset" class="visually-hidden">Reset</button>
         </form>
+        <h2>Follow peer review groups</h2>
+        <p>
+          Researchers reviewing and curating the latest preprints.<br>
+          <a href="/groups">Explore their work</a>
+        </p>
       </div>
 
       <div class="home-page-hero__right_wrapper">
