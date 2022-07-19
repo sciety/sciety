@@ -178,6 +178,10 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 }
 
+.home-page-hero__groups_link {
+  font-weight: bold;
+}
+
 .home-page-hero__sign_up_button {
   @include button.button-link();
 }

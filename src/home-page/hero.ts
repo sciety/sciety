@@ -30,7 +30,7 @@ export const hero: HtmlFragment = toHtmlFragment(`
         <h2>Follow peer review groups</h2>
         <p>
           Researchers reviewing and curating the latest preprints.<br>
-          <a href="/groups">Explore their work</a>
+          <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
         </p>
         <h2>Organize &amp; share with peers</h2>
         <p>Create an account to start sharing preprints with your community.</p>
