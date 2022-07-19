@@ -32,6 +32,9 @@ export const hero: HtmlFragment = toHtmlFragment(`
           Researchers reviewing and curating the latest preprints.<br>
           <a href="/groups">Explore their work</a>
         </p>
+        <h2>Organize &amp; share with peers</h2>
+        <p>Create an account to start sharing preprints with your community.</p>
+        <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
       </div>
 
       <div class="home-page-hero__right_wrapper">

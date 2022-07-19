@@ -177,3 +177,7 @@ $_arbitrary-large-amount-of-px: 9000px;
     text-decoration: underline;
   }
 }
+
+.home-page-hero__sign_up_button {
+  @include button.button-link();
+}
