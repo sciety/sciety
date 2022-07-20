@@ -46,8 +46,8 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__white_box {
-  padding-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
-  padding-right: functions.px-to-rem(settings.$menu-icons-left-spacing);
+  padding-left: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
+  padding-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
   background-color: settings.$colour-white;
 }
 
@@ -69,7 +69,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__logo_link {
-  margin-right: functions.px-to-rem(22px);
+  margin-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
   display: block;
 }
 

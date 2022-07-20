@@ -62,13 +62,13 @@ $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page__close_nav {
   align-self: center;
-  margin-right: functions.px-to-rem(16px);
+  margin-left: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
+  margin-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
   @supports(display: flex) {
     display: flex;
   }
   align-items: center;
   justify-content: center;
-  margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
 
   &::before {
     @include layout.visually-hidden();
