@@ -57,12 +57,9 @@ $_outer-vertical-spacing: baseline.increments(4);
   flex-wrap: wrap;
 
   li {
-    margin-right: functions.px-to-rem(35px);
+    margin-left: functions.px-to-rem(16px);
+    margin-right: functions.px-to-rem(16px);
     padding-bottom: baseline.increments(2);
-  }
-
-  li:last-child {
-    margin-right: 0;
   }
 }
 
