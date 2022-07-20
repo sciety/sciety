@@ -16,7 +16,13 @@ export const pageFooter: HtmlFragment = toHtmlFragment(`
         </li>   
         <li>
           <a href="/contact-us" class="main-footer__link">Contact</a>
-        </li>   
+        </li>
+        <li>
+          <a href="https://twitter.com/scietyHQ"><img src="/static/images/twitter-bird-white.svg" alt="Follow us on Twitter"/></a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/ScietyHQ/"><img src="/static/images/facebook-white.svg" alt="Follow us on Facebook"/></a>
+        </li>  
       </ul>
       <small class="main-footer__small_print">
         © 2022 eLife Sciences Publications Ltd.

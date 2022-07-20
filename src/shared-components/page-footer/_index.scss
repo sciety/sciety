@@ -53,9 +53,12 @@ $_outer-vertical-spacing: baseline.increments(4);
   margin-bottom: baseline.increments(6);
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 
   li {
     margin-right: functions.px-to-rem(35px);
+    padding-bottom: baseline.increments(2);
   }
 
   li:last-child {
@@ -65,6 +68,7 @@ $_outer-vertical-spacing: baseline.increments(4);
 
 .main-footer__link {
   @include typography.sizing(18px, 2.5);
+  display: block;
   font-weight: bold;
   border-bottom: settings.$navigation-link-border-width solid settings.$colour-white;
   padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
