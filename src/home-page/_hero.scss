@@ -17,6 +17,7 @@ $_search-form-vertical-spacing: baseline.increments(1);
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(76px);
 $_arbitrary-large-amount-of-px: 9000px;
+$_hero-wrappers-horizontal-spacing: 16px;
 
 .home-page-hero {
   @include common.container-horizontal-spacing();
@@ -130,8 +131,8 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .home-page-hero__left_wrapper {
   padding-bottom: baseline.increments(6);
-  padding-right: functions.px-to-rem(16px);
-  padding-left: functions.px-to-rem(16px);
+  padding-right: functions.px-to-rem($_hero-wrappers-horizontal-spacing);
+  padding-left: functions.px-to-rem($_hero-wrappers-horizontal-spacing);
   padding-top: baseline.increments(2.5);
 
   @media screen and (min-width: common.$home-page-breakpoint) {
@@ -142,8 +143,8 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero__right_wrapper {
-  padding-right: functions.px-to-rem(16px);
-  padding-left: functions.px-to-rem(16px);
+  padding-right: functions.px-to-rem($_hero-wrappers-horizontal-spacing);
+  padding-left: functions.px-to-rem($_hero-wrappers-horizontal-spacing);
   background-color: settings.$colour-container-background;
   padding-top: common.$section-padding;
   padding-bottom: common.$section-padding;
