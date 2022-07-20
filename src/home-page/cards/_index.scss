@@ -10,7 +10,7 @@
 @use './user-list-card';
 
 .home-page-cards {
-  background-color: settings.$colour-component-background;
+  background-color: settings.$colour-white;
   padding-top: common.$section-padding;
   padding-bottom: baseline.increments(3);
 
