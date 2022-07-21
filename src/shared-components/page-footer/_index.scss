@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @use '../../sass/baseline';
 @use '../../sass/breakpoints';
 @use '../../sass/button';
@@ -58,8 +60,9 @@ $_outer-vertical-spacing: baseline.increments(4);
 }
 
 .main-footer__navigation_item {
-  margin-left: functions.px-to-rem(16px);
-  margin-right: functions.px-to-rem(16px);
+  $_item-spacing: 32px;
+  margin-left: functions.px-to-rem(math.div($_item-spacing, 2));
+  margin-right: functions.px-to-rem(math.div($_item-spacing, 2));
   padding-bottom: baseline.increments(2);
 }
 
