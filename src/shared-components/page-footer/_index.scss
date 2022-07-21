@@ -55,12 +55,12 @@ $_outer-vertical-spacing: baseline.increments(4);
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+}
 
-  li {
-    margin-left: functions.px-to-rem(16px);
-    margin-right: functions.px-to-rem(16px);
-    padding-bottom: baseline.increments(2);
-  }
+.main-footer__navigation_item {
+  margin-left: functions.px-to-rem(16px);
+  margin-right: functions.px-to-rem(16px);
+  padding-bottom: baseline.increments(2);
 }
 
 .main-footer__link {
