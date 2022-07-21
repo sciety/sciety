@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from './analytics';
 import { head } from './head';
-import { pageFooter } from './page-footer';
+import { siteFooter } from './site-footer';
 import { siteHeader } from './site-header';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -21,7 +21,7 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
       </div>
     </main>
 
-    ${pageFooter}
+    ${siteFooter}
   </div>
 
   <script src="/static/behaviour.js"></script>

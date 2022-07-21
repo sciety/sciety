@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
-import { pageFooter } from '../shared-components/page-footer';
+import { siteFooter } from '../shared-components/site-footer';
 import { siteHeader } from '../shared-components/site-header';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -18,7 +18,7 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
       ${page.content}
     </main>
 
-    ${pageFooter}
+    ${siteFooter}
   </div>
 
   <script src="/static/behaviour.js"></script>
