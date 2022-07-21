@@ -176,10 +176,10 @@
       ]
     },
     {
-      "label": "Page footer",
+      "label": "Site footer",
       "url": "http://sciety_app/about",
       "selectors": [
-        ".page-footer"
+        ".site-footer"
       ]
     },
     {
