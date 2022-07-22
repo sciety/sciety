@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
-import { Group, updateAll } from './update-all';
+import { GroupIngestionConfiguration, updateAll } from './update-all';
 
-const shouldUpdate = (group: Group) => {
+const shouldUpdate = (group: GroupIngestionConfiguration) => {
   const pattern = process.env.INGEST_ONLY;
   if (pattern) {
     return group.name.toLowerCase().includes(pattern.toLowerCase())

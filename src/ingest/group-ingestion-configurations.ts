@@ -5,10 +5,10 @@ import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
 import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
-import { Group } from './update-all';
+import { GroupIngestionConfiguration } from './update-all';
 import { fetchPrelightsEvaluations } from '../third-parties/prelights/fetch-prelights-evaluations';
 
-export const groupIngestionConfigurations: Array<Group> = [
+export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = [
   {
     id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     name: 'eLife',

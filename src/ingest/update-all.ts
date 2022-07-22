@@ -28,7 +28,7 @@ export type FeedData = {
 
 export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
 
-export type Group = {
+export type GroupIngestionConfiguration = {
   id: string,
   name: string,
   fetchFeed: FetchEvaluations,
@@ -46,7 +46,7 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
   process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
 
-const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
+const reportSkippedItems = (group: GroupIngestionConfiguration) => (feedData: FeedData) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
       feedData.skippedItems,
@@ -93,7 +93,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 
 const ingestionCommandsBatchSize = 1;
 
-const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => pipe(
+const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (feedData: FeedData) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
@@ -124,7 +124,7 @@ const sendRecordEvaluationCommands = (group: Group) => (feedData: FeedData) => p
   }),
 );
 
-const updateGroup = (group: Group): T.Task<void> => pipe(
+const updateGroup = (group: GroupIngestionConfiguration): T.Task<void> => pipe(
   group.fetchFeed({
     fetchData,
     fetchGoogleSheet,
@@ -144,7 +144,7 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
   ),
 );
 
-export const updateAll = (groups: ReadonlyArray<Group>): T.Task<ReadonlyArray<void>> => pipe(
+export const updateAll = (groups: ReadonlyArray<GroupIngestionConfiguration>): T.Task<ReadonlyArray<void>> => pipe(
   groups,
   T.traverseArray(updateGroup),
 );
