@@ -94,7 +94,7 @@ const allGroups: Array<Group> = [
   {
     id: '50401e46-b764-47b7-8557-6bb35444b7c8',
     name: 'ASAPbio crowd review',
-    fetchFeed: fetchReviewsFromHypothesisGroup('EBy1rZMX'),
+    fetchFeed: fetchReviewsFromHypothesisUser('ASAPbio_crowd_preprint_review'),
   },
   {
     id: 'b5f31635-d32b-4df9-92a5-0325a1524343',
