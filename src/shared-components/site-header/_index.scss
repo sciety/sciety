@@ -30,7 +30,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .site-header {
   display: grid;
-  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 92px)) 1fr;
+  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 229px)) 1fr;
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
@@ -82,7 +82,6 @@ $_search-icon-size: functions.px-to-rem(24px);
   flex-grow: 1;
 
   @supports (display: flex) {
-    max-width: functions.px-to-rem(settings.$max-site-width);
     display: flex;
     align-items: center;
     padding-top: 0;
