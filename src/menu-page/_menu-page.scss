@@ -62,8 +62,8 @@ $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page__close_nav {
   align-self: center;
-  margin-left: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
-  margin-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
+  margin-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  margin-right: functions.px-to-rem(settings.$site-header-click-target-separation);
   @supports(display: flex) {
     display: flex;
   }

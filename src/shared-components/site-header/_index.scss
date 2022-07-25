@@ -30,7 +30,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .site-header {
   display: grid;
-  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 229px)) 1fr;
+  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 225px)) 1fr;
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
@@ -46,8 +46,8 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__white_box {
-  padding-left: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
-  padding-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
+  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   background-color: settings.$colour-white;
 }
 
@@ -69,7 +69,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 }
 
 .site-header__logo_link {
-  margin-right: functions.px-to-rem(settings.$site-header-icon-horizontal-spacing);
+  margin-right: functions.px-to-rem(settings.$site-header-click-target-separation);
   display: block;
 }
 
