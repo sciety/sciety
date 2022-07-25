@@ -10,12 +10,14 @@
 @use './user-list-card';
 
 .home-page-cards {
-  background-color: settings.$colour-white;
   padding-top: common.$section-padding;
   padding-bottom: baseline.increments(3);
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  margin: 0 auto;
 
   @include breakpoints.not-narrow {
-    @include common.container-horizontal-spacing();
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
   @media screen and (min-width: 30.25em) {
