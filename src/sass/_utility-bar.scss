@@ -11,7 +11,7 @@
 
 .utility-bar {
   display: flex;
-  margin-right: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+  margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
   flex-grow: 1;
   align-self: center;
   float: right;

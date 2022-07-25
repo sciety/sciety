@@ -41,7 +41,7 @@
   .sciety-grid-two-columns {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-column-gap: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+    grid-column-gap: functions.px-to-rem(settings.$sciety-default-gutter);
     grid-auto-rows: min-content;
     grid-auto-flow: column;
 
@@ -61,7 +61,7 @@
   flex-grow: 1;
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    padding: 0 functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+    padding: 0 functions.px-to-rem(settings.$sciety-default-gutter);
   }
 }
 

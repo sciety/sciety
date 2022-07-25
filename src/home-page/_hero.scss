@@ -57,7 +57,7 @@ $_hero-wrappers-horizontal-spacing: 16px;
   @media screen and (min-width: common.$home-page-breakpoint) {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-column-gap: functions.px-to-rem(settings.$sciety-grid-two-columns-column-gap);
+    grid-column-gap: functions.px-to-rem(settings.$sciety-default-gutter);
 
     position: relative;
 
