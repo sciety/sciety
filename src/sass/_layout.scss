@@ -16,8 +16,8 @@
 }
 
 @mixin page-content-horizontal-margins() {
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
 
   @include breakpoints.not-narrow {
     margin-left: 0;
