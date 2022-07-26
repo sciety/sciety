@@ -4,6 +4,7 @@ import { User } from '../../types/user';
 import { utilityBar } from '../utility-bar';
 
 export const siteHeader = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`<header class="site-header">
+  <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <div class="site-header__white_box_padding"></div>  
   <nav class="site-header__white_box">
     <ul class="site-header__white_box_list">

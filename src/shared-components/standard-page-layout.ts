@@ -15,7 +15,7 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
   <div class="page-container">
     ${siteHeader(user)}
 
-    <main class="page-content">
+    <main class="page-content" id="mainContent">
       <div class="sciety-grid-two-columns">
         ${page.content}
       </div>
