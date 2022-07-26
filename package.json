@@ -22,7 +22,7 @@
     "escape-goat": "^3.0.0",
     "fast-printf": "1.6.9",
     "fast-xml-parser": "^4.0.9",
-    "fp-ts": "^2.12.1",
+    "fp-ts": "^2.12.2",
     "googleapis": "^105.0.0",
     "googleapis-common": "6.0.0",
     "http-status-codes": "^2.2.0",
