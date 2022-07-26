@@ -92,7 +92,7 @@ $_white-box-width-not-narrow: 225px;
   }
 }
 
-.site-header__white_box_list_item--narrow-only {
+.site-header__white_box_list_item--menu {
   @include breakpoints.not-narrow() {
     display: none;
   }
