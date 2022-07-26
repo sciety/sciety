@@ -21,32 +21,30 @@ const renderVideoCallToAction = () => `
 
 export const hero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero">
-    <div class="home-page-hero__content">
-      <div class="home-page-hero__left_wrapper">
-        <h1 class="home-page-hero__content_title">
-          The home of public preprint evaluation
-        </h1>
-        <p class="home-page-hero__content_byline">
-          Explore and curate evaluated preprints.
-        </p>
+    <div class="home-page-hero__left_wrapper">
+      <h1 class="home-page-hero__content_title">
+        The home of public preprint evaluation
+      </h1>
+      <p class="home-page-hero__content_byline">
+        Explore and curate evaluated preprints.
+      </p>
 
-        <h2>Find evaluated preprints</h2>
-        ${renderSearchForm()}
+      <h2>Find evaluated preprints</h2>
+      ${renderSearchForm()}
 
-        <h2>Follow peer review groups</h2>
-        <p>
-          Researchers reviewing and curating the latest preprints.<br>
-          <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
-        </p>
+      <h2>Follow peer review groups</h2>
+      <p>
+        Researchers reviewing and curating the latest preprints.<br>
+        <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
+      </p>
 
-        <h2>Organise &amp; share with peers</h2>
-        <p>Create an account to start sharing preprints with your community.</p>
-        <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
-      </div>
+      <h2>Organise &amp; share with peers</h2>
+      <p>Create an account to start sharing preprints with your community.</p>
+      <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
+    </div>
 
-      <div class="home-page-hero__right_wrapper">
-        ${renderVideoCallToAction()}
-      </div>
+    <div class="home-page-hero__right_wrapper">
+      ${renderVideoCallToAction()}
     </div>
   </section>
 `);

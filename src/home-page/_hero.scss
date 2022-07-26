@@ -18,37 +18,7 @@ $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(76px);
 $_arbitrary-large-amount-of-px: 9000px;
 
-.home-page-hero__search_form {
-  width: 100%;
-  max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
-  position: relative;
-  margin-bottom: $_search-form-vertical-spacing;
-}
-
-.home-page-hero__search_text {
-  width: 100%;
-  height: $_search-form-text-input-height;
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-  padding-top: baseline.increments(math.div(17, 8));
-  padding-bottom: baseline.increments(math.div(17, 8));
-  padding-left: functions.px-to-rem($_search-form-gutter);
-  padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
-  margin-bottom: $_search-form-vertical-spacing;
-  color: settings.$colour-text-primary;
-  background-color: settings.$colour-home-page-search;
-}
-
-.home-page-hero__search_button {
-  @include button.button();
-  position: absolute;
-  top: $_search-form-gutter;
-  right: $_search-form-gutter;
-  width: $_search-button-width;
-  height: calc(#{$_search-form-text-input-height} - 2 * #{$_search-form-gutter});
-}
-
-.home-page-hero__content {
+.home-page-hero {
   max-width: settings.$max-site-width;
   margin: 0 auto;
   background-color: settings.$colour-page-background;
@@ -82,6 +52,36 @@ $_arbitrary-large-amount-of-px: 9000px;
       z-index: -1;
     }
   }
+}
+
+.home-page-hero__search_form {
+  width: 100%;
+  max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
+  position: relative;
+  margin-bottom: $_search-form-vertical-spacing;
+}
+
+.home-page-hero__search_text {
+  width: 100%;
+  height: $_search-form-text-input-height;
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  padding-top: baseline.increments(math.div(17, 8));
+  padding-bottom: baseline.increments(math.div(17, 8));
+  padding-left: functions.px-to-rem($_search-form-gutter);
+  padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
+  margin-bottom: $_search-form-vertical-spacing;
+  color: settings.$colour-text-primary;
+  background-color: settings.$colour-home-page-search;
+}
+
+.home-page-hero__search_button {
+  @include button.button();
+  position: absolute;
+  top: $_search-form-gutter;
+  right: $_search-form-gutter;
+  width: $_search-button-width;
+  height: calc(#{$_search-form-text-input-height} - 2 * #{$_search-form-gutter});
 }
 
 .home-page-hero__content_title {
