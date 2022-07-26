@@ -10,6 +10,7 @@
 @use '../../sass/list';
 
 $_search-icon-size: functions.px-to-rem(24px);
+$_white-box-width-not-narrow: 225px;
 
 @mixin secondary-button-link() {
   @include typography.button();
@@ -30,7 +31,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .site-header {
   display: grid;
-  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - 225px)) 1fr;
+  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
@@ -49,6 +50,9 @@ $_search-icon-size: functions.px-to-rem(24px);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   background-color: settings.$colour-white;
+  @include breakpoints.not-narrow() {
+    width: $_white-box-width-not-narrow;
+  }
 }
 
 .site-header__white_box_list {
