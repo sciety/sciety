@@ -16,8 +16,8 @@
   margin: 0 auto;
 
   @include breakpoints.not-narrow {
-    padding-left: 22px;
-    padding-right: 22px;
+    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   }
 
   @media screen and (min-width: 30.25em) {
