@@ -43,7 +43,7 @@
   }
 }
 
-.utility-bar__list_item--wide-only {
+.utility-bar__list_item--navigation {
   display: none;
 
   @include breakpoints.not-narrow() {

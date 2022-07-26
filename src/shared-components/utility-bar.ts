@@ -3,13 +3,13 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
 const homeMenuItem = () => `
-  <li class="utility-bar__list_item utility-bar__list_item--wide-only" aria-hidden="true">
+  <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">
     <a href="/" class="utility-bar__list_nav_link">Home</a>
   </li>
 `;
 
 const groupsMenuItem = () => `
-  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/groups" class="utility-bar__list_nav_link">Groups</a>
   </li>
 `;
@@ -33,19 +33,19 @@ const signUpMenuItem = () => `
 `;
 
 const myFeedMenuItem = () => `
-  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/my-feed" class="utility-bar__list_nav_link">My feed</a>
   </li>
 `;
 
 const myProfileMenuItem = (user: User) => `
-  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">My profile</a>
   </li>
 `;
 
 const scietyFeedMenuItem = () => `
-  <li class="utility-bar__list_item utility-bar__list_item--wide-only">
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety feed</a>
   </li>
 `;
