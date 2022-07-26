@@ -20,9 +20,9 @@ export const signUpPage: Page = {
       <h2>Why should I make a Sciety account?</h2>
       <p>You don't need an account to use Sciety, but having an account unlocks new features.</p>
       <ul>
-        <li><b>Save your favourite preprints</b>: never lose the preprints that interest you most.</li>
-        <li><b>Follow trusted groups</b>: stay updated on what your favourite groups are evaluating.</li>
-        <li><b>Track recent activity</b>: always see new evaluations on saved preprints.</li>
+        <li><strong>Save your favourite preprints</strong>: never lose the preprints that interest you most.</li>
+        <li><strong>Follow trusted groups</strong>: stay updated on what your favourite groups are evaluating.</li>
+        <li><strong>Track recent activity</strong>: always see new evaluations on saved preprints.</li>
       </ul>
   
       <p><a href="/about">Learn more about Sciety</a></p>
