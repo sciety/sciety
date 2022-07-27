@@ -50,10 +50,17 @@ const scietyFeedMenuItem = () => `
   </li>
 `;
 
+const aboutScietyMenuItem = () => `
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
+    <a href="/about" class="utility-bar__list_nav_link">About Scietyt a</a>
+  </li>
+`;
+
 const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
   ${scietyFeedMenuItem()}
+  ${aboutScietyMenuItem()}
   ${logInMenuItem()}
   ${signUpMenuItem()}
 `;
