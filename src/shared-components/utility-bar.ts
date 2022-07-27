@@ -34,19 +34,19 @@ const signUpMenuItem = () => `
 
 const myFeedMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/my-feed" class="utility-bar__list_nav_link">My feed</a>
+    <a href="/my-feed" class="utility-bar__list_nav_link">My Feed</a>
   </li>
 `;
 
 const myProfileMenuItem = (user: User) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">My profile</a>
+    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">My Profile</a>
   </li>
 `;
 
 const scietyFeedMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety feed</a>
+    <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety Feed</a>
   </li>
 `;
 
