@@ -46,7 +46,7 @@
 .utility-bar__list_item--navigation {
   display: none;
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.site-header() {
     display: flex;
   }
 }

@@ -50,7 +50,7 @@ $_white-box-width-not-narrow: 225px;
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   background-color: settings.$colour-white;
-  @include breakpoints.not-narrow() {
+  @include breakpoints.site-header() {
     width: $_white-box-width-not-narrow;
   }
 }
@@ -66,7 +66,7 @@ $_white-box-width-not-narrow: 225px;
 .site-header__white_box_list_item--logo {
   display: none;
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.site-header() {
     display: initial;
     line-height: 0;
   }
@@ -93,7 +93,7 @@ $_white-box-width-not-narrow: 225px;
 }
 
 .site-header__white_box_list_item--menu {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.site-header() {
     display: none;
   }
 }

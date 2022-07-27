@@ -4,6 +4,10 @@
   @media screen and (min-width: settings.$breakpoint-narrow) { @content; }
 }
 
+@mixin site-header() {
+  @media screen and (min-width: 51.56em) { @content; }
+}
+
 @mixin two-column-display() {
   @media screen and (min-width: 68.75em) { @content; }
 }
