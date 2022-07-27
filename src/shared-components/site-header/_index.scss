@@ -10,7 +10,7 @@
 @use '../../sass/list';
 
 $_search-icon-size: functions.px-to-rem(24px);
-$_white-box-width-not-narrow: 225px;
+$_white-box-width-not-narrow: 280px;
 
 @mixin secondary-button-link() {
   @include typography.button();
@@ -129,4 +129,8 @@ $_white-box-width-not-narrow: 225px;
 
 .site-header__search_label {
   @include layout.visually-hidden();
+
+  @include breakpoints.site-header() {
+    @include layout.visually-unhidden();
+  }
 }
