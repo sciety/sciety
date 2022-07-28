@@ -20,7 +20,7 @@
     padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   }
 
-  @media screen and (min-width: 30.25em) {
+  @media screen and (min-width: functions.px-to-em(484px)) {
     padding-bottom: baseline.increments(6);
   }
 }
