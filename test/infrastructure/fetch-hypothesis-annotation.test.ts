@@ -64,7 +64,15 @@ describe('fetch-hypothesis-annotation', () => {
     })));
   });
 
-  it.todo('test the 404 response when hypothesis group has removed an annotation');
+  it.skip('test the 404 response when hypothesis group has removed an annotation', async () => {
+    const input = '<p><strong><em>bold italic</strong> italic</em></p>';
+    const getJson = async (): Promise<Json> => { throw new Error('404 response'); };
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+
+    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
+      fullText: expect.stringContaining(input),
+    })));
+  });
 
   it.todo('test the 500 response when hypothesis is unreachable');
 });
