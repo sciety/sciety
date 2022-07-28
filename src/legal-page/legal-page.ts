@@ -106,12 +106,14 @@ export const legalPage: Page = {
         15th June 2021: clarified the exact use of data by Intercom and Microsoft Clarity as their own documentation was too broad
       </p>
 
-      <h2>Cookie declaration</h2>
-      <noscript>
-        <p>You do not have Javascript enabled, so we do not use tracking cookies.</p>
-      </noscript>
-      <script id="CookieDeclaration" src="https://consent.cookiebot.com/56f22051-f915-4cf1-9552-7d8f64d81152/cd.js" type="text/javascript" async></script>
-
+      <div id="cookieDeclaration">
+        <h2>Cookie declaration</h2>
+        <noscript>
+          <p>You do not have Javascript enabled, so we do not use tracking cookies.</p>
+        </noscript>
+        <script id="CookieDeclaration" src="https://consent.cookiebot.com/56f22051-f915-4cf1-9552-7d8f64d81152/cd.js" type="text/javascript" async></script>
+      </div>
+      
       <h2>Company information</h2>
       <p>
         Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its groups, readers and authors.

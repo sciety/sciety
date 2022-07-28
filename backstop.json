@@ -159,6 +159,9 @@
       "url": "http://sciety_app/legal",
       "selectors": [
         "main"
+      ],
+      "removeSelectors": [
+        "#cookieDeclaration"
       ]
     },
     {
