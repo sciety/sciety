@@ -73,5 +73,13 @@ describe('fetch-hypothesis-annotation', () => {
     expect(evaluation).toStrictEqual(E.left(DE.unavailable));
   });
 
-  it.todo('test the 500 response when hypothesis is unreachable');
+  it.skip('test the 500 response when hypothesis is unreachable', async () => {
+    const input = '<p><strong><em>bold italic</strong> italic</em></p>';
+    const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+
+    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
+      fullText: expect.stringContaining(input),
+    })));
+  });
 });
