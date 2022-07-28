@@ -3,12 +3,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import * as DE from '../../src/types/data-error';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
+const notAvailableAnnotationKey = '123';
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the evaluation', async () => {
@@ -64,14 +66,11 @@ describe('fetch-hypothesis-annotation', () => {
     })));
   });
 
-  it.skip('test the 404 response when hypothesis group has removed an annotation', async () => {
-    const input = '<p><strong><em>bold italic</strong> italic</em></p>';
+  it('test the 404 response when hypothesis group has removed an annotation', async () => {
     const getJson = async (): Promise<Json> => { throw new Error('404 response'); };
-    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(notAvailableAnnotationKey)();
 
-    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
-      fullText: expect.stringContaining(input),
-    })));
+    expect(evaluation).toStrictEqual(E.left(DE.unavailable));
   });
 
   it.todo('test the 500 response when hypothesis is unreachable');
