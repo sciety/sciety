@@ -5,3 +5,7 @@
 @function px-to-rem($px) {
   @return math.div($px, settings.$base-font-measure) * 1rem;
 }
+
+@function px-to-em($px) {
+  @return math.div($px, settings.$base-font-measure) * 1em;
+}

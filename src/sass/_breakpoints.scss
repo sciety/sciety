@@ -1,13 +1,14 @@
 @use 'settings';
+@use 'functions';
 
 @mixin not-narrow() {
   @media screen and (min-width: settings.$breakpoint-narrow) { @content; }
 }
 
 @mixin site-header() {
-  @media screen and (min-width: 55em) { @content; }
+  @media screen and (min-width: functions.px-to-em(880px)) { @content; }
 }
 
 @mixin two-column-display() {
-  @media screen and (min-width: 68.75em) { @content; }
+  @media screen and (min-width: functions.px-to-em(1100px)) { @content; }
 }
