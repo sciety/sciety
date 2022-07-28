@@ -29,7 +29,7 @@ const zenodoRecordCodec = t.type({
 type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
-// ts-unused-exports:disable-next-line
+
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   key,
   E.fromPredicate(
