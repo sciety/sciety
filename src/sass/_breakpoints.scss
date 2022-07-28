@@ -5,7 +5,7 @@
 }
 
 @mixin site-header() {
-  @media screen and (min-width: 51.56em) { @content; }
+  @media screen and (min-width: 55em) { @content; }
 }
 
 @mixin two-column-display() {
