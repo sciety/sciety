@@ -1,0 +1,5 @@
+@use '../sass/layout';
+
+.home-page-container {
+  @include layout.page-container();
+}

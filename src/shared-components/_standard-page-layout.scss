@@ -9,10 +9,6 @@
   background-color: settings.$colour-page-background;
 }
 
-.home-page-container {
-  @include layout.page-container();
-}
-
 .page-content {
   background-color: settings.$colour-page-background;
   padding-bottom: baseline.increments(6);
