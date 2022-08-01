@@ -11,7 +11,7 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
   ${head(O.none, page)}
 <body>
   ${googleTagManagerNoScript()}
-  <div class="page-container">
+  <div class="page-container page-container--home-page-layout">
     ${siteHeader(user)}
 
     <main id="mainContent">

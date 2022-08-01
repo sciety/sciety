@@ -7,6 +7,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  &:not(.page-container--home-page-layout) {
+    background-color: settings.$colour-page-background;
+  }
 }
 
 .page-content {
