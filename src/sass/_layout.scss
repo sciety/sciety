@@ -81,3 +81,9 @@
     grid-row: 2;
   }
 }
+
+@mixin page-container() {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

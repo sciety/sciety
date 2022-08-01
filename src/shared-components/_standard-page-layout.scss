@@ -1,17 +1,16 @@
 @use '../sass/baseline';
 @use '../sass/breakpoints';
 @use '../sass/functions';
+@use '../sass/layout';
 @use '../sass/settings';
 
-.page-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.standard-page-container {
+  @include layout.page-container();
   background-color: settings.$colour-page-background;
+}
 
-  &.page-container--home-page-layout {
-    background-color: settings.$colour-white;
-  }
+.home-page-container {
+  @include layout.page-container();
 }
 
 .page-content {

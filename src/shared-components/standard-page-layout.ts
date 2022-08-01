@@ -12,7 +12,7 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
   ${head(user, page)}
 <body>
   ${googleTagManagerNoScript()}
-  <div class="page-container">
+  <div class="standard-page-container">
     ${siteHeader(user)}
 
     <main class="page-content" id="mainContent">
