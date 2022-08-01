@@ -12,10 +12,6 @@
 
 $_outer-vertical-spacing: baseline.increments(4);
 
-.site-footer {
-  background-color: settings.$colour-page-background;
-}
-
 .pre-footer {
   @include layout.page-content-horizontal-margins();
   @include breakpoints.not-narrow() {
