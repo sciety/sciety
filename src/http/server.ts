@@ -112,7 +112,11 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
             displayName: profile.displayName,
           };
           void createAccountIfNecessary(adapters)(userAccount)()
-            .then(() => cb(undefined, { id: userAccount.id, handle: userAccount.handle }));
+            .then(() => cb(undefined, {
+              id: userAccount.id,
+              handle: userAccount.handle,
+              avatarUrl: userAccount.avatarUrl,
+            }));
         },
       ),
     );
