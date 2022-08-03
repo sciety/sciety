@@ -29,16 +29,16 @@ export const hero: HtmlFragment = toHtmlFragment(`
         Explore and curate evaluated preprints.
       </p>
 
-      <h2>Find evaluated preprints</h2>
+      <h2 class="home-page-hero__subheading">Find evaluated preprints</h2>
       ${renderSearchForm()}
 
-      <h2>Follow peer review groups</h2>
+      <h2 class="home-page-hero__subheading">Follow peer review groups</h2>
       <p>
         Researchers reviewing and curating the latest preprints.<br>
         <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
       </p>
 
-      <h2>Organise &amp; share with peers</h2>
+      <h2 class="home-page-hero__subheading">Organise &amp; share with peers</h2>
       <p>Create an account to start sharing preprints with your community.</p>
       <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
     </div>

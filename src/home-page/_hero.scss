@@ -93,9 +93,11 @@ $_desired-image-width-on-wide-screens: 396px;
   @include typography.sizing(32px, 4.75);
   font-weight: normal;
   margin-top: baseline.increments(2.5);
+  margin-bottom: baseline.increments(1);
 
   @include breakpoints.not-narrow() {
     @include typography.sizing(36px, 5.25);
+    margin-bottom: baseline.increments(1.5);
   }
 }
 
@@ -105,6 +107,10 @@ $_desired-image-width-on-wide-screens: 396px;
   @include breakpoints.not-narrow() {
     @include typography.sizing(24px, 3.5);
   }
+}
+
+.home-page-hero__subheading {
+  margin-bottom: baseline.increments(0.5);
 }
 
 .home-page-hero__video_call_to_action {
