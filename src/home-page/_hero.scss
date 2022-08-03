@@ -13,7 +13,6 @@
 @use '../sass/states';
 
 $_search-form-text-input-height: baseline.increments(6);
-$_search-form-vertical-spacing: baseline.increments(1);
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(76px);
 $_arbitrary-large-amount-of-px: 9000px;
@@ -63,7 +62,6 @@ $_desired-image-width-on-wide-screens: 396px;
   width: 100%;
   max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
   position: relative;
-  margin-bottom: $_search-form-vertical-spacing;
 }
 
 .home-page-hero__search_text {
@@ -75,7 +73,6 @@ $_desired-image-width-on-wide-screens: 396px;
   padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem($_search-form-gutter);
   padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
-  margin-bottom: $_search-form-vertical-spacing;
   color: settings.$colour-text-primary;
   background-color: settings.$colour-home-page-search;
 }
@@ -103,9 +100,19 @@ $_desired-image-width-on-wide-screens: 396px;
 
 .home-page-hero__content_byline {
   @include typography.sizing(20px, 2.75);
+  margin-bottom: baseline.increments(2.5);
 
   @include breakpoints.not-narrow() {
     @include typography.sizing(24px, 3.5);
+    margin-bottom: baseline.increments(5);
+  }
+}
+
+.home-page-hero__section {
+  margin-bottom: baseline.increments(2.5);
+
+  @include breakpoints.not-narrow() {
+    margin-bottom: baseline.increments(5);
   }
 }
 
