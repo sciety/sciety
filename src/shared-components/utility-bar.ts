@@ -44,6 +44,12 @@ const myProfileMenuItem = (user: User) => `
   </li>
 `;
 
+const myUsernameMenuItem = (user: User) => `
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
+    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">${user.handle ?? user.id}</a>
+  </li>
+`;
+
 const scietyFeedMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety Feed</a>
@@ -70,6 +76,7 @@ const loggedInMenuItems = (user: User) => `
   ${groupsMenuItem()}
   ${myFeedMenuItem()}
   ${myProfileMenuItem(user)}
+  ${myUsernameMenuItem(user)}
   ${logOutMenuItem()}
 `;
 
