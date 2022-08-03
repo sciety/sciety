@@ -46,7 +46,9 @@ const myProfileMenuItem = (user: User) => `
 
 const myUsernameMenuItem = (user: User) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">${user.handle ?? user.id}</a>
+    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">
+    <img src="${user.avatarUrl ?? ''}" alt=""/>
+    ${user.handle ?? user.id}</a>
   </li>
 `;
 
