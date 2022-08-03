@@ -201,4 +201,5 @@ $_desired-image-width-on-wide-screens: 396px;
 
 .home-page-hero__sign_up_button {
   @include button.button-link();
+  display: inline-block;
 }
