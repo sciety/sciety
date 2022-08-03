@@ -45,18 +45,6 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
     await next();
   });
 
-  const checkUserDetails: Middleware = async (context, next) => {
-    if (context.state.user) {
-      if (!context.state.user.handle) {
-        context.logout();
-      }
-    }
-
-    await next();
-  };
-
-  app.use(checkUserDetails);
-
   const requiredEnvironmentVariables = [
     'APP_ORIGIN',
     'APP_SECRET',
@@ -145,6 +133,17 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
     done(null, user);
   });
 
+  const checkUserDetails: Middleware = async (context, next) => {
+    if (context.state.user) {
+      if (!context.state.user.handle) {
+        context.logout();
+      }
+    }
+
+    await next();
+  };
+
+  app.use(checkUserDetails);
   app.use(router.middleware());
   app.use(routeNotFound);
 
