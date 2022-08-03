@@ -68,18 +68,24 @@ $_desired-image-width-on-wide-screens: 396px;
   padding-right: functions.px-to-rem($_search-form-gutter);
   color: settings.$colour-text-primary;
   background-color: settings.$colour-home-page-search;
-  margin-right: functions.px-to-rem(16px);
-  width: functions.px-to-rem(224px);
+  margin-bottom: functions.px-to-rem(10px);
+  width: 100%;
+  
 
   @include breakpoints.not-narrow() {
-    width: functions.px-to-rem(308px);
+    width: functions.px-to-rem(360px);
+    margin-right: functions.px-to-rem(16px);
+    margin-bottom: 0;
   }
 }
 
 .home-page-hero__search_button {
   @include button.button();
   width: $_search-button-width;
-  height: functions.px-to-rem($_search-input-height - 2px);
+
+  @include breakpoints.not-narrow() {
+    height: functions.px-to-rem($_search-input-height - 2px);
+  }
 }
 
 .home-page-hero__content_title {
