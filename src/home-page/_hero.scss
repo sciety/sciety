@@ -199,6 +199,10 @@ $_desired-image-width-on-wide-screens: 396px;
   font-weight: bold;
 }
 
+.home-page-hero__above_button {
+  margin-bottom: baseline.increments(1);
+}
+
 .home-page-hero__sign_up_button {
   @include button.button-link();
   display: inline-block;
