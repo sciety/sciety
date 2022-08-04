@@ -4,7 +4,7 @@ const renderSearchForm = () => `
   <form action="/search" method="get">
     <input type="hidden" name="category" value="articles">
     <label for="searchText" class="visually-hidden">Search term</label>
-    <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
+    <input id="searchText" name="query" class="home-page-hero__search_text">
     <input type="hidden" name="evaluatedOnly" value="true">
     <button type="submit" class="home-page-hero__search_button">Search</button>
     <button type="reset" class="visually-hidden">Reset</button>
