@@ -121,6 +121,10 @@ $_desired-image-width-on-wide-screens: 396px;
   @include breakpoints.not-narrow() {
     margin-bottom: baseline.increments(5);
   }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .home-page-hero__subheading {
