@@ -13,7 +13,6 @@
 @use '../sass/states';
 
 $_search-form-gutter: 8px;
-$_search-button-width: functions.px-to-rem(76px);
 $_search-input-height: 40px;
 $_arbitrary-large-amount-of-px: 9000px;
 
@@ -81,7 +80,6 @@ $_desired-image-width-on-wide-screens: 396px;
 
 .home-page-hero__search_button {
   @include button.button();
-  width: $_search-button-width;
 
   @include breakpoints.not-narrow() {
     height: functions.px-to-rem($_search-input-height - 2px);
