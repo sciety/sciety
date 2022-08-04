@@ -14,6 +14,7 @@
 
 $_search-form-gutter: 8px;
 $_search-input-height: 40px;
+$_search-input-width-on-wide-screens: 360px;
 $_arbitrary-large-amount-of-px: 9000px;
 
 $_image-path: 'images/home-page-illustration.png';
@@ -70,9 +71,8 @@ $_desired-image-width-on-wide-screens: 396px;
   margin-bottom: functions.px-to-rem(10px);
   width: 100%;
   
-
   @include breakpoints.not-narrow() {
-    width: functions.px-to-rem(360px);
+    width: functions.px-to-rem($_search-input-width-on-wide-screens);
     margin-right: functions.px-to-rem(16px);
     margin-bottom: 0;
   }
