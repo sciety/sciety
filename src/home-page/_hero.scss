@@ -58,6 +58,13 @@ $_desired-image-width-on-wide-screens: 396px;
   }
 }
 
+.home-page-hero__search_form {
+  @include breakpoints.not-narrow() {
+    display: flex;
+    align-items: center;
+  }
+}
+
 .home-page-hero__search_text {
   height: functions.px-to-rem($_search-input-height);
   border: settings.$border-width solid settings.$colour-furniture;
