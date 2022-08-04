@@ -1,0 +1,48 @@
+@use 'sass:math';
+
+@use '../sass/settings';
+@use '../sass/functions';
+
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+
+@use '../sass/button';
+
+$_search-form-gutter: 8px;
+$_search-input-height: 40px;
+$_search-input-width-on-wide-screens: 360px;
+
+.home-page-hero__search_form {
+  @include breakpoints.not-narrow() {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.home-page-hero__search_text {
+  height: functions.px-to-rem($_search-input-height);
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  padding-top: baseline.increments(math.div(17, 8));
+  padding-bottom: baseline.increments(math.div(17, 8));
+  padding-left: functions.px-to-rem($_search-form-gutter);
+  padding-right: functions.px-to-rem($_search-form-gutter);
+  color: settings.$colour-text-primary;
+  margin-bottom: functions.px-to-rem(10px);
+  width: 100%;
+  
+  @include breakpoints.not-narrow() {
+    width: functions.px-to-rem($_search-input-width-on-wide-screens);
+    margin-right: functions.px-to-rem(16px);
+    margin-bottom: 0;
+  }
+}
+
+.home-page-hero__search_button {
+  @include button.button();
+  cursor: pointer;
+
+  @include breakpoints.not-narrow() {
+    height: functions.px-to-rem($_search-input-height - 2px);
+  }
+}
