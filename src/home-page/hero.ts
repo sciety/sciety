@@ -1,7 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderSearchForm = () => `
-  <form class="home-page-hero__search_form" action="/search" method="get">
+  <form action="/search" method="get">
     <input type="hidden" name="category" value="articles">
     <label for="searchText" class="visually-hidden">Search term</label>
     <input id="searchText" name="query" placeholder="Search for a topic of interest" class="home-page-hero__search_text">
