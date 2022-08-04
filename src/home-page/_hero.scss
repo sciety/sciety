@@ -22,6 +22,15 @@ $_colour-home-page-illustration-background: rgb(226, 230, 233);
 $_image-height: 722px;
 $_desired-image-width-on-wide-screens: 396px;
 
+@mixin vertical-spacing-in-left-wrapper() {
+  margin-bottom: baseline.increments(2.5);
+
+  @include breakpoints.not-narrow() {
+    margin-bottom: baseline.increments(5);
+  }
+
+}
+
 .home-page-hero {
   max-width: settings.$max-site-width;
   margin: 0 auto;
@@ -106,21 +115,16 @@ $_desired-image-width-on-wide-screens: 396px;
 }
 
 .home-page-hero__content_byline {
+  @include vertical-spacing-in-left-wrapper();
   @include typography.sizing(20px, 2.75);
-  margin-bottom: baseline.increments(2.5);
 
   @include breakpoints.not-narrow() {
     @include typography.sizing(24px, 3.5);
-    margin-bottom: baseline.increments(5);
   }
 }
 
 .home-page-hero__section {
-  margin-bottom: baseline.increments(2.5);
-
-  @include breakpoints.not-narrow() {
-    margin-bottom: baseline.increments(5);
-  }
+  @include vertical-spacing-in-left-wrapper();
 
   &:last-child {
     margin-bottom: 0;
