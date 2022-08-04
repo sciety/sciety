@@ -1,12 +1,12 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderSearchForm = () => `
-  <form class="home-page-hero__search_form" action="/search" method="get">
+  <form class="home-page-hero-search-form" action="/search" method="get">
     <input type="hidden" name="category" value="articles">
     <label for="searchText" class="visually-hidden">Search term</label>
-    <input id="searchText" name="query" class="home-page-hero__search_text">
+    <input id="searchText" name="query" class="home-page-hero-search-form__text">
     <input type="hidden" name="evaluatedOnly" value="true">
-    <button type="submit" class="home-page-hero__search_button">Search</button>
+    <button type="submit" class="home-page-hero-search-form__button">Search</button>
     <button type="reset" class="visually-hidden">Reset</button>
   </form>
 `;
