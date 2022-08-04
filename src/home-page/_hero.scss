@@ -80,6 +80,7 @@ $_desired-image-width-on-wide-screens: 396px;
 
 .home-page-hero__search_button {
   @include button.button();
+  cursor: pointer;
 
   @include breakpoints.not-narrow() {
     height: functions.px-to-rem($_search-input-height - 2px);
