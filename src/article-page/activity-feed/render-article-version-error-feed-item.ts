@@ -25,6 +25,11 @@ const servers: Record<ArticleServer, ServerInfo> = {
     avatarUrl: '/static/images/researchsquare.png',
     versionsSupported: false,
   },
+  scielo: {
+    name: 'SciELO',
+    avatarUrl: '/static/images/researchsquare.png',
+    versionsSupported: false,
+  },
 };
 
 export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment => pipe(
