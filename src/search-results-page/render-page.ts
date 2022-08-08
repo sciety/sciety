@@ -13,13 +13,24 @@ export const renderErrorPage = (error: DE.DataError): RenderPageError => ({
   message: toHtmlFragment('We\'re having trouble accessing search right now, please try again later.'),
 });
 
-export const renderPage = (searchResults: SearchResults): Page => ({
-  title: `Search results for ${searchResults.query}`,
+type SearchParams = {
+  query: string,
+  evaluatedOnly: boolean,
+};
+
+export const renderSearchResultsHeader = (searchParams: SearchParams): Page => ({
+  title: `Search results for ${searchParams.query}`,
   content: toHtmlFragment(`
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
-    ${renderSearchForm(searchResults.query, searchResults.evaluatedOnly)}
+    ${renderSearchForm(searchParams.query, searchParams.evaluatedOnly)}
+  `),
+});
+
+export const renderPage = (searchResults: SearchResults): Page => ({
+  title: `Search results for ${searchResults.query}`,
+  content: toHtmlFragment(`
     <section class="search-results">
       ${renderSearchResults(searchResults)}
     </section>

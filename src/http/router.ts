@@ -59,6 +59,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
+import { renderSearchResultsHeader } from '../search-results-page/render-page';
 import { standardPageLayoutBottomPartial, standardPageLayoutTopPartial } from '../shared-components/standard-page-layout';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -266,14 +267,31 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       context.respond = false;
       context.type = 'text/html';
-      context.res.write(standardPageLayoutTopPartial(O.fromNullable(context.state.user))({ title: 'Search results' }));
-      context.res.write(await pipe(
+      const params = pipe(
         {
           ...context.params,
           ...context.query,
           ...context.state,
         },
         searchResultsPageParams.decode,
+      );
+
+      context.res.write(standardPageLayoutTopPartial(O.fromNullable(context.state.user))({ title: 'Search results' }));
+
+      context.res.write(pipe(
+        params,
+        E.map((p) => ({
+          ...p,
+          evaluatedOnly: O.isSome(p.evaluatedOnly),
+        })),
+        (foo) => foo,
+        E.map(renderSearchResultsHeader),
+        E.map((page) => page.content),
+        E.getOrElse(() => ''),
+      ));
+
+      context.res.write(await pipe(
+        params,
         E.fold(
           () => TE.right(searchPage),
           searchResultsPage(adapters)(20),
@@ -284,6 +302,7 @@ export const createRouter = (adapters: Adapters): Router => {
         ),
         TE.toUnion,
       )());
+
       context.res.write(standardPageLayoutBottomPartial);
       context.res.end(null);
 
