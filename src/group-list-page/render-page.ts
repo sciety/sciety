@@ -15,6 +15,18 @@ type Render = (components: Components) => HtmlFragment;
 
 const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
   ${header}
+  <ul>
+  <li><a href="#example1">Open example #1</a></li>
+  </ul>
+
+  <div class="lightbox" id="example1">
+    <figure>
+      <a href="#" class="close"></a>
+      <figcaption>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Donec felis enim, placerat id eleifend eu, semper vel sem.</figcaption>
+    </figure>
+  </div>
+
   <section>
     ${content}
   </section>
