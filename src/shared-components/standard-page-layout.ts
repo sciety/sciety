@@ -29,3 +29,28 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
 </body>
 </html>
 `;
+
+export const standardPageLayoutTopPartial = (user: O.Option<User>) => (page: Omit<Page, 'content'>): string => `<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  ${head(user, page)}
+<body>
+  ${googleTagManagerNoScript()}
+  <div class="standard-page-container">
+    ${siteHeader(user)}
+
+    <main class="page-content" id="mainContent">
+      <div class="sciety-grid-two-columns">
+`;
+
+export const standardPageLayoutBottomPartial = `<!doctype html>
+      </div>
+    </main>
+
+    ${siteFooter}
+  </div>
+
+  <script src="/static/behaviour.js"></script>
+
+</body>
+</html>
+`;
