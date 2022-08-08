@@ -83,6 +83,34 @@ $_clear-button-inline-size: 48px;
   display: block;
 }
 
+.search-results:empty {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.search-results:empty:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid settings.$colour-brand;
+  border-color: settings.$colour-brand transparent settings.$colour-brand transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .search-results__page_count {
   @include typography.details();
   font-weight: 400;

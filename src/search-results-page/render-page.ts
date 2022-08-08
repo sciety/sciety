@@ -25,13 +25,12 @@ export const renderSearchResultsHeader = (searchParams: SearchParams): Page => (
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm(searchParams.query, searchParams.evaluatedOnly)}
-  `),
+    <section class="search-results">`),
 });
 
 export const renderPage = (searchResults: SearchResults): Page => ({
   title: `Search results for ${searchResults.query}`,
   content: toHtmlFragment(`
-    <section class="search-results">
       ${renderSearchResults(searchResults)}
     </section>
   `),
