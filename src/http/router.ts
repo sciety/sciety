@@ -59,6 +59,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -66,6 +67,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { User } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
@@ -256,19 +258,45 @@ export const createRouter = (adapters: Adapters): Router => {
     },
   );
 
+  const pageToSuccessResponse = (user: O.Option<User>) => flow(
+    standardPageLayout(user),
+    (body) => ({
+      body,
+      status: StatusCodes.OK,
+    }),
+  );
+
   router.get(
     '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(flow(
-      searchResultsPageParams.decode,
-      E.fold(
-        () => TE.right(searchPage),
-        searchResultsPage(adapters)(20),
-      ),
-    )),
+    async (context, next) => {
+      const response = await pipe(
+        {
+          ...context.params,
+          ...context.query,
+          ...context.state,
+        },
+        searchResultsPageParams.decode,
+        E.fold(
+          () => TE.right(searchPage),
+          searchResultsPage(adapters)(20),
+        ),
+        TE.bimap(
+          toErrorResponse(O.fromNullable(context.state.user)),
+          pageToSuccessResponse(O.fromNullable(context.state.user)),
+        ),
+        TE.toUnion,
+      )();
+
+      context.response.status = response.status;
+      context.response.type = 'html';
+      context.response.body = response.body;
+
+      await next();
+    },
   );
 
   router.get(
