@@ -20,11 +20,19 @@ const render: Render = ({ header, content, supplementary = toHtmlFragment('') })
   </ul>
 
   <div class="lightbox" id="example1">
-    <figure>
-      <a href="#" class="close"></a>
-      <figcaption>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Donec felis enim, placerat id eleifend eu, semper vel sem.</figcaption>
-    </figure>
+    <a href="#" class="close"></a>
+    <form>
+      <label>
+        List name
+        <input>
+      </label>
+      <label>
+        Description
+        <textarea></textarea>
+      </label>
+      <a href="#">Cancel</a>
+      <button type="submit">Save</button>
+    </form>
   </div>
 
   <section>
