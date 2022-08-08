@@ -4,7 +4,7 @@ Biophysics Colab is a collaboration of biophysicists whose goal is to improve th
 
 By combining the knowledge and expertise of the biophysics community with the principles of open science, Biophysics Colab provide an equitable, inclusive, and transparent environment for peer review. Their free service delivers constructive feedback on publicly available preprints so that researchers can form the best possible interpretation of their data. In the future, Biophysics Colab will launch a journal to endorse rigorous and robust studies in the form of articles.
 
-Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add value and credibility to the scientific literature in a way that supports and benefits the scientific community. Their vision is of a publishing ecosystem in which research is judged by its intrinsic significance and not the venue in which it’s published.
+Biophysics Colab is the first endeavour of the fledgling non-profit organisation, [Science Colab](https://sciencecolab.org), whose mission is to add value and credibility to the scientific literature in a way that supports and benefits the scientific community. Their vision is of a publishing ecosystem in which research is judged by its intrinsic significance and not the venue in which it’s published.
 
 The curators at Biophysics Colab receive support for their operations from Lesley Anson ([lesley@sciencecolab.org](mailto:lesley@sciencecolab.org)) and Marie E Sweet ([marie@sciencecolab.org](mailto:marie@sciencecolab.org)).
 
@@ -52,24 +52,28 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
 
 ## People
 
+Members of the Biophysics Colab community include:
+
 - Kenton J Swartz (Curator-in-Chief)
 - Richard W Aldrich
+- Rene Barro-Soria
 - Sudha Chakrapani
 - Baron Chanda
 - Alexander T Chesler
 - Lucie Delemotte
 - José Faraldo-Gómez
 - Rachelle Gaudet
-- Teresa Giraldez
+- Marcel P Goldschen-Ohm
 - Sharona E Gordon
-- Inga Hänelt
 - Alexander S Hauser
+- Yun Lyna Luo
 - Merritt Maduke
 - Medha M Pathak
 - Stephan A Pless
 - Janice L Robertson
 - Gary Rudnick
 - Renae M Ryan
+- Marie E Sweet
 - Sotiria Tavoulari
 - William N Zagotta
 
