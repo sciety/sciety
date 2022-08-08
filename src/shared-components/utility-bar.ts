@@ -56,6 +56,16 @@ const aboutScietyMenuItem = () => `
   </li>
 `;
 
+const username = () => `
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
+    <a href="/about" class="utility-bar__list_nav_link" style="display: flex; align-items: center; gap: 6px">
+    <img src="https://pbs.twimg.com/profile_images/1417079202973638657/VrQKBTkw_bigger.jpg" class="user-list-card__avatar">
+    MMMMMMMMMMMMMMM
+    </a>
+  </li>
+`;
+
+
 const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
@@ -70,6 +80,7 @@ const loggedInMenuItems = (user: User) => `
   ${groupsMenuItem()}
   ${myFeedMenuItem()}
   ${myProfileMenuItem(user)}
+  ${username()}
   ${logOutMenuItem()}
 `;
 
