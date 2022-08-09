@@ -68,6 +68,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
+import { doNotIndex } from './do-not-index';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -258,10 +259,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/search',
-    async (context, next) => {
-      context.response.set('X-Robots-Tag', 'noindex');
-      await next();
-    },
+    doNotIndex,
     async (ctx, next) => {
       const page = pipe(
         {
