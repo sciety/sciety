@@ -1,4 +1,5 @@
 import path from 'path';
+import { Readable } from 'stream';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -263,9 +264,6 @@ export const createRouter = (adapters: Adapters): Router => {
       await next();
     },
     async (ctx, next) => {
-      ctx.respond = false;
-      ctx.type = 'text/html';
-
       const page = pipe(
         {
           ...ctx.params,
@@ -275,17 +273,22 @@ export const createRouter = (adapters: Adapters): Router => {
         searchResultsPageAsPartials(adapters),
       );
 
-      ctx.res.write(await pipe(
+      const stream = new Readable();
+      ctx.body = stream;
+      stream._read = () => {};
+      stream.pipe(ctx.res);
+      ctx.type = 'text/html';
+
+      stream.push(await pipe(
         page.title,
         T.map(standardPageLayoutTopPartial(
           O.fromNullable(ctx.state.user),
         )),
       )());
-      ctx.res.write(await page.first());
-      ctx.res.write(await page.second());
-
-      ctx.res.write(standardPageLayoutBottomPartial);
-      ctx.res.end(null);
+      stream.push(await page.first());
+      stream.push(await page.second());
+      stream.push(standardPageLayoutBottomPartial);
+      stream.push(null);
 
       await next();
     },
