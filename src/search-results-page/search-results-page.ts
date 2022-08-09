@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -43,47 +42,38 @@ type PageAsPartials = {
   second: T.Task<HtmlFragment>,
 };
 
-type SearchResultsPageAsPartials = (ports: Ports) => (params: unknown) => PageAsPartials;
+type SearchResultsPageAsPartials = (ports: Ports) => (combinedContext: unknown) => PageAsPartials;
 
-export const searchResultsPageAsPartials: SearchResultsPageAsPartials = (ports) => (combinedContext) => ({
-  title: pipe(
-    combinedContext,
-    searchResultsPageParams.decode,
-    E.map((p) => ({
-      ...p,
-      evaluatedOnly: O.isSome(p.evaluatedOnly),
-    })),
-    (foo) => foo,
-    E.map(renderSearchResultsHeader),
-    E.map((page) => page.title),
-    E.getOrElse(() => ''),
-    T.of,
-  ),
-  first: pipe(
-    combinedContext,
-    searchResultsPageParams.decode,
-    E.map((p) => ({
-      ...p,
-      evaluatedOnly: O.isSome(p.evaluatedOnly),
-    })),
-    (foo) => foo,
-    E.map(renderSearchResultsHeader),
-    E.map((page) => page.content),
-    E.getOrElse(() => ''),
-    toHtmlFragment,
-    T.of,
-  ),
-  second: pipe(
-    combinedContext,
-    searchResultsPageParams.decode,
-    E.fold(
-      () => TE.right(searchPage),
-      searchResultsPage(ports)(20),
+export const searchResultsPageAsPartials: SearchResultsPageAsPartials = (ports) => (combinedContext) => pipe(
+  combinedContext,
+  searchResultsPageParams.decode,
+  (params) => ({
+    title: pipe(
+      params,
+      E.map(renderSearchResultsHeader),
+      E.map((page) => page.title),
+      E.getOrElse(() => ''),
+      T.of,
     ),
-    TE.bimap(
-      (err) => err.message,
-      (page) => page.content,
+    first: pipe(
+      params,
+      E.map(renderSearchResultsHeader),
+      E.map((page) => page.content),
+      E.getOrElse(() => ''),
+      toHtmlFragment,
+      T.of,
     ),
-    TE.toUnion,
-  ),
-});
+    second: pipe(
+      params,
+      E.fold(
+        () => TE.right(searchPage),
+        searchResultsPage(ports)(20),
+      ),
+      TE.bimap(
+        (err) => err.message,
+        (page) => page.content,
+      ),
+      TE.toUnion,
+    ),
+  }),
+);

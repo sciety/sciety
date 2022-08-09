@@ -31,7 +31,7 @@ export const paramsCodec = t.type({
   ),
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
-  evaluatedOnly: tt.optionFromNullable(t.unknown),
+  evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
@@ -43,12 +43,7 @@ type PerformAllSearches = (
 export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (params) => pipe(
   {
     query: TE.right(params.query),
-    evaluatedOnly: TE.right(
-      pipe(
-        params.evaluatedOnly,
-        O.isSome,
-      ),
-    ),
+    evaluatedOnly: TE.right(params.evaluatedOnly),
     pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
     category: TE.right(O.getOrElseW(constant('articles' as const))(params.category)),
@@ -56,10 +51,7 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
       [
         params.query,
         params.cursor,
-        pipe(
-          params.evaluatedOnly,
-          O.isSome,
-        ),
+        params.evaluatedOnly,
       ],
       tupled(ports.searchEuropePmc(pageSize)),
     ),
