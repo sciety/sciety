@@ -276,32 +276,51 @@ export const createRouter = (adapters: Adapters): Router => {
         searchResultsPageParams.decode,
       );
 
-      context.res.write(standardPageLayoutTopPartial(O.fromNullable(context.state.user))({ title: 'Search results' }));
-
-      context.res.write(pipe(
-        params,
-        E.map((p) => ({
-          ...p,
-          evaluatedOnly: O.isSome(p.evaluatedOnly),
-        })),
-        (foo) => foo,
-        E.map(renderSearchResultsHeader),
-        E.map((page) => page.content),
-        E.getOrElse(() => ''),
-      ));
-
-      context.res.write(await pipe(
-        params,
-        E.fold(
-          () => TE.right(searchPage),
-          searchResultsPage(adapters)(20),
+      const pageContentPartials = {
+        title: pipe(
+          params,
+          E.map((p) => ({
+            ...p,
+            evaluatedOnly: O.isSome(p.evaluatedOnly),
+          })),
+          (foo) => foo,
+          E.map(renderSearchResultsHeader),
+          E.map((page) => page.title),
+          E.getOrElse(() => ''),
+          T.of,
         ),
-        TE.bimap(
-          (err) => err.message,
-          (page) => page.content,
+        first: pipe(
+          params,
+          E.map((p) => ({
+            ...p,
+            evaluatedOnly: O.isSome(p.evaluatedOnly),
+          })),
+          (foo) => foo,
+          E.map(renderSearchResultsHeader),
+          E.map((page) => page.content),
+          E.getOrElse(() => ''),
+          T.of,
         ),
-        TE.toUnion,
-      )());
+        second: pipe(
+          params,
+          E.fold(
+            () => TE.right(searchPage),
+            searchResultsPage(adapters)(20),
+          ),
+          TE.bimap(
+            (err) => err.message,
+            (page) => page.content,
+          ),
+          TE.toUnion,
+        ),
+      };
+
+      context.res.write(
+        standardPageLayoutTopPartial(O.fromNullable(context.state.user))({ title: await pageContentPartials.title() }),
+      );
+
+      context.res.write(await pageContentPartials.first());
+      context.res.write(await pageContentPartials.second());
 
       context.res.write(standardPageLayoutBottomPartial);
       context.res.end(null);
