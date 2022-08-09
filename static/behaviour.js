@@ -66,4 +66,13 @@
       searchInput.focus();
     });
   }
+
+  // edit list
+  const editListButton = doc.getElementById('editListButton');
+  const editListDialogue = doc.getElementById('editListDialogue');
+  editListButton.onclick = () => {
+    editListDialogue.showModal();
+    //   Focus first input when dialog opens
+    editListDialogue.querySelector("input").focus();
+  };
 }(window.document));

@@ -16,10 +16,10 @@ type Render = (components: Components) => HtmlFragment;
 const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
   ${header}
   <ul>
-  <li><a href="#example1">Open example #1</a></li>
+  <li><a href="#example1" id="editListButton">Open example #1</a></li>
   </ul>
 
-  <div class="lightbox" id="example1">
+  <dialog id="editListDialogue">
     <a href="#" class="close"></a>
     <form>
       <label>
@@ -33,7 +33,7 @@ const render: Render = ({ header, content, supplementary = toHtmlFragment('') })
       <a href="#">Cancel</a>
       <button type="submit">Save</button>
     </form>
-  </div>
+  </dialog>
 
   <section>
     ${content}
