@@ -267,18 +267,16 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       context.respond = false;
       context.type = 'text/html';
-      const params = pipe(
-        {
-          ...context.params,
-          ...context.query,
-          ...context.state,
-        },
-        searchResultsPageParams.decode,
-      );
+      const combinedContext = {
+        ...context.params,
+        ...context.query,
+        ...context.state,
+      };
 
       const pageContentPartials = {
         title: pipe(
-          params,
+          combinedContext,
+          searchResultsPageParams.decode,
           E.map((p) => ({
             ...p,
             evaluatedOnly: O.isSome(p.evaluatedOnly),
@@ -290,7 +288,8 @@ export const createRouter = (adapters: Adapters): Router => {
           T.of,
         ),
         first: pipe(
-          params,
+          combinedContext,
+          searchResultsPageParams.decode,
           E.map((p) => ({
             ...p,
             evaluatedOnly: O.isSome(p.evaluatedOnly),
@@ -302,7 +301,8 @@ export const createRouter = (adapters: Adapters): Router => {
           T.of,
         ),
         second: pipe(
-          params,
+          combinedContext,
+          searchResultsPageParams.decode,
           E.fold(
             () => TE.right(searchPage),
             searchResultsPage(adapters)(20),
