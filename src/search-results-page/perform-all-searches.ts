@@ -3,7 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe, tupled } from 'fp-ts/function';
+import {
+  constant, identity, pipe, tupled,
+} from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ArticleResults } from './data-types';
@@ -21,6 +23,13 @@ export type Ports = FindGroupsPorts & {
   searchEuropePmc: FindArticles,
 };
 
+const booleanFromNullable = new t.Type(
+  'BooleanFromNullable',
+  t.boolean.is,
+  (u) => (u == null ? t.success(false) : t.success(true)),
+  identity,
+);
+
 export const paramsCodec = t.type({
   query: t.string,
   category: tt.optionFromNullable(
@@ -31,7 +40,7 @@ export const paramsCodec = t.type({
   ),
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
-  evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
+  evaluatedOnly: booleanFromNullable,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
