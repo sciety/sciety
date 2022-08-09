@@ -30,9 +30,9 @@ export const standardPageLayout = (user: O.Option<User>) => (page: Page): string
 </html>
 `;
 
-export const standardPageLayoutTopPartial = (user: O.Option<User>) => (page: Omit<Page, 'content'>): string => `<!doctype html>
+export const standardPageLayoutTopPartial = (user: O.Option<User>) => (title: string): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, page)}
+  ${head(user, { title })}
 <body>
   ${googleTagManagerNoScript()}
   <div class="standard-page-container">

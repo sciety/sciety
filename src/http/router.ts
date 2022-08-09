@@ -262,32 +262,30 @@ export const createRouter = (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    async (context, next) => {
-      context.respond = false;
-      context.type = 'text/html';
+    async (ctx, next) => {
+      ctx.respond = false;
+      ctx.type = 'text/html';
 
       const page = pipe(
         {
-          ...context.params,
-          ...context.query,
-          ...context.state,
+          ...ctx.params,
+          ...ctx.query,
+          ...ctx.state,
         },
         searchResultsPageAsPartials(adapters),
       );
 
-      context.res.write(
-        standardPageLayoutTopPartial(
-          O.fromNullable(context.state.user),
-        )(
-          { title: await page.title() },
-        ),
-      );
+      ctx.res.write(await pipe(
+        page.title,
+        T.map(standardPageLayoutTopPartial(
+          O.fromNullable(ctx.state.user),
+        )),
+      )());
+      ctx.res.write(await page.first());
+      ctx.res.write(await page.second());
 
-      context.res.write(await page.first());
-      context.res.write(await page.second());
-
-      context.res.write(standardPageLayoutBottomPartial);
-      context.res.end(null);
+      ctx.res.write(standardPageLayoutBottomPartial);
+      ctx.res.end(null);
 
       await next();
     },
