@@ -1,5 +1,4 @@
 import path from 'path';
-import { Readable } from 'stream';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
