@@ -23,4 +23,4 @@ export const renderSearchResultsHeader = (searchParams: SearchParams): HtmlFragm
 export const renderPage = (searchResults: SearchResults): HtmlFragment => toHtmlFragment(`
       ${renderSearchResults(searchResults)}
     </section>
-  `);
+`);
