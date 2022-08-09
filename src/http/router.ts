@@ -13,11 +13,13 @@ import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { logIn, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
+import { doNotIndex } from './do-not-index';
 import { finishCommand } from './finish-command';
 import { handleScietyApiCommand } from './handle-sciety-api-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
+import { pageAsPartialsHandler } from './page-as-partials-handler';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
@@ -58,7 +60,6 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchResultsPageAsPartials } from '../search-results-page';
-import { standardPageLayoutBottomPartial, standardPageLayoutTopPartial } from '../shared-components/standard-page-layout';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -68,7 +69,6 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
-import { doNotIndex } from './do-not-index';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -260,32 +260,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/search',
     doNotIndex,
-    async (ctx, next) => {
-      const page = pipe(
-        {
-          ...ctx.params,
-          ...ctx.query,
-          ...ctx.state,
-        },
-        searchResultsPageAsPartials(adapters),
-      );
-      const user = O.fromNullable(ctx.state.user);
-
-      ctx.response.status = 200;
-      ctx.respond = false;
-      ctx.type = 'text/html';
-
-      ctx.res.write(await pipe(
-        page.title,
-        T.map(standardPageLayoutTopPartial(user)),
-      )());
-      ctx.res.write(await page.first());
-      ctx.res.write(await page.second());
-      ctx.res.write(standardPageLayoutBottomPartial);
-      ctx.res.end(null);
-
-      await next();
-    },
+    pageAsPartialsHandler(searchResultsPageAsPartials(adapters)),
   );
 
   router.get(
