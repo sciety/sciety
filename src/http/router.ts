@@ -57,9 +57,7 @@ import { unsaveArticle } from '../save-article/execute-unsave-article-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
-import { searchPage } from '../search-page';
-import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
-import { renderSearchResultsHeader } from '../search-results-page/render-page';
+import { searchResultsPageAsPartials } from '../search-results-page';
 import { standardPageLayoutBottomPartial, standardPageLayoutTopPartial } from '../shared-components/standard-page-layout';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -267,60 +265,26 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       context.respond = false;
       context.type = 'text/html';
-      const combinedContext = {
-        ...context.params,
-        ...context.query,
-        ...context.state,
-      };
 
-      const pageContentPartials = {
-        title: pipe(
-          combinedContext,
-          searchResultsPageParams.decode,
-          E.map((p) => ({
-            ...p,
-            evaluatedOnly: O.isSome(p.evaluatedOnly),
-          })),
-          (foo) => foo,
-          E.map(renderSearchResultsHeader),
-          E.map((page) => page.title),
-          E.getOrElse(() => ''),
-          T.of,
-        ),
-        first: pipe(
-          combinedContext,
-          searchResultsPageParams.decode,
-          E.map((p) => ({
-            ...p,
-            evaluatedOnly: O.isSome(p.evaluatedOnly),
-          })),
-          (foo) => foo,
-          E.map(renderSearchResultsHeader),
-          E.map((page) => page.content),
-          E.getOrElse(() => ''),
-          T.of,
-        ),
-        second: pipe(
-          combinedContext,
-          searchResultsPageParams.decode,
-          E.fold(
-            () => TE.right(searchPage),
-            searchResultsPage(adapters)(20),
-          ),
-          TE.bimap(
-            (err) => err.message,
-            (page) => page.content,
-          ),
-          TE.toUnion,
-        ),
-      };
-
-      context.res.write(
-        standardPageLayoutTopPartial(O.fromNullable(context.state.user))({ title: await pageContentPartials.title() }),
+      const page = pipe(
+        {
+          ...context.params,
+          ...context.query,
+          ...context.state,
+        },
+        searchResultsPageAsPartials(adapters),
       );
 
-      context.res.write(await pageContentPartials.first());
-      context.res.write(await pageContentPartials.second());
+      context.res.write(
+        standardPageLayoutTopPartial(
+          O.fromNullable(context.state.user),
+        )(
+          { title: await page.title() },
+        ),
+      );
+
+      context.res.write(await page.first());
+      context.res.write(await page.second());
 
       context.res.write(standardPageLayoutBottomPartial);
       context.res.end(null);

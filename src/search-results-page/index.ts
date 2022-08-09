@@ -1,2 +1,2 @@
-export { searchResultsPage } from './search-results-page';
+export { searchResultsPage, searchResultsPageAsPartials } from './search-results-page';
 export { paramsCodec } from './perform-all-searches';
