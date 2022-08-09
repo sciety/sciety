@@ -42,7 +42,7 @@ export const standardPageLayoutTopPartial = (user: O.Option<User>) => (title: st
       <div class="sciety-grid-two-columns">
 `;
 
-export const standardPageLayoutBottomPartial = `<!doctype html>
+export const standardPageLayoutBottomPartial = `
       </div>
     </main>
 

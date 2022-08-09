@@ -10,12 +10,13 @@ import {
   Params, performAllSearches, Ports as PerformAllSearchesPorts, paramsCodec as searchResultsPageParams,
 } from './perform-all-searches';
 import {
-  renderErrorPage, RenderPage, renderPage, renderSearchResultsHeader,
+  renderErrorPage, renderPage, renderSearchResultsHeader, renderSearchResultsTitle,
 } from './render-page';
 import { selectSubsetToDisplay } from './select-subset-to-display';
 import { searchPage } from '../search-page';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../shared-components/article-card';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
+import { PageAsPartials } from '../types/page-as-partials';
 
 type Ports = PerformAllSearchesPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
@@ -23,9 +24,9 @@ type Ports = PerformAllSearchesPorts & {
   getListsOwnedBy: FetchExtraDetailsPorts['getListsOwnedBy'],
 };
 
-type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;
+type SearchResults = (ports: Ports) => (pageSize: number) => (params: Params) => T.Task<HtmlFragment>;
 
-export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (params) => pipe(
+const searchResults: SearchResults = (ports) => (pageSize) => (params) => pipe(
   params,
   performAllSearches(ports)(pageSize),
   TE.map(selectSubsetToDisplay),
@@ -33,47 +34,31 @@ export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (pa
     ...ports,
     getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
   })),
-  TE.bimap(renderErrorPage, renderPage),
+  TE.match(() => renderErrorPage, renderPage),
 );
-
-type PageAsPartials = {
-  title: T.Task<string>,
-  first: T.Task<HtmlFragment>,
-  second: T.Task<HtmlFragment>,
-};
 
 type SearchResultsPageAsPartials = (ports: Ports) => (combinedContext: unknown) => PageAsPartials;
 
 export const searchResultsPageAsPartials: SearchResultsPageAsPartials = (ports) => (combinedContext) => pipe(
   combinedContext,
   searchResultsPageParams.decode,
-  (params) => ({
-    title: pipe(
-      params,
-      E.map(renderSearchResultsHeader),
-      E.map((page) => page.title),
-      E.getOrElse(() => ''),
-      T.of,
-    ),
-    first: pipe(
-      params,
-      E.map(renderSearchResultsHeader),
-      E.map((page) => page.content),
-      E.getOrElse(() => ''),
-      toHtmlFragment,
-      T.of,
-    ),
-    second: pipe(
-      params,
-      E.fold(
-        () => TE.right(searchPage),
-        searchResultsPage(ports)(20),
+  E.fold(
+    () => searchPage,
+    (params) => ({
+      title: pipe(
+        params.query,
+        renderSearchResultsTitle,
+        T.of,
       ),
-      TE.bimap(
-        (err) => err.message,
-        (page) => page.content,
+      first: pipe(
+        params,
+        renderSearchResultsHeader,
+        T.of,
       ),
-      TE.toUnion,
-    ),
-  }),
+      second: pipe(
+        params,
+        searchResults(ports)(20),
+      ),
+    }),
+  ),
 );
