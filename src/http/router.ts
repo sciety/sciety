@@ -274,20 +274,18 @@ export const createRouter = (adapters: Adapters): Router => {
       );
       const user = O.fromNullable(ctx.state.user);
 
-      const stream = new Readable();
-      ctx.body = stream;
-      stream._read = () => {};
-      stream.pipe(ctx.res);
+      ctx.response.status = 200;
+      ctx.respond = false;
       ctx.type = 'text/html';
 
-      stream.push(await pipe(
+      ctx.res.write(await pipe(
         page.title,
         T.map(standardPageLayoutTopPartial(user)),
       )());
-      stream.push(await page.first());
-      stream.push(await page.second());
-      stream.push(standardPageLayoutBottomPartial);
-      stream.push(null);
+      ctx.res.write(await page.first());
+      ctx.res.write(await page.second());
+      ctx.res.write(standardPageLayoutBottomPartial);
+      ctx.res.end(null);
 
       await next();
     },
