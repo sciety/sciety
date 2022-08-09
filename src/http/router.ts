@@ -272,6 +272,7 @@ export const createRouter = (adapters: Adapters): Router => {
         },
         searchResultsPageAsPartials(adapters),
       );
+      const user = O.fromNullable(ctx.state.user);
 
       const stream = new Readable();
       ctx.body = stream;
@@ -281,9 +282,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
       stream.push(await pipe(
         page.title,
-        T.map(standardPageLayoutTopPartial(
-          O.fromNullable(ctx.state.user),
-        )),
+        T.map(standardPageLayoutTopPartial(user)),
       )());
       stream.push(await page.first());
       stream.push(await page.second());
