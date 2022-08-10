@@ -86,7 +86,7 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
         const user = {
           id: toUserId(username),
           handle: 'account27775998',
-          avatarUrl: '',
+          avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
           displayName: '',
         };
         void createAccountIfNecessary(adapters)(user)()
@@ -112,7 +112,14 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
             displayName: profile.displayName,
           };
           void createAccountIfNecessary(adapters)(userAccount)()
-            .then(() => cb(undefined, { id: userAccount.id, handle: userAccount.handle }));
+            .then(() => cb(
+              undefined,
+              {
+                id: userAccount.id,
+                handle: userAccount.handle,
+                avatarUrl: userAccount.avatarUrl,
+              },
+            ));
         },
       ),
     );
