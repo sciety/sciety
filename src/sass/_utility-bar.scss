@@ -7,6 +7,7 @@
 @use 'typography';
 @use 'layout';
 @use 'breakpoints';
+@use 'avatar';
 @use '../shared-components/site-header';
 
 .utility-bar {
@@ -77,4 +78,20 @@
   @include site-header.secondary-button-link();
 }
 
+.utility-bar-user-avatar {
+  @include avatar.border();
+  width: functions.px-to-rem(25px);
+  height: auto;
+  margin-right: functions.px-to-rem(6px);
+  display: inline-block;
+}
 
+.utility-bar-user-handle {
+  max-width: functions.px-to-rem(89px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media screen and (min-width: functions.px-to-em(1000px)) { 
+    max-width: none;
+  }
+}

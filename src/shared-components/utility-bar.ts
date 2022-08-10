@@ -44,6 +44,13 @@ const myProfileMenuItem = (user: User) => `
   </li>
 `;
 
+const myUsernameMenuItem = (user: User) => `
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
+    <img src="${user.avatarUrl ?? ''}" alt="" class="utility-bar-user-avatar">
+    <span class="utility-bar-user-handle">${user.handle ?? user.id}</span>
+  </li>
+`;
+
 const scietyFeedMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety Feed</a>
@@ -70,6 +77,7 @@ const loggedInMenuItems = (user: User) => `
   ${groupsMenuItem()}
   ${myFeedMenuItem()}
   ${myProfileMenuItem(user)}
+  ${myUsernameMenuItem(user)}
   ${logOutMenuItem()}
 `;
 
