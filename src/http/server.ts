@@ -2,7 +2,7 @@ import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
-import Koa from 'koa';
+import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -136,6 +136,18 @@ export const createApplicationServer = (router: Router, adapters: Adapters): E.E
     done(null, user);
   });
 
+  const checkUserDetails: Middleware = async (context, next) => {
+    if (context.state.user) {
+      if (!context.state.user.handle || !context.state.user.avatarUrl) {
+        logger('info', 'Logging out user', { user: context.state.user });
+        context.logout();
+      }
+    }
+
+    await next();
+  };
+
+  app.use(checkUserDetails);
   app.use(router.middleware());
   app.use(routeNotFound);
 
