@@ -40,14 +40,14 @@ const myFeedMenuItem = () => `
 
 const myProfileMenuItem = (user: User) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${user.handle ?? user.id}" class="utility-bar__list_nav_link">My Profile</a>
+    <a href="/users/${user.handle}" class="utility-bar__list_nav_link">My Profile</a>
   </li>
 `;
 
 const myUsernameMenuItem = (user: User) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <img src="${user.avatarUrl ?? ''}" alt="" class="utility-bar-user-avatar">
-    <span class="utility-bar-user-handle">${user.handle ?? user.id}</span>
+    <img src="${user.avatarUrl}" alt="" class="utility-bar-user-avatar">
+    <span class="utility-bar-user-handle">${user.handle}</span>
   </li>
 `;
 
