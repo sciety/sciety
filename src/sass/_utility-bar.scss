@@ -95,7 +95,7 @@ $_avatar-right-margin: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header + $_space-allocated-to-avatar-and-handle)) {
+  @include breakpoints.site-header-show-full-user-handle($_space-allocated-to-avatar-and-handle) {
     max-width: none;
   }
 }

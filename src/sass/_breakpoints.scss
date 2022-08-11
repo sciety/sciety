@@ -9,6 +9,10 @@
   @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header)) { @content; }
 }
 
+@mixin site-header-show-full-user-handle($additional-space-needed) {
+  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header + $additional-space-needed)) { @content; }
+}
+
 @mixin two-column-display() {
   @media screen and (min-width: functions.px-to-em(1100px)) { @content; }
 }
