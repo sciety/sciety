@@ -12,6 +12,8 @@ import { Page } from '../types/page';
 export const homePageParams = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
+    handle: t.string,
+    avatarUrl: t.string,
   })),
 });
 

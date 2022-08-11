@@ -87,6 +87,8 @@ const articlePageParams = t.type({
   doi: DoiFromString,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
+    handle: t.string,
+    avatarUrl: t.string,
   })),
 });
 
