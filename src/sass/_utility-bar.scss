@@ -11,7 +11,6 @@
 @use '../shared-components/site-header';
 
 $_space-allocated-to-avatar-and-handle: 120px;
-$_avatar-width: 25px;
 $_avatar-right-margin: 6px;
 
 .utility-bar {
@@ -84,14 +83,14 @@ $_avatar-right-margin: 6px;
 
 .utility-bar-user-avatar {
   @include avatar.border();
-  width: functions.px-to-rem($_avatar-width);
+  width: functions.px-to-rem(avatar.$size--in-site-header);
   height: auto;
   margin-right: functions.px-to-rem($_avatar-right-margin);
   display: inline-block;
 }
 
 .utility-bar-user-handle {
-  max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - $_avatar-width - $_avatar-right-margin);
+  max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
   overflow: hidden;
   text-overflow: ellipsis;
 
