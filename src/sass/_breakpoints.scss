@@ -2,7 +2,7 @@
 @use 'functions';
 
 @mixin not-narrow() {
-  @media screen and (min-width: settings.$breakpoint-narrow) { @content; }
+  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-narrow)) { @content; }
 }
 
 @mixin site-header() {
