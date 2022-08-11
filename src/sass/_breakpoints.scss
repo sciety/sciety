@@ -6,7 +6,7 @@
 }
 
 @mixin site-header() {
-  @media screen and (min-width: functions.px-to-em(880px)) { @content; }
+  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header)) { @content; }
 }
 
 @mixin two-column-display() {

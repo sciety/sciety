@@ -10,6 +10,10 @@
 @use 'avatar';
 @use '../shared-components/site-header';
 
+$_space-allocated-to-avatar-and-handle: 120px;
+$_avatar-width: 25px;
+$_avatar-right-margin: 6px;
+
 .utility-bar {
   display: flex;
   margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
@@ -80,18 +84,18 @@
 
 .utility-bar-user-avatar {
   @include avatar.border();
-  width: functions.px-to-rem(25px);
+  width: functions.px-to-rem($_avatar-width);
   height: auto;
-  margin-right: functions.px-to-rem(6px);
+  margin-right: functions.px-to-rem($_avatar-right-margin);
   display: inline-block;
 }
 
 .utility-bar-user-handle {
-  max-width: functions.px-to-rem(89px);
+  max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - $_avatar-width - $_avatar-right-margin);
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @media screen and (min-width: functions.px-to-em(1000px)) { 
+  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header + $_space-allocated-to-avatar-and-handle)) {
     max-width: none;
   }
 }
