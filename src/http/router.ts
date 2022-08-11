@@ -66,6 +66,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
@@ -85,11 +86,7 @@ const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: Gen
 
 const articlePageParams = t.type({
   doi: DoiFromString,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-    handle: t.string,
-    avatarUrl: t.string,
-  })),
+  user: tt.optionFromNullable(userCodec),
 });
 
 const userPageParams = t.type({

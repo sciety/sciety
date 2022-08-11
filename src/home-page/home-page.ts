@@ -5,16 +5,12 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { cards, Ports as CardsPorts } from './cards';
 import { hero } from './hero';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
+import { userCodec } from '../types/user';
 
 export const homePageParams = t.type({
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-    handle: t.string,
-    avatarUrl: t.string,
-  })),
+  user: tt.optionFromNullable(userCodec),
 });
 
 type Components = {
