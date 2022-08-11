@@ -1,6 +1,5 @@
 import * as t from 'io-ts';
 import { UserIdFromString } from './codecs/UserIdFromString';
-import { UserId } from './user-id';
 
 export const userCodec = t.type({
   id: UserIdFromString,
@@ -8,8 +7,4 @@ export const userCodec = t.type({
   avatarUrl: t.string,
 });
 
-export type User = {
-  id: UserId,
-  handle: string,
-  avatarUrl: string,
-};
+export type User = t.TypeOf<typeof userCodec>;
