@@ -1,18 +1,22 @@
 @use 'settings';
 @use 'functions';
 
+$_breakpoint-not-narrow: 740px;
+$_breakpoint-site-header: 880px;
+$_breakpoint-two-column-display: 1100px;
+
 @mixin not-narrow() {
-  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-narrow)) { @content; }
+  @media screen and (min-width: functions.px-to-em($_breakpoint-not-narrow)) { @content; }
 }
 
 @mixin site-header() {
-  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header)) { @content; }
+  @media screen and (min-width: functions.px-to-em($_breakpoint-site-header)) { @content; }
 }
 
 @mixin site-header-show-full-user-handle($additional-space-needed) {
-  @media screen and (min-width: functions.px-to-em(settings.$breakpoint-site-header + $additional-space-needed)) { @content; }
+  @media screen and (min-width: functions.px-to-em($_breakpoint-site-header + $additional-space-needed)) { @content; }
 }
 
 @mixin two-column-display() {
-  @media screen and (min-width: functions.px-to-em(1100px)) { @content; }
+  @media screen and (min-width: functions.px-to-em($_breakpoint-two-column-display)) { @content; }
 }
