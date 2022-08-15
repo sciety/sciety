@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { DomainEvent } from './domain-events';
+import {DomainEvent, isUserSavedArticleEvent} from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
@@ -26,15 +26,27 @@ type NoopPolicy = (event: DomainEvent) => T.Task<void>;
 
 const noopPolicy: NoopPolicy = () => T.of(undefined);
 
+type LogEventIfItIsAUserSavedArticle = (event: DomainEvent, logger: Logger) => T.Task<void>;
+
+const logEventIfItIsAUserSavedArticle: LogEventIfItIsAUserSavedArticle = (event, logger) => {
+    if(isUserSavedArticleEvent(event)) {
+        logger('debug', 'UserSavedArticleEvent found',{ event });
+    }
+
+    return T.of(undefined);
+};
+
 type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
   const events = await adapters.getAllEvents();
-  const amountOfEventsToProcess = 0;
+  const amountOfEventsToProcess = 100;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
+    console.log(events[i]);
+    await logEventIfItIsAUserSavedArticle(events[i], adapters.logger)();
     await new Promise((resolve) => {
       setTimeout(resolve, 0);
     });
