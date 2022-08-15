@@ -42,7 +42,7 @@ type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
   const events = await adapters.getAllEvents();
-  const amountOfEventsToProcess = 100;
+  const amountOfEventsToProcess = 70000;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
