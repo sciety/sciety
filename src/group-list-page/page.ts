@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articlesList, Ports } from './articles-list/articles-list';
+import { Ports } from './articles-list/articles-list';
 import { renderComponent } from './header/render-component';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
@@ -13,6 +13,7 @@ import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -54,12 +55,14 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       T.chain(headers(params.id)),
       TE.map(renderComponent),
     ),
-    content: articlesList(ports, params.id, params.page),
-    title: pipe(
-      ports.getAllEvents,
-      T.chain(headers(params.id)),
-      TE.map((header) => header.name),
-    ),
+    // content: articlesList(ports, params.id, params.page),
+    // title: pipe(
+    //   ports.getAllEvents,
+    //   T.chain(headers(params.id)),
+    //   TE.map((header) => header.name),
+    // ),
+    content: TE.right(toHtmlFragment('')),
+    title: TE.right(''),
   },
   sequenceS(TE.ApplyPar),
   TE.bimap(renderErrorPage, renderPage),
