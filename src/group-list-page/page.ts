@@ -17,6 +17,19 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { UserId } from '../types/user-id';
+
+type Owner = {
+  ownerName: string,
+  ownerHref: string,
+  ownerAvatarPath: string,
+};
+
+const getOwnerThatIsUser = (userId: UserId): E.Either<unknown, Owner> => E.right({
+  ownerName: 'owner-name',
+  ownerHref: 'owner-slug',
+  ownerAvatarPath: 'owner-avatar-path',
+});
 
 const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -38,6 +51,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
+    E.alt(() => pipe(
+      partial.ownerId,
+      getOwnerThatIsUser,
+      E.map((owner) => ({
+        ...partial,
+        ...owner,
+      })),
+    )),
     E.alt(() => E.right({
       ...partial,
       ownerName: 'owner-name',
