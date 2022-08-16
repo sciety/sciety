@@ -18,6 +18,7 @@ import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
+import {GroupId} from "../types/group-id";
 
 type Owner = {
   ownerName: string,
@@ -44,7 +45,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
   )),
   TE.chainEitherK((partial) => pipe(
     events,
-    getGroup(partial.ownerId),
+    getGroup(partial.ownerId as GroupId),
     E.map((group) => ({
       ...partial,
       ownerName: group.name,
@@ -52,14 +53,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerAvatarPath: group.avatarPath,
     })),
     E.alt(() => pipe(
-      partial.ownerId,
+      partial.ownerId as UserId,
       getOwnerThatIsUser,
       E.map((owner) => ({
         ...partial,
         ...owner,
       })),
     )),
-    E.alt(() => E.right({
+    E.altW(() => E.right({
       ...partial,
       ownerName: 'owner-name',
       ownerHref: 'owner-slug',

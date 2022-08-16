@@ -1,6 +1,7 @@
 import { listCreated, ListCreatedEvent } from '../../domain-events';
 import * as GID from '../../types/group-id';
 import * as LID from '../../types/list-id';
+import * as UID from '../../types/user-id';
 
 export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
   listCreated(
@@ -315,7 +316,7 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LID.fromValidatedString('arbitrary-list-id-for-spike'),
     'Saved Articles',
     'Articles that have been saved by @maria_eichel.',
-    GID.fromValidatedString('this-should-be-a-user-id-but-that-is-for-later-in-this-spike'),
+    UID.toUserId('this-should-be-a-user-id-but-that-is-for-later-in-this-spike'),
     new Date('2022-08-16T10:59:00Z'),
   ),
 ];
