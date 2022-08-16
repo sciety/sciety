@@ -311,4 +311,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
     new Date('2022-03-24T10:19:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('arbitrary-list-id-for-spike'),
+    'Saved Articles',
+    'Articles that have been saved by @maria_eichel.',
+    GID.fromValidatedString('this-should-be-a-user-id-but-that-is-for-later-in-this-spike'),
+    new Date('2022-08-16T10:59:00Z'),
+  ),
 ];
