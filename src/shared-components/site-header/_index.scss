@@ -78,7 +78,8 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header__logo {
-  max-width: 115px;
+  max-width: functions.px-to-rem(115px);
+  height: functions.px-to-rem(34px);
 }
 
 .site-header__grey_box {
