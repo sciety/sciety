@@ -10,7 +10,7 @@ import { renderComponent } from './header/render-component';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
-import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
+import { selectArticlesBelongingToList } from '../shared-read-models/list-articles';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -37,6 +37,12 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerName: group.name,
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
+    })),
+    E.alt(() => E.right({
+      ...partial,
+      ownerName: 'owner-name',
+      ownerHref: 'owner-slug',
+      ownerAvatarPath: 'owner-avatar-path',
     })),
   )),
 );
