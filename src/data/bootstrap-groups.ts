@@ -183,4 +183,13 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupCreate
     homepage: 'https://gigabytejournal.com/',
     slug: 'gigabyte',
   }, new Date('2022-03-24T10:03:00Z')),
+  DomainEvent.groupCreated({
+    id: Gid.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18'),
+    name: 'Arcadia Science',
+    avatarPath: '/static/groups/arcadia-science--bc1f956b-12e8-4f5c-aadc-70f91347bd18.png',
+    descriptionPath: 'arcadia-science--bc1f956b-12e8-4f5c-aadc-70f91347bd18.md',
+    shortDescription: 'Arcadia Science is a research and development company pursuing emerging organisms and innovating in research, commercialization, and open scientific communication.',
+    homepage: 'https://www.arcadiascience.com',
+    slug: 'arcadia-science',
+  }, new Date('2022-08-17T13:43:00Z')),
 ];
