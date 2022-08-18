@@ -13,6 +13,7 @@ import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
+import * as DE from '../types/data-error';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -37,12 +38,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
-    E.alt(() => E.right({
-      ...partial,
-      ownerName: '',
-      ownerHref: '',
-      ownerAvatarPath: '',
-    })),
+    E.alt(() => (partial.ownerId === 'this-should-be-a-user-id-of-931653361'
+      ? E.right({
+        ...partial,
+        ownerName: 'David Ashbrook',
+        ownerHref: '/users/DavidAshbrook',
+        ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1503119472353239040/eJgS9Y1y_normal.jpg',
+      })
+      : E.left(DE.notFound))),
   )),
 );
 
