@@ -311,4 +311,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
     new Date('2022-03-24T10:19:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('f8459240-f79c-4bb2-bb55-b43eae25e4f6'),
+    'Evaluated articles',
+    'Articles that have been evaluated by Arcadia Science.',
+    GID.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18'),
+    new Date('2022-08-18T08:36:00Z'),
+  ),
 ];
