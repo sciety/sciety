@@ -14,6 +14,7 @@ import { selectArticlesBelongingToList } from '../shared-read-models/list-articl
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import * as DE from '../types/data-error';
+import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -31,14 +32,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
   )),
   TE.chainEitherK((partial) => pipe(
     events,
-    getGroup(partial.ownerId),
+    getGroup(partial.ownerId as GroupId),
     E.map((group) => ({
       ...partial,
       ownerName: group.name,
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
-    E.alt(() => (partial.ownerId === 'this-should-be-a-user-id-of-931653361'
+    E.alt(() => (partial.ownerId === '931653361'
       ? E.right({
         ...partial,
         ownerName: 'David Ashbrook',
