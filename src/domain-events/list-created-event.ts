@@ -1,12 +1,11 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
+import { listOwnerIdCodec } from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
 export const listCreatedEventCodec = t.type({
@@ -16,7 +15,7 @@ export const listCreatedEventCodec = t.type({
   listId: ListIdFromString,
   name: t.string,
   description: t.string,
-  ownerId: t.union([GroupIdFromString, UserIdFromString]),
+  ownerId: listOwnerIdCodec,
 });
 
 export type ListCreatedEvent = t.TypeOf<typeof listCreatedEventCodec>;
