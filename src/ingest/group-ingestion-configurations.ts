@@ -8,6 +8,7 @@ import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-
 import { GroupIngestionConfiguration } from './update-all';
 import { fetchPrelightsEvaluations } from '../third-parties/prelights/fetch-prelights-evaluations';
 
+// addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = [
   {
     id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
