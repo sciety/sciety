@@ -318,4 +318,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     GID.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18'),
     new Date('2022-08-18T08:36:00Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('list-id-931653361'),
+    'Saved articles',
+    'Articles that have been saved by @DavidAshbrook.',
+    GID.fromValidatedString('this-should-be-a-user-id-of-931653361'),
+    new Date('2022-07-27T15:19:31.9Z'),
+  ),
 ];

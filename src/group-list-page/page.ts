@@ -37,6 +37,12 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
+    E.alt(() => E.right({
+      ...partial,
+      ownerName: '',
+      ownerHref: '',
+      ownerAvatarPath: '',
+    })),
   )),
 );
 
