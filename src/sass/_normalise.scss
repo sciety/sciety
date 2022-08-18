@@ -28,6 +28,11 @@ p {
   }
 }
 
+p + ul,
+p + ol {
+  margin-top: baseline.increments(-2);
+}
+
 h1 {
   @include typography.heading-1();
   margin-top: 0;
