@@ -3,10 +3,8 @@ import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { generate } from '../types/event-id';
-import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
-import { listOwnerIdCodec } from '../types/list-owner-id';
-import { UserId } from '../types/user-id';
+import { ListOwnerId, listOwnerIdCodec } from '../types/list-owner-id';
 
 export const listCreatedEventCodec = t.type({
   id: EventIdFromString,
@@ -27,7 +25,7 @@ export const listCreated = (
   listId: ListId,
   name: string,
   description: string,
-  ownerId: GroupId | UserId,
+  ownerId: ListOwnerId,
   date = new Date(),
 ): ListCreatedEvent => ({
   id: generate(),
