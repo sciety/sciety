@@ -6,6 +6,7 @@ import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { Logger } from '../shared-ports';
+import * as LOID from '../types/list-owner-id';
 
 type Ports = {
   getListsEvents: GetListsEvents,
@@ -17,7 +18,7 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
   await pipe(
     ports.getListsEvents,
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded lists events'))),
-    TE.map(selectAllListsOwnedBy(params.groupId)),
+    TE.map(selectAllListsOwnedBy(LOID.fromValidatedString(params.ownerId))),
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Constructed and queried read model'))),
     TE.match(
       () => {

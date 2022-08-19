@@ -8,7 +8,7 @@ export const createRouter = (ports: Ports): Router => {
 
   router.get('/ping', ping());
 
-  router.get('/owned-by/:groupId', ownedBy(ports));
+  router.get('/owned-by/:ownerId', ownedBy(ports));
 
   return router;
 };
