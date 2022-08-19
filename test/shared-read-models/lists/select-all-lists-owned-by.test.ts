@@ -6,14 +6,13 @@ import { List, selectAllListsOwnedBy } from '../../../src/shared-read-models/lis
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('select-all-lists-owned-by', () => {
-  const ownerId = arbitraryGroupId();
+  const ownerId = arbitraryListOwnerId();
 
-  describe('when the group does not own any list', () => {
+  describe('when the owner does not own any list', () => {
     let result: ReadonlyArray<List>;
 
     beforeEach(async () => {
@@ -29,7 +28,7 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the group owns an empty list', () => {
+  describe('when the owner owns an empty list', () => {
     const listId = arbitraryListId();
     const listName = arbitraryString();
     const listDescription = arbitraryString();
@@ -68,7 +67,7 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the group owns a non-empty list', () => {
+  describe('when the owner owns a non-empty list', () => {
     const listId = arbitraryListId();
     const listName = arbitraryString();
     const listDescription = arbitraryString();
