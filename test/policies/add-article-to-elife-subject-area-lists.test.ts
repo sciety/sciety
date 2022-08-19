@@ -10,12 +10,13 @@ import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const getAllEvents = T.of([
-  listCreated(Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'), arbitraryString(), arbitraryString(), arbitraryGroupId()),
-  listCreated(Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'), arbitraryString(), arbitraryString(), arbitraryGroupId()),
+  listCreated(Lid.fromValidatedString('c7237468-aac1-4132-9598-06e9ed68f31d'), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+  listCreated(Lid.fromValidatedString('cb15ef21-944d-44d6-b415-a3d8951e9e8b'), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
 ]);
 
 describe('add-article-to-elife-subject-area-lists', () => {

@@ -5,8 +5,8 @@ import { selectArticlesBelongingToList } from '../../../src/shared-read-models/l
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('select-articles-belonging-to-list', () => {
   const listId = arbitraryListId();
@@ -17,7 +17,7 @@ describe('select-articles-belonging-to-list', () => {
       const articleId2 = arbitraryArticleId();
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
           articleAddedToList(articleId1, listId, new Date('2019')),
           articleAddedToList(articleId2, listId, new Date('2021')),
         ],
@@ -32,7 +32,7 @@ describe('select-articles-belonging-to-list', () => {
     describe('and is empty', () => {
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
         selectArticlesBelongingToList(listId),
       );

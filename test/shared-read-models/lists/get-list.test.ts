@@ -5,8 +5,8 @@ import { getList, List } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('get-list', () => {
   describe('when the listId does not exist', () => {
@@ -18,7 +18,7 @@ describe('get-list', () => {
       const listId = arbitraryListId();
       const name = arbitraryString();
       const description = arbitraryString();
-      const ownerId = arbitraryGroupId();
+      const ownerId = arbitraryListOwnerId();
 
       describe('when the list is empty', () => {
         const creationDate = arbitraryDate();

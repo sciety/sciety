@@ -4,8 +4,8 @@ import { executeCommand } from '../../src/add-article-to-list/execute-command';
 import { articleAddedToList, listCreated } from '../../src/domain-events';
 import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
@@ -15,7 +15,7 @@ describe('execute-command', () => {
     describe('and the article is already on the list', () => {
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
           articleAddedToList(articleId, listId),
         ],
         executeCommand({
@@ -32,7 +32,7 @@ describe('execute-command', () => {
     describe('and the article was never on the list', () => {
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
         executeCommand({
           listId,
@@ -58,7 +58,7 @@ describe('execute-command', () => {
 
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryGroupId()),
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
         executeCommand({
           listId,

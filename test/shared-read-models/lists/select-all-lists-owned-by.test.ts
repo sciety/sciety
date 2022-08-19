@@ -8,6 +8,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryGroupId();
@@ -109,7 +110,7 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when a list with a different owner contains some articles', () => {
-    const anotherOwnerId = arbitraryGroupId();
+    const anotherOwnerId = arbitraryListOwnerId();
     const anotherListId = arbitraryListId();
     let result: ReadonlyArray<List>;
 
