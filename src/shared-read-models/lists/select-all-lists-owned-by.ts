@@ -9,9 +9,9 @@ import { constructReadModel } from './construct-read-model';
 import { List } from './list';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
-import { GroupId } from '../../types/group-id';
+import { ListOwnerId } from '../../types/list-owner-id';
 
-type SelectAllListsOwnedBy = (groupId: GroupId)
+type SelectAllListsOwnedBy = (ownerId: ListOwnerId)
 => (events: ReadonlyArray<DomainEvent>)
 => TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
@@ -21,11 +21,11 @@ const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
   Ord.contramap((list) => list.lastUpdated),
 );
 
-export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (groupId) => (events) => pipe(
+export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => (events) => pipe(
   events,
   constructReadModel,
   RM.values(orderByLastUpdatedDescending),
-  RA.filter((list) => list.ownerId === groupId),
+  RA.filter((list) => list.ownerId === ownerId),
   T.of,
   T.delay(1),
   TE.rightTask,
