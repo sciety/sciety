@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ListsEvent } from './lists-event';
 import { List } from '../shared-read-models/lists';
 import { constructReadModel } from '../shared-read-models/lists/construct-read-model';
-import { ListOwnerId } from '../types/list-owner-id';
+import { eqListOwnerId, ListOwnerId } from '../types/list-owner-id';
 
 const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
   D.Ord,
@@ -17,6 +17,6 @@ type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (events: ReadonlyArray<Li
 
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
   constructReadModel,
-  RM.filter((list) => list.ownerId === ownerId),
+  RM.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
   RM.values(orderByLastUpdatedDescending),
 );

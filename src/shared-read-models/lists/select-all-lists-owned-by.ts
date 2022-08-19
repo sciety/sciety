@@ -9,7 +9,7 @@ import { constructReadModel } from './construct-read-model';
 import { List } from './list';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
-import { ListOwnerId } from '../../types/list-owner-id';
+import { eqListOwnerId, ListOwnerId } from '../../types/list-owner-id';
 
 type SelectAllListsOwnedBy = (ownerId: ListOwnerId)
 => (events: ReadonlyArray<DomainEvent>)
@@ -25,7 +25,7 @@ export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => (events
   events,
   constructReadModel,
   RM.values(orderByLastUpdatedDescending),
-  RA.filter((list) => list.ownerId === ownerId),
+  RA.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
   T.of,
   T.delay(1),
   TE.rightTask,

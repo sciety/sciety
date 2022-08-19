@@ -1,3 +1,5 @@
+import * as Eq from 'fp-ts/Eq';
+import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { GroupIdFromString } from './codecs/GroupIdFromString';
 import { UserIdFromString } from './codecs/UserIdFromString';
@@ -11,3 +13,5 @@ export type ListOwnerId = t.TypeOf<typeof listOwnerIdCodec>;
 export const fromGroupId = (groupId: GroupId): ListOwnerId => groupId;
 
 export const fromUserId = (userId: UserId): ListOwnerId => userId;
+
+export const eqListOwnerId: Eq.Eq<ListOwnerId> = S.Eq;
