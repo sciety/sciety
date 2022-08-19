@@ -10,7 +10,8 @@ import { List } from '../shared-read-models/lists';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import * as DE from '../types/data-error';
-import { GroupId } from '../types/group-id';
+import { ListOwnerId } from '../types/list-owner-id';
+import * as LOID from '../types/list-owner-id';
 
 const ownedByQueryCodec = t.type({
   items: t.readonlyArray(t.type({
@@ -23,18 +24,18 @@ const ownedByQueryCodec = t.type({
   })),
 });
 
-type GetListsOwnedByFromListsReadModelService = (logger: Logger, listsReadModelUri: string) => (groupId: GroupId)
+type GetListsOwnedByFromListsReadModelService = (logger: Logger, listsReadModelUri: string) => (ownerId: ListOwnerId)
 => TE.TaskEither<DE.DataError, ReadonlyArray<List>>;
 
 export const getListsOwnedByFromListsReadModelService: GetListsOwnedByFromListsReadModelService = (
   logger,
   listsReadModelUri,
 ) => (
-  groupId,
+  ownerId,
 ) => pipe(
   TE.tryCatch(
     async () => {
-      const uri = `${listsReadModelUri}/owned-by/${groupId}`;
+      const uri = `${listsReadModelUri}/owned-by/${LOID.toString(ownerId)}`;
       const response = await fetchData(logger)<string>(uri);
       return response.data;
     },
