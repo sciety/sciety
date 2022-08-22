@@ -13,7 +13,7 @@ import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
-import { GroupId } from '../types/group-id';
+import { ListOwnerId } from '../types/list-owner-id';
 
 export type Adapters = {
   commitEvents: CommitEvents,
@@ -23,7 +23,7 @@ export type Adapters = {
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
-  getListsOwnedBy: (groupId: GroupId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
+  getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
