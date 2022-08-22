@@ -11,6 +11,7 @@ import { selectAllListsOwnedBy } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import * as LOID from '../types/list-owner-id';
 
 export type Ports = AboutPorts & FollowersPorts & ListsPorts;
 
@@ -60,7 +61,7 @@ export const contentComponent: ContentComponent = (
     listCount: pipe(
       ports.getAllEvents,
       TE.rightTask,
-      TE.chain(selectAllListsOwnedBy(group.id)),
+      TE.chain(selectAllListsOwnedBy(LOID.fromGroupId(group.id))),
       TE.map(RA.size),
     ),
     followerCount: pipe(
