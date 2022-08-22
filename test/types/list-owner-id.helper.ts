@@ -1,3 +1,6 @@
 import { arbitraryUserId } from './user-id.helper';
+import * as LOID from '../../src/types/list-owner-id';
 
-export const arbitraryListOwnerId = arbitraryUserId;
+type ArbitraryListOwnerId = () => LOID.ListOwnerId;
+
+export const arbitraryListOwnerId: ArbitraryListOwnerId = () => LOID.fromUserId(arbitraryUserId());
