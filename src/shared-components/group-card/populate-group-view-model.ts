@@ -11,13 +11,15 @@ import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { ListOwnerId } from '../../types/list-owner-id';
+import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
   getAllEvents: GetAllEvents,
-  getListsOwnedBy: (groupId: GroupId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
+  getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
 };
 
 export const populateGroupViewModel = (
@@ -38,6 +40,7 @@ export const populateGroupViewModel = (
   )),
   TE.chain((partial) => pipe(
     groupId,
+    LOID.fromGroupId,
     ports.getListsOwnedBy,
     TE.map((lists) => lists.length),
     TE.map((listCount) => ({
