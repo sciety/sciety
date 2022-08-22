@@ -32,14 +32,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
   )),
   TE.chainEitherK((partial) => pipe(
     events,
-    getGroup(partial.ownerId as GroupId),
+    getGroup(partial.ownerId.value as GroupId),
     E.map((group) => ({
       ...partial,
       ownerName: group.name,
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
-    E.alt(() => (partial.ownerId === '931653361'
+    E.alt(() => (partial.ownerId.value === '931653361'
       ? E.right({
         ...partial,
         ownerName: 'David Ashbrook',
