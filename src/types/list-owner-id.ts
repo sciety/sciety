@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
+import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { GroupIdFromString } from './codecs/GroupIdFromString';
@@ -33,5 +34,9 @@ type FromStringCodec = {
 };
 export const fromStringCodec: FromStringCodec = {
   encode: toString,
-  decode: (input) => E.right(fromValidatedString(input)),
+  decode: (input) => pipe(
+    input,
+    fromValidatedString,
+    E.right,
+  ),
 };
