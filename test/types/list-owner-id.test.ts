@@ -22,15 +22,21 @@ describe('list-owner-id', () => {
     it.todo('encodes and decodes to a right of the same value');
   });
 
-  describe('given an invalid tag', () => {
-    it.todo('returns on the left');
-  });
+  describe('decoding', () => {
+    describe('an invalid tag', () => {
+      const result = LOID.fromStringCodec.decode(`foo:${arbitraryUserId()}`);
 
-  describe('given an invalid value', () => {
-    it.todo('returns on the left');
-  });
+      it.skip('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
 
-  describe('given an invalid separator', () => {
-    it.todo('returns on the left');
+    describe('an invalid value', () => {
+      it.todo('returns on the left');
+    });
+
+    describe('an invalid separator', () => {
+      it.todo('returns on the left');
+    });
   });
 });
