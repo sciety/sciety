@@ -12,15 +12,6 @@ export const listOwnerIdCodec = t.union([
   t.type({ value: UserIdFromString, tag: t.literal('user-id') }),
 ]);
 
-type FromStringCodec = {
-  encode: (ownerId: ListOwnerId) => string,
-  decode: (input: string) => E.Either<unknown, ListOwnerId>,
-};
-export const fromStringCodec: FromStringCodec = {
-  encode: () => '',
-  decode: () => E.left(''),
-};
-
 export type ListOwnerId = t.TypeOf<typeof listOwnerIdCodec>;
 
 export const fromGroupId = (groupId: GroupId): ListOwnerId => ({ value: groupId, tag: 'group-id' });
@@ -34,4 +25,13 @@ export const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag
 export const fromValidatedString = (str: string): ListOwnerId => {
   const firstPart = str.split(':')[0];
   return firstPart === 'group-id' ? fromGroupId(str.split(':')[1] as GroupId) : fromUserId(str.split(':')[1] as UserId);
+};
+
+type FromStringCodec = {
+  encode: (ownerId: ListOwnerId) => string,
+  decode: (input: string) => E.Either<unknown, ListOwnerId>,
+};
+export const fromStringCodec: FromStringCodec = {
+  encode: toString,
+  decode: (input) => E.right(fromValidatedString(input)),
 };

@@ -7,7 +7,7 @@ describe('list-owner-id', () => {
   describe('given a list owner id that contains a user id', () => {
     const original = LOID.fromUserId(arbitraryUserId());
 
-    it.skip('encodes and decodes to a right of the same value', () => {
+    it('encodes and decodes to a right of the same value', () => {
       const result = pipe(
         original,
         LOID.fromStringCodec.encode,
