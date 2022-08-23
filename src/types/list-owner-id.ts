@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
@@ -10,6 +11,15 @@ export const listOwnerIdCodec = t.union([
   t.type({ value: GroupIdFromString, tag: t.literal('group-id') }),
   t.type({ value: UserIdFromString, tag: t.literal('user-id') }),
 ]);
+
+type FromStringCodec = {
+  encode: (ownerId: ListOwnerId) => string,
+  decode: (input: string) => E.Either<unknown, ListOwnerId>,
+};
+export const fromStringCodec: FromStringCodec = {
+  encode: () => '',
+  decode: () => E.left(''),
+};
 
 export type ListOwnerId = t.TypeOf<typeof listOwnerIdCodec>;
 
