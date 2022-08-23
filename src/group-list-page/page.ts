@@ -18,6 +18,15 @@ import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { UserId } from '../types/user-id';
+
+const getDavidAshbrook = (userId: UserId) => (userId === '931653361'
+  ? E.right({
+    ownerName: 'David Ashbrook',
+    ownerHref: '/users/DavidAshbrook',
+    ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1503119472353239040/eJgS9Y1y_normal.jpg',
+  })
+  : E.left(DE.notFound));
 
 const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -30,23 +39,20 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
       articleCount: articleIds.length,
     })),
   )),
-  TE.chainEitherK((partial) => pipe(
-    events,
-    getGroup(partial.ownerId.value as GroupId),
+  TE.chainEitherKW((partial) => pipe(
+    partial.ownerId,
+    (ownerId) => ownerId.value as GroupId,
+    (groupOwnerId) => getGroup(groupOwnerId)(events),
     E.map((group) => ({
-      ...partial,
       ownerName: group.name,
       ownerHref: `/groups/${group.slug}`,
       ownerAvatarPath: group.avatarPath,
     })),
-    E.alt(() => (partial.ownerId.value === '931653361'
-      ? E.right({
-        ...partial,
-        ownerName: 'David Ashbrook',
-        ownerHref: '/users/DavidAshbrook',
-        ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1503119472353239040/eJgS9Y1y_normal.jpg',
-      })
-      : E.left(DE.notFound))),
+    E.altW(() => (getDavidAshbrook(partial.ownerId.value as UserId))),
+    E.map((ownerInformation) => ({
+      ...partial,
+      ...ownerInformation,
+    })),
   )),
 );
 
