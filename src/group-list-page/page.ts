@@ -51,9 +51,14 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
   )),
   TE.chainEitherKW((partial) => pipe(
     partial.ownerId,
-    (ownerId) => ownerId.value as GroupId,
-    getGroupOwnerInformation(events),
-    E.altW(() => (getDavidAshbrookOwnerInformation(partial.ownerId.value as UserId))),
+    (ownerId) => {
+      switch (ownerId.tag) {
+        case 'group-id':
+          return getGroupOwnerInformation(events)(ownerId.value);
+        case 'user-id':
+          return getDavidAshbrookOwnerInformation(ownerId.value);
+      }
+    },
     E.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
