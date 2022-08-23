@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -16,9 +17,13 @@ type Ports = {
 export const ownedBy = (ports: Ports): Middleware => async ({ params, response }, next) => {
   ports.logger('debug', 'Started ownedBy query');
   await pipe(
-    ports.getListsEvents,
+    {
+      events: ports.getListsEvents,
+      ownerId: TE.right(LOID.fromValidatedString(params.ownerId)),
+    },
+    sequenceS(TE.ApplyPar),
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded lists events'))),
-    TE.map(selectAllListsOwnedBy(LOID.fromValidatedString(params.ownerId))),
+    TE.map(({ events, ownerId }) => selectAllListsOwnedBy(ownerId)(events)),
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Constructed and queried read model'))),
     TE.match(
       () => {
