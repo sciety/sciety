@@ -43,7 +43,12 @@ type FromStringCodec = {
 export const fromStringCodec: FromStringCodec = {
   encode: toString,
   decode: (input) => pipe(
-    checkStringForTag(input) ? E.right(input) : E.left(''),
+    input,
+    E.right,
+    E.filterOrElse(
+      checkStringForTag,
+      () => 'Invalid tag',
+    ),
     E.map(fromValidatedString),
   ),
 };
