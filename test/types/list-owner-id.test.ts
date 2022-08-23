@@ -26,7 +26,7 @@ describe('list-owner-id', () => {
     describe('an invalid tag', () => {
       const result = LOID.fromStringCodec.decode(`foo:${arbitraryUserId()}`);
 
-      it.skip('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
