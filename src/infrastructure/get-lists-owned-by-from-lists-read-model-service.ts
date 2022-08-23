@@ -7,10 +7,9 @@ import * as tt from 'io-ts-types';
 import { fetchData } from './fetchers';
 import { Logger } from './logger';
 import { List } from '../shared-read-models/lists';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import * as DE from '../types/data-error';
-import { ListOwnerId } from '../types/list-owner-id';
+import { ListOwnerId, listOwnerIdCodec } from '../types/list-owner-id';
 import * as LOID from '../types/list-owner-id';
 
 const ownedByQueryCodec = t.type({
@@ -20,7 +19,7 @@ const ownedByQueryCodec = t.type({
     description: t.string,
     articleCount: t.number,
     lastUpdated: tt.DateFromISOString,
-    ownerId: GroupIdFromString,
+    ownerId: listOwnerIdCodec,
   })),
 });
 
