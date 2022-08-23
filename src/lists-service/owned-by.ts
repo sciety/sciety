@@ -19,7 +19,7 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
   await pipe(
     {
       events: ports.getListsEvents,
-      ownerId: TE.right(LOID.fromValidatedString(params.ownerId)),
+      ownerId: TE.fromEither(LOID.fromStringCodec.decode(params.ownerId)),
     },
     sequenceS(TE.ApplyPar),
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded lists events'))),

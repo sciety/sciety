@@ -23,7 +23,7 @@ export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S
 
 export const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
 
-export const fromValidatedString = (str: string): ListOwnerId => {
+const fromValidatedString = (str: string): ListOwnerId => {
   const firstPart = str.split(':')[0];
   return firstPart === 'group-id' ? fromGroupId(str.split(':')[1] as GroupId) : fromUserId(str.split(':')[1] as UserId);
 };
