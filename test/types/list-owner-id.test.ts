@@ -45,7 +45,7 @@ describe('list-owner-id', () => {
     describe('an invalid value', () => {
       const result = LOID.fromStringCodec.decode('user-id:');
 
-      it.skip('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });

@@ -23,32 +23,18 @@ export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S
 
 export const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
 
-const fromValidatedString = (str: string): ListOwnerId => {
-  const firstPart = str.split(':')[0];
-  return firstPart === 'group-id' ? fromGroupId(str.split(':')[1] as GroupId) : fromUserId(str.split(':')[1] as UserId);
-};
-
-const checkStringForTag = (input: string) => {
-  if (input.split(':')[0] === 'group-id' || input.split(':')[0] === 'user-id') {
-    return true;
-  }
-  return false;
-};
-
-type FromStringCodec = {
-  encode: (ownerId: ListOwnerId) => string,
-  decode: (input: string) => E.Either<unknown, ListOwnerId>,
-};
-
-export const fromStringCodec: FromStringCodec = {
-  encode: toString,
-  decode: (input) => pipe(
+export const fromStringCodec = new t.Type(
+  'fromStringCodec',
+  listOwnerIdCodec.is,
+  (input) => pipe(
     input,
-    E.right,
-    E.filterOrElse(
-      checkStringForTag,
-      () => 'Invalid tag',
-    ),
-    E.map(fromValidatedString),
+    t.string.decode,
+    E.map((str) => str.split(':')),
+    E.map((fields) => ({
+      tag: fields[0],
+      value: fields[1],
+    })),
+    E.chain(listOwnerIdCodec.decode),
   ),
-};
+  toString,
+);
