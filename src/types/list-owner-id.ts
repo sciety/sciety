@@ -23,18 +23,20 @@ export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S
 
 const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
 
+const fromString = (input: unknown) => pipe(
+  input,
+  t.string.decode,
+  E.map((str) => str.split(':')),
+  E.map((fields) => ({
+    tag: fields[0],
+    value: fields[1],
+  })),
+  E.chain(listOwnerIdCodec.decode),
+);
+
 export const fromStringCodec = new t.Type(
   'fromStringCodec',
   listOwnerIdCodec.is,
-  (input) => pipe(
-    input,
-    t.string.decode,
-    E.map((str) => str.split(':')),
-    E.map((fields) => ({
-      tag: fields[0],
-      value: fields[1],
-    })),
-    E.chain(listOwnerIdCodec.decode),
-  ),
+  fromString,
   toString,
 );
