@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -7,6 +8,7 @@ import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { Logger } from '../shared-ports';
+import * as DE from '../types/data-error';
 import * as LOID from '../types/list-owner-id';
 
 type Ports = {
@@ -19,7 +21,12 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
   await pipe(
     {
       events: ports.getListsEvents,
-      ownerId: TE.fromEither(LOID.fromStringCodec.decode(params.ownerId)),
+      ownerId: pipe(
+        params.ownerId,
+        LOID.fromStringCodec.decode,
+        E.mapLeft(() => DE.unavailable),
+        TE.fromEither,
+      ),
     },
     sequenceS(TE.ApplyPar),
     TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded lists events'))),
