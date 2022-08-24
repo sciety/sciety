@@ -8,6 +8,7 @@ import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { Logger } from '../shared-ports';
+import { OwnedByQuery } from '../types/codecs/OwnedByQuery';
 import * as DE from '../types/data-error';
 import * as LOID from '../types/list-owner-id';
 
@@ -39,7 +40,7 @@ export const ownedBy = (ports: Ports): Middleware => async ({ params, response }
       (items) => {
         response.status = StatusCodes.OK;
         response.set({ 'Content-Type': 'application/json' });
-        response.body = { items };
+        response.body = OwnedByQuery.encode({ items });
       },
     ),
   )();
