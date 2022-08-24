@@ -4,7 +4,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { generate } from '../types/event-id';
 import { ListId } from '../types/list-id';
-import { ListOwnerId, listOwnerIdCodec } from '../types/list-owner-id';
+import { fromStringCodec, ListOwnerId } from '../types/list-owner-id';
 
 export const listCreatedEventCodec = t.type({
   id: EventIdFromString,
@@ -13,7 +13,7 @@ export const listCreatedEventCodec = t.type({
   listId: ListIdFromString,
   name: t.string,
   description: t.string,
-  ownerId: listOwnerIdCodec,
+  ownerId: fromStringCodec,
 });
 
 export type ListCreatedEvent = t.TypeOf<typeof listCreatedEventCodec>;
