@@ -21,7 +21,7 @@ export const fromUserId = (userId: UserId): ListOwnerId => ({ value: userId, tag
 
 export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S.Eq });
 
-export const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
+const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
 
 export const fromStringCodec = new t.Type(
   'fromStringCodec',

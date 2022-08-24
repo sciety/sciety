@@ -21,7 +21,7 @@ export const getListsOwnedByFromListsReadModelService: GetListsOwnedByFromListsR
 ) => pipe(
   TE.tryCatch(
     async () => {
-      const uri = `${listsReadModelUri}/owned-by/${LOID.toString(ownerId)}`;
+      const uri = `${listsReadModelUri}/owned-by/${LOID.fromStringCodec.encode(ownerId)}`;
       const response = await fetchData(logger)<string>(uri);
       return response.data;
     },
