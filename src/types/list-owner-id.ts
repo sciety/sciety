@@ -8,12 +8,12 @@ import { UserIdFromString } from './codecs/UserIdFromString';
 import { GroupId } from './group-id';
 import { UserId } from './user-id';
 
-const listOwnerIdCodec = t.union([
+const fromObjectOfStrings = t.union([
   t.type({ value: GroupIdFromString, tag: t.literal('group-id') }),
   t.type({ value: UserIdFromString, tag: t.literal('user-id') }),
 ]);
 
-export type ListOwnerId = t.TypeOf<typeof listOwnerIdCodec>;
+export type ListOwnerId = t.TypeOf<typeof fromObjectOfStrings>;
 
 export const fromGroupId = (groupId: GroupId): ListOwnerId => ({ value: groupId, tag: 'group-id' });
 
@@ -31,12 +31,12 @@ const fromString = (input: unknown) => pipe(
     tag: fields[0],
     value: fields[1],
   })),
-  E.chain(listOwnerIdCodec.decode),
+  E.chain(fromObjectOfStrings.decode),
 );
 
 export const fromStringCodec = new t.Type(
   'fromStringCodec',
-  listOwnerIdCodec.is,
+  fromObjectOfStrings.is,
   fromString,
   toString,
 );
