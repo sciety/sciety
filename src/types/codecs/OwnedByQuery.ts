@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ListIdFromString } from './ListIdFromString';
-import { fromStringCodec } from '../list-owner-id';
+import * as LOID from '../list-owner-id';
 
 export const OwnedByQuery = t.type({
   items: t.readonlyArray(t.type({
@@ -10,6 +10,6 @@ export const OwnedByQuery = t.type({
     description: t.string,
     articleCount: t.number,
     lastUpdated: tt.DateFromISOString,
-    ownerId: fromStringCodec,
+    ownerId: LOID.fromStringCodec,
   })),
 });
