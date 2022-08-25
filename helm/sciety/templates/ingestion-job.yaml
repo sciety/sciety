@@ -20,7 +20,7 @@ spec:
           containers:
           - name: app
             image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
-            command: ["sh", "-c", "node ./build/ingest/update-event-data && wget --quiet https://hc-ping.com/{{ .Values.healthchecksPingKey }}/{{ .Release.Name | replace "--" "-" }}"]
+            command: ["sh", "-c", "node ./build/ingest/update-event-data && wget --quiet https://hc-ping.com/{{ .Values.healthchecksPingKey }}/{{ .Release.Name | replace "--" "-" }}-ingestion"]
             env:
               - name: CROSSREF_API_BEARER_TOKEN
                 value: {{ .Values.crossrefApiBearerToken }}
