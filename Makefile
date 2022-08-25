@@ -14,7 +14,7 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release replay-events-for-elife-subject-area-policy stop test* update* watch*
+.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 dev: export TARGET = dev
 dev: .env install build
@@ -131,11 +131,6 @@ ingest-events: build
 	npx ts-node src/ingest/update-event-data
 
 update-event-data: ingest-events backstop-test
-
-manual-deploy-to-prod: export TAG = latest/$(shell date +%Y%m%d%H%M)
-manual-deploy-to-prod:
-	git tag $$TAG
-	git push origin $$TAG
 
 dev-sql: export TARGET = dev
 dev-sql:
