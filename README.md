@@ -128,6 +128,8 @@ A [staging environment] and [production environment] are updated with every new 
 
 There is a `#sciety-errors` Slack channel.
 
+View logs, k8s metrics and create dashboard on [sciety.grafana.net](https://sciety.grafana.net).
+
 ### Looking at logs
 
 Logs from all kubernetes pods from the last 30 days are viewable on Grafana Cloud.
