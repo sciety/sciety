@@ -38,6 +38,7 @@ jobs:
             --set postgresqlSecretName=hive-prod-rds-postgres \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --wait \
             helm/sciety
         env:
@@ -50,6 +51,7 @@ jobs:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
+          HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
 
       - name: Notify Slack of success
         if: success()

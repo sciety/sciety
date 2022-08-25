@@ -10,3 +10,4 @@ googleTagManagerId:
 postgresqlSecretName: null
 appSecret: "not-a-secret-coming-from-helm-chart-defaults"
 ingestionAuthBearerToken:
+healthchecksPingKey:
