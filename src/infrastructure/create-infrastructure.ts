@@ -24,9 +24,7 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToList } from '../add-article-to-list';
 import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
-import {
-  isArticleAddedToListEvent, sort as sortEvents,
-} from '../domain-events';
+import { isListCreatedEvent, sort as sortEvents } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { executePolicies } from '../policies/execute-policies';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
@@ -87,7 +85,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 ) => pipe(
   [],
   TE.right,
-  TE.map(RA.filter(isArticleAddedToListEvent)),
+  TE.map(RA.filter(isListCreatedEvent)),
   TE.map(RA.filter(needsToBeAdded(events))),
   TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
   TE.map((eventsToAdd) => [
