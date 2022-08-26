@@ -103,6 +103,15 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
+    TE.map((events) => {
+      const numberOfListCreatedEvents = pipe(
+        events,
+        RA.filter(isListCreatedEvent),
+        RA.size,
+      );
+      console.log('numberOfListCreatedEvents in database: ', numberOfListCreatedEvents);
+      return events;
+    }),
     TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
     TE.map((eventsFromDatabase) => pipe(
       [

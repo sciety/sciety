@@ -1,5 +1,6 @@
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import { ListsEvent } from './lists-event';
@@ -17,6 +18,10 @@ type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (events: ReadonlyArray<Li
 
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
   constructReadModel,
+  (lists) => {
+    console.log('number of lists:', RM.size(lists));
+    return lists;
+  },
   RM.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
   RM.values(orderByLastUpdatedDescending),
 );

@@ -6,7 +6,7 @@ import { Pool } from 'pg';
 import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from-database';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
-import { sort as sortEvents } from '../domain-events';
+import {isListCreatedEvent, sort as sortEvents} from '../domain-events';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
@@ -45,9 +45,36 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.map(({ pool, logger, eventsAvailableAtStartup }) => ({
     getListsEvents: pipe(
       eventsAvailableAtStartup,
+      (events) => {
+        const numberOfListCreatedEventsAvailableAtStartup = pipe(
+          events,
+          RA.filter(isListCreatedEvent),
+          RA.size,
+        );
+        console.log('numberOfListCreatedEventsAvailableAtStartup: ', numberOfListCreatedEventsAvailableAtStartup);
+        return events;
+      },
       appendNewListsEventsFromDatabase(pool, logger),
+      TE.map((events) => {
+        const numberOfListCreatedEventsAfterAppendingNewListEventsFromDatabase = pipe(
+          events,
+          RA.filter(isListCreatedEvent),
+          RA.size,
+        );
+        console.log('numberOfListCreatedEventsAfterAppendingNewListEventsFromDatabase: ', numberOfListCreatedEventsAfterAppendingNewListEventsFromDatabase);
+        return events;
+      }),
       TE.map(RA.toArray),
       TE.map(sortEvents),
+      TE.map((events) => {
+        const numberOfListCreatedEvents = pipe(
+          events,
+          RA.filter(isListCreatedEvent),
+          RA.size,
+        );
+        console.log('numberOfListCreatedEvents: ', numberOfListCreatedEvents);
+        return events;
+      }),
     ),
     logger,
   })),
