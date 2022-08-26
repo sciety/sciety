@@ -83,7 +83,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 ) => (
   events: ReadonlyArray<RuntimeGeneratedEvent>,
 ) => pipe(
-  [],
+  listCreationEvents,
   TE.right,
   TE.map(RA.filter(isListCreatedEvent)),
   TE.map(RA.filter(needsToBeAdded(events))),
@@ -108,7 +108,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       [
         ...eventsFromDatabase,
         ...groupCreatedEvents,
-        ...listCreationEvents,
       ],
       sortEvents,
     )),
