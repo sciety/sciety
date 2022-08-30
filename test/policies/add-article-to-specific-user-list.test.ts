@@ -31,7 +31,7 @@ describe('add-article-to-specific-user-list', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
       });
 
-      it.skip('call the command with the list id for David Ashbrook', () => {
+      it('call the command with the list id for David Ashbrook', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId }));
       });
     });

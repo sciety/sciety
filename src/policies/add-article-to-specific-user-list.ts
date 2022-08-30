@@ -24,7 +24,7 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
   E.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
   E.map((userSavedEvent) => ({
     articleId: userSavedEvent.articleId,
-    listId: Lid.fromValidatedString('foo'),
+    listId: Lid.fromValidatedString('list-id-931653361'),
   })),
   TE.fromEither,
   TE.chain(ports.callAddArticleToList),
