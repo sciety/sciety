@@ -7,6 +7,11 @@ import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
+  const defaultPorts = {
+    callAddArticleToList: () => TE.right(undefined),
+    logger: dummyLogger,
+  };
+
   describe('when a UserSavedArticle event is received', () => {
     describe('when the user is David Ashbrook', () => {
       let ports: Ports;
@@ -19,8 +24,8 @@ describe('add-article-to-specific-user-list', () => {
       describe('happy callAddArticleToList port', () => {
         beforeEach(async () => {
           ports = {
-            callAddArticleToList: jest.fn(() => TE.right(undefined)),
-            logger: jest.fn(dummyLogger),
+            ...defaultPorts,
+            callAddArticleToList: jest.fn(defaultPorts.callAddArticleToList),
           };
           await addArticleToSpecificUserList(ports)(event)();
         });
@@ -57,8 +62,8 @@ describe('add-article-to-specific-user-list', () => {
 
     describe('when the user is not David Ashbrook', () => {
       const ports = {
-        callAddArticleToList: jest.fn(() => TE.right(undefined)),
-        logger: jest.fn(dummyLogger),
+        ...defaultPorts,
+        callAddArticleToList: jest.fn(defaultPorts.callAddArticleToList),
       };
 
       const userId = toUserId('not-david-ashbrook');
