@@ -14,25 +14,31 @@ describe('add-article-to-specific-user-list', () => {
 
       const event = userSavedArticle(userId, articleId);
 
-      beforeEach(async () => {
-        ports = {
-          callAddArticleToList: jest.fn(() => TE.right(undefined)),
-        };
-        await addArticleToSpecificUserList(ports)(event)();
+      describe('happy callAddArticleToList port', () => {
+        beforeEach(async () => {
+          ports = {
+            callAddArticleToList: jest.fn(() => TE.right(undefined)),
+          };
+          await addArticleToSpecificUserList(ports)(event)();
+        });
+
+        it('calls the AddArticleToList command', () => {
+          expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
+        });
+
+        it('call the command with the article id coming from the event', () => {
+          expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
+        });
+
+        it('call the command with the list id for David Ashbrook', () => {
+          expect(ports.callAddArticleToList).toHaveBeenCalledWith(
+            expect.objectContaining({ listId: specificUserListId }),
+          );
+        });
       });
 
-      it('calls the AddArticleToList command', () => {
-        expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
-      });
-
-      it('call the command with the article id coming from the event', () => {
-        expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
-      });
-
-      it('call the command with the list id for David Ashbrook', () => {
-        expect(ports.callAddArticleToList).toHaveBeenCalledWith(
-          expect.objectContaining({ listId: specificUserListId }),
-        );
+      describe('unhappy callAddArticleToList port', () => {
+        it.todo('logs an error level message');
       });
     });
 
