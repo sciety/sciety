@@ -17,6 +17,8 @@ export type Ports = {
   callAddArticleToList: CallAddArticleToList,
 };
 
+export const specificUserListId = Lid.fromValidatedString('list-id-931653361');
+
 type AddArticleToSpecificUserList = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
 export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports) => (event) => pipe(
@@ -24,7 +26,7 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
   E.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
   E.map((userSavedEvent) => ({
     articleId: userSavedEvent.articleId,
-    listId: Lid.fromValidatedString('list-id-931653361'),
+    listId: specificUserListId,
   })),
   TE.fromEither,
   TE.chain(ports.callAddArticleToList),
