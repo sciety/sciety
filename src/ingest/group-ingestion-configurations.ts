@@ -103,16 +103,16 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: 'b5f31635-d32b-4df9-92a5-0325a1524343',
     name: 'PeerRef',
-    fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j', 150),
+    fetchFeed: fetchReviewsFromHypothesisGroup('LN28Q33j'),
   },
   {
     id: 'd6e1a913-76f8-40dc-9074-8eac033e1bc8',
     name: 'GigaScience',
-    fetchFeed: fetchReviewsFromHypothesisGroup('x6WjqQay', 365),
+    fetchFeed: fetchReviewsFromHypothesisGroup('x6WjqQay'),
   },
   {
     id: 'f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58',
     name: 'GigaByte',
-    fetchFeed: fetchReviewsFromHypothesisGroup('z4oRbDWY', 365),
+    fetchFeed: fetchReviewsFromHypothesisGroup('z4oRbDWY'),
   },
 ];
