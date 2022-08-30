@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/domain-events';
 import { addArticleToSpecificUserList, Ports } from '../../src/policies/add-article-to-specific-user-list';
+import * as LID from '../../src/types/list-id';
 import { toUserId } from '../../src/types/user-id';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
@@ -10,6 +11,7 @@ describe('add-article-to-specific-user-list', () => {
       let ports: Ports;
 
       const userId = toUserId('931653361');
+      const listId = LID.fromValidatedString('list-id-931653361');
       const articleId = arbitraryArticleId();
 
       const event = userSavedArticle(userId, articleId);
@@ -27,6 +29,10 @@ describe('add-article-to-specific-user-list', () => {
 
       it('call the command with the article id coming from the event', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
+      });
+
+      it.skip('call the command with the list id for David Ashbrook', () => {
+        expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId }));
       });
     });
 
