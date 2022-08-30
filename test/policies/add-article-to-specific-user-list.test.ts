@@ -55,7 +55,7 @@ describe('add-article-to-specific-user-list', () => {
         await addArticleToSpecificUserList(ports)(event)();
       });
 
-      it.skip('does not call the AddArticleToList command', () => {
+      it('does not call the AddArticleToList command', () => {
         expect(ports.callAddArticleToList).not.toHaveBeenCalled();
       });
     });

@@ -6,6 +6,7 @@ import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Doi } from '../types/doi';
 import * as Lid from '../types/list-id';
+import { toUserId } from '../types/user-id';
 
 type AddArticleToListCommandPayload = {
   articleId: Doi, listId: Lid.ListId,
@@ -24,6 +25,10 @@ type AddArticleToSpecificUserList = (ports: Ports) => (event: DomainEvent) => T.
 export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports) => (event) => pipe(
   event,
   E.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
+  E.filterOrElse(
+    (userSavedEvent) => userSavedEvent.userId === toUserId('931653361'),
+    () => 'not the right user',
+  ),
   E.map((userSavedEvent) => ({
     articleId: userSavedEvent.articleId,
     listId: specificUserListId,
