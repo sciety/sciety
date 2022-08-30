@@ -25,6 +25,6 @@ export const selectAllListsEvents = `
 export const selectListsEventsWithNewerDate = `
   SELECT id, type, date::text, payload 
   FROM events 
-  WHERE type = 'ListCreated' OR type = 'ArticleAddedToList'
+  WHERE (type = 'ListCreated' OR type = 'ArticleAddedToList')
   AND date > $1
 `;
