@@ -2,6 +2,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/domain-events';
 import { addArticleToSpecificUserList, Ports, specificUserListId } from '../../src/policies/add-article-to-specific-user-list';
 import { toUserId } from '../../src/types/user-id';
+import { dummyLogger } from '../dummy-logger';
+import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
@@ -18,6 +20,7 @@ describe('add-article-to-specific-user-list', () => {
         beforeEach(async () => {
           ports = {
             callAddArticleToList: jest.fn(() => TE.right(undefined)),
+            logger: jest.fn(dummyLogger),
           };
           await addArticleToSpecificUserList(ports)(event)();
         });
@@ -38,13 +41,24 @@ describe('add-article-to-specific-user-list', () => {
       });
 
       describe('unhappy callAddArticleToList port', () => {
-        it.todo('logs an error level message');
+        beforeEach(async () => {
+          ports = {
+            callAddArticleToList: () => TE.left(arbitraryString()),
+            logger: jest.fn(dummyLogger),
+          };
+          await addArticleToSpecificUserList(ports)(event)();
+        });
+
+        it.skip('logs an error level message', () => {
+          expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        });
       });
     });
 
     describe('when the user is not David Ashbrook', () => {
       const ports = {
         callAddArticleToList: jest.fn(() => TE.right(undefined)),
+        logger: jest.fn(dummyLogger),
       };
 
       const userId = toUserId('not-david-ashbrook');

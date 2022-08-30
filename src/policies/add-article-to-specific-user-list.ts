@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
+import { Logger } from '../shared-ports';
 import { Doi } from '../types/doi';
 import * as Lid from '../types/list-id';
 import { toUserId } from '../types/user-id';
@@ -16,6 +17,7 @@ type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.Task
 
 export type Ports = {
   callAddArticleToList: CallAddArticleToList,
+  logger: Logger,
 };
 
 export const specificUserListId = Lid.fromValidatedString('list-id-931653361');
