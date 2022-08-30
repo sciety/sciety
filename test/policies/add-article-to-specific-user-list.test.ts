@@ -19,7 +19,7 @@ describe('add-article-to-specific-user-list', () => {
         await addArticleToSpecificUserList(ports)(event)();
       });
 
-      it.skip('calls the AddArticleToList command', () => {
+      it('calls the AddArticleToList command', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
       });
     });
