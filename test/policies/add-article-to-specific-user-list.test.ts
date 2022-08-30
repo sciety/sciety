@@ -43,7 +43,21 @@ describe('add-article-to-specific-user-list', () => {
     });
 
     describe('when the user is not David Ashbrook', () => {
-      it.todo('does not call the AddArticleToList command');
+      const ports = {
+        callAddArticleToList: jest.fn(() => TE.right(undefined)),
+      };
+
+      const userId = toUserId('not-david-ashbrook');
+
+      const event = userSavedArticle(userId, arbitraryArticleId());
+
+      beforeEach(async () => {
+        await addArticleToSpecificUserList(ports)(event)();
+      });
+
+      it.skip('does not call the AddArticleToList command', () => {
+        expect(ports.callAddArticleToList).not.toHaveBeenCalled();
+      });
     });
   });
 
