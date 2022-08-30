@@ -25,7 +25,7 @@ describe('add-article-to-specific-user-list', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
       });
 
-      it.skip('call the command with the article id coming from the event', () => {
+      it('call the command with the article id coming from the event', () => {
         expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
       });
     });
