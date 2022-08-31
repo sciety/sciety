@@ -12,14 +12,16 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add-article-to-elife-subject-area-lists', () => {
+  const defaultPorts = {
+    logger: dummyLogger,
+    getBiorxivOrMedrxivSubjectArea: () => TE.right(arbitraryString()),
+    addArticleToList: () => TE.right(undefined),
+  };
+
   describe('when an EvaluationRecorded event by eLife is received', () => {
     const elifeGroupId = GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
     describe('and the subject area belongs to the Medicine list', () => {
-      const defaultPorts = {
-        logger: jest.fn(dummyLogger),
-      };
-
       const ports = {
         ...defaultPorts,
         getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
@@ -38,7 +40,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
 
     describe('and the subject area belongs to the Cell Biology list', () => {
       const ports = {
-        logger: jest.fn(dummyLogger),
+        ...defaultPorts,
         getBiorxivOrMedrxivSubjectArea: () => TE.right('cell biology'),
         addArticleToList: jest.fn(() => TE.right(undefined)),
       };
@@ -55,8 +57,9 @@ describe('add-article-to-elife-subject-area-lists', () => {
 
     describe('and the subject area does not belong to any supported eLife subject area list', () => {
       const ports = {
+        ...defaultPorts,
         logger: jest.fn(dummyLogger),
-        getBiorxivOrMedrxivSubjectArea: () => TE.right(arbitraryString()),
+        getBiorxivOrMedrxivSubjectArea: () => TE.right('not supported eLife subject area list'),
         addArticleToList: jest.fn(shouldNotBeCalled),
       };
       const event = evaluationRecorded(elifeGroupId, arbitraryArticleId(), arbitraryReviewId());
@@ -76,6 +79,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
 
     describe('and subject area cannot be retrieved', () => {
       const ports = {
+        ...defaultPorts,
         logger: jest.fn(dummyLogger),
         getBiorxivOrMedrxivSubjectArea: () => TE.left(DE.unavailable),
         addArticleToList: jest.fn(shouldNotBeCalled),
@@ -99,8 +103,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
   describe('when an EvaluationRecorded event by another group is received', () => {
     const anotherGroupId = arbitraryGroupId();
     const ports = {
-      logger: shouldNotBeCalled,
-      getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
+      ...defaultPorts,
       addArticleToList: jest.fn(shouldNotBeCalled),
     };
     const event = evaluationRecorded(anotherGroupId, arbitraryArticleId(), arbitraryReviewId());
@@ -116,8 +119,7 @@ describe('add-article-to-elife-subject-area-lists', () => {
 
   describe('when any other event is received', () => {
     const ports = {
-      logger: shouldNotBeCalled,
-      getBiorxivOrMedrxivSubjectArea: shouldNotBeCalled,
+      ...defaultPorts,
       addArticleToList: jest.fn(shouldNotBeCalled),
     };
     const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
