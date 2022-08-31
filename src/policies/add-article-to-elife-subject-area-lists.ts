@@ -3,7 +3,6 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
@@ -125,7 +124,7 @@ type AddArticleToListCommandPayload = {
 
 type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
-export type Ports = AddArticleToListPorts & {
+export type Ports = {
   logger: Logger,
   getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
   addArticleToList: AddArticleToList,
