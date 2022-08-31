@@ -54,7 +54,7 @@ describe('add-article-to-specific-user-list', () => {
           await addArticleToSpecificUserList(ports)(event)();
         });
 
-        it.skip('logs an error level message', () => {
+        it('logs an error level message', () => {
           expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
         });
       });

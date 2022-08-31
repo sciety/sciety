@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Logger } from '../shared-ports';
@@ -36,7 +36,13 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
     listId: specificUserListId,
   })),
   TE.fromEither,
-  TE.chain(ports.callAddArticleToList),
+  TE.chain(flow(
+    ports.callAddArticleToList,
+    TE.mapLeft((foo) => {
+      ports.logger('error', 'unhappy call to callAddArticleToList in addArticleToSpecificUserList', { foo, event });
+      return foo;
+    }),
+  )),
   TE.match(
     () => undefined,
     () => undefined,
