@@ -24,10 +24,14 @@ describe('add-article-to-elife-subject-area-lists', () => {
     const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
     describe('and the subject area belongs to the Medicine list', () => {
-      const ports = {
+      const defaultPorts = {
         getAllEvents,
         commitEvents: jest.fn(() => T.of('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
+      };
+
+      const ports = {
+        ...defaultPorts,
         getBiorxivOrMedrxivSubjectArea: () => TE.right('addiction medicine'),
         addArticleToList: jest.fn(() => TE.right(undefined)),
       };
