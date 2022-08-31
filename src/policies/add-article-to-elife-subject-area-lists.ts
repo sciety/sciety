@@ -123,12 +123,12 @@ type AddArticleToListCommandPayload = {
   articleId: Doi, listId: Lid.ListId,
 };
 
-type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
+type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
 export type Ports = AddArticleToListPorts & {
   logger: Logger,
   getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
-  callAddArticleToList: CallAddArticleToList,
+  addArticleToList: AddArticleToList,
 };
 
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
@@ -153,7 +153,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
           ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
           return TE.right(undefined);
         },
-        (listId) => ports.callAddArticleToList({ articleId: event.articleId, listId }),
+        (listId) => ports.addArticleToList({ articleId: event.articleId, listId }),
       ),
     )),
     TE.match(

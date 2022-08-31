@@ -191,7 +191,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               logger,
               commitEvents: commitEventsWithoutListeners,
               getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
-              callAddArticleToList: executeAddArticleToListCommandInProcess,
+              addArticleToList: executeAddArticleToListCommandInProcess,
             })),
           )),
         ),

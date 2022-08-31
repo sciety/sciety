@@ -8,7 +8,7 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
   const defaultPorts = {
-    callAddArticleToList: () => TE.right(undefined),
+    addArticleToList: () => TE.right(undefined),
     logger: dummyLogger,
   };
 
@@ -21,34 +21,34 @@ describe('add-article-to-specific-user-list', () => {
 
       const event = userSavedArticle(userId, articleId);
 
-      describe('a successful call to the callAddArticleToList port', () => {
+      describe('a successful call to the addArticleToList port', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            callAddArticleToList: jest.fn(defaultPorts.callAddArticleToList),
+            addArticleToList: jest.fn(defaultPorts.addArticleToList),
           };
           await addArticleToSpecificUserList(ports)(event)();
         });
 
         it('calls the AddArticleToList command', () => {
-          expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.anything());
+          expect(ports.addArticleToList).toHaveBeenCalledWith(expect.anything());
         });
 
         it('call the command with the article id coming from the event', () => {
-          expect(ports.callAddArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
+          expect(ports.addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ articleId }));
         });
 
         it('call the command with the list id for David Ashbrook', () => {
-          expect(ports.callAddArticleToList).toHaveBeenCalledWith(
+          expect(ports.addArticleToList).toHaveBeenCalledWith(
             expect.objectContaining({ listId: specificUserListId }),
           );
         });
       });
 
-      describe('an unsuccessful call to the callAddArticleToList port', () => {
+      describe('an unsuccessful call to the addArticleToList port', () => {
         beforeEach(async () => {
           ports = {
-            callAddArticleToList: () => TE.left(arbitraryString()),
+            addArticleToList: () => TE.left(arbitraryString()),
             logger: jest.fn(dummyLogger),
           };
           await addArticleToSpecificUserList(ports)(event)();
@@ -63,7 +63,7 @@ describe('add-article-to-specific-user-list', () => {
     describe('when the user is not David Ashbrook', () => {
       const ports = {
         ...defaultPorts,
-        callAddArticleToList: jest.fn(defaultPorts.callAddArticleToList),
+        addArticleToList: jest.fn(defaultPorts.addArticleToList),
       };
 
       const userId = toUserId('not-david-ashbrook');
@@ -75,7 +75,7 @@ describe('add-article-to-specific-user-list', () => {
       });
 
       it('does not call the AddArticleToList command', () => {
-        expect(ports.callAddArticleToList).not.toHaveBeenCalled();
+        expect(ports.addArticleToList).not.toHaveBeenCalled();
       });
     });
   });

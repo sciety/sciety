@@ -13,15 +13,15 @@ type AddArticleToListCommandPayload = {
   articleId: Doi, listId: Lid.ListId,
 };
 
-type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
+type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
 export type Ports = {
-  callAddArticleToList: CallAddArticleToList,
+  addArticleToList: AddArticleToList,
   logger: Logger,
 };
 
-const logAnyErrorInCallAddArticleToList = (logger: Logger, event: DomainEvent) => (error: string) => {
-  logger('error', 'Unsuccessful call to callAddArticleToList in addArticleToSpecificUserList', { error, event });
+const logAnyErrorInAddArticleToList = (logger: Logger, event: DomainEvent) => (error: string) => {
+  logger('error', 'Unsuccessful call to addArticleToList in addArticleToSpecificUserList', { error, event });
   return error;
 };
 
@@ -42,8 +42,8 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
   })),
   TE.fromEither,
   TE.chain(flow(
-    ports.callAddArticleToList,
-    TE.mapLeft(logAnyErrorInCallAddArticleToList(ports.logger, event)),
+    ports.addArticleToList,
+    TE.mapLeft(logAnyErrorInAddArticleToList(ports.logger, event)),
   )),
   TE.match(
     () => undefined,
