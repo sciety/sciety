@@ -20,6 +20,11 @@ export type Ports = {
   logger: Logger,
 };
 
+const logAnyErrorInCallAddArticleToList = (logger: Logger, event: DomainEvent) => (error: string) => {
+  logger('error', 'unhappy call to callAddArticleToList in addArticleToSpecificUserList', { error, event });
+  return error;
+};
+
 export const specificUserListId = Lid.fromValidatedString('list-id-931653361');
 
 type AddArticleToSpecificUserList = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
@@ -38,10 +43,7 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
   TE.fromEither,
   TE.chain(flow(
     ports.callAddArticleToList,
-    TE.mapLeft((foo) => {
-      ports.logger('error', 'unhappy call to callAddArticleToList in addArticleToSpecificUserList', { foo, event });
-      return foo;
-    }),
+    TE.mapLeft(logAnyErrorInCallAddArticleToList(ports.logger, event)),
   )),
   TE.match(
     () => undefined,
