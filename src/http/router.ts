@@ -27,7 +27,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { addArticleToList } from '../add-article-to-list';
+import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
@@ -459,7 +459,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post('/record-evaluation', handleScietyApiCommand(adapters, recordEvaluation));
 
-  router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToList));
+  router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToListCommandHandler));
 
   router.post(
     '/annotations/create-annotation',

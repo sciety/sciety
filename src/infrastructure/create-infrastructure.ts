@@ -22,7 +22,7 @@ import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
-import { addArticleToList } from '../add-article-to-list';
+import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
 import {
   isArticleAddedToListEvent, sort as sortEvents,
@@ -163,7 +163,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           articleId: payload.articleId.value,
           listId: payload.listId.toString(),
         },
-        addArticleToList({ getAllEvents, commitEvents: commitEventsWithoutListeners, ...partialAdapters }),
+        addArticleToListCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+          ...partialAdapters,
+        }),
         TE.map(() => undefined),
       );
 

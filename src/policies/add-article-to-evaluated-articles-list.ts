@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { addArticleToList, Ports as AddArticleToListPorts } from '../add-article-to-list';
+import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 import * as Gid from '../types/group-id';
@@ -50,7 +50,7 @@ export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: Domai
   ports.logger('debug', 'Policy attempting to add article to list', { command });
   return pipe(
     command,
-    addArticleToList(ports),
+    addArticleToListCommandHandler(ports),
     TE.match(
       (errorMessage) => {
         ports.logger('error', 'Failed to add article to list', { errorMessage, command });

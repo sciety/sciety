@@ -12,9 +12,19 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-type AddArticleToList = (ports: Ports) => (input: unknown, date?: Date) => TE.TaskEither<string, CommandResult>;
+type AddArticleToListCommandHandler = (
+  ports: Ports
+) => (
+  input: unknown,
+  date?: Date
+) => TE.TaskEither<string, CommandResult>;
 
-export const addArticleToList: AddArticleToList = (ports) => (input, date = new Date()) => pipe(
+export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
+  ports,
+) => (
+  input,
+  date = new Date(),
+) => pipe(
   input,
   validateInputShape,
   TE.fromEither,
