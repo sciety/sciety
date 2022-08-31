@@ -21,7 +21,7 @@ describe('add-article-to-specific-user-list', () => {
 
       const event = userSavedArticle(userId, articleId);
 
-      describe('happy callAddArticleToList port', () => {
+      describe('a successful call to the callAddArticleToList port', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
@@ -45,7 +45,7 @@ describe('add-article-to-specific-user-list', () => {
         });
       });
 
-      describe('unhappy callAddArticleToList port', () => {
+      describe('an unsuccessful call to the callAddArticleToList port', () => {
         beforeEach(async () => {
           ports = {
             callAddArticleToList: () => TE.left(arbitraryString()),

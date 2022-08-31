@@ -21,7 +21,7 @@ export type Ports = {
 };
 
 const logAnyErrorInCallAddArticleToList = (logger: Logger, event: DomainEvent) => (error: string) => {
-  logger('error', 'unhappy call to callAddArticleToList in addArticleToSpecificUserList', { error, event });
+  logger('error', 'Unsuccessful call to callAddArticleToList in addArticleToSpecificUserList', { error, event });
   return error;
 };
 
