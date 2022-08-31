@@ -152,9 +152,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
 
-      type CallAddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
+      type ExecuteAddArticleToListCommandInProcess = (
+        payload: AddArticleToListCommandPayload
+      ) => TE.TaskEither<string, void>;
 
-      const callAddArticleToList: CallAddArticleToList = (
+      const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
         payload,
       ) => pipe(
         {
@@ -185,7 +187,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               logger,
               commitEvents: commitEventsWithoutListeners,
               getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
-              callAddArticleToList,
+              callAddArticleToList: executeAddArticleToListCommandInProcess,
             })),
           )),
         ),
