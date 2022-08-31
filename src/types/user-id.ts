@@ -1,4 +1,6 @@
+import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
+import * as S from 'fp-ts/string';
 
 export type UserId = string & { readonly UserId: unique symbol };
 
@@ -12,3 +14,5 @@ export const toUserId = (value: string): UserId => {
 };
 
 export const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
+
+export const eqUserId: Eq.Eq<UserId> = S.Eq;
