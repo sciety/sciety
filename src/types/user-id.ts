@@ -13,6 +13,8 @@ export const toUserId = (value: string): UserId => {
   throw new Error();
 };
 
+export const fromValidatedString = (value: string): UserId => value as UserId;
+
 export const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
 
 export const eqUserId: Eq.Eq<UserId> = S.Eq;

@@ -7,7 +7,7 @@ import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-eve
 import { Logger } from '../shared-ports';
 import { Doi } from '../types/doi';
 import * as Lid from '../types/list-id';
-import { eqUserId, toUserId } from '../types/user-id';
+import * as UID from '../types/user-id';
 
 type AddArticleToListCommandPayload = {
   articleId: Doi, listId: Lid.ListId,
@@ -33,7 +33,7 @@ export const addArticleToSpecificUserList: AddArticleToSpecificUserList = (ports
   event,
   E.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
   E.filterOrElse(
-    (userSavedEvent) => eqUserId.equals(userSavedEvent.userId, toUserId('931653361')),
+    (userSavedEvent) => UID.eqUserId.equals(userSavedEvent.userId, UID.fromValidatedString('931653361')),
     () => 'not the right user',
   ),
   E.map((userSavedEvent) => ({
