@@ -1,10 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
-import { userSavedArticle } from '../../src/domain-events';
+import { userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
 import { addArticleToSpecificUserList, Ports, specificUserListId } from '../../src/policies/add-article-to-specific-user-list';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
   const defaultPorts = {
@@ -81,6 +82,19 @@ describe('add-article-to-specific-user-list', () => {
   });
 
   describe('when any other event is received', () => {
-    it.todo('does not call the AddArticleToList command');
+    const ports = {
+      ...defaultPorts,
+      addArticleToList: jest.fn(defaultPorts.addArticleToList),
+    };
+
+    const event = userUnsavedArticle(arbitraryUserId(), arbitraryArticleId());
+
+    beforeEach(async () => {
+      await addArticleToSpecificUserList(ports)(event)();
+    });
+
+    it('does not call the AddArticleToList command', () => {
+      expect(ports.addArticleToList).not.toHaveBeenCalled();
+    });
   });
 });
