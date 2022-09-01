@@ -5,12 +5,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articlesList, Ports } from './articles-list/articles-list';
+import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
 import { renderComponent } from './header/render-component';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
-import { getGroup } from '../shared-read-models/groups';
-import { constructReadModel } from '../shared-read-models/groups/construct-read-model';
+import { GetGroupsReadModel } from '../shared-ports';
+import { getGroup, GroupsReadModel } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
@@ -21,6 +21,10 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
+type Ports = ArticlesListPorts & {
+  getGroupsReadModel: GetGroupsReadModel,
+};
+
 const getDavidAshbrookOwnerInformation = (userId: UserId) => (userId === '931653361'
   ? E.right({
     ownerName: 'David Ashbrook',
@@ -29,9 +33,8 @@ const getDavidAshbrookOwnerInformation = (userId: UserId) => (userId === '931653
   })
   : E.left(DE.notFound));
 
-const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => pipe(
-  events,
-  constructReadModel,
+const getGroupOwnerInformation = (groupsReadModel: GroupsReadModel) => (groupId: GroupId) => pipe(
+  groupsReadModel,
   getGroup(groupId),
   E.map((group) => ({
     ownerName: group.name,
@@ -40,7 +43,7 @@ const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupI
   })),
 );
 
-const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+const headers = (events: ReadonlyArray<DomainEvent>, groupsReadModel: GroupsReadModel) => (listId: ListId) => pipe(
   events,
   getList(listId),
   TE.chainEitherK((partial) => pipe(
@@ -56,7 +59,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
     (ownerId) => {
       switch (ownerId.tag) {
         case 'group-id':
-          return getGroupOwnerInformation(events)(ownerId.value);
+          return getGroupOwnerInformation(groupsReadModel)(ownerId.value);
         case 'user-id':
           return getDavidAshbrookOwnerInformation(ownerId.value);
       }
@@ -77,18 +80,26 @@ type Params = t.TypeOf<typeof paramsCodec>;
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   {
-    header: pipe(
-      ports.getAllEvents,
-      T.chain(headers(params.id)),
-      TE.map(renderComponent),
-    ),
-    content: articlesList(ports, params.id, params.page),
-    title: pipe(
-      ports.getAllEvents,
-      T.chain(headers(params.id)),
-      TE.map((header) => header.name),
-    ),
+    events: ports.getAllEvents,
+    groupsReadModel: ports.getGroupsReadModel,
   },
-  sequenceS(TE.ApplyPar),
+  sequenceS(T.ApplyPar),
+  TE.fromTask,
+  TE.chain(({ events, groupsReadModel }) => pipe(
+    {
+      header: pipe(
+        params.id,
+        headers(events, groupsReadModel),
+        TE.map(renderComponent),
+      ),
+      content: articlesList(ports, params.id, params.page),
+      title: pipe(
+        params.id,
+        headers(events, groupsReadModel),
+        TE.map((header) => header.name),
+      ),
+    },
+    sequenceS(TE.ApplyPar),
+  )),
   TE.bimap(renderErrorPage, renderPage),
 );

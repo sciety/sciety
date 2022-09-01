@@ -8,7 +8,8 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { getGroup, GroupsReadModel } from '../../shared-read-models/groups';
+import { GetGroupsReadModel } from '../../shared-ports/get-groups-read-model';
+import { getGroup } from '../../shared-read-models/groups';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
@@ -33,7 +34,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 });
 
 export type Ports = {
-  getGroupsReadModel: T.Task<GroupsReadModel>,
+  getGroupsReadModel: GetGroupsReadModel,
 };
 
 type IdentifyAllPossibleIndexEntries = (
