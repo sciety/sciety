@@ -212,6 +212,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getJson: getCachedAxiosRequest(logger),
           logger,
         }),
+        addArticleToList: executeAddArticleToListCommandInProcess,
         ...partialAdapters,
       };
     },

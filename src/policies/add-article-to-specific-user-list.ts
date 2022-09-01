@@ -13,7 +13,7 @@ type AddArticleToListCommandPayload = {
   articleId: Doi, listId: LID.ListId,
 };
 
-type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
+export type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
 export type Ports = {
   addArticleToList: AddArticleToList,

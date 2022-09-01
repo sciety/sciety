@@ -6,6 +6,7 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
+import { AddArticleToList } from '../policies/add-article-to-specific-user-list';
 import { List } from '../shared-read-models/lists';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
@@ -16,6 +17,7 @@ import * as DE from '../types/data-error';
 import { ListOwnerId } from '../types/list-owner-id';
 
 export type Adapters = {
+  addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
