@@ -15,8 +15,8 @@ export const card2 = {
 };
 
 export const card3 = {
-  userId: toUserId('1223116442549145601'),
-  description: 'A list of papers on innate immunology curated by Ailís O’Carroll',
-  avatarUrl: 'https://pbs.twimg.com/profile_images/1223116710820974592/-b-9R-UX_bigger.jpg',
-  handle: 'AilisDr',
+  userId: toUserId('1384541806231175172'),
+  description: 'Articles that are being read by Biophysics Colab.',
+  avatarUrl: 'https://pbs.twimg.com/profile_images/1417582635040317442/jYHfOlh6_bigger.jpg',
+  handle: 'BiophysicsColab',
 };
