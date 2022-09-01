@@ -22,6 +22,7 @@ import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
+import { statefulGroupsReadModel } from './stateful-groups-read-model';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
 import {
@@ -29,7 +30,6 @@ import {
 } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { executePolicies } from '../policies/execute-policies';
-import { constructReadModel } from '../shared-read-models/groups/construct-read-model';
 import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
@@ -196,7 +196,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             })),
           )),
         ),
-        getGroupsReadModel: pipe(getAllEvents, T.map(constructReadModel)),
+        getGroupsReadModel: pipe(getAllEvents, T.map(statefulGroupsReadModel)),
         getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
