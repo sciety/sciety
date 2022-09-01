@@ -22,7 +22,17 @@ const recordEvent = (rm: ReadModel, event: DomainEvent) => (
     : rm
 );
 
+let lastEventParsed = 0;
+
+const readmodel = new Map();
+
 export const constructReadModel = (events: ReadonlyArray<DomainEvent>): ReadModel => pipe(
   events,
-  RA.reduce(new Map(), recordEvent),
+  RA.splitAt(lastEventParsed),
+  ([_knownEvents, newEvents]) => newEvents,
+  RA.reduce(readmodel, recordEvent),
+  (model) => {
+    lastEventParsed = events.length;
+    return model;
+  },
 );
