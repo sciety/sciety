@@ -1,4 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import {performance} from 'perf_hooks'
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -28,12 +29,16 @@ type DocmapIndex = (ports: Ports) => (query: Record<string, unknown>) => T.Task<
 export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
   ports.getAllEvents,
   TE.rightTask,
+  TE.map((foo) => { console.log('>>>>>>>>>>>0', performance.now()); return foo; }),
   TE.chain(identifyAllPossibleIndexEntries(supportedGroups, ports)),
+  TE.map((foo) => { console.log('>>>>>>>>>>>1', performance.now()); return foo; }),
   TE.chainEitherK(filterByParams(query)),
+  TE.map((foo) => { console.log('>>>>>>>>>>>2', performance.now()); return foo; }),
   TE.chainW(flow(
     TE.traverseArray(generateDocmapViewModel(ports)),
     TE.mapLeft(() => ER.internalServerError),
   )),
+  TE.map((foo) => { console.log('>>>>>>>>>>>3', performance.now()); return foo; }),
   TE.map(RA.map(toDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },
