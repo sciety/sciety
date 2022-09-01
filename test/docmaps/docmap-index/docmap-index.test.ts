@@ -2,13 +2,15 @@ import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { DomainEvent, evaluationRecorded, groupCreated } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
+import { groupsReadModelFromEvents } from '../../shared-read-models/groups/read-model.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
@@ -29,6 +31,7 @@ describe('docmap-index', () => {
       beforeEach(async () => {
         const ports = {
           getAllEvents: T.of([]),
+          getGroupsReadModel: pipe([], groupsReadModelFromEvents, T.of),
           fetchReview: shouldNotBeCalled,
           findReviewsForArticleDoi: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
@@ -49,16 +52,18 @@ describe('docmap-index', () => {
 
     describe('when there are docmaps', () => {
       let response: { body: DocmapIndexBody, status: StatusCodes };
+      const events = [
+        groupCreated({
+          ...arbitraryGroup(),
+          id: ncrcGroupId,
+        }),
+        evaluationRecorded(ncrcGroupId, arbitraryArticleId(), arbitraryReviewId()),
+      ];
 
       beforeEach(async () => {
         const ports = {
-          getAllEvents: T.of([
-            groupCreated({
-              ...arbitraryGroup(),
-              id: ncrcGroupId,
-            }),
-            evaluationRecorded(ncrcGroupId, arbitraryArticleId(), arbitraryReviewId()),
-          ]),
+          getAllEvents: T.of(events),
+          getGroupsReadModel: pipe(events, groupsReadModelFromEvents, T.of),
           fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
           findReviewsForArticleDoi: () => TE.right([{
             reviewId: arbitraryReviewId(),
@@ -97,6 +102,7 @@ describe('docmap-index', () => {
         getAllEvents: T.of([
           evaluationRecorded(ncrcGroupId, arbitraryArticleId(), arbitraryReviewId()),
         ]),
+        getGroupsReadModel: T.of(new Map()),
         fetchReview: () => TE.left(DE.unavailable),
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
@@ -118,10 +124,12 @@ describe('docmap-index', () => {
 
   describe('when the query parameters are invalid', () => {
     let response: { body: DocmapIndexBody, status: StatusCodes };
+    const events: ReadonlyArray<DomainEvent> = [];
 
     beforeEach(async () => {
       const ports = {
-        getAllEvents: T.of([]),
+        getAllEvents: T.of(events),
+        getGroupsReadModel: pipe(events, groupsReadModelFromEvents, T.of),
         fetchReview: shouldNotBeCalled,
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,

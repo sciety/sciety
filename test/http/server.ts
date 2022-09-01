@@ -48,6 +48,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
     getAllEvents: T.of([]),
+    getGroupsReadModel: T.of(new Map()),
     commitEvents: () => T.of('events-created'),
     logger: dummyLogger,
     getBiorxivOrMedrxivSubjectArea: () => TE.right(''),

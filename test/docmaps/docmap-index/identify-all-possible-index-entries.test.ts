@@ -11,6 +11,7 @@ import {
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { groupsReadModelFromEvents } from '../../shared-read-models/groups/read-model.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -21,9 +22,10 @@ describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
   const defaultPorts: Ports = {
-    getAllEvents: pipe(
+    getGroupsReadModel: pipe(
       supportedGroups,
       RA.map(groupCreated),
+      groupsReadModelFromEvents,
       T.of,
     ),
   };
@@ -148,7 +150,7 @@ describe('identify-all-possible-index-entries', () => {
           supportedGroupIds,
           {
             ...defaultPorts,
-            getAllEvents: T.of([]),
+            getGroupsReadModel: pipe([], groupsReadModelFromEvents, T.of),
           },
         ),
       )();

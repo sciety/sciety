@@ -6,6 +6,7 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
+import { GroupsReadModel } from '../shared-read-models/groups';
 import { List } from '../shared-read-models/lists';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
@@ -22,6 +23,7 @@ export type Adapters = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroupsReadModel: T.Task<GroupsReadModel>,
   getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
   getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
   getUserDetails: GetTwitterUserDetails,
