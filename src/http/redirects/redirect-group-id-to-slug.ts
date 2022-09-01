@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import { GroupId } from '../../types/group-id';
 
 type Ports = {
@@ -14,6 +15,7 @@ type Ports = {
 export const redirectGroupIdToSlug = (ports: Ports, path: string): Middleware => async (context, next) => {
   await pipe(
     ports.getAllEvents,
+    T.map(constructReadModel),
     T.map(getGroup(context.params.id as GroupId)),
     TE.match(
       () => {

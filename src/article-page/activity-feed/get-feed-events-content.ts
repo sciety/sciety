@@ -9,6 +9,7 @@ import { projectUserReviewResponse } from './project-user-review-response';
 import { FeedItem } from './render-feed';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import { ArticleServer } from '../../types/article-server';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -58,6 +59,7 @@ const reviewToFeedItem = (
   {
     groupDetails: pipe(
       ports.getAllEvents,
+      T.map(constructReadModel),
       T.map(getGroup(feedEvent.groupId)),
       TE.match(
         () => ({

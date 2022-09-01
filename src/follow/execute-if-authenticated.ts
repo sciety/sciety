@@ -13,6 +13,7 @@ import { constructRedirectUrl } from '../http/require-authentication';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { Logger } from '../shared-ports';
 import { getGroup } from '../shared-read-models/groups';
+import { constructReadModel } from '../shared-read-models/groups/construct-read-model';
 import * as DE from '../types/data-error';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -24,6 +25,7 @@ type Ports = FollowCommandPorts & {
 
 const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
   ports.getAllEvents,
+  T.map(constructReadModel),
   T.map(getGroup(groupId)),
   TE.map((group) => ({
     groupId: group.id,

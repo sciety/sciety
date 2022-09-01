@@ -9,6 +9,7 @@ import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
@@ -57,6 +58,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   })),
   TE.traverseArray((incompleteEntry) => pipe(
     ports.getAllEvents,
+    T.map(constructReadModel),
     T.map(getGroup(incompleteEntry.groupId)),
     TE.map((group) => ({
       ...incompleteEntry,

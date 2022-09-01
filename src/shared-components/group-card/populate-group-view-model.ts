@@ -7,6 +7,7 @@ import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
@@ -28,6 +29,7 @@ export const populateGroupViewModel = (
   groupId: GroupId,
 ): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
   ports.getAllEvents,
+  T.map(constructReadModel),
   T.map(getGroup(groupId)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,

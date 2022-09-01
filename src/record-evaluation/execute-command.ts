@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { Command, createAppropriateEvents } from './create-appropriate-events';
 import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
+import { constructReadModel } from '../shared-read-models/groups/construct-read-model';
 import { GroupId } from '../types/group-id';
 
 type ExecuteCommand = (command: Command)
@@ -17,6 +18,7 @@ const ignoreResult = () => undefined;
 
 const confirmGroupExists: ConfirmGroupExists = (groupId) => (events) => pipe(
   events,
+  constructReadModel,
   getGroup(groupId),
   E.bimap(
     () => `Group "${groupId}" not found`,

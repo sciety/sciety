@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -27,6 +28,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event)
   {
     group: pipe(
       ports.getAllEvents,
+      T.map(constructReadModel),
       T.map(getGroup(event.editorialCommunityId)),
     ),
     userDetails: pipe(

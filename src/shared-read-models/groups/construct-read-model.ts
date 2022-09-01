@@ -1,28 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, GroupCreatedEvent, isGroupCreatedEvent } from '../../domain-events';
-import { Group } from '../../types/group';
-import { GroupId } from '../../types/group-id';
+import { GroupsReadModel, groupsReadModelReducer } from './read-model';
+import { DomainEvent } from '../../domain-events';
 
-const toGroup = (event: GroupCreatedEvent) => ({
-  id: event.groupId,
-  name: event.name,
-  avatarPath: event.avatarPath,
-  descriptionPath: event.descriptionPath,
-  shortDescription: event.shortDescription,
-  homepage: event.homepage,
-  slug: event.slug,
-});
-
-type ReadModel = Map<GroupId, Group>;
-
-const recordEvent = (rm: ReadModel, event: DomainEvent) => (
-  isGroupCreatedEvent(event)
-    ? rm.set(event.groupId, toGroup(event))
-    : rm
-);
-
-export const constructReadModel = (events: ReadonlyArray<DomainEvent>): ReadModel => pipe(
+export const constructReadModel = (events: ReadonlyArray<DomainEvent>): GroupsReadModel => pipe(
   events,
-  RA.reduce(new Map(), recordEvent),
+  RA.reduce(new Map(), groupsReadModelReducer),
 );

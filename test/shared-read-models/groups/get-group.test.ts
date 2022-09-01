@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
+import { groupsReadModelFromEvents } from './read-model.helper';
 import { groupCreated } from '../../../src/domain-events';
 import { getGroup } from '../../../src/shared-read-models/groups';
 import * as DE from '../../../src/types/data-error';
@@ -16,6 +17,7 @@ describe('getGroup', () => {
         groupCreated(group),
         ...arbitraryUninterestingEvents,
       ],
+      groupsReadModelFromEvents,
       getGroup(group.id),
     );
 
@@ -29,6 +31,7 @@ describe('getGroup', () => {
       [
         ...arbitraryUninterestingEvents,
       ],
+      groupsReadModelFromEvents,
       getGroup(group.id),
     );
 

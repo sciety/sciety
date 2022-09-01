@@ -12,6 +12,7 @@ import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMost
 import { DomainEvent } from '../../domain-events';
 import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -85,6 +86,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ ar
     inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(ports, articleId),
     group: pipe(
       ports.getAllEvents,
+      T.map(constructReadModel),
       T.map(getGroup(groupId)),
     ),
   },

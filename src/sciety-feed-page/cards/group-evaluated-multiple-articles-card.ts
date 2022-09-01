@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent } from '../../domain-events';
 import { getGroup } from '../../shared-read-models/groups';
+import { constructReadModel } from '../../shared-read-models/groups/construct-read-model';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
@@ -21,6 +22,7 @@ export const groupEvaluatedMultipleArticlesCard = (ports: Ports) => (
   card: GroupEvaluatedMultipleArticlesCard,
 ): TE.TaskEither<DE.DataError, ScietyFeedCard> => pipe(
   ports.getAllEvents,
+  T.map(constructReadModel),
   T.map(getGroup(card.groupId)),
   TE.map((group) => pipe(
     {

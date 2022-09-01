@@ -10,6 +10,7 @@ import { renderComponent } from './header/render-component';
 import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
+import { constructReadModel } from '../shared-read-models/groups/construct-read-model';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
@@ -30,6 +31,7 @@ const getDavidAshbrookOwnerInformation = (userId: UserId) => (userId === '931653
 
 const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => pipe(
   events,
+  constructReadModel,
   getGroup(groupId),
   E.map((group) => ({
     ownerName: group.name,
