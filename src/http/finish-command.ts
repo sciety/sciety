@@ -4,11 +4,11 @@ import { Middleware } from 'koa';
 import { renderErrorPage } from './render-error-page';
 import { finishFollowCommand } from '../follow';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
-import { Adapters } from '../infrastructure';
+import { CollectedPorts } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
-export const finishCommand = (adapters: Adapters): Middleware => async (context, next) => {
+export const finishCommand = (adapters: CollectedPorts): Middleware => async (context, next) => {
   if (context.session.command === 'follow') {
     const result = await finishFollowCommand(adapters)(context.session[sessionGroupProperty], context.state.user)();
     delete context.session.command;

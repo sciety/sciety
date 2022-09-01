@@ -6,12 +6,15 @@ import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { logRequestBody } from './log-request-body';
 import { requireBearerToken } from './require-bearer-token';
-import { Adapters } from '../infrastructure';
+import { CollectedPorts } from '../infrastructure';
 import { CommandResult } from '../types/command-result';
 
-type ScietyApiCommandHandler = (adapters: Adapters) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type ScietyApiCommandHandler = (adapters: CollectedPorts) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
-export const handleScietyApiCommand = (adapters: Adapters, handler: ScietyApiCommandHandler): Middleware => compose([
+export const handleScietyApiCommand = (
+  adapters: CollectedPorts,
+  handler: ScietyApiCommandHandler,
+): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
   logRequestBody(adapters.logger),
   requireBearerToken,

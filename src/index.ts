@@ -9,7 +9,7 @@ import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
-  Adapters, createInfrastructure, Logger, replaceError,
+  CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { addArticleToSpecificUserList } from './policies/add-article-to-specific-user-list';
 
@@ -27,7 +27,7 @@ type NoopPolicy = (event: DomainEvent) => T.Task<void>;
 
 const noopPolicy: NoopPolicy = () => T.of(undefined);
 
-type ExecuteBackgroundPolicies = (adapters: Adapters) => T.Task<void>;
+type ExecuteBackgroundPolicies = (adapters: CollectedPorts) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
   const events = await adapters.getAllEvents();

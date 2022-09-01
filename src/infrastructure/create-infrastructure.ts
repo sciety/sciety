@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { Adapters } from './adapters';
+import { CollectedPorts } from './collected-ports';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
@@ -96,7 +96,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
+export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
     logger: createLogger(dependencies),

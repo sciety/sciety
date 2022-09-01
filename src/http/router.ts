@@ -44,7 +44,7 @@ import {
 } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
-import { Adapters } from '../infrastructure';
+import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../learn-about-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
@@ -96,7 +96,7 @@ const userPageParams = t.type({
   })),
 });
 
-export const createRouter = (adapters: Adapters): Router => {
+export const createRouter = (adapters: CollectedPorts): Router => {
   const router = new Router();
 
   const toSuccessResponse = (body: string) => ({

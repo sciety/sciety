@@ -16,7 +16,7 @@ import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '..
 import * as DE from '../types/data-error';
 import { ListOwnerId } from '../types/list-owner-id';
 
-export type Adapters = {
+export type CollectedPorts = {
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   fetchArticle: FetchCrossrefArticle,
