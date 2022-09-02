@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
-import { Logger } from '../shared-ports';
+import { AddArticleToList, Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
@@ -117,12 +117,6 @@ const mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists: Record<string, string>
 };
 
 type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
-
-type AddArticleToListCommandPayload = {
-  articleId: Doi, listId: Lid.ListId,
-};
-
-type AddArticleToList = (payload: AddArticleToListCommandPayload) => TE.TaskEither<string, void>;
 
 export type Ports = {
   logger: Logger,
