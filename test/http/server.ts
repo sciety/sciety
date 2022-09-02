@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
-import { Adapters } from '../../src/infrastructure';
+import { CollectedPorts } from '../../src/infrastructure';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
@@ -20,7 +20,7 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type TestServer = {
-  adapters: Adapters,
+  adapters: CollectedPorts,
   server: Server,
 };
 
@@ -42,7 +42,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     rapidreviews: () => TE.left(DE.unavailable),
   };
 
-  const adapters: Adapters = {
+  const adapters: CollectedPorts = {
     addArticleToList: () => TE.left(''),
     fetchArticle,
     fetchReview: fetchReview(fetchers),
