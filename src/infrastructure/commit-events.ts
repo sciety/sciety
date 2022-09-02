@@ -27,7 +27,7 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
-export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
+type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,
