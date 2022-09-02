@@ -1,14 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent } from '../domain-events';
+import {
+  DomainEvent, isListCreatedEvent, ListCreatedEvent,
+} from '../domain-events';
 
 type NeedsToBeAdded = (existingEvents: ReadonlyArray<DomainEvent>,)
-=> (eventToAdd: ArticleAddedToListEvent)
+=> (eventToAdd: ListCreatedEvent)
 => boolean;
 
 export const needsToBeAdded: NeedsToBeAdded = (existingEvents) => (eventToAdd) => pipe(
   existingEvents,
-  RA.filter(isArticleAddedToListEvent),
-  RA.some((event) => event.articleId.value === eventToAdd.articleId.value && event.listId === eventToAdd.listId),
+  RA.filter(isListCreatedEvent),
+  RA.some((event) => event.listId === eventToAdd.listId),
   (found) => !found,
 );
