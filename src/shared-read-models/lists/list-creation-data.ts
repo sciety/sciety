@@ -327,4 +327,11 @@ export const listCreationEvents: ReadonlyArray<ListCreatedEvent> = [
     LOID.fromUserId(toUserId('931653361')),
     new Date('2022-07-27T15:19:31.9Z'),
   ),
+  listCreated(
+    LID.fromValidatedString('list-id-1238289812307632129'),
+    'Saved articles',
+    'Articles that have been saved by @RuchikaBajaj9.',
+    LOID.fromUserId(toUserId('1238289812307632129')),
+    new Date('2022-09-02T13:30:00Z'),
+  ),
 ];

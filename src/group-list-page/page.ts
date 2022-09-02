@@ -20,13 +20,24 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-const getDavidAshbrookOwnerInformation = (userId: UserId) => (userId === '931653361'
-  ? E.right({
-    ownerName: 'David Ashbrook',
-    ownerHref: '/users/DavidAshbrook',
-    ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1503119472353239040/eJgS9Y1y_normal.jpg',
-  })
-  : E.left(DE.notFound));
+const getSelectUserOwnerInformation = (userId: UserId) => {
+  switch (userId) {
+    case '931653361':
+      return E.right({
+        ownerName: 'David Ashbrook',
+        ownerHref: '/users/DavidAshbrook',
+        ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1503119472353239040/eJgS9Y1y_normal.jpg',
+      });
+    case '1238289812307632129':
+      return E.right({
+        ownerName: 'Ruchika Bajaj',
+        ownerHref: '/users/RuchikaBajaj9',
+        ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1426490209990975489/tkYaltji_normal.jpg',
+      });
+    default:
+      return E.left(DE.notFound);
+  }
+};
 
 const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => pipe(
   events,
@@ -56,7 +67,7 @@ const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe
         case 'group-id':
           return getGroupOwnerInformation(events)(ownerId.value);
         case 'user-id':
-          return getDavidAshbrookOwnerInformation(ownerId.value);
+          return getSelectUserOwnerInformation(ownerId.value);
       }
     },
     E.map((ownerInformation) => ({
