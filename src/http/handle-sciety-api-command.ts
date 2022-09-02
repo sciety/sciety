@@ -9,19 +9,19 @@ import { requireBearerToken } from './require-bearer-token';
 import { CollectedPorts } from '../infrastructure';
 import { CommandResult } from '../types/command-result';
 
-type ScietyApiCommandHandler = (adapters: CollectedPorts) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type ScietyApiCommandHandler = (ports: CollectedPorts) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
 export const handleScietyApiCommand = (
-  adapters: CollectedPorts,
+  ports: CollectedPorts,
   handler: ScietyApiCommandHandler,
 ): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
-  logRequestBody(adapters.logger),
+  logRequestBody(ports.logger),
   requireBearerToken,
   async (context) => {
     await pipe(
       context.request.body,
-      handler(adapters),
+      handler(ports),
       TE.match(
         (error) => {
           context.response.status = StatusCodes.BAD_REQUEST;

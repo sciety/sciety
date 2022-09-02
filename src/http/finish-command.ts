@@ -8,13 +8,13 @@ import { CollectedPorts } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
-export const finishCommand = (adapters: CollectedPorts): Middleware => async (context, next) => {
+export const finishCommand = (ports: CollectedPorts): Middleware => async (context, next) => {
   if (context.session.command === 'follow') {
-    const result = await finishFollowCommand(adapters)(context.session[sessionGroupProperty], context.state.user)();
+    const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], context.state.user)();
     delete context.session.command;
     delete context.session[sessionGroupProperty];
     if (O.isNone(result)) {
-      adapters.logger('error', 'Could not finish command', { session: context.session });
+      ports.logger('error', 'Could not finish command', { session: context.session });
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
       context.response.body = standardPageLayout(O.none)({
         title: 'Error',

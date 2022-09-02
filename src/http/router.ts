@@ -96,7 +96,7 @@ const userPageParams = t.type({
   })),
 });
 
-export const createRouter = (adapters: CollectedPorts): Router => {
+export const createRouter = (ports: CollectedPorts): Router => {
   const router = new Router();
 
   const toSuccessResponse = (body: string) => ({
@@ -116,7 +116,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
         TE.fromEither,
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
-          adapters,
+          ports,
           homePage,
           T.map(homePageLayout(user)),
         )),
@@ -137,7 +137,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/my-feed',
     pageHandler(createPageFromParams(
       myFeedParams,
-      myFeedPage(adapters),
+      myFeedPage(ports),
     )),
   );
 
@@ -145,7 +145,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/sciety-feed',
     pageHandler(createPageFromParams(
       scietyFeedCodec,
-      scietyFeedPage(adapters)(20),
+      scietyFeedPage(ports)(20),
     )),
   );
 
@@ -166,7 +166,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/about',
-    pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+    pageHandler(() => aboutPage(ports.fetchStaticFile)),
   );
 
   router.get(
@@ -210,39 +210,39 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     `/users/:handle(${matchHandle})/lists`,
     pageHandler(createPageFromParams(
       userPageParams,
-      userPage(adapters)('lists'),
+      userPage(ports)('lists'),
     )),
   );
 
   router.get(
     '/users/:id([0-9]+)/lists',
-    redirectUserIdToHandle(adapters, 'lists'),
+    redirectUserIdToHandle(ports, 'lists'),
   );
 
   router.get(
     `/users/:handle(${matchHandle})/following`,
     pageHandler(createPageFromParams(
       userPageParams,
-      userPage(adapters)('followed-groups'),
+      userPage(ports)('followed-groups'),
     )),
   );
 
   router.get(
     '/users/:id([0-9]+)/following',
-    redirectUserIdToHandle(adapters, 'following'),
+    redirectUserIdToHandle(ports, 'following'),
   );
 
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
     pageHandler(createPageFromParams(
       userListPageParams,
-      userListPage(adapters),
+      userListPage(ports),
     )),
   );
 
   router.get(
     '/users/:id([0-9]+)/lists/saved-articles',
-    redirectUserIdToHandle(adapters, 'lists/saved-articles'),
+    redirectUserIdToHandle(ports, 'lists/saved-articles'),
   );
 
   router.get(
@@ -265,7 +265,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       searchResultsPageParams.decode,
       E.fold(
         () => TE.right(searchPage),
-        searchResultsPage(adapters)(20),
+        searchResultsPage(ports)(20),
       ),
     )),
   );
@@ -296,13 +296,13 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(articleActivityPage(adapters)),
+      TE.chain(articleActivityPage(ports)),
     )),
   );
 
   router.get(
     '/groups',
-    pageHandler(() => groupsPage(adapters)),
+    pageHandler(() => groupsPage(ports)),
   );
 
   router.get(
@@ -322,7 +322,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     `/groups/:slug(${groupSlugRegex})/lists`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.lists),
+      groupPage(ports)(groupPageTabs.lists),
     )),
   );
 
@@ -330,7 +330,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     `/groups/:slug(${groupSlugRegex})/about`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.about),
+      groupPage(ports)(groupPageTabs.about),
     )),
   );
 
@@ -338,7 +338,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     `/groups/:slug(${groupSlugRegex})/followers`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.followers),
+      groupPage(ports)(groupPageTabs.followers),
     )),
   );
 
@@ -349,22 +349,22 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     `/groups/:id(${uuidRegex})/lists`,
-    redirectGroupIdToSlug(adapters, 'lists'),
+    redirectGroupIdToSlug(ports, 'lists'),
   );
 
   router.get(
     `/groups/:id(${uuidRegex})/about`,
-    redirectGroupIdToSlug(adapters, 'about'),
+    redirectGroupIdToSlug(ports, 'about'),
   );
 
   router.get(
     `/groups/:id(${uuidRegex})/followers`,
-    redirectGroupIdToSlug(adapters, 'followers'),
+    redirectGroupIdToSlug(ports, 'followers'),
   );
 
   router.get(
     `/groups/:id(${uuidRegex})/evaluated-articles`,
-    redirectGroupIdToSlug(adapters, 'evaluated-articles'),
+    redirectGroupIdToSlug(ports, 'evaluated-articles'),
   );
 
   router.get(
@@ -381,7 +381,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/lists/:id',
     pageHandler(createPageFromParams(
       groupListPageParams,
-      groupListPage(adapters),
+      groupListPage(ports),
     )),
   );
 
@@ -421,7 +421,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/follow',
     bodyParser({ enableTypes: ['form'] }),
-    executeIfAuthenticated(adapters),
+    executeIfAuthenticated(ports),
   );
 
   router.post(
@@ -429,7 +429,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     bodyParser({ enableTypes: ['form'] }),
     saveUnfollowCommand(),
     requireAuthentication,
-    unfollowHandler(adapters),
+    unfollowHandler(ports),
   );
 
   router.post(
@@ -437,7 +437,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
     requireAuthentication,
-    respondHandler(adapters),
+    respondHandler(ports),
   );
 
   router.post(
@@ -445,7 +445,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
     requireAuthentication,
-    finishSaveArticleCommand(adapters),
+    finishSaveArticleCommand(ports),
     redirectBack,
   );
 
@@ -453,17 +453,17 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/unsave-article',
     bodyParser({ enableTypes: ['form'] }),
     requireAuthentication,
-    unsaveArticle(adapters),
+    unsaveArticle(ports),
     redirectBack,
   );
 
-  router.post('/record-evaluation', handleScietyApiCommand(adapters, recordEvaluation));
+  router.post('/record-evaluation', handleScietyApiCommand(ports, recordEvaluation));
 
-  router.post('/add-article-to-list', handleScietyApiCommand(adapters, addArticleToListCommandHandler));
+  router.post('/add-article-to-list', handleScietyApiCommand(ports, addArticleToListCommandHandler));
 
   router.post(
     '/annotations/create-annotation',
-    supplyFormSubmissionTo(handleCreateAnnotationCommand(adapters)),
+    supplyFormSubmissionTo(handleCreateAnnotationCommand(ports)),
   );
 
   // AUTHENTICATION
@@ -494,21 +494,21 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/twitter/callback',
     catchErrors(
-      adapters.logger,
+      ports.logger,
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
     onlyIfNotAuthenticated(logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
-    finishCommand(adapters),
-    finishUnfollowCommand(adapters),
-    finishRespondCommand(adapters),
-    finishSaveArticleCommand(adapters),
+    finishCommand(ports),
+    finishUnfollowCommand(ports),
+    finishRespondCommand(ports),
+    finishSaveArticleCommand(ports),
     redirectAfterAuthenticating(),
   );
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    const response = await docmapIndex(adapters)(context.query)();
+    const response = await docmapIndex(ports)(context.query)();
 
     context.response.status = response.status;
     context.response.body = response.body;
@@ -519,7 +519,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const response = await pipe(
       context.params.doi,
-      generateDocmaps(adapters),
+      generateDocmaps(ports),
       TE.fold(
         (error) => T.of({
           body: {},
@@ -558,7 +558,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/static/:file(.+)',
-    loadStaticFile(adapters.logger),
+    loadStaticFile(ports.logger),
   );
 
   return router;

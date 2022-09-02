@@ -27,23 +27,23 @@ type NoopPolicy = (event: DomainEvent) => T.Task<void>;
 
 const noopPolicy: NoopPolicy = () => T.of(undefined);
 
-type ExecuteBackgroundPolicies = (adapters: CollectedPorts) => T.Task<void>;
+type ExecuteBackgroundPolicies = (ports: CollectedPorts) => T.Task<void>;
 
-const executeBackgroundPolicies: ExecuteBackgroundPolicies = (adapters) => async () => {
-  const events = await adapters.getAllEvents();
+const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async () => {
+  const events = await ports.getAllEvents();
   // const amountOfEventsToProcess = events.length;
   const amountOfEventsToProcess = 0;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
-    await addArticleToSpecificUserList(adapters)(events[i])();
+    await addArticleToSpecificUserList(ports)(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 0);
     });
   }
   const stop = performance.now();
-  adapters.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
+  ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
 
 void pipe(

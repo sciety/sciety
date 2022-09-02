@@ -12,9 +12,9 @@ import { CollectedPorts } from '../infrastructure';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
-export const createApplicationServer = (router: Router, adapters: CollectedPorts): E.Either<string, Server> => {
+export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
   const app = new Koa();
-  const { logger } = adapters;
+  const { logger } = ports;
 
   app.use(rTracer.koaMiddleware());
 
@@ -89,7 +89,7 @@ export const createApplicationServer = (router: Router, adapters: CollectedPorts
           avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
           displayName: '',
         };
-        void createAccountIfNecessary(adapters)(user)()
+        void createAccountIfNecessary(ports)(user)()
           .then(() => cb(null, user));
       },
     ));
@@ -111,7 +111,7 @@ export const createApplicationServer = (router: Router, adapters: CollectedPorts
             avatarUrl: photos[0].value,
             displayName: profile.displayName,
           };
-          void createAccountIfNecessary(adapters)(userAccount)()
+          void createAccountIfNecessary(ports)(userAccount)()
             .then(() => cb(
               undefined,
               {
