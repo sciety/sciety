@@ -27,7 +27,6 @@ import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups'
 import { isListCreatedEvent, sort as sortEvents } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { executePolicies } from '../policies/execute-policies';
-import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -83,7 +82,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 ) => (
   events: ReadonlyArray<RuntimeGeneratedEvent>,
 ) => pipe(
-  listCreationEvents,
+  [],
   TE.right,
   TE.map(RA.filter(isListCreatedEvent)),
   TE.map(RA.filter(needsToBeAdded(events))),

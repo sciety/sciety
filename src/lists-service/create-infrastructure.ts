@@ -10,7 +10,6 @@ import { sort as sortEvents } from '../domain-events';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
-import { listCreationEvents } from '../shared-read-models/lists/list-creation-data';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -33,7 +32,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getListsEventsFromDatabase(pool, logger),
         TE.map((eventsFromDatabase) => [
           ...eventsFromDatabase,
-          ...listCreationEvents,
         ]),
         TE.map(sortEvents),
       ),
