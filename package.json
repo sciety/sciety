@@ -20,7 +20,6 @@
     "clownface": "^1.5.1",
     "cls-rtracer": "^2.6.2",
     "escape-goat": "^3.0.0",
-    "fast-printf": "1.6.9",
     "fast-xml-parser": "^4.0.9",
     "fp-ts": "^2.12.3",
     "googleapis": "^107.0.0",
