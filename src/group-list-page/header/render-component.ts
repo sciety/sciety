@@ -28,9 +28,6 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
     </p>
     <p class="page-header__description">${viewModel.description}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
-    <p>
-      <a href="#">Edit list details</a>
-    </p>
   </header>`,
   toHtmlFragment,
 );
