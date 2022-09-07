@@ -18,16 +18,18 @@ describe('save-article-to-generic-list', () => {
       await click('Log in');
     });
 
-    describe('when the user saves the article', () => {
-      beforeEach(async () => {
-        await goto('localhost:8080/articles/activity/10.1101/2021.12.06.471423');
-        await click('Save to my list');
-      });
+    describe('and the user already has a generic list', () => {
+      describe('when the user saves the article', () => {
+        beforeEach(async () => {
+          await goto('localhost:8080/articles/activity/10.1101/2021.12.06.471423');
+          await click('Save to my list');
+        });
 
-      it('the article should appear in the user\'s generic list', async () => {
-        await goto(`localhost:8080/lists/list-id-${testUserId}`);
+        it.skip('the article should appear in the user\'s generic list', async () => {
+          await goto(`localhost:8080/lists/list-id-${testUserId}`);
 
-        expect(true).toBe(false);
+          expect(true).toBe(false);
+        });
       });
     });
   });
