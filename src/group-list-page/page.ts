@@ -34,6 +34,12 @@ const getSelectUserOwnerInformation = (userId: UserId) => {
         ownerHref: '/users/RuchikaBajaj9',
         ownerAvatarPath: 'https://pbs.twimg.com/profile_images/1426490209990975489/tkYaltji_normal.jpg',
       });
+    case '1338873008283377664':
+      return E.right({
+        ownerName: 'accountfortesting',
+        ownerHref: '/users/account27775998',
+        ownerAvatarPath: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
+      });
     default:
       return E.left(DE.notFound);
   }
