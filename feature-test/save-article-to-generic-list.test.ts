@@ -10,7 +10,7 @@ describe('save-article-to-generic-list', () => {
 
   afterEach(screenshotTeardown);
 
-  describe('when logged in', () => {
+  describe('given the user is logged in', () => {
     const testUserId = '1338873008283377664';
 
     beforeEach(async () => {
@@ -24,7 +24,7 @@ describe('save-article-to-generic-list', () => {
         await click('Save to my list');
       });
 
-      it.skip('the article should appear in the user\'s generic list page', async () => {
+      it('the article should appear in the user\'s generic list', async () => {
         await goto(`localhost:8080/lists/list-id-${testUserId}`);
 
         expect(true).toBe(false);
