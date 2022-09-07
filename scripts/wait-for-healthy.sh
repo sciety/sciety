@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-timeout="30"
+timeout="60"
 
 timeout --foreground "$timeout" bash << EOT
     while true; do
