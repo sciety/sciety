@@ -3,7 +3,7 @@ import {
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 
-describe('save-article-to-generic-list', () => {
+describe('save-article-to-list', () => {
   beforeEach(async () => {
     await openBrowser();
   });
@@ -49,6 +49,9 @@ describe('save-article-to-generic-list', () => {
 
         it.todo('the article card on the list page offers a delete button');
       });
+    });
+
+    describe('and the user only has the default user list', () => {
     });
   });
 });
