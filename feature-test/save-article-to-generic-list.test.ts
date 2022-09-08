@@ -27,7 +27,7 @@ describe('save-article-to-generic-list', () => {
           await click('Save to my list');
         });
 
-        it.skip('the article should appear in the user\'s generic list', async () => {
+        it.skip('the article should appear in the list page', async () => {
           await goto(`localhost:8080/lists/list-id-${testUserId}`);
 
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
@@ -44,6 +44,10 @@ describe('save-article-to-generic-list', () => {
         it.todo('the list count of the article card on the list page it is in increases by one');
 
         it.todo('the last updated date of the list card on the user\'s list page is updated');
+
+        it.todo('the save article button on the article\'s page is replaced with link to the list');
+
+        it.todo('the article card on the list page offers a delete button');
       });
     });
   });
