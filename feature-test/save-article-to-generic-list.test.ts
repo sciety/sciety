@@ -77,12 +77,18 @@ describe('save-article-to-list', () => {
         it('the article is counted in the list card on the user account page', async () => {
           await goto(`localhost:8080/users/${userHandle}`);
 
-          const foo = await $('.list-card').text();
+          const cardText = await $('.list-card').text();
 
-          expect(foo).toContain('1 article');
+          expect(cardText).toContain('1 article');
         });
 
-        it.todo('the user\'s action appears in the Sciety feed');
+        it('the user\'s action appears in the Sciety feed', async () => {
+          await goto('localhost:8080/sciety-feed');
+
+          const cardText = await $('.sciety-feed-card').text();
+
+          expect(cardText).toContain(`${userHandle} saved an article`);
+        });
 
         it.todo('the list count of the article card on the search page increases by one');
 
