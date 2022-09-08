@@ -19,7 +19,7 @@ describe('save-article-to-generic-list', () => {
     });
 
     describe('and the user already has a generic list', () => {
-      describe('when the user saves the article', () => {
+      describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2021.12.06.471423';
 
         beforeEach(async () => {
@@ -34,6 +34,16 @@ describe('save-article-to-generic-list', () => {
 
           expect(articleIsDisplayed).toBe(true);
         });
+
+        it.todo('the article is counted in the list card on the user account page');
+
+        it.todo('the user\'s action appears in the Sciety feed');
+
+        it.todo('the list count of the article card on the search page increases by one');
+
+        it.todo('the list count of the article card on the list page it is in increases by one');
+
+        it.todo('the last updated date of the list card on the user\'s list page is updated');
       });
     });
   });
