@@ -90,7 +90,13 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain(`${userHandle} saved an article`);
         });
 
-        it.todo('the list count of the article card on the search page increases by one');
+        it('the list count of the article card on the search page increases by one', async () => {
+          await goto(`localhost:8080/search?query=${articleId}`);
+
+          const cardText = await $('.article-card').text();
+
+          expect(cardText).toContain('Appears in 1 list');
+        });
 
         it.todo('the list count of the article card on the list page it is in increases by one');
 
