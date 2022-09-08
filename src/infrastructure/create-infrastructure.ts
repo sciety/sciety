@@ -36,7 +36,9 @@ import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
 import { Doi } from '../types/doi';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -167,12 +169,25 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         TE.map(() => undefined),
       );
 
-      return {
-        fetchArticle: fetchCrossrefArticle(
+      let fetchArticle;
+      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+        fetchArticle = (doi: Doi) => TE.right({
+          abstract: sanitise(toHtmlFragment('')),
+          authors: O.none,
+          doi,
+          title: sanitise(toHtmlFragment('')),
+          server: 'biorxiv' as const,
+        });
+      } else {
+        fetchArticle = fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
           dependencies.crossrefApiBearerToken,
-        ),
+        );
+      }
+
+      return {
+        fetchArticle,
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
