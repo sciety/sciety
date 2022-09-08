@@ -59,7 +59,11 @@ describe('save-article-to-list', () => {
 
         beforeEach(async () => {
           await goto(`localhost:8080/articles/activity/${articleId}`);
-          await click('Save to my list');
+          const canSave = await $('.save-article-button').exists();
+
+          if (canSave) {
+            await click('Save to my list');
+          }
         });
 
         it('the article should appear in the list page', async () => {
@@ -70,7 +74,13 @@ describe('save-article-to-list', () => {
           expect(articleIsDisplayed).toBe(true);
         });
 
-        it.todo('the article is counted in the list card on the user account page');
+        it('the article is counted in the list card on the user account page', async () => {
+          await goto(`localhost:8080/users/${userHandle}`);
+
+          const foo = await $('.list-card').text();
+
+          expect(foo).toContain('1 article');
+        });
 
         it.todo('the user\'s action appears in the Sciety feed');
 
