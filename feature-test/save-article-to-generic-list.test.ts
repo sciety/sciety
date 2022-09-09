@@ -51,7 +51,7 @@ describe('save-article-to-list', () => {
       });
     });
 
-    describe('and the user only has the default user list', () => {
+    describe('and the user only has an empty default user list', () => {
       const userHandle = 'account27775998';
 
       describe('when the user saves an article that isn\'t in any list', () => {
@@ -72,6 +72,14 @@ describe('save-article-to-list', () => {
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
 
           expect(articleIsDisplayed).toBe(true);
+        });
+
+        it('the article card on the list page offers a delete button', async () => {
+          await goto(`localhost:8080/users/${userHandle}/lists/saved-articles`);
+
+          const deleteButton = $('.article-card form[action="/unsave-article"]');
+
+          expect(await deleteButton.exists()).toBe(true);
         });
 
         it('the article is counted in the list card on the user account page', async () => {
@@ -122,8 +130,6 @@ describe('save-article-to-list', () => {
 
           expect(await currentURL()).toBe(`http://localhost:8080/users/${userHandle}/lists/saved-articles`);
         });
-
-        it.todo('the article card on the list page offers a delete button');
       });
     });
   });
