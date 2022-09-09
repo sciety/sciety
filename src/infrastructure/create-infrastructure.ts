@@ -18,6 +18,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import { getListsOwnedByFromListsReadModelService } from './get-lists-owned-by-from-lists-read-model-service';
+import { localFetchArticleAdapter } from './local-fetch-article-adapter';
 import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
@@ -36,9 +37,7 @@ import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
 import { Doi } from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
-import { sanitise } from '../types/sanitised-html-fragment';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -171,13 +170,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       let fetchArticle;
       if (process.env.FETCH_ARTICLE_ADAPTER === 'local') {
-        fetchArticle = (doi: Doi) => TE.right({
-          abstract: sanitise(toHtmlFragment('')),
-          authors: O.none,
-          doi,
-          title: sanitise(toHtmlFragment('')),
-          server: 'biorxiv' as const,
-        });
+        fetchArticle = localFetchArticleAdapter;
       } else {
         fetchArticle = fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
