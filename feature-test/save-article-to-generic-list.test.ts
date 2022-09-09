@@ -82,6 +82,15 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('1 article');
         });
 
+        it('the last updated date in the list card on the user account page', async () => {
+          await goto(`localhost:8080/users/${userHandle}`);
+
+          const lastUpdatedDate = await $('.list-card time').attribute('datetime');
+          const today = (new Date()).toISOString().split('T')[0];
+
+          expect(lastUpdatedDate).toBe(today);
+        });
+
         it('the user\'s action appears in the Sciety feed', async () => {
           await goto('localhost:8080/sciety-feed');
 
@@ -105,8 +114,6 @@ describe('save-article-to-list', () => {
 
           expect(cardText).toContain('Appears in 1 list');
         });
-
-        it.todo('the last updated date of the list card on the user\'s list page is updated');
 
         it.todo('the save article button on the article\'s page is replaced with link to the list');
 
