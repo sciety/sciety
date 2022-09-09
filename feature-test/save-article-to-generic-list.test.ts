@@ -1,28 +1,26 @@
 import {
-  $, click, currentURL, goto, openBrowser,
+  $, click, closeBrowser, currentURL, goto, openBrowser,
 } from 'taiko';
-import { screenshotTeardown } from './utilities';
 
 describe('save-article-to-list', () => {
-  beforeEach(async () => {
-    await openBrowser();
-  });
-
-  afterEach(screenshotTeardown);
-
   describe('given the user is logged in', () => {
     const testUserId = '1338873008283377664';
 
-    beforeEach(async () => {
+    beforeAll(async () => {
+      await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
     });
 
-    describe('and the user already has a generic list', () => {
+    afterAll(async () => {
+      await closeBrowser();
+    });
+
+    describe.skip('and the user already has a generic list', () => {
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2021.12.06.471423';
 
-        beforeEach(async () => {
+        beforeAll(async () => {
           await goto(`localhost:8080/articles/activity/${articleId}`);
           await click('Save to my list');
         });
@@ -57,13 +55,9 @@ describe('save-article-to-list', () => {
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2021.12.06.471423';
 
-        beforeEach(async () => {
+        beforeAll(async () => {
           await goto(`localhost:8080/articles/activity/${articleId}`);
-          const canSave = await $('.save-article-button').exists();
-
-          if (canSave) {
-            await click('Save to my list');
-          }
+          await click('Save to my list');
         });
 
         it('the article should appear in the list page', async () => {
