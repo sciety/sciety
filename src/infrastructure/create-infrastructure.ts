@@ -170,7 +170,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       let fetchArticle;
-      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+      if (process.env.FETCH_ARTICLE_ADAPTER === 'local') {
         fetchArticle = (doi: Doi) => TE.right({
           abstract: sanitise(toHtmlFragment('')),
           authors: O.none,
