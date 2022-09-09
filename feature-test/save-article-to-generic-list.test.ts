@@ -1,5 +1,5 @@
 import {
-  $, click, goto, openBrowser,
+  $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 
@@ -115,7 +115,13 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.todo('the save article button on the article\'s page is replaced with link to the list');
+        it.skip('the save article button on the article page is replaced with a link to the list', async () => {
+          await goto(`localhost:8080/articles/activity/${articleId}`);
+
+          await click('Saved to my list');
+
+          expect(await currentURL()).toBe(`http://localhost:8080/users/${userHandle}/lists/saved-articles`);
+        });
 
         it.todo('the article card on the list page offers a delete button');
       });
