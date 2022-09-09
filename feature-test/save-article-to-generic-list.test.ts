@@ -3,13 +3,12 @@ import {
 } from 'taiko';
 
 describe('save-article-to-list', () => {
-  describe('given the user is logged in', () => {
-    const testUserId = '1338873008283377664';
+  describe.skip('given the user is logged in', () => {
+    const testUserId = '12345';
 
     beforeAll(async () => {
       await openBrowser();
-      await goto('localhost:8080/');
-      await click('Log in');
+      await goto(`localhost:8080/log-in-as?user-id=${testUserId}`);
     });
 
     afterAll(async () => {
