@@ -479,6 +479,18 @@ export const createRouter = (ports: CollectedPorts): Router => {
     logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
   );
 
+  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+    router.get(
+      '/log-in-as',
+      async (context, next) => {
+        const { userId } = context.query;
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        context.redirect(`/twitter/callback?username=${userId}&password=anypassword`);
+        await next();
+      },
+    );
+  }
+
   router.get(
     '/sign-up-call-to-action',
     async (context: ParameterizedContext, next) => {

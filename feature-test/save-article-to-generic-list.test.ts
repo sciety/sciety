@@ -3,12 +3,12 @@ import {
 } from 'taiko';
 
 describe('save-article-to-list', () => {
-  describe.skip('given the user is logged in', () => {
-    const testUserId = '12345';
+  describe('given the user is logged in', () => {
+    const testUserId = '1295307136415735808';
 
     beforeAll(async () => {
       await openBrowser();
-      await goto(`localhost:8080/log-in-as?user-id=${testUserId}`);
+      await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
     });
 
     afterAll(async () => {
@@ -49,7 +49,7 @@ describe('save-article-to-list', () => {
     });
 
     describe('and the user only has an empty default user list', () => {
-      const userHandle = 'account27775998';
+      const userHandle = 'scietyHQ';
 
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2021.12.06.471423';
@@ -92,7 +92,7 @@ describe('save-article-to-list', () => {
           expect(lastUpdatedDate).toBe(today);
         });
 
-        it('the user\'s action appears in the Sciety feed', async () => {
+        it.skip('the user\'s action appears in the Sciety feed', async () => {
           await goto('localhost:8080/sciety-feed');
 
           const cardText = await $('.sciety-feed-card').text();
