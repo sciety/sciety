@@ -1,5 +1,5 @@
 import {
-  $, click, closeBrowser, currentURL, goto, openBrowser,
+  $, click, closeBrowser, currentURL, goto, listItem, openBrowser,
 } from 'taiko';
 
 describe('save-article-to-list', () => {
@@ -92,10 +92,10 @@ describe('save-article-to-list', () => {
           expect(lastUpdatedDate).toBe(today);
         });
 
-        it.skip('the user\'s action appears in the Sciety feed', async () => {
+        it('the user\'s action appears in the Sciety feed', async () => {
           await goto('localhost:8080/sciety-feed');
 
-          const cardText = await $('.sciety-feed-card').text();
+          const cardText = await listItem(userHandle).text();
 
           expect(cardText).toContain(`${userHandle} saved an article`);
         });
