@@ -98,7 +98,13 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.todo('the list count of the article card on the list page it is in increases by one');
+        it('the list count of the article card on the list page it is in increases by one', async () => {
+          await goto(`localhost:8080/users/${userHandle}/lists/saved-articles`);
+
+          const cardText = await $('.article-card').text();
+
+          expect(cardText).toContain('Appears in 1 list');
+        });
 
         it.todo('the last updated date of the list card on the user\'s list page is updated');
 
