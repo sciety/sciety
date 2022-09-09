@@ -10,7 +10,7 @@ import { CollectedPorts } from '../../src/infrastructure';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
-import { FetchCrossrefArticle } from '../../src/third-parties/crossref';
+import { FetchArticle } from '../../src/shared-ports';
 import * as DE from '../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
@@ -25,7 +25,7 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const fetchArticle: FetchCrossrefArticle = (doi) => TE.right({
+  const fetchArticle: FetchArticle = (doi) => TE.right({
     abstract: 'Article abstract.' as SanitisedHtmlFragment,
     authors: O.none,
     doi,

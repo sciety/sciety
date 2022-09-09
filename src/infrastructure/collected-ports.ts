@@ -3,12 +3,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import {
-  AddArticleToList, CommitEvents, GetAllEvents, Logger,
+  AddArticleToList, CommitEvents, FetchArticle, GetAllEvents,
+  Logger,
 } from '../shared-ports';
 import { List } from '../shared-read-models/lists';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
-import { FetchCrossrefArticle } from '../third-parties/crossref';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
@@ -17,7 +17,7 @@ import { ListOwnerId } from '../types/list-owner-id';
 export type CollectedPorts = {
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
-  fetchArticle: FetchCrossrefArticle,
+  fetchArticle: FetchArticle,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
