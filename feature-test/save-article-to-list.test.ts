@@ -9,6 +9,7 @@ describe('save-article-to-list', () => {
       const testUserId = '931653361';
       const userProfilePage = `localhost:8080/users/${userHandle}`;
       const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
+      const scietyFeedPage = 'localhost:8080/sciety-feed';
 
       beforeAll(async () => {
         await openBrowser();
@@ -22,6 +23,7 @@ describe('save-article-to-list', () => {
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2022.06.06.494969';
         const articlePage = `localhost:8080/articles/activity/${articleId}`;
+        const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -62,7 +64,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the user\'s action appears in the Sciety feed', async () => {
-          await goto('localhost:8080/sciety-feed');
+          await goto(scietyFeedPage);
 
           const cardText = await listItem(userHandle).text();
 
@@ -70,7 +72,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
-          await goto(`localhost:8080/search?query=${articleId}`);
+          await goto(articleSearchResultsPage);
 
           const cardText = await $('.article-card').text();
 
