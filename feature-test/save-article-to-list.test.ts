@@ -77,7 +77,7 @@ describe('save-article-to-list', () => {
         it.skip('the save article button on the article page is replaced with a link to the list', async () => {
           await goto(articlePage);
           await click('Saved to my list');
-          expect(await currentURL()).toBe(`http://localhost:8080/users/${userHandle}/lists/saved-articles`);
+          expect(await currentURL()).toBe(genericListPage);
         });
       });
     });
@@ -154,7 +154,7 @@ describe('save-article-to-list', () => {
         it.skip('the save article button on the article page is replaced with a link to the list', async () => {
           await goto(articlePage);
           await click('Saved to my list');
-          expect(await currentURL()).toBe(`http://localhost:8080/users/${userHandle}/lists/saved-articles`);
+          expect(await currentURL()).toBe(userSavedArticlesPage);
         });
       });
     });
