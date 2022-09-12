@@ -7,6 +7,7 @@ describe('save-article-to-list', () => {
     describe('and the user already has a generic list', () => {
       const userHandle = 'DavidAshbrook';
       const testUserId = '931653361';
+      const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
 
       beforeAll(async () => {
         await openBrowser();
@@ -26,7 +27,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the article should appear in the list page', async () => {
-          await goto(`localhost:8080/lists/list-id-${testUserId}`);
+          await goto(genericListPage);
 
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
 
@@ -34,7 +35,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the article card on the list page offers a delete button', async () => {
-          await goto(`localhost:8080/lists/list-id-${testUserId}`);
+          await goto(genericListPage);
 
           const deleteButton = $('.article-card form[action="/unsave-article"]');
 
@@ -75,7 +76,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the list count of the article card on the list page it is in increases by one', async () => {
-          await goto(`localhost:8080/lists/list-id-${testUserId}`);
+          await goto(genericListPage);
 
           const cardText = await $('.article-card').text();
 
