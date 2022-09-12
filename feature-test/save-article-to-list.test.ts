@@ -100,6 +100,9 @@ describe('save-article-to-list', () => {
     describe('and the user only has an empty default user list', () => {
       const userHandle = 'scietyHQ';
       const testUserId = '1295307136415735808';
+      const userSavedArticlesPage = `localhost:8080/users/${userHandle}/lists/saved-articles`;
+      const userProfilePage = `localhost:8080/users/${userHandle}`;
+      const scietyFeedPage = 'localhost:8080/sciety-feed';
 
       beforeAll(async () => {
         await openBrowser();
@@ -112,14 +115,16 @@ describe('save-article-to-list', () => {
 
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2021.12.06.471423';
+        const articlePage = `localhost:8080/articles/activity/${articleId}`;
+        const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
         beforeAll(async () => {
-          await goto(`localhost:8080/articles/activity/${articleId}`);
+          await goto(articlePage);
           await click('Save to my list');
         });
 
         it('the article should appear in the list page', async () => {
-          await goto(`localhost:8080/users/${userHandle}/lists/saved-articles`);
+          await goto(userSavedArticlesPage);
 
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
 
@@ -127,7 +132,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the article card on the list page offers a delete button', async () => {
-          await goto(`localhost:8080/users/${userHandle}/lists/saved-articles`);
+          await goto(userSavedArticlesPage);
 
           const deleteButton = $('.article-card form[action="/unsave-article"]');
 
@@ -135,7 +140,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the article is counted in the list card on the user profile page', async () => {
-          await goto(`localhost:8080/users/${userHandle}`);
+          await goto(userProfilePage);
 
           const cardText = await $('.list-card').text();
 
@@ -143,7 +148,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the last updated date in the list card on the user profile page', async () => {
-          await goto(`localhost:8080/users/${userHandle}`);
+          await goto(userProfilePage);
 
           const lastUpdatedDate = await $('.list-card time').attribute('datetime');
           const today = (new Date()).toISOString().split('T')[0];
@@ -152,7 +157,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the user\'s action appears in the Sciety feed', async () => {
-          await goto('localhost:8080/sciety-feed');
+          await goto(scietyFeedPage);
 
           const cardText = await listItem(userHandle).text();
 
@@ -160,7 +165,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
-          await goto(`localhost:8080/search?query=${articleId}`);
+          await goto(articleSearchResultsPage);
 
           const cardText = await $('.article-card').text();
 
@@ -168,7 +173,7 @@ describe('save-article-to-list', () => {
         });
 
         it('the list count of the article card on the list page it is in increases by one', async () => {
-          await goto(`localhost:8080/users/${userHandle}/lists/saved-articles`);
+          await goto(userSavedArticlesPage);
 
           const cardText = await $('.article-card').text();
 
@@ -176,7 +181,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the save article button on the article page is replaced with a link to the list', async () => {
-          await goto(`localhost:8080/articles/activity/${articleId}`);
+          await goto(articlePage);
 
           await click('Saved to my list');
 
