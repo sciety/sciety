@@ -28,6 +28,7 @@ describe('save-article-to-list', () => {
 
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
         const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+        const listCardSelector = '.list-card';
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -48,7 +49,7 @@ describe('save-article-to-list', () => {
 
         it('the article is counted in the list card on the user profile page', async () => {
           await goto(userProfilePage);
-          const cardText = await $('.list-card').text();
+          const cardText = await $(listCardSelector).text();
           expect(cardText).toContain('1 article');
         });
 
@@ -108,6 +109,7 @@ describe('save-article-to-list', () => {
 
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
         const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+        const listCardSelector = '.list-card';
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -128,7 +130,7 @@ describe('save-article-to-list', () => {
 
         it('the article is counted in the list card on the user profile page', async () => {
           await goto(userProfilePage);
-          const cardText = await $('.list-card').text();
+          const cardText = await $(listCardSelector).text();
           expect(cardText).toContain('1 article');
         });
 
