@@ -20,9 +20,10 @@ describe('save-article-to-list', () => {
 
       describe('when the user saves an article that isn\'t in any list', () => {
         const articleId = '10.1101/2022.06.06.494969';
+        const articlePage = `localhost:8080/articles/activity/${articleId}`;
 
         beforeAll(async () => {
-          await goto(`localhost:8080/articles/activity/${articleId}`);
+          await goto(articlePage);
           await click('Save to my list');
         });
 
@@ -84,7 +85,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the save article button on the article page is replaced with a link to the list', async () => {
-          await goto(`localhost:8080/articles/activity/${articleId}`);
+          await goto(articlePage);
 
           await click('Saved to my list');
 
