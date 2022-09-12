@@ -7,6 +7,7 @@ describe('save-article-to-list', () => {
     describe('and the user already has a generic list', () => {
       const userHandle = 'DavidAshbrook';
       const testUserId = '931653361';
+      const userProfilePage = `localhost:8080/users/${userHandle}`;
       const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
 
       beforeAll(async () => {
@@ -43,16 +44,16 @@ describe('save-article-to-list', () => {
           expect(await deleteButton.exists()).toBe(true);
         });
 
-        it('the article is counted in the list card on the user account page', async () => {
-          await goto(`localhost:8080/users/${userHandle}`);
+        it('the article is counted in the list card on the user profile page', async () => {
+          await goto(userProfilePage);
 
           const cardText = await $('.list-card').text();
 
           expect(cardText).toContain('1 article');
         });
 
-        it('the last updated date in the list card on the user account page', async () => {
-          await goto(`localhost:8080/users/${userHandle}`);
+        it('the last updated date in the list card on the user profile page', async () => {
+          await goto(userProfilePage);
 
           const lastUpdatedDate = await $('.list-card time').attribute('datetime');
           const today = (new Date()).toISOString().split('T')[0];
@@ -131,7 +132,7 @@ describe('save-article-to-list', () => {
           expect(await deleteButton.exists()).toBe(true);
         });
 
-        it('the article is counted in the list card on the user account page', async () => {
+        it('the article is counted in the list card on the user profile page', async () => {
           await goto(`localhost:8080/users/${userHandle}`);
 
           const cardText = await $('.list-card').text();
@@ -139,7 +140,7 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('1 article');
         });
 
-        it('the last updated date in the list card on the user account page', async () => {
+        it('the last updated date in the list card on the user profile page', async () => {
           await goto(`localhost:8080/users/${userHandle}`);
 
           const lastUpdatedDate = await $('.list-card time').attribute('datetime');
