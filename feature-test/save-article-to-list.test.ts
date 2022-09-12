@@ -29,6 +29,7 @@ describe('save-article-to-list', () => {
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
         const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
         const listCardSelector = '.list-card';
+        const listCardTimeSelector = '.list-card time';
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -55,7 +56,7 @@ describe('save-article-to-list', () => {
 
         it('the last updated date in the list card on the user profile page', async () => {
           await goto(userProfilePage);
-          const lastUpdatedDate = await $('.list-card time').attribute('datetime');
+          const lastUpdatedDate = await $(listCardTimeSelector).attribute('datetime');
           const today = (new Date()).toISOString().split('T')[0];
           expect(lastUpdatedDate).toBe(today);
         });
@@ -110,6 +111,7 @@ describe('save-article-to-list', () => {
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
         const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
         const listCardSelector = '.list-card';
+        const listCardTimeSelector = '.list-card time';
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -136,7 +138,7 @@ describe('save-article-to-list', () => {
 
         it('the last updated date in the list card on the user profile page', async () => {
           await goto(userProfilePage);
-          const lastUpdatedDate = await $('.list-card time').attribute('datetime');
+          const lastUpdatedDate = await $(listCardTimeSelector).attribute('datetime');
           const today = (new Date()).toISOString().split('T')[0];
           expect(lastUpdatedDate).toBe(today);
         });
