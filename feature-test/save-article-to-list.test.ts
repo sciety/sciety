@@ -30,7 +30,7 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it.skip('the article should appear in the list page', async () => {
+        it.skip('the article appears in the list page', async () => {
           await goto(genericListPage);
 
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
@@ -123,7 +123,7 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it('the article should appear in the list page', async () => {
+        it('the article appears in the list page', async () => {
           await goto(userSavedArticlesPage);
 
           const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
