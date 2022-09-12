@@ -26,6 +26,9 @@ describe('save-article-to-list', () => {
         const articlePage = `localhost:8080/articles/activity/${articleId}`;
         const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
+        const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
+        const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+
         beforeAll(async () => {
           await goto(articlePage);
           await click('Save to my list');
@@ -33,13 +36,13 @@ describe('save-article-to-list', () => {
 
         it.skip('the article appears in the list page', async () => {
           await goto(genericListPage);
-          const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
+          const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
         });
 
         it.skip('the article card on the list page offers a delete button', async () => {
           await goto(genericListPage);
-          const deleteButton = $('.article-card form[action="/unsave-article"]');
+          const deleteButton = $(articleCardDeleteButtonSelector);
           expect(await deleteButton.exists()).toBe(true);
         });
 
@@ -103,6 +106,9 @@ describe('save-article-to-list', () => {
         const articlePage = `localhost:8080/articles/activity/${articleId}`;
         const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
+        const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
+        const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+
         beforeAll(async () => {
           await goto(articlePage);
           await click('Save to my list');
@@ -110,13 +116,13 @@ describe('save-article-to-list', () => {
 
         it('the article appears in the list page', async () => {
           await goto(userSavedArticlesPage);
-          const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
+          const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
         });
 
         it('the article card on the list page offers a delete button', async () => {
           await goto(userSavedArticlesPage);
-          const deleteButton = $('.article-card form[action="/unsave-article"]');
+          const deleteButton = $(articleCardDeleteButtonSelector);
           expect(await deleteButton.exists()).toBe(true);
         });
 
