@@ -1,4 +1,5 @@
 /* eslint-disable jest-formatting/padding-around-all */
+import axios from 'axios';
 import {
   $, click, closeBrowser, currentURL, goto, listItem, openBrowser,
 } from 'taiko';
@@ -112,6 +113,7 @@ describe('save-article-to-list', () => {
         const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
         const listCardSelector = '.list-card';
         const listCardTimeSelector = '.list-card time';
+        const pageHeaderDescriptionSelector = '.page-header__description';
 
         beforeAll(async () => {
           await goto(articlePage);
@@ -165,6 +167,15 @@ describe('save-article-to-list', () => {
           await goto(articlePage);
           await click('Saved to my list');
           expect(await currentURL()).toBe(userSavedArticlesPage);
+        });
+
+        it.skip('the user now has a generic list page', async () => {
+          const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${testUserId}`);
+          const listId = userList.data.items[0].id as unknown as string;
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
+          const description = await $(pageHeaderDescriptionSelector).text();
+          expect(description).toContain(userHandle);
         });
       });
     });
