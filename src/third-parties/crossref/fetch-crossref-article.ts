@@ -1,6 +1,8 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
+import { detect } from 'tinyld';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
@@ -8,7 +10,13 @@ import { Logger } from '../../infrastructure';
 import { FetchArticle } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import {toHtmlFragment} from '../../types/html-fragment';
+
+const wrapWithLanguageAttribute = (s: string): string => {
+  const lang = detect(s, { only: ['en', 'es', 'pt'] });
+  return `<span lang="${lang}">${s}</span>`;
+};
 
 type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
@@ -78,7 +86,16 @@ export const fetchCrossrefArticle = (
         return E.left(DE.notFound);
       }
 
-      abstract = getAbstract(doc, doi, logger);
+      abstract = pipe(
+        getAbstract(doc, doi, logger),
+        wrapWithLanguageAttribute,
+        (foo) => {
+          console.log('>>>>>', foo);
+          return foo;
+        },
+        toHtmlFragment,
+        sanitise,
+      );
       title = getTitle(doc, doi, logger);
     } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });
