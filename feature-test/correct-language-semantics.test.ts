@@ -24,7 +24,7 @@ describe('correct-language-semantics', () => {
       });
 
       describe('when detected as English', () => {
-        it.skip('is marked up as English', async () => {
+        it('is marked up as English', async () => {
           await goto('localhost:8080/articles/activity/10.1101/2020.11.12.379909');
           const languageAttribute = await $(articleTitleSelector).attribute('lang');
 

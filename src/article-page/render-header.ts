@@ -9,7 +9,7 @@ type HeaderViewModel = {
 
 export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
-    <h1>${viewModel.title}</h1>
+    <h1><span lang="en">${viewModel.title}</span></h1>
     ${renderAuthors(viewModel.authors)}
   </header>
 `);
