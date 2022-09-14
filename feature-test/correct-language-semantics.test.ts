@@ -10,6 +10,12 @@ import { arbitraryDoi } from '../test/types/doi.helper';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {
+    const irrelevantPorts = {
+      fetchReview: () => TE.left(undefined),
+      findVersionsForArticleDoi: () => TO.none,
+      getAllEvents: T.of([]),
+    };
+
     describe('the article title', () => {
       describe('when detected as Portuguese', () => {
         it.todo('is marked up as Portuguese');
@@ -30,9 +36,7 @@ describe('correct-language-semantics', () => {
           }));
           const ports = {
             fetchArticle: getArticleDetails,
-            fetchReview: () => TE.left(undefined),
-            findVersionsForArticleDoi: () => TO.none,
-            getAllEvents: T.of([]),
+            ...irrelevantPorts,
           };
           const renderPage = articleActivityPage(ports);
           const rendered = await renderPage({
