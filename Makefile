@@ -167,6 +167,9 @@ taiko: node_modules clean-db
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
+non-taiko-feature-test:
+	npx jest ${TEST} --cache-directory=.jest-non-taiko-feature-test --roots ./feature-test/
+
 download-exploratory-test-from-prod:
 	kubectl run --rm --attach ship-events \
 		--image=amazon/aws-cli:2.4.23 \
