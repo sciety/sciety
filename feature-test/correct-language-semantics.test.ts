@@ -1,6 +1,8 @@
+import { articleActivityPage } from './../src/article-page/activity-page';
 import {
   $, closeBrowser, goto, openBrowser,
 } from 'taiko';
+import * as TE from 'fp-ts/TaskEither';
 
 describe('correct-language-semantics', () => {
   beforeAll(async () => {
@@ -25,6 +27,13 @@ describe('correct-language-semantics', () => {
 
       describe('when detected as English', () => {
         it('is marked up as English', async () => {
+          const ports = {
+            fetchArticle: GetArticleDetails,
+            fetchReview: () => TE.left(undefined),
+            findVersionsForArticleDoi: FindVersionsForArticleDoi,
+            getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+          };
+          const renderPage = articleActivityPage(ports);
           await goto('localhost:8080/articles/activity/10.1101/2020.11.12.379909');
           const languageAttribute = await $(articleTitleSelector).attribute('lang');
 
