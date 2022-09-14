@@ -1,9 +1,35 @@
 describe('correct-language-semantics', () => {
-  describe('the article page', () => {
-    it.todo('does not need to mark up English content as the HTML document is already marked up as being in English');
+  describe('in the article page', () => {
+    describe('the article title', () => {
+      describe('when detected as Portuguese', () => {
+        it.todo('is marked up as Portuguese');
+      });
 
-    it.todo('marks up Portuguese content as Portuguese');
+      describe('when detected as Spanish', () => {
+        it.todo('is marked up as Spanish');
+      });
 
-    it.todo('marks up Spanish content as Spanish');
+      describe('when detected as English', () => {
+        it.todo('is marked up as English');
+      });
+    });
+
+    describe('the article abstract', () => {
+      describe('when detected as Portuguese', () => {
+        it.todo('is marked up as Portuguese');
+      });
+
+      describe('when detected as Spanish', () => {
+        it.todo('is marked up as Spanish');
+      });
+
+      describe('when detected as English', () => {
+        it.todo('is marked up as English');
+      });
+    });
+  });
+
+  describe.skip('in the article card', () => {
+    it.todo('to be done later');
   });
 });
