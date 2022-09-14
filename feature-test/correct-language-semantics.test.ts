@@ -16,6 +16,14 @@ describe('correct-language-semantics', () => {
       getAllEvents: T.of([]),
     };
 
+    const createGetArticleDetails = (title: string) => () => (TE.right({
+      doi: arbitraryDoi(),
+      title: title as SanitisedHtmlFragment,
+      abstract: arbitrarySanitisedHtmlFragment(),
+      server: 'biorxiv' as const,
+      authors: O.none,
+    }));
+
     describe('the article title', () => {
       describe('when detected as Portuguese', () => {
         it.todo('is marked up as Portuguese');
@@ -27,15 +35,8 @@ describe('correct-language-semantics', () => {
 
       describe('when detected as English', () => {
         it('is marked up as English', async () => {
-          const getArticleDetails = () => (TE.right({
-            doi: arbitraryDoi(),
-            title: 'Arbitrary title in English' as SanitisedHtmlFragment,
-            abstract: arbitrarySanitisedHtmlFragment(),
-            server: 'biorxiv' as const,
-            authors: O.none,
-          }));
           const ports = {
-            fetchArticle: getArticleDetails,
+            fetchArticle: createGetArticleDetails('Arbitrary title in English'),
             ...irrelevantPorts,
           };
           const renderPage = articleActivityPage(ports);
