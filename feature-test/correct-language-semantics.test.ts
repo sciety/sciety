@@ -3,21 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { closeBrowser, openBrowser } from 'taiko';
 import { articleActivityPage } from '../src/article-page';
 import { SanitisedHtmlFragment } from '../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../test/helpers';
 import { arbitraryDoi } from '../test/types/doi.helper';
 
 describe('correct-language-semantics', () => {
-  beforeAll(async () => {
-    await openBrowser();
-  });
-
-  afterAll(async () => {
-    await closeBrowser();
-  });
-
   describe('in the article page', () => {
     describe('the article title', () => {
       describe('when detected as Portuguese', () => {
