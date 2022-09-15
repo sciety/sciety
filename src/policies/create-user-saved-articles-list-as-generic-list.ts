@@ -30,22 +30,22 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
 ) => (event) => pipe(
   event,
   TE.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
-  TE.chain(({ userId }) => pipe(
+  TE.chain((userSavedArticleEvent) => pipe(
     {
-      ownerId: TE.right(LOID.fromUserId(userId)),
-      name: pipe(
-        userId,
+      userId: TE.right(userSavedArticleEvent.userId),
+      handle: pipe(
+        userSavedArticleEvent.userId,
         ports.getUserDetails,
-        TE.map(({ handle }) => `@${handle}'s saved articles`),
-      ),
-      description: pipe(
-        userId,
-        ports.getUserDetails,
-        TE.map(({ handle }) => `Articles that have been saved by @${handle}`),
+        TE.map(({ handle }) => handle),
       ),
     },
     sequenceS(TE.ApplyPar),
   )),
+  TE.map(({ userId, handle }) => ({
+    ownerId: LOID.fromUserId(userId),
+    name: `@${handle}'s saved articles`,
+    description: `Articles that have been saved by @${handle}`,
+  })),
   TE.chain(ports.createList),
   TE.match(
     () => undefined,
