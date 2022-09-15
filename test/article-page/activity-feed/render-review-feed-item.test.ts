@@ -57,45 +57,48 @@ describe('render-review-feed-item', () => {
   });
 
   describe('when the review has short full text', () => {
-    const fullText = 'tldr';
-    const source = 'http://example.com/source';
-    const item = pipe(
-      RFI.arbitrary(),
-      RFI.withFullText(fullText),
-      RFI.withSource(source),
-    );
-    let rendered: DocumentFragment;
-
-    beforeEach(() => {
-      rendered = pipe(
-        item,
-        renderReviewFeedItem(12),
-        JSDOM.fragment,
-      );
-    });
-
-    it('renders without a teaser', async () => {
-      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-      const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
-      const teaserWrapper = rendered.querySelector('[data-teaser]');
-      const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
-
-      expect(toggleableContent).toBeNull();
-      expect(teaserWrapper).toBeNull();
-      expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
-      expect(sourceLinkUrl).toStrictEqual(source);
-    });
-
-    it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
-    });
-
     describe.each([
       ['en', 'Arbitrary full text of an evaluation'],
       ['es', 'Texto completo arbitrario de una evaluación'],
       ['pt', 'Texto completo arbitrário de uma avaliação'],
-    ])('when the language is %s', () => {
-      it.todo('infers the language of the full text');
+    ])('when the language is %s', (code, fullText) => {
+      const source = 'http://example.com/source';
+      const item = pipe(
+        RFI.arbitrary(),
+        RFI.withFullText(fullText),
+        RFI.withSource(source),
+      );
+      let rendered: DocumentFragment;
+
+      beforeEach(() => {
+        rendered = pipe(
+          item,
+          renderReviewFeedItem(200),
+          JSDOM.fragment,
+        );
+      });
+
+      it('renders without a teaser', async () => {
+        const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
+        const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
+        const teaserWrapper = rendered.querySelector('[data-teaser]');
+        const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
+
+        expect(toggleableContent).toBeNull();
+        expect(teaserWrapper).toBeNull();
+        expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
+        expect(sourceLinkUrl).toStrictEqual(source);
+      });
+
+      it('renders an id tag with the correct value', async () => {
+        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+      });
+
+      it('infers the language of the full text', () => {
+        const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
+
+        expect(fullTextWrapper?.innerHTML).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
+      });
     });
   });
 

@@ -69,7 +69,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
         </header>
         <div class="activity-feed__item__body">
           <div>
-            ${fullText}
+            <div${inferLanguageCode(fullText)}>${fullText}</div>
             ${pipe(review, sourceLink, O.getOrElse(constant('')))}
           </div>
         </div>
