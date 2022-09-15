@@ -13,25 +13,21 @@ describe('render-review-feed-item', () => {
     ['pt', 'Texto completo arbitrário de uma avaliação'],
   ])('when the evaluation has full text in language %s', (code, fullText) => {
     describe('when the evaluation has long full text', () => {
-      let rendered: DocumentFragment;
       const teaserLength = 6;
       const item = pipe(
         RFI.arbitrary(),
         RFI.withFullText(fullText),
       );
-
-      beforeEach(() => {
-        rendered = pipe(
-          item,
-          renderReviewFeedItem(teaserLength),
-          JSDOM.fragment,
-        );
-      });
+      const rendered: DocumentFragment = pipe(
+        item,
+        renderReviewFeedItem(teaserLength),
+        JSDOM.fragment,
+      );
+      const fullTextWrapper = rendered.querySelector('[data-full-text]');
+      const teaserWrapper = rendered.querySelector('[data-teaser]');
 
       it('renders the full text', async () => {
         const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-        const fullTextWrapper = rendered.querySelector('[data-full-text]');
-        const teaserWrapper = rendered.querySelector('[data-teaser]');
 
         expect(toggleableContent).not.toBeNull();
         expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
@@ -43,14 +39,10 @@ describe('render-review-feed-item', () => {
       });
 
       it('infers the language of the full text', () => {
-        const fullTextWrapper = rendered.querySelector('[data-full-text]');
-
         expect(fullTextWrapper?.innerHTML).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
       });
 
       it('infers the language of the teaser', () => {
-        const teaserWrapper = rendered.querySelector('[data-teaser]');
-
         expect(teaserWrapper?.getAttribute('lang')).toBe(code);
       });
     });
