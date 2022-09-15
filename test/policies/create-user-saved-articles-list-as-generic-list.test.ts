@@ -22,7 +22,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
 
-        it.skip('calls the CreateList command', () => {
+        it('calls the CreateList command', () => {
           expect(ports.createList).toHaveBeenCalledWith(expect.anything());
         });
 
