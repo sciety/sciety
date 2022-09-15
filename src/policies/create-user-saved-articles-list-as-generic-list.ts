@@ -36,7 +36,7 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
       name: pipe(
         userId,
         ports.getUserDetails,
-        TE.map(({ handle }) => `${handle}'s saved articles`),
+        TE.map(({ handle }) => `@${handle}'s saved articles`),
       ),
     },
     sequenceS(TE.ApplyPar),
