@@ -43,7 +43,11 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           }));
         });
 
-        it.todo('calls the command with "Articles that have been saved by @{handle}" as a description');
+        it.skip('calls the command with "Articles that have been saved by @{handle}" as a description', () => {
+          expect(ports.createList).toHaveBeenCalledWith(expect.objectContaining({
+            description: `Articles that have saved by @${handle}`,
+          }));
+        });
       });
 
       describe('if the command fails', () => {
