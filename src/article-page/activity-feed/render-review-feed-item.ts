@@ -1,3 +1,4 @@
+import { detect } from 'tinyld';
 import { URL } from 'url';
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
@@ -23,6 +24,11 @@ export type ReviewFeedItem = {
   fullText: O.Option<SanitisedHtmlFragment>,
   counts: { helpfulCount: number, notHelpfulCount: number },
   current: O.Option<'helpful' | 'not-helpful'>,
+};
+
+const inferLanguageCode = (text: string): string => {
+  const code = detect(text, { only: ['en', 'es', 'pt'] });
+  return code === '' ? '' : ` lang="${code}"`;
 };
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
@@ -83,7 +89,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
           ${teaserText}
         </div>
         <div data-full-text>
-          ${fullText}
+          <div${inferLanguageCode(fullText)}>${fullText}</div>
           ${pipe(review, sourceLink, O.getOrElse(constant('')))}
         </div>
       </div>

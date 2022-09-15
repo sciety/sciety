@@ -42,10 +42,10 @@ describe('render-review-feed-item', () => {
         expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
       });
 
-      it.skip('infers the language of the full text', () => {
+      it('infers the language of the full text', () => {
         const fullTextWrapper = rendered.querySelector('[data-full-text]');
 
-        expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
+        expect(fullTextWrapper?.innerHTML).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
       });
 
       it.todo('infers the language of the teaser');
