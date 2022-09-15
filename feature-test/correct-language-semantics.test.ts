@@ -46,7 +46,7 @@ describe('correct-language-semantics', () => {
       });
 
       describe('when the language cannot be inferred', () => {
-        it.skip('does not add a lang attribute', async () => {
+        it('does not add a lang attribute', async () => {
           const title = '12345';
           const ports = {
             fetchArticle: createGetArticleDetails(title),
