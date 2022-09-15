@@ -25,58 +25,24 @@ describe('correct-language-semantics', () => {
         authors: O.none,
       }));
 
-      describe('when detected as Portuguese', () => {
-        it('is marked up as Portuguese', async () => {
-          const ports = {
-            fetchArticle: createGetArticleDetails('Título arbitrário em português'),
-            ...irrelevantPorts,
-          };
-          const renderPage = articleActivityPage(ports);
-          const rendered = await renderPage({
-            doi: arbitraryDoi(),
-            user: O.none,
-          })();
+      it.each([
+        ['en', 'Arbitrary title in English'],
+        ['es', 'Título arbitrario en español'],
+        ['pt', 'Título arbitrário em português'],
+      ])('is correctly inferred as %s', async (code, title) => {
+        const ports = {
+          fetchArticle: createGetArticleDetails(title),
+          ...irrelevantPorts,
+        };
+        const renderPage = articleActivityPage(ports);
+        const rendered = await renderPage({
+          doi: arbitraryDoi(),
+          user: O.none,
+        })();
 
-          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining('<h1><span lang="pt">Título arbitrário em português</span></h1>'),
-          })));
-        });
-      });
-
-      describe('when detected as Spanish', () => {
-        it('is marked up as Spanish', async () => {
-          const ports = {
-            fetchArticle: createGetArticleDetails('Título arbitrario en español'),
-            ...irrelevantPorts,
-          };
-          const renderPage = articleActivityPage(ports);
-          const rendered = await renderPage({
-            doi: arbitraryDoi(),
-            user: O.none,
-          })();
-
-          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining('<h1><span lang="es">Título arbitrario en español</span></h1>'),
-          })));
-        });
-      });
-
-      describe('when detected as English', () => {
-        it('is marked up as English', async () => {
-          const ports = {
-            fetchArticle: createGetArticleDetails('Arbitrary title in English'),
-            ...irrelevantPorts,
-          };
-          const renderPage = articleActivityPage(ports);
-          const rendered = await renderPage({
-            doi: arbitraryDoi(),
-            user: O.none,
-          })();
-
-          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining('<h1><span lang="en">Arbitrary title in English</span></h1>'),
-          })));
-        });
+        expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+          content: expect.stringContaining(`<h1><span lang="${code}">${title}</span></h1>`),
+        })));
       });
     });
 
