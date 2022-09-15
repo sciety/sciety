@@ -67,7 +67,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         await createUserSavedArticlesListAsGenericList(ports)(event)();
       });
 
-      it.skip('does not call the CreateList command', () => {
+      it('does not call the CreateList command', () => {
         expect(ports.createList).not.toHaveBeenCalled();
       });
     });
