@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/domain-events';
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
 import * as LOID from '../../src/types/list-owner-id';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -25,6 +26,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
             createList: jest.fn(defaultPorts.createList),
             getUserDetails: () => TE.right({ handle }),
             getListsOwnedBy: () => TE.right([]),
+            logger: dummyLogger,
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
@@ -53,7 +55,19 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
       });
 
       describe('if the command fails', () => {
-        it.todo('logs an error');
+        beforeEach(async () => {
+          ports = {
+            createList: () => TE.left(undefined),
+            getUserDetails: () => TE.right({ handle }),
+            getListsOwnedBy: () => TE.right([]),
+            logger: jest.fn(dummyLogger),
+          };
+          await createUserSavedArticlesListAsGenericList(ports)(event)();
+        });
+
+        it.skip('logs an error', () => {
+          expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        });
       });
     });
 
@@ -63,6 +77,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           createList: jest.fn(defaultPorts.createList),
           getUserDetails: () => TE.right({ handle }),
           getListsOwnedBy: () => TE.right([{ id: arbitraryListId() }]),
+          logger: dummyLogger,
         };
         await createUserSavedArticlesListAsGenericList(ports)(event)();
       });
