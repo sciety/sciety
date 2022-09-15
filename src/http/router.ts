@@ -11,7 +11,7 @@ import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
-import { logIn, logInCallback } from './authenticate';
+import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
 import { handleScietyApiCommand } from './handle-sciety-api-command';
@@ -480,15 +480,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-    router.get(
-      '/log-in-as',
-      async (context, next) => {
-        const { userId } = context.query;
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        context.redirect(`/twitter/callback?username=${userId}&password=anypassword`);
-        await next();
-      },
-    );
+    router.get('/log-in-as', logInAsSpecificUser);
   }
 
   router.get(

@@ -24,3 +24,10 @@ export const logIn = (strategy: 'twitter' | 'local'): Middleware => {
 };
 
 export const logInCallback = (strategy: 'twitter' | 'local'): Middleware => authenticate(strategy);
+
+export const logInAsSpecificUser: Middleware = async (context, next) => {
+  const { userId } = context.query;
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  context.redirect(`/twitter/callback?username=${userId}&password=anypassword`);
+  await next();
+};
