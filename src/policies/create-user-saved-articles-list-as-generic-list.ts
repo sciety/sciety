@@ -22,6 +22,12 @@ export type Ports = {
 
 };
 
+const constructCommand = (userDetails: { userId: UserId, handle: string }) => ({
+  ownerId: LOID.fromUserId(userDetails.userId),
+  name: `@${userDetails.handle}'s saved articles`,
+  description: `Articles that have been saved by @${userDetails.handle}`,
+});
+
 type CreateUserSavedArticlesListAsGenericList = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
 // ts-unused-exports:disable-next-line
@@ -41,11 +47,7 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
     },
     sequenceS(TE.ApplyPar),
   )),
-  TE.map(({ userId, handle }) => ({
-    ownerId: LOID.fromUserId(userId),
-    name: `@${handle}'s saved articles`,
-    description: `Articles that have been saved by @${handle}`,
-  })),
+  TE.map(constructCommand),
   TE.chain(ports.createList),
   TE.match(
     () => undefined,
