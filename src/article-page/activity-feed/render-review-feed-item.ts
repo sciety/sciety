@@ -46,13 +46,15 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   </div>
 `);
 
-const sourceLink = flow(
+const appendSourceLink = flow(
   (review: ReviewFeedItem) => review.source,
   O.map(flow(
     (source) => `
-      <a href="${source.toString()}" class="activity-feed__item__read_original_source">
-        Read the original source
-      </a>
+      <div data-read-original-source>
+        <a href="${source.toString()}" class="activity-feed__item__read_original_source">
+          Read the original source
+        </a>
+      </div>
     `,
     toHtmlFragment,
   )),
@@ -62,7 +64,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
     <div${inferLanguageCode(fullText)}>${fullText}</div>
-    ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+    ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
@@ -98,7 +100,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
 
 const renderSourceLinkWhenFulltextMissing = (review: ReviewFeedItem) => pipe(
   review,
-  sourceLink,
+  appendSourceLink,
   O.getOrElse(constant(missingFullTextAndSourceLink)),
 );
 
