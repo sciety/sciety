@@ -54,20 +54,16 @@ describe('render-review-feed-item', () => {
         RFI.withFullText(fullText),
         RFI.withSource(source),
       );
-      let rendered: DocumentFragment;
-
-      beforeEach(() => {
-        rendered = pipe(
-          item,
-          renderReviewFeedItem(200),
-          JSDOM.fragment,
-        );
-      });
+      const rendered: DocumentFragment = pipe(
+        item,
+        renderReviewFeedItem(200),
+        JSDOM.fragment,
+      );
+      const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
+      const teaserWrapper = rendered.querySelector('[data-teaser]');
 
       it('renders without a teaser', async () => {
         const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-        const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
-        const teaserWrapper = rendered.querySelector('[data-teaser]');
         const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
 
         expect(toggleableContent).toBeNull();
@@ -81,8 +77,6 @@ describe('render-review-feed-item', () => {
       });
 
       it('infers the language of the full text', () => {
-        const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
-
         expect(fullTextWrapper?.innerHTML).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
       });
     });
