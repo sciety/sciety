@@ -78,6 +78,7 @@ p.activity-feed__item__title {
   padding: 0;
   border: 0;
   color: settings.$colour-accent;
+  margin-bottom: baseline.increments(2);
 
   @include states.link {
     text-decoration: underline;
