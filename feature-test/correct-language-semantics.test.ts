@@ -65,7 +65,7 @@ describe('correct-language-semantics', () => {
       });
     });
 
-    describe.skip('the article abstract', () => {
+    describe('the article abstract', () => {
       const createGetArticleDetails = (abstract: string) => () => (TE.right({
         doi: arbitraryDoi(),
         title: arbitrarySanitisedHtmlFragment(),
@@ -95,7 +95,7 @@ describe('correct-language-semantics', () => {
       });
 
       describe('when the language cannot be inferred', () => {
-        it.skip('does not add a lang attribute', async () => {
+        it('does not add a lang attribute', async () => {
           const articleAbstract = '12345';
           const ports = {
             fetchArticle: createGetArticleDetails(articleAbstract),
