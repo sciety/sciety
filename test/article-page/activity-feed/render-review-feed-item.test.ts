@@ -38,6 +38,16 @@ describe('render-review-feed-item', () => {
     it('renders an id tag with the correct value', async () => {
       expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
     });
+
+    describe.each([
+      ['en', 'Arbitrary full text of an evaluation'],
+      ['es', 'Texto completo arbitrario de una evaluación'],
+      ['pt', 'Texto completo arbitrário de uma avaliação'],
+    ])('when the language is %s', () => {
+      it.todo('infers the language of the full text');
+
+      it.todo('infers the language of the teaser');
+    });
   });
 
   describe('when the review has short full text', () => {
@@ -72,6 +82,14 @@ describe('render-review-feed-item', () => {
 
     it('renders an id tag with the correct value', async () => {
       expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+    });
+
+    describe.each([
+      ['en', 'Arbitrary full text of an evaluation'],
+      ['es', 'Texto completo arbitrario de una evaluación'],
+      ['pt', 'Texto completo arbitrário de uma avaliação'],
+    ])('when the language is %s', () => {
+      it.todo('infers the language of the full text');
     });
   });
 
