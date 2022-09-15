@@ -16,15 +16,15 @@ describe('correct-language-semantics', () => {
       getAllEvents: T.of([]),
     };
 
-    const createGetArticleDetails = (title: string) => () => (TE.right({
-      doi: arbitraryDoi(),
-      title: title as SanitisedHtmlFragment,
-      abstract: arbitrarySanitisedHtmlFragment(),
-      server: 'biorxiv' as const,
-      authors: O.none,
-    }));
-
     describe('the article title', () => {
+      const createGetArticleDetails = (title: string) => () => (TE.right({
+        doi: arbitraryDoi(),
+        title: title as SanitisedHtmlFragment,
+        abstract: arbitrarySanitisedHtmlFragment(),
+        server: 'biorxiv' as const,
+        authors: O.none,
+      }));
+
       describe('when detected as Portuguese', () => {
         it('is marked up as Portuguese', async () => {
           const ports = {
@@ -81,6 +81,14 @@ describe('correct-language-semantics', () => {
     });
 
     describe('the article abstract', () => {
+      const createGetArticleDetails = (abstract: string) => () => (TE.right({
+        doi: arbitraryDoi(),
+        title: arbitrarySanitisedHtmlFragment(),
+        abstract: abstract as SanitisedHtmlFragment,
+        server: 'biorxiv' as const,
+        authors: O.none,
+      }));
+
       describe('when detected as Portuguese', () => {
         it.todo('is marked up as Portuguese');
       });
@@ -90,7 +98,24 @@ describe('correct-language-semantics', () => {
       });
 
       describe('when detected as English', () => {
-        it.todo('is marked up as English');
+        it.skip('is marked up as English', async () => {
+          const articleAbstract = `
+            This text represents the abstract of this article in English.
+          `;
+          const ports = {
+            fetchArticle: createGetArticleDetails(articleAbstract),
+            ...irrelevantPorts,
+          };
+          const renderPage = articleActivityPage(ports);
+          const rendered = await renderPage({
+            doi: arbitraryDoi(),
+            user: O.none,
+          })();
+
+          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+            content: expect.stringContaining(`<h1><span lang="en">${articleAbstract}</span></h1>`),
+          })));
+        });
       });
     });
   });
