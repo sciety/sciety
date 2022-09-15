@@ -5,9 +5,13 @@ import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import * as LOID from '../types/list-owner-id';
 
+type CreateListCommand = {
+  ownerId: LOID.ListOwnerId,
+};
+
 // ts-unused-exports:disable-next-line
 export type Ports = {
-  createList: () => TE.TaskEither<unknown, void>,
+  createList: (command: CreateListCommand) => TE.TaskEither<unknown, void>,
 };
 
 type CreateUserSavedArticlesListAsGenericList = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
