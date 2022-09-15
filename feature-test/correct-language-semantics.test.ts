@@ -26,7 +26,21 @@ describe('correct-language-semantics', () => {
 
     describe('the article title', () => {
       describe('when detected as Portuguese', () => {
-        it.todo('is marked up as Portuguese');
+        it.skip('is marked up as Portuguese', async () => {
+          const ports = {
+            fetchArticle: createGetArticleDetails('Título arbitrário em português'),
+            ...irrelevantPorts,
+          };
+          const renderPage = articleActivityPage(ports);
+          const rendered = await renderPage({
+            doi: arbitraryDoi(),
+            user: O.none,
+          })();
+
+          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+            content: expect.stringContaining('<h1><span lang="pt">Título arbitrário em português</span></h1>'),
+          })));
+        });
       });
 
       describe('when detected as Spanish', () => {
