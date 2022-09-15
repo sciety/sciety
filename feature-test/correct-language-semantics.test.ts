@@ -26,7 +26,7 @@ describe('correct-language-semantics', () => {
 
     describe('the article title', () => {
       describe('when detected as Portuguese', () => {
-        it.skip('is marked up as Portuguese', async () => {
+        it('is marked up as Portuguese', async () => {
           const ports = {
             fetchArticle: createGetArticleDetails('Título arbitrário em português'),
             ...irrelevantPorts,
