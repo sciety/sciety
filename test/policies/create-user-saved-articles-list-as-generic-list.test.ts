@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/domain-events';
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
 import * as LOID from '../../src/types/list-owner-id';
+import { arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -12,6 +13,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
 
   describe('when a UserSavedArticle event is received', () => {
     const userId = arbitraryUserId();
+    const handle = arbitraryWord();
     const event = userSavedArticle(userId, arbitraryArticleId());
     let ports: Ports;
 
@@ -20,6 +22,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             createList: jest.fn(defaultPorts.createList),
+            getUserDetails: () => TE.right({ handle }),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
@@ -34,7 +37,11 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           }));
         });
 
-        it.todo('calls the command with "@{handle}\'s saved articles" as a name');
+        it.skip('calls the command with "@{handle}\'s saved articles" as a name', () => {
+          expect(ports.createList).toHaveBeenCalledWith(expect.objectContaining({
+            name: `${handle}'s saved articles`,
+          }));
+        });
 
         it.todo('calls the command with "Articles that have been saved by @{handle}" as a description');
       });

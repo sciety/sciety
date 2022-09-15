@@ -4,14 +4,21 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import * as LOID from '../types/list-owner-id';
+import { UserId } from '../types/user-id';
 
 type CreateListCommand = {
   ownerId: LOID.ListOwnerId,
 };
 
+type UserDetails = {
+  handle: string,
+};
+
 // ts-unused-exports:disable-next-line
 export type Ports = {
   createList: (command: CreateListCommand) => TE.TaskEither<unknown, void>,
+  getUserDetails: (userId: UserId) => TE.TaskEither<unknown, UserDetails>,
+
 };
 
 type CreateUserSavedArticlesListAsGenericList = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
