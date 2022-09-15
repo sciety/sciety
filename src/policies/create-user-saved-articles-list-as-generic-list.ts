@@ -7,7 +7,6 @@ import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent, UserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Logger } from '../shared-ports';
 import { ListId } from '../types/list-id';
-import { ListOwnerId } from '../types/list-owner-id';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
