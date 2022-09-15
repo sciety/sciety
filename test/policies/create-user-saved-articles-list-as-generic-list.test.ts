@@ -1,8 +1,30 @@
+import * as TE from 'fp-ts/TaskEither';
+import { userSavedArticle } from '../../src/domain-events';
+import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
+import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
+
 describe('create-user-saved-articles-list-as-generic-list', () => {
+  const defaultPorts = {
+    createList: () => TE.right(undefined),
+  };
+
   describe('when a UserSavedArticle event is received', () => {
+    const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
+    let ports: Ports;
+
     describe('and that user owns no generic list', () => {
       describe('if the command succeeds', () => {
-        it.todo('calls the CreateList command');
+        beforeEach(async () => {
+          ports = {
+            createList: jest.fn(defaultPorts.createList),
+          };
+          await createUserSavedArticlesListAsGenericList(ports)(event)();
+        });
+
+        it.skip('calls the CreateList command', () => {
+          expect(ports.createList).toHaveBeenCalledWith(expect.anything());
+        });
 
         it.todo('calls the command with the user as the owner');
 
