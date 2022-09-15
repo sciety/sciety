@@ -44,6 +44,25 @@ describe('correct-language-semantics', () => {
           content: expect.stringContaining(`<h1><span lang="${code}">${title}</span></h1>`),
         })));
       });
+
+      describe('when the language cannot be inferred', () => {
+        it.skip('does not add a lang attribute', async () => {
+          const title = '12345';
+          const ports = {
+            fetchArticle: createGetArticleDetails(title),
+            ...irrelevantPorts,
+          };
+          const renderPage = articleActivityPage(ports);
+          const rendered = await renderPage({
+            doi: arbitraryDoi(),
+            user: O.none,
+          })();
+
+          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+            content: expect.stringContaining(`<h1>${title}</h1>`),
+          })));
+        });
+      });
     });
 
     describe('the article abstract', () => {
