@@ -5,46 +5,48 @@ import { renderReviewFeedItem } from '../../../src/article-page/activity-feed/re
 import { missingFullTextAndSourceLink } from '../../../src/article-page/activity-feed/static-messages';
 import { reviewIdCodec } from '../../../src/types/review-id';
 import { arbitraryNumber } from '../../helpers';
-import * as t from '../../helpers';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
-    let rendered: DocumentFragment;
-    const teaserLength = 6;
-    const fullText = t.arbitraryTextLongerThan(teaserLength);
-    const item = pipe(
-      RFI.arbitrary(),
-      RFI.withFullText(fullText),
-    );
-
-    beforeEach(() => {
-      rendered = pipe(
-        item,
-        renderReviewFeedItem(teaserLength),
-        JSDOM.fragment,
-      );
-    });
-
-    it('renders the full text', async () => {
-      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-      const fullTextWrapper = rendered.querySelector('[data-full-text]');
-      const teaserWrapper = rendered.querySelector('[data-teaser]');
-
-      expect(toggleableContent).not.toBeNull();
-      expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
-      expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('…'));
-    });
-
-    it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
-    });
-
     describe.each([
       ['en', 'Arbitrary full text of an evaluation'],
       ['es', 'Texto completo arbitrario de una evaluación'],
       ['pt', 'Texto completo arbitrário de uma avaliação'],
-    ])('when the language is %s', () => {
-      it.todo('infers the language of the full text');
+    ])('when the language is %s', (code, fullText) => {
+      let rendered: DocumentFragment;
+      const teaserLength = 6;
+      const item = pipe(
+        RFI.arbitrary(),
+        RFI.withFullText(fullText),
+      );
+
+      beforeEach(() => {
+        rendered = pipe(
+          item,
+          renderReviewFeedItem(teaserLength),
+          JSDOM.fragment,
+        );
+      });
+
+      it('renders the full text', async () => {
+        const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
+        const fullTextWrapper = rendered.querySelector('[data-full-text]');
+        const teaserWrapper = rendered.querySelector('[data-teaser]');
+
+        expect(toggleableContent).not.toBeNull();
+        expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
+        expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('…'));
+      });
+
+      it('renders an id tag with the correct value', async () => {
+        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+      });
+
+      it.skip('infers the language of the full text', () => {
+        const fullTextWrapper = rendered.querySelector('[data-full-text]');
+
+        expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
+      });
 
       it.todo('infers the language of the teaser');
     });
