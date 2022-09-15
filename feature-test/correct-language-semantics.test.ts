@@ -65,7 +65,7 @@ describe('correct-language-semantics', () => {
       });
     });
 
-    describe('the article abstract', () => {
+    describe.skip('the article abstract', () => {
       const createGetArticleDetails = (abstract: string) => () => (TE.right({
         doi: arbitraryDoi(),
         title: arbitrarySanitisedHtmlFragment(),
@@ -74,19 +74,29 @@ describe('correct-language-semantics', () => {
         authors: O.none,
       }));
 
-      describe('when detected as Portuguese', () => {
-        it.todo('is marked up as Portuguese');
+      it.each([
+        ['en', 'This text represents the abstract of this article in English.'],
+        ['es', 'Este texto representa el resumen de este artículo en español.'],
+        ['pt', 'Este texto representa o resumo deste artigo em português.'],
+      ])('is correctly inferred as %s', async (code, articleAbstract) => {
+        const ports = {
+          fetchArticle: createGetArticleDetails(articleAbstract),
+          ...irrelevantPorts,
+        };
+        const renderPage = articleActivityPage(ports);
+        const rendered = await renderPage({
+          doi: arbitraryDoi(),
+          user: O.none,
+        })();
+
+        expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+          content: expect.stringContaining(`<div lang="${code}">${articleAbstract}</div>`),
+        })));
       });
 
-      describe('when detected as Spanish', () => {
-        it.todo('is marked up as Spanish');
-      });
-
-      describe('when detected as English', () => {
-        it.skip('is marked up as English', async () => {
-          const articleAbstract = `
-            This text represents the abstract of this article in English.
-          `;
+      describe('when the language cannot be inferred', () => {
+        it.skip('does not add a lang attribute', async () => {
+          const articleAbstract = '12345';
           const ports = {
             fetchArticle: createGetArticleDetails(articleAbstract),
             ...irrelevantPorts,
@@ -98,7 +108,7 @@ describe('correct-language-semantics', () => {
           })();
 
           expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining(`<h1><span lang="en">${articleAbstract}</span></h1>`),
+            content: expect.stringContaining(`<div>${articleAbstract}</div>`),
           })));
         });
       });
