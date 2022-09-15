@@ -7,12 +7,12 @@ import { reviewIdCodec } from '../../../src/types/review-id';
 import { arbitraryNumber } from '../../helpers';
 
 describe('render-review-feed-item', () => {
-  describe('when the review has long full text', () => {
-    describe.each([
-      ['en', 'Arbitrary full text of an evaluation'],
-      ['es', 'Texto completo arbitrario de una evaluación'],
-      ['pt', 'Texto completo arbitrário de uma avaliação'],
-    ])('when the language is %s', (code, fullText) => {
+  describe.each([
+    ['en', 'Arbitrary full text of an evaluation'],
+    ['es', 'Texto completo arbitrario de una evaluación'],
+    ['pt', 'Texto completo arbitrário de uma avaliação'],
+  ])('when the evaluation has full text in language %s', (code, fullText) => {
+    describe('when the evaluation has long full text', () => {
       let rendered: DocumentFragment;
       const teaserLength = 6;
       const item = pipe(
@@ -54,14 +54,8 @@ describe('render-review-feed-item', () => {
         expect(teaserWrapper?.getAttribute('lang')).toBe(code);
       });
     });
-  });
 
-  describe('when the review has short full text', () => {
-    describe.each([
-      ['en', 'Arbitrary full text of an evaluation'],
-      ['es', 'Texto completo arbitrario de una evaluación'],
-      ['pt', 'Texto completo arbitrário de uma avaliação'],
-    ])('when the language is %s', (code, fullText) => {
+    describe('when the evaluation has short full text', () => {
       const source = 'http://example.com/source';
       const item = pipe(
         RFI.arbitrary(),
@@ -102,7 +96,7 @@ describe('render-review-feed-item', () => {
     });
   });
 
-  describe('when the review has no full text', () => {
+  describe('when the evaluation has no full text', () => {
     describe('when there is a source link URL', () => {
       const source = 'http://example.com/source';
       let rendered: DocumentFragment;
