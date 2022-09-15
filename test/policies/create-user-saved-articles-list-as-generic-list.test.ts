@@ -69,6 +69,14 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
         });
       });
+
+      describe('if getListsOwnedBy fails', () => {
+        it.todo('logs an error');
+      });
+
+      describe('if getUserDetails fails', () => {
+        it.todo('logs an error');
+      });
     });
 
     describe('and the user already owns a generic list', () => {
@@ -85,10 +93,14 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
       it('does not call the CreateList command', () => {
         expect(ports.createList).not.toHaveBeenCalled();
       });
+
+      it.todo('logs a debug message');
     });
   });
 
   describe('when any other event is received', () => {
     it.todo('does not call the CreateList command');
+
+    it.todo('does not log');
   });
 });
