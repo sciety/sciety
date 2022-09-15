@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/domain-events';
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
+import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -10,7 +11,8 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
   };
 
   describe('when a UserSavedArticle event is received', () => {
-    const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
+    const userId = arbitraryUserId();
+    const event = userSavedArticle(userId, arbitraryArticleId());
     let ports: Ports;
 
     describe('and that user owns no generic list', () => {
@@ -26,7 +28,11 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           expect(ports.createList).toHaveBeenCalledWith(expect.anything());
         });
 
-        it.todo('calls the command with the user as the owner');
+        it('calls the command with the user as the owner', () => {
+          expect(ports.createList).toHaveBeenCalledWith(expect.objectContaining({
+            ownerId: LOID.fromUserId(userId),
+          }));
+        });
 
         it.todo('calls the command with "@{handle}\'s saved articles" as a name');
 
