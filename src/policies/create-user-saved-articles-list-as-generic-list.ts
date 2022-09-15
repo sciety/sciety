@@ -38,6 +38,11 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
         ports.getUserDetails,
         TE.map(({ handle }) => `@${handle}'s saved articles`),
       ),
+      description: pipe(
+        userId,
+        ports.getUserDetails,
+        TE.map(({ handle }) => `Articles that have been saved by @${handle}`),
+      ),
     },
     sequenceS(TE.ApplyPar),
   )),
