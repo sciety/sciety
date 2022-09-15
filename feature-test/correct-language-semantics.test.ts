@@ -41,7 +41,7 @@ describe('correct-language-semantics', () => {
         })();
 
         expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-          content: expect.stringContaining(`<h1><span lang="${code}">${title}</span></h1>`),
+          content: expect.stringContaining(`<h1 lang="${code}">${title}</h1>`),
         })));
       });
 

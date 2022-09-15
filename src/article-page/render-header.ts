@@ -12,7 +12,7 @@ const inferLanguageCode = (title: string): string => detect(title, { only: ['en'
 
 export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
-    <h1><span lang="${inferLanguageCode(viewModel.title)}">${viewModel.title}</span></h1>
+    <h1 lang="${inferLanguageCode(viewModel.title)}">${viewModel.title}</h1>
     ${renderAuthors(viewModel.authors)}
   </header>
 `);
