@@ -60,14 +60,17 @@ const sourceLink = flow(
 
 const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
+  const fulltextAndSourceLink = `
+    <div${inferLanguageCode(fullText)}>${fullText}</div>
+    ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+  `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
       <div class="hidden" data-teaser${inferLanguageCode(fullText)}>
         ${teaserText}
       </div>
       <div data-full-text>
-        <div${inferLanguageCode(fullText)}>${fullText}</div>
-        ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+        ${fulltextAndSourceLink}
       </div>
     </div>
   `;
@@ -76,8 +79,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
     feedItemBody = `
       <div class="activity-feed__item__body">
         <div>
-          <div${inferLanguageCode(fullText)}>${fullText}</div>
-          ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+          ${fulltextAndSourceLink}
         </div>
       </div>
     `;
