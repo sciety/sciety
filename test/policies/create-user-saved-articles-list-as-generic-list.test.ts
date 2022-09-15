@@ -4,6 +4,7 @@ import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/polic
 import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('create-user-saved-articles-list-as-generic-list', () => {
@@ -23,6 +24,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           ports = {
             createList: jest.fn(defaultPorts.createList),
             getUserDetails: () => TE.right({ handle }),
+            getListsOwnedBy: () => TE.right([]),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
@@ -56,7 +58,18 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
     });
 
     describe('and the user already owns a generic list', () => {
-      it.todo('does not call the CreateList command');
+      beforeEach(async () => {
+        ports = {
+          createList: jest.fn(defaultPorts.createList),
+          getUserDetails: () => TE.right({ handle }),
+          getListsOwnedBy: () => TE.right([{ id: arbitraryListId() }]),
+        };
+        await createUserSavedArticlesListAsGenericList(ports)(event)();
+      });
+
+      it.skip('does not call the CreateList command', () => {
+        expect(ports.createList).not.toHaveBeenCalled();
+      });
     });
   });
 

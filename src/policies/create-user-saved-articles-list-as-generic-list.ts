@@ -4,6 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent } from '../domain-events/user-saved-article-event';
+import { ListId } from '../types/list-id';
+import { ListOwnerId } from '../types/list-owner-id';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
@@ -19,7 +21,7 @@ type UserDetails = {
 export type Ports = {
   createList: (command: CreateListCommand) => TE.TaskEither<unknown, void>,
   getUserDetails: (userId: UserId) => TE.TaskEither<unknown, UserDetails>,
-
+  getListsOwnedBy: (ownerId: LOID.ListOwnerId) => TE.TaskEither<unknown, ReadonlyArray<{ id: ListId }>>,
 };
 
 const constructCommand = (userDetails: { userId: UserId, handle: string }) => ({
