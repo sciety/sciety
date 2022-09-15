@@ -37,7 +37,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           }));
         });
 
-        it.skip('calls the command with "@{handle}\'s saved articles" as a name', () => {
+        it('calls the command with "@{handle}\'s saved articles" as a name', () => {
           expect(ports.createList).toHaveBeenCalledWith(expect.objectContaining({
             name: `${handle}'s saved articles`,
           }));
