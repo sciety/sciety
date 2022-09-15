@@ -85,7 +85,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
         ${eventMetadata(review)}
       </header>
       <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-        <div class="hidden" data-teaser>
+        <div class="hidden" data-teaser${inferLanguageCode(fullText)}>
           ${teaserText}
         </div>
         <div data-full-text>

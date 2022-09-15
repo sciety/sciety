@@ -48,7 +48,11 @@ describe('render-review-feed-item', () => {
         expect(fullTextWrapper?.innerHTML).toStrictEqual(expect.stringContaining(`<div lang="${code}">${fullText}</div>`));
       });
 
-      it.todo('infers the language of the teaser');
+      it('infers the language of the teaser', () => {
+        const teaserWrapper = rendered.querySelector('[data-teaser]');
+
+        expect(teaserWrapper?.getAttribute('lang')).toBe(code);
+      });
     });
   });
 
