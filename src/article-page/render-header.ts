@@ -8,7 +8,7 @@ type HeaderViewModel = {
   authors: ArticleAuthors,
 };
 
-const inferLanguageCode = (title: string): string => detect(title, { only: ['en', 'pt'] });
+const inferLanguageCode = (title: string): string => detect(title, { only: ['en', 'es', 'pt'] });
 
 export const renderHeader = (viewModel: HeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">

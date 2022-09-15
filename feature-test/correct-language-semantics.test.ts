@@ -44,13 +44,9 @@ describe('correct-language-semantics', () => {
       });
 
       describe('when detected as Spanish', () => {
-        it.todo('is marked up as Spanish');
-      });
-
-      describe('when detected as English', () => {
-        it('is marked up as English', async () => {
+        it('is marked up as Spanish', async () => {
           const ports = {
-            fetchArticle: createGetArticleDetails('Arbitrary title in English'),
+            fetchArticle: createGetArticleDetails('Título arbitrário em português'),
             ...irrelevantPorts,
           };
           const renderPage = articleActivityPage(ports);
@@ -60,7 +56,25 @@ describe('correct-language-semantics', () => {
           })();
 
           expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining('<h1><span lang="en">Arbitrary title in English</span></h1>'),
+            content: expect.stringContaining('<h1><span lang="pt">Título arbitrário em português</span></h1>'),
+          })));
+        });
+      });
+
+      describe('when detected as English', () => {
+        it('is marked up as English', async () => {
+          const ports = {
+            fetchArticle: createGetArticleDetails('Título arbitrario en español'),
+            ...irrelevantPorts,
+          };
+          const renderPage = articleActivityPage(ports);
+          const rendered = await renderPage({
+            doi: arbitraryDoi(),
+            user: O.none,
+          })();
+
+          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
+            content: expect.stringContaining('<h1><span lang="es">Título arbitrario en español</span></h1>'),
           })));
         });
       });
