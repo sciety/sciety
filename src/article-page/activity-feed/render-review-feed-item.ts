@@ -60,39 +60,35 @@ const sourceLink = flow(
 
 const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
+  let feedItemBody = `
+    <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
+      <div class="hidden" data-teaser${inferLanguageCode(fullText)}>
+        ${teaserText}
+      </div>
+      <div data-full-text>
+        <div${inferLanguageCode(fullText)}>${fullText}</div>
+        ${pipe(review, sourceLink, O.getOrElse(constant('')))}
+      </div>
+    </div>
+  `;
+
   if (teaserText === fullText) {
-    return `
-      <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
-        <header class="activity-feed__item__header">
-          ${avatar(review)}
-          ${eventMetadata(review)}
-        </header>
-        <div class="activity-feed__item__body">
-          <div>
-            <div${inferLanguageCode(fullText)}>${fullText}</div>
-            ${pipe(review, sourceLink, O.getOrElse(constant('')))}
-          </div>
+    feedItemBody = `
+      <div class="activity-feed__item__body">
+        <div>
+          <div${inferLanguageCode(fullText)}>${fullText}</div>
+          ${pipe(review, sourceLink, O.getOrElse(constant('')))}
         </div>
-      </article>
-      ${responses}
+      </div>
     `;
   }
-  // TODO: a review.id containing dodgy chars could break this
   return `
     <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
       <header class="activity-feed__item__header">
         ${avatar(review)}
         ${eventMetadata(review)}
       </header>
-      <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-        <div class="hidden" data-teaser${inferLanguageCode(fullText)}>
-          ${teaserText}
-        </div>
-        <div data-full-text>
-          <div${inferLanguageCode(fullText)}>${fullText}</div>
-          ${pipe(review, sourceLink, O.getOrElse(constant('')))}
-        </div>
-      </div>
+      ${feedItemBody}
     </article>
     ${responses}
   `;
