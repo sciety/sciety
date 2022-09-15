@@ -1,9 +1,9 @@
-import { detect } from 'tinyld';
 import { URL } from 'url';
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
+import { detect } from 'tinyld';
 import { renderReviewResponses } from './render-review-responses';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../shared-components/date';
