@@ -109,6 +109,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           ...defaultPorts,
           createList: jest.fn(defaultPorts.createList),
           getListsOwnedBy: () => TE.right([{ id: arbitraryListId() }]),
+          logger: jest.fn(dummyLogger),
         };
         await createUserSavedArticlesListAsGenericList(ports)(event)();
       });
@@ -117,7 +118,9 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         expect(ports.createList).not.toHaveBeenCalled();
       });
 
-      it.todo('logs a debug message');
+      it.skip('logs a debug message', () => {
+        expect(ports.logger).toHaveBeenCalledWith('debug', expect.anything(), expect.anything());
+      });
     });
   });
 
