@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -46,17 +45,8 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
   event,
   TE.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest' as const),
   TE.chainFirstW(filterOutUsersWithGenericLists(ports.getListsOwnedBy)),
-  TE.chainW((userSavedArticleEvent) => pipe(
-    {
-      userId: TE.right(userSavedArticleEvent.userId),
-      handle: pipe(
-        userSavedArticleEvent.userId,
-        ports.getUserDetails,
-        TE.map(({ handle }) => handle),
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-  )),
+  TE.map(({ userId }) => userId),
+  TE.chainW(ports.getUserDetails),
   TE.map(constructCommand),
   TE.chainW(ports.createList),
   TE.match(
