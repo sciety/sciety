@@ -63,6 +63,9 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
         ports.logger('debug', 'createUserSavedArticlesListAsGenericList policy produced no action', { error, event });
         return undefined;
       }
+      if (error === 'event not of interest') {
+        return undefined;
+      }
       ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { error, event });
       return undefined;
     },

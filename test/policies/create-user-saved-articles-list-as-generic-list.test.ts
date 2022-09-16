@@ -140,7 +140,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
 
     it.todo('does not call the CreateList command');
 
-    it.skip('does not log', () => {
+    it('does not log', () => {
       expect(ports.logger).not.toHaveBeenCalled();
     });
   });
