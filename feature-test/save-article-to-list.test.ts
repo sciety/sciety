@@ -4,6 +4,13 @@ import {
   $, click, closeBrowser, currentURL, goto, listItem, openBrowser,
 } from 'taiko';
 
+const getFirstListOwnedBy = async (userId: string) => {
+  const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
+  expect(userList.data.items).toHaveLength(1);
+  const listId = userList.data.items[0].id as unknown as string;
+  return listId;
+};
+
 describe('save-article-to-list', () => {
   describe('given the user is logged in', () => {
     describe('and the user already has a generic list', () => {
@@ -170,8 +177,7 @@ describe('save-article-to-list', () => {
         });
 
         it.skip('the user now has a generic list page', async () => {
-          const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${testUserId}`);
-          const listId = userList.data.items[0].id as unknown as string;
+          const listId = await getFirstListOwnedBy(testUserId);
           const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
           await goto(userGenericListPageUrl);
           const description = await $(pageHeaderDescriptionSelector).text();
