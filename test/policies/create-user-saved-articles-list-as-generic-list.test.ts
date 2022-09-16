@@ -133,12 +133,15 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
     beforeEach(async () => {
       ports = {
         ...defaultPorts,
+        createList: jest.fn(defaultPorts.createList),
         logger: jest.fn(dummyLogger),
       };
       await createUserSavedArticlesListAsGenericList(ports)(event)();
     });
 
-    it.todo('does not call the CreateList command');
+    it('does not call the CreateList command', () => {
+      expect(ports.createList).not.toHaveBeenCalled();
+    });
 
     it('does not log', () => {
       expect(ports.logger).not.toHaveBeenCalled();
