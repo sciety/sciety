@@ -1,11 +1,14 @@
 import * as TE from 'fp-ts/TaskEither';
-import { userSavedArticle } from '../../src/domain-events';
+import {
+  userFoundReviewHelpful, userSavedArticle,
+} from '../../src/domain-events';
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
 import * as LOID from '../../src/types/list-owner-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('create-user-saved-articles-list-as-generic-list', () => {
@@ -15,12 +18,12 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
     getListsOwnedBy: () => TE.right([]),
     logger: dummyLogger,
   };
+  let ports: Ports;
 
   describe('when a UserSavedArticle event is received', () => {
     const userId = arbitraryUserId();
     const handle = arbitraryWord();
     const event = userSavedArticle(userId, arbitraryArticleId());
-    let ports: Ports;
 
     describe('and that user owns no generic list', () => {
       describe('if the command succeeds', () => {
@@ -125,8 +128,20 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
   });
 
   describe('when any other event is received', () => {
+    const event = userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId());
+
+    beforeEach(async () => {
+      ports = {
+        ...defaultPorts,
+        logger: jest.fn(dummyLogger),
+      };
+      await createUserSavedArticlesListAsGenericList(ports)(event)();
+    });
+
     it.todo('does not call the CreateList command');
 
-    it.todo('does not log');
+    it.skip('does not log', () => {
+      expect(ports.logger).not.toHaveBeenCalled();
+    });
   });
 });
