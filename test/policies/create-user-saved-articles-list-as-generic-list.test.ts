@@ -88,7 +88,18 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
       });
 
       describe('if getUserDetails fails', () => {
-        it.todo('logs an error');
+        beforeEach(async () => {
+          ports = {
+            ...defaultPorts,
+            getUserDetails: () => TE.left(undefined),
+            logger: jest.fn(dummyLogger),
+          };
+          await createUserSavedArticlesListAsGenericList(ports)(event)();
+        });
+
+        it('logs an error', () => {
+          expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        });
       });
     });
 
