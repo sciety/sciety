@@ -118,7 +118,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         expect(ports.createList).not.toHaveBeenCalled();
       });
 
-      it.skip('logs a debug message', () => {
+      it('logs a debug message', () => {
         expect(ports.logger).toHaveBeenCalledWith('debug', expect.anything(), expect.anything());
       });
     });
