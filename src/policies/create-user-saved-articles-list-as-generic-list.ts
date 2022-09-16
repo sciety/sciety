@@ -6,15 +6,10 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent, UserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Logger } from '../shared-ports';
+import { CreateList } from '../shared-ports/create-list';
 import { ListId } from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
-
-type CreateListCommand = {
-  ownerId: LOID.ListOwnerId,
-  name: string,
-  description: string,
-};
 
 type UserDetails = {
   handle: string,
@@ -22,7 +17,7 @@ type UserDetails = {
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
-  createList: (command: CreateListCommand) => TE.TaskEither<unknown, void>,
+  createList: CreateList,
   getUserDetails: (userId: UserId) => TE.TaskEither<unknown, UserDetails>,
   getListsOwnedBy: (ownerId: LOID.ListOwnerId) => TE.TaskEither<unknown, ReadonlyArray<{ id: ListId }>>,
   logger: Logger,
@@ -43,7 +38,6 @@ const constructCommand = (userDetails: { userId: UserId, handle: string }) => ({
 
 type CreateUserSavedArticlesListAsGenericList = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
-// ts-unused-exports:disable-next-line
 export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesListAsGenericList = (
   ports,
 ) => (event) => pipe(

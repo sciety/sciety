@@ -217,6 +217,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         addArticleToList: executeAddArticleToListCommandInProcess,
+        createList: () => TE.left('not implemented'),
         ...partialAdapters,
       };
     },

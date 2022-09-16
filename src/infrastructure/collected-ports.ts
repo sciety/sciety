@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import {
-  AddArticleToList, CommitEvents, FetchArticle, GetAllEvents,
+  AddArticleToList, CommitEvents, CreateList, FetchArticle, GetAllEvents,
   Logger,
 } from '../shared-ports';
 import { List } from '../shared-read-models/lists';
@@ -17,6 +17,7 @@ import { ListOwnerId } from '../types/list-owner-id';
 export type CollectedPorts = {
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
+  createList: CreateList,
   fetchArticle: FetchArticle,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,

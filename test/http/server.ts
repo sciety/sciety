@@ -44,6 +44,7 @@ export const createTestServer = async (): Promise<TestServer> => {
 
   const adapters: CollectedPorts = {
     addArticleToList: () => TE.left(''),
+    createList: () => TE.left('not implemented'),
     fetchArticle,
     fetchReview: fetchReview(fetchers),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
