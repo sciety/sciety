@@ -65,7 +65,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
 
-        it.skip('logs an error', () => {
+        it('logs an error', () => {
           expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
         });
       });

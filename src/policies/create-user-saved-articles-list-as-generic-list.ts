@@ -58,7 +58,10 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
   TE.map(constructCommand),
   TE.chain(ports.createList),
   TE.match(
-    () => undefined,
+    (error) => {
+      ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { error, event });
+      return undefined;
+    },
     () => undefined,
   ),
 );
