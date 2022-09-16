@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import { validate as isUuid } from 'uuid';
 import { isListCreatedEvent } from '../../src/domain-events/list-created-event';
-import { executeCreateListCommand } from '../../src/lists';
+import { executeCreateListCommand } from '../../src/lists/execute-create-list-command';
 import { arbitraryString } from '../helpers';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
-describe('index', () => {
+describe('execute-create-list-command', () => {
   describe('when a command is received', () => {
     const ownerId = arbitraryListOwnerId();
     const name = arbitraryString();
