@@ -11,6 +11,9 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('create-user-saved-articles-list-as-generic-list', () => {
   const defaultPorts = {
     createList: () => TE.right(undefined),
+    getUserDetails: () => TE.right({ handle: arbitraryWord() }),
+    getListsOwnedBy: () => TE.right([]),
+    logger: dummyLogger,
   };
 
   describe('when a UserSavedArticle event is received', () => {
@@ -23,10 +26,10 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
       describe('if the command succeeds', () => {
         beforeEach(async () => {
           ports = {
+            ...defaultPorts,
             createList: jest.fn(defaultPorts.createList),
             getUserDetails: () => TE.right({ handle }),
             getListsOwnedBy: () => TE.right([]),
-            logger: dummyLogger,
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
         });
@@ -57,9 +60,8 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
       describe('if the command fails', () => {
         beforeEach(async () => {
           ports = {
+            ...defaultPorts,
             createList: () => TE.left(undefined),
-            getUserDetails: () => TE.right({ handle }),
-            getListsOwnedBy: () => TE.right([]),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
@@ -74,7 +76,6 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            getUserDetails: () => TE.right({ handle }),
             getListsOwnedBy: () => TE.left(undefined),
             logger: jest.fn(dummyLogger),
           };
@@ -94,10 +95,9 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
     describe('and the user already owns a generic list', () => {
       beforeEach(async () => {
         ports = {
+          ...defaultPorts,
           createList: jest.fn(defaultPorts.createList),
-          getUserDetails: () => TE.right({ handle }),
           getListsOwnedBy: () => TE.right([{ id: arbitraryListId() }]),
-          logger: dummyLogger,
         };
         await createUserSavedArticlesListAsGenericList(ports)(event)();
       });
