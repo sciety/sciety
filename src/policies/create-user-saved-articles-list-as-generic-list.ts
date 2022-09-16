@@ -59,14 +59,15 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
   TE.chain(ports.createList),
   TE.match(
     (error) => {
-      if (error === 'user already owns a list') {
-        ports.logger('debug', 'createUserSavedArticlesListAsGenericList policy produced no action', { error, event });
-        return undefined;
+      switch (error) {
+        case 'user already owns a list':
+          ports.logger('debug', 'createUserSavedArticlesListAsGenericList policy produced no action', { error, event });
+          break;
+        case 'event not of interest':
+          break;
+        default:
+          ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { error, event });
       }
-      if (error === 'event not of interest') {
-        return undefined;
-      }
-      ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { error, event });
       return undefined;
     },
     () => undefined,
