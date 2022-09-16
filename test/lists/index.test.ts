@@ -15,7 +15,7 @@ describe('index', () => {
       executeCreateListCommand,
     );
 
-    it.skip('returns a ListCreated event', () => {
+    it('returns a ListCreated event', () => {
       expect(result).toHaveLength(1);
       expect(isListCreatedEvent(result[0])).toBe(true);
     });
