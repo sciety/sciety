@@ -222,7 +222,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           command,
           executeCreateListCommand,
           commitEventsWithoutListeners,
-          TE.fromTask,
+          TE.rightTask,
           TE.map(() => undefined),
         ),
         ...partialAdapters,

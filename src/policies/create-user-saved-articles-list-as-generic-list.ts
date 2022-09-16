@@ -7,6 +7,7 @@ import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent, UserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Logger } from '../shared-ports';
 import { CreateList } from '../shared-ports/create-list';
+import * as DE from '../types/data-error';
 import { ListId } from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
@@ -18,8 +19,8 @@ type UserDetails = {
 // ts-unused-exports:disable-next-line
 export type Ports = {
   createList: CreateList,
-  getUserDetails: (userId: UserId) => TE.TaskEither<unknown, UserDetails>,
-  getListsOwnedBy: (ownerId: LOID.ListOwnerId) => TE.TaskEither<unknown, ReadonlyArray<{ id: ListId }>>,
+  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
+  getListsOwnedBy: (ownerId: LOID.ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<{ id: ListId }>>,
   logger: Logger,
 };
 
@@ -27,7 +28,7 @@ const filterOutUsersWithGenericLists = (getListsOwnedBy: Ports['getListsOwnedBy'
   userSavedArticleEvent.userId,
   LOID.fromUserId,
   getListsOwnedBy,
-  TE.filterOrElseW(RA.isEmpty, () => 'user already owns a list'),
+  TE.filterOrElseW(RA.isEmpty, () => 'user already owns a list' as const),
 );
 
 const constructCommand = (userDetails: { userId: UserId, handle: string }) => ({
@@ -42,9 +43,9 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
   ports,
 ) => (event) => pipe(
   event,
-  TE.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest'),
-  TE.chainFirst(filterOutUsersWithGenericLists(ports.getListsOwnedBy)),
-  TE.chain((userSavedArticleEvent) => pipe(
+  TE.fromPredicate(isUserSavedArticleEvent, () => 'event not of interest' as const),
+  TE.chainFirstW(filterOutUsersWithGenericLists(ports.getListsOwnedBy)),
+  TE.chainW((userSavedArticleEvent) => pipe(
     {
       userId: TE.right(userSavedArticleEvent.userId),
       handle: pipe(
@@ -56,17 +57,21 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
     sequenceS(TE.ApplyPar),
   )),
   TE.map(constructCommand),
-  TE.chain(ports.createList),
+  TE.chainW(ports.createList),
   TE.match(
-    (error) => {
-      switch (error) {
+    (reason) => {
+      switch (reason) {
         case 'user already owns a list':
-          ports.logger('debug', 'createUserSavedArticlesListAsGenericList policy produced no action', { error, event });
+          ports.logger('debug', 'createUserSavedArticlesListAsGenericList policy produced no action', { reason, event });
           break;
         case 'event not of interest':
           break;
-        default:
-          ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { error, event });
+        case DE.notFound:
+          ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { reason, event });
+          break;
+        case DE.unavailable:
+          ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { reason, event });
+          break;
       }
       return undefined;
     },

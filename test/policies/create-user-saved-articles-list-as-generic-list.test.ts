@@ -3,6 +3,7 @@ import {
   userFoundReviewHelpful, userSavedArticle,
 } from '../../src/domain-events';
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
+import * as DE from '../../src/types/data-error';
 import * as LOID from '../../src/types/list-owner-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
@@ -64,7 +65,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            createList: () => TE.left(undefined),
+            createList: () => TE.left(DE.unavailable),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
@@ -79,7 +80,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            getListsOwnedBy: () => TE.left(undefined),
+            getListsOwnedBy: () => TE.left(DE.unavailable),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
@@ -94,7 +95,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            getUserDetails: () => TE.left(undefined),
+            getUserDetails: () => TE.left(DE.unavailable),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
