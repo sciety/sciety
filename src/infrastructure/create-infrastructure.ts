@@ -180,32 +180,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         );
       }
 
-      return {
+      const collectedAdapters = {
         fetchArticle,
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        commitEvents: (eventsToCommit) => pipe(
-          eventsToCommit,
-          commitEventsWithoutListeners,
-          T.chainFirst(() => pipe(
-            eventsToCommit,
-            T.traverseArray(executePolicies({
-              getAllEvents,
-              logger,
-              commitEvents: commitEventsWithoutListeners,
-              getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
-              addArticleToList: executeAddArticleToListCommandInProcess,
-              getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
-              getUserDetails: getTwitterUserDetails(
-                getTwitterResponse(dependencies.twitterApiBearerToken, logger),
-                logger,
-              ),
-              createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
-            })),
-          )),
-        ),
         getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
@@ -226,6 +206,29 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         addArticleToList: executeAddArticleToListCommandInProcess,
         createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
         ...partialAdapters,
+      };
+
+      const policiesAdapters = {
+        commitEvents: commitEventsWithoutListeners,
+        getAllEvents: collectedAdapters.getAllEvents,
+        logger: collectedAdapters.logger,
+        getBiorxivOrMedrxivSubjectArea: collectedAdapters.getBiorxivOrMedrxivSubjectArea,
+        getListsOwnedBy: collectedAdapters.getListsOwnedBy,
+        getUserDetails: collectedAdapters.getUserDetails,
+        addArticleToList: collectedAdapters.addArticleToList,
+        createList: collectedAdapters.createList,
+      };
+
+      return {
+        ...collectedAdapters,
+        commitEvents: (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => pipe(
+          eventsToCommit,
+          commitEventsWithoutListeners,
+          T.chainFirst(() => pipe(
+            eventsToCommit,
+            T.traverseArray(executePolicies(policiesAdapters)),
+          )),
+        ),
       };
     },
     identity,
