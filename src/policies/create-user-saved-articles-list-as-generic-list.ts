@@ -14,6 +14,7 @@ import { UserId } from '../types/user-id';
 
 type UserDetails = {
   handle: string,
+  userId: UserId,
 };
 
 // ts-unused-exports:disable-next-line

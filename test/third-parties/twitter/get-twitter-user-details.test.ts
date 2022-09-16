@@ -12,6 +12,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-twitter-user-details', () => {
   it('returns the details for the user', async () => {
+    const userId = arbitraryUserId();
     const getTwitterResponse: GetTwitterResponse = () => TE.right({
       data: {
         name: 'John Smith',
@@ -19,11 +20,12 @@ describe('get-twitter-user-details', () => {
         username: 'arbitrary_twitter_handle',
       },
     });
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
+    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(userId);
     const expected = {
       avatarUrl: 'http://example.com',
       displayName: 'John Smith',
       handle: 'arbitrary_twitter_handle',
+      userId,
     };
 
     expect(await result()).toStrictEqual(E.right(expected));

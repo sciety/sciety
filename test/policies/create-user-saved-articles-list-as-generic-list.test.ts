@@ -5,6 +5,7 @@ import {
 import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/policies/create-user-saved-articles-list-as-generic-list';
 import * as DE from '../../src/types/data-error';
 import * as LOID from '../../src/types/list-owner-id';
+import { UserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -15,7 +16,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('create-user-saved-articles-list-as-generic-list', () => {
   const defaultPorts = {
     createList: () => TE.right(undefined),
-    getUserDetails: () => TE.right({ handle: arbitraryWord() }),
+    getUserDetails: (userId: UserId) => TE.right({ handle: arbitraryWord(), userId }),
     getListsOwnedBy: () => TE.right([]),
     logger: dummyLogger,
   };
@@ -32,7 +33,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           ports = {
             ...defaultPorts,
             createList: jest.fn(defaultPorts.createList),
-            getUserDetails: () => TE.right({ handle }),
+            getUserDetails: () => TE.right({ handle, userId }),
             getListsOwnedBy: () => TE.right([]),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();

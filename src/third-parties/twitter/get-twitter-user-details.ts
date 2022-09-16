@@ -10,6 +10,7 @@ type TwitterUserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string,
+  userId: UserId,
 };
 
 type TwitterResponse = {
@@ -35,6 +36,7 @@ const handleOk = (
       avatarUrl: data.data.profile_image_url.replace('_normal.', '_bigger.'),
       displayName: data.data.name,
       handle: data.data.username,
+      userId,
     });
   }
   logger('debug', 'Twitter user not found', { userId, data });

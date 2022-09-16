@@ -54,10 +54,11 @@ export const createTestServer = async (): Promise<TestServer> => {
     logger: dummyLogger,
     getBiorxivOrMedrxivSubjectArea: () => TE.right(''),
     getListsOwnedBy: () => TE.left(DE.unavailable),
-    getUserDetails: () => TE.right({
+    getUserDetails: (userId) => TE.right({
       avatarUrl: '',
       displayName: '',
       handle: '',
+      userId,
     }),
     getUserDetailsBatch: TE.traverseArray(() => TE.right({
       avatarUrl: '',
