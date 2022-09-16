@@ -12,6 +12,8 @@ import { UserId } from '../types/user-id';
 
 type CreateListCommand = {
   ownerId: LOID.ListOwnerId,
+  name: string,
+  description: string,
 };
 
 type UserDetails = {
