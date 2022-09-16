@@ -197,6 +197,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
               commitEvents: commitEventsWithoutListeners,
               getBiorxivOrMedrxivSubjectArea: partialAdapters.getBiorxivOrMedrxivSubjectArea,
               addArticleToList: executeAddArticleToListCommandInProcess,
+              getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
+              getUserDetails: getTwitterUserDetails(
+                getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+                logger,
+              ),
+              createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
             })),
           )),
         ),
