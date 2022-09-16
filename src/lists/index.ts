@@ -13,7 +13,7 @@ type ExecuteCreateListCommand = (command: CreateListCommand) => ReadonlyArray<Li
 
 export const executeCreateListCommand: ExecuteCreateListCommand = (command) => [listCreated(
   LID.fromValidatedString(v4()),
-  '',
-  '',
+  command.name,
+  command.description,
   command.ownerId,
 )];

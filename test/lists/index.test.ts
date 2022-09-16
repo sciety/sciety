@@ -8,11 +8,13 @@ import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 describe('index', () => {
   describe('when a command is received', () => {
     const ownerId = arbitraryListOwnerId();
+    const name = arbitraryString();
+    const description = arbitraryString();
     const result = pipe(
       {
         ownerId,
-        name: arbitraryString(),
-        description: arbitraryString(),
+        name,
+        description,
       },
       executeCreateListCommand,
     );
@@ -30,8 +32,12 @@ describe('index', () => {
       expect(result[0].ownerId).toStrictEqual(ownerId);
     });
 
-    it.todo('returns a ListCreated event containing the requested name');
+    it('returns a ListCreated event containing the requested name', () => {
+      expect(result[0].name).toStrictEqual(name);
+    });
 
-    it.todo('returns a ListCreated event containing the requested description');
+    it('returns a ListCreated event containing the requested description', () => {
+      expect(result[0].description).toStrictEqual(description);
+    });
   });
 });
