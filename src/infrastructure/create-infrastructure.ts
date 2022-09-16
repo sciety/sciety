@@ -27,6 +27,7 @@ import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
 import { isListCreatedEvent, sort as sortEvents } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
+import { executeCreateListCommand } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
@@ -217,7 +218,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         addArticleToList: executeAddArticleToListCommandInProcess,
-        createList: () => TE.left('not implemented'),
+        createList: (command) => pipe(
+          command,
+          executeCreateListCommand,
+          commitEventsWithoutListeners,
+          TE.fromTask,
+          TE.map(() => undefined),
+        ),
         ...partialAdapters,
       };
     },
