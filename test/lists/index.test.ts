@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { validate as isUuid } from 'uuid';
 import { isListCreatedEvent } from '../../src/domain-events/list-created-event';
 import { executeCreateListCommand } from '../../src/lists';
 import { arbitraryString } from '../helpers';
@@ -18,6 +19,10 @@ describe('index', () => {
     it('returns a ListCreated event', () => {
       expect(result).toHaveLength(1);
       expect(isListCreatedEvent(result[0])).toBe(true);
+    });
+
+    it('returns a ListCreated event with a uuid as its listId', () => {
+      expect(isUuid(result[0].listId)).toBe(true);
     });
 
     it.todo('returns a ListCreated event containing the requested owner');
