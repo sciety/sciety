@@ -13,7 +13,6 @@ import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
-import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
@@ -41,7 +40,11 @@ const getSelectUserOwnerInformation = (userId: UserId) => {
         ownerAvatarPath: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
       });
     default:
-      return E.left(DE.notFound);
+      return E.right({
+        ownerName: 'Getting owner info is not implemented',
+        ownerHref: '/users/not-a-valid-user-id',
+        ownerAvatarPath: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
+      });
   }
 };
 
