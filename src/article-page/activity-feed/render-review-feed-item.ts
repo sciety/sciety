@@ -3,10 +3,10 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
-import { detect } from 'tinyld';
 import { renderReviewResponses } from './render-review-responses';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../shared-components/date';
+import { langAttributeFor } from '../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/review-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -24,11 +24,6 @@ export type ReviewFeedItem = {
   fullText: O.Option<SanitisedHtmlFragment>,
   counts: { helpfulCount: number, notHelpfulCount: number },
   current: O.Option<'helpful' | 'not-helpful'>,
-};
-
-const langAttributeFor = (text: string): string => {
-  const code = detect(text, { only: ['en', 'es', 'pt'] });
-  return code === '' ? '' : ` lang="${code}"`;
 };
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
