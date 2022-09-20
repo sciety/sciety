@@ -191,60 +191,21 @@ describe('parse-crossref-article', () => {
   });
 
   describe('parsing the server', () => {
-    describe('when the resource is medrxiv', () => {
-      it('returns medrxiv', () => {
-        const response = crossrefResponseWith(`
+    it.each([
+      ['medrxiv', 'http://medrxiv.org/lookup/doi/10.1101/2021.01.15.21249880'],
+      ['biorxiv', 'http://biorxiv.org/lookup/doi/10.1101/2020.07.04.187583'],
+      ['researchsquare', 'https://www.researchsquare.com/article/rs-955726/v1'],
+      ['scielopreprints', 'https://preprints.scielo.org/index.php/scielo/preprint/view/3564/version/3775'],
+    ])('detects %s correctly', (expectedServer, resourceUrl) => {
+      const response = crossrefResponseWith(`
           <doi_data>
-            <resource>http://medrxiv.org/lookup/doi/10.1101/2021.01.15.21249880</resource>
+            <resource>${resourceUrl}</resource>
           </doi_data>
         `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const server = getServer(doc);
+      const doc = parser.parseFromString(response, 'text/xml');
+      const server = getServer(doc);
 
-        expect(server).toStrictEqual(O.some('medrxiv'));
-      });
-    });
-
-    describe('when the resource is biorxiv', () => {
-      it('returns biorxiv', () => {
-        const response = crossrefResponseWith(`
-          <doi_data>
-            <resource>http://biorxiv.org/lookup/doi/10.1101/2020.07.04.187583</resource>
-          </doi_data>
-        `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const server = getServer(doc);
-
-        expect(server).toStrictEqual(O.some('biorxiv'));
-      });
-    });
-
-    describe('when the resource is Research Square', () => {
-      it('returns researchsquare', () => {
-        const response = crossrefResponseWith(`
-          <doi_data>
-            <resource>https://www.researchsquare.com/article/rs-955726/v1</resource>
-          </doi_data>
-        `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const server = getServer(doc);
-
-        expect(server).toStrictEqual(O.some('researchsquare'));
-      });
-    });
-
-    describe('when the resource is SciELO', () => {
-      it('returns scielopreprints', () => {
-        const response = crossrefResponseWith(`
-          <doi_data>
-            <resource>https://preprints.scielo.org/index.php/scielo/preprint/view/3564/version/3775</resource>
-          </doi_data>
-        `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const server = getServer(doc);
-
-        expect(server).toStrictEqual(O.some('scielopreprints'));
-      });
+      expect(server).toStrictEqual(O.some(expectedServer));
     });
 
     describe('when the resource is not supported', () => {
