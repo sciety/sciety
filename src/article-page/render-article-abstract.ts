@@ -6,16 +6,16 @@ type ArticleAbstractViewModel = {
   abstract: HtmlFragment,
 };
 
-const inferLanguageCode = (articleAbstract: string): string => {
+const langAttributeFor = (articleAbstract: string): string => {
   const code = detect(articleAbstract, { only: ['en', 'es', 'pt'] });
   return code === '' ? '' : ` lang="${code}"`;
 };
 
 export const renderArticleAbstract = (articleDetails: ArticleAbstractViewModel): HtmlFragment => pipe(
   `
-    <section role="doc-abstract" class="article-abstract"> 
+    <section role="doc-abstract" class="article-abstract">
       <h2>Abstract</h2>
-      <div${inferLanguageCode(articleDetails.abstract)}>${articleDetails.abstract}</div>
+      <div${langAttributeFor(articleDetails.abstract)}>${articleDetails.abstract}</div>
     </section>
   `,
   toHtmlFragment,

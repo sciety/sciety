@@ -26,7 +26,7 @@ export type ReviewFeedItem = {
   current: O.Option<'helpful' | 'not-helpful'>,
 };
 
-const inferLanguageCode = (text: string): string => {
+const langAttributeFor = (text: string): string => {
   const code = detect(text, { only: ['en', 'es', 'pt'] });
   return code === '' ? '' : ` lang="${code}"`;
 };
@@ -63,12 +63,12 @@ const appendSourceLink = flow(
 const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
-    <div${inferLanguageCode(fullText)}>${fullText}</div>
+    <div${langAttributeFor(fullText)}>${fullText}</div>
     ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-      <div class="hidden" data-teaser${inferLanguageCode(fullText)}>
+      <div class="hidden" data-teaser${langAttributeFor(fullText)}>
         ${teaserText}
       </div>
       <div data-full-text>
