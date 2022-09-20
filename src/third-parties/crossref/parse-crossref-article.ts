@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleAuthors } from '../../types/article-authors';
+import { articleServers } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -99,16 +100,20 @@ export const getServer = flow(
   },
   O.fromNullable,
   O.chain((resource) => {
-    if (resource.includes('://medrxiv.org')) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    if (resource.includes(`://${articleServers['medrxiv'].domain}`)) {
       return O.some('medrxiv' as const);
     }
-    if (resource.includes('://biorxiv.org')) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    if (resource.includes(`://${articleServers['biorxiv'].domain}`)) {
       return O.some('biorxiv' as const);
     }
-    if (resource.includes('://www.researchsquare.com')) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    if (resource.includes(`://${articleServers['researchsquare'].domain}`)) {
       return O.some('researchsquare' as const);
     }
-    if (resource.includes('://preprints.scielo.org')) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    if (resource.includes(`://${articleServers['scielopreprints'].domain}`)) {
       return O.some('scielopreprints' as const);
     }
 
