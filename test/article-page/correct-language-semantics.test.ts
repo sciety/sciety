@@ -10,7 +10,7 @@ import { arbitraryDoi } from '../types/doi.helper';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {
-    const irrelevantPorts = {
+    const irrelevantAdapters = {
       fetchReview: () => TE.left(undefined),
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),
@@ -30,11 +30,11 @@ describe('correct-language-semantics', () => {
         ['es', 'Título arbitrario en español'],
         ['pt', 'Título arbitrário em português'],
       ])('is correctly inferred as %s', async (code, title) => {
-        const ports = {
+        const adapters = {
           fetchArticle: createGetArticleDetails(title),
-          ...irrelevantPorts,
+          ...irrelevantAdapters,
         };
-        const renderPage = articleActivityPage(ports);
+        const renderPage = articleActivityPage(adapters);
         const rendered = await renderPage({
           doi: arbitraryDoi(),
           user: O.none,
@@ -60,11 +60,11 @@ describe('correct-language-semantics', () => {
         ['es', 'Este texto representa el resumen de este artículo en español.'],
         ['pt', 'Este texto representa o resumo deste artigo em português.'],
       ])('is correctly inferred as %s', async (code, articleAbstract) => {
-        const ports = {
+        const adapters = {
           fetchArticle: createGetArticleDetails(articleAbstract),
-          ...irrelevantPorts,
+          ...irrelevantAdapters,
         };
-        const renderPage = articleActivityPage(ports);
+        const renderPage = articleActivityPage(adapters);
         const rendered = await renderPage({
           doi: arbitraryDoi(),
           user: O.none,
