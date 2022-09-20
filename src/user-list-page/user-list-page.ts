@@ -9,7 +9,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
-import { renderPage } from '../group-list-page/render-page';
+import { renderPage } from '../generic-list-page/render-page';
 import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';

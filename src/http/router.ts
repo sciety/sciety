@@ -38,7 +38,7 @@ import { hardcodedElifeArticle } from '../docmaps/hardcoded-elife-article';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
-import { page as groupListPage, paramsCodec as groupListPageParams } from '../group-list-page/page';
+import { page as genericListPage, paramsCodec as genericListPageParams } from '../generic-list-page/page';
 import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../group-page/group-page';
@@ -380,8 +380,8 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
-      groupListPageParams,
-      groupListPage(ports),
+      genericListPageParams,
+      genericListPage(ports),
     )),
   );
 
