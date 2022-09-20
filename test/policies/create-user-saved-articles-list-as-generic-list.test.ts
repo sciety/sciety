@@ -13,6 +13,8 @@ import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
+const arbitraryDataError = () => DE.unavailable;
+
 describe('create-user-saved-articles-list-as-generic-list', () => {
   const defaultPorts = {
     createList: () => TE.right(undefined),
@@ -66,7 +68,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            createList: () => TE.left(DE.unavailable),
+            createList: () => TE.left(arbitraryDataError()),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
@@ -81,7 +83,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            getListsOwnedBy: () => TE.left(DE.unavailable),
+            getListsOwnedBy: () => TE.left(arbitraryDataError()),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
@@ -96,7 +98,7 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
         beforeEach(async () => {
           ports = {
             ...defaultPorts,
-            getUserDetails: () => TE.left(DE.unavailable),
+            getUserDetails: () => TE.left(arbitraryDataError()),
             logger: jest.fn(dummyLogger),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
