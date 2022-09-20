@@ -1,1 +1,4 @@
-export type ArticleServer = 'biorxiv' | 'medrxiv' | 'researchsquare';
+export type ArticleServer = 'biorxiv'
+| 'medrxiv'
+| 'researchsquare'
+| 'scielopreprints';

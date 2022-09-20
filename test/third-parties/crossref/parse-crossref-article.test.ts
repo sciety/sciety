@@ -234,7 +234,7 @@ describe('parse-crossref-article', () => {
     });
 
     describe('when the resource is SciELO', () => {
-      it.failing('returns scielopreprints', () => {
+      it('returns scielopreprints', () => {
         const response = crossrefResponseWith(`
           <doi_data>
             <resource>https://preprints.scielo.org/index.php/scielo/preprint/view/3564/version/3775</resource>

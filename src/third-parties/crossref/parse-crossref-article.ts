@@ -108,6 +108,9 @@ export const getServer = flow(
     if (resource.includes('://www.researchsquare.com')) {
       return O.some('researchsquare' as const);
     }
+    if (resource.includes('://preprints.scielo.org')) {
+      return O.some('scielopreprints' as const);
+    }
 
     return O.none;
   }),

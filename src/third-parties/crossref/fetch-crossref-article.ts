@@ -7,6 +7,7 @@ import {
 import { Logger } from '../../infrastructure';
 import { FetchArticle } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
+import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
@@ -62,7 +63,7 @@ export const fetchCrossrefArticle = (
 
     let abstract: SanitisedHtmlFragment;
     let authors: ArticleAuthors;
-    let server: O.Option<'medrxiv' | 'biorxiv' | 'researchsquare'>;
+    let server: O.Option<ArticleServer>;
     let title: SanitisedHtmlFragment;
     try {
       const doc = parser.parseFromString(response, 'text/xml');
