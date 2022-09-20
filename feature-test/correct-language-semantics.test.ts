@@ -44,25 +44,6 @@ describe('correct-language-semantics', () => {
           content: expect.stringContaining(`<h1 lang="${code}">${title}</h1>`),
         })));
       });
-
-      describe('when the language cannot be inferred', () => {
-        it('does not add a lang attribute', async () => {
-          const title = '12345';
-          const ports = {
-            fetchArticle: createGetArticleDetails(title),
-            ...irrelevantPorts,
-          };
-          const renderPage = articleActivityPage(ports);
-          const rendered = await renderPage({
-            doi: arbitraryDoi(),
-            user: O.none,
-          })();
-
-          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining(`<h1>${title}</h1>`),
-          })));
-        });
-      });
     });
 
     describe('the article abstract', () => {
@@ -92,25 +73,6 @@ describe('correct-language-semantics', () => {
         expect(rendered).toStrictEqual(E.right(expect.objectContaining({
           content: expect.stringContaining(`<div lang="${code}">${articleAbstract}</div>`),
         })));
-      });
-
-      describe('when the language cannot be inferred', () => {
-        it('does not add a lang attribute', async () => {
-          const articleAbstract = '12345';
-          const ports = {
-            fetchArticle: createGetArticleDetails(articleAbstract),
-            ...irrelevantPorts,
-          };
-          const renderPage = articleActivityPage(ports);
-          const rendered = await renderPage({
-            doi: arbitraryDoi(),
-            user: O.none,
-          })();
-
-          expect(rendered).toStrictEqual(E.right(expect.objectContaining({
-            content: expect.stringContaining(`<div>${articleAbstract}</div>`),
-          })));
-        });
       });
     });
   });
