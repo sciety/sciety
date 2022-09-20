@@ -27,7 +27,7 @@ const servers: Record<ArticleServer, ServerInfo> = {
   },
   scielopreprints: {
     name: 'SciELO Preprints',
-    avatarUrl: '/static/images/broken.png',
+    avatarUrl: '/static/images/scielo.svg',
     versionsSupported: false,
   },
 };
