@@ -219,7 +219,21 @@ describe('parse-crossref-article', () => {
       });
     });
 
-    describe('when the resource is neither biorxiv nor medrxiv', () => {
+    describe('when the resource is researchsquare', () => {
+      it('returns researchsquare', () => {
+        const response = crossrefResponseWith(`
+          <doi_data>
+            <resource>https://www.researchsquare.com/article/rs-955726/v1</resource>
+          </doi_data>
+        `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const server = getServer(doc);
+
+        expect(server).toStrictEqual(O.some('researchsquare'));
+      });
+    });
+
+    describe('when the resource is not supported', () => {
       it('returns O.none', () => {
         const response = crossrefResponseWith(`
           <doi_data>
