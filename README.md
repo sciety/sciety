@@ -98,21 +98,21 @@ make lint
 You can fix problems, where possible, by executing:
 
 ```shell
-make lint:fix
+make lint-fix
 ```
 
 The above is quite heavy weight and can take a while.
 To increase feedback speed you can gain partial coverage:
 
 ```shell
-make watch:typescript
+make watch-typescript
 ```
 
 In our team we also rely on eslint feedback from our IDEs.
 
 To check only the SASS code, execute:
 ```shell
-make lint:sass
+make lint-sass
 ```
 
 To check only for unused TypeScript exports, execute:

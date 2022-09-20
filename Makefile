@@ -43,19 +43,19 @@ unused-sass: node_modules find-unused-sass-declarations
 find-unused-sass-declarations: node_modules
 	npx sass-unused 'src/**/*.scss'
 
-watch\:typescript: node_modules
+watch-typescript: node_modules
 	npm run watch:typescript
 
 lint: export TARGET = dev
 lint: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint
 
-lint\:fix: export TARGET = dev
-lint\:fix: build unused-sass
+lint-fix: export TARGET = dev
+lint-fix: build unused-sass
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
 
-lint\:sass: export TARGET = dev
-lint\:sass: build unused-sass
+lint-sass: export TARGET = dev
+lint-sass: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint:stylelint
 
 unused-exports: export TARGET = dev
@@ -66,8 +66,8 @@ test: export TARGET = dev
 test: build
 	${DOCKER_COMPOSE} run --rm app npm run test
 
-test\:coverage: export TARGET = dev
-test\:coverage: build
+test-coverage: export TARGET = dev
+test-coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
