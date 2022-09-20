@@ -7,13 +7,13 @@ import * as DE from '../../src/types/data-error';
 import * as LOID from '../../src/types/list-owner-id';
 import { UserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryWord } from '../helpers';
+import { arbitraryBoolean, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-const arbitraryDataError = () => DE.unavailable;
+const arbitraryDataError = () => (arbitraryBoolean() ? DE.unavailable : DE.notFound);
 
 describe('create-user-saved-articles-list-as-generic-list', () => {
   const defaultPorts = {
