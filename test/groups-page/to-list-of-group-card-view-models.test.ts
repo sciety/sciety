@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, groupCreated } from '../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../src/domain-events';
 import { Ports, toListOfGroupCardViewModels } from '../../src/groups-page/to-list-of-group-card-view-models';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -16,9 +16,9 @@ describe('to-list-of-group-card-view-models', () => {
   const inactiveGroup = arbitraryGroup();
   const ports: Ports = {
     getAllEvents: T.of([
-      groupCreated(inactiveGroup),
-      groupCreated(leastActiveGroup),
-      groupCreated(mostActiveGroup),
+      groupJoined(inactiveGroup),
+      groupJoined(leastActiveGroup),
+      groupJoined(mostActiveGroup),
       evaluationRecorded(leastActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
       evaluationRecorded(mostActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
     ]),

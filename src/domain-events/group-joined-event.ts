@@ -5,9 +5,9 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { generate } from '../types/event-id';
 import { Group } from '../types/group';
 
-const groupCreatedEventCodec = t.type({
+const groupJoinedEventCodec = t.type({
   id: EventIdFromString,
-  type: t.literal('GroupCreated'),
+  type: t.literal('GroupJoined'),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   name: t.string,
@@ -18,14 +18,14 @@ const groupCreatedEventCodec = t.type({
   slug: t.string,
 });
 
-export type GroupCreatedEvent = t.TypeOf<typeof groupCreatedEventCodec>;
+export type GroupJoinedEvent = t.TypeOf<typeof groupJoinedEventCodec>;
 
-export const isGroupCreatedEvent = (event: { type: string }):
-  event is GroupCreatedEvent => event.type === 'GroupCreated';
+export const isGroupJoinedEvent = (event: { type: string }):
+  event is GroupJoinedEvent => event.type === 'GroupJoined';
 
-export const groupCreated = (group: Group, date: Date = new Date()): GroupCreatedEvent => ({
+export const groupJoined = (group: Group, date: Date = new Date()): GroupJoinedEvent => ({
   id: generate(),
-  type: 'GroupCreated',
+  type: 'GroupJoined',
   date,
   groupId: group.id,
   name: group.name,

@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import { populateArticleViewModel } from '../../../src/shared-components/article-card/populate-article-view-model';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
@@ -22,7 +22,7 @@ describe('populate-article-view-model', () => {
     const laterPublicationDate = new Date('2020');
     const ports = {
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
         evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
       ]),

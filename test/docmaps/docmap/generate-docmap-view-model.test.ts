@@ -10,7 +10,7 @@ import {
   generateDocmapViewModel,
   Ports,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl, ReviewId } from '../../../src/types/review-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -43,7 +43,7 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated({ ...group }),
+        groupJoined({ ...group }),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
     };
@@ -61,7 +61,7 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated({ ...group }),
+        groupJoined({ ...group }),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
     };
@@ -85,7 +85,7 @@ describe('generate-docmap-view-model', () => {
       const ports = {
         ...defaultPorts,
         getAllEvents: T.of([
-          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
           evaluationRecorded(indexedGroupId, articleId, earlierReviewId, [], new Date(), earlierDate),
           evaluationRecorded(indexedGroupId, articleId, laterReviewId, [], new Date(), laterDate),
         ]),
@@ -123,7 +123,7 @@ describe('generate-docmap-view-model', () => {
         ...defaultPorts,
         fetchReview: shouldNotBeCalled,
         getAllEvents: T.of([
-          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
           evaluationRecorded(indexedGroupId, articleId, reviewIdWithInferrableSourceUrl),
         ]),
       };
@@ -152,7 +152,7 @@ describe('generate-docmap-view-model', () => {
         ...defaultPorts,
         fetchReview: () => TE.right({ url: sourceUrl }),
         getAllEvents: T.of([
-          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
           evaluationRecorded(indexedGroupId, articleId, reviewIdWithUninferrableSourceUrl),
         ]),
       };
@@ -189,7 +189,7 @@ describe('generate-docmap-view-model', () => {
       const ports = {
         ...defaultPorts,
         getAllEvents: T.of([
-          groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
           evaluationRecorded(indexedGroupId, articleId, idOfEvaluationByThisGroup),
         ]),
@@ -213,7 +213,7 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated({ ...arbitraryGroup(), id: indexedGroupId }),
+        groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
         evaluationRecorded(indexedGroupId, articleId, arbitraryReviewId()),
       ]),
     };

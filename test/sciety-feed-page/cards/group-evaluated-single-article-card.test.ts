@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import { groupEvaluatedSingleArticleCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
@@ -30,7 +30,7 @@ describe('group-evaluated-article-card', () => {
       const createCard = pipe(
         evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
         groupEvaluatedSingleArticleCard({
-          getAllEvents: T.of([groupCreated(group)]),
+          getAllEvents: T.of([groupJoined(group)]),
           fetchArticle,
         }),
         TE.getOrElse(shouldNotBeCalled),
@@ -52,7 +52,7 @@ describe('group-evaluated-article-card', () => {
     const createCard = pipe(
       evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       groupEvaluatedSingleArticleCard({
-        getAllEvents: T.of([groupCreated(group)]),
+        getAllEvents: T.of([groupJoined(group)]),
         fetchArticle,
       }),
     );

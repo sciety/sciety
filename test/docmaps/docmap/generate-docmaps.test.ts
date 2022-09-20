@@ -8,7 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
@@ -84,8 +84,8 @@ describe('generate-docmaps', () => {
         generateDocmaps({
           ...defaultPorts,
           getAllEvents: T.of([
-            groupCreated(group1),
-            groupCreated(group2),
+            groupJoined(group1),
+            groupJoined(group2),
             evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
             evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
           ]),
@@ -108,7 +108,7 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
-          groupCreated({
+          groupJoined({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
@@ -128,7 +128,7 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
-          groupCreated({
+          groupJoined({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
@@ -153,11 +153,11 @@ describe('generate-docmaps', () => {
           review(rapidReviewsGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
-          groupCreated({
+          groupJoined({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
-          groupCreated({
+          groupJoined({
             ...arbitraryGroup(),
             id: rapidReviewsGroupId,
           }),
@@ -185,7 +185,7 @@ describe('generate-docmaps', () => {
           review(ncrcGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
-          groupCreated({
+          groupJoined({
             ...arbitraryGroup(),
             id: ncrcGroupId,
           }),
@@ -214,7 +214,7 @@ describe('generate-docmaps', () => {
               : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
           ),
           getAllEvents: T.of([
-            groupCreated({
+            groupJoined({
               ...arbitraryGroup(),
               id: ncrcGroupId,
             }),

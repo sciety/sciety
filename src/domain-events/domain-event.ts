@@ -6,7 +6,7 @@ import * as S from 'fp-ts/string';
 import { AnnotationCreatedEvent } from './annotation-created-event';
 import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
-import { GroupCreatedEvent } from './group-created-event';
+import { GroupJoinedEvent } from './group-joined-event';
 import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
@@ -21,7 +21,7 @@ import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 export type DomainEvent =
   AnnotationCreatedEvent |
   ArticleAddedToListEvent |
-  GroupCreatedEvent |
+  GroupJoinedEvent |
   EvaluationRecordedEvent |
   ListCreatedEvent |
   UserSavedArticleEvent |

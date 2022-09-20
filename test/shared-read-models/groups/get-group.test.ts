@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { groupCreated } from '../../../src/domain-events';
+import { groupJoined } from '../../../src/domain-events';
 import { getGroup } from '../../../src/shared-read-models/groups';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -13,7 +13,7 @@ describe('getGroup', () => {
     const result = pipe(
       [
         ...arbitraryUninterestingEvents,
-        groupCreated(group),
+        groupJoined(group),
         ...arbitraryUninterestingEvents,
       ],
       getGroup(group.id),

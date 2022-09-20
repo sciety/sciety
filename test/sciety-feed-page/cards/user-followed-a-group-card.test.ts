@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupCreated, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
@@ -21,7 +21,7 @@ describe('user-followed-a-group-card', () => {
     const avatarUrl = arbitraryUri();
     const handle = arbitraryWord();
     const ports = {
-      getAllEvents: T.of([groupCreated(group)]),
+      getAllEvents: T.of([groupJoined(group)]),
       getUserDetails: () => TE.right({ handle, avatarUrl }),
     };
 
@@ -62,7 +62,7 @@ describe('user-followed-a-group-card', () => {
 
   describe('when the user details cannot be obtained', () => {
     const ports = {
-      getAllEvents: T.of([groupCreated(group)]),
+      getAllEvents: T.of([groupJoined(group)]),
       getUserDetails: () => TE.left(DE.unavailable),
     };
 

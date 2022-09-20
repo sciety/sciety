@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { groupCreated, userFollowedEditorialCommunity } from '../../src/domain-events';
+import { groupJoined, userFollowedEditorialCommunity } from '../../src/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
@@ -194,8 +194,8 @@ describe('user-page', () => {
         const ports = {
           ...defaultPorts,
           getAllEvents: T.of([
-            groupCreated(group1),
-            groupCreated(group2),
+            groupJoined(group1),
+            groupJoined(group2),
             userFollowedEditorialCommunity(userId, group1.id),
             userFollowedEditorialCommunity(userId, group2.id),
           ]),

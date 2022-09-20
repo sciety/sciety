@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { groupCreated } from '../../src/domain-events';
+import { groupJoined } from '../../src/domain-events';
 import { searchResultsPage } from '../../src/search-results-page';
 import * as DE from '../../src/types/data-error';
 import { Page } from '../../src/types/page';
@@ -331,7 +331,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               getAllEvents: T.of([
-                groupCreated(arbitraryGroup()),
+                groupJoined(arbitraryGroup()),
               ]),
             })(pageSize),
           );
@@ -353,7 +353,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               getAllEvents: T.of([
-                groupCreated(arbitraryGroup()),
+                groupJoined(arbitraryGroup()),
               ]),
             })(pageSize),
           );
@@ -437,9 +437,9 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               getAllEvents: T.of([
-                groupCreated(group1),
-                groupCreated(group2),
-                groupCreated(group3),
+                groupJoined(group1),
+                groupJoined(group2),
+                groupJoined(group3),
               ]),
             })(n),
           );
@@ -461,7 +461,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               getAllEvents: T.of([
-                groupCreated(arbitraryGroup()),
+                groupJoined(arbitraryGroup()),
               ]),
             })(1),
           );

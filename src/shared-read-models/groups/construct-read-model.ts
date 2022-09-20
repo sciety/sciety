@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, GroupCreatedEvent, isGroupCreatedEvent } from '../../domain-events';
+import { DomainEvent, GroupJoinedEvent, isGroupJoinedEvent } from '../../domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
-const toGroup = (event: GroupCreatedEvent) => ({
+const toGroup = (event: GroupJoinedEvent) => ({
   id: event.groupId,
   name: event.name,
   avatarPath: event.avatarPath,
@@ -17,7 +17,7 @@ const toGroup = (event: GroupCreatedEvent) => ({
 type ReadModel = Map<GroupId, Group>;
 
 const recordEvent = (rm: ReadModel, event: DomainEvent) => (
-  isGroupCreatedEvent(event)
+  isGroupJoinedEvent(event)
     ? rm.set(event.groupId, toGroup(event))
     : rm
 );

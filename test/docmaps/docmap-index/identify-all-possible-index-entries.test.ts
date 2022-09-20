@@ -10,7 +10,7 @@ import {
   Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -23,7 +23,7 @@ describe('identify-all-possible-index-entries', () => {
   const defaultPorts: Ports = {
     getAllEvents: pipe(
       supportedGroups,
-      RA.map(groupCreated),
+      RA.map(groupJoined),
       T.of,
     ),
   };

@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
   evaluationRecorded,
-  groupCreated, userFollowedEditorialCommunity,
+  groupJoined, userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -49,7 +49,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
@@ -67,7 +67,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
         evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       ]),
@@ -85,7 +85,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
       ]),
     };
@@ -118,7 +118,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       ]),
     };
@@ -133,7 +133,7 @@ describe('sciety-feed-page', () => {
 
   it('renders at most a page of cards at a time', async () => {
     const events = [
-      groupCreated(group),
+      groupJoined(group),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
@@ -158,7 +158,7 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupCreated(group),
+        groupJoined(group),
         evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
         userUnsavedArticle(arbitraryUserId(), arbitraryArticleId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),

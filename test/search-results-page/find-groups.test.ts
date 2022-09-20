@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupCreated } from '../../src/domain-events';
+import { groupJoined } from '../../src/domain-events';
 import { findGroups } from '../../src/search-results-page/find-groups';
 import { GroupId } from '../../src/types/group-id';
 import { arbitraryString } from '../helpers';
@@ -19,8 +19,8 @@ describe('find-groups', () => {
     beforeEach(async () => {
       result = await pipe(
         [
-          groupCreated(group1),
-          groupCreated(group2),
+          groupJoined(group1),
+          groupJoined(group2),
         ],
         findGroups(ports, group1.name),
       )();
@@ -36,7 +36,7 @@ describe('find-groups', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        [groupCreated(group1)],
+        [groupJoined(group1)],
         findGroups(ports, arbitraryString()),
       )();
     });

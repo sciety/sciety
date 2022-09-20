@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupCreated } from '../../../src/domain-events';
+import { groupJoined } from '../../../src/domain-events';
 import { groupEvaluatedMultipleArticlesCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
@@ -24,7 +24,7 @@ describe('group-evaluated-multiple-articles-card', () => {
           date: arbitraryDate(),
         },
         groupEvaluatedMultipleArticlesCard({
-          getAllEvents: T.of([groupCreated(group)]),
+          getAllEvents: T.of([groupJoined(group)]),
         }),
         TE.getOrElse(shouldNotBeCalled),
       )();

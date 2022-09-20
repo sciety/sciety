@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, groupCreated } from '../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../src/domain-events';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
@@ -26,7 +26,7 @@ describe('fetch-extra-details', () => {
       const laterPublicationDate = new Date('2020');
       const ports = {
         getAllEvents: T.of([
-          groupCreated(group),
+          groupJoined(group),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
         ]),
@@ -82,7 +82,7 @@ describe('fetch-extra-details', () => {
         const group = arbitraryGroup();
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
-          getAllEvents: T.of([groupCreated(group)]),
+          getAllEvents: T.of([groupJoined(group)]),
           getLatestArticleVersionDate: shouldNotBeCalled,
           getListsOwnedBy: () => TE.right([]),
         };

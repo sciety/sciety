@@ -24,7 +24,7 @@ import {
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
-import { bootstrapGroups as groupCreatedEvents } from '../data/bootstrap-groups';
+import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { isListCreatedEvent, sort as sortEvents } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
@@ -108,7 +108,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     TE.map((eventsFromDatabase) => pipe(
       [
         ...eventsFromDatabase,
-        ...groupCreatedEvents,
+        ...groupJoinedEvents,
       ],
       sortEvents,
     )),

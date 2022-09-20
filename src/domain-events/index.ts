@@ -16,10 +16,10 @@ export {
 } from './article-added-to-list-event';
 
 export {
-  isGroupCreatedEvent,
-  GroupCreatedEvent,
-  groupCreated,
-} from './group-created-event';
+  isGroupJoinedEvent,
+  GroupJoinedEvent,
+  groupJoined,
+} from './group-joined-event';
 
 export {
   isEvaluationRecordedEvent,

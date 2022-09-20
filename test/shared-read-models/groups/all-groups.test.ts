@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { groupCreated } from '../../../src/domain-events';
+import { groupJoined } from '../../../src/domain-events';
 import { getAllGroups } from '../../../src/shared-read-models/groups';
 import { arbitraryGroup } from '../../types/group.helper';
 
@@ -12,9 +12,9 @@ describe('allGroups', () => {
   const groupNames = pipe(
     [
       ...arbitraryUninterestingEvents,
-      groupCreated(group2),
-      groupCreated(group3),
-      groupCreated(group1),
+      groupJoined(group2),
+      groupJoined(group3),
+      groupJoined(group1),
       ...arbitraryUninterestingEvents,
     ],
     getAllGroups,

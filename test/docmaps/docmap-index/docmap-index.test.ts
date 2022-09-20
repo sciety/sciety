@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
-import { evaluationRecorded, groupCreated } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -53,7 +53,7 @@ describe('docmap-index', () => {
       beforeEach(async () => {
         const ports = {
           getAllEvents: T.of([
-            groupCreated({
+            groupJoined({
               ...arbitraryGroup(),
               id: ncrcGroupId,
             }),
