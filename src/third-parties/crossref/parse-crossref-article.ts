@@ -1,9 +1,11 @@
 import { XMLSerializer } from '@xmldom/xmldom';
+import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleAuthors } from '../../types/article-authors';
-import { articleServers } from '../../types/article-server';
+import { ArticleServer, articleServers } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -99,26 +101,15 @@ export const getServer = flow(
     return resourceElement?.textContent;
   },
   O.fromNullable,
-  O.chain((resource) => {
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    if (resource.includes(`://${articleServers['medrxiv'].domain}`)) {
-      return O.some('medrxiv' as const);
-    }
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    if (resource.includes(`://${articleServers['biorxiv'].domain}`)) {
-      return O.some('biorxiv' as const);
-    }
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    if (resource.includes(`://${articleServers['researchsquare'].domain}`)) {
-      return O.some('researchsquare' as const);
-    }
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    if (resource.includes(`://${articleServers['scielopreprints'].domain}`)) {
-      return O.some('scielopreprints' as const);
-    }
-
-    return O.none;
-  }),
+  O.chain((resource) => pipe(
+    articleServers,
+    R.filter((info) => resource.includes(`://${info.domain}`)),
+    R.toArray,
+    A.match(
+      () => O.none,
+      (infos) => O.some(infos[0][0] as ArticleServer),
+    ),
+  )),
 );
 
 const personAuthor = (person: Element) => {
