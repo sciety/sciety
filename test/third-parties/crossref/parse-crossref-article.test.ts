@@ -219,7 +219,7 @@ describe('parse-crossref-article', () => {
       });
     });
 
-    describe('when the resource is researchsquare', () => {
+    describe('when the resource is Research Square', () => {
       it('returns researchsquare', () => {
         const response = crossrefResponseWith(`
           <doi_data>
@@ -230,6 +230,20 @@ describe('parse-crossref-article', () => {
         const server = getServer(doc);
 
         expect(server).toStrictEqual(O.some('researchsquare'));
+      });
+    });
+
+    describe('when the resource is SciELO', () => {
+      it.failing('returns scielopreprints', () => {
+        const response = crossrefResponseWith(`
+          <doi_data>
+            <resource>https://preprints.scielo.org/index.php/scielo/preprint/view/3564/version/3775</resource>
+          </doi_data>
+        `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const server = getServer(doc);
+
+        expect(server).toStrictEqual(O.some('scielopreprints'));
       });
     });
 
