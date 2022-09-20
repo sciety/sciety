@@ -104,10 +104,10 @@ export const getServer = flow(
   O.chain((resource) => pipe(
     articleServers,
     R.filter((info) => resource.includes(`://${info.domain}`)),
-    R.toArray,
+    R.keys,
     A.match(
       () => O.none,
-      (infos) => O.some(infos[0][0] as ArticleServer),
+      (keys) => O.some(keys[0] as ArticleServer),
     ),
   )),
 );
