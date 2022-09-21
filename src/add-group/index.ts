@@ -7,7 +7,7 @@ import { DomainEvent } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 
-export type Ports = {
+type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
 };
