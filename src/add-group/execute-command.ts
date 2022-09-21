@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import {
-  DomainEvent, RuntimeGeneratedEvent,
+  DomainEvent, groupJoined, RuntimeGeneratedEvent,
 } from '../domain-events';
+import * as GID from '../types/group-id';
 
 export type Command = {
   name: string,
@@ -16,4 +17,9 @@ type ExecuteCommand = (command: Command, date?: Date)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
-export const executeCommand: ExecuteCommand = () => () => E.right([]);
+export const executeCommand: ExecuteCommand = (command, date = new Date()) => () => E.right([
+  groupJoined({
+    id: GID.generate(),
+    ...command,
+  }, date),
+]);

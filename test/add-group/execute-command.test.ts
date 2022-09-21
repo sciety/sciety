@@ -21,7 +21,7 @@ describe('execute-command', () => {
       executeCommand(newGroup),
     );
 
-    it.skip('succeeds and raises an event', () => {
+    it('succeeds and raises an event', () => {
       expect(result).toStrictEqual(E.right([expect.objectContaining({
         type: 'GroupJoined',
         ...newGroup,

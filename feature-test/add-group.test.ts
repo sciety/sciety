@@ -33,7 +33,7 @@ describe('add-group', () => {
     await closeBrowser();
   });
 
-  describe.skip('the list of groups on the groups page', () => {
+  describe('the list of groups on the groups page', () => {
     beforeAll(async () => {
       await goto('localhost:8080/groups');
     });
