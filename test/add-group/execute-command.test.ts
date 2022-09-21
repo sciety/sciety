@@ -40,7 +40,7 @@ describe('execute-command', () => {
       executeCommand(newGroup),
     );
 
-    it.skip('fails with no events raised', () => {
+    it('fails with no events raised', () => {
       expect(result).toStrictEqual(E.left(expect.stringContaining(newGroup.slug)));
     });
   });
