@@ -33,32 +33,23 @@ describe('add-group', () => {
     await closeBrowser();
   });
 
-  describe('the list of groups on the groups page', () => {
-    beforeAll(async () => {
-      await goto('localhost:8080/groups');
-    });
+  it('the group appears in the list on the groups page', async () => {
+    await goto('localhost:8080/groups');
+    const groupCardExists = await text(newGroup.name, within($('.group-list'))).exists();
 
-    it.each([
-      [newGroup.name],
-      [newGroup.shortDescription],
-    ])('the new group appears', async (expectedString) => {
-      const itemExists = await text(expectedString, within($('.group-list'))).exists();
-
-      expect(itemExists).toBe(true);
-    });
+    expect(groupCardExists).toBe(true);
   });
 
   it('the group now has its own page', async () => {
     await goto('localhost:8080/groups');
     const link = $(`[href="/groups/${newGroup.slug}"].group-card__link`);
     await click(link);
-
     const title = await $('h1').text();
 
     expect(title).toContain(newGroup.name);
   });
 
-  it('can be searched for', async () => {
+  it('the group can be searched for', async () => {
     const encodedGroupName = encodeURIComponent(newGroup.name);
     await goto(`localhost:8080/search?query=${encodedGroupName}&category=groups`);
     const groupWasFound = await text(newGroup.name, within($('.search-results-list'))).exists();
