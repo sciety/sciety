@@ -2,12 +2,16 @@ import axios from 'axios';
 import {
   $, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
 
-describe.skip('add-group', () => {
+describe('add-group', () => {
   const newGroup = {
     name: arbitraryWord(),
     shortDescription: arbitraryString(),
+    homepage: arbitraryUri(),
+    avatarPath: arbitraryUri(),
+    descriptionPath: arbitraryString(),
+    slug: arbitraryWord(),
   };
 
   beforeAll(async () => {
@@ -29,7 +33,7 @@ describe.skip('add-group', () => {
     await closeBrowser();
   });
 
-  describe('the list of groups on the groups page', () => {
+  describe.skip('the list of groups on the groups page', () => {
     beforeAll(async () => {
       await goto('localhost:8080/groups');
     });
