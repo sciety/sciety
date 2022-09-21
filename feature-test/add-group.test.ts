@@ -58,7 +58,13 @@ describe('add-group', () => {
     expect(title).toContain(newGroup.name);
   });
 
-  it.todo('can be searched for');
+  it('can be searched for', async () => {
+    const encodedGroupName = encodeURIComponent(newGroup.name);
+    await goto(`localhost:8080/search?query=${encodedGroupName}&category=groups`);
+    const groupWasFound = await text(newGroup.name, within($('.search-results-list'))).exists();
+
+    expect(groupWasFound).toBe(true);
+  });
 
   it.todo('creation of the group appears in the Sciety feed');
 });
