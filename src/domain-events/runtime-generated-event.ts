@@ -1,6 +1,7 @@
 import { AnnotationCreatedEvent } from './annotation-created-event';
 import { ArticleAddedToListEvent } from './article-added-to-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
+import { GroupJoinedEvent } from './group-joined-event';
 import { ListCreatedEvent } from './list-created-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
@@ -16,6 +17,7 @@ export type RuntimeGeneratedEvent =
   AnnotationCreatedEvent |
   ArticleAddedToListEvent |
   EvaluationRecordedEvent |
+  GroupJoinedEvent |
   ListCreatedEvent |
   UserUnsavedArticleEvent |
   UserFollowedEditorialCommunityEvent |

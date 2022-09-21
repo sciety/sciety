@@ -19,6 +19,7 @@ export {
   isGroupJoinedEvent,
   GroupJoinedEvent,
   groupJoined,
+  groupJoinedEventCodec,
 } from './group-joined-event';
 
 export {

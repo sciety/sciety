@@ -5,7 +5,7 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { generate } from '../types/event-id';
 import { Group } from '../types/group';
 
-const groupJoinedEventCodec = t.type({
+export const groupJoinedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('GroupJoined'),
   date: tt.DateFromISOString,
