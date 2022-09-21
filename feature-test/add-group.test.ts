@@ -56,6 +56,4 @@ describe('add-group', () => {
 
     expect(groupWasFound).toBe(true);
   });
-
-  it.todo('creation of the group appears in the Sciety feed');
 });
