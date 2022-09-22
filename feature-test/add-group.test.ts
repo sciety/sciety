@@ -10,7 +10,7 @@ describe('add-group', () => {
     shortDescription: arbitraryString(),
     homepage: arbitraryUri(),
     avatarPath: arbitraryUri(),
-    descriptionPath: arbitraryString(),
+    descriptionPath: `${arbitraryString()}.md`,
     slug: arbitraryWord(50),
   };
 
