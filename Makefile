@@ -17,6 +17,7 @@ export AWS_DEFAULT_REGION
 .PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 dev: export TARGET = dev
+dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 dev: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
