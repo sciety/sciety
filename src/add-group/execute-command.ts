@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent, groupJoined, RuntimeGeneratedEvent,
+  DomainEvent, groupJoined, isGroupJoinedEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
-import { getGroupBySlug } from '../shared-read-models/groups/get-group-by-slug';
 import * as GID from '../types/group-id';
 
 export type Command = {
@@ -21,15 +21,15 @@ type ExecuteCommand = (command: Command, date?: Date)
 
 export const executeCommand: ExecuteCommand = (command, date = new Date()) => (events) => pipe(
   events,
-  getGroupBySlug(command.slug),
-  E.swap,
-  E.bimap(
-    () => `Group with slug ${command.slug} already exists`,
-    () => [
+  RA.filter(isGroupJoinedEvent),
+  RA.filter((event) => event.slug === command.slug),
+  RA.match(
+    () => E.right([
       groupJoined({
         id: GID.generate(),
         ...command,
       }, date),
-    ],
+    ]),
+    () => E.left(`Group with slug ${command.slug} already exists`),
   ),
 );
