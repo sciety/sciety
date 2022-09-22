@@ -12,7 +12,11 @@ describe('description-path-codec', () => {
   });
 
   describe('that contains a folder', () => {
-    it.todo('is not valid');
+    const descriptionPath = descriptionPathCodec.decode(`/${arbitraryWord()}/${arbitraryWord()}.md`);
+
+    it.failing('is not valid', () => {
+      expect(E.isLeft(descriptionPath)).toBe(true);
+    });
   });
 
   describe('that does not have a markdown file extension', () => {
