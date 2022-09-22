@@ -1,20 +1,8 @@
-import axios from 'axios';
 import {
   $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
+import { callApi } from './call-api.helper';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
-
-const callApi = async (endpoint: string, payload: Record<string, unknown>) => axios.post(
-  `http://localhost:8080/${endpoint}`,
-  JSON.stringify(payload),
-  {
-    headers: {
-      Authorization: 'Bearer secret',
-      'Content-Type': 'application/json',
-    },
-    timeout: 5000,
-  },
-);
 
 describe('add-group', () => {
   const newGroup = {

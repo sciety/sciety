@@ -1,7 +1,7 @@
-import axios from 'axios';
 import {
   $, goto, openBrowser,
 } from 'taiko';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('add an article to a list', () => {
@@ -16,20 +16,7 @@ describe('add an article to a list', () => {
     const listId = '5ac3a439-e5c6-4b15-b109-92928a740812';
 
     beforeEach(async () => {
-      await axios.post(
-        'http://localhost:8080/add-article-to-list',
-        JSON.stringify({
-          articleId,
-          listId,
-        }),
-        {
-          headers: {
-            Authorization: 'Bearer secret',
-            'Content-Type': 'application/json',
-          },
-          timeout: 5000,
-        },
-      );
+      await callApi('add-article-to-list', { articleId, listId });
     });
 
     it('displays the article', async () => {

@@ -1,7 +1,7 @@
-import axios from 'axios';
 import {
   $, goto, openBrowser,
 } from 'taiko';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 import * as RI from '../src/types/review-id';
 import { arbitraryDate, arbitraryString } from '../test/helpers';
@@ -19,23 +19,13 @@ describe('record an evaluation', () => {
     const evaluationLocator = RI.serialize(arbitraryReviewId());
 
     beforeEach(async () => {
-      await axios.post(
-        'http://localhost:8080/record-evaluation',
-        JSON.stringify({
-          evaluationLocator,
-          articleId,
-          groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-          publishedAt: arbitraryDate(),
-          authors: [arbitraryString(), arbitraryString()],
-        }),
-        {
-          headers: {
-            Authorization: 'Bearer secret',
-            'Content-Type': 'application/json',
-          },
-          timeout: 5000,
-        },
-      );
+      await callApi('record-evaluation', {
+        evaluationLocator,
+        articleId,
+        groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        publishedAt: arbitraryDate(),
+        authors: [arbitraryString(), arbitraryString()],
+      });
     });
 
     it('displays the evaluation', async () => {
