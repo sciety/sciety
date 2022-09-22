@@ -4,6 +4,18 @@ import {
 } from 'taiko';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
 
+const callApi = async (endpoint: string, payload: Record<string, unknown>) => axios.post(
+  `http://localhost:8080/${endpoint}`,
+  JSON.stringify(payload),
+  {
+    headers: {
+      Authorization: 'Bearer secret',
+      'Content-Type': 'application/json',
+    },
+    timeout: 5000,
+  },
+);
+
 describe('add-group', () => {
   const newGroup = {
     name: arbitraryWord(),
@@ -16,17 +28,7 @@ describe('add-group', () => {
 
   beforeAll(async () => {
     await openBrowser();
-    await axios.post(
-      'http://localhost:8080/add-group',
-      JSON.stringify(newGroup),
-      {
-        headers: {
-          Authorization: 'Bearer secret',
-          'Content-Type': 'application/json',
-        },
-        timeout: 5000,
-      },
-    );
+    await callApi('add-group', newGroup);
   });
 
   afterAll(async () => {
