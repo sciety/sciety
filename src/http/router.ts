@@ -317,7 +317,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
-  const groupSlugRegex = '[A-Za-z0-9-]{0,30}';
+  const groupSlugRegex = '[A-Za-z0-9-]{0,255}';
 
   router.get(
     `/groups/:slug(${groupSlugRegex})/lists`,
