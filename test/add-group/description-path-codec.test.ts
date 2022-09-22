@@ -22,7 +22,7 @@ describe('description-path-codec', () => {
   describe('that does not have a markdown file extension', () => {
     const descriptionPath = descriptionPathCodec.decode(`${arbitraryWord()}.js`);
 
-    it.failing('is not valid', () => {
+    it('is not valid', () => {
       expect(E.isLeft(descriptionPath)).toBe(true);
     });
   });
