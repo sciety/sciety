@@ -14,7 +14,7 @@ describe('description-path-codec', () => {
   describe('that contains a folder', () => {
     const descriptionPath = descriptionPathCodec.decode(`/${arbitraryWord()}/${arbitraryWord()}.md`);
 
-    it.failing('is not valid', () => {
+    it('is not valid', () => {
       expect(E.isLeft(descriptionPath)).toBe(true);
     });
   });
