@@ -347,16 +347,6 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    '/editorial-communities/:id',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/groups/${context.params.id}`);
-
-      await next();
-    },
-  );
-
-  router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
       genericListPageParams,
