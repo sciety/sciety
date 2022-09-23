@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { Eq as stringEq } from 'fp-ts/string';
 import {
   DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
@@ -15,7 +16,7 @@ export type Command = {
   slug: string,
 };
 
-const isSlugEqualIn = (command: Command) => (event: GroupJoinedEvent) => command.slug === event.slug;
+const isSlugEqualIn = (command: Command) => (event: GroupJoinedEvent) => stringEq.equals(command.slug, event.slug);
 
 type ExecuteCommand = (command: Command, date?: Date)
 => (events: ReadonlyArray<DomainEvent>)
