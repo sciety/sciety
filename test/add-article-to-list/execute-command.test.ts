@@ -12,12 +12,9 @@ describe('execute-command', () => {
   const articleId = arbitraryArticleId();
 
   describe('when the list exists', () => {
-    describe('and the article is already on the list', () => {
+    describe('and the article is already in the list', () => {
       const result = pipe(
-        [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-          articleAddedToList(articleId, listId),
-        ],
+        { articleIds: [articleId]},
         executeCommand({
           listId,
           articleId,
@@ -29,11 +26,9 @@ describe('execute-command', () => {
       });
     });
 
-    describe('and the article was never on the list', () => {
+    describe('and the article is not in the list', () => {
       const result = pipe(
-        [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-        ],
+        { articleIds: []},
         executeCommand({
           listId,
           articleId,
@@ -49,17 +44,11 @@ describe('execute-command', () => {
       });
     });
 
-    describe('and the article used to be on the list and was removed', () => {
-      it.todo('succeeds and raises an event');
-    });
-
     describe('and the article should have been on the list', () => {
       const backdated = arbitraryDate();
 
       const result = pipe(
-        [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-        ],
+        { articleIds: []},
         executeCommand({
           listId,
           articleId,
@@ -74,21 +63,6 @@ describe('execute-command', () => {
           date: backdated,
         })]));
       });
-    });
-  });
-
-  describe('when the list does not exist', () => {
-    const result = pipe(
-      [
-      ],
-      executeCommand({
-        listId,
-        articleId,
-      }),
-    );
-
-    it('fails with no events raised', () => {
-      expect(result).toStrictEqual(E.left(expect.stringContaining(listId)));
     });
   });
 });
