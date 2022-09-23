@@ -33,7 +33,7 @@ export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
     ports.getAllEvents,
     TE.rightTask,
     TE.chainEitherK(replayAggregate(command.listId)),
-    TE.chainEitherK(executeCommand(command, date)),
+    TE.map(executeCommand(command, date)),
   )),
   TE.chainTaskK(ports.commitEvents),
 );

@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
@@ -25,10 +24,9 @@ const createAppropriateEvents = (command: Command, date: Date) => (listAggregate
 
 type ExecuteCommand = (command: Command, date?: Date)
 => (listAggregate: ListAggregate)
-=> E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
+=> ReadonlyArray<RuntimeGeneratedEvent>;
 
 export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
   listAggregate,
-  E.right,
-  E.map(createAppropriateEvents(command, date)),
+  createAppropriateEvents(command, date),
 );

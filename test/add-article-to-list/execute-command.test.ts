@@ -1,11 +1,8 @@
-import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-article-to-list/execute-command';
-import { articleAddedToList, listCreated } from '../../src/domain-events';
-import { arbitraryDate, arbitraryString } from '../helpers';
+import { arbitraryDate } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
@@ -14,7 +11,7 @@ describe('execute-command', () => {
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
       const result = pipe(
-        { articleIds: [articleId]},
+        { articleIds: [articleId] },
         executeCommand({
           listId,
           articleId,
@@ -22,13 +19,13 @@ describe('execute-command', () => {
       );
 
       it('succeeds with no events raised', () => {
-        expect(result).toStrictEqual(E.right([]));
+        expect(result).toStrictEqual([]);
       });
     });
 
     describe('and the article is not in the list', () => {
       const result = pipe(
-        { articleIds: []},
+        { articleIds: [] },
         executeCommand({
           listId,
           articleId,
@@ -36,11 +33,11 @@ describe('execute-command', () => {
       );
 
       it('succeeds and raises an event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
+        expect(result).toStrictEqual([expect.objectContaining({
           type: 'ArticleAddedToList',
           articleId,
           listId,
-        })]));
+        })]);
       });
     });
 
@@ -48,7 +45,7 @@ describe('execute-command', () => {
       const backdated = arbitraryDate();
 
       const result = pipe(
-        { articleIds: []},
+        { articleIds: [] },
         executeCommand({
           listId,
           articleId,
@@ -56,12 +53,12 @@ describe('execute-command', () => {
       );
 
       it('succeeds and raises a backdated event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
+        expect(result).toStrictEqual([expect.objectContaining({
           type: 'ArticleAddedToList',
           articleId,
           listId,
           date: backdated,
-        })]));
+        })]);
       });
     });
   });
