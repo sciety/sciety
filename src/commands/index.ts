@@ -1,20 +1,2 @@
-import * as t from 'io-ts';
-import { descriptionPathCodec } from './description-path-codec';
-import * as LOID from '../types/list-owner-id';
-
-export type CreateListCommand = {
-  ownerId: LOID.ListOwnerId,
-  name: string,
-  description: string,
-};
-
-export const addGroupCommandCodec = t.type({
-  name: t.string,
-  shortDescription: t.string,
-  homepage: t.string,
-  avatarPath: t.string,
-  descriptionPath: descriptionPathCodec,
-  slug: t.string,
-});
-
-export type AddGroupCommand = t.TypeOf<typeof addGroupCommandCodec>;
+export { CreateListCommand } from './create-list';
+export { addGroupCommandCodec, AddGroupCommand } from './add-group';
