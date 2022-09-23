@@ -14,11 +14,11 @@ const isSlugEqualIn = (
   event: GroupJoinedEvent,
 ) => stringEq.equals(command.slug, event.slug);
 
-type ExecuteCommand = (command: AddGroupCommand, date?: Date)
+type ExecuteCommand = (command: AddGroupCommand)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
-export const executeCommand: ExecuteCommand = (command, date = new Date()) => (events) => pipe(
+export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
   RA.filter(isGroupJoinedEvent),
   RA.filter(isSlugEqualIn(command)),
@@ -27,7 +27,7 @@ export const executeCommand: ExecuteCommand = (command, date = new Date()) => (e
       groupJoined({
         id: GID.generate(),
         ...command,
-      }, date),
+      }),
     ]),
     () => E.left(`Group with slug ${command.slug} already exists`),
   ),
