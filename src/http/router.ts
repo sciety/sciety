@@ -315,10 +315,8 @@ export const createRouter = (ports: CollectedPorts): Router => {
     },
   );
 
-  const groupSlugRegex = '[A-Za-z0-9-]{0,255}';
-
   router.get(
-    `/groups/:slug(${groupSlugRegex})/lists`,
+    '/groups/:slug/lists',
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.lists),
@@ -326,7 +324,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${groupSlugRegex})/about`,
+    '/groups/:slug/about',
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.about),
@@ -334,7 +332,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${groupSlugRegex})/followers`,
+    '/groups/:slug/followers',
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.followers),
@@ -342,7 +340,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
+    '/groups/:slug/evaluated-articles',
     redirectEvaluatedArticlesToListsPage,
   );
 
