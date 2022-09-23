@@ -1,11 +1,21 @@
 import {
   $, click, currentURL, goBack, goto, link, openBrowser,
 } from 'taiko';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
+import * as GID from '../src/types/group-id';
+import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('authentication-and-redirect', () => {
   beforeEach(async () => {
     await openBrowser();
+    await callApi('record-evaluation', {
+      groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+      publishedAt: new Date(),
+      evaluationLocator: arbitraryReviewId(),
+      articleId: 'doi:10.1101/2020.07.13.199174',
+      authors: [],
+    });
   });
 
   afterEach(screenshotTeardown);
@@ -34,7 +44,8 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
+      expect(result).toContain('10.1101/2020.07.13.199174');
+      expect(result).toMatch(/.*#[a-z]*:/);
     });
 
     it('follow command from the group page returns to the group page', async () => {
