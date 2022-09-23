@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { DescriptionPath, descriptionPathCodec } from './description-path-codec';
+import { descriptionPathCodec } from './description-path-codec';
 import * as LOID from '../types/list-owner-id';
 
 export type CreateListCommand = {
@@ -17,11 +17,4 @@ export const addGroupCommandCodec = t.type({
   slug: t.string,
 });
 
-export type AddGroupCommand = {
-  name: string,
-  shortDescription: string,
-  homepage: string,
-  avatarPath: string,
-  descriptionPath: DescriptionPath,
-  slug: string,
-};
+export type AddGroupCommand = t.TypeOf<typeof addGroupCommandCodec>;
