@@ -22,7 +22,6 @@ import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evaluated-articles-to-lists-page';
-import { redirectGroupIdToSlug } from './redirects/redirect-group-id-to-slug';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
@@ -316,7 +315,6 @@ export const createRouter = (ports: CollectedPorts): Router => {
     },
   );
 
-  const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
   const groupSlugRegex = '[A-Za-z0-9-]{0,255}';
 
   router.get(
@@ -346,26 +344,6 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get(
     `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
     redirectEvaluatedArticlesToListsPage,
-  );
-
-  router.get(
-    `/groups/:id(${uuidRegex})/lists`,
-    redirectGroupIdToSlug(ports, 'lists'),
-  );
-
-  router.get(
-    `/groups/:id(${uuidRegex})/about`,
-    redirectGroupIdToSlug(ports, 'about'),
-  );
-
-  router.get(
-    `/groups/:id(${uuidRegex})/followers`,
-    redirectGroupIdToSlug(ports, 'followers'),
-  );
-
-  router.get(
-    `/groups/:id(${uuidRegex})/evaluated-articles`,
-    redirectGroupIdToSlug(ports, 'evaluated-articles'),
   );
 
   router.get(
