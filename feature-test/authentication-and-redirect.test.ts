@@ -38,7 +38,7 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the group page returns to the group page', async () => {
-      await goto('localhost:8080/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      await goto('localhost:8080/groups/pci-animal-science');
       await click('Follow');
 
       const result = await currentURL();
@@ -82,7 +82,7 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the group page returns to the group page', async () => {
-      await goto('localhost:8080/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+      await goto('localhost:8080/groups/prereview');
       await click('Follow');
 
       const result = await currentURL();
