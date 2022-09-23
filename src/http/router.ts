@@ -66,7 +66,6 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { slugRegex } from '../types/slug';
 import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
@@ -316,8 +315,10 @@ export const createRouter = (ports: CollectedPorts): Router => {
     },
   );
 
+  const groupSlugRegex = '[A-Za-z0-9-]{0,255}';
+
   router.get(
-    `/groups/:slug(${slugRegex})/lists`,
+    `/groups/:slug(${groupSlugRegex})/lists`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.lists),
@@ -325,7 +326,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${slugRegex})/about`,
+    `/groups/:slug(${groupSlugRegex})/about`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.about),
@@ -333,7 +334,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${slugRegex})/followers`,
+    `/groups/:slug(${groupSlugRegex})/followers`,
     pageHandler(createPageFromParams(
       groupPageParamsCodec,
       groupPage(ports)(groupPageTabs.followers),
@@ -341,7 +342,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
-    `/groups/:slug(${slugRegex})/evaluated-articles`,
+    `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
     redirectEvaluatedArticlesToListsPage,
   );
 
