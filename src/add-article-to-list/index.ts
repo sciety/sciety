@@ -17,7 +17,15 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+const listAggregateByListId = (listId: ListId) => (events: ReadonlyArray<DomainEvent>): ListAggregate => pipe(
+  events,
+  RA.filter(isArticleAddedToListEvent),
+  RA.filter((event) => event.listId === listId),
+  RA.map((event) => event.articleId),
+  (articleIds) => ({ articleIds }),
+);
+
+const confirmListExistsAndReturnListAggregate = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isListCreatedEvent),
   RA.some((event) => event.listId === listId),
@@ -25,14 +33,7 @@ const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent
     () => E.left(`List "${listId}" not found`),
     () => E.right(undefined),
   ),
-);
-
-const listAggregateByListId = (listId: ListId) => (events: ReadonlyArray<DomainEvent>): ListAggregate => pipe(
-  events,
-  RA.filter(isArticleAddedToListEvent),
-  RA.filter((event) => event.listId === listId),
-  RA.map((event) => event.articleId),
-  (articleIds) => ({ articleIds }),
+  E.map(() => listAggregateByListId(listId)(events)),
 );
 
 type AddArticleToListCommandHandler = (
@@ -54,8 +55,7 @@ export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   TE.chainW((command) => pipe(
     ports.getAllEvents,
     TE.rightTask,
-    TE.chainFirstEitherK(confirmListExists(command.listId)),
-    TE.map(listAggregateByListId(command.listId)),
+    TE.chainEitherK(confirmListExistsAndReturnListAggregate(command.listId)),
     TE.chainEitherK(executeCommand(command, date)),
   )),
   TE.chainTaskK(ports.commitEvents),
