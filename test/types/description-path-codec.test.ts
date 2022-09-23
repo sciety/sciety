@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { descriptionPathCodec } from '../../src/commands/description-path-codec';
+import { descriptionPathCodec } from '../../src/types/description-path';
 import { arbitraryWord } from '../helpers';
 
 describe('description-path-codec', () => {

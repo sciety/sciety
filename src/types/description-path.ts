@@ -10,7 +10,6 @@ export const descriptionPathCodec = t.brand(
   'DescriptionPath',
 );
 
-// ts-unused-exports:disable-next-line
 export type DescriptionPath = t.TypeOf<typeof descriptionPathCodec>;
 
 export const fromValidatedString = (input: string): DescriptionPath => input as DescriptionPath;

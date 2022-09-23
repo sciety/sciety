@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { descriptionPathCodec } from '../commands/description-path-codec';
+import { descriptionPathCodec } from '../types/description-path';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { generate } from '../types/event-id';

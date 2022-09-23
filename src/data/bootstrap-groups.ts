@@ -1,6 +1,6 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { fromValidatedString as descriptionPathFromValidatedString } from '../commands/description-path-codec';
 import * as DomainEvent from '../domain-events';
+import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import * as Gid from '../types/group-id';
 
 export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoinedEvent> = [

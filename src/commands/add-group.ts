@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { descriptionPathCodec } from './description-path-codec';
+import { descriptionPathCodec } from '../types/description-path';
 
 export const addGroupCommandCodec = t.type({
   name: t.string,

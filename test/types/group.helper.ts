@@ -1,5 +1,5 @@
 import { arbitraryGroupId } from './group-id.helper';
-import { DescriptionPath } from '../../src/commands/description-path-codec';
+import { DescriptionPath } from '../../src/types/description-path';
 import { Group } from '../../src/types/group';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 
