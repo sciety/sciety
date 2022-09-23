@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { descriptionPathCodec } from '../commands/description-path-codec';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { generate } from '../types/event-id';
@@ -12,7 +13,7 @@ export const groupJoinedEventCodec = t.type({
   groupId: GroupIdFromString,
   name: t.string,
   avatarPath: t.string,
-  descriptionPath: t.string,
+  descriptionPath: descriptionPathCodec,
   shortDescription: t.string,
   homepage: t.string,
   slug: t.string,
