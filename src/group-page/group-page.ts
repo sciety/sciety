@@ -17,6 +17,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { slugCodec } from '../types/slug';
 
 type Ports = ContentComponentPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -29,7 +30,7 @@ export const groupPageTabs: Record<string, TabIndex> = {
 };
 
 export const paramsCodec = t.type({
-  slug: t.string,
+  slug: slugCodec,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
