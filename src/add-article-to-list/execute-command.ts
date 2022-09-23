@@ -4,8 +4,7 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { ListAggregate } from './list-aggregate';
 import {
-  articleAddedToList,
-  DomainEvent, isListCreatedEvent, RuntimeGeneratedEvent,
+  articleAddedToList, RuntimeGeneratedEvent,
 } from '../domain-events';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
@@ -24,16 +23,6 @@ const createAppropriateEvents = (command: Command, date: Date) => (listAggregate
   ),
 );
 
-const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
-  events,
-  RA.filter(isListCreatedEvent),
-  RA.some((event) => event.listId === listId),
-  B.fold(
-    () => E.left(`List "${listId}" not found`),
-    () => E.right(undefined),
-  ),
-);
-
 type ExecuteCommand = (command: Command, date?: Date)
 => (listAggregate: ListAggregate)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
@@ -41,6 +30,5 @@ type ExecuteCommand = (command: Command, date?: Date)
 export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
   listAggregate,
   E.right,
-  // E.chainFirst(confirmListExists(command.listId)),
   E.map(createAppropriateEvents(command, date)),
 );
