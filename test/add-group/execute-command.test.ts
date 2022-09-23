@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-group/execute-command';
+import { DescriptionPath } from '../../src/commands/description-path-codec';
 import { groupJoined } from '../../src/domain-events';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -11,7 +12,7 @@ describe('execute-command', () => {
     shortDescription: arbitraryString(),
     homepage: arbitraryUri(),
     avatarPath: arbitraryUri(),
-    descriptionPath: arbitraryString(),
+    descriptionPath: arbitraryString() as DescriptionPath,
     slug: arbitraryWord(),
   };
 

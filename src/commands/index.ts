@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { descriptionPathCodec } from './description-path-codec';
+import { DescriptionPath, descriptionPathCodec } from './description-path-codec';
 import * as LOID from '../types/list-owner-id';
 
 export type CreateListCommand = {
@@ -22,6 +22,6 @@ export type AddGroupCommand = {
   shortDescription: string,
   homepage: string,
   avatarPath: string,
-  descriptionPath: string,
+  descriptionPath: DescriptionPath,
   slug: string,
 };
