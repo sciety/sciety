@@ -2,9 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { ListAggregate } from './list-aggregate';
 import {
   articleAddedToList,
-  DomainEvent, isArticleAddedToListEvent, isListCreatedEvent, RuntimeGeneratedEvent,
+  DomainEvent, isListCreatedEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
@@ -14,10 +15,9 @@ export type Command = {
   listId: ListId,
 };
 
-const createAppropriateEvents = (command: Command, date: Date) => (events: ReadonlyArray<DomainEvent>) => pipe(
-  events,
-  RA.filter(isArticleAddedToListEvent),
-  RA.some((event) => event.articleId.value === command.articleId.value && event.listId === command.listId),
+const createAppropriateEvents = (command: Command, date: Date) => (listAggregate: ListAggregate) => pipe(
+  listAggregate.articleIds,
+  RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
     () => [articleAddedToList(command.articleId, command.listId, date)],
     () => [],
@@ -35,12 +35,12 @@ const confirmListExists = (listId: ListId) => (events: ReadonlyArray<DomainEvent
 );
 
 type ExecuteCommand = (command: Command, date?: Date)
-=> (events: ReadonlyArray<DomainEvent>)
+=> (listAggregate: ListAggregate)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 
-export const executeCommand: ExecuteCommand = (command, date = new Date()) => (events) => pipe(
-  events,
+export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
+  listAggregate,
   E.right,
-  E.chainFirst(confirmListExists(command.listId)),
+  // E.chainFirst(confirmListExists(command.listId)),
   E.map(createAppropriateEvents(command, date)),
 );
