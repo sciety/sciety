@@ -2,23 +2,19 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
+import { AddGroupCommand } from '../commands';
 import {
   DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent, RuntimeGeneratedEvent,
 } from '../domain-events';
 import * as GID from '../types/group-id';
 
-export type Command = {
-  name: string,
-  shortDescription: string,
-  homepage: string,
-  avatarPath: string,
-  descriptionPath: string,
-  slug: string,
-};
+const isSlugEqualIn = (
+  command: AddGroupCommand,
+) => (
+  event: GroupJoinedEvent,
+) => stringEq.equals(command.slug, event.slug);
 
-const isSlugEqualIn = (command: Command) => (event: GroupJoinedEvent) => stringEq.equals(command.slug, event.slug);
-
-type ExecuteCommand = (command: Command, date?: Date)
+type ExecuteCommand = (command: AddGroupCommand, date?: Date)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
 

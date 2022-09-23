@@ -1,23 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
-import { descriptionPathCodec } from './description-path-codec';
-import { Command } from './execute-command';
+import { AddGroupCommand, addGroupCommandCodec } from '../commands';
 
-const inputCodec = t.type({
-  name: t.string,
-  shortDescription: t.string,
-  homepage: t.string,
-  avatarPath: t.string,
-  descriptionPath: descriptionPathCodec,
-  slug: t.string,
-});
-
-type ValidateInputShape = (input: unknown) => E.Either<string, Command>;
+type ValidateInputShape = (input: unknown) => E.Either<string, AddGroupCommand>;
 
 export const validateInputShape: ValidateInputShape = (input) => pipe(
   input,
-  inputCodec.decode,
+  addGroupCommandCodec.decode,
   E.mapLeft((errors) => PR.failure(errors).join('\n')),
 );
