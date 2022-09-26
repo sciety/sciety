@@ -3,144 +3,157 @@
 <p><strong>Reviewer #1 (Public Review):</strong></p>
 </blockquote>
 <blockquote>
-<p>
-    This paper provides experimental and modeling analysis of the inter-brain coupling of socially interacting bats, and reports that coordinated brain activity evolves at a slower time scale than the activity describing the differences. Specifically, the paper finds that there is an attracting submanifold corresponding to the mean (or "common mode") of neural activity, and that the dynamics in the orthogonal eigenmode, corresponding to the difference in brain activity, decays rapidly. These rapid decays in the difference mode are referred to as "catch up" activity.
-</p>
+<p>Summary</p>
 </blockquote>
 <blockquote>
-<p>
-    There are two main findings:
-</p>
+<p>Moncunill et al set out to investigate a very important question: why are half of children vaccinated three times with RTS,S AS01 protected from clinical malaria - and half not? To do so they isolated PBMCs before vaccination and one month after third vaccination and stimulated them in vitro with DMSO (vehicle control), two malaria antigens (CSP (part of RTS,S) &amp; AMA1) or HBS (hepatitis B antigen - part of RTS,S).</p>
+</blockquote>
+<blockquote>
+<p>They then assessed their transcriptional response by blood transcriptional module analysis and correlated those results with previous published data on antibody titers and T cell cytokine production to find associations. To assess risk of clinical malaria, responses were compared between RTS,S vaccinated children who developed clinical malaria in the one year follow-up (cases) and those who received RTS,S or a comparator vaccine and did not (controls). They found that responses after RTS,S vaccination did not predict protection from clinical malaria. Instead a blood transcriptional module signature related to dendritic cells, inflammation, and monocytes before vaccination may be associated with clinical malaria risk.</p>
+</blockquote>
+<blockquote>
+<p>Strengths</p>
+</blockquote>
+<blockquote>
+<p>Immune correlates of protection are evaluated in African children (who are the RTS,S target population) in a natural transmission setting.</p>
+</blockquote>
+<blockquote>
+<p>Excellent set of controls: children (same age) vaccinated with RTS,S or comparator vaccine alongside each other -&gt; retrospectively stratified by whether the did or did not develop clinical malaria : controls for the effect of a developing immune system and would allow to disentangle RTS,S specific and clinical malaria specific response patterns.</p>
+</blockquote>
+<blockquote>
+<p>Weaknesses</p>
+</blockquote>
+<blockquote>
+<p>RTS,S is composed of CSP &amp; HBS. yet when PBMCs from children vaccinated three time with RTS,S are stimulated with these peptides no transcriptional differences compared to children receiving a rabies or meningitis vaccine were detected (Figure 2). this lack of recall response impacts all downstream conclusions and comparisons made in the paper.</p>
+</blockquote>
+<p>The fact that bulk transcriptional profiling of Ag-stimulated PBMCs (and specifically to CSP) did not identify large significant differences in BTM expression between the RTS,S vs. comparator group could be due to several factors. First of all, the frequency of antigen-specific CD4+ T cells was very low among CD4+ T cells (Figure 4 of the manuscript shows that CSP-specific CD4+ T cells comprise &lt; 0.004% of all CD4+ T cells). This low frequency of CSP-specific T cells is consistent with other RTS,S studies [e.g. as we state on line 330, we have previously found that CSP-specific T-cells in RTS,S/AS01 vaccines comprise &lt; 0.10% of all CD4+ T cells (1)]. Moreover, CD4+ T cells themselves comprise approximately 45-57% of all PBMCs (2). Thus, finding an expression signal between the RTS,S vs. comparator group would require the signal to be high enough to be detected in only 0.002% of all PBMCs [0.004% (% CSP-specific CD4+ T cells out of total CD4+ T cells) x 51% (average % of CD4+ T cells out of all PBMCs) = 0.002%]. Thus, lack of detectable recall response does not mean lack of recall response. Moreover, as suggested below, we opted not to focus the rest of the manuscript on the Ag-stimulation results.</p>
+<p>Second of all, the PBMCs were stimulated on site for 12h and then cryopreserved. This stimulation time was chosen based on the kinetics of IFN- and IL-2 mRNA response (3), but other responses may have had different kinetics and thus have already resolved or have not yet occurred by the 12-h cryopreservation. We have added text in the manuscript to discuss these caveats (“Another potential reason for why no BTMs were found to associate with the response to RTS,S/AS01 vaccination or with protection when analyzing CSP-stimulated PBMC is that all PBMC were stimulated on site for 12 hours (this stimulation time was chosen based on the kinetics of the IFN-gamma transcriptional response) and then cryopreserved. Thus, we were unable to detect earlier transient responses that had already resolved by 12 hours, as well as more delayed response that had not yet initiated by 12 hours, if such responses occurred”).</p>
+<p>It should be noted that in all our analyses, the stimulated results were adjusted for DMSO to focus on the antigen-specific response only. This would explain why we detect signal in the DMSO samples but not in response to stimulation. We have realized that this was not very well described in the figure captions and the Methods section and have added more details, including the model description in Methods section. As such, we do not believe that these results impact all downstream conclusions. We believe that the unstimulated results provide significant new insights into the immune and molecular mechanisms of RTS,S vaccine efficacy, not necessarily directly related to the RTS,S-specific acquired immune response. Finally, we would like to highlight the fact that we have improved our model specification to directly account for the pairing of some of the samples using a random effect using the limma package. This has slightly increased statistical power, and as such the number of significantly differentially expressed BTMs in response to stimulation is a bit higher (but still much less than that for the DMSO). Originally, we had decided against the use of a random effect due to the computational cost of estimating the random effect.</p>
+<blockquote>
+<p>Transcriptional responses 1 month after the final RTS,S vaccination do not predict clinical malaria risk (Figure 3) - this is a key finding, which should be central to the conclusion of this paper.</p>
+</blockquote>
+<p>Considering that Kazmin et al. (4) showed that the transcriptional response to the third RTS,S/AS01 dose peaks at Day 1 post-injection, with some decline by Day 6 and approximately 90% of the response having waned by Day 21 (with the caveat that Kazmin et al.’s study population was malaria-naïve adults), we do not find it surprising that there were only a few BTMs whose 1 month post-final RTS,S dose associated with clinical malaria risk. However, the point is well-taken about the relative merits of the baseline. We have edited the Discussion to include discussion of the Month 3 correlates results:</p>
+<p>“Compared to the 45 BTMs whose baseline levels significantly associated with clinical malaria risk in RTS,S/AS01-vaccinated African children, fewer BTMs (seven) had levels at one month post-final RTS,S/AS01 dose that significantly associated with clinical malaria risk. Moreover, if a more stringent FDR cutoff had been used (i.e. 5%), six of these seven BTMs would not have been identified. Thus it is entirely possible that, at one month post-final RTS,S/AS01 dose, there is no circulating immune transcriptomic signature predictive of risk. Such a conclusion would not be surprising, given that in malaria-naïve adults, the transcriptional response to the third RTS,S/AS01 dose has been shown to peak at Day 1 post-injection, with some decline by Day 6 and approximately 90% of the response having waned by Day 21 (17). Therefore, it is likely that the sampling scheme in this study (one month post-final dose) misses the majority of the transcriptional response to RTS,S/AS01.”</p>
+<blockquote>
+<p>The take-home message put forward in the title/abstract (that a monocyte and DC related pre-vaccination signature predicts risk of clinical malaria in RTS,S vaccinated children) is not strongly supported by the data. It is based on blood transcriptional modules related to monocytes being picked out when comparing RTS,S vaccinated cases and controls.</p>
+</blockquote>
+<p>Thank you for giving us the opportunity to provide further rationale for our focus on the 7 monocyte-related and 4 DC-related BTMs shown in Figure 6B (MAL067 column) out of the 45 total BTMs whose baseline expression associated with clinical malaria risk in RTS,S/AS01-vaccinated children. The reviewer implies that these modules were chosen for focus somewhat randomly or without justification (or, even worse, “cherry picked”), which we would agree would be an imperfect method for drawing conclusions.</p>
+<p>First, we have always ensured to mention that the 45 baseline modules that correlated with risk in RTS,S recipients (Fig 6B, MAL067 column) belonged to many functional annotations, including DC cells and monocytes. (Abstract: “In contrast, baseline levels of BTMs associated with dendritic cells and with monocytes (<em>among others</em>) correlated with malaria risk”) (Main text, lines 519-522: “Compared to the results from the month 3 analysis (7 BTMs), the baseline correlates analysis of MAL067 revealed a larger number (45) of BTMs, <em>spanning many functional categories</em>, whose month 0 levels in vehicle-stimulated PBMC nearly all associated with clinical malaria risk in RTS,S/AS01 recipients .”</p>
+<p>The focus on DC cells and monocytes is due to two reasons: 1) the fact that the DC-related modules and the monocyte-related modules were some of the most significant correlations (lines 522-524: “The BTM with the most significant association with risk was “enriched in monocytes (II) (M11.0)” (FDR = 1.80E-14), followed by “inflammatory response (M33)” (FDR = 2.45E-07) and “resting dendritic cell surface signature (S10)” (FDR = 6.03E-07).”</p>
+<p>Second, the baseline association of DC- and monocyte-related modules appeared to generalize across populations: (Abstract: “A cross-study analysis supported generalizability of the baseline dendritic cell- and monocyte-related BTM correlations with malaria risk to healthy, malaria-naïve adults, suggesting that certain monocyte subsets may inhibit protective RTS,S/AS01-induced responses.”; Main text: “BTMs related to dendritic cells and to monocytes were most consistently associated with risk across these three studies [“resting dendritic cell surface signature (S10)”, “DC surface signature (S5)”, “enriched in dendritic cells (M168)”, “enriched in monocytes (I) (M4.15)”, “enriched in monocytes (II) (M11.0)”, “enriched in monocytes (IV) (M118.0)”, and “monocyte surface signature (S4)” significantly correlated with risk in all three studies].”</p>
+<p>The first two sentences of the Discussion (lines 577-580) explain our focus on monocytes and DCs:</p>
+<p>“Our main finding is the identification of a baseline blood transcriptional module (BTM) signature that associates with clinical malaria risk in RTS,S/AS01-vaccinated African children. In a cross-study comparison, much of this baseline risk signature – specifically, dendritic cell- and monocyte-related BTMs – was also recapitulated in two of the three CHMI studies in healthy, malaria-naïve adults.”</p>
+<p>Finally, we note that the title (“A baseline transcriptional signature associates with clinical malaria risk in RTS,S/AS01-vaccinated African children”) does not restrict to DC-related or monocyte-related BTMs, rather, we chose this title based on the larger number of BTMs, and higher correlations with risk, in the baseline analysis compared to the Month 3 analysis.</p>
+<p>We have revised all instances where we have communicated this less clearly, e.g. “for why we identified a baseline monocyte transcriptional signature of risk” has been changed to “for why we identified monocyte-related BTMs in our transcriptional signature of risk”.</p>
+<blockquote>
+<p>Many other modules are picked out as well e.g. cell cycle (Figure 6B). An in-depth analysis of the genes in these module and what their up and downregulation can tell us about their function is warranted to support the conclusions.</p>
+</blockquote>
+<p>Thank you for the suggestion to look at the cell cycle module in Figure 6B. You make a good point that this module is the only module to show a significant association with clinical malaria risk across all 4 of the RTS,S studies and should therefore be further examined.  First, we have added this to the text:</p>
+<p>“Only one BTM, “cell cycle and transcription (M4.0)”, was significantly associated with risk across all four studies. Of the 335 genes in this module (M4.0), 130 were also present in one or more of the six “monocyte-related” BTMs shown in Figure 6B (297 genes total across all six BTMs), suggesting that the “cell cycle” and “monocyte” results may actually be picking up the same signal.”</p>
+<p>We have done the gene-level analysis as suggested, resulting in 8 new supplemental figures (Figure 6-figure supplements 1-8) and one new supplemental table (S5). We have also made the following revisions to the text:</p>
+<p>In Results: “To gain insight into specific module-member genes that may be involved in the RTS,S/AS01 baseline risk signature, we performed the same analysis on the gene level, i.e. examined associations with clinical malaria risk for each of the constituent genes in the 45 BTMs shown in Figure 6B. Figure 6-figure supplements 1-8 show the gene-level association results within the eight BTMs that were significantly associated with clinical malaria risk in MAL067 and at least two of the three CHMI studies, and had at least one gene in MAL067 that was significantly associated with risk (these eight correspond to M4.0, S10, S5, M168, M4.3, M11.0, M4.15, and S4).  Within MAL067, 35 unique genes were shown to significantly associate with malaria risk (Supplementary Table 5); 9 of these genes (CCNF, MK167, KIF18A, NPL, RBM47, CFD, MAFB, IL13RA1, and CCR1) also had significant association with non-protection in one of the CHMI studies. Although no individual gene was significantly associated with risk across &gt;2 studies, many showed consistent effect (direction and magnitude) across 3 studies. This further supports our choice to focus on modules instead of individual genes as GSEA increases power to detect more subtle but coordinated changes in gene expression data that would be missed otherwise. For this same reason, GSEA has been shown to enhance cross-study comparisons (45).”</p>
+<p>In Discussion: “Our gene-level correlates analyses suggest an alternative hypothesis, however. With the caveat that the gene-level analyses were performed post hoc, high baseline expression of STAB1 (which is present in DC-related, monocyte-related, and cell cycle-related modules) was found to positively associate with clinical malaria risk (Figure 6-figure supplements 1, 2, and 6). STAB1 encodes stabilin-1 (also called Clever-1), a transmembrane glycoprotein scavenger receptor that links extracellular signals to intracellular vesicle trafficking pathways (58). Interestingly, stabilin-1high monocytes show downregulation of proinflammatory genes, and T cells co-cultured with stabilin-1high monocytes showed decreased antigen recall, suggesting that monocyte stabilin-1 suppresses T cell activation (56). Thus one possibility is that stabilin-1high immunosuppressive monocytes circulating at baseline could decrease protective RTS,S-induced T-cell responses, or inhibit another aspect of adaptive immunity. Single-cell transcriptomic profiling of PBMC or purified monocyte subsets in future RTS,S trials in African children in malaria-endemic areas could help test this hypothesis.”</p>
+<blockquote>
+<p>Impact</p>
+</blockquote>
+<blockquote>
+<p>This paper will inform future studies looking for correlates of RTS,S induced protection from clinical malaria in a variety of ways:</p>
+</blockquote>
+<blockquote>
+<p>It validates the blood transcriptional module approach (as published by Li S, Rouphael N, Duraisingham S, Romero-Steiner S, Presnell S, Davis C, Schmidt DS, Johnson SE, Milton A, Rajam G, et al: Molecular signatures of antibody responses derived from a systems biology study of five human vaccines. Nat Immunol 2014) to find target cell populations which can then be investigated in much more detail.</p>
+</blockquote>
+<blockquote>
+<p>It shows that studying PBMC recall responses after peptide stimulation post final vaccination is not the way forward, since no response is detected (Figure 2). future studies can now take an alternative approach. e.g. since unstimulated PBMCs (vehicle control) from RTS,S vaccinated children were different from those who received a comparator vaccine (Figure 2) RTS,S vaccine signatures could be picked up much more easily by whole blood RNAseq.</p>
+</blockquote>
+<blockquote>
+<p>It implicates innate immune cells in shaping an individuals response to a vaccine - an exciting basis for future functional and mechanistic studies.</p>
+</blockquote>
+<p>We are glad the reviewer appreciates the value of the study.</p>
+<blockquote>
+<p><strong>Reviewer #2 (Public Review):</strong></p>
+</blockquote>
+<blockquote>
+<p>This paper reports a sub-study of the RTS,S/AS01 malaria vaccine Phase 3 trial, which aimed to identify groups of genes (blood transcriptional modules, BTMs) for which expression in DMSO or antigen-stimulated PBMCs was associated with clinical malaria during a 12-month follow-up period. Study subjects were infants and children who received either RTS,S/AS01 or comparator vaccines (meningococcal C for infants, rabies vaccine for children), enrolled in the study in Tanzania and Mozambique (with some additional analyses using samples from Gabonese infants).</p>
+</blockquote>
+<blockquote>
+<p>Using PBMCs collected at baseline before vaccination and 3 months later (a month after the third vaccine dose), stimulated with DMSO or parasite antigens, the authors used RNA-sequencing to identify BTMs which were different between recipients of RTS,S/AS01 vs comparator vaccines; which were different between baseline and month 3 in RTS,S/AS01 recipients; and which differed between RTS,S/AS01 recipients with a malaria episode and those without a malaria episode during the follow-up period. This combination of analyses might help to distinguish BTMs specifically associated with RTS,S/AS01 vaccine efficacy from those associated with other factors influencing susceptibility to malaria. To further aid mechanistic understanding the authors examined correlations between BTMs and measures of cellular and humoral immune responses. To try to establish generalisability the authors examined whether BTMs identified in African children were also associated with developing malaria in RTS,S/AS01-vaccinated malaria-naïve adults in the United States who underwent controlled human malaria infection (CHMI).</p>
+</blockquote>
+<blockquote>
+<p>Strengths of the study include:</p>
 </blockquote>
 <blockquote>
 <ol>
-<li>
-    Neural activity (especially higher frequency LFP activity in the 30-150Hz range) is modulated by social context. Specifically, the ratio of the averaged, moment-to-moment MEAN:DIFF ratio is much higher when the bats are in a single chamber, clearly indicating that the animals are coordinating their neural activity. This change also seems to hold -- although not as striking -- in lower-frequency LFP and spiking activity.
-</li>
+<li>The relatively large number of subjects, the large amount of transcriptomic and immunological data which has been generated (and made publicly accessible), and the extensive analysis to evaluate associations between BTMs and numerous immunological variables.</li>
 </ol>
 </blockquote>
 <blockquote>
 <ol>
-<li>
-    The time scales of the mean vs. difference dynamics are segregated: the "difference dynamics" evolve at a faster time scale than "similarity dynamics", seems to be well supported.
-</li>
+<li>Clear explanation of both the rationale and methods for most of the analyses</li>
 </ol>
 </blockquote>
 <blockquote>
-<p>
-    The basic finding is presented in Figure 1. The rest of the paper is focused on a modeling study to garner further insight into the dynamics.
-</p>
+<ol>
+<li>The attempt to validate findings in the CHMI studies</li>
+</ol>
 </blockquote>
 <blockquote>
-<p>Weaknesses:</p>
+<ol>
+<li>Matching of subjects to try to eliminate the confounding effects of age, study site, and time of vaccination</li>
+</ol>
 </blockquote>
 <blockquote>
-<p>
-    This is an entirely phenomenological paper, and while it claims to garner "mechanistic insight", it is unclear what that means.
-</p>
-</blockquote>
-<p>
-    We regret not clarifying sufficiently what we meant by “mechanistic insight.” The insight is the following: functional across-brain coupling acts as positive feedback to the mean component of neural activity, which amplifies it and slows it down; at the same time, it acts as negative feedback to the difference component, which suppresses it and speeds it up. Thus, findings (1) and (2) in the reviewer’s summary above can be explained by the same model mechanism.
-    As the reviewer pointed out below, the details of the model are complex, which could have made the simple mechanism above opaque. Thus, we analyzed two simplified versions of the model to make the mechanistic insight clear. This is detailed below in our response to the reviewer’s comment on model complexity
-</p>
-<blockquote>
-<p>
-    The basic idea of the model is simple and somewhat interesting, but the details are extremely complex. There are many examples of this, but the method used to "regress out" the behavior was very hard to interpret.
-</p>
-</blockquote>
-<p>
-    The method for regressing out behavior was described in Materials and Methods section 3.10, and we regret having neglected to reference it in the main text. We now reference it at the first instance in the main text where this is relevant.
-</p>
-<blockquote>
-<p>
-    On the face of it, the model is extremely simple: a two-state linear dynamical system. However, this simplistic description buries extreme complexity. The model is extremely complex as involves a large number of parameters (e.g., time switching 'b' values, the values of which are completely unclear), the switching over time of these parameters based on hand-scored animal behavioral state, and the complex mix of markovian and linear dynamical systems theoretic results.
-</p>
-</blockquote>
-<p>
-    As the reviewer pointed out, the core of the model is very simple: a linear dynamical system that models neural activity coupling. The model mechanism of positive and negative feedback, which is responsible for reproducing the two experimental results summarized by the reviewer above, is contained in this core (see Materials and Methods section 3.7 for details). On top of this, the model has a layer of complexity, involving a Markov chain model of behavior and a large number of behavioral parameters. This layer of complexity is independent from the feedback mechanism of the core of the model. Thus, while it makes the model more biologically realistic, it is not required to reproduce the two main experimental results. To explicitly show this, and to better understand the dependence of model behavior on its parameters, we analyzed two reduced versions of the model.
-    The first reduced model replaces the behavioral inputs with white noise. The original model is <a href="https://imgur.com/vc4GR10"></a> , where a is neural activity, <a href="https://imgur.com/RGYKyOq"></a> , is the coupling matrix, <em>b</em> is behavioral modulation, and τ is a time constant. b is where the complexity lies, as it is simulated using a Markov chain and involves many parameters. To strip away this layer of complexity, we replaced <em>b</em> with noise having a simple structure, namely, the mean and difference components of <em>b</em> having identical, flat power spectra. Importantly, this noise input does not induce correlation between bats, and it amounts to inputs of the same magnitude and same timescales to the mean and difference components of <em>a</em>.
-    The resulting reduced model has only two parameters, the functional self-coupling <em>C_S</em> and functional across-brain coupling <em>C_I</em> (for simplicity, <em>τ</em> can be absorbed into the other parameters). We are interested in the two results the reviewer summarized above: (1) the mean component of neural activity having a larger variance than the difference component; (2) the mean component having a slow timescale than the difference component. In the manuscript, these are respectively quantified using the variance ratio and the power spectral centroid ratio of the mean and difference components. The reduced model allowed us to derive analytical expressions for these two quantities (see Materials and Methods section 3.8 for details). We found that they have very simple dependence on the functional coupling parameters: the variance ratio (mean variance divided by difference variance) is approximately <a href="https://imgur.com/BcWvgrH"></a> , and the centroid ratio (mean centroid divided by difference centroid) is approximately <a href="https://imgur.com/OONVean"></a> .
-</p>
-<p>
-    This parameter dependence is visualized below (note that the color maps are in log scale, and the white spaces are regions where the model is unstable).
-</p>
-<p><a href="https://imgur.com/FFeuydR"></a></p>
-<p>
-    In the experimental data, the mean component had larger variance and lower power spectral centroid than the difference component. This corresponds to the parameter regime of  <a href="https://imgur.com/D0VMDBy"></a>   (enclosed by dashed lines). Thus, a positive <em>C_I</em> acts as positive feedback to the mean component and negative feedback to the difference component, modulating their variance and timescales in opposite directions. This is consistent with the analysis of the original model in Materials and Methods section 3.7. In the revised manuscript, we’ve now added analysis of this reduced model to the Results section, and the above figure has been added as Figure 3I-J.
-</p>
-<p>
-    The reviewer has stated a concern regarding the large number of parameters that set the input level according to behavioral state (<em>b_resting</em>, <em>b_(social grooming)</em>, <em>b_fighting</em>, etc.). These parameters are important for ensuring that the model outputs realistic levels of behaviorally modulated neural activity (discussed below in our reply regarding model fit), but they are not important for the main results on variance and timescales. To demonstrate this, we studied a second reduced model. This model is identical to our original model except that, for each simulation, each of the behavior parameters (<em>b_fighting</em>, etc.) was independently drawn from the uniform distribution from 0 to 1. Despite the completely random behavioral parameters, this reduced model reproduces the variance and timescales results just like the original model, as shown in the figure below (compare with Figure 3E-F).
-</p>
-<p><a href="https://imgur.com/5jQyF4m"></a></p>
-<p>
-    To summarize, the reduced models allowed us to identify the simple parameter dependence of the modeling results, and showed that the simple linear dynamical system at the core of the original model is sufficient to reproduce the two main experimental observations.
-</p>
-<blockquote>
-<p>
-    Indeed, a fundamental weakness of the model is that the Markov chain is taken as an "input" to the 2-state linear systems model, as if somehow the neural state does not affect the state transitions.
-</p>
-</blockquote>
-<p>
-    Yes, this is a limitation of our model. We’ve added a discussion of this limitation, as well as future directions for overcoming it, in the Discussion section.
-    The reason we did not model neural control of behavioral transitions is that it is under-constrained by existing data. While the brain obviously controls behaviors, not every part of the brain controls every behavior. Of the 11 behaviors observed in this study, we do not know which of them is controlled by the bat frontal cortex, and we do not know how they might be controlled (i.e., what specific spatiotemporal activity patterns affects behaviors in what ways). Without this knowledge, it’s unclear how to implement neural control of behavior in the model. This knowledge requires perturbation studies (lesion, inactivation, or activity manipulation) to establish casual relationships from neural activity to specific behaviors in the bat, which will be an important future direction.
-</p>
-<p>
-    On the other hand, as the reviewer stated, our model included behavioral modulation of neural activity. It is well known that in mammals, arousal and movement modulate neural activity globally across cortex (McGinley et al., 2015, Neuron). Thus, given that different behaviors in general involve different levels of arousal and movement, our model included behavior-dependent modulation of frontal cortical neural activity.
-    Finally, for the reviewer’s convenience, we also quote below the paragraph addressing this issue in the revised Discussion.
-    “Another limitation of our model is the “open-loop” nature of the relationship between behavior and neural activity. Specifically, we modeled neural activity as being modulated by behavior, but behavior was modeled using a Markov chain that is independent from the neural activity. In reality, neural activity and behavior form a closed-loop, with different social behaviors being controlled by the neural activity of specific neural populations in specific brain regions. Thus, an important future direction is to close the loop by incorporating neural control of social behaviors into models of the inter-brain relationship in bats. This will require future experimental studies to identify which frontal cortical regions and populations in bats are necessary or sufficient to control social behaviors, as well as the detailed causal relationship from neural activity to social behavior. Furthermore, as social interactions can occur at multiple timescales, it will be interesting to investigate how these are controlled by neural activity at different timescales, and how those timescales are shaped by functional across-brain coupling. In summary, such a closed-loop model will shed light on how inter-brain activity patterns and dynamic social interactions co-evolve and feedback onto each other.”
-</p>
-<blockquote>
-<p>
-    Further, the Markov assumption is not rigorously tested.
-</p>
-</blockquote>
-<p>
-    We have now tested the Markov assumption, using the following methods. We compared three models of bat behaviors: (1) the independent model, where the behavioral state at a given time point is independent from the state at other time points; (2) the 1st-order dependency model, where the behavioral state at a given time point depends on the state at the previous time point only; (3) the 2nd-order dependency model, where the behavioral state at a given time point depends on the states at the two previous time points. The Markov assumption corresponds to model (2), which is used as a part of the main model of the paper. Note that models with longer time-dependencies (≥3) were not tested because the number of parameters grows exponentially with model order and our dataset is not large enough to fit them.
-</p>
-<p>
-    To compare the three models, we split the behavioral data into a training set and a test set, fitted each model on the training set (Laplace smoothing was used to avoid assigning zero probability to unobserved events), and calculated the log-likelihood of the test set under each model. The figure below shows the cross-validated likelihoods for the behavioral data of one-chamber (A) and two-chambers (B) sessions, which were fitted separately; circles and error bars are means and standard deviations across 100 random splits of the data into training and test sets.
-</p>
-<p><a href="https://imgur.com/oANtVYl"></a></p>
-<p>
-    As the figure above shows, the 1st-order model had the highest likelihood on average. This does not necessarily prove that bat behavior obeys the Markov assumption (if we had a lot more data, we might be able to fit better 2nd-order and higher-order models). But this does mean that, given the amount of data we have, the best model that we can fit is the 1st-order Markov chain. Thus, this result supports our usage of the Markov chain in the main model of the paper.
-    In the revised manuscript, the above figure is included as Figure 3—figure supplement 2A-B, and the analysis is described in Materials and Methods section 3.5.
-</p>
-<blockquote>
-<p>
-    No model selecting or other model validation appears to be done.
-</p>
-</blockquote>
-<p>
-    To evaluate model fit, we simulated our model using experimentally observed behaviors (rather than simulating behaviors using a Markov chain), and compared the simulated neural activity with the experimentally observed activity (see Materials and Methods section 3.6 for detailed procedures). The comparison for an example experimental session is shown below, where we’ve plotted the experimentally observed neural activity and behaviors for bat 1 (A) and bat 2 (B), along with the simulated neural activity. The correlation coefficient between data and model are indicated above each plot. These are representative examples, as the average correlation over all sessions and bats is 0.72 (standard deviation is 0.10). This figure was added to the revised manuscript as Figure 3—figure supplement 1.
-</p>
-<p><a href="https://imgur.com/qJdBaDg"></a></p>
-<p>
-    In evaluating model fit, we realized that the model in the original manuscript produced outputs with a DC offset different from that of the data. Thus, in the revised manuscript (including the figure above), we added one more behavioral parameter (<em>b_constant</em>) that adjusts the DC offset, which is a parameter that reflects the effect of a baseline arousal level on neural activity (Materials and Methods section 3.4). Note that, since the only effect of this parameter is to adjust the DC offset of neural activity, it does not change any of the results in the paper.
-</p>
-<blockquote>
-<p>
-    In short, the model, while very interesting, is so complex that it is literally impossible to evaluate. The authors report literally no shortcomings of their model. They do not report parameter estimation methods. They do not report fitting errors or other model validation metrics. The only evaluation is whether it can produce certain outputs that are similar to biological data. While the latter is certainly important, all models are wrong, and it essential to have a model simple enough to understand, both in terms of how it works and how it fails.
-</p>
-</blockquote>
-<p>
-    The comments on the complexity of the model and on fitting errors have been addressed above. Regarding parameter estimation methods, they were described in Materials and Methods section 3.14, and we regret having neglected to directly reference it in the original manuscript. We now reference the section in the legend of Figure 3A which is the first place to introduce the parameters. Briefly, the behavioral parameters (b_resting, b_fighting, etc.) were simply chosen to be the average neural activity during the respective behaviors from the data; the other parameters were chosen by hand to roughly match the levels of activity from the data, keeping within the parameter regime of  <a href="https://imgur.com/LV3kVoF"></a> identified from the analyses. As we showed above, these parameters provide a reasonable fit to the data.
-</p>
-<p>
-    The reason we chose the parameters heuristically in this way, rather than by minimizing some error objective, is the following. Our goal was to build a model that could qualitatively reproduce the experimental findings in a robust manner, that is, without fine-tuning of parameters. Thus, we analyzed the model to understand how model behaviors depend on the parameters, and to identify the parameter regime that reproduces the qualitative trends seen in the data (Figure 3I-J; Materials and Methods sections 3.7 and 3.8). Guided by these analyses, we chose parameters heuristically without algorithmic fine-tuning.
-</p>
-<p>
-    Finally, following suggestions from reviewer 1 and reviewer 3, we have added discussions of shortcomings of the models (the last two paragraphs of the Discussion). With these discussions of model limitations, along with the presentation of simple insights into model mechanism from the reduced models above, we believe we have now presented a model that is “simple enough to understand, both in terms of how it works and how it fails.”
-</p>
-<blockquote>
-<p>
-    In general, while the basic finding is fairly interesting, and the experiments and their findings are highly relevant to the field, the modeling and its explication fall short.
-</p>
+<p>Weaknesses of the study include:</p>
 </blockquote>
 <blockquote>
-<p>
-    It is not that it is wrong or bad; however, it is not clear that such a complex model increases our understanding beyond the experimental findings in Figure 1, and if it does, there has to be a major caveat that the model itself is not carefully vetted.
-</p>
+<ol>
+<li>Despite the relatively large size of the study, it is hard to know whether it had sufficient power to achieve its main objective, and we are not presented with data to demonstrate how successfully the authors managed to match subjects for age, timing of vaccination and follow-up duration</li>
+</ol>
 </blockquote>
-<p>
-    Based on the reviewer’s comments on the model’s complexity, we have analyzed reduced versions of the model to understand its simple underlying mechanisms, as described above. This goes beyond the experimental findings in Figure 1, as it provides a computational mechanism that could give rise to those experimental findings. Moreover, based on the reviewer’s comments, we have more carefully vetted the model, by evaluating model fit and testing different behavioral models that assume or doesn’t assume the Markov property. Finally, we now discuss caveats of the model in the Discussion section, including the open-loop nature of the model as pointed out by the reviewer.
-</p>
+<p>We have added the following to our “limitations” paragraph in the Discussion: “Fourth, despite the relatively large size of the study, our statistical power was limited by the number of malaria cases with available samples; sampling additional controls would not have increased our statistical power.”</p>
+<p>Moreover, we now also provide the new Supplementary Table 1, which provides complete information on participant match ID, site, age cohort, sex assigned at birth, and time of vaccination.</p>
+<blockquote>
+<ol>
+<li>The comparator group to the RTS,S/AS01 vaccine is not a single vaccine, but two vaccines, but the presentation of the data makes it difficult to identify what effect this may have had on the results</li>
+</ol>
+</blockquote>
+<p>Indeed, comparators received a rabies vaccine or the meningococcal C conjugate depending on the age cohort. However, we think that the impact on the study results and conclusions is minimal since the main results are based on baseline gene expression and its association with malaria risk within RTS,S vaccinees. Correlates of malaria risk in comparators are done separately. Comparator vaccination may be a confounding factor for age cohort, but we are not analyzing the effect of age cohort on the transcriptional profile. Comparators are only included in the analysis of RTS,S immunogenicity at post-vaccination (RTS,S vs Comparators, Fig 2A, Comparison (1)) and we have adjusted analyses by age cohort and hence by comparator vaccine. The fact that the comparators received different control vaccines only stresses that the BTMs found to be associated with RTS,S vaccination are specific to the RTS,S vaccine.</p>
+<p>Moreover, as an alternative way to identify RTS,S-specific transcriptional responses, we also include Comparison (2), which compares Month 3 to Month 0 transcription levels within RTS,S vaccinees. We include in the text extensive discussion of the merits and drawbacks of each comparison:</p>
+<p>“Two comparisons were done to characterize the transcriptional response to RTS,S/AS01 vaccination: Comparison (1): comparing gene expression in month 3 samples from RTS,S/AS01 vs comparator recipients (month 3 RTS,S/AS01 vs comparator); and Comparison (2): comparing gene expression in month 3 vs month 0 from RTS,S/AS01 recipients (RTS,S/AS01 month 3 vs month 0). Each comparison has its own advantages: Comparison (1) allows the identification of RTS,S/AS01-specific responses while taking into account other environmental factors to which the children are exposed, such as malaria exposure (albeit malaria transmission intensity was low during the study at both sites). Moreover, the very young ages of the trial participants mean that RTS,S/AS01-induced changes may be confounded with normal developmental changes in participant immune systems, further underscoring the value of Comparison (1), as it does not involve comparison across two different time points. On the other side, an advantage of Comparison (2) is that it takes into consideration each participant’s intrinsic baseline gene expression. Comparison (1) uses data from both infants and children, whereas Comparison (2) can only yield insight into RTS,S/AS01 responses in children (as baseline samples were not collected from infants).”</p>
+<blockquote>
+<ol>
+<li>A very "liberal" false-discovery rate (FDR) threshold has been used throughout to define significant associations. An FDR of 0.2 indicates that 20% (or 1 in 5) results which are considered significant will be false-discoveries. This means that the "significant" results must be interpreted with a high degree of caution. Typically researchers use lower FDR thresholds, like 0.05 or 0.01, although one may argue for different thresholds under different circumstances</li>
+</ol>
+</blockquote>
+<p>While it is not uncommon to use a threshold of 20% for immune correlates studies [e.g. (5-10)], we agree with you that it is important to clearly state the chosen FDR rate and to discuss conclusions in the context of the FDR rate used. We see we could improve our manuscript in this respect. We have added the following:</p>
+<p>Results: “Compared to the 45 BTMs whose baseline levels significantly associated with clinical malaria risk in RTS,S/AS01-vaccinated African children, fewer BTMs (seven) had levels at one month post-final RTS,S/AS01 dose that significantly associated with clinical malaria risk. Moreover, if a more stringent FDR cutoff had been used (i.e. 5%), six of these seven BTMs would not have been identified. Thus it is entirely possible that, at one month post-final RTS,S/AS01 dose, there is no circulating immune transcriptomic signature predictive of risk…”</p>
+<p>Discussion: “Finally, while it is not uncommon to use an FDR cutoff of 20% in high-dimensional immune correlates studies [e.g. (65-70)], our results should be interpreted with the requisite level of caution. However, we do note that many of our significant modules in the baseline risk analysis would have survived even lower FDR cutoffs (in many cases even a 1% cutoff), giving us a fair degree of confidence in our results. For example, of the seven monocyte-related BTMs whose baseline levels associated with risk, all would have survived a 5% FDR cut-off, and three even a 1% cut-off; likewise, of the four dendritic cell-related BTMs whose baseline levels associated with risk, all would have survived a 5% FDR cut-off, and three even a 1% cut-off.”</p>
+<p>Moreover, we have revised Figures 2, 3, and 6 so that it is easy to discern whether a specific BTM correlation would also pass more stringent FDR cutoffs, through the addition of 1, 2, or 3 asterisks where appropriate: “|FDR| &lt; 0.2 (<em>), &lt; 0.05 (</em><em>), &lt; 0.01 (</em>**).” Note that, most central to the key message of the paper, many of the monocyte-related, DC-related, and cell cycle-related BTMs would have passed more stringent FDR cutoffs, with many even passing a 1% FDR cutoff (as discussed above).</p>
+<blockquote>
+<ol>
+<li>A perplexing finding, which is not addressed in detail, is the large number of BTMs which differ between RTS,S and comparator vaccine groups after DMSO stimulation of PBMCs, but these are not seen when PBMCs are stimulated with parasite antigens in DMSO (and a similar finding for month 3 vs month 0 samples from RTS,S recipients). This raises some concern about the stimulation experiments, because one might expect that the DMSO vehicle in the antigen preparations would trigger a similar response to DMSO alone.</li>
+</ol>
+</blockquote>
+<p>It should be noted that in all our analyses, the stimulated results were adjusted for DMSO to focus on the antigen-specific response only. This would explain why we detect signal in the DMSO samples but not in response to stimulation. We have realized that this was not very well described in the figure captions and the Methods section and have added more details, including the model description in Methods section. As such, we do not believe that these results impact all downstream conclusions. We believe that the unstimulated results provide significant new insights into the immune and molecular mechanisms of RTS,S vaccine efficacy, not necessarily directly related to the RTS,S-specific acquired immune response.  We would also like to highlight the fact that we have improved our model specification to directly account for the pairing of some of the samples using a random effect using the limma package. This has slightly increased statistical power, and as such the number of significantly differentially expressed BTMs in response to stimulation is a bit higher (but still much less than that for the DMSO). Originally, we had decided against the use of a random effect due to the computational cost of estimating the random effect.</p>
+<p>The fact that bulk transcriptional profiling of Ag-stimulated PBMCs did not identify almost any significant differences in BTM expression between the RTS,S vs. comparator group could be due to several factors. First of all, the frequency of antigen-specific CD4+ T cells was very low among CD4+ T cells (Figure 4 of the manuscript shows that CSP-specific CD4+ T cells comprise &lt; 0.004% of all CD4+ T cells). This low frequency of CSP-specific T cells is consistent with other RTS,S studies [e.g. as we state on line 330, we have previously found that CSP-specific T-cells in RTS,S/AS01 vaccinees comprise &lt; 0.10% of all CD4+ T cells (1)].</p>
+<p>Moreover, CD4+ T cells themselves comprise approximately 45-57% of all PBMCs (2). Thus, finding an expression signal between the RTS,S vs. comparator group would require the signal to be high enough to be detected in only 0.002% of all PBMCs [0.004% (% CSP-specific CD4+ T cells out of total CD4+ T cells) x 51% (average % of CD4+ T cells out of all PBMCs) = 0.002%]. Thus, lack of detectable recall response does not mean lack of recall response. Moreover, as suggested below, we opted not to focus the rest of the manuscript on the Ag-stimulation results.</p>
+<p>Second of all, the PBMCs were stimulated on site for 12h and then cryopreserved. This stimulation time was chosen based on the kinetics of IFN-g and IL-2 mRNA response (3), but other responses may have had different kinetics and thus have already resolved or have not yet occurred by the 12-h cryopreservation. We have added text in the manuscript to discuss these caveats (“Another potential reason for why no BTMs were found to associate with the response to RTS,S/AS01 vaccination or with protection when analyzing CSP-stimulated PBMC is that all PBMC were stimulated on site for 12 hours (this stimulation time was chosen based on the kinetics of the IFN-g transcriptional response) and then cryopreserved. Thus, we were unable to detect earlier transient responses that had already resolved by 12 hours, as well as more delayed response that had not yet initiated by 12 hours, if such responses occurred.”.</p>
+<blockquote>
+<p>The authors partly achieved their aims. They identified BTMs differentially expressed between RTS,S/AS01 and the comparator vaccines, and between baseline and month 3 in RTS,S/AS01 recipients. They also identified BTMs at month 3 associated with developing malaria, and BTMs at baseline associated with developing malaria. These latter BTMs were partly replicated in the CHMI study subjects. Higher expression of BTMs associated with monocytes and dendritic cells were most consistently identified across the different analyses and their expression in stimulated baseline samples was most consistently associated with development of clinical malaria in RTS,S/AS01 recipients. However there were inconsistencies in associations between some of the studies, and it is possible that the "consistent" monocyte and dendritic cell BTMs would not be so consistent if a more stringent FDR threshold was used. However the authors conclusions are largely quite measured and for the most part they do not over-interpret the significance of their findings.</p>
+</blockquote>
+<p>We have added the following to the Discussion: “Finally, while it is not uncommon to use an FDR cutoff of 20% in high-dimensional immune correlates studies [e.g. (65-70)], our results should be interpreted with the requisite level of caution. However, we do note that many of our significant modules in the baseline risk analysis would have survived even lower FDR cutoffs (in many cases even a 1% cutoff), giving us a fair degree of confidence in our results. For example, of the seven monocyte-related BTMs whose baseline levels associated with risk, all would have survived a 5% FDR cut-off, and three even a 1% cut-off; likewise, of the four dendritic cell-related BTMs whose baseline levels associated with risk, all would have survived a 5% FDR cut-off, and three even a 1% cut-off.”</p>
+<blockquote>
+<p>Overall the work provides some evidence that baseline immunological status, particularly related to monocyte and dendritic cell responses and possibly their role in or response to baseline inflammation, may be a determinant of how well the RTS,S vaccine works to prevent malaria. This provides a basis for further work to optimise the effectiveness of the vaccine. The usefulness of PBMC stimulation to predict an individual's response to vaccination will be limited because this is not a method which can be used at scale in resource limited settings, but the concept that vaccine response could be enhanced by modifying pre-vaccine immunological or inflammatory status is potentially important. The data published with this study will be a valuable resource and will undoubtedly be used by others to address similar questions. Increasing the efficacy of malaria vaccines remains an extremely important goal, and identifying possible mechanisms which restrict the efficacy of RTS,S is important.</p>
+</blockquote>
+<p>References:</p>
+<ol>
+<li>Moncunill G, De Rosa SC, Ayestaran A, Nhabomba AJ, Mpina M, Cohen KW, Jairoce C, Rutishauser T, Campo JJ, Harezlak J, Sanz H, Diez-Padrisa N, Williams NA, Morris D, Aponte JJ, Valim C, Daubenberger C, Dobano C, McElrath MJ. RTS,S/AS01E Malaria Vaccine Induces Memory and Polyfunctional T Cell Responses in a Pediatric African Phase III Trial. Front Immunol. 2017;8:1008.</li>
+<li>Kleiveland CR. Peripheral Blood Mononuclear Cells. In: Verhoeckx K, Cotter P, López-Expósito I, Kleiveland C, Lea T, Mackie A, et al., editors. The Impact of Food Bioactives on Health: in vitro and ex vivo models. Cham: Springer International Publishing; 2015. p. 161-7.</li>
+<li>Schultz-Thater E, Frey DM, Margelli D, Raafat N, Feder-Mengus C, Spagnoli GC, Zajac P. Whole blood assessment of antigen specific cellular immune response by real time quantitative PCR: a versatile monitoring and discovery tool. J Transl Med. 2008;6:58.</li>
+<li>Kazmin D, Nakaya HI, Lee EK, Johnson MJ, van der Most R, van den Berg RA, Ballou WR, Jongert E, Wille-Reece U, Ockenhouse C, Aderem A, Zak DE, Sadoff J, Hendriks J, Wrammert J, Ahmed R, Pulendran B. Systems analysis of protective immune responses to RTS,S malaria vaccination in humans. Proc Natl Acad Sci U S A. 2017;114(9):2425-30.</li>
+<li>Liu C, Martins AJ, Lau WW, Rachmaninoff N, Chen J, Imberti L, Mostaghimi D, Fink DL, Burbelo PD, Dobbs K, Delmonte OM, Bansal N, Failla L, Sottini A, Quiros-Roldan E, Han KL, Sellers BA, Cheung F, Sparks R, Chun TW, Moir S, Lionakis MS, Consortium NC, Clinicians C, Rossi C, Su HC, Kuhns DB, Cohen JI, Notarangelo LD, Tsang JS. Time-resolved systems immunology reveals a late juncture linked to fatal COVID-19. Cell. 2021;184(7):1836-57 e22.</li>
+<li>Andersen-Nissen E, Fiore-Gartland A, Ballweber Fleming L, Carpp LN, Naidoo AF, Harper MS, Voillet V, Grunenberg N, Laher F, Innes C, Bekker LG, Kublin JG, Huang Y, Ferrari G, Tomaras GD, Gray G, Gilbert PB, McElrath MJ. Innate immune signatures to a partially-efficacious HIV vaccine predict correlates of HIV-1 infection risk. PLoS Pathog. 2021;17(3):e1009363.</li>
+<li>Lu P, Guerin DJ, Lin S, Chaudhury S, Ackerman ME, Bolton DL, Wallqvist A. Immunoprofiling Correlates of Protection Against SHIV Infection in Adjuvanted HIV-1 Pox-Protein Vaccinated Rhesus Macaques. Front Immunol. 2021;12:625030.</li>
+<li>Haynes BF, Gilbert PB, McElrath MJ, Zolla-Pazner S, Tomaras GD, Alam SM, Evans DT, Montefiori DC, Karnasuta C, Sutthent R, Liao HX, DeVico AL, Lewis GK, Williams C, Pinter A, Fong Y, Janes H, DeCamp A, Huang Y, Rao M, Billings E, Karasavvas N, Robb ML, Ngauy V, de Souza MS, Paris R, Ferrari G, Bailer RT, Soderberg KA, Andrews C, Berman PW, Frahm N, De Rosa SC, Alpert MD, Yates NL, Shen X, Koup RA, Pitisuttithum P, Kaewkungwal J, Nitayaphan S, Rerks-Ngarm S, Michael NL, Kim JH. Immune-correlates analysis of an HIV-1 vaccine efficacy trial. N Engl J Med. 2012;366(14):1275-86.</li>
+<li>Fletcher HA, Snowden MA, Landry B, Rida W, Satti I, Harris SA, Matsumiya M, Tanner R, O'Shea MK, Dheenadhayalan V, Bogardus L, Stockdale L, Marsay L, Chomka A, Harrington-Kandt R, Manjaly-Thomas ZR, Naranbhai V, Stylianou E, Darboe F, Penn-Nicholson A, Nemes E, Hatherill M, Hussey G, Mahomed H, Tameris M, McClain JB, Evans TG, Hanekom WA, Scriba TJ, McShane H. T-cell activation is an immune correlate of risk in BCG vaccinated infants. Nat Commun. 2016;7:11290.</li>
+<li>Young WC, Carpp LN, Chaudhury S, Regules JA, Bergmann-Leitner ES, Ockenhouse C, Wille-Reece U, deCamp AC, Hughes E, Mahoney C, Pallikkuth S, Pahwa S, Dennison SM, Mudrak SV, Alam SM, Seaton KE, Spreng RL, Fallon J, Michell A, Ulloa-Montoya F, Coccia M, Jongert E, Alter G, Tomaras GD, Gottardo R. Comprehensive Data Integration Approach to Assess Immune Responses and Correlates of RTS,S/AS01-Mediated Protection From Malaria Infection in Controlled Human Malaria Infection Trials. Front Big Data. 2021;4:672460.</li>
+</ol>

@@ -1,39 +1,15 @@
 <p><strong>Reviewer #1 (Public Review):</strong></p>
-<p>
-    This paper provides experimental and modeling analysis of the inter-brain coupling of socially interacting bats, and reports that coordinated brain activity evolves at a slower time scale than the activity describing the differences. Specifically, the paper finds that there is an attracting submanifold corresponding to the mean (or "common mode") of neural activity, and that the dynamics in the orthogonal eigenmode, corresponding to the difference in brain activity, decays rapidly. These rapid decays in the difference mode are referred to as "catch up" activity.
-</p>
-<p>
-    There are two main findings:
-</p>
-<ol>
-<li><p>
-    Neural activity (especially higher frequency LFP activity in the 30-150Hz range) is modulated by social context. Specifically, the ratio of the averaged, moment-to-moment MEAN:DIFF ratio is much higher when the bats are in a single chamber, clearly indicating that the animals are coordinating their neural activity. This change also seems to hold -- although not as striking -- in lower-frequency LFP and spiking activity.
-</p></li>
-<li><p>
-    The time scales of the mean vs. difference dynamics are segregated: the "difference dynamics" evolve at a faster time scale than "similarity dynamics", seems to be well supported.
-</p></li>
-</ol>
-<p>
-    The basic finding is presented in Figure 1. The rest of the paper is focused on a modeling study to garner further insight into the dynamics.
-</p>
-<p>
-    Weaknesses:
-</p>
-<p>
-    This is an entirely phenomenological paper, and while it claims to garner "mechanistic insight", it is unclear what that means.
-</p>
-<p>
-    The basic idea of the model is simple and somewhat interesting, but the details are extremely complex. There are many examples of this, but the method used to "regress out" the behavior was very hard to interpret.
-</p>
-<p>
-    On the face of it, the model is extremely simple: a two-state linear dynamical system. However, this simplistic description buries extreme complexity. The model is extremely complex as involves a large number of parameters (e.g., time switching 'b' values, the values of which are completely unclear), the switching over time of these parameters based on hand-scored animal behavioral state, and the complex mix of markovian and linear dynamical systems theoretic results. Indeed, a fundamental weakness of the model is that the Markov chain is taken as an "input" to the 2-state linear systems model, as if somehow the neural state does not affect the state transitions. Further, the Markov assumption is not rigorously tested. No model selecting or other model validation appears to be done.
-</p>
-<p>
-    In short, the model, while very interesting, is so complex that it is literally impossible to evaluate. The authors report literally no shortcomings of their model. They do not report parameter estimation methods. They do not report fitting errors or other model validation metrics. The only evaluation is whether it can produce certain outputs that are similar to biological data. While the latter is certainly important, all models are wrong, and it essential to have a model simple enough to understand, both in terms of how it works and how it fails.
-</p>
-<p>
-    In general, while the basic finding is fairly interesting, and the experiments and their findings are highly relevant to the field, the modeling and its explication fall short.
-</p>
-<p>
-    It is not that it is wrong or bad; however, it is not clear that such a complex model increases our understanding beyond the experimental findings in Figure 1, and if it does, there has to be a major caveat that the model itself is not carefully vetted.
-</p>
+<p>Summary<br>
+Moncunill et al set out to investigate a very important question: why are half of children vaccinated three times with RTS,S AS01 protected from clinical malaria - and half not? To do so they isolated PBMCs before vaccination and one month after third vaccination and stimulated them in vitro with DMSO (vehicle control), two malaria antigens (CSP (part of RTS,S) &amp; AMA1) or HBS (hepatitis B antigen - part of RTS,S). They then assessed their transcriptional response by blood transcriptional module analysis and correlated those results with previous published data on antibody titers and T cell cytokine production to find associations. To assess risk of clinical malaria, responses were compared between RTS,S vaccinated children who developed clinical malaria in the one year follow-up (cases) and those who received RTS,S or a comparator vaccine and did not (controls). They found that responses after RTS,S vaccination did not predict protection from clinical malaria. Instead a blood transcriptional module signature related to dendritic cells, inflammation, and monocytes before vaccination may be associated with clinical malaria risk.</p>
+<p>Strengths<br>
+Immune correlates of protection are evaluated in African children (who are the RTS,S target population) in a natural transmission setting.<br>
+Excellent set of controls: children (same age) vaccinated with RTS,S or comparator vaccine alongside each other -&gt; retrospectively stratified by whether the did or did not develop clinical malaria : controls for the effect of a developing immune system and would allow to disentangle RTS,S specific and clinical malaria specific response patterns.</p>
+<p>Weaknesses<br>
+RTS,S is composed of CSP &amp; HBS. yet when PBMCs from children vaccinated three time with RTS,S are stimulated with these peptides no transcriptional differences compared to children receiving a rabies or meningitis vaccine were detected (Figure 2). this lack of recall response impacts all downstream conclusions and comparisons made in the paper.<br>
+Transcriptional responses 1 month after the final RTS,S vaccination do not predict clinical malaria risk (Figure 3) - this is a key finding, which should be central to the conclusion of this paper.<br>
+The take-home message put forward in the title/abstract (that a monocyte and DC related pre-vaccination signature predicts risk of clinical malaria in RTS,S vaccinated children) is not strongly supported by the data. It is based on blood transcriptional modules related to monocytes being picked out when comparing RTS,S vaccinated cases and controls. Many other modules are picked out as well e.g. cell cycle (Figure 6B). An in-depth analysis of the genes in these module and what their up and downregulation can tell us about their function is warranted to support the conclusions.</p>
+<p>Impact<br>
+This paper will inform future studies looking for correlates of RTS,S induced protection from clinical malaria in a variety of ways:<br>
+It validates the blood transcriptional module approach (as published by Li S, Rouphael N, Duraisingham S, Romero-Steiner S, Presnell S, Davis C, Schmidt DS, Johnson SE, Milton A, Rajam G, et al: Molecular signatures of antibody responses derived from a systems biology study of five human vaccines. Nat Immunol 2014) to find target cell populations which can then be investigated in much more detail.<br>
+It shows that studying PBMC recall responses after peptide stimulation post final vaccination is not the way forward, since no response is detected (Figure 2). future studies can now take an alternative approach. e.g. since unstimulated PBMCs (vehicle control) from RTS,S vaccinated children were different from those who received a comparator vaccine (Figure 2) RTS,S vaccine signatures could be picked up much more easily by whole blood RNAseq.<br>
+It implicates innate immune cells in shaping an individuals response to a vaccine - an exciting basis for future functional and mechanistic studies.</p>
