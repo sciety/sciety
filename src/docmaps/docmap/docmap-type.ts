@@ -4,6 +4,7 @@ type PeerReviewer = {
   actor: {
     name: string,
     type: 'person',
+    _relatesToOrganization?: string,
   },
   role: 'peer-reviewer',
 };
