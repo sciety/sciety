@@ -1,4 +1,4 @@
-import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
+import { Docmap } from '../docmap/docmap-type';
 
 export const hardcodedElifeArticle: Docmap = {
   '@context': 'https://w3id.org/docmaps/context.jsonld',
