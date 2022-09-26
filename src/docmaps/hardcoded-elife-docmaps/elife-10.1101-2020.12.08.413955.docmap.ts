@@ -19,10 +19,12 @@ export const hardcodedElifeArticle: Docmap = {
       assertions: [],
       inputs: [{ doi: '10.1101/2020.12.08.413955', url: 'https://doi.org/10.1101/2020.12.08.413955' }],
       actions: [{
-        participants: [{
-          actor: { name: 'anonymous', type: 'person' },
-          role: 'peer-reviewer',
-        }],
+        participants: [
+          {
+            actor: { name: 'anonymous', type: 'person' },
+            role: 'peer-reviewer',
+          },
+        ],
         outputs: [{
           type: 'evaluation-summary',
           published: '2021-03-26T16:45:35.930Z',
@@ -46,19 +48,76 @@ export const hardcodedElifeArticle: Docmap = {
           actor: { name: 'anonymous', type: 'person' },
           role: 'peer-reviewer',
         }],
-        outputs: [{ type: 'review-article', published: '2021-03-26T16:45:41.694Z', content: [{ type: 'web-page', url: 'https://hypothes.is/a/s7pNso5SEeuN_zcG1nqDVw' }, { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:s7pNso5SEeuN_zcG1nqDVw' }] }],
+        outputs: [
+          {
+            type: 'review-article',
+            published: '2021-03-26T16:45:41.694Z',
+            content: [
+              {
+                type: 'web-page',
+                url: 'https://hypothes.is/a/s7pNso5SEeuN_zcG1nqDVw',
+              },
+              {
+                type: 'web-page',
+                url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:s7pNso5SEeuN_zcG1nqDVw',
+              },
+              {
+                type: 'web-content',
+                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/review-one.html',
+              },
+            ],
+          }],
+
       }, {
         participants: [{
           actor: { name: 'anonymous', type: 'person' },
           role: 'peer-reviewer',
         }],
-        outputs: [{ type: 'review-article', published: '2021-03-26T16:45:45.058Z', content: [{ type: 'web-page', url: 'https://hypothes.is/a/tc8Y0I5SEeuOQgflHqczuA' }, { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:tc8Y0I5SEeuOQgflHqczuA' }] }],
+        outputs: [
+          {
+            type: 'review-article',
+            published: '2021-03-26T16:45:45.058Z',
+            content: [
+              {
+                type: 'web-page',
+                url: 'https://hypothes.is/a/tc8Y0I5SEeuOQgflHqczuA',
+              },
+              {
+                type: 'web-page',
+                url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:tc8Y0I5SEeuOQgflHqczuA',
+              },
+              {
+                type: 'web-content',
+                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/review-two.html',
+              },
+            ],
+          }],
+
       }, {
         participants: [{
           actor: { name: 'anonymous', type: 'person' },
           role: 'peer-reviewer',
         }],
-        outputs: [{ type: 'review-article', published: '2021-09-01T12:49:02.822Z', content: [{ type: 'web-page', url: 'https://hypothes.is/a/_EcT2AsiEeynBsvN2IqmAQ' }, { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:_EcT2AsiEeynBsvN2IqmAQ' }] }],
+        outputs: [
+          {
+            type: 'reply',
+            published: '2021-09-01T12:49:02.822Z',
+            content: [
+              {
+                type: 'web-page',
+                url: 'https://hypothes.is/a/_EcT2AsiEeynBsvN2IqmAQ',
+              },
+              {
+                type: 'web-page',
+                url: 'https://sciety.org/articles/activity/10.1101/2020.12.08.413955#hypothesis:_EcT2AsiEeynBsvN2IqmAQ',
+              },
+              {
+                type: 'web-content',
+                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/reply.html',
+              },
+            ],
+          }],
+
       }],
     },
   },
