@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ParameterizedContext } from 'koa';
+import { Next, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
@@ -25,7 +25,7 @@ import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evalu
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
-import { hardcodedElifeArticle } from '../../static/docmaps/elife-10.1101-2021.06.02.446694/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_06_02_446694 } from '../../static/docmaps/elife-10.1101-2021.06.02.446694/docmap';
 import { aboutPage } from '../about-page';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -35,6 +35,7 @@ import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to
 import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
+import { Docmap } from '../docmaps/docmap/docmap-type';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
@@ -69,6 +70,12 @@ import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
+
+const returnFile = (json: Docmap) => async (context: ParameterizedContext, next: Next) => {
+  context.response.status = 200;
+  context.response.body = json;
+  await next();
+};
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -510,11 +517,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
     await next();
   });
 
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', async (context, next) => {
-    context.response.status = 200;
-    context.response.body = hardcodedElifeArticle;
-    await next();
-  });
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', returnFile(elife_10_1101_2021_06_02_446694));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
