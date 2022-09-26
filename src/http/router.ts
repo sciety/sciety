@@ -25,7 +25,16 @@ import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evalu
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
+import { hardcodedElifeArticle as elife_10_1101_2020_04_07_030213 } from '../../static/docmaps/elife-10.1101-2020.04.07.030213/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2020_12_08_413955 } from '../../static/docmaps/elife-10.1101-2020.12.08.413955/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_05_03_442492 } from '../../static/docmaps/elife-10.1101-2021.05.03.442492/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_05_10_443380 } from '../../static/docmaps/elife-10.1101-2021.05.10.443380/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_05_13_443994 } from '../../static/docmaps/elife-10.1101-2021.05.13.443994/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_05_19_21257227 } from '../../static/docmaps/elife-10.1101-2021.05.19.21257227/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_06_01_21258150 } from '../../static/docmaps/elife-10.1101-2021.06.01.21258150/docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_06_02_446694 } from '../../static/docmaps/elife-10.1101-2021.06.02.446694/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_12_03_21267269v1 } from '../../static/docmaps/elife-10.1101-2021.12.03.21267269v1/docmap';
+import { hardcodedElifeArticle as elife_10_1101_2022_05_03_22274606v1 } from '../../static/docmaps/elife-10.1101-2022.05.03.22274606v1/docmap';
 import { aboutPage } from '../about-page';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -518,6 +527,24 @@ export const createRouter = (ports: CollectedPorts): Router => {
   });
 
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', returnFile(elife_10_1101_2021_06_02_446694));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2020.12.08.413955.docmap.json', returnFile(elife_10_1101_2020_12_08_413955));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.03.442492.docmap.json', returnFile(elife_10_1101_2021_05_03_442492));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.10.443380.docmap.json', returnFile(elife_10_1101_2021_05_10_443380));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.13.443994.docmap.json', returnFile(elife_10_1101_2021_05_13_443994));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.19.21257227.docmap.json', returnFile(elife_10_1101_2021_05_19_21257227));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.01.21258150.docmap.json', returnFile(elife_10_1101_2021_06_01_21258150));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2020.04.07.030213.docmap.json', returnFile(elife_10_1101_2020_04_07_030213));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.12.03.21267269v1.docmap.json', returnFile(elife_10_1101_2021_12_03_21267269v1));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.03.22274606v1.docmap.json', returnFile(elife_10_1101_2022_05_03_22274606v1));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
