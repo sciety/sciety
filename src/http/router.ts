@@ -25,6 +25,7 @@ import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evalu
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
+import { hardcodedElifeArticle } from '../../static/docmaps/elife-10.1101-2021.06.02.446694/docmap';
 import { aboutPage } from '../about-page';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -34,7 +35,6 @@ import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to
 import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
-import { hardcodedElifeArticle } from '../docmaps/hardcoded-elife-article';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';

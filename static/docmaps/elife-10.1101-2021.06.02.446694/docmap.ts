@@ -1,4 +1,4 @@
-import { Docmap } from './docmap/docmap-type';
+import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 
 export const hardcodedElifeArticle: Docmap = {
   '@context': 'https://w3id.org/docmaps/context.jsonld',
@@ -49,7 +49,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-review-three.html',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.06.02.446694/review-three.html',
                 },
               ],
             },
@@ -77,7 +77,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-review-two.html',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.06.02.446694/review-two.html',
                 },
               ],
             },
@@ -105,7 +105,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-review-one.html',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.06.02.446694/review-one.html',
                 },
               ],
             },
@@ -137,7 +137,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-evaluation-summary.html',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.06.02.446694/evaluation-summary.html',
                 },
               ],
             },
@@ -165,7 +165,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/hardcoded-elife-article-reply.html',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.06.02.446694/reply.html',
                 },
               ],
             },
