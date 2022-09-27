@@ -124,8 +124,25 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Patricia J Wittkopp',
                 type: 'person',
+                _relatesToOrganization: 'University of Michigan, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Luis Barreiro',
+                type: 'person',
+                _relatesToOrganization: 'University of Chicago, United States',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Kirk E Lohmueller',
+                type: 'person',
+                _relatesToOrganization: 'University of California, Los Angeles, United States',
               },
               role: 'peer-reviewer',
             },
