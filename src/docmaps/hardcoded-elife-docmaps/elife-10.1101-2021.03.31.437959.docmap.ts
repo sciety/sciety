@@ -52,7 +52,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.03.31.437959/review-three.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:1F_FtOvlEeyG99OhW4PefQ/content',
                 },
               ],
             },
@@ -83,7 +83,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.03.31.437959/review-two.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:1NN1ruvlEeykz09yoKTuKg/content',
                 },
               ],
             },
@@ -114,7 +114,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.03.31.437959/review-one.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:1UK9dOvlEeywYle43r1aAQ/content',
                 },
               ],
             },
@@ -162,7 +162,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.03.31.437959/evaluation-summary.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:1dqSyuvlEeyWFs8c2PkP5Q/content',
                 },
               ],
             },
@@ -193,7 +193,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.03.31.437959/reply.html',
+                  url: 'https://sciety.org/evaluations/10.1101/2021.03.31.437959#hypothesis:99LwwgalEe248ycpDrRwVg/content',
                 },
               ],
             },
