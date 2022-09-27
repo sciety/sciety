@@ -93,8 +93,25 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'C Daniela Robles-Espinoza',
                 type: 'person',
+                _relatesToOrganization: 'International Laboratory for Human Genome Research, Mexico',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Ricardo Azziz',
+                type: 'person',
+                _relatesToOrganization: 'University at Albany, SUNY, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Arjun Bhattacharya',
+                type: 'person',
+                _relatesToOrganization: 'UCLA, United States',
               },
               role: 'peer-reviewer',
             },
