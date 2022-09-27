@@ -40,21 +40,21 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   }),
 );
 
-const pageToSuccessResponse = (user: O.Option<User>, applyWrapper: boolean) => (page: Page) => ({
-  body: (applyWrapper) ? standardPageLayout(user)(page) : page.content,
+const pageToSuccessResponse = (user: O.Option<User>, applyStandardPageLayout: boolean) => (page: Page) => ({
+  body: (applyStandardPageLayout) ? standardPageLayout(user)(page) : page.content,
   status: StatusCodes.OK,
 });
 
-const toWebPage = (user: O.Option<User>, applyWrapper: boolean) => E.fold(
+const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.fold(
   toErrorResponse(user),
-  pageToSuccessResponse(user, applyWrapper),
+  pageToSuccessResponse(user, applyStandardPageLayout),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
   handler: HandlePage,
-  applyWrapper = true,
+  applyStandardPageLayout = true,
 ): Middleware => (
   async (context, next) => {
     const response = await pipe(
@@ -64,7 +64,7 @@ export const pageHandler = (
         ...context.state,
       },
       handler,
-      T.map(toWebPage(O.fromNullable(context.state.user), applyWrapper)),
+      T.map(toWebPage(O.fromNullable(context.state.user), applyStandardPageLayout)),
     )();
 
     context.response.status = response.status;
