@@ -124,8 +124,25 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Kayla Sprenger',
                 type: 'person',
+                _relatesToOrganization: 'Massachusetts Institute of Technology, United States',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Miles P Davenport',
+                type: 'person',
+                _relatesToOrganization: 'University of New South Wales, Australia',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Kayla Sprenger',
+                type: 'person',
+                _relatesToOrganization: 'Massachusetts Institute of Technology, United States',
               },
               role: 'peer-reviewer',
             },
