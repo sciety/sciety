@@ -21,7 +21,27 @@ export const hardcodedElifeArticle: Docmap = {
       actions: [{
         participants: [
           {
-            actor: { name: 'anonymous', type: 'person' },
+            actor: {
+              name: 'Ronald L Calabrese',
+              type: 'person',
+              _relatesToOrganization: 'Emory University, United States',
+            },
+            role: 'senior-editor',
+          },
+          {
+            actor: {
+              name: 'Stanley Heinze',
+              type: 'person',
+              _relatesToOrganization: 'Lund University, Sweden',
+            },
+            role: 'peer-reviewer',
+          },
+          {
+            actor: {
+              name: 'Jason Pipkin',
+              type: 'person',
+              _relatesToOrganization: 'Brandeis University, United States',
+            },
             role: 'peer-reviewer',
           },
         ],
