@@ -1,39 +1,14 @@
 <p><strong>Reviewer #1 (Public Review):</strong></p>
-<p>
-    This paper provides experimental and modeling analysis of the inter-brain coupling of socially interacting bats, and reports that coordinated brain activity evolves at a slower time scale than the activity describing the differences. Specifically, the paper finds that there is an attracting submanifold corresponding to the mean (or "common mode") of neural activity, and that the dynamics in the orthogonal eigenmode, corresponding to the difference in brain activity, decays rapidly. These rapid decays in the difference mode are referred to as "catch up" activity.
-</p>
-<p>
-    There are two main findings:
-</p>
+<p>The relationship between genetic disease and adaptation is important for biomedical research as well as understanding human evolution. This topic has received considerable attention over the past several decades in human genetics research. The present manuscript provides a much more comprehensive and rigorous analysis of this topic. Specifically, the authors select a set of ~4000 human Mendelian disease genes and examine patterns of recent positive selection in these genes using the iHS and nSL tests (both haplotype test) for selection. They then compare the signals of sweeps to control genes. Importantly, they match the control set to the disease genes based upon many different genomic variables, such as recombination rate, amount of background selection, expression level, etc. The authors find that there is a deficit of selective sweeps in disease genes. They test several hypotheses for this deficit. They find that the deficit of sweeps is stronger in disease genes at low recombination rate and those that have more disease mutations. From this, the authors conclude that strongly deleterious mutations could be impeding selective sweeps.</p>
+<p>Strengths</p>
+<p>The manuscript includes a number of important strengths:</p>
 <ol>
-<li><p>
-    Neural activity (especially higher frequency LFP activity in the 30-150Hz range) is modulated by social context. Specifically, the ratio of the averaged, moment-to-moment MEAN:DIFF ratio is much higher when the bats are in a single chamber, clearly indicating that the animals are coordinating their neural activity. This change also seems to hold -- although not as striking -- in lower-frequency LFP and spiking activity.
-</p></li>
-<li><p>
-    The time scales of the mean vs. difference dynamics are segregated: the "difference dynamics" evolve at a faster time scale than "similarity dynamics", seems to be well supported.
-</p></li>
+<li><p>It tackles an important question in the field. The question of selection in disease genes has been very well-studied in the past, with conflicting viewpoints. The present study examines this topic in a rigorous way and finds a deficit of sweeps in disease genes.</p></li>
+<li><p>The statistical analyses are rigorously done. The genome is a confusing place and there can often be many reasons why a certain set of genes could differ from another set of genes, unrelated to the variable of interest. Di et al. carefully match on these genomic confounders. Thus, they rigorously demonstrate that sweeps are depleted in disease genes relative to control genes. Further, the pipeline for ranking the genes and testing for significance is solid.</p></li>
+<li><p>The Introduction of the manuscript nicely relates different evolutionary models and explanations to patterns that could be seen in the data. As such, the present manuscript isn't just merely an exploratory analysis of patterns of sweeps in disease genes. Rather, it tests specific evolutionary scenarios.</p></li>
 </ol>
-<p>
-    The basic finding is presented in Figure 1. The rest of the paper is focused on a modeling study to garner further insight into the dynamics.
-</p>
-<p>
-    Weaknesses:
-</p>
-<p>
-    This is an entirely phenomenological paper, and while it claims to garner "mechanistic insight", it is unclear what that means.
-</p>
-<p>
-    The basic idea of the model is simple and somewhat interesting, but the details are extremely complex. There are many examples of this, but the method used to "regress out" the behavior was very hard to interpret.
-</p>
-<p>
-    On the face of it, the model is extremely simple: a two-state linear dynamical system. However, this simplistic description buries extreme complexity. The model is extremely complex as involves a large number of parameters (e.g., time switching 'b' values, the values of which are completely unclear), the switching over time of these parameters based on hand-scored animal behavioral state, and the complex mix of markovian and linear dynamical systems theoretic results. Indeed, a fundamental weakness of the model is that the Markov chain is taken as an "input" to the 2-state linear systems model, as if somehow the neural state does not affect the state transitions. Further, the Markov assumption is not rigorously tested. No model selecting or other model validation appears to be done.
-</p>
-<p>
-    In short, the model, while very interesting, is so complex that it is literally impossible to evaluate. The authors report literally no shortcomings of their model. They do not report parameter estimation methods. They do not report fitting errors or other model validation metrics. The only evaluation is whether it can produce certain outputs that are similar to biological data. While the latter is certainly important, all models are wrong, and it essential to have a model simple enough to understand, both in terms of how it works and how it fails.
-</p>
-<p>
-    In general, while the basic finding is fairly interesting, and the experiments and their findings are highly relevant to the field, the modeling and its explication fall short.
-</p>
-<p>
-    It is not that it is wrong or bad; however, it is not clear that such a complex model increases our understanding beyond the experimental findings in Figure 1, and if it does, there has to be a major caveat that the model itself is not carefully vetted.
-</p>
+<p>Weaknesses</p>
+<ol>
+<li><p>The authors did not discuss or test a basic explanation for the deficit of sweeps in disease genes. Namely, certain types of genes, when mutated, give rise to strong Mendelian phenotypes. However, mutations in these genes do not result in variation that gives rise to a phenotype on which positive selection could occur. In other words, there are just different types of genes underlying disease and positive selection. I could think that such a pattern would be possible if humans are close to the fitness optimum and strong effect mutations (like those in Mendelian disease genes) result in moving further away from the fitness optimum. On the other hand, more weak effect mutations could be either weakly deleterious or beneficial and subject to positive selection. I'm not sure whether these patterns would necessarily be captured by the overall measures of constraint which the disease and non-disease genes were matched on.</p></li>
+<li><p>While I think the authors did a superb job of controlling for genome differences between disease and non-disease genes, the analysis of separating regions by recombination rate and number of disease mutations does not seem as rigorous. Specifically, the authors tested for enrichment of sweeps in disease genes vs control and then stratified that comparison by recombination rate and/or number of disease mutations. While this nicely matches the disease genes to the control genes, it is not clear whether the high recombination rate genes differ in other important attributes from the low recombination rate genes. Thus, I worry whether there could be a confounder that makes it easier/harder to detect an enrichment/deficit of sweeps in regions of low/high recombination.</p></li>
+</ol>
