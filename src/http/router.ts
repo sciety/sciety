@@ -45,6 +45,7 @@ import { hardcodedElifeArticle as elife_10_1101_2022_03_04_482974 } from '../doc
 import { hardcodedElifeArticle as elife_10_1101_2022_05_03_22274606 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.03.22274606.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_06_24_497502 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.06.24.497502.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_07_26_501569 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.07.26.501569.docmap';
+import { evaluationContent } from '../evaluation-content';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
@@ -308,10 +309,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
 
   router.get(
     '/evaluations/:reviewid/content',
-    pageHandler(() => TE.right({
-      title: 'evaluation',
-      content: toHtmlFragment('evaluation'),
-    }), false),
+    pageHandler(() => evaluationContent, false),
   );
 
   router.get(
