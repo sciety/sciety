@@ -307,6 +307,21 @@ export const createRouter = (ports: CollectedPorts): Router => {
   );
 
   router.get(
+    '/evaluations/:reviewid/content',
+    async (context, next) => {
+      const response = {
+        body: 'evaluation',
+        status: StatusCodes.OK,
+      };
+
+      context.response.status = response.status;
+      context.response.type = 'html';
+      context.response.body = response.body;
+      await next();
+    },
+  );
+
+  router.get(
     '/articles/activity/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
