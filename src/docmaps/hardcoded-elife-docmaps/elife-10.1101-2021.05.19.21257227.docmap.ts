@@ -157,6 +157,10 @@ export const hardcodedElifeArticle: Docmap = {
                   url: 'https://hypothes.is/a/GwVEqEiPEeyzwSuNMvy3qQ',
                 },
                 {
+                  type: 'web-page',
+                  url: 'https://sciety.org/articles/activity/10.1101/2021.05.19.21257227#hypothesis:GwVEqEiPEeyzwSuNMvy3qQ',
+                },
+                {
                   type: 'web-content',
                   url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.05.19.21257227/evaluation-summary.html',
                 },
