@@ -311,7 +311,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
     '/evaluations/:reviewid/content',
     pageHandler(createPageFromParams(
       evaluationContentParams,
-      evaluationContent,
+      evaluationContent(ports),
     ), false),
   );
 
