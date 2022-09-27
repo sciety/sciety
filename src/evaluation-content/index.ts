@@ -1,1 +1,1 @@
-export { evaluationContent } from './evaluation-content';
+export { evaluationContent, paramsCodec } from './evaluation-content';
