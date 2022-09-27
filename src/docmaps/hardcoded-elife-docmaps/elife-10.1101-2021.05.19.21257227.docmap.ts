@@ -39,7 +39,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'reply',
               published: '2021-11-18T17:19:50.666Z',
               content: [
                 {
@@ -49,6 +49,10 @@ export const hardcodedElifeArticle: Docmap = {
                 {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2021.05.19.21257227#hypothesis:vPCd6kiTEeyqf48M8Cq4kg',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.05.19.21257227/reply.html',
                 },
               ],
             },
@@ -77,6 +81,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2021.05.19.21257227#hypothesis:Gm0NHkiPEeyvu98D8OEzHg',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.05.19.21257227/review-one.html',
+                },
               ],
             },
           ],
@@ -104,6 +112,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2021.05.19.21257227#hypothesis:GfqkNkiPEey-Gz-ai7bPaA',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.05.19.21257227/review-two.html',
+                },
               ],
             },
           ],
@@ -120,7 +132,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2021-11-18T16:46:41.238Z',
               content: [
                 {
@@ -128,8 +140,8 @@ export const hardcodedElifeArticle: Docmap = {
                   url: 'https://hypothes.is/a/GwVEqEiPEeyzwSuNMvy3qQ',
                 },
                 {
-                  type: 'web-page',
-                  url: 'https://sciety.org/articles/activity/10.1101/2021.05.19.21257227#hypothesis:GwVEqEiPEeyzwSuNMvy3qQ',
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2021.05.19.21257227/evaluation-summary.html',
                 },
               ],
             },
