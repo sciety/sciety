@@ -124,8 +124,25 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Richard B Kennedy',
                 type: 'person',
+                _relatesToOrganization: 'Mayo Clinic, United States',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Betty Diamond',
+                type: 'person',
+                _relatesToOrganization: 'The Feinstein Institute for Medical Research, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Wiebke Nahrendorf',
+                type: 'person',
+                _relatesToOrganization: 'University of Edinburgh, United Kingdom',
               },
               role: 'peer-reviewer',
             },
