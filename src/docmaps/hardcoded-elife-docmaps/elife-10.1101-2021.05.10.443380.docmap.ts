@@ -31,8 +31,25 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Ruth de Diego-Balaguer',
                 type: 'person',
+                _relatesToOrganization: 'Universitat de Barcelona, Spain',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Chris I Baker',
+                type: 'person',
+                _relatesToOrganization: 'National Institute of Mental Health, National Institutes of Health, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Li Hai Tan',
+                type: 'person',
+                _relatesToOrganization: 'Shenzhen University, China',
               },
               role: 'peer-reviewer',
             },
