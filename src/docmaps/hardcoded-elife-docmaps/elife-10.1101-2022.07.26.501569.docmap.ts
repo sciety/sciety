@@ -50,6 +50,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.07.26.501569#hypothesis:v1peZi0PEe29S8NgoiFIuQ',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.07.26.501569/review-two.html',
+                },
               ],
             },
           ],
@@ -77,6 +81,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.07.26.501569#hypothesis:v_N3wi0PEe2NQGss06cygw',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.07.26.501569/review-one.html',
+                },
               ],
             },
           ],
@@ -93,7 +101,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2022-09-05T11:41:59.635Z',
               content: [
                 {
@@ -103,6 +111,10 @@ export const hardcodedElifeArticle: Docmap = {
                 {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.07.26.501569#hypothesis:wIvOvi0PEe29TMvGGAp6Jw',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.07.26.501569/evaluation-summary.html',
                 },
               ],
             },
