@@ -108,7 +108,30 @@ export const hardcodedElifeArticle: Docmap = {
           ],
         }, {
           participants: [
-            { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
+            {
+              actor: {
+                name: 'Kenton J Swartz',
+                type: 'person',
+                _relatesToOrganization: 'National Institute of Neurological Disorders and Stroke, National Institutes of Health, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Bruce P Bean',
+                type: 'person',
+                _relatesToOrganization: 'Harvard Medical School, United States',
+              },
+              role: 'peer-reviewer',
+            },
+            {
+              actor: {
+                name: 'Mitchell Goldfarb',
+                type: 'person',
+                _relatesToOrganization: 'Hunter College, United States',
+              },
+              role: 'peer-reviewer',
+            },
           ],
           outputs: [
             {
