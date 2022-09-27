@@ -124,10 +124,19 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Aloke Finn',
                 type: 'person',
+                _relatesToOrganization: 'CVPath Institute, United States',
               },
-              role: 'peer-reviewer',
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Carlos Isales',
+                type: 'person',
+                _relatesToOrganization: 'Medical College of Georgia at Augusta University, United States',
+              },
+              role: 'senior-editor',
             },
           ],
           outputs: [

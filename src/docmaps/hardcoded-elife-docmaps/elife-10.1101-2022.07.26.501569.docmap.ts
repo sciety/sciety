@@ -93,10 +93,19 @@ export const hardcodedElifeArticle: Docmap = {
           participants: [
             {
               actor: {
-                name: 'anonymous',
+                name: 'Peter Tontonoz',
                 type: 'person',
+                _relatesToOrganization: 'University of California, Los Angeles, United States',
               },
-              role: 'peer-reviewer',
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Carlos Isales',
+                type: 'person',
+                _relatesToOrganization: 'Medical College of Georgia at Augusta University, United States',
+              },
+              role: 'senior-editor',
             },
           ],
           outputs: [
