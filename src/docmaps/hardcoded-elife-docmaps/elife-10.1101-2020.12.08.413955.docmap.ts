@@ -59,7 +59,7 @@ export const hardcodedElifeArticle: Docmap = {
             },
             {
               type: 'web-content',
-              url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/evaluation-summary.html',
+              url: 'https://sciety.org/evaluations/hypothesis:sE8-RI5SEeuN_pfRKWMobg/content',
             },
           ],
         }],
@@ -83,7 +83,7 @@ export const hardcodedElifeArticle: Docmap = {
               },
               {
                 type: 'web-content',
-                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/review-one.html',
+                url: 'https://sciety.org/evaluations/hypothesis:s7pNso5SEeuN_zcG1nqDVw/content',
               },
             ],
           }],
@@ -108,7 +108,7 @@ export const hardcodedElifeArticle: Docmap = {
               },
               {
                 type: 'web-content',
-                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/review-two.html',
+                url: 'https://sciety.org/evaluations/hypothesis:tc8Y0I5SEeuOQgflHqczuA/content',
               },
             ],
           }],
@@ -133,11 +133,10 @@ export const hardcodedElifeArticle: Docmap = {
               },
               {
                 type: 'web-content',
-                url: 'https://sciety.org/static/docmaps/elife-10.1101-2020.12.08.413955/reply.html',
+                url: 'https://sciety.org/evaluations/hypothesis:_EcT2AsiEeynBsvN2IqmAQ/content',
               },
             ],
           }],
-
       }],
     },
   },
