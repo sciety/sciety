@@ -1,39 +1,7 @@
 <p><strong>Reviewer #1 (Public Review):</strong></p>
-<p>
-    This paper provides experimental and modeling analysis of the inter-brain coupling of socially interacting bats, and reports that coordinated brain activity evolves at a slower time scale than the activity describing the differences. Specifically, the paper finds that there is an attracting submanifold corresponding to the mean (or "common mode") of neural activity, and that the dynamics in the orthogonal eigenmode, corresponding to the difference in brain activity, decays rapidly. These rapid decays in the difference mode are referred to as "catch up" activity.
-</p>
-<p>
-    There are two main findings:
-</p>
-<ol>
-<li><p>
-    Neural activity (especially higher frequency LFP activity in the 30-150Hz range) is modulated by social context. Specifically, the ratio of the averaged, moment-to-moment MEAN:DIFF ratio is much higher when the bats are in a single chamber, clearly indicating that the animals are coordinating their neural activity. This change also seems to hold -- although not as striking -- in lower-frequency LFP and spiking activity.
-</p></li>
-<li><p>
-    The time scales of the mean vs. difference dynamics are segregated: the "difference dynamics" evolve at a faster time scale than "similarity dynamics", seems to be well supported.
-</p></li>
-</ol>
-<p>
-    The basic finding is presented in Figure 1. The rest of the paper is focused on a modeling study to garner further insight into the dynamics.
-</p>
-<p>
-    Weaknesses:
-</p>
-<p>
-    This is an entirely phenomenological paper, and while it claims to garner "mechanistic insight", it is unclear what that means.
-</p>
-<p>
-    The basic idea of the model is simple and somewhat interesting, but the details are extremely complex. There are many examples of this, but the method used to "regress out" the behavior was very hard to interpret.
-</p>
-<p>
-    On the face of it, the model is extremely simple: a two-state linear dynamical system. However, this simplistic description buries extreme complexity. The model is extremely complex as involves a large number of parameters (e.g., time switching 'b' values, the values of which are completely unclear), the switching over time of these parameters based on hand-scored animal behavioral state, and the complex mix of markovian and linear dynamical systems theoretic results. Indeed, a fundamental weakness of the model is that the Markov chain is taken as an "input" to the 2-state linear systems model, as if somehow the neural state does not affect the state transitions. Further, the Markov assumption is not rigorously tested. No model selecting or other model validation appears to be done.
-</p>
-<p>
-    In short, the model, while very interesting, is so complex that it is literally impossible to evaluate. The authors report literally no shortcomings of their model. They do not report parameter estimation methods. They do not report fitting errors or other model validation metrics. The only evaluation is whether it can produce certain outputs that are similar to biological data. While the latter is certainly important, all models are wrong, and it essential to have a model simple enough to understand, both in terms of how it works and how it fails.
-</p>
-<p>
-    In general, while the basic finding is fairly interesting, and the experiments and their findings are highly relevant to the field, the modeling and its explication fall short.
-</p>
-<p>
-    It is not that it is wrong or bad; however, it is not clear that such a complex model increases our understanding beyond the experimental findings in Figure 1, and if it does, there has to be a major caveat that the model itself is not carefully vetted.
-</p>
+<p>This manuscript explores how biliary epithelial cells respond to excess dietary lipids, an important area of research given the increasing prevalence of NAFLD. The authors utilize in vivo models complemented with cultured organoid systems. Interesting, E2F transcription factors appear important for BEC glycolytic activation and proliferation.</p>
+<p>Much of the work utilizes the BEC-organoid model, which is complicated by the fact that liver cell organoid models often fail to maintain exclusive cell identity in culture. The method used by the authors (Broutier et al., 2016) can lead to organoids with a mixture of ductal and hepatocyte markers. It would be helpful for the authors to further demonstrate the cholangiocyte identity of the organoid cells.</p>
+<p>The authors suggest that BECs form lipid droplets in vivo by detecting BODIPY immunofluorescence of liver cryosections. While confocal microscopy would ensure that the BODIPY fluorescence signal is within the same plane as the cell of interest, the authors use a virtual slide microscope that cannot exclude fluorescence from a different focal plane. The conclusion that BECs accumulate lipids does not seem to be fully supported by this analysis.</p>
+<p>Several mouse experiments rely heavily on rare BEC proliferation events with the median proliferation event per bile duct being 0-1 cell. While the proliferative effect appears consistent across experiments, a more quantitative approach, such as performing Epcam+ BEC FACS and flow cytometry-based cell cycle analyses, would be helpful.</p>
+<p>Finally, it is not yet clear how relevant the findings in this study are to ductular reaction, which is a non-specific histopathologic indicator of liver injury in the context of severe liver disease. In NAFLD, the ductular reaction is uncommon in benign steatosis, and if seen at all, occurs in the setting of substantial liver inflammation and fibrosis (Gadd et al., Hepatology 2014). The authors use a dietary model containing 60 kcal% fat, which causes adipose lipid accumulation as well as subsequent liver lipid accumulation. This diet does not cause overt inflammation or fibrosis that would represent experimental NASH, which typically requires the addition of cholesterol in dietary lipid NASH models (Farrell et al., Hepatology, 2019). While the E2F-driven proliferation may be important for physiologic bile duct function in the setting of obesity, the claim that E2Fs mediate DR initiation would require an additional pathophysiologic model or human data to demonstrate relevance. The authors could clarify this point in their discussion.</p>
+
