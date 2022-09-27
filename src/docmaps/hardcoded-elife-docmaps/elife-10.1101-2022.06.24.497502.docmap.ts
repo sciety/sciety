@@ -50,6 +50,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.06.24.497502#hypothesis:hVq6MC3DEe2ERdPL5ARqAA',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.06.24.497502/review-three.html',
+                },
               ],
             },
           ],
@@ -76,6 +80,10 @@ export const hardcodedElifeArticle: Docmap = {
                 {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.06.24.497502#hypothesis:hgzitC3DEe2SBN9NIUxw5A',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.06.24.497502/review-two.html',
                 },
               ],
             },
@@ -104,6 +112,10 @@ export const hardcodedElifeArticle: Docmap = {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.06.24.497502#hypothesis:hmP-bi3DEe2C9QtcFZcxmQ',
                 },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.06.24.497502/review-one.html',
+                },
               ],
             },
           ],
@@ -120,7 +132,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2022-09-06T09:08:52.030Z',
               content: [
                 {
@@ -130,6 +142,10 @@ export const hardcodedElifeArticle: Docmap = {
                 {
                   type: 'web-page',
                   url: 'https://sciety.org/articles/activity/10.1101/2022.06.24.497502#hypothesis:hrlVWC3DEe2hhdsGW6wNvg',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.06.24.497502/evaluation-summary.html',
                 },
               ],
             },
