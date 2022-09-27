@@ -89,7 +89,8 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
+      expect(result).toContain('10.1101/2020.07.13.199174');
+      expect(result).toMatch(/.*#[a-z]*:/);
     });
 
     it('follow command from the group page returns to the group page', async () => {
