@@ -19,15 +19,15 @@ type FetchReview = (id: RID.ReviewId) => TE.TaskEither<DE.DataError, {
   url: URL,
 }>;
 
-export type Ports = {
+type Ports = {
   fetchReview: FetchReview,
 };
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-export const evaluationContent = (ports: Ports) => (params: Params): EvaluationContent => pipe(
+export const evaluationContent = (adapters: Ports) => (params: Params): EvaluationContent => pipe(
   params.reviewid,
-  ports.fetchReview,
+  adapters.fetchReview,
   TE.bimap(
     (error) => ({
       type: error,
