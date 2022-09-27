@@ -52,7 +52,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.03.04.482974/review-three.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:8R4Qcra5EeyhOScbIo__uA/content',
                 },
               ],
             },
@@ -83,7 +83,7 @@ export const hardcodedElifeArticle: Docmap = {
                 },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.03.04.482974/review-two.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:8ZN75ra5Eey4cpOEMlBsJA/content',
                 },
               ],
             },
@@ -101,7 +101,7 @@ export const hardcodedElifeArticle: Docmap = {
                 { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2022.03.04.482974#hypothesis:8gbVlra5EeyDXKsbmydacQ' },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.03.04.482974/review-one.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:8gbVlra5EeyDXKsbmydacQ/content',
                 },
               ],
             },
@@ -142,7 +142,7 @@ export const hardcodedElifeArticle: Docmap = {
                 { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2022.03.04.482974#hypothesis:8nGtdra5Eey9SDOugQFaWg' },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.03.04.482974/evaluation-summary.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:8nGtdra5Eey9SDOugQFaWg/content',
                 },
               ],
             },
@@ -160,7 +160,7 @@ export const hardcodedElifeArticle: Docmap = {
                 { type: 'web-page', url: 'https://sciety.org/articles/activity/10.1101/2022.03.04.482974#hypothesis:l3KKjra6Eey4dVtpowAVAg' },
                 {
                   type: 'web-content',
-                  url: 'https://sciety.org/static/docmaps/elife-10.1101-2022.03.04.482974/reply.html',
+                  url: 'https://sciety.org/evaluations/hypothesis:l3KKjra6Eey4dVtpowAVAg/content',
                 },
               ],
             },
