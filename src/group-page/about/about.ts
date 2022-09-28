@@ -25,7 +25,7 @@ export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   TE.map(renderDescription),
   TE.map((renderedDescription) => ({
     description: renderedDescription,
-    lists: renderLists,
+    lists: renderLists(),
   })),
   TE.map(renderAbout),
 );
