@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
+import { renderLists } from './render-lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -8,8 +9,6 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
-
-const renderLists = process.env.EXPERIMENT_ENABLED === 'true' ? toHtmlFragment('Placeholder for group lists') : toHtmlFragment('');
 
 type RenderAbout = (about: { lists: HtmlFragment, description: HtmlFragment }) => HtmlFragment;
 
