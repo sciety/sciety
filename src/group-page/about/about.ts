@@ -9,7 +9,7 @@ export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
-const renderLists = process.env.EXPERIMENT_ENABLED ? toHtmlFragment('Placeholder for group lists') : toHtmlFragment('');
+const renderLists = process.env.EXPERIMENT_ENABLED === 'true' ? toHtmlFragment('Placeholder for group lists') : toHtmlFragment('');
 
 type RenderAbout = (about: { lists: HtmlFragment, description: HtmlFragment }) => HtmlFragment;
 
