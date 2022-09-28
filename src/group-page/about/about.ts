@@ -9,8 +9,11 @@ export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
+const lists = process.env.EXPERIMENT_ENABLED ? 'Placeholder for group lists' : '';
+
 const renderAbout = (description: HtmlFragment) => toHtmlFragment(`
   <div class="group-page-about">
+    ${lists}
     ${description}
   </div>
 `);
