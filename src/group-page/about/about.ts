@@ -9,12 +9,14 @@ export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
-const lists = process.env.EXPERIMENT_ENABLED ? 'Placeholder for group lists' : '';
+const renderLists = process.env.EXPERIMENT_ENABLED ? toHtmlFragment('Placeholder for group lists') : toHtmlFragment('');
 
-const renderAbout = (description: HtmlFragment) => toHtmlFragment(`
+type RenderAbout = (about: { lists: HtmlFragment, description: HtmlFragment }) => HtmlFragment;
+
+const renderAbout: RenderAbout = (about) => toHtmlFragment(`
   <div class="group-page-about">
-    ${lists}
-    ${description}
+    ${about.lists}
+    ${about.description}
   </div>
 `);
 
@@ -22,5 +24,9 @@ export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   `groups/${group.descriptionPath}`,
   ports.fetchStaticFile,
   TE.map(renderDescription),
+  TE.map((renderedDescription) => ({
+    description: renderedDescription,
+    lists: renderLists,
+  })),
   TE.map(renderAbout),
 );
