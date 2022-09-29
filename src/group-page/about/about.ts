@@ -1,3 +1,5 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
@@ -8,6 +10,7 @@ import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { ListOwnerId } from '../../types/list-owner-id';
+import { toListCardViewModel } from '../lists/to-list-card-view-model';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
@@ -34,19 +37,23 @@ const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<D
   TE.map(renderDescription),
 );
 
-const getRenderedLists = (ports: Ports) => (group: Group): HtmlFragment => pipe(
+const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
   ports.getListsOwnedBy,
-  renderLists,
+  TE.map(RA.map(toListCardViewModel)),
+  TE.map(renderLists),
 );
 
 export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   group,
   getRenderedDescription(ports),
-  TE.map((renderedDescription) => ({
-    description: renderedDescription,
-    lists: getRenderedLists(ports)(group),
-  })),
+  TE.chain((renderedDescription) => pipe(
+    {
+      description: TE.right(renderedDescription),
+      lists: getRenderedLists(ports)(group),
+    },
+    sequenceS(TE.ApplyPar),
+  )),
   TE.map(renderAbout),
 );
