@@ -16,7 +16,7 @@ export const renderLists = (listViewModels: ReadonlyArray<ListCardViewModel>): H
       listViewModels,
       RA.map((viewModel) => `<li><span>${viewModel.title}</span><span>${viewModel.articleCount} articles</span>${renderLastUpdatedDate(viewModel.lastUpdated)}</li>`),
       (fragments) => fragments.join(''),
-      (slimlineCards) => `<ul>${slimlineCards}</ul>`,
+      (slimlineCards) => `<h2>Our lists</h2><ul>${slimlineCards}</ul>`,
       toHtmlFragment,
     );
   }
