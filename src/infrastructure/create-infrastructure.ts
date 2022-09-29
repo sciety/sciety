@@ -95,6 +95,11 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
+const eventsOnlyForStaging = () => ((process.env.EXPERIMENT_ENABLED === 'true')
+  ? []
+  : []
+);
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
@@ -109,6 +114,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       [
         ...eventsFromDatabase,
         ...groupJoinedEvents,
+        ...eventsOnlyForStaging(),
       ],
       sortEvents,
     )),
