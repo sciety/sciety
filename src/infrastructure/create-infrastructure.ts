@@ -25,7 +25,9 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
-import { groupJoined, isListCreatedEvent, sort as sortEvents } from '../domain-events';
+import {
+  groupJoined, isListCreatedEvent, listCreated, sort as sortEvents,
+} from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
@@ -40,7 +42,9 @@ import {
 import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import { Doi } from '../types/doi';
 import * as Gid from '../types/group-id';
+import * as LID from '../types/list-id';
 import { ListId } from '../types/list-id';
+import * as LOID from '../types/list-owner-id';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -108,8 +112,14 @@ const eventsOnlyForStaging = () => ((process.env.EXPERIMENT_ENABLED === 'true')
       homepage: 'https://asapbio.org/crowd-preprint-review',
       slug: 'asapbio-scielo-preprint-crowd-review',
     }, new Date('2022-09-29T10:23:14Z')),
-  ]
-  : []
+    listCreated(
+      LID.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
+      'Evaluated articles',
+      'Articles that have been evaluated by ASAPbio-SciELO Preprint crowd review.',
+      LOID.fromGroupId(Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')),
+      new Date('2022-09-29T10:28:14Z'),
+    ),
+  ] : []
 );
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
