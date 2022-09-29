@@ -25,6 +25,8 @@ spec:
             requests:
               cpu: 1.0
           env:
+            - name: EXPERIMENT_ENABLED
+              value: "{{ .Values.experimentEnabled }}"
             - name: PGDATABASE
               valueFrom:
                 secretKeyRef:
