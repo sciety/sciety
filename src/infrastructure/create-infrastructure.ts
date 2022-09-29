@@ -25,7 +25,7 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
-import { isListCreatedEvent, sort as sortEvents } from '../domain-events';
+import { groupJoined, isListCreatedEvent, sort as sortEvents } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
@@ -37,7 +37,9 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
+import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import { Doi } from '../types/doi';
+import * as Gid from '../types/group-id';
 import { ListId } from '../types/list-id';
 
 type Dependencies = {
@@ -96,7 +98,17 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 );
 
 const eventsOnlyForStaging = () => ((process.env.EXPERIMENT_ENABLED === 'true')
-  ? []
+  ? [
+    groupJoined({
+      id: Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827'),
+      name: 'ASAPbio-SciELO Preprint crowd review',
+      avatarPath: '/static/groups/asapbio-scielo-preprint-crowd-review.png',
+      descriptionPath: descriptionPathFromValidatedString('asapbio-scielo-preprint-crowd-review.md'),
+      shortDescription: 'O ASAPbio promovemos o uso produtivo de preprints para divulgação da pesquisa e avaliação por pares transparente e feedback sobre todos os resultados da pesquisa. SciELO Preprints é um servidor de preprints multilingue e multi-disciplinar gerenciado pelo Programa SciELO.',
+      homepage: 'https://asapbio.org/crowd-preprint-review',
+      slug: 'asapbio-scielo-preprint-crowd-review',
+    }, new Date('2022-09-29T10:23:14Z')),
+  ]
   : []
 );
 
