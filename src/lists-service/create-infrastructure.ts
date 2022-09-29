@@ -6,7 +6,8 @@ import { Pool } from 'pg';
 import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from-database';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
-import { hardcodedEventsOnlyForStaging, sort as sortEvents } from '../domain-events';
+import { hardcodedEventsOnlyForStaging } from '../data/hardcoded-events-only-for-staging';
+import { sort as sortEvents } from '../domain-events';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';

@@ -97,5 +97,3 @@ export {
 } from './user-unsaved-article-event';
 
 export { sort } from './domain-event';
-
-export { hardcodedEventsOnlyForStaging } from './hardcoded-events-only-for-staging';

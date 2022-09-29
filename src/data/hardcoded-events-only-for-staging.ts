@@ -1,6 +1,6 @@
 import {
   groupJoined, GroupJoinedEvent, listCreated, ListCreatedEvent,
-} from '.';
+} from '../domain-events';
 import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import * as Gid from '../types/group-id';
 import * as LID from '../types/list-id';

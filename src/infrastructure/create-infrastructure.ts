@@ -25,8 +25,9 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
+import { hardcodedEventsOnlyForStaging } from '../data/hardcoded-events-only-for-staging';
 import {
-  hardcodedEventsOnlyForStaging, isListCreatedEvent, sort as sortEvents,
+  isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
