@@ -12,11 +12,12 @@
     "sourceMap": true,
     "incremental": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ]
   },
   "include": [
-    "src", 
-    "static/docmaps" 
+    "**/*", 
+    "**/.*" 
   ]
 }
