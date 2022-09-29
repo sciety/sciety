@@ -10,16 +10,27 @@ const renderLastUpdatedDate = O.fold(
   (date: Date) => `<span>Updated: ${templateDate(date)}</span>`,
 );
 
-export const renderLists = (listViewModels: ReadonlyArray<ListCardViewModel>): HtmlFragment => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return pipe(
-      listViewModels,
-      RA.map((viewModel) => `<li><span>${viewModel.title}</span><span>${viewModel.articleCount} articles</span>${renderLastUpdatedDate(viewModel.lastUpdated)}</li>`),
-      (fragments) => fragments.join(''),
-      (slimlineCards) => `<h2>Our lists</h2><ul>${slimlineCards}</ul>`,
-      toHtmlFragment,
-    );
-  }
+const renderSlimlineCard = (viewModel: ListCardViewModel) => `
+<li>
+  <span>${viewModel.title}</span>
+  <span>${viewModel.articleCount} articles</span>
+  ${renderLastUpdatedDate(viewModel.lastUpdated)}
+</li>
+`;
 
-  return toHtmlFragment('');
+const renderOurLists = (fragments: ReadonlyArray<string>) => pipe(
+  fragments.join(''),
+  (slimlineCards) => `<h2>Our lists</h2><ul>${slimlineCards}</ul>`,
+);
+
+export const renderLists = (listViewModels: ReadonlyArray<ListCardViewModel>): HtmlFragment => {
+  if (process.env.EXPERIMENT_ENABLED !== 'true') {
+    return toHtmlFragment('');
+  }
+  return pipe(
+    listViewModels,
+    RA.map(renderSlimlineCard),
+    renderOurLists,
+    toHtmlFragment,
+  );
 };
