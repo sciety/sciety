@@ -13,7 +13,7 @@ export const hardcodedEventsOnlyForStaging = (): ReadonlyArray<GroupJoinedEvent 
       name: 'ASAPbio-SciELO Preprint crowd review',
       avatarPath: '/static/groups/asapbio-scielo-preprint-crowd-review.png',
       descriptionPath: descriptionPathFromValidatedString('asapbio-scielo-preprint-crowd-review.md'),
-      shortDescription: 'O ASAPbio promovemos o uso produtivo de preprints para divulgação da pesquisa e avaliação por pares transparente e feedback sobre todos os resultados da pesquisa. SciELO Preprints é um servidor de preprints multilingue e multi-disciplinar gerenciado pelo Programa SciELO.',
+      shortDescription: 'O ASAPbio promove o uso produtivo de preprints para divulgação da pesquisa e avaliação por pares transparente e feedback sobre todos os resultados da pesquisa. SciELO Preprints é um servidor de preprints multilingue e multi-disciplinar gerenciado pelo Programa SciELO.',
       homepage: 'https://asapbio.org/crowd-preprint-review',
       slug: 'asapbio-scielo-preprint-crowd-review',
     }, new Date('2022-09-29T10:23:14Z')),
