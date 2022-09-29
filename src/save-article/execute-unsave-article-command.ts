@@ -1,6 +1,8 @@
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
@@ -8,8 +10,8 @@ import {
   DomainEvent,
 } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
-import * as Doi from '../types/doi';
-import { User } from '../types/user';
+import { DoiFromString } from '../types/codecs/DoiFromString';
+import { userCodec } from '../types/user';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -18,29 +20,49 @@ type Ports = {
 
 export const articleIdFieldName = 'articleid';
 
+const contextCodec = t.type({
+  state: t.type({
+    user: userCodec,
+  }),
+  request: t.type({
+    body: t.type({
+      [articleIdFieldName]: DoiFromString,
+    }),
+  }),
+});
+
 export const unsaveArticle = (
   { getAllEvents, commitEvents }: Ports,
 ): Middleware => async (context, next) => {
-  const user = context.state.user as User;
-  await pipe(
-    context.request.body[articleIdFieldName],
-    Doi.fromString,
-    O.fold(
-      () => { throw new Error('no articleId passed to unsaveArticle'); },
-      (articleId) => pipe(
-        getAllEvents,
-        T.chain(flow(
-          articleSaveState(user.id, articleId),
-          commandHandler({
-            articleId,
-            userId: user.id,
-            type: 'UnsaveArticle' as const,
-          }),
-          commitEvents,
-        )),
-      ),
+  const middlewareSucceeded = await pipe(
+    context,
+    contextCodec.decode,
+    E.map((ctx) => ({
+      user: ctx.state.user,
+      articleId: ctx.request.body[articleIdFieldName],
+    })),
+    TE.fromEither,
+    TE.chainTaskK(({ user, articleId }) => pipe(
+      getAllEvents,
+      T.chain(flow(
+        articleSaveState(user.id, articleId),
+        commandHandler({
+          articleId,
+          userId: user.id,
+          type: 'UnsaveArticle' as const,
+        }),
+        commitEvents,
+      )),
+    )),
+    TE.match(
+      () => false,
+      () => true,
     ),
   )();
 
-  await next();
+  if (middlewareSucceeded) {
+    await next();
+  } else {
+    throw new Error('no articleId passed to unsaveArticle');
+  }
 };
