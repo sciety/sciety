@@ -1,3 +1,3 @@
-import { ArticleAddedToListEvent, ListCreatedEvent } from '../domain-events';
+import { ArticleAddedToListEvent, GroupJoinedEvent, ListCreatedEvent } from '../domain-events';
 
-export type ListsEvent = ListCreatedEvent | ArticleAddedToListEvent;
+export type ListsEvent = ListCreatedEvent | ArticleAddedToListEvent | GroupJoinedEvent;

@@ -7,6 +7,7 @@ import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
 import { sort as sortEvents } from '../domain-events';
+import { eventsOnlyForStaging } from '../infrastructure/create-infrastructure';
 import {
   jsonSerializer, rTracerLogger, streamLogger,
 } from '../infrastructure/logger';
@@ -32,6 +33,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getListsEventsFromDatabase(pool, logger),
         TE.map((eventsFromDatabase) => [
           ...eventsFromDatabase,
+          ...eventsOnlyForStaging(),
         ]),
         TE.map(sortEvents),
       ),

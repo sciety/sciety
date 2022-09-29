@@ -26,7 +26,7 @@ import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import {
-  groupJoined, isListCreatedEvent, listCreated, sort as sortEvents,
+  groupJoined, GroupJoinedEvent, isListCreatedEvent, listCreated, ListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
 import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
@@ -101,7 +101,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
-const eventsOnlyForStaging = () => ((process.env.EXPERIMENT_ENABLED === 'true')
+export const eventsOnlyForStaging = (): ReadonlyArray<GroupJoinedEvent | ListCreatedEvent> => ((process.env.EXPERIMENT_ENABLED === 'true')
   ? [
     groupJoined({
       id: Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827'),

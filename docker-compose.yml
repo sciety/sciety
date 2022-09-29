@@ -41,6 +41,7 @@ services:
     build:
       context: .
     environment:
+      EXPERIMENT_ENABLED: "true"
       PGUSER: user
       PGHOST: db
       PGPASSWORD: secret
