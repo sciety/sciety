@@ -7,8 +7,9 @@ export const renderLists = (listViewModels: ReadonlyArray<ListCardViewModel>): H
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     return pipe(
       listViewModels,
-      RA.map((viewModel) => `<div>${viewModel.title}</div>`),
+      RA.map((viewModel) => `<li>${viewModel.title}</li>`),
       (fragments) => fragments.join(''),
+      (slimlineCards) => `<ul>${slimlineCards}</ul>`,
       toHtmlFragment,
     );
   }
