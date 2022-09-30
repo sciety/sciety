@@ -4,14 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-const renderLastUpdatedDate = O.fold(
-  () => '',
-  (date: Date) => `<span>Updated: ${templateDate(date)}</span>`,
-);
-
 type SlimlineCardViewModel = {
   articleCount: number,
-  lastUpdated: O.Option<Date>,
+  lastUpdated: Date,
   href: string,
   title: string,
 };
@@ -20,7 +15,7 @@ const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
 <li class="slimline-card">
   <span><a href=${viewModel.href}>${viewModel.title}</a></span>
   <span>${viewModel.articleCount} articles</span>
-  ${renderLastUpdatedDate(viewModel.lastUpdated)}
+  <span>Updated: ${templateDate(viewModel.lastUpdated)}</span>
 </li>
 `;
 
