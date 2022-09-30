@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { OurListsViewModel } from './render-lists';
@@ -9,5 +10,5 @@ type ToOurListsViewModel = (lists: ReadonlyArray<List>) => OurListsViewModel;
 export const toOurListsViewModel: ToOurListsViewModel = (lists) => pipe(
   lists,
   RA.map(toListCardViewModel),
-  (slimlineCards) => ({ slimlineCards }),
+  (slimlineCards) => ({ slimlineCards, viewAllListsUrl: O.none }),
 );

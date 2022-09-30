@@ -27,6 +27,7 @@ const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
 
 export type OurListsViewModel = {
   slimlineCards: ReadonlyArray<SlimlineCardViewModel>,
+  viewAllListsUrl: O.Option<string>,
 };
 
 export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {

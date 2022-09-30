@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../src/group-page/about/to-our-lists-view-model';
 import { List } from '../../../src/shared-read-models/lists';
@@ -24,20 +25,22 @@ describe('to-our-lists-view-model', () => {
   });
 
   describe('when the group has three or fewer lists', () => {
-    it('returns slimline card view models for each list', () => {
-      const model = pipe(
-        [
-          arbitraryList(),
-          arbitraryList(),
-          arbitraryList(),
-        ],
-        toOurListsViewModel,
-      );
+    const model = pipe(
+      [
+        arbitraryList(),
+        arbitraryList(),
+        arbitraryList(),
+      ],
+      toOurListsViewModel,
+    );
 
+    it('returns slimline card view models for each list', () => {
       expect(model.slimlineCards).toHaveLength(3);
     });
 
-    it.todo('the View All Lists button is not set');
+    it('the View All Lists button is not set', () => {
+      expect(O.isNone(model.viewAllListsUrl)).toBe(true);
+    });
   });
 
   describe('when the group has no lists', () => {
