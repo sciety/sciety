@@ -25,7 +25,7 @@ describe('to-our-lists-view-model', () => {
 
   describe('when the group has three or fewer lists', () => {
     it('returns slimline card view models for each list', () => {
-      const slimlineCards = pipe(
+      const model = pipe(
         [
           arbitraryList(),
           arbitraryList(),
@@ -34,7 +34,7 @@ describe('to-our-lists-view-model', () => {
         toOurListsViewModel,
       );
 
-      expect(slimlineCards).toHaveLength(3);
+      expect(model.slimlineCards).toHaveLength(3);
     });
 
     it.todo('the View All Lists button is not set');
