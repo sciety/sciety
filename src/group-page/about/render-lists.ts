@@ -29,19 +29,19 @@ const renderViewAllListsButton = O.match(
   (url: string) => `<a href="${url}">View all lists</a>`,
 );
 
+const renderSlimlineLists = (slimlineCards: ReadonlyArray<SlimlineCardViewModel>) => pipe(
+  slimlineCards,
+  RA.map(renderSlimlineCard),
+  (fragments) => `<ul>${fragments.join('')}</ul>`,
+);
+
 export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return toHtmlFragment('');
   }
-  return pipe(
-    ourListsViewModel.slimlineCards,
-    RA.map(renderSlimlineCard),
-    (fragments) => fragments.join(''),
-    (slimlineCards) => `
-      <h2>Our lists</h2>
-      <ul>${slimlineCards}</ul>
-      ${renderViewAllListsButton(ourListsViewModel.viewAllListsUrl)}
-    `,
-    toHtmlFragment,
-  );
+  return toHtmlFragment(`
+    <h2>Our lists</h2>
+    ${renderSlimlineLists(ourListsViewModel.slimlineCards)}
+    ${renderViewAllListsButton(ourListsViewModel.viewAllListsUrl)}
+  `);
 };
