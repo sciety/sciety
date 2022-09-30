@@ -1,16 +1,15 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderLists } from './render-lists';
+import { toOurListsViewModel } from './to-our-lists-view-model';
 import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { ListOwnerId } from '../../types/list-owner-id';
-import { toListCardViewModel } from '../lists/to-list-card-view-model';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
@@ -36,8 +35,6 @@ const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<D
   ports.fetchStaticFile,
   TE.map(renderDescription),
 );
-
-const toOurListsViewModel = RA.map(toListCardViewModel);
 
 const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
