@@ -4,9 +4,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent, UserSavedArticleEvent } from '../domain-events/user-saved-article-event';
-import { GetListsOwnedBy, Logger } from '../shared-ports';
+import { Logger } from '../shared-ports';
 import { CreateList } from '../shared-ports/create-list';
 import * as DE from '../types/data-error';
+import { ListId } from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
@@ -19,7 +20,7 @@ type UserDetails = {
 export type Ports = {
   createList: CreateList,
   getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
-  getListsOwnedBy: GetListsOwnedBy,
+  getListsOwnedBy: (ownerId: LOID.ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<{ id: ListId }>>,
   logger: Logger,
 };
 
