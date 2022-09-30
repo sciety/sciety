@@ -16,26 +16,6 @@ export type Ports = {
   getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
 };
 
-type RenderAbout = (
-  about: { lists: HtmlFragment, description: HtmlFragment }
-) => HtmlFragment;
-
-const renderAbout: RenderAbout = (about) => pipe(
-  `
-  <div class="group-page-about">
-    ${about.lists}
-    ${about.description}
-  </div>
-`,
-  toHtmlFragment,
-);
-
-const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  `groups/${group.descriptionPath}`,
-  ports.fetchStaticFile,
-  TE.map(renderDescription),
-);
-
 const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
@@ -44,15 +24,23 @@ const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   TE.map(renderOurLists),
 );
 
+const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+  `groups/${group.descriptionPath}`,
+  ports.fetchStaticFile,
+  TE.map(renderDescription),
+);
+
 export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  group,
-  getRenderedDescription(ports),
-  TE.chain((renderedDescription) => pipe(
-    {
-      description: TE.right(renderedDescription),
-      lists: getRenderedLists(ports)(group),
-    },
-    sequenceS(TE.ApplyPar),
-  )),
-  TE.map(renderAbout),
+  {
+    lists: getRenderedLists(ports)(group),
+    description: getRenderedDescription(ports)(group),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(({ lists, description }) => `
+    <div class="group-page-about">
+      ${lists}
+      ${description}
+    </div>
+  `),
+  TE.map(toHtmlFragment),
 );
