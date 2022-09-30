@@ -11,5 +11,5 @@ export const toOurListsViewModel: ToOurListsViewModel = (lists) => pipe(
   lists,
   RA.takeLeft(3),
   RA.map(toListCardViewModel),
-  (slimlineCards) => ({ slimlineCards, viewAllListsUrl: O.none }),
+  (slimlineCards) => ({ slimlineCards, viewAllListsUrl: lists.length > 3 ? O.some('') : O.none }),
 );
