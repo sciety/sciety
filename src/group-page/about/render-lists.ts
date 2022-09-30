@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { renderOurLists } from './render-our-lists';
 import { templateDate } from '../../shared-components/date';
-import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const renderLastUpdatedDate = O.fold(
@@ -11,7 +10,14 @@ const renderLastUpdatedDate = O.fold(
   (date: Date) => `<span>Updated: ${templateDate(date)}</span>`,
 );
 
-const renderSlimlineCard = (viewModel: ListCardViewModel) => `
+type SlimlineCardViewModel = {
+  articleCount: number,
+  lastUpdated: O.Option<Date>,
+  href: string,
+  title: string,
+};
+
+const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
 <li class="slimline-card">
   <span>${viewModel.title}</span>
   <span>${viewModel.articleCount} articles</span>
@@ -19,12 +25,16 @@ const renderSlimlineCard = (viewModel: ListCardViewModel) => `
 </li>
 `;
 
-export const renderLists = (listViewModels: ReadonlyArray<ListCardViewModel>): HtmlFragment => {
+export type OurListsViewModel = {
+  slimlineCards: ReadonlyArray<SlimlineCardViewModel>,
+};
+
+export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return toHtmlFragment('');
   }
   return pipe(
-    listViewModels,
+    ourListsViewModel.slimlineCards,
     RA.map(renderSlimlineCard),
     renderOurLists,
   );
