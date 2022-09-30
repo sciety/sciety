@@ -18,7 +18,7 @@ type SlimlineCardViewModel = {
 
 const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
 <li class="slimline-card">
-  <span>${viewModel.title}</span>
+  <span><a href=${viewModel.href}>${viewModel.title}</a></span>
   <span>${viewModel.articleCount} articles</span>
   ${renderLastUpdatedDate(viewModel.lastUpdated)}
 </li>
