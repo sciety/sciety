@@ -6,12 +6,11 @@ import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import { DomainEvent } from '../../domain-events';
+import { GetListsOwnedBy } from '../../shared-ports';
 import { getGroup } from '../../shared-read-models/groups';
-import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { ListOwnerId } from '../../types/list-owner-id';
 import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
@@ -19,7 +18,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
   getAllEvents: GetAllEvents,
-  getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
+  getListsOwnedBy: GetListsOwnedBy,
 };
 
 export const populateGroupViewModel = (

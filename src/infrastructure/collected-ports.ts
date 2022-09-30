@@ -4,15 +4,14 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import {
   AddArticleToList, CommitEvents, CreateList, FetchArticle, GetAllEvents,
+  GetListsOwnedBy,
   Logger,
 } from '../shared-ports';
-import { List } from '../shared-read-models/lists';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
-import { ListOwnerId } from '../types/list-owner-id';
 
 export type CollectedPorts = {
   addArticleToList: AddArticleToList,
@@ -24,7 +23,7 @@ export type CollectedPorts = {
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: GetAllEvents,
   getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
-  getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
+  getListsOwnedBy: GetListsOwnedBy,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,

@@ -4,16 +4,15 @@ import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderOurLists } from './render-our-lists';
 import { toOurListsViewModel } from './to-our-lists-view-model';
-import { List } from '../../shared-read-models/lists';
+import { GetListsOwnedBy } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
-import { ListOwnerId } from '../../types/list-owner-id';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
-  getListsOwnedBy: (ownerId: ListOwnerId) => TE.TaskEither<DE.DataError, ReadonlyArray<List>>,
+  getListsOwnedBy: GetListsOwnedBy,
 };
 
 const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
