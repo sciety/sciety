@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../src/group-page/about/to-our-lists-view-model';
 import { List } from '../../../src/shared-read-models/lists';
 import { arbitraryDate, arbitraryNumber, arbitraryString } from '../../helpers';
+import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
@@ -27,6 +28,8 @@ describe('to-our-lists-view-model', () => {
       toOurListsViewModel,
     );
 
+    const groupSlug = arbitraryGroup().slug;
+
     it('returns slimline card view models for only three lists', () => {
       expect(model.slimlineCards).toHaveLength(3);
     });
@@ -35,7 +38,9 @@ describe('to-our-lists-view-model', () => {
       expect(O.isSome(model.viewAllListsUrl)).toBe(true);
     });
 
-    it.todo('the View All Lists button is a link to the lists tab');
+    it.failing('the View All Lists button is a link to the lists tab', () => {
+      expect(model.viewAllListsUrl).toBe(O.some(`/groups/${groupSlug}/lists`));
+    });
   });
 
   describe('when the group has three or fewer lists', () => {
