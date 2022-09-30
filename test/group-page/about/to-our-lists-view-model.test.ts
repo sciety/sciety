@@ -17,6 +17,8 @@ const arbitraryList = (): List => ({
 });
 
 describe('to-our-lists-view-model', () => {
+  const groupSlug = arbitraryGroup().slug;
+
   describe('when the group has more than three lists', () => {
     const model = pipe(
       [
@@ -25,10 +27,8 @@ describe('to-our-lists-view-model', () => {
         arbitraryList(),
         arbitraryList(),
       ],
-      toOurListsViewModel,
+      toOurListsViewModel(groupSlug),
     );
-
-    const groupSlug = arbitraryGroup().slug;
 
     it('returns slimline card view models for only three lists', () => {
       expect(model.slimlineCards).toHaveLength(3);
@@ -38,8 +38,8 @@ describe('to-our-lists-view-model', () => {
       expect(O.isSome(model.viewAllListsUrl)).toBe(true);
     });
 
-    it.failing('the View All Lists button is a link to the lists tab', () => {
-      expect(model.viewAllListsUrl).toBe(O.some(`/groups/${groupSlug}/lists`));
+    it('the View All Lists button is a link to the lists tab', () => {
+      expect(model.viewAllListsUrl).toStrictEqual(O.some(`/groups/${groupSlug}/lists`));
     });
   });
 
@@ -50,7 +50,7 @@ describe('to-our-lists-view-model', () => {
         arbitraryList(),
         arbitraryList(),
       ],
-      toOurListsViewModel,
+      toOurListsViewModel(groupSlug),
     );
 
     it('returns slimline card view models for each list', () => {

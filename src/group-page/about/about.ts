@@ -40,7 +40,7 @@ const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
   ports.getListsOwnedBy,
-  TE.map(toOurListsViewModel),
+  TE.map(toOurListsViewModel(group.slug)),
   TE.map(renderLists),
 );
 

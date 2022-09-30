@@ -7,13 +7,13 @@ import { toListCardViewModel } from '../lists/to-list-card-view-model';
 
 const maxSlimlineCards = 3;
 
-type ToOurListsViewModel = (lists: ReadonlyArray<List>) => OurListsViewModel;
+type ToOurListsViewModel = (groupSlug: string) => (lists: ReadonlyArray<List>) => OurListsViewModel;
 
-export const toOurListsViewModel: ToOurListsViewModel = (lists) => pipe(
+export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) => pipe(
   lists,
   RA.map(toListCardViewModel),
   (slimlineCards) => (slimlineCards.length > maxSlimlineCards
-    ? { slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards), viewAllListsUrl: O.some('') }
+    ? { slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards), viewAllListsUrl: O.some(`/groups/${groupSlug}/lists`) }
     : { slimlineCards, viewAllListsUrl: O.none }
   ),
 );
