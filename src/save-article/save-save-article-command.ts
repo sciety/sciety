@@ -2,13 +2,21 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Middleware } from 'koa';
+import { DefaultContext, Middleware } from 'koa';
 
 export const articleIdFieldName = 'articleid';
 
 const bodyCodec = t.type({
   [articleIdFieldName]: t.string,
 });
+
+const appendToSession = (context: DefaultContext) => (payload: Record<string, unknown>) => {
+  context.session = {
+    ...context.session,
+    ...payload,
+  };
+  return T.of(undefined);
+};
 
 export const saveSaveArticleCommand: Middleware = async (context, next) => {
   await pipe(
@@ -19,13 +27,13 @@ export const saveSaveArticleCommand: Middleware = async (context, next) => {
       articleId: body[articleIdFieldName],
       command: 'save-article',
     })),
-    TE.chainFirstTaskK((session) => {
-      context.session = {
-        ...context.session,
-        ...session,
-      };
-      return T.of(undefined);
-    }),
-    TE.chainTaskK(() => next),
+    TE.chainTaskK(appendToSession(context)),
+    TE.fold(
+      (error) => {
+        console.log('error: failed to store SaveArticleCommand on session', error);
+        return T.of(undefined);
+      },
+      () => next,
+    ),
   )();
 };
