@@ -1,11 +1,21 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
+import * as GID from '../src/types/group-id';
+import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('respond', () => {
   beforeEach(async () => {
     await openBrowser();
+    await callApi('record-evaluation', {
+      groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+      publishedAt: new Date(),
+      evaluationLocator: arbitraryReviewId(),
+      articleId: 'doi:10.1101/722579',
+      authors: [],
+    });
   });
 
   afterEach(screenshotTeardown);
