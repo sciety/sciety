@@ -3,17 +3,17 @@ import { JSDOM } from 'jsdom';
 import { renderOurLists } from '../../../src/group-page/about/render-our-lists';
 import { arbitraryString } from '../../helpers';
 
-describe('render-our-lists', () => {
+describe('to-our-lists-view-model', () => {
   describe('when the group has more than three lists', () => {
-    it.todo('renders a slimline card for only three lists');
+    it.todo('returns slimline card view models for only three lists');
 
-    it.todo('displays a View All Lists button');
+    it.todo('the View All Lists button is set');
 
-    it.todo('the View All Lists button links to the lists tab');
+    it.todo('the View All Lists button is a link to the lists tab');
   });
 
   describe('when the group has three or fewer lists', () => {
-    it('renders a slimline card for each list', () => {
+    it('returns slimline card view models for each list', () => {
       const rendered: DocumentFragment = pipe(
         [
           `<li class="slimline-card">${arbitraryString()}</li>`,
@@ -28,7 +28,7 @@ describe('render-our-lists', () => {
       expect(slimlineCards).toHaveLength(3);
     });
 
-    it.todo('does not display a View All Lists button');
+    it.todo('the View All Lists button is not set');
   });
 
   describe('when the group has no lists', () => {
