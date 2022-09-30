@@ -10,7 +10,7 @@ const bodyCodec = t.type({
   [articleIdFieldName]: t.string,
 });
 
-const appendToSession = (context: DefaultContext) => (payload: Record<string, unknown>) => {
+export const appendToSession = (context: DefaultContext) => (payload: Record<string, unknown>): T.Task<void> => {
   context.session = {
     ...context.session,
     ...payload,
