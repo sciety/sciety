@@ -5,11 +5,15 @@ import { OurListsViewModel } from './render-lists';
 import { List } from '../../shared-read-models/lists';
 import { toListCardViewModel } from '../lists/to-list-card-view-model';
 
+const maxSlimlineCards = 3;
+
 type ToOurListsViewModel = (lists: ReadonlyArray<List>) => OurListsViewModel;
 
 export const toOurListsViewModel: ToOurListsViewModel = (lists) => pipe(
   lists,
-  RA.takeLeft(3),
   RA.map(toListCardViewModel),
-  (slimlineCards) => ({ slimlineCards, viewAllListsUrl: lists.length > 3 ? O.some('') : O.none }),
+  (slimlineCards) => (slimlineCards.length > maxSlimlineCards
+    ? { slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards), viewAllListsUrl: O.some('') }
+    : { slimlineCards, viewAllListsUrl: O.none }
+  ),
 );
