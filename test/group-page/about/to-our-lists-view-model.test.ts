@@ -27,7 +27,7 @@ describe('to-our-lists-view-model', () => {
       toOurListsViewModel,
     );
 
-    it.failing('returns slimline card view models for only three lists', () => {
+    it('returns slimline card view models for only three lists', () => {
       expect(model.slimlineCards).toHaveLength(3);
     });
 

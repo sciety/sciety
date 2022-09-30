@@ -9,6 +9,7 @@ type ToOurListsViewModel = (lists: ReadonlyArray<List>) => OurListsViewModel;
 
 export const toOurListsViewModel: ToOurListsViewModel = (lists) => pipe(
   lists,
+  RA.takeLeft(3),
   RA.map(toListCardViewModel),
   (slimlineCards) => ({ slimlineCards, viewAllListsUrl: O.none }),
 );
