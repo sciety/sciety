@@ -31,7 +31,9 @@ describe('to-our-lists-view-model', () => {
       expect(model.slimlineCards).toHaveLength(3);
     });
 
-    it.todo('the View All Lists button is set');
+    it.failing('the View All Lists button is set', () => {
+      expect(O.isSome(model.viewAllListsUrl)).toBe(true);
+    });
 
     it.todo('the View All Lists button is a link to the lists tab');
   });
