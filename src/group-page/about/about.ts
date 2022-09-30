@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
-import { renderLists } from './render-lists';
+import { renderOurLists } from './render-our-lists';
 import { toOurListsViewModel } from './to-our-lists-view-model';
 import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
@@ -41,7 +41,7 @@ const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   LOID.fromGroupId,
   ports.getListsOwnedBy,
   TE.map(toOurListsViewModel(group.slug)),
-  TE.map(renderLists),
+  TE.map(renderOurLists),
 );
 
 export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(

@@ -4,15 +4,15 @@ import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type SlimlineCardViewModel = {
+type ListViewModel = {
   articleCount: number,
   lastUpdated: Date,
   href: string,
   title: string,
 };
 
-const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
-<li class="slimline-card">
+const renderRow = (viewModel: ListViewModel) => `
+<li>
   <span><a href=${viewModel.href}>${viewModel.title}</a></span>
   <span>${viewModel.articleCount} articles</span>
   <span>Updated: ${templateDate(viewModel.lastUpdated)}</span>
@@ -20,28 +20,28 @@ const renderSlimlineCard = (viewModel: SlimlineCardViewModel) => `
 `;
 
 export type OurListsViewModel = {
-  slimlineCards: ReadonlyArray<SlimlineCardViewModel>,
-  viewAllListsUrl: O.Option<string>,
+  lists: ReadonlyArray<ListViewModel>,
+  allListsUrl: O.Option<string>,
 };
 
-const renderViewAllListsButton = O.match(
+const renderButton = O.match(
   () => '',
   (url: string) => `<a href="${url}">View all lists</a>`,
 );
 
-const renderSlimlineLists = (slimlineCards: ReadonlyArray<SlimlineCardViewModel>) => pipe(
-  slimlineCards,
-  RA.map(renderSlimlineCard),
+const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
+  lists,
+  RA.map(renderRow),
   (fragments) => `<ul>${fragments.join('')}</ul>`,
 );
 
-export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
+export const renderOurLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return toHtmlFragment('');
   }
   return toHtmlFragment(`
     <h2>Our lists</h2>
-    ${renderSlimlineLists(ourListsViewModel.slimlineCards)}
-    ${renderViewAllListsButton(ourListsViewModel.viewAllListsUrl)}
+    ${renderLists(ourListsViewModel.lists)}
+    ${renderButton(ourListsViewModel.allListsUrl)}
   `);
 };

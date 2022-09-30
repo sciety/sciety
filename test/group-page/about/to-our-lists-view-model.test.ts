@@ -30,16 +30,16 @@ describe('to-our-lists-view-model', () => {
       toOurListsViewModel(groupSlug),
     );
 
-    it('returns slimline card view models for only three lists', () => {
-      expect(model.slimlineCards).toHaveLength(3);
+    it('returns list view models for only three lists', () => {
+      expect(model.lists).toHaveLength(3);
     });
 
     it('the View All Lists button is set', () => {
-      expect(O.isSome(model.viewAllListsUrl)).toBe(true);
+      expect(O.isSome(model.allListsUrl)).toBe(true);
     });
 
     it('the View All Lists button is a link to the lists tab', () => {
-      expect(model.viewAllListsUrl).toStrictEqual(O.some(`/groups/${groupSlug}/lists`));
+      expect(model.allListsUrl).toStrictEqual(O.some(`/groups/${groupSlug}/lists`));
     });
   });
 
@@ -53,12 +53,12 @@ describe('to-our-lists-view-model', () => {
       toOurListsViewModel(groupSlug),
     );
 
-    it('returns slimline card view models for each list', () => {
-      expect(model.slimlineCards).toHaveLength(3);
+    it('returns list view models for each list', () => {
+      expect(model.lists).toHaveLength(3);
     });
 
     it('the View All Lists button is not set', () => {
-      expect(O.isNone(model.viewAllListsUrl)).toBe(true);
+      expect(O.isNone(model.allListsUrl)).toBe(true);
     });
   });
 

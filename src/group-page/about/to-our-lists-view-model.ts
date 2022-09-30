@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { OurListsViewModel } from './render-lists';
+import { OurListsViewModel } from './render-our-lists';
 import { List } from '../../shared-read-models/lists';
 
-const maxSlimlineCards = 3;
+const maxLists = 3;
 
-const truncatedView = <T>(slimlineCards: ReadonlyArray<T>, groupSlug: string) => (
+const truncatedView = <T>(lists: ReadonlyArray<T>, groupSlug: string) => (
   {
-    slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards),
-    viewAllListsUrl: O.some(`/groups/${groupSlug}/lists`),
+    lists: RA.takeLeft(maxLists)(lists),
+    allListsUrl: O.some(`/groups/${groupSlug}/lists`),
   }
 );
 
@@ -23,8 +23,8 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
     title: list.name,
     lastUpdated: list.lastUpdated,
   })),
-  (slimlineCards) => (slimlineCards.length > maxSlimlineCards
-    ? truncatedView(slimlineCards, groupSlug)
-    : { slimlineCards, viewAllListsUrl: O.none }
+  (listViewModels) => (listViewModels.length > maxLists
+    ? truncatedView(listViewModels, groupSlug)
+    : { lists: listViewModels, allListsUrl: O.none }
   ),
 );
