@@ -1,7 +1,18 @@
 import { pipe } from 'fp-ts/function';
-import { JSDOM } from 'jsdom';
-import { renderOurLists } from '../../../src/group-page/about/render-our-lists';
-import { arbitraryString } from '../../helpers';
+import { toOurListsViewModel } from '../../../src/group-page/about/to-our-lists-view-model';
+import { List } from '../../../src/shared-read-models/lists';
+import { arbitraryDate, arbitraryNumber, arbitraryString } from '../../helpers';
+import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+
+const arbitraryList = (): List => ({
+  id: arbitraryListId(),
+  name: arbitraryString(),
+  description: arbitraryString(),
+  articleCount: arbitraryNumber(0, 100),
+  lastUpdated: arbitraryDate(),
+  ownerId: arbitraryListOwnerId(),
+});
 
 describe('to-our-lists-view-model', () => {
   describe('when the group has more than three lists', () => {
@@ -14,16 +25,14 @@ describe('to-our-lists-view-model', () => {
 
   describe('when the group has three or fewer lists', () => {
     it('returns slimline card view models for each list', () => {
-      const rendered: DocumentFragment = pipe(
+      const slimlineCards = pipe(
         [
-          `<li class="slimline-card">${arbitraryString()}</li>`,
-          `<li class="slimline-card">${arbitraryString()}</li>`,
-          `<li class="slimline-card">${arbitraryString()}</li>`,
+          arbitraryList(),
+          arbitraryList(),
+          arbitraryList(),
         ],
-        renderOurLists,
-        JSDOM.fragment,
+        toOurListsViewModel,
       );
-      const slimlineCards = rendered.querySelectorAll('.slimline-card');
 
       expect(slimlineCards).toHaveLength(3);
     });
