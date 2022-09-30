@@ -11,29 +11,27 @@ type ListViewModel = {
   title: string,
 };
 
-const renderRow = (viewModel: ListViewModel) => `
-<li>
-  <span><a href=${viewModel.href}>${viewModel.title}</a></span>
-  <span>${viewModel.articleCount} articles</span>
-  <span>Updated: ${templateDate(viewModel.lastUpdated)}</span>
-</li>
-`;
-
-export type OurListsViewModel = {
-  lists: ReadonlyArray<ListViewModel>,
-  allListsUrl: O.Option<string>,
-};
+const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
+  lists,
+  RA.map((viewModel) => (`
+    <li>
+      <span><a href=${viewModel.href}>${viewModel.title}</a></span>
+      <span>${viewModel.articleCount} articles</span>
+      <span>Updated: ${templateDate(viewModel.lastUpdated)}</span>
+    </li>
+  `)),
+  (listItems) => `<ul>${listItems.join('')}</ul>`,
+);
 
 const renderButton = O.match(
   () => '',
   (url: string) => `<a href="${url}">View all lists</a>`,
 );
 
-const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
-  lists,
-  RA.map(renderRow),
-  (fragments) => `<ul>${fragments.join('')}</ul>`,
-);
+export type OurListsViewModel = {
+  lists: ReadonlyArray<ListViewModel>,
+  allListsUrl: O.Option<string>,
+};
 
 export const renderOurLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
