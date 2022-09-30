@@ -37,11 +37,13 @@ const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<D
   TE.map(renderDescription),
 );
 
+const toOurListsViewModel = RA.map(toListCardViewModel);
+
 const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
   ports.getListsOwnedBy,
-  TE.map(RA.map(toListCardViewModel)),
+  TE.map(toOurListsViewModel),
   TE.map(renderLists),
 );
 
