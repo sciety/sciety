@@ -9,11 +9,18 @@ const maxSlimlineCards = 3;
 
 type ToOurListsViewModel = (groupSlug: string) => (lists: ReadonlyArray<List>) => OurListsViewModel;
 
+const truncatedView = <T>(slimlineCards: ReadonlyArray<T>, groupSlug: string) => (
+  {
+    slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards),
+    viewAllListsUrl: O.some(`/groups/${groupSlug}/lists`),
+  }
+);
+
 export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) => pipe(
   lists,
   RA.map(toListCardViewModel),
   (slimlineCards) => (slimlineCards.length > maxSlimlineCards
-    ? { slimlineCards: RA.takeLeft(maxSlimlineCards)(slimlineCards), viewAllListsUrl: O.some(`/groups/${groupSlug}/lists`) }
+    ? truncatedView(slimlineCards, groupSlug)
     : { slimlineCards, viewAllListsUrl: O.none }
   ),
 );
