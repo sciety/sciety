@@ -29,6 +29,11 @@ export type OurListsViewModel = {
   viewAllListsUrl: O.Option<string>,
 };
 
+const renderViewAllListsButton = O.match(
+  () => '',
+  (url: string) => `<a href="${url}">View all lists</a>`,
+);
+
 export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return toHtmlFragment('');
@@ -37,7 +42,11 @@ export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment 
     ourListsViewModel.slimlineCards,
     RA.map(renderSlimlineCard),
     (fragments) => fragments.join(''),
-    (slimlineCards) => `<h2>Our lists</h2><ul>${slimlineCards}</ul>`,
+    (slimlineCards) => `
+      <h2>Our lists</h2>
+      <ul>${slimlineCards}</ul>
+      ${renderViewAllListsButton(ourListsViewModel.viewAllListsUrl)}
+    `,
     toHtmlFragment,
   );
 };
