@@ -17,7 +17,19 @@ const arbitraryList = (): List => ({
 
 describe('to-our-lists-view-model', () => {
   describe('when the group has more than three lists', () => {
-    it.todo('returns slimline card view models for only three lists');
+    const model = pipe(
+      [
+        arbitraryList(),
+        arbitraryList(),
+        arbitraryList(),
+        arbitraryList(),
+      ],
+      toOurListsViewModel,
+    );
+
+    it.failing('returns slimline card view models for only three lists', () => {
+      expect(model.slimlineCards).toHaveLength(3);
+    });
 
     it.todo('the View All Lists button is set');
 
