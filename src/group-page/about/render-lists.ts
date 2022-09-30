@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { renderOurLists } from './render-our-lists';
 import { templateDate } from '../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
@@ -37,6 +36,8 @@ export const renderLists = (ourListsViewModel: OurListsViewModel): HtmlFragment 
   return pipe(
     ourListsViewModel.slimlineCards,
     RA.map(renderSlimlineCard),
-    renderOurLists,
+    (fragments) => fragments.join(''),
+    (slimlineCards) => `<h2>Our lists</h2><ul>${slimlineCards}</ul>`,
+    toHtmlFragment,
   );
 };
