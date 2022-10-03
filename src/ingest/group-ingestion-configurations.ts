@@ -115,4 +115,9 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
     name: 'GigaByte',
     fetchFeed: fetchReviewsFromHypothesisGroup('z4oRbDWY'),
   },
+  {
+    id: '36fbf532-ed07-4573-87fd-b0e22ee49827',
+    name: 'ASAPbio-SciELO Preprint crowd review',
+    fetchFeed: fetchReviewsFromHypothesisUser('ASAPbio_SciELO_preprint_review'),
+  },
 ];
