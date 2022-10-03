@@ -174,7 +174,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       let fetchArticle;
-      if (process.env.FETCH_ARTICLE_ADAPTER === 'local') {
+      if (process.env.USE_STUB_ADAPTERS === 'true') {
         fetchArticle = localFetchArticleAdapter;
       } else {
         fetchArticle = fetchCrossrefArticle(
