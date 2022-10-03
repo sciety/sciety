@@ -42,13 +42,8 @@ export type OurListsViewModel = {
   allListsUrl: O.Option<string>,
 };
 
-export const renderOurLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => {
-  if (process.env.EXPERIMENT_ENABLED !== 'true') {
-    return toHtmlFragment('');
-  }
-  return toHtmlFragment(`
-    <h2>Our lists</h2>
-    ${renderLists(ourListsViewModel.lists)}
-    ${renderButton(ourListsViewModel.allListsUrl)}
-  `);
-};
+export const renderOurLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => toHtmlFragment(`
+  <h2>Our lists</h2>
+  ${renderLists(ourListsViewModel.lists)}
+  ${renderButton(ourListsViewModel.allListsUrl)}
+`);
