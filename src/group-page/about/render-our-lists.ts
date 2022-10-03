@@ -14,13 +14,22 @@ type ListViewModel = {
 const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
   lists,
   RA.map((viewModel) => (`
-    <li>
-      <span><a href=${viewModel.href}>${viewModel.title}</a></span>
-      <span>${viewModel.articleCount} articles</span>
-      <span>Updated: ${templateDate(viewModel.lastUpdated)}</span>
-    </li>
+    <tr>
+      <td><a href=${viewModel.href}>${viewModel.title}</a></td>
+      <td>${viewModel.articleCount}<span aria-hidden="true"> articles</span></td>
+      <td><span aria-hidden="true">Updated </span>${templateDate(viewModel.lastUpdated)}</td>
+    </tr>
   `)),
-  (listItems) => `<ul>${listItems.join('')}</ul>`,
+  (listItems) => `
+    <table>
+      <thead class="visually-hidden">
+        <th>List name</th>
+        <th>Number of articles</th>
+        <th>Updated on</th>
+      </thead>
+    ${listItems.join('')}
+    </table>
+  `,
 );
 
 const renderButton = O.match(
