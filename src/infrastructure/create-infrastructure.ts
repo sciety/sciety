@@ -173,19 +173,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         TE.map(() => undefined),
       );
 
-      let fetchArticle;
-      if (process.env.USE_STUB_ADAPTERS === 'true') {
-        fetchArticle = localFetchArticleAdapter;
-      } else {
-        fetchArticle = fetchCrossrefArticle(
+      const collectedAdapters = {
+        fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
           dependencies.crossrefApiBearerToken,
-        );
-      }
-
-      const collectedAdapters = {
-        fetchArticle,
+        ),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
@@ -223,7 +216,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         createList: collectedAdapters.createList,
       };
 
-      return {
+      const allAdapters = {
         ...collectedAdapters,
         commitEvents: (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => pipe(
           eventsToCommit,
@@ -234,6 +227,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           )),
         ),
       };
+
+      if (process.env.USE_STUB_ADAPTERS === 'true') {
+        return {
+          ...allAdapters,
+          fetchArticle: localFetchArticleAdapter,
+        };
+      }
+      return allAdapters;
     },
     identity,
   )),
