@@ -32,6 +32,7 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('d6e1a913-76f8-40dc-9074-8eac033e1bc8')]: '5498e813-ddad-414d-88df-d1f84696cecd',
   [Gid.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58')]: '794cb0bd-f784-4b58-afde-7427faced494',
   [Gid.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18')]: 'f8459240-f79c-4bb2-bb55-b43eae25e4f6',
+  [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: 'f524583f-ab45-4f07-8b44-6b0767b2d79a',
 };
 
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => {
