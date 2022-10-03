@@ -48,7 +48,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
     }
     case 'scielo': {
       const [, suffix] = /download\/(\d+)\//.exec(link) ?? [];
-      return E.right(`https://doi.org/10.1590/SciELOPreprints.${suffix}`);
+      return E.right(`10.1590/SciELOPreprints.${suffix}`);
     }
     default:
       return E.left(`server "${server}" not supported in "${link}"`);

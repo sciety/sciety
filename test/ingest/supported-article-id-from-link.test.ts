@@ -12,7 +12,7 @@ describe('supported-article-id-from-link', () => {
       ['biorxiv/medrxiv DOI link', 'https://doi.org/10.1101/2021.08.30.21262866', '10.1101/2021.08.30.21262866'],
       ['research square link', 'https://www.researchsquare.com/article/rs-955726/v1', '10.21203/rs.3.rs-955726/v1'],
       ['research square DOI link', 'https://doi.org/10.21203/rs.3.rs-885194/v1', '10.21203/rs.3.rs-885194/v1'],
-      ['SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/download/4639/8936/9328', 'https://doi.org/10.1590/SciELOPreprints.4639'],
+      ['SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/download/4639/8936/9328', '10.1590/SciELOPreprints.4639'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
         const result = supportedArticleIdFromLink(input);
