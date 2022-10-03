@@ -193,4 +193,13 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoined
     homepage: 'https://www.arcadiascience.com',
     slug: 'arcadia-science',
   }, new Date('2022-08-17T13:43:00Z')),
+  DomainEvent.groupJoined({
+    id: Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827'),
+    name: 'ASAPbio-SciELO Preprint crowd review',
+    avatarPath: '/static/groups/asapbio-scielo-preprint-crowd-review.png',
+    descriptionPath: descriptionPathFromValidatedString('asapbio-scielo-preprint-crowd-review.md'),
+    shortDescription: 'O ASAPbio promove o uso produtivo de preprints para divulgação da pesquisa e avaliação por pares transparente e feedback sobre todos os resultados da pesquisa. SciELO Preprints é um servidor de preprints multilingue e multi-disciplinar gerenciado pelo Programa SciELO.',
+    homepage: 'https://asapbio.org/crowd-preprint-review',
+    slug: 'asapbio-scielo-preprint-crowd-review',
+  }, new Date('2022-09-29T10:23:14Z')),
 ];

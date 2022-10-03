@@ -25,7 +25,7 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
-import { hardcodedEventsOnlyForStaging } from '../data/hardcoded-events-only-for-staging';
+import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
   isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
@@ -112,7 +112,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       [
         ...eventsFromDatabase,
         ...groupJoinedEvents,
-        ...hardcodedEventsOnlyForStaging(),
+        ...hardcodedListCreationEvents(),
       ],
       sortEvents,
     )),
