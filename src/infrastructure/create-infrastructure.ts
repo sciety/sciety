@@ -232,6 +232,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return {
           ...allAdapters,
           fetchArticle: localFetchArticleAdapter,
+          fetchStaticFile: () => TE.right(''),
         };
       }
       return allAdapters;
