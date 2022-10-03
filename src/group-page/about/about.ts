@@ -37,8 +37,12 @@ export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataErro
   sequenceS(TE.ApplyPar),
   TE.map(({ lists, description }) => `
     <div class="group-page-about">
-      ${lists}
-      ${description}
+      <section>
+        ${lists}
+      </section>
+      <section>
+        ${description}
+      </section>
     </div>
   `),
   TE.map(toHtmlFragment),

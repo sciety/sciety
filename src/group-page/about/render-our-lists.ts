@@ -34,7 +34,7 @@ const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
 
 const renderButton = O.match(
   () => '',
-  (url: string) => `<a href="${url}">View all lists</a>`,
+  (url: string) => `<p><a href="${url}">View all lists</a></p>`,
 );
 
 export type OurListsViewModel = {
