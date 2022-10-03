@@ -32,3 +32,16 @@
     margin-left: 0;
   }
 }
+
+.our-lists__article_count {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.our-lists__updated_label {
+  display: block;
+
+  @include breakpoints.not-narrow {
+    display: inline;
+  }
+}
