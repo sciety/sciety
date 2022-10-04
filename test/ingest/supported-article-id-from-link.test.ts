@@ -34,7 +34,7 @@ describe('supported-article-id-from-link', () => {
       ['invalid medrxiv suffix', 'https://medrxiv.org/content/10.1101/abcdef'],
       // ['invalid biorxiv link', 'https://biorxiv.org/10.1101/111111'],
       // ['invalid medrxiv link', 'https://medrxiv.org/10.1101/111111'],
-      // ['invalid research square link', 'https://www.researchsquare.com/article/955726'],
+      ['invalid research square link', 'https://www.researchsquare.com/article/955726'],
       // ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
     ])('%s', (_, input) => {
       it('returns a left', () => {

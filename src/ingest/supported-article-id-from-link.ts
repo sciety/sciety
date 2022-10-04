@@ -44,6 +44,9 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       );
     case 'researchsquare': {
       const [, suffix] = /rs-(.*)$/.exec(link) ?? [];
+      if (!suffix) {
+        return E.left(`link not parseable: "${link}"`);
+      }
       return E.right(`10.21203/rs.3.rs-${suffix}`);
     }
     case 'scielo': {
