@@ -25,8 +25,17 @@ describe('supported-article-id-from-link', () => {
   describe('when the input is not supported', () => {
     describe.each([
       ['empty', ''],
-      ['other DOI link', 'https://doi.org/10.444444/555555'],
-      ['other DOI link with version', 'https://doi.org/10.444444/555555/v1'],
+      ['unsupported DOI prefix', 'https://doi.org/10.444444/555555'],
+      ['unsupported DOI prefix with version', 'https://doi.org/10.444444/555555/v1'],
+      ['unsupported server', 'https://example.com'],
+      ['missing DOI suffix', 'https://doi.org/10.1101'],
+      // ['missing DOI suffix', 'https://doi.org/10.1101/'],
+      ['invalid biorxiv suffix', 'https://biorxiv.org/content/10.1101/abcdef'],
+      ['invalid medrxiv suffix', 'https://medrxiv.org/content/10.1101/abcdef'],
+      // ['invalid biorxiv link', 'https://biorxiv.org/10.1101/111111'],
+      // ['invalid medrxiv link', 'https://medrxiv.org/10.1101/111111'],
+      // ['invalid research square link', 'https://www.researchsquare.com/article/955726'],
+      // ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
         const result = supportedArticleIdFromLink(input);
