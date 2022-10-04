@@ -139,7 +139,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       } = partialAdapters;
 
       const getAllEvents = T.of(events);
-      const fetchFile = fetchStaticFile(loggerIO(logger));
       const fetchers = {
         doi: fetchZenodoRecord(getJson, logger),
         hypothesis: fetchHypothesisAnnotation(getJson, logger),
@@ -180,7 +179,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           dependencies.crossrefApiBearerToken,
         ),
         fetchReview: fetchReview(fetchers),
-        fetchStaticFile: fetchFile,
+        fetchStaticFile: fetchStaticFile(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
