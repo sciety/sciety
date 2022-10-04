@@ -51,8 +51,12 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
-      const [, suffix] = /download\/(\d+)\//.exec(link) ?? [];
-      return E.right(`10.1590/SciELOPreprints.${suffix}`);
+      const match = /download\/(\d+)\//.exec(link);
+      if (match && match[1]) {
+        return E.right(`10.1590/SciELOPreprints.${match[1]}`);
+      }
+
+      return E.left(`link not parseable: "${link}"`);
     }
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
