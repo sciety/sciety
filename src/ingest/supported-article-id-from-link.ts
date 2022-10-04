@@ -43,11 +43,12 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
         ),
       );
     case 'researchsquare': {
-      const [, suffix] = /rs-(.*)$/.exec(link) ?? [];
-      if (!suffix) {
-        return E.left(`link not parseable: "${link}"`);
+      const match = /rs-(.*)$/.exec(link);
+      if (match && match[1]) {
+        return E.right(`10.21203/rs.3.rs-${match[1]}`);
       }
-      return E.right(`10.21203/rs.3.rs-${suffix}`);
+
+      return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
       const [, suffix] = /download\/(\d+)\//.exec(link) ?? [];
