@@ -25,6 +25,27 @@ const doiFromLinkData = {
   },
 };
 
+type ServerData = {
+  startOfDoi: string,
+  regexToCaptureEndOfDoi: RegExp,
+};
+
+const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pipe(
+  link,
+  (input) => serverData.regexToCaptureEndOfDoi.exec(input),
+  E.fromNullable('regex failed'),
+  E.chain(
+    flow(
+      RA.lookup(1),
+      E.fromOption(() => 'no first capture group in regex match'),
+    ),
+  ),
+  E.bimap(
+    (error) => `link not parseable due to "${error}": "${link}"`,
+    (endOfDoi) => `${serverData.startOfDoi}${endOfDoi}`,
+  ),
+);
+
 export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
   const [, server] = /([a-z]+)\.(com|org)/.exec(link) ?? [];
   if (!server) {
@@ -63,21 +84,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
-      return pipe(
-        link,
-        (input) => doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(input),
-        E.fromNullable('regex failed'),
-        E.chain(
-          flow(
-            RA.lookup(1),
-            E.fromOption(() => 'no first capture group in regex match'),
-          ),
-        ),
-        E.bimap(
-          (error) => `link not parseable due to "${error}": "${link}"`,
-          (endOfDoi) => `${doiFromLinkData.scielo.startOfDoi}${endOfDoi}`,
-        ),
-      );
+      return deriveDoiForSpecificServer(doiFromLinkData.scielo, link);
     }
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
