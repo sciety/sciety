@@ -40,6 +40,10 @@ const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pip
       E.fromOption(() => 'no first capture group in regex match'),
     ),
   ),
+  E.filterOrElse(
+    (captureGroup) => captureGroup.length >= 1,
+    () => 'capture group for endOfDoi is empty',
+  ),
   E.bimap(
     (error) => `link not parseable due to "${error}": "${link}"`,
     (endOfDoi) => `${serverData.startOfDoi}${endOfDoi}`,
