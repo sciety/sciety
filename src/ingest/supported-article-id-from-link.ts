@@ -74,7 +74,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
           ),
         ),
         E.bimap(
-          () => `link not parseable: "${link}"`,
+          (error) => `link not parseable due to "${error}": "${link}"`,
           (endOfDoi) => `${doiFromLinkData.scielo.startOfDoi}${endOfDoi}`,
         ),
       );
