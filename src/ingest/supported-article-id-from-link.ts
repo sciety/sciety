@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 
-const doiFromLinkData = {
+const doiFromLinkData: DoiFromLinkData = {
   researchsquare: {
     startOfDoi: '10.21203/rs.3.rs-',
     regexToCaptureEndOfDoi: /rs-(.*)$/,
@@ -32,7 +32,9 @@ type ServerData = {
   prefix: string,
 };
 
-type DoiFromLinkData = Record<string, ServerData>;
+type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv';
+
+type DoiFromLinkData = Record<SupportedServerName, ServerData>;
 
 const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => {
   const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
@@ -72,17 +74,22 @@ const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pip
   ),
 );
 
+const isSupported = (server: string, allServerData: DoiFromLinkData): server is SupportedServerName => pipe(
+  allServerData,
+  Object.keys,
+  RA.elem(stringEq)(server),
+);
+
 export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
   const [, server] = /([a-z]+)\.(com|org)/.exec(link) ?? [];
   if (!server) {
     return E.left(`server not found in "${link}"`);
   }
+  if (isSupported(server, doiFromLinkData)) {
+    return deriveDoiForSpecificServer(doiFromLinkData[server], link);
+  }
   switch (server) {
     case 'doi': return deriveDoiFromDoiDotOrgLink(doiFromLinkData, link);
-    case 'biorxiv': return deriveDoiForSpecificServer(doiFromLinkData.biorxiv, link);
-    case 'medrxiv': return deriveDoiForSpecificServer(doiFromLinkData.medrxiv, link);
-    case 'researchsquare': return deriveDoiForSpecificServer(doiFromLinkData.researchsquare, link);
-    case 'scielo': return deriveDoiForSpecificServer(doiFromLinkData.scielo, link);
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
   }
