@@ -32,6 +32,26 @@ type ServerData = {
   prefix: string,
 };
 
+type DoiFromLinkData = Record<string, ServerData>;
+
+const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => {
+  const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
+  return pipe(
+    allServerData,
+    Object.values,
+    RA.map((data: ServerData) => data.prefix),
+    E.right,
+    E.filterOrElse(
+      RA.elem(stringEq)(prefix),
+      () => 'not a supported server',
+    ),
+    E.bimap(
+      (error) => `${error}, prefix: ${prefix}, link: ${link}`,
+      () => `${prefix}/${suffix}`,
+
+    ),
+  );
+};
 const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pipe(
   link,
   (input) => serverData.regexToCaptureEndOfDoi.exec(input),
@@ -58,24 +78,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
     return E.left(`server not found in "${link}"`);
   }
   switch (server) {
-    case 'doi': {
-      const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
-      return pipe(
-        doiFromLinkData,
-        Object.values,
-        RA.map((data: ServerData) => data.prefix),
-        E.right,
-        E.filterOrElse(
-          RA.elem(stringEq)(prefix),
-          () => 'not a supported server',
-        ),
-        E.bimap(
-          (error) => `${error}, prefix: ${prefix}, link: ${link}`,
-          () => `${prefix}/${suffix}`,
-
-        ),
-      );
-    }
+    case 'doi': return deriveDoiFromDoiDotOrgLink(doiFromLinkData, link);
     case 'biorxiv': return deriveDoiForSpecificServer(doiFromLinkData.biorxiv, link);
     case 'medrxiv': return deriveDoiForSpecificServer(doiFromLinkData.medrxiv, link);
     case 'researchsquare': return deriveDoiForSpecificServer(doiFromLinkData.researchsquare, link);
