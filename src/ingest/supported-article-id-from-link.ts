@@ -7,7 +7,7 @@ const stripTrailingDot = (s: string) => s.replace(/\.$/, '');
 const addMedrxivOrBiorxivPrefix = (s: string) => `10.1101/${s}`;
 
 const extractDoiSuffix = (link: string) => {
-  const [, doiSuffix] = /.*\/([^/a-z]*).*$/.exec(link) ?? [];
+  const [, doiSuffix] = /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/.exec(link) ?? [];
   if (!doiSuffix) {
     return E.left('nope');
   }
