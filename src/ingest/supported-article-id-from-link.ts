@@ -13,6 +13,15 @@ const extractDoiSuffix = (link: string) => {
   return E.right(doiSuffix);
 };
 
+const doiFromLinkData = {
+  researchsquare: {
+    startOfDoi: '10.21203/rs.3.rs-',
+  },
+  scielo: {
+    startOfDoi: '10.1590/SciELOPreprints.',
+  },
+};
+
 export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
   const [, server] = /([a-z]+)\.(com|org)/.exec(link) ?? [];
   if (!server) {
@@ -44,18 +53,16 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       );
     case 'researchsquare': {
       const match = /rs-(.*)$/.exec(link);
-      const startOfResearchSquareDoi = '10.21203/rs.3.rs-';
       if (match && match[1]) {
-        return E.right(`${startOfResearchSquareDoi}${match[1]}`);
+        return E.right(`${doiFromLinkData.researchsquare.startOfDoi}${match[1]}`);
       }
 
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
       const match = /download\/(\d+)\//.exec(link);
-      const startOfScieloPreprintDoi = '10.1590/SciELOPreprints.';
       if (match && match[1]) {
-        return E.right(`${startOfScieloPreprintDoi}${match[1]}`);
+        return E.right(`${doiFromLinkData.scielo.startOfDoi}${match[1]}`);
       }
 
       return E.left(`link not parseable: "${link}"`);
