@@ -64,18 +64,19 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
     }
     case 'scielo': {
       const match = doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(link);
-      if (match && match[1]) {
-        return pipe(
-          match,
-          RA.lookup(1),
-          E.fromOption(() => 'no first capture group in regex match'),
-          E.map((endOfDoi) => `${doiFromLinkData.scielo.startOfDoi}${endOfDoi}`),
-        );
-      }
-
       return pipe(
-        `link not parseable: "${link}"`,
-        E.left,
+        match,
+        E.fromNullable('regex failed'),
+        E.chain(
+          flow(
+            RA.lookup(1),
+            E.fromOption(() => 'no first capture group in regex match'),
+          ),
+        ),
+        E.bimap(
+          () => `link not parseable: "${link}"`,
+          (endOfDoi) => `${doiFromLinkData.scielo.startOfDoi}${endOfDoi}`,
+        ),
       );
     }
     default:
