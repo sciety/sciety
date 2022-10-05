@@ -2,18 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 
-const stripTrailingDot = (s: string) => s.replace(/\.$/, '');
-
-const addMedrxivOrBiorxivPrefix = (s: string) => `10.1101/${s}`;
-
-const extractDoiSuffix = (link: string) => {
-  const [, doiSuffix] = /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/.exec(link) ?? [];
-  if (!doiSuffix) {
-    return E.left('nope');
-  }
-  return E.right(doiSuffix);
-};
-
 const doiFromLinkData = {
   researchsquare: {
     startOfDoi: '10.21203/rs.3.rs-',
@@ -22,6 +10,14 @@ const doiFromLinkData = {
   scielo: {
     startOfDoi: '10.1590/SciELOPreprints.',
     regexToCaptureEndOfDoi: /download\/(\d+)\//,
+  },
+  biorxiv: {
+    startOfDoi: '10.1101/',
+    regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
+  },
+  medrxiv: {
+    startOfDoi: '10.1101/',
+    regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
   },
 };
 
@@ -66,25 +62,10 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
           return E.left(`link "${link}" not a supported server`);
       }
     }
-    case 'biorxiv':
-    case 'medrxiv':
-      return pipe(
-        link,
-        extractDoiSuffix,
-        E.bimap(
-          () => `link not parseable for DOI: "${link}"`,
-          flow(
-            stripTrailingDot,
-            addMedrxivOrBiorxivPrefix,
-          ),
-        ),
-      );
-    case 'researchsquare': {
-      return deriveDoiForSpecificServer(doiFromLinkData.researchsquare, link);
-    }
-    case 'scielo': {
-      return deriveDoiForSpecificServer(doiFromLinkData.scielo, link);
-    }
+    case 'biorxiv': return deriveDoiForSpecificServer(doiFromLinkData.biorxiv, link);
+    case 'medrxiv': return deriveDoiForSpecificServer(doiFromLinkData.medrxiv, link);
+    case 'researchsquare': return deriveDoiForSpecificServer(doiFromLinkData.researchsquare, link);
+    case 'scielo': return deriveDoiForSpecificServer(doiFromLinkData.scielo, link);
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
   }
