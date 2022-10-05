@@ -44,16 +44,18 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       );
     case 'researchsquare': {
       const match = /rs-(.*)$/.exec(link);
+      const startOfResearchSquareDoi = '10.21203/rs.3.rs-';
       if (match && match[1]) {
-        return E.right(`10.21203/rs.3.rs-${match[1]}`);
+        return E.right(`${startOfResearchSquareDoi}${match[1]}`);
       }
 
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
       const match = /download\/(\d+)\//.exec(link);
+      const startOfScieloPreprintDoi = '10.1590/SciELOPreprints.';
       if (match && match[1]) {
-        return E.right(`10.1590/SciELOPreprints.${match[1]}`);
+        return E.right(`${startOfScieloPreprintDoi}${match[1]}`);
       }
 
       return E.left(`link not parseable: "${link}"`);
