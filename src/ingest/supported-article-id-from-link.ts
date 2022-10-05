@@ -16,9 +16,11 @@ const extractDoiSuffix = (link: string) => {
 const doiFromLinkData = {
   researchsquare: {
     startOfDoi: '10.21203/rs.3.rs-',
+    regexToCaptureEndOfDoi: /rs-(.*)$/,
   },
   scielo: {
     startOfDoi: '10.1590/SciELOPreprints.',
+    regexToCaptureEndOfDoi: /download\/(\d+)\//,
   },
 };
 
@@ -52,7 +54,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
         ),
       );
     case 'researchsquare': {
-      const match = /rs-(.*)$/.exec(link);
+      const match = doiFromLinkData.researchsquare.regexToCaptureEndOfDoi.exec(link);
       if (match && match[1]) {
         return E.right(`${doiFromLinkData.researchsquare.startOfDoi}${match[1]}`);
       }
@@ -60,7 +62,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
-      const match = /download\/(\d+)\//.exec(link);
+      const match = doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(link);
       if (match && match[1]) {
         return E.right(`${doiFromLinkData.scielo.startOfDoi}${match[1]}`);
       }
