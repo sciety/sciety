@@ -76,12 +76,7 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
         ),
       );
     case 'researchsquare': {
-      const match = doiFromLinkData.researchsquare.regexToCaptureEndOfDoi.exec(link);
-      if (match && match[1]) {
-        return E.right(`${doiFromLinkData.researchsquare.startOfDoi}${match[1]}`);
-      }
-
-      return E.left(`link not parseable: "${link}"`);
+      return deriveDoiForSpecificServer(doiFromLinkData.researchsquare, link);
     }
     case 'scielo': {
       return deriveDoiForSpecificServer(doiFromLinkData.scielo, link);
