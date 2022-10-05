@@ -63,9 +63,9 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
       return E.left(`link not parseable: "${link}"`);
     }
     case 'scielo': {
-      const match = doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(link);
       return pipe(
-        match,
+        link,
+        (input) => doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(input),
         E.fromNullable('regex failed'),
         E.chain(
           flow(
