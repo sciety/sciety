@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 
 const stripTrailingDot = (s: string) => s.replace(/\.$/, '');
@@ -64,10 +65,18 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
     case 'scielo': {
       const match = doiFromLinkData.scielo.regexToCaptureEndOfDoi.exec(link);
       if (match && match[1]) {
-        return E.right(`${doiFromLinkData.scielo.startOfDoi}${match[1]}`);
+        return pipe(
+          match,
+          RA.lookup(1),
+          E.fromOption(() => 'no first capture group in regex match'),
+          E.map((endOfDoi) => `${doiFromLinkData.scielo.startOfDoi}${endOfDoi}`),
+        );
       }
 
-      return E.left(`link not parseable: "${link}"`);
+      return pipe(
+        `link not parseable: "${link}"`,
+        E.left,
+      );
     }
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
