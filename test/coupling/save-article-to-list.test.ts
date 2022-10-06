@@ -115,6 +115,17 @@ describe('save-article-to-list', () => {
 
           expect(card.articleCount).toBe(1);
         });
+
+        it('the last updated date in the list card on the user profile page', async () => {
+          const card = await pipe(
+            getAllEvents,
+            T.map(getUserListDetails(user.id)),
+          )();
+
+          const lastUpdatedDate = card.lastUpdated;
+
+          expect(O.isSome(lastUpdatedDate)).toBeTruthy()
+        });
       });
     });
   });
