@@ -10,8 +10,9 @@ import { executePolicies } from '../../src/policies/execute-policies';
 import { executeSaveArticle } from '../../src/save-article/finish-save-article-command';
 import { generateViewModel } from '../../src/sciety-feed-page/sciety-feed-page';
 import { generateSearchResults } from '../../src/search-results-page/search-results-page';
+import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import { getUserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
+import { getUserListDetails, UserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
 import {
   arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
   arbitraryWord,
@@ -63,6 +64,26 @@ const commitEvents = (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => {
   );
 };
 
+const nullAdapters = {
+  commitEvents,
+  getAllEvents,
+  fetchStaticFile: () => TE.right(arbitraryString()),
+  findVersionsForArticleDoi: () => TO.none,
+  getListsOwnedBy: () => TE.right([]),
+  fetchArticle: (doi: Doi) => TE.right({
+    doi,
+    title: toHtmlFragment(arbitraryString()),
+    authors: O.none,
+  }),
+};
+
+const searchHit = (articleId: Doi) => ({
+  articleId,
+  server: 'biorxiv' as const,
+  title: arbitrarySanitisedHtmlFragment(),
+  authors: O.none,
+});
+
 describe('save-article-to-list', () => {
   describe('given the user is logged in', () => {
     describe('and the user only has an empty default user list', () => {
@@ -75,28 +96,16 @@ describe('save-article-to-list', () => {
 
       describe('when the user saves an article that isn\'t in any list', () => {
         beforeEach(async () => {
-          const ports = {
-            getAllEvents,
-            commitEvents,
-          };
-          await executeSaveArticle(ports)(user, articleId)();
+          await executeSaveArticle(nullAdapters)(user, articleId)();
         });
 
         it('the user\'s action appears in the Sciety feed', async () => {
           const adapters = {
-            getAllEvents,
+            ...nullAdapters,
             getUserDetails: () => TE.right(user),
-            fetchArticle: () => TE.right({
-              doi: arbitraryArticleId(),
-              title: toHtmlFragment(arbitraryString()),
-              authors: O.none,
-            }),
-          };
-          const params = {
-            page: 1,
           };
           const viewModel = await pipe(
-            params,
+            { page: 1 },
             generateViewModel(adapters)(20),
             TE.getOrElse(shouldNotBeCalled),
           )();
@@ -110,44 +119,36 @@ describe('save-article-to-list', () => {
           expect(event.articleId.value).toBe(articleId.value);
         });
 
-        it('the article is counted in the list card on the user profile page', async () => {
-          const card = await pipe(
-            getAllEvents,
-            T.map(getUserListDetails(user.id)),
-          )();
+        describe('the list card on the user profile page', () => {
+          let card: UserListDetails;
 
-          expect(card.articleCount).toBe(1);
-        });
+          beforeEach(async () => {
+            card = await pipe(
+              getAllEvents,
+              T.map(getUserListDetails(user.id)),
+            )();
+          });
 
-        it('the last updated date in the list card on the user profile page', async () => {
-          const card = await pipe(
-            getAllEvents,
-            T.map(getUserListDetails(user.id)),
-          )();
-          const lastUpdatedDate = card.lastUpdated;
+          it('shows an incremented article count', async () => {
+            expect(card.articleCount).toBe(1);
+          });
 
-          expect(O.isSome(lastUpdatedDate)).toBeTruthy();
+          it('shows that the list has recently been updated', async () => {
+            expect(O.isSome(card.lastUpdated)).toBeTruthy();
+          });
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
-          const ports = {
-            fetchStaticFile: () => TE.right(''),
-            findVersionsForArticleDoi: () => TO.none,
-            getAllEvents,
-            getListsOwnedBy: () => TE.right([]),
+          const adapters = {
+            ...nullAdapters,
             searchEuropePmc: () => () => TE.right({
-              items: [{
-                articleId,
-                server: 'biorxiv' as const,
-                title: arbitrarySanitisedHtmlFragment(),
-                authors: O.none,
-              }],
-              total: 0,
+              items: [searchHit(articleId)],
+              total: 1,
               nextCursor: O.none,
             }),
           };
           const params = {
-            query: arbitraryString(),
+            query: articleId.toString(),
             category: O.some('articles' as const),
             cursor: O.none,
             page: O.none,
@@ -155,7 +156,7 @@ describe('save-article-to-list', () => {
           };
           const results = await pipe(
             params,
-            generateSearchResults(ports)(20),
+            generateSearchResults(adapters)(20),
             TE.getOrElse(shouldNotBeCalled),
           )();
 

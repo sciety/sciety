@@ -10,7 +10,7 @@ import {
 } from '../../domain-events';
 import { UserId } from '../../types/user-id';
 
-type UserListDetails = {
+export type UserListDetails = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
