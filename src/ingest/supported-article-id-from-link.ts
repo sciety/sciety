@@ -36,27 +36,39 @@ type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv';
 
 type DoiFromLinkData = Record<SupportedServerName, ServerData>;
 
-const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => {
-  const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
-  if (suffix === '') {
-    return E.left(`missing suffix, prefix: ${prefix}, link: ${link}`);
-  }
-  return pipe(
-    allServerData,
-    Object.values,
-    RA.map((data: ServerData) => data.prefix),
-    E.right,
-    E.filterOrElse(
-      RA.elem(stringEq)(prefix),
-      () => 'not a supported server',
-    ),
-    E.bimap(
-      (error) => `${error}, prefix: ${prefix}, link: ${link}`,
-      () => `${prefix}/${suffix}`,
+const isPrefixOfASupportedServer = (allServerData: DoiFromLinkData, prefix: string) => pipe(
+  allServerData,
+  Object.values,
+  RA.map((data: ServerData) => data.prefix),
+  RA.elem(stringEq)(prefix),
+);
 
-    ),
-  );
+const derivePrefixAndSuffixFromLink = (link: string) => {
+  const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
+  return {
+    prefix,
+    suffix,
+  };
 };
+
+const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => pipe(
+  link,
+  derivePrefixAndSuffixFromLink,
+  E.right,
+  E.filterOrElse(
+    ({ prefix }) => isPrefixOfASupportedServer(allServerData, prefix),
+    ({ prefix }) => `not a supported server, prefix: ${prefix}`,
+  ),
+  E.filterOrElse(
+    ({ suffix }) => suffix !== '',
+    ({ prefix }) => `missing suffix, prefix: ${prefix}`,
+  ),
+  E.bimap(
+    (error) => `${error} link: ${link}`,
+    ({ prefix, suffix }) => `${prefix}/${suffix}`,
+  ),
+);
+
 const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pipe(
   link,
   (input) => serverData.regexToCaptureEndOfDoi.exec(input),
