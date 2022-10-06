@@ -1,6 +1,5 @@
 import { performance } from 'perf_hooks';
 import axios from 'axios';
-import chalk from 'chalk';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 
@@ -13,7 +12,7 @@ const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string
   return axios.get<D>(url, { headers }).finally(() => {
     if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
       const endTime = performance.now();
-      process.stdout.write(chalk.yellow(`Fetched ${url} (${Math.round(endTime - startTime)}ms)\n`));
+      process.stdout.write(`Fetched ${url} (${Math.round(endTime - startTime)}ms)\n`);
     }
   });
 };

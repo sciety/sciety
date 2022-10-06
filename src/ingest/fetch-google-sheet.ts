@@ -1,5 +1,4 @@
 import { performance } from 'perf_hooks';
-import chalk from 'chalk';
 import * as TE from 'fp-ts/TaskEither';
 import { google, sheets_v4 } from 'googleapis';
 import { GaxiosResponse } from 'googleapis-common';
@@ -21,7 +20,7 @@ const getSheets = async (
   return google.sheets('v4').spreadsheets.values.get({ spreadsheetId, range }).finally(() => {
     if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
       const endTime = performance.now();
-      process.stdout.write(chalk.yellow(`Fetched Google sheet ${spreadsheetId}/${range} (${Math.round(endTime - startTime)}ms)\n`));
+      process.stdout.write(`Fetched Google sheet ${spreadsheetId}/${range} (${Math.round(endTime - startTime)}ms)\n`);
     }
   });
 };
