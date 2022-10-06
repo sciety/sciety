@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { RuntimeGeneratedEvent } from '../../src/domain-events';
+import { isUserSavedArticleEvent, RuntimeGeneratedEvent, UserSavedArticleEvent } from '../../src/domain-events';
 import { createListCommandHandler } from '../../src/lists';
 import { executePolicies } from '../../src/policies/execute-policies';
 import { executeSaveArticle } from '../../src/save-article/finish-save-article-command';
@@ -21,7 +21,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 // eslint-disable-next-line jest/require-hook
 let events: ReadonlyArray<RuntimeGeneratedEvent> = [];
 
-const getAllEvents = T.of(events);
+const getAllEvents = async () => events;
 
 const commitEvents = (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => {
   events = events.concat(eventsToCommit);
@@ -62,9 +62,12 @@ const commitEvents = (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => {
 describe('save-article-to-list', () => {
   describe('given the user is logged in', () => {
     describe('and the user only has an empty default user list', () => {
-      beforeAll(async () => {
-        // await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
-      });
+      const articleId = arbitraryArticleId();
+      const user = {
+        id: arbitraryUserId(),
+        handle: arbitraryWord(),
+        avatarUrl: arbitraryUri(),
+      };
 
       describe('when the user saves an article that isn\'t in any list', () => {
         beforeEach(async () => {
@@ -72,22 +75,13 @@ describe('save-article-to-list', () => {
             getAllEvents,
             commitEvents,
           };
-          const user = {
-            id: arbitraryUserId(),
-            handle: arbitraryWord(),
-            avatarUrl: arbitraryUri(),
-          };
-          const articleId = arbitraryArticleId();
           await executeSaveArticle(ports)(user, articleId)();
         });
 
-        it.failing('the user\'s action appears in the Sciety feed', async () => {
+        it('the user\'s action appears in the Sciety feed', async () => {
           const adapters = {
             getAllEvents,
-            getUserDetails: () => TE.right({
-              handle: arbitraryWord(),
-              avatarUrl: arbitraryUri(),
-            }),
+            getUserDetails: () => TE.right(user),
             fetchArticle: () => TE.right({
               doi: arbitraryArticleId(),
               title: toHtmlFragment(arbitraryString()),
@@ -104,6 +98,12 @@ describe('save-article-to-list', () => {
           )();
 
           expect(viewModel.items).toHaveLength(1);
+          expect(isUserSavedArticleEvent(viewModel.items[0])).toBeTruthy();
+
+          const event = viewModel.items[0] as UserSavedArticleEvent;
+
+          expect(event.userId).toBe(user.id);
+          expect(event.articleId.value).toBe(articleId.value);
         });
       });
     });
