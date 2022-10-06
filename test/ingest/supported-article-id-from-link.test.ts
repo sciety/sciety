@@ -30,7 +30,7 @@ describe('supported-article-id-from-link', () => {
       ['unsupported DOI prefix with version', 'https://doi.org/10.444444/555555/v1'],
       ['unsupported server', 'https://example.com'],
       ['missing DOI suffix', 'https://doi.org/10.1101'],
-      // ['missing DOI suffix', 'https://doi.org/10.1101/'],
+      ['missing DOI suffix', 'https://doi.org/10.1101/'],
       // ['invalid biorxiv suffix', 'https://biorxiv.org/content/10.1101/abcdef'],
       // ['invalid medrxiv suffix', 'https://medrxiv.org/content/10.1101/abcdef'],
       // ['invalid biorxiv link', 'https://biorxiv.org/10.1101/111111'],

@@ -38,6 +38,9 @@ type DoiFromLinkData = Record<SupportedServerName, ServerData>;
 
 const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => {
   const [, prefix, suffix] = /.*\/(10\.[0-9]+)\/(.*)/.exec(link) ?? [];
+  if (suffix === '') {
+    return E.left(`missing suffix, prefix: ${prefix}, link: ${link}`);
+  }
   return pipe(
     allServerData,
     Object.values,
