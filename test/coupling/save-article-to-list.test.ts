@@ -9,6 +9,7 @@ import { executePolicies } from '../../src/policies/execute-policies';
 import { executeSaveArticle } from '../../src/save-article/finish-save-article-command';
 import { generateViewModel } from '../../src/sciety-feed-page/sciety-feed-page';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { getUserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
@@ -17,7 +18,6 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
-import { getUserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
 
 // eslint-disable-next-line jest/require-hook
 let events: ReadonlyArray<RuntimeGeneratedEvent> = [];
@@ -121,10 +121,9 @@ describe('save-article-to-list', () => {
             getAllEvents,
             T.map(getUserListDetails(user.id)),
           )();
-
           const lastUpdatedDate = card.lastUpdated;
 
-          expect(O.isSome(lastUpdatedDate)).toBeTruthy()
+          expect(O.isSome(lastUpdatedDate)).toBeTruthy();
         });
       });
     });
