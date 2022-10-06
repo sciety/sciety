@@ -2,16 +2,19 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { isUserSavedArticleEvent, RuntimeGeneratedEvent, UserSavedArticleEvent } from '../../src/domain-events';
 import { createListCommandHandler } from '../../src/lists';
 import { executePolicies } from '../../src/policies/execute-policies';
 import { executeSaveArticle } from '../../src/save-article/finish-save-article-command';
 import { generateViewModel } from '../../src/sciety-feed-page/sciety-feed-page';
+import { generateSearchResults } from '../../src/search-results-page/search-results-page';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { getUserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
 import {
-  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryUri, arbitraryWord,
+  arbitraryDate, arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
+  arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -124,6 +127,39 @@ describe('save-article-to-list', () => {
           const lastUpdatedDate = card.lastUpdated;
 
           expect(O.isSome(lastUpdatedDate)).toBeTruthy();
+        });
+
+        it('the list count of the article card on the search page increases by one', async () => {
+          const ports = {
+            fetchStaticFile: () => TE.right(''),
+            findVersionsForArticleDoi: () => TO.none,
+            getAllEvents,
+            getListsOwnedBy: () => TE.right([]),
+            searchEuropePmc: () => () => TE.right({
+              items: [{
+                articleId,
+                server: 'biorxiv' as const,
+                title: arbitrarySanitisedHtmlFragment(),
+                authors: O.none,
+              }],
+              total: 0,
+              nextCursor: O.none,
+            }),
+          };
+          const params = {
+            query: arbitraryString(),
+            category: O.some('articles' as const),
+            cursor: O.none,
+            page: O.none,
+            evaluatedOnly: O.none,
+          };
+          const results = await pipe(
+            params,
+            generateSearchResults(ports)(20),
+            TE.getOrElse(shouldNotBeCalled),
+          )();
+
+          expect(results.itemsToDisplay).toHaveLength(1);
         });
       });
     });
