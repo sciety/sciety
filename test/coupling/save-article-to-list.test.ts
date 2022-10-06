@@ -8,7 +8,7 @@ import { isUserSavedArticleEvent, RuntimeGeneratedEvent, UserSavedArticleEvent }
 import { createListCommandHandler } from '../../src/lists';
 import { executePolicies } from '../../src/policies/execute-policies';
 import { executeSaveArticle } from '../../src/save-article/finish-save-article-command';
-import { generateViewModel } from '../../src/sciety-feed-page/sciety-feed-page';
+import { generateViewModel as generateScietyFeedPageModel } from '../../src/sciety-feed-page/sciety-feed-page';
 import { generateSearchResults } from '../../src/search-results-page/search-results-page';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -77,6 +77,12 @@ const nullAdapters = {
   }),
 };
 
+const arbitraryUser = () => ({
+  id: arbitraryUserId(),
+  handle: arbitraryWord(),
+  avatarUrl: arbitraryUri(),
+});
+
 const searchHit = (articleId: Doi) => ({
   articleId,
   server: 'biorxiv' as const,
@@ -88,11 +94,7 @@ describe('save-article-to-list', () => {
   describe('given the user is logged in', () => {
     describe('and the user only has an empty default user list', () => {
       const articleId = arbitraryArticleId();
-      const user = {
-        id: arbitraryUserId(),
-        handle: arbitraryWord(),
-        avatarUrl: arbitraryUri(),
-      };
+      const user = arbitraryUser();
 
       describe('when the user saves an article that isn\'t in any list', () => {
         beforeEach(async () => {
@@ -106,7 +108,7 @@ describe('save-article-to-list', () => {
           };
           const viewModel = await pipe(
             { page: 1 },
-            generateViewModel(adapters)(20),
+            generateScietyFeedPageModel(adapters)(20),
             TE.getOrElse(shouldNotBeCalled),
           )();
 
