@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
-  collapseCloseEvents,
+  collapseCloseEvents, StateEntry,
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
@@ -17,6 +17,7 @@ import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -71,14 +72,28 @@ const isFeedRelevantEvent = (event: DomainEvent) => (
     || isUserFollowedEditorialCommunityEvent(event)
 );
 
-export const scietyFeedPage = (
+type PageViewModel = {
+  items: ReadonlyArray<StateEntry>,
+  nextPage: O.Option<number>,
+  numberOfPages: number,
+  pageNumber: number,
+};
+
+export const generateViewModel = (
   ports: Ports,
-) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+) => (pageSize: number) => (params: Params): TE.TaskEither<DE.DataError, PageViewModel> => pipe(
   ports.getAllEvents,
   T.map(RA.filter(isFeedRelevantEvent)),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map(paginate(pageSize, params.page)),
+);
+
+export const scietyFeedPage = (
+  ports: Ports,
+) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+  params,
+  generateViewModel(ports)(pageSize),
   TE.chain(({ items, ...rest }) => pipe(
     items,
     TE.traverseArray(eventCard(ports)),

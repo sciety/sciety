@@ -25,7 +25,7 @@ type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCar
 
 export type CollapsedEvent = CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles;
 
-type StateEntry = DomainEvent | CollapsedEvent;
+export type StateEntry = DomainEvent | CollapsedEvent;
 
 const collapsedGroupEvaluatedMultipleArticles = (
   last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles,
