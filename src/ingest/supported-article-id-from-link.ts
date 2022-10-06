@@ -2,39 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
-
-const doiFromLinkData: DoiFromLinkData = {
-  researchsquare: {
-    startOfDoi: '10.21203/rs.3.rs-',
-    regexToCaptureEndOfDoi: /rs-(.*)$/,
-    prefix: '10.21203',
-  },
-  scielo: {
-    startOfDoi: '10.1590/SciELOPreprints.',
-    regexToCaptureEndOfDoi: /download\/(\d+)\//,
-    prefix: '10.1590',
-  },
-  biorxiv: {
-    startOfDoi: '10.1101/',
-    regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
-    prefix: '10.1101',
-  },
-  medrxiv: {
-    startOfDoi: '10.1101/',
-    regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
-    prefix: '10.1101',
-  },
-};
-
-type ServerData = {
-  startOfDoi: string,
-  regexToCaptureEndOfDoi: RegExp,
-  prefix: string,
-};
-
-type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv';
-
-type DoiFromLinkData = Record<SupportedServerName, ServerData>;
+import {
+  DoiFromLinkData, ServerData, SupportedServerName, supportedServersDoiFromLinkConfiguration,
+} from './supported-servers-doi-from-link-configuration';
 
 const isPrefixOfASupportedServer = (allServerData: DoiFromLinkData, prefix: string) => pipe(
   allServerData,
@@ -100,11 +70,11 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
   if (!server) {
     return E.left(`server not found in "${link}"`);
   }
-  if (isSupported(server, doiFromLinkData)) {
-    return deriveDoiForSpecificServer(doiFromLinkData[server], link);
+  if (isSupported(server, supportedServersDoiFromLinkConfiguration)) {
+    return deriveDoiForSpecificServer(supportedServersDoiFromLinkConfiguration[server], link);
   }
   switch (server) {
-    case 'doi': return deriveDoiFromDoiDotOrgLink(doiFromLinkData, link);
+    case 'doi': return deriveDoiFromDoiDotOrgLink(supportedServersDoiFromLinkConfiguration, link);
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
   }
