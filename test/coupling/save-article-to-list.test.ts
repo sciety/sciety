@@ -17,6 +17,7 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
+import { getUserListDetails } from '../../src/user-page/user-list-card/get-user-list-details';
 
 // eslint-disable-next-line jest/require-hook
 let events: ReadonlyArray<RuntimeGeneratedEvent> = [];
@@ -104,6 +105,15 @@ describe('save-article-to-list', () => {
 
           expect(event.userId).toBe(user.id);
           expect(event.articleId.value).toBe(articleId.value);
+        });
+
+        it('the article is counted in the list card on the user profile page', async () => {
+          const card = await pipe(
+            getAllEvents,
+            T.map(getUserListDetails(user.id)),
+          )();
+
+          expect(card.articleCount).toBe(1);
         });
       });
     });
