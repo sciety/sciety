@@ -95,7 +95,7 @@ describe('save-article-to-list', () => {
       });
     });
 
-    describe('and the user only has an empty default user list', () => {
+    describe('and the user only has an empty default user list page and not a generic list', () => {
       const userHandle = 'scietyHQ';
       const testUserId = '1295307136415735808';
       const userSavedArticlesPage = `localhost:8080/users/${userHandle}/lists/saved-articles`;
