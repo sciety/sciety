@@ -185,5 +185,11 @@ describe('save-article-to-list', () => {
         });
       });
     });
+
+    describe('and the user only has a populated user list page and not a generic list', () => {
+      it.todo('the user now has a generic list page');
+
+      it.todo('the count in the lists tab of the user page does not increase');
+    });
   });
 });
