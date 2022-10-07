@@ -11,7 +11,6 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
-import { addArticleToSpecificUserList } from './policies/add-article-to-specific-user-list';
 import { createUserSavedArticlesListAsGenericList } from './policies/create-user-saved-articles-list-as-generic-list';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
@@ -39,7 +38,6 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
     await createUserSavedArticlesListAsGenericList(ports)(events[i])();
-    await addArticleToSpecificUserList(ports)(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 0);
     });
