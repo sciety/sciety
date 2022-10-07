@@ -200,7 +200,7 @@ describe('save-article-to-list', () => {
       await closeBrowser();
     });
 
-    it.failing('the user now has a generic list page', async () => {
+    it('the user now has a generic list page', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
       const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
       await goto(userGenericListPageUrl);
