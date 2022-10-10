@@ -56,8 +56,9 @@ describe('get-list', () => {
           });
         });
 
-        describe('an was added and then removed', () => {
+        describe('an article was added and then removed', () => {
           const creationDate = arbitraryDate();
+          const latestDate = arbitraryDate();
           const articleId = arbitraryArticleId();
           let result: List;
 
@@ -66,7 +67,7 @@ describe('get-list', () => {
               [
                 listCreated(listId, name, description, ownerId, creationDate),
                 articleAddedToList(articleId, listId),
-                articleRemovedFromList(articleId, listId),
+                articleRemovedFromList(articleId, listId, latestDate),
               ],
               getList(listId),
               TE.getOrElse(shouldNotBeCalled),
@@ -85,11 +86,11 @@ describe('get-list', () => {
             expect(result.id).toStrictEqual(listId);
           });
 
-          it.failing('returns the list creation date as the last updated date', () => {
-            expect(result.lastUpdated).toStrictEqual(creationDate);
+          it('returns the date of last removal as the last updated date', () => {
+            expect(result.lastUpdated).toStrictEqual(latestDate);
           });
 
-          it.failing('returns an articleCount of 0', () => {
+          it('returns an articleCount of 0', () => {
             expect(result.articleCount).toBe(0);
           });
         });
