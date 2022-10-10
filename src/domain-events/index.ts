@@ -16,6 +16,13 @@ export {
 } from './article-added-to-list-event';
 
 export {
+  isArticleRemovedFromListEvent,
+  ArticleRemovedFromListEvent,
+  articleRemovedFromList,
+  articleRemovedFromListEventCodec,
+} from './article-removed-from-list-event';
+
+export {
   isGroupJoinedEvent,
   GroupJoinedEvent,
   groupJoined,

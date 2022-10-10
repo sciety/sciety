@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import {
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
+  articleRemovedFromListEventCodec,
   evaluationRecordedEventCodec,
   groupJoinedEventCodec,
   listCreatedEventCodec,
@@ -19,6 +20,7 @@ import {
 export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
+  articleRemovedFromListEventCodec,
   evaluationRecordedEventCodec,
   groupJoinedEventCodec,
   listCreatedEventCodec,
