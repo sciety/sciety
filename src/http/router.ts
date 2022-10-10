@@ -518,9 +518,9 @@ export const createRouter = (ports: CollectedPorts): Router => {
     const response = await pipe(
       context.params.doi,
       generateDocmaps(ports),
-      TE.fold(
+      TE.foldW(
         (error) => T.of({
-          body: {},
+          body: { message: error.message },
           status: error.status,
         }),
         (body) => T.of({
