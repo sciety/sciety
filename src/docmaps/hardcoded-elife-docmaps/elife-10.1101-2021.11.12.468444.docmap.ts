@@ -121,7 +121,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2022-09-29T11:33:13.330Z',
               content: [
                 {
