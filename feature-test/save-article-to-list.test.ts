@@ -187,27 +187,4 @@ describe('save-article-to-list', () => {
       });
     });
   });
-
-  describe('the user only has a populated user list page and not a generic list', () => {
-    const userHandle = 'BlueReZZ';
-    const testUserId = '56806677';
-
-    beforeAll(async () => {
-      await openBrowser();
-    });
-
-    afterAll(async () => {
-      await closeBrowser();
-    });
-
-    it('the user now has a generic list page', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userGenericListPageUrl);
-      const description = await $(pageHeaderDescriptionSelector).text();
-      expect(description).toContain(userHandle);
-    });
-
-    it.todo('the count in the lists tab of the user page does not increase');
-  });
 });
