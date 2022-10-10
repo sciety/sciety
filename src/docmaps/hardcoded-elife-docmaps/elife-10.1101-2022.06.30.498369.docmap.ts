@@ -115,8 +115,20 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: { name: 'anonymous', type: 'person' },
-              role: 'peer-reviewer',
+              actor: {
+                name: 'Jürgen Kleine-Vehn',
+                type: 'person',
+                _relatesToOrganization: 'University of Freiburg, Germany',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Pil Joon Seo',
+                type: 'person',
+                _relatesToOrganization: 'Seoul National University, Republic of Korea',
+              },
+              role: 'editor',
             },
           ],
           outputs: [
