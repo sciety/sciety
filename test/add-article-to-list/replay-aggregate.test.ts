@@ -49,7 +49,7 @@ describe('replay-aggregate', () => {
         replayAggregate(listId),
       );
 
-      it.failing('the article id is not in the aggregate', () => {
+      it('the article id is not in the aggregate', () => {
         expect(result).toStrictEqual(E.right({ articleIds: [] }));
       });
     });
