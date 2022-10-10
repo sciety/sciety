@@ -43,6 +43,7 @@ import { hardcodedElifeArticle as elife_10_1101_2021_06_02_446694 } from '../doc
 import { hardcodedElifeArticle as elife_10_1101_2021_12_03_21267269 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.12.03.21267269.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_03_04_482974 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.03.04.482974.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_05_03_22274606 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.03.22274606.docmap';
+import { hardcodedElifeArticle as elife_10_1101_2022_05_28_493855 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.28.493855.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_06_24_497502 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.06.24.497502.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_07_26_501569 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.07.26.501569.docmap';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
@@ -554,6 +555,8 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.12.03.21267269.docmap.json', returnFile(elife_10_1101_2021_12_03_21267269));
 
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.03.22274606.docmap.json', returnFile(elife_10_1101_2022_05_03_22274606));
+
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.28.493855.docmap.json', returnFile(elife_10_1101_2022_05_28_493855));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
