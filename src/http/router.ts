@@ -2,13 +2,14 @@ import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Next, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
@@ -34,7 +35,6 @@ import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to
 import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
-import { Docmap } from '../docmaps/docmap/docmap-type';
 import { hardcodedElifeArticle as elife_10_1101_2020_07_27_223354 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2020.07.27.223354.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2020_12_08_413955 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2020.12.08.413955.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_03_31_437959 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.03.31.437959.docmap';
@@ -86,12 +86,6 @@ import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
-
-const returnFile = (json: Docmap) => async (context: ParameterizedContext, next: Next) => {
-  context.response.status = 200;
-  context.response.body = json;
-  await next();
-};
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -541,36 +535,43 @@ export const createRouter = (ports: CollectedPorts): Router => {
     await next();
   });
 
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.06.02.446694.docmap.json', returnFile(elife_10_1101_2021_06_02_446694));
+  const hardcodedDocmaps = {
+    '10.1101/2021.06.02.446694': elife_10_1101_2021_06_02_446694,
+    '10.1101/2020.12.08.413955': elife_10_1101_2020_12_08_413955,
+    '10.1101/2022.07.26.501569': elife_10_1101_2022_07_26_501569,
+    '10.1101/2021.05.10.443380': elife_10_1101_2021_05_10_443380,
+    '10.1101/2022.06.24.497502': elife_10_1101_2022_06_24_497502,
+    '10.1101/2021.05.19.21257227': elife_10_1101_2021_05_19_21257227,
+    '10.1101/2021.03.31.437959': elife_10_1101_2021_03_31_437959,
+    '10.1101/2022.03.04.482974': elife_10_1101_2022_03_04_482974,
+    '10.1101/2021.12.03.21267269': elife_10_1101_2021_12_03_21267269,
+    '10.1101/2022.05.03.22274606': elife_10_1101_2022_05_03_22274606,
+    '10.1101/2022.05.28.493855': elife_10_1101_2022_05_28_493855,
+    '10.1101/2022.06.30.498369': elife_10_1101_2022_06_30_498369,
+    '10.1101/2022.05.30.22275761': elife_10_1101_2022_05_30_22275761,
+    'elife/10.1101/2022.07.21.500925': elife_10_1101_2022_07_21_500925,
+    'elife/10.1101/2020.07.27.223354': elife_10_1101_2020_07_27_223354,
+    'elife/10.1101/2021.11.12.468444': elife_10_1101_2021_11_12_468444,
+  };
 
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2020.12.08.413955.docmap.json', returnFile(elife_10_1101_2020_12_08_413955));
+  router.get('/docmaps/v1/evaluations-by/elife/:doi(.+).docmap.json', async (context, next) => {
+    pipe(
+      hardcodedDocmaps,
+      R.lookup(context.params.doi),
+      O.fold(
+        () => {
+          context.status = StatusCodes.NOT_FOUND;
+          context.body = { message: 'No such hardcoded docmap.' };
+        },
+        (json) => {
+          context.response.status = 200;
+          context.response.body = json;
+        },
+      ),
+    );
 
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.07.26.501569.docmap.json', returnFile(elife_10_1101_2022_07_26_501569));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.10.443380.docmap.json', returnFile(elife_10_1101_2021_05_10_443380));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.06.24.497502.docmap.json', returnFile(elife_10_1101_2022_06_24_497502));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.05.19.21257227.docmap.json', returnFile(elife_10_1101_2021_05_19_21257227));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.03.31.437959.docmap.json', returnFile(elife_10_1101_2021_03_31_437959));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.03.04.482974.docmap.json', returnFile(elife_10_1101_2022_03_04_482974));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2021.12.03.21267269.docmap.json', returnFile(elife_10_1101_2021_12_03_21267269));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.03.22274606.docmap.json', returnFile(elife_10_1101_2022_05_03_22274606));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.28.493855.docmap.json', returnFile(elife_10_1101_2022_05_28_493855));
-
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.06.30.498369.docmap.json', returnFile(elife_10_1101_2022_06_30_498369));
-  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.30.22275761.docmap.json', returnFile(elife_10_1101_2022_05_30_22275761));
-
-  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2022.07.21.500925.docmap.json', returnFile(elife_10_1101_2022_07_21_500925));
-
-  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2020.07.27.223354.docmap.json', returnFile(elife_10_1101_2020_07_27_223354));
-
-  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2021.11.12.468444.docmap.json', returnFile(elife_10_1101_2021_11_12_468444));
+    await next();
+  });
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
