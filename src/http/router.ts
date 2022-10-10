@@ -35,11 +35,13 @@ import { articleActivityPage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { Docmap } from '../docmaps/docmap/docmap-type';
+import { hardcodedElifeArticle as elife_10_1101_2020_07_27_223354 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2020.07.27.223354.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2020_12_08_413955 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2020.12.08.413955.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_03_31_437959 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.03.31.437959.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_05_10_443380 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.05.10.443380.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_05_19_21257227 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.05.19.21257227.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_06_02_446694 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.06.02.446694.docmap';
+import { hardcodedElifeArticle as elife_10_1101_2021_11_12_468444 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.11.12.468444.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2021_12_03_21267269 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2021.12.03.21267269.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_03_04_482974 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.03.04.482974.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_05_03_22274606 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.03.22274606.docmap';
@@ -565,6 +567,10 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.30.22275761.docmap.json', returnFile(elife_10_1101_2022_05_30_22275761));
 
   router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2022.07.21.500925.docmap.json', returnFile(elife_10_1101_2022_07_21_500925));
+
+  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2020.07.27.223354.docmap.json', returnFile(elife_10_1101_2020_07_27_223354));
+
+  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2021.11.12.468444.docmap.json', returnFile(elife_10_1101_2021_11_12_468444));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');

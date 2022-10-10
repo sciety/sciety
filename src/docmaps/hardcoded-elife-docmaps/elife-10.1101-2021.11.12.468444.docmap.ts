@@ -1,6 +1,5 @@
 import { Docmap } from '../docmap/docmap-type';
 
-// ts-unused-exports:disable-next-line
 export const hardcodedElifeArticle: Docmap = {
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.11.12.468444/elife.docmap.json',
@@ -115,8 +114,20 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: { name: 'anonymous', type: 'person' },
-              role: 'peer-reviewer',
+              actor: {
+                name: 'Claude Desplan',
+                type: 'person',
+                _relatesToOrganization: 'New York University, United States',
+              },
+              role: 'senior-editor',
+            },
+            {
+              actor: {
+                name: 'Ilona C Grunwald Kadow',
+                type: 'person',
+                _relatesToOrganization: 'University of Bonn, Germany',
+              },
+              role: 'editor',
             },
           ],
           outputs: [
