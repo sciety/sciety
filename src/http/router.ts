@@ -44,8 +44,10 @@ import { hardcodedElifeArticle as elife_10_1101_2021_12_03_21267269 } from '../d
 import { hardcodedElifeArticle as elife_10_1101_2022_03_04_482974 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.03.04.482974.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_05_03_22274606 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.03.22274606.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_05_28_493855 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.28.493855.docmap';
+import { hardcodedElifeArticle as elife_10_1101_2022_05_30_22275761 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.05.30.22275761.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_06_24_497502 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.06.24.497502.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_06_30_498369 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.06.30.498369.docmap';
+import { hardcodedElifeArticle as elife_10_1101_2022_07_21_500925 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.07.21.500925.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_07_26_501569 } from '../docmaps/hardcoded-elife-docmaps/elife-10.1101-2022.07.26.501569.docmap';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
@@ -560,6 +562,9 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.28.493855.docmap.json', returnFile(elife_10_1101_2022_05_28_493855));
 
   router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.06.30.498369.docmap.json', returnFile(elife_10_1101_2022_06_30_498369));
+  router.get('/docmaps/v1/evaluations-by/elife/10.1101/2022.05.30.22275761.docmap.json', returnFile(elife_10_1101_2022_05_30_22275761));
+
+  router.get('/docmaps/v1/evaluations-by/elife/elife/10.1101/2022.07.21.500925.docmap.json', returnFile(elife_10_1101_2022_07_21_500925));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
