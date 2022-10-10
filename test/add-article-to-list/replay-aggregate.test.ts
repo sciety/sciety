@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { replayAggregate } from '../../src/add-article-to-list/replay-aggregate';
-import { articleAddedToList, listCreated } from '../../src/domain-events';
+import { articleAddedToList, articleRemovedFromList, listCreated } from '../../src/domain-events';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -40,7 +40,18 @@ describe('replay-aggregate', () => {
     });
 
     describe('and an article used to be on the list and has been removed', () => {
-      it.todo('the article id is not in the aggregate');
+      const result = pipe(
+        [
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+          articleAddedToList(articleId, listId),
+          articleRemovedFromList(articleId, listId),
+        ],
+        replayAggregate(listId),
+      );
+
+      it.failing('the article id is not in the aggregate', () => {
+        expect(result).toStrictEqual(E.right({ articleIds: [] }));
+      });
     });
   });
 
