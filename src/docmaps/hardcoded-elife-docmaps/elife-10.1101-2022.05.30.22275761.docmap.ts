@@ -1,5 +1,6 @@
 import { Docmap } from '../docmap/docmap-type';
 
+// ts-unused-exports:disable-next-line
 export const hardcodedElifeArticle: Docmap = {
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: 'https://sciety.org/docmaps/v1/articles/10.1101/2022.05.30.22275761/elife.docmap.json',
