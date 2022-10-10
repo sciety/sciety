@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { ListAggregate } from './list-aggregate';
 import {
   articleAddedToList, RuntimeGeneratedEvent,
 } from '../domain-events';
+import { ListAggregate } from '../shared-write-models/list-aggregate';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { replayAggregate } from '../../src/add-article-to-list/replay-aggregate';
 import { articleAddedToList, articleRemovedFromList, listCreated } from '../../src/domain-events';
+import { replayListAggregate } from '../../src/shared-write-models/replay-list-aggregate';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -18,7 +18,7 @@ describe('replay-aggregate', () => {
           listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
           articleAddedToList(articleId, listId),
         ],
-        replayAggregate(listId),
+        replayListAggregate(listId),
       );
 
       it('the article id is in the aggregate', () => {
@@ -31,7 +31,7 @@ describe('replay-aggregate', () => {
         [
           listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
-        replayAggregate(listId),
+        replayListAggregate(listId),
       );
 
       it('the article id is not in the aggregate', () => {
@@ -46,7 +46,7 @@ describe('replay-aggregate', () => {
           articleAddedToList(articleId, listId),
           articleRemovedFromList(articleId, listId),
         ],
-        replayAggregate(listId),
+        replayListAggregate(listId),
       );
 
       it('the article id is not in the aggregate', () => {
@@ -59,7 +59,7 @@ describe('replay-aggregate', () => {
     const result = pipe(
       [
       ],
-      replayAggregate(listId),
+      replayListAggregate(listId),
     );
 
     it('fails', () => {

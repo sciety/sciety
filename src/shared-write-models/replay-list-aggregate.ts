@@ -10,7 +10,7 @@ import { ListCreatedEvent } from '../domain-events/list-created-event';
 import { eqDoi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
-type ReplayAggregate = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => E.Either<string, ListAggregate>;
+type ReplayListAggregate = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => E.Either<string, ListAggregate>;
 
 type RelevantEvent = ListCreatedEvent | ArticleAddedToListEvent | ArticleRemovedFromListEvent;
 
@@ -22,7 +22,7 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
 
 const isAnEventOfThisAggregate = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-export const replayAggregate: ReplayAggregate = (listId) => (events) => pipe(
+export const replayListAggregate: ReplayListAggregate = (listId) => (events) => pipe(
   events,
   RA.filter(isARelevantEventForTheWriteModel),
   RA.filter(isAnEventOfThisAggregate(listId)),
