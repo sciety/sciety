@@ -10,7 +10,7 @@
     "@rdfjs/fetch-lite": "^2.1.2",
     "@rdfjs/parser-jsonld": "^1.2.2",
     "@rdfjs/parser-n3": "^1.1.4",
-    "@rdfjs/sink-map": "^1.0.1",
+    "@rdfjs/sink-map": "^2.0.0",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
     "@types/passport-local": "^1.0.34",
     "@xmldom/xmldom": "^0.8.2",
