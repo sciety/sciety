@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { articleAddedToList, articleRemovedFromList, listCreated } from '../../../src/domain-events';
 import { selectArticlesBelongingToList } from '../../../src/shared-read-models/list-articles';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
@@ -30,15 +30,33 @@ describe('select-articles-belonging-to-list', () => {
     });
 
     describe('and is empty', () => {
-      const result = pipe(
-        [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-        ],
-        selectArticlesBelongingToList(listId),
-      );
+      describe('because it is new', () => {
+        const result = pipe(
+          [
+            listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+          ],
+          selectArticlesBelongingToList(listId),
+        );
 
-      it('returns an empty array', () => {
-        expect(result).toStrictEqual(E.right([]));
+        it('returns an empty array', () => {
+          expect(result).toStrictEqual(E.right([]));
+        });
+      });
+
+      describe('because an article has been added and removed', () => {
+        const articleId = arbitraryArticleId();
+        const result = pipe(
+          [
+            listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+            articleAddedToList(articleId, listId),
+            articleRemovedFromList(articleId, listId),
+          ],
+          selectArticlesBelongingToList(listId),
+        );
+
+        it.failing('returns an empty array', () => {
+          expect(result).toStrictEqual(E.right([]));
+        });
       });
     });
   });
