@@ -23,6 +23,10 @@ const groupSlugToEvaluatedArticlesListId: Record<string, string> = {
   'pci-paleontology': 'dd9d166f-6d25-432c-a60f-6df33ca86897',
   'pci-neuroscience': 'f2ce72ba-a982-4156-ab34-4a536bd86cb7',
   peerref: 'c5cf299c-2097-4f3d-b362-2475d7bd35cd',
+  gigascience: '5498e813-ddad-414d-88df-d1f84696cecd',
+  gigabyte: '794cb0bd-f784-4b58-afde-7427faced494',
+  'arcadia-science': 'f8459240-f79c-4bb2-bb55-b43eae25e4f6',
+  'asapbio-scielo-preprint-crowd-review': 'f524583f-ab45-4f07-8b44-6b0767b2d79a',
 };
 
 export const redirectEvaluatedArticlesToListsPage: Middleware = async (context, next) => {
