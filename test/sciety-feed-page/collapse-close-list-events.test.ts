@@ -1,11 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, evaluationRecorded, userSavedArticle } from '../../src/domain-events';
-import { collapseCloseEvents, collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-events';
-import { arbitraryDate } from '../helpers';
+import { articleAddedToList, userSavedArticle } from '../../src/domain-events';
+import { collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('collapse-close-list-events', () => {
@@ -38,34 +35,32 @@ describe('collapse-close-list-events', () => {
   });
 
   describe('given consecutive events adding articles to the same list', () => {
-    const groupId = arbitraryGroupId();
-    const articleId = arbitraryArticleId();
     const laterDate = new Date('2021-09-14 12:00');
     const earlierDate = new Date('2021-09-14 11:00');
+    const myListId = arbitraryListId();
 
     const result = pipe(
       [
-        evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], laterDate, arbitraryDate()),
-        evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], earlierDate, arbitraryDate()),
+        articleAddedToList(arbitraryArticleId(), myListId, laterDate),
+        articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
       ],
-      collapseCloseEvents,
+      collapseCloseListEvents,
     );
 
-    it('collapses into a single feed item', () => {
+    it.failing('collapses into a single feed item', () => {
       expect(result).toHaveLength(1);
     });
 
-    it('collapses into a Group Evaluated Article feed item', () => {
+    it.failing('collapses into a CollapsedArticlesAddedToList item', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
-          type: 'CollapsedGroupEvaluatedArticle',
-          groupId,
-          articleId,
+          type: 'CollapsedArticlesAddedToList',
+          listId: myListId,
         },
       )]);
     });
 
-    it('returns the most recent evaluation published date', () => {
+    it.failing('returns the most recent date', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           date: laterDate,
