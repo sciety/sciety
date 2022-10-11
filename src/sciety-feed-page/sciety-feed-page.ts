@@ -8,6 +8,7 @@ import * as tt from 'io-ts-types';
 import {
   collapseCloseEvents,
 } from './collapse-close-events';
+import { collapseCloseListEvents } from './collapse-close-list-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
   DomainEvent,
@@ -80,6 +81,7 @@ export const scietyFeedPage = (
   T.map(RA.filter(isFeedRelevantEvent)),
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
+  T.map(collapseCloseListEvents),
   T.map(paginate(pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,

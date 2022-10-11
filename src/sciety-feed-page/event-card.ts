@@ -9,6 +9,7 @@ import {
   userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
 } from './cards';
 import {
+  CollapsedArticlesAddedToList,
   CollapsedEvent,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
@@ -29,7 +30,7 @@ export type Ports =
 export const eventCard = (
   ports: Ports,
 ) => (
-  event: DomainEvent | CollapsedEvent,
+  event: DomainEvent | CollapsedEvent | CollapsedArticlesAddedToList,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(

@@ -1,9 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import { GroupEvaluatedMultipleArticlesCard, GroupEvaluatedSingleArticle } from './cards';
 import { DomainEvent, EvaluationRecordedEvent } from '../domain-events';
+import { ListId } from '../types/list-id';
 
 type CollapsedGroupEvaluatedSingleArticle = GroupEvaluatedSingleArticle & {
   type: 'CollapsedGroupEvaluatedArticle',
+};
+
+export type CollapsedArticlesAddedToList = {
+  type: 'CollapsedArticlesAddedToList',
+  listId: ListId,
+  date: Date,
 };
 
 const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
@@ -25,7 +32,7 @@ type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCar
 
 export type CollapsedEvent = CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles;
 
-type StateEntry = DomainEvent | CollapsedEvent;
+export type StateEntry = DomainEvent | CollapsedEvent | CollapsedArticlesAddedToList;
 
 const collapsedGroupEvaluatedMultipleArticles = (
   last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles,

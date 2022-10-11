@@ -1,24 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { GroupEvaluatedMultipleArticlesCard } from './cards';
+import { CollapsedArticlesAddedToList, StateEntry } from './collapse-close-events';
 import {
-  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
+  ArticleAddedToListEvent, isArticleAddedToListEvent,
 } from '../domain-events';
-import { ListId } from '../types/list-id';
-
-type CollapsedArticlesAddedToList = {
-  type: 'CollapsedArticlesAddedToList',
-  listId: ListId,
-  date: Date,
-};
-
-type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
-  articleIds: Set<string>,
-};
-
-type CollapsedEvent = CollapsedArticlesAddedToList | CollapsedGroupEvaluatedMultipleArticles;
-
-type StateEntry = DomainEvent | CollapsedEvent;
 
 const isCollapsedArticlesAddedToList = (
   entry: StateEntry,
@@ -53,7 +37,7 @@ const replaceWithCollapseEvent = (
 };
 
 const processEvent = (
-  state: Array<StateEntry>, event: DomainEvent,
+  state: Array<StateEntry>, event: StateEntry,
 ) => {
   if (isArticleAddedToListEvent(event)) {
     if (collapsesIntoPreviousEvent(state, event)) {
@@ -69,5 +53,5 @@ const processEvent = (
 
 // ts-unused-exports:disable-next-line
 export const collapseCloseListEvents = (
-  events: ReadonlyArray<DomainEvent>,
+  events: ReadonlyArray<StateEntry>,
 ): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
