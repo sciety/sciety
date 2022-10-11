@@ -3,20 +3,45 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import {
-  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent, isListCreatedEvent,
+  ArticleAddedToListEvent,
+  ArticleRemovedFromListEvent,
+  DomainEvent,
+  isArticleAddedToListEvent,
+  isArticleRemovedFromListEvent,
+  isListCreatedEvent,
 } from '../../domain-events';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
+import { Doi, eqDoi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
 
 type SelectArticlesBelongingToList = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<DE.DataError, ReadonlyArray<Doi>>;
 
-const calculateListContents = (state: Array<Doi>, event: ArticleAddedToListEvent): Array<Doi> => {
-  state.push(event.articleId);
+const calculateListContents = (
+  state: Array<Doi>,
+  event: ArticleAddedToListEvent | ArticleRemovedFromListEvent,
+): Array<Doi> => {
+  if (isArticleAddedToListEvent(event)) {
+    state.push(event.articleId);
+  }
+  if (isArticleRemovedFromListEvent(event)) {
+    // eslint-disable-next-line no-loops/no-loops
+    for (let indexOfArticle = 0; indexOfArticle < state.length; indexOfArticle += 1) {
+      if (eqDoi.equals(event.articleId, state[indexOfArticle])) {
+        state.splice(indexOfArticle, 1);
+        break;
+      }
+    }
+  }
   return state;
 };
+
+const isListMembershipEvent = (
+  event: DomainEvent,
+): event is ArticleAddedToListEvent | ArticleRemovedFromListEvent => (
+  isArticleAddedToListEvent(event) || isArticleRemovedFromListEvent(event)
+);
 
 export const selectArticlesBelongingToList: SelectArticlesBelongingToList = (listId) => (events) => pipe(
   events,
@@ -26,7 +51,7 @@ export const selectArticlesBelongingToList: SelectArticlesBelongingToList = (lis
     () => E.left(DE.notFound),
     () => pipe(
       events,
-      RA.filter(isArticleAddedToListEvent),
+      RA.filter(isListMembershipEvent),
       RA.filter((event) => event.listId === listId),
       RA.reduce([], calculateListContents),
       RA.reverse,

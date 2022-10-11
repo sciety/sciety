@@ -54,7 +54,7 @@ describe('select-articles-belonging-to-list', () => {
           selectArticlesBelongingToList(listId),
         );
 
-        it.failing('returns an empty array', () => {
+        it('returns an empty array', () => {
           expect(result).toStrictEqual(E.right([]));
         });
       });
