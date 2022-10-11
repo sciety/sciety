@@ -8,12 +8,14 @@ import {
   userFollowedAGroupCard, UserFollowedAGroupCardPorts,
   userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
 } from './cards';
+import { collapsedArticlesAddedToListCard } from './cards/collapsed-articles-added-to-list-card';
 import {
   CollapsedArticlesAddedToList,
   CollapsedEvent,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
+import { isCollapsedArticlesAddedToList } from './collapse-close-list-events';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
@@ -68,6 +70,14 @@ export const eventCard = (
     return pipe(
       event,
       articleAddedToListCard(ports),
+      TE.map(scietyFeedCard),
+    );
+  }
+
+  if (isCollapsedArticlesAddedToList(event)) {
+    return pipe(
+      event,
+      collapsedArticlesAddedToListCard(ports),
       TE.map(scietyFeedCard),
     );
   }

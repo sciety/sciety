@@ -4,7 +4,7 @@ import {
   ArticleAddedToListEvent, isArticleAddedToListEvent,
 } from '../domain-events';
 
-const isCollapsedArticlesAddedToList = (
+export const isCollapsedArticlesAddedToList = (
   entry: StateEntry,
 ): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
 
