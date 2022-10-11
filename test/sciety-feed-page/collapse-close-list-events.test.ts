@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
-import { collapseCloseEvents } from '../../src/sciety-feed-page/collapse-close-events';
+import { collapseCloseEvents, collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDate } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -14,7 +14,7 @@ describe('collapse-close-list-events', () => {
       [
         userSavedArticle(arbitraryUserId(), arbitraryArticleId(), date),
       ],
-      collapseCloseEvents,
+      collapseCloseListEvents,
     );
 
     it('returns it unchanged', () => {

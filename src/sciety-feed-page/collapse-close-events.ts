@@ -126,6 +126,17 @@ const processEvent = (
   return state;
 };
 
+const processListEvent = (
+  state: Array<StateEntry>, event: DomainEvent,
+) => {
+  state.push(event);
+  return state;
+};
+
 export const collapseCloseEvents = (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
+
+export const collapseCloseListEvents = (
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<StateEntry> => events.reduce(processListEvent, []);
