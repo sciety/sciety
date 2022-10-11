@@ -6,13 +6,14 @@ import { ListAggregate } from '../shared-write-models/list-aggregate';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
-type Command = {
+export type Command = {
   articleId: Doi,
   listId: ListId,
 };
 
 type ExecuteCommand = (
-  command: { listId: ListId, articleId: Doi }
+  command: { listId: ListId, articleId: Doi },
+  date?: Date,
 ) => (
   aggregate: ListAggregate,
 ) => ReadonlyArray<DomainEvent>;
