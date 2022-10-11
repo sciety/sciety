@@ -1,18 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../src/domain-events';
-import { ListAggregate } from '../../src/shared-write-models/list-aggregate';
-import { Doi } from '../../src/types/doi';
-import { ListId } from '../../src/types/list-id';
+import { executeCommand } from '../../src/remove-article-from-list/execute-command';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-
-type ExecuteCommand = (
-  command: { listId: ListId, articleId: Doi }
-) => (
-  aggregate: ListAggregate,
-) => ReadonlyArray<DomainEvent>;
-
-const executeCommand: ExecuteCommand = () => () => [];
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
