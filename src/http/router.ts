@@ -22,7 +22,6 @@ import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
-import { redirectEvaluatedArticlesToListsPage } from './redirects/redirect-evaluated-articles-to-lists-page';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
@@ -351,7 +350,12 @@ export const createRouter = (ports: CollectedPorts): Router => {
 
   router.get(
     '/groups/:slug/evaluated-articles',
-    redirectEvaluatedArticlesToListsPage,
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect(`/groups/${context.params.slug}`);
+
+      await next();
+    },
   );
 
   router.get(
