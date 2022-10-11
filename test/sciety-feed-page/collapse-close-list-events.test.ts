@@ -9,18 +9,16 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('collapse-close-list-events', () => {
   describe('when there is a uninteresting event', () => {
-    const date = new Date('2021-09-14 12:00');
+    const events = [
+      userSavedArticle(arbitraryUserId(), arbitraryArticleId(), arbitraryDate()),
+    ];
     const result = pipe(
-      [
-        userSavedArticle(arbitraryUserId(), arbitraryArticleId(), date),
-      ],
+      events,
       collapseCloseListEvents,
     );
 
     it('returns it unchanged', () => {
-      expect(result).toStrictEqual([expect.objectContaining({
-        date,
-      })]);
+      expect(result).toStrictEqual(events);
     });
   });
 
