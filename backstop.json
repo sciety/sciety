@@ -127,13 +127,6 @@
       ]
     },
     {
-      "label": "Group list page",
-      "url": "http://sciety_app/groups/pci-zoology/evaluated-articles",
-      "selectors": [
-        "main"
-      ]
-    },
-    {
       "label": "List page",
       "url": "http://sciety_app/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7",
       "selectors": [
