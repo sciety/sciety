@@ -22,7 +22,7 @@ import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
-import { localFetchArticleAdapter } from './stub-adapters';
+import { localFetchArticleAdapter, fetchStaticFile as stubFetchStaticFile } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
@@ -231,7 +231,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return {
           ...allAdapters,
           fetchArticle: localFetchArticleAdapter,
-          fetchStaticFile: () => TE.right(''),
+          fetchStaticFile: stubFetchStaticFile,
         };
       }
       return allAdapters;
