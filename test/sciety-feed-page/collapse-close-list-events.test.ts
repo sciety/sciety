@@ -41,8 +41,8 @@ describe('collapse-close-list-events', () => {
 
     const result = pipe(
       [
-        articleAddedToList(arbitraryArticleId(), myListId, laterDate),
         articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
+        articleAddedToList(arbitraryArticleId(), myListId, laterDate),
       ],
       collapseCloseListEvents,
     );
@@ -51,7 +51,7 @@ describe('collapse-close-list-events', () => {
       expect(result).toHaveLength(1);
     });
 
-    it.failing('collapses into a CollapsedArticlesAddedToList item', () => {
+    it('collapses into a CollapsedArticlesAddedToList item', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           type: 'CollapsedArticlesAddedToList',
@@ -60,7 +60,7 @@ describe('collapse-close-list-events', () => {
       )]);
     });
 
-    it.failing('returns the most recent date', () => {
+    it('returns the most recent date', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           date: laterDate,

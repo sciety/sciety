@@ -8,6 +8,7 @@ import { ListId } from '../types/list-id';
 type CollapsedArticlesAddedToList = {
   type: 'CollapsedArticlesAddedToList',
   listId: ListId,
+  date: Date,
 };
 
 type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
@@ -38,21 +39,17 @@ const collapsesIntoPreviousEvent = (
   },
 );
 
-const calculateNextStateEntry = (
-  current: StateEntry,
-  event: ArticleAddedToListEvent,
-) => event;
-
 const replaceWithCollapseEvent = (
   state: Array<StateEntry>,
   event: ArticleAddedToListEvent,
 ) => {
   const current = state.pop();
   if (!current) { return; }
-  const next = calculateNextStateEntry(current, event);
-  if (next) {
-    state.push(next);
-  }
+  state.push({
+    type: 'CollapsedArticlesAddedToList',
+    listId: event.listId,
+    date: event.date,
+  });
 };
 
 const processEvent = (
