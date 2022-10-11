@@ -16,7 +16,7 @@ describe('execute-command', () => {
       }),
     );
 
-    it.failing('succeeds and raises an event', () => {
+    it('succeeds and raises an event', () => {
       expect(result).toStrictEqual([expect.objectContaining({
         type: 'ArticleRemovedFromList',
         articleId,
