@@ -3,12 +3,27 @@ import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { ArticleAddedToListEvent } from '../../domain-events';
 import { GetAllEvents } from '../../shared-ports';
-import { getList } from '../../shared-read-models/lists';
+import { getList, List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 type Ports = {
   getAllEvents: GetAllEvents,
+};
+
+const addListOwnerName = (list: List) => {
+  switch (list.ownerId.tag) {
+    case 'group-id':
+      return {
+        ...list,
+        ownerName: 'A group',
+      };
+    case 'user-id':
+      return {
+        ...list,
+        ownerName: 'A user',
+      };
+  }
 };
 
 type ArticleAddedToListCard = (
@@ -19,10 +34,11 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(getList(event.listId)),
-  TE.map((list) => ({
-    ownerName: 'Someone',
-    listName: list.name,
-    listDescription: list.description,
+  TE.map(addListOwnerName),
+  TE.map((extendedListMetadata) => ({
+    ownerName: extendedListMetadata.ownerName,
+    listName: extendedListMetadata.name,
+    listDescription: extendedListMetadata.description,
   })),
   TE.map(
     (viewModel) => ({
