@@ -20,7 +20,6 @@ type RemoveArticleFromListCommandHandler = (
   date?: Date
 ) => TE.TaskEither<string, CommandResult>;
 
-// ts-unused-exports:disable-next-line
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
   ports,
 ) => (

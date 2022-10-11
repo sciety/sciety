@@ -27,7 +27,6 @@ const createAppropriateEvents = (command: Command, date: Date) => (listAggregate
   ),
 );
 
-// ts-unused-exports:disable-next-line
 export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
   listAggregate,
   createAppropriateEvents(command, date),

@@ -51,6 +51,7 @@ import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluation } from '../record-evaluation';
+import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -441,6 +442,8 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.post('/record-evaluation', handleScietyApiCommand(ports, recordEvaluation));
 
   router.post('/add-article-to-list', handleScietyApiCommand(ports, addArticleToListCommandHandler));
+
+  router.post('/remove-article-from-list', handleScietyApiCommand(ports, removeArticleFromListCommandHandler));
 
   router.post('/add-group', handleScietyApiCommand(ports, addGroupCommandHandler));
 

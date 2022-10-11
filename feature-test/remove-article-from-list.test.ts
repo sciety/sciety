@@ -11,7 +11,7 @@ describe('remove an article from a list', () => {
 
   afterEach(screenshotTeardown);
 
-  describe.skip('when an article is removed from a list via the API', () => {
+  describe('when an article is removed from a list via the API', () => {
     const articleId = '10.1101/813451';
     const listId = '5498e813-ddad-414d-88df-d1f84696cecd';
 
@@ -20,7 +20,7 @@ describe('remove an article from a list', () => {
       await callApi('remove-article-from-list', { articleId, listId });
     });
 
-    it('displays the article', async () => {
+    it('does not display the article', async () => {
       await goto(`localhost:8080/lists/${listId}`);
       const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
 
