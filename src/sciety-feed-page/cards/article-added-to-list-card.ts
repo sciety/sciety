@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { ArticleAddedToListEvent } from '../../domain-events';
 import { GetAllEvents } from '../../shared-ports';
+import { getGroup } from '../../shared-read-models/groups';
 import { getList, List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -11,18 +12,23 @@ type Ports = {
   getAllEvents: GetAllEvents,
 };
 
-const addListOwnerName = (list: List) => {
+const addListOwnerName = (ports: Ports) => (list: List) => {
   switch (list.ownerId.tag) {
     case 'group-id':
-      return {
-        ...list,
-        ownerName: 'A group',
-      };
+      return pipe(
+        ports.getAllEvents,
+        TE.rightTask,
+        TE.chainEitherK(getGroup(list.ownerId.value)),
+        TE.map((group) => ({
+          ...list,
+          ownerName: group.name,
+        })),
+      );
     case 'user-id':
-      return {
+      return TE.right({
         ...list,
         ownerName: 'A user',
-      };
+      });
   }
 };
 
@@ -34,7 +40,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(getList(event.listId)),
-  TE.map(addListOwnerName),
+  TE.chain(addListOwnerName(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     listName: extendedListMetadata.name,
