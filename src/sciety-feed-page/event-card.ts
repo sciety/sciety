@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
+  articleAddedToListCard,
   GroupEvaluatedArticleCardPorts, groupEvaluatedMultipleArticlesCard,
   GroupEvaluatedMultipleArticlesCardPorts, groupEvaluatedSingleArticleCard,
   scietyFeedCard,
@@ -17,7 +18,7 @@ import {
   isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 
 export type Ports =
   UserSavedArticleToAListCardPorts
@@ -65,11 +66,8 @@ export const eventCard = (
   if (isArticleAddedToListEvent(event)) {
     return pipe(
       event,
-      TE.right,
-      TE.map((e) => `
-        ${e.listId} ${e.articleId.value}
-      `),
-      TE.map(toHtmlFragment),
+      articleAddedToListCard(ports),
+      TE.map(scietyFeedCard),
     );
   }
 
