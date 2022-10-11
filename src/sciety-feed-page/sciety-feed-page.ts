@@ -10,7 +10,8 @@ import {
 } from './collapse-close-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
-  DomainEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  DomainEvent,
+  isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginate } from '../shared-components/paginate';
@@ -69,6 +70,7 @@ const isFeedRelevantEvent = (event: DomainEvent) => (
   isEvaluationRecordedEvent(event)
     || isUserSavedArticleEvent(event)
     || isUserFollowedEditorialCommunityEvent(event)
+    || (process.env.EXPERIMENT_ENABLED === 'true' && isArticleAddedToListEvent(event))
 );
 
 export const scietyFeedPage = (

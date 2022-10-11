@@ -13,10 +13,11 @@ import {
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
 import {
-  DomainEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  DomainEvent,
+  isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
-import { HtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type Ports =
   UserSavedArticleToAListCardPorts
@@ -58,6 +59,17 @@ export const eventCard = (
       event,
       userFollowedAGroupCard(ports),
       TE.map(scietyFeedCard),
+    );
+  }
+
+  if (isArticleAddedToListEvent(event)) {
+    return pipe(
+      event,
+      TE.right,
+      TE.map((e) => `
+        ${e.listId} ${e.articleId.value}
+      `),
+      TE.map(toHtmlFragment),
     );
   }
 
