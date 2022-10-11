@@ -6,12 +6,12 @@ import { ListAggregate } from '../shared-write-models/list-aggregate';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
-export type Command = {
+type Command = {
   articleId: Doi,
   listId: ListId,
 };
 
-export type ExecuteCommand = (
+type ExecuteCommand = (
   command: { listId: ListId, articleId: Doi }
 ) => (
   aggregate: ListAggregate,
@@ -26,6 +26,7 @@ const createAppropriateEvents = (command: Command, date: Date) => (listAggregate
   ),
 );
 
+// ts-unused-exports:disable-next-line
 export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
   listAggregate,
   createAppropriateEvents(command, date),
