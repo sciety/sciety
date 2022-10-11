@@ -9,7 +9,7 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
   avatarUrl: string,
 }>;
 
-export type Ports = {
+type Ports = {
   getUserDetails: GetUserDetails,
 };
 
