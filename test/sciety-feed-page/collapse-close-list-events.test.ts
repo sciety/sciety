@@ -47,7 +47,7 @@ describe('collapse-close-list-events', () => {
       collapseCloseListEvents,
     );
 
-    it.failing('collapses into a single feed item', () => {
+    it('collapses into a single feed item', () => {
       expect(result).toHaveLength(1);
     });
 

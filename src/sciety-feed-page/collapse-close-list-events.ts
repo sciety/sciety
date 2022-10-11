@@ -1,68 +1,38 @@
 import { pipe } from 'fp-ts/function';
-import { GroupEvaluatedMultipleArticlesCard, GroupEvaluatedSingleArticle } from './cards';
-import { DomainEvent, EvaluationRecordedEvent } from '../domain-events';
+import { GroupEvaluatedMultipleArticlesCard } from './cards';
+import {
+  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
+} from '../domain-events';
+import { ListId } from '../types/list-id';
 
-type CollapsedGroupEvaluatedSingleArticle = GroupEvaluatedSingleArticle & {
-  type: 'CollapsedGroupEvaluatedArticle',
+type CollapsedArticlesAddedToList = {
+  type: 'CollapsedArticlesAddedToList',
+  listId: ListId,
 };
-
-const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
-
-const collapsedGroupEvaluatedSingleArticle = (
-  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle,
-  publishedAt: Date,
-): CollapsedGroupEvaluatedSingleArticle => ({
-  type: 'CollapsedGroupEvaluatedArticle',
-  groupId: last.groupId,
-  articleId: last.articleId,
-  date: mostRecentDate(last.date, publishedAt),
-});
 
 type CollapsedGroupEvaluatedMultipleArticles = GroupEvaluatedMultipleArticlesCard & {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   articleIds: Set<string>,
 };
 
-type CollapsedEvent = CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles;
+type CollapsedEvent = CollapsedArticlesAddedToList | CollapsedGroupEvaluatedMultipleArticles;
 
 type StateEntry = DomainEvent | CollapsedEvent;
 
-const collapsedGroupEvaluatedMultipleArticles = (
-  last: EvaluationRecordedEvent | CollapsedGroupEvaluatedSingleArticle | CollapsedGroupEvaluatedMultipleArticles,
-  articleIds: Set<string>,
-  publishedAt: Date,
-): CollapsedGroupEvaluatedMultipleArticles => ({
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
-  groupId: last.groupId,
-  articleIds,
-  articleCount: articleIds.size,
-  date: mostRecentDate(last.date, publishedAt),
-});
-
-const isCollapsedGroupEvaluatedArticle = (
+const isCollapsedArticlesAddedToList = (
   entry: StateEntry,
-): entry is CollapsedGroupEvaluatedSingleArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
-
-const isCollapsedGroupEvaluatedMultipleArticles = (
-  entry: StateEntry,
-): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
-
-const isEvaluationRecordedEvent = (event: StateEntry):
-  event is EvaluationRecordedEvent => (
-  event.type === 'EvaluationRecorded'
-);
+): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
 
 const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<StateEntry>, event: EvaluationRecordedEvent,
+  state: ReadonlyArray<StateEntry>, event: ArticleAddedToListEvent,
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
     if (
-      isEvaluationRecordedEvent(entry)
-      || isCollapsedGroupEvaluatedArticle(entry)
-      || isCollapsedGroupEvaluatedMultipleArticles(entry)
+      isArticleAddedToListEvent(entry)
+      || isCollapsedArticlesAddedToList(entry)
     ) {
-      return entry.groupId === event.groupId;
+      return entry.listId === event.listId;
     }
     return false;
   },
@@ -70,38 +40,12 @@ const collapsesIntoPreviousEvent = (
 
 const calculateNextStateEntry = (
   current: StateEntry,
-  event: EvaluationRecordedEvent,
-) => {
-  if (isEvaluationRecordedEvent(current)) {
-    if (event.articleId.value === current.articleId.value) {
-      return collapsedGroupEvaluatedSingleArticle(current, event.publishedAt);
-    }
-    return collapsedGroupEvaluatedMultipleArticles(
-      current,
-      new Set([current.articleId.value, event.articleId.value]),
-      event.publishedAt,
-    );
-  } if (isCollapsedGroupEvaluatedArticle(current)) {
-    if (event.articleId.value === current.articleId.value) {
-      return collapsedGroupEvaluatedSingleArticle(current, event.publishedAt);
-    }
-    return collapsedGroupEvaluatedMultipleArticles(
-      current,
-      new Set([current.articleId.value, event.articleId.value]),
-      event.publishedAt,
-    );
-  } if (isCollapsedGroupEvaluatedMultipleArticles(current)) {
-    return collapsedGroupEvaluatedMultipleArticles(
-      current,
-      current.articleIds.add(event.articleId.value),
-      event.publishedAt,
-    );
-  }
-};
+  event: ArticleAddedToListEvent,
+) => event;
 
 const replaceWithCollapseEvent = (
   state: Array<StateEntry>,
-  event: EvaluationRecordedEvent,
+  event: ArticleAddedToListEvent,
 ) => {
   const current = state.pop();
   if (!current) { return; }
@@ -114,11 +58,11 @@ const replaceWithCollapseEvent = (
 const processEvent = (
   state: Array<StateEntry>, event: DomainEvent,
 ) => {
-  if (isEvaluationRecordedEvent(event)) {
+  if (isArticleAddedToListEvent(event)) {
     if (collapsesIntoPreviousEvent(state, event)) {
       replaceWithCollapseEvent(state, event);
     } else {
-      state.push({ ...event, date: event.publishedAt });
+      state.push(event);
     }
   } else {
     state.push(event);
