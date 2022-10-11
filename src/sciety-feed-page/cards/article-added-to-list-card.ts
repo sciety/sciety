@@ -19,15 +19,20 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(getList(event.listId)),
+  TE.map((list) => ({
+    ownerName: 'Someone',
+    listName: list.name,
+    listDescription: list.description,
+  })),
   TE.map(
-    (list) => ({
-      titleText: 'Somebody added an article to a list',
+    (viewModel) => ({
+      titleText: `${viewModel.ownerName} added an article to a list`,
       linkUrl: `/lists/${event.listId}`,
       avatarUrl: '/static/images/sciety-logo.jpg',
       date: event.date,
       details: {
-        title: toHtmlFragment(list.name),
-        content: toHtmlFragment(list.description),
+        title: toHtmlFragment(viewModel.listName),
+        content: toHtmlFragment(viewModel.listDescription),
       },
     }),
   ),
