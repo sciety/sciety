@@ -126,6 +126,7 @@ const processEvent = (
   return state;
 };
 
-export const collapseCloseEvents = (
+// ts-unused-exports:disable-next-line
+export const collapseCloseListEvents = (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);

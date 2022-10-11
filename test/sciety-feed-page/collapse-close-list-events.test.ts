@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, userSavedArticle } from '../../src/domain-events';
-import { collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-events';
+import { collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-list-events';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
