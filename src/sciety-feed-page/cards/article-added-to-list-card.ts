@@ -22,12 +22,14 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
         TE.map((group) => ({
           ...list,
           ownerName: group.name,
+          ownerAvatarUrl: group.avatarPath,
         })),
       );
     case 'user-id':
       return TE.right({
         ...list,
         ownerName: 'A user',
+        ownerAvatarUrl: '/static/images/sciety-logo.jpg',
       });
   }
 };
@@ -43,6 +45,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   TE.chain(addListOwnerName(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
+    ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
     listName: extendedListMetadata.name,
     listDescription: extendedListMetadata.description,
   })),
@@ -50,7 +53,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added an article to a list`,
       linkUrl: `/lists/${event.listId}`,
-      avatarUrl: '/static/images/sciety-logo.jpg',
+      avatarUrl: viewModel.ownerAvatarUrl,
       date: event.date,
       details: {
         title: toHtmlFragment(viewModel.listName),
