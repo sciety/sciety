@@ -11,7 +11,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('collapse-close-list-events', () => {
   describe('when there is a uninteresting event', () => {
     const events = [
-      userSavedArticle(arbitraryUserId(), arbitraryArticleId(), arbitraryDate()),
+      userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
     ];
     const result = pipe(
       events,
@@ -25,7 +25,7 @@ describe('collapse-close-list-events', () => {
 
   describe('when a single article is added to a list', () => {
     const events = [
-      articleAddedToList(arbitraryArticleId(), arbitraryListId(), arbitraryDate()),
+      articleAddedToList(arbitraryArticleId(), arbitraryListId()),
     ];
     const result = pipe(
       events,
@@ -75,21 +75,20 @@ describe('collapse-close-list-events', () => {
   });
 
   describe('given two articles are added to a list separated by an article added to a different list', () => {
-    const groupOne = arbitraryGroupId();
-    const groupTwo = arbitraryGroupId();
+    const myList = arbitraryListId();
 
     const events = [
-      evaluationRecorded(groupOne, arbitraryArticleId(), arbitraryReviewId()),
-      evaluationRecorded(groupTwo, arbitraryArticleId(), arbitraryReviewId()),
-      evaluationRecorded(groupOne, arbitraryArticleId(), arbitraryReviewId()),
+      articleAddedToList(arbitraryArticleId(), myList),
+      articleAddedToList(arbitraryArticleId(), arbitraryListId()),
+      articleAddedToList(arbitraryArticleId(), myList),
     ];
     const result = pipe(
       events,
-      collapseCloseEvents,
+      collapseCloseListEvents,
     );
 
     it('does not collapse the events', () => {
-      expect(result).toHaveLength(events.length);
+      expect(result).toStrictEqual(events);
     });
   });
 });
