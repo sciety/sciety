@@ -1,9 +1,10 @@
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, userSavedArticle } from '../../src/domain-events';
+import { articleAddedToList, evaluationRecorded, userSavedArticle } from '../../src/domain-events';
 import { collapseCloseEvents, collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-events';
 import { arbitraryDate } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -23,25 +24,16 @@ describe('collapse-close-list-events', () => {
   });
 
   describe('when a single article is added to a list', () => {
-    const publishedDate = new Date('2021-09-14 12:00');
+    const events = [
+      articleAddedToList(arbitraryArticleId(), arbitraryListId(), arbitraryDate()),
+    ];
     const result = pipe(
-      [
-        evaluationRecorded(
-          arbitraryGroupId(),
-          arbitraryArticleId(),
-          arbitraryReviewId(),
-          [],
-          publishedDate,
-          arbitraryDate(),
-        ),
-      ],
-      collapseCloseEvents,
+      events,
+      collapseCloseListEvents,
     );
 
     it('returns it unchanged', () => {
-      expect(result).toStrictEqual([expect.objectContaining({
-        date: publishedDate,
-      })]);
+      expect(result).toStrictEqual(events);
     });
   });
 
