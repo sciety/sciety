@@ -18,11 +18,11 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import { getListsOwnedByFromListsReadModelService } from './get-lists-owned-by-from-lists-read-model-service';
-import { localFetchArticleAdapter } from './local-fetch-article-adapter';
 import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
+import { localFetchArticleAdapter } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
