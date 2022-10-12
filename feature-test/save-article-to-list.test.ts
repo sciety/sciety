@@ -186,5 +186,13 @@ describe('save-article-to-list', () => {
         });
       });
     });
+
+    describe('the user has a user list page with one article', () => {
+      it.todo('that article appears on their generic list page');
+    });
+
+    describe('the user has unsaved an article', () => {
+      it.todo('that article does not appear on their generic list page');
+    });
   });
 });
