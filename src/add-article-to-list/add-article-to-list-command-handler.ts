@@ -2,7 +2,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
-import { validateInputShape } from './validate-input-shape';
+import { addArticleToListCommandCodec } from '../commands';
+import { validateInputShape } from '../commands/validate-input-shape';
 import { DomainEvent } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
@@ -27,7 +28,7 @@ export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   date = new Date(),
 ) => pipe(
   input,
-  validateInputShape,
+  validateInputShape(addArticleToListCommandCodec),
   TE.fromEither,
   TE.chainW((command) => pipe(
     ports.getAllEvents,
