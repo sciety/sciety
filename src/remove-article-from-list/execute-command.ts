@@ -13,21 +13,20 @@ type Command = {
 
 type ExecuteCommand = (
   command: { listId: ListId, articleId: Doi },
-  date?: Date,
 ) => (
   aggregate: ListAggregate,
 ) => ReadonlyArray<DomainEvent>;
 
-const createAppropriateEvents = (command: Command, date: Date) => (listAggregate: ListAggregate) => pipe(
+const createAppropriateEvents = (command: Command) => (listAggregate: ListAggregate) => pipe(
   listAggregate.articleIds,
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
     () => [],
-    () => [articleRemovedFromList(command.articleId, command.listId, date)],
+    () => [articleRemovedFromList(command.articleId, command.listId)],
   ),
 );
 
-export const executeCommand: ExecuteCommand = (command, date = new Date()) => (listAggregate) => pipe(
+export const executeCommand: ExecuteCommand = (command) => (listAggregate) => pipe(
   listAggregate,
-  createAppropriateEvents(command, date),
+  createAppropriateEvents(command),
 );

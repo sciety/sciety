@@ -16,14 +16,12 @@ type RemoveArticleFromListCommandHandler = (
   ports: Ports
 ) => (
   input: unknown,
-  date?: Date
 ) => TE.TaskEither<string, CommandResult>;
 
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
   ports,
 ) => (
   input,
-  date = new Date(),
 ) => pipe(
   input,
   validateInputShape(removeArticleFromListCommandCodec),
@@ -32,7 +30,7 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
     ports.getAllEvents,
     TE.rightTask,
     TE.chainEitherK(replayListAggregate(command.listId)),
-    TE.map(executeCommand(command, date)),
+    TE.map(executeCommand(command)),
   )),
   TE.chainTaskK(ports.commitEvents),
 );
