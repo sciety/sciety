@@ -2,7 +2,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
-import { validateInputShape } from './validate-input-shape';
+import { recordEvaluationCommandCodec } from '../commands';
+import { validateInputShape } from '../commands/validate-input-shape';
 import { DomainEvent } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
@@ -12,11 +13,11 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type RecordEvaluation = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type RecordEvaluationCommandHandler = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;
 
-export const recordEvaluation: RecordEvaluation = (ports) => (input) => pipe(
+export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (ports) => (input) => pipe(
   input,
-  validateInputShape,
+  validateInputShape(recordEvaluationCommandCodec),
   TE.fromEither,
   TE.chainW((command) => pipe(
     ports.getAllEvents,

@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
-import { validateInputShape } from '../../src/record-evaluation/validate-input-shape';
+import { recordEvaluationCommandCodec } from '../../src/commands';
+import { validateInputShape } from '../../src/commands/validate-input-shape';
 import * as RI from '../../src/types/review-id';
 import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -15,7 +16,7 @@ describe('validate-input-shape', () => {
 
   describe('when the input is valid', () => {
     it('returns a Command', () => {
-      const result = validateInputShape({
+      const result = validateInputShape(recordEvaluationCommandCodec)({
         groupId: groupId.toString(),
         publishedAt: publishedAt.toISOString(),
         evaluationLocator: RI.serialize(evaluationLocator),
@@ -36,7 +37,7 @@ describe('validate-input-shape', () => {
   describe('when the input is invalid', () => {
     describe('because the groupId is invalid', () => {
       it('returns an error message', () => {
-        const result = validateInputShape({
+        const result = validateInputShape(recordEvaluationCommandCodec)({
           groupId: null,
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: RI.serialize(evaluationLocator),
@@ -50,7 +51,7 @@ describe('validate-input-shape', () => {
 
     describe('because the publishedAt is invalid', () => {
       it('returns an error message', () => {
-        const result = validateInputShape({
+        const result = validateInputShape(recordEvaluationCommandCodec)({
           groupId: groupId.toString(),
           publishedAt: null,
           evaluationLocator: RI.serialize(evaluationLocator),
@@ -64,7 +65,7 @@ describe('validate-input-shape', () => {
 
     describe('because the evaluationLocator is invalid', () => {
       it('returns an error message', () => {
-        const result = validateInputShape({
+        const result = validateInputShape(recordEvaluationCommandCodec)({
           groupId: groupId.toString(),
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: null,
@@ -78,7 +79,7 @@ describe('validate-input-shape', () => {
 
     describe('because the articleId is invalid', () => {
       it('returns an error message', () => {
-        const result = validateInputShape({
+        const result = validateInputShape(recordEvaluationCommandCodec)({
           groupId: groupId.toString(),
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: RI.serialize(evaluationLocator),
@@ -92,7 +93,7 @@ describe('validate-input-shape', () => {
 
     describe('because the authors is invalid', () => {
       it('returns an error message', () => {
-        const result = validateInputShape({
+        const result = validateInputShape(recordEvaluationCommandCodec)({
           groupId: groupId.toString(),
           publishedAt: publishedAt.toISOString(),
           evaluationLocator: RI.serialize(evaluationLocator),
