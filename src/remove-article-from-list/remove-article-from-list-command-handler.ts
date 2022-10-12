@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { validateInputShape } from './validate-input-shape';
+import { removeArticleFromListCommandCodec } from '../commands';
 import { DomainEvent } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
@@ -27,7 +28,7 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
   date = new Date(),
 ) => pipe(
   input,
-  validateInputShape,
+  validateInputShape(removeArticleFromListCommandCodec),
   TE.fromEither,
   TE.chainW((command) => pipe(
     ports.getAllEvents,
