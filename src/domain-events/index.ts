@@ -1,5 +1,4 @@
 export { DomainEvent } from './domain-event';
-export { RuntimeGeneratedEvent } from './runtime-generated-event';
 
 export {
   isAnnotationCreatedEvent,

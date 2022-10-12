@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
-import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { domainEventCodec } from '../types/codecs/DomainEvent';
 import { CommandResult } from '../types/command-result';
 
@@ -14,7 +14,7 @@ type Dependencies = {
   logger: L.Logger,
 };
 
-export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEvent): T.Task<void> => pipe(
+export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
   event,
   domainEventCodec.encode,
   ({
@@ -27,7 +27,7 @@ export const writeEventToDatabase = (pool: Pool) => (event: RuntimeGeneratedEven
   T.map(() => undefined),
 );
 
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
+type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,

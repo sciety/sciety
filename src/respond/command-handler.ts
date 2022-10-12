@@ -6,14 +6,14 @@ import { respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
-import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
+export type CommitEvents = (events: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
 const commands = {
   'respond-helpful': respondHelpful,

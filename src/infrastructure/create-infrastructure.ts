@@ -27,9 +27,9 @@ import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
+  DomainEvent,
   isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
-import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -85,7 +85,7 @@ const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri
 const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   pool: Pool,
 ) => (
-  events: ReadonlyArray<RuntimeGeneratedEvent>,
+  events: ReadonlyArray<DomainEvent>,
 ) => pipe(
   [],
   TE.right,
@@ -217,7 +217,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const allAdapters = {
         ...collectedAdapters,
-        commitEvents: (eventsToCommit: ReadonlyArray<RuntimeGeneratedEvent>) => pipe(
+        commitEvents: (eventsToCommit: ReadonlyArray<DomainEvent>) => pipe(
           eventsToCommit,
           commitEventsWithoutListeners,
           T.chainFirst(() => pipe(

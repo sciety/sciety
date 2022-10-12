@@ -7,7 +7,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { domainEventsCodec, EventRow, selectAllEvents } from './events-table';
 import { Logger } from './logger';
-import { RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
@@ -40,7 +40,7 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
+): TE.TaskEither<Error, ReadonlyArray<DomainEvent>> => pipe(
   TE.tryCatch(async () => {
     await waitForTableToExist(pool, logger);
     return pool.query<EventRow>(selectAllEvents);

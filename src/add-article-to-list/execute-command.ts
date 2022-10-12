@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, RuntimeGeneratedEvent,
+  articleAddedToList, DomainEvent,
 } from '../domain-events';
 import { ListAggregate } from '../shared-write-models/list-aggregate';
 import { Doi } from '../types/doi';
@@ -24,7 +24,7 @@ const createAppropriateEvents = (command: Command) => (listAggregate: ListAggreg
 
 type ExecuteCommand = (command: Command)
 => (listAggregate: ListAggregate)
-=> ReadonlyArray<RuntimeGeneratedEvent>;
+=> ReadonlyArray<DomainEvent>;
 
 export const executeCommand: ExecuteCommand = (command) => (listAggregate) => pipe(
   listAggregate,

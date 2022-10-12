@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { RuntimeGeneratedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 
-export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<CommandResult>;
+export type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;

@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent, evaluationRecorded, isEvaluationRecordedEvent, RuntimeGeneratedEvent,
+  DomainEvent, evaluationRecorded, isEvaluationRecordedEvent,
 } from '../domain-events';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -18,7 +18,7 @@ export type Command = {
 
 type CreateAppropriateEvents = (command: Command)
 => (events: ReadonlyArray<DomainEvent>)
-=> ReadonlyArray<RuntimeGeneratedEvent>;
+=> ReadonlyArray<DomainEvent>;
 
 const hasEvaluationAlreadyBeenRecorded = (evaluationLocator: ReviewId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,

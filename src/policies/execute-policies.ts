@@ -4,14 +4,14 @@ import { addArticleToElifeSubjectAreaLists, Ports as AddArticleToElifeSubjectAre
 import { Ports as AddArticleToEvaluatedArticlePorts, addArticleToEvaluatedArticlesList } from './add-article-to-evaluated-articles-list';
 import { createUserSavedArticlesListAsGenericList, Ports as CreateUserSavedArticlesListAsGenericListPorts } from './create-user-saved-articles-list-as-generic-list';
 import {
-  RuntimeGeneratedEvent,
+  DomainEvent,
 } from '../domain-events';
 
 type PoliciesPorts = AddArticleToEvaluatedArticlePorts
 & AddArticleToElifeSubjectAreaListsPorts
 & CreateUserSavedArticlesListAsGenericListPorts;
 
-type ExecutePolicies = (ports: PoliciesPorts) => (event: RuntimeGeneratedEvent) => T.Task<void>;
+type ExecutePolicies = (ports: PoliciesPorts) => (event: DomainEvent) => T.Task<void>;
 
 export const executePolicies: ExecutePolicies = (ports) => (event) => pipe(
   [

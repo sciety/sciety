@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 import { AddGroupCommand } from '../commands';
 import {
-  DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent, RuntimeGeneratedEvent,
+  DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent,
 } from '../domain-events';
 import * as GID from '../types/group-id';
 
@@ -16,7 +16,7 @@ const isSlugEqualIn = (
 
 type ExecuteCommand = (command: AddGroupCommand)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<string, ReadonlyArray<RuntimeGeneratedEvent>>;
+=> E.Either<string, ReadonlyArray<DomainEvent>>;
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
