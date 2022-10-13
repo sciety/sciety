@@ -6,6 +6,7 @@ import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../../src/domain-events';
 import { AddArticleToList, GetListsOwnedBy } from '../../src/shared-ports';
+import * as LOID from '../../src/types/list-owner-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -19,8 +20,11 @@ type Ports = {
 
 type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
-const toCommand = (event: UserSavedArticleEvent) => (
-  { articleId: event.articleId, listId: arbitraryListId() }
+const toCommand = (ports: Ports) => (event: UserSavedArticleEvent) => pipe(
+  event.userId,
+  LOID.fromUserId,
+  ports.getListsOwnedBy,
+  TE.map((lists) => ({ articleId: event.articleId, listId: lists[0].id })),
 );
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
@@ -28,8 +32,8 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
 ) => (event) => pipe(
   event,
   E.fromPredicate(isUserSavedArticleEvent, () => 'not interesting'),
-  E.map(toCommand),
   TE.fromEither,
+  TE.chainW(toCommand(ports)),
   TE.chain(ports.addArticleToList),
   TE.match(
     () => undefined,
@@ -68,7 +72,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(expect.anything());
       });
 
-      it.failing('calls the command with the generic list id owned by that user', () => {
+      it('calls the command with the generic list id owned by that user', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(
           expect.objectContaining({ listId }),
         );
