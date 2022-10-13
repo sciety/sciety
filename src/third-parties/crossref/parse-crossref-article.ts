@@ -1,11 +1,10 @@
 import { XMLSerializer } from '@xmldom/xmldom';
-import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Record';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer, articleServers } from '../../types/article-server';
+import { articleServersArray } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -102,13 +101,9 @@ export const getServer = flow(
   },
   O.fromNullable,
   O.chain((resource) => pipe(
-    articleServers,
-    R.filter((info) => resource.includes(`://${info.domain}`)),
-    R.keys,
-    A.match(
-      () => O.none,
-      (keys) => O.some(keys[0] as ArticleServer),
-    ),
+    articleServersArray,
+    RA.findFirst((info) => resource.includes(`://${info.domain}`)),
+    O.map((server) => server.id),
   )),
 );
 
