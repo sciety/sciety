@@ -5,14 +5,16 @@ import { pipe } from 'fp-ts/function';
 import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../../src/domain-events';
-import { AddArticleToList } from '../../src/shared-ports';
+import { AddArticleToList, GetListsOwnedBy } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type Ports = {
   addArticleToList: AddArticleToList,
+  getListsOwnedBy: GetListsOwnedBy,
 };
 
 type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
@@ -47,12 +49,17 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     describe('and the user has a generic list', () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryArticleId();
+      const listId = arbitraryListId();
 
       const event = userSavedArticle(userId, articleId);
 
       beforeEach(async () => {
         ports = {
           addArticleToList: jest.fn(defaultPorts.addArticleToList),
+          getListsOwnedBy: () => TE.right([{
+            ...arbitraryList(),
+            id: listId,
+          }]),
         };
         await addArticleToGenericListFromUserSavedArticle(ports)(event)();
       });
@@ -61,7 +68,11 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(expect.anything());
       });
 
-      it.todo('calls the command with the generic list id owned by that user');
+      it.failing('calls the command with the generic list id owned by that user', () => {
+        expect(ports.addArticleToList).toHaveBeenCalledWith(
+          expect.objectContaining({ listId }),
+        );
+      });
 
       it('calls the command with the article id in the UserSavedArticle event', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(expect.objectContaining({

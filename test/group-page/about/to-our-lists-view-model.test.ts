@@ -7,7 +7,8 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
-const arbitraryList = (): List => ({
+// eslint-disable-next-line jest/no-export
+export const arbitraryList = (): List => ({
   id: arbitraryListId(),
   name: arbitraryString(),
   description: arbitraryString(),
