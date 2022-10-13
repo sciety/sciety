@@ -67,12 +67,17 @@ type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
-const isFeedRelevantEvent = (event: DomainEvent) => (
-  isEvaluationRecordedEvent(event)
+const isFeedRelevantEvent = (event: DomainEvent) => ((process.env.EXPERIMENT_ENABLED === 'true')
+  ? (
+    isUserSavedArticleEvent(event)
+    || isUserFollowedEditorialCommunityEvent(event)
+    || isArticleAddedToListEvent(event)
+  )
+  : (
+    isEvaluationRecordedEvent(event)
     || isUserSavedArticleEvent(event)
     || isUserFollowedEditorialCommunityEvent(event)
-    || (process.env.EXPERIMENT_ENABLED === 'true' && isArticleAddedToListEvent(event))
-);
+  ));
 
 export const scietyFeedPage = (
   ports: Ports,
