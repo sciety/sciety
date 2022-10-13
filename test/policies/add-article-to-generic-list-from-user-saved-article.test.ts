@@ -2,7 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isUserSavedArticleEvent, userSavedArticle } from '../../src/domain-events';
+import {
+  DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
+} from '../../src/domain-events';
 import { AddArticleToList } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -15,12 +17,16 @@ type Ports = {
 
 type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
+const toCommand = (event: UserSavedArticleEvent) => (
+  { articleId: event.articleId, listId: arbitraryListId() }
+);
+
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
   ports,
 ) => (event) => pipe(
   event,
   E.fromPredicate(isUserSavedArticleEvent, () => 'not interesting'),
-  E.map((e) => ({ articleId: e.articleId, listId: arbitraryListId() })),
+  E.map(toCommand),
   TE.fromEither,
   TE.chain(ports.addArticleToList),
   TE.match(
