@@ -1,5 +1,6 @@
 import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
+import { Predicate } from 'fp-ts/Predicate';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
@@ -95,6 +96,12 @@ export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtml
   );
 };
 
+const keyOfFirstMatch = <K extends string, V>(predicate: Predicate<V>) => flow(
+  R.collect(stringOrd)((k: K, v: V) => ({ ...v, id: k })),
+  RA.findFirst(predicate),
+  O.map((server) => server.id),
+);
+
 export const getServer = flow(
   (doc: Document) => {
     const doiDataElement = getElement(doc, 'doi_data');
@@ -104,9 +111,7 @@ export const getServer = flow(
   O.fromNullable,
   O.chain((resource) => pipe(
     articleServers,
-    R.collect(stringOrd)((k, v) => ({ ...v, id: k })),
-    RA.findFirst((info) => resource.includes(`://${info.domain}`)),
-    O.map((server) => server.id),
+    keyOfFirstMatch((info) => resource.includes(`://${info.domain}`)),
   )),
 );
 
