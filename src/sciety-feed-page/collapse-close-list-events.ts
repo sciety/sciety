@@ -33,6 +33,7 @@ const replaceWithCollapseEvent = (
     type: 'CollapsedArticlesAddedToList',
     listId: event.listId,
     date: event.date,
+    articleCount: 2,
   });
 };
 

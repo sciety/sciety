@@ -11,6 +11,7 @@ export type CollapsedArticlesAddedToList = {
   type: 'CollapsedArticlesAddedToList',
   listId: ListId,
   date: Date,
+  articleCount: number,
 };
 
 const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
