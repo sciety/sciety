@@ -1,7 +1,16 @@
 import { performance } from 'perf_hooks';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+
+axiosRetry(axios, {
+  retries: 3,
+  onRetry: (retryCount: number, error, requestConfig) => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    process.stdout.write(`Retrying retryCount: ${retryCount}, error: ${error}, requestConfig: ${requestConfig}\n`);
+  },
+});
 
 const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string>) => {
   const startTime = performance.now();
