@@ -34,7 +34,7 @@ describe('collapse-close-list-events', () => {
     });
   });
 
-  describe('given consecutive events adding articles to the same list', () => {
+  describe('given two consecutive events adding articles to the same list', () => {
     const laterDate = new Date('2021-09-14 12:00');
     const earlierDate = new Date('2021-09-14 11:00');
     const myListId = arbitraryListId();
@@ -49,6 +49,58 @@ describe('collapse-close-list-events', () => {
 
     it('collapses into a single feed item', () => {
       expect(result).toHaveLength(1);
+    });
+
+    it('collapses into a CollapsedArticlesAddedToList item', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          type: 'CollapsedArticlesAddedToList',
+          listId: myListId,
+        },
+      )]);
+    });
+
+    it.failing('returns the number of article events collapsed', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          articleCount: 2,
+        },
+      )]);
+    });
+
+    it('returns the most recent date', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          date: laterDate,
+        },
+      )]);
+    });
+  });
+
+  describe('given three consecutive events adding articles to the same list', () => {
+    const laterDate = new Date('2021-09-14 12:00');
+    const earlierDate = new Date('2021-09-14 11:00');
+    const myListId = arbitraryListId();
+
+    const result = pipe(
+      [
+        articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
+        articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
+        articleAddedToList(arbitraryArticleId(), myListId, laterDate),
+      ],
+      collapseCloseListEvents,
+    );
+
+    it('collapses into a single feed item', () => {
+      expect(result).toHaveLength(1);
+    });
+
+    it.failing('returns the number of article events collapsed', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          articleCount: 3,
+        },
+      )]);
     });
 
     it('collapses into a CollapsedArticlesAddedToList item', () => {
