@@ -5,8 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
-  evaluationRecorded,
-  groupJoined, userFollowedEditorialCommunity,
+  articleAddedToList,
+  groupJoined, listCreated, userFollowedEditorialCommunity,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -16,14 +16,16 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
+import * as LOID from '../../src/types/list-owner-id';
 import {
-  arbitraryHtmlFragment, arbitraryUri, arbitraryWord,
+  arbitraryHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -43,60 +45,6 @@ describe('sciety-feed-page', () => {
       authors: O.none,
     }),
   };
-
-  it('renders collapsed single article evaluated events as a single card', async () => {
-    const articleId = arbitraryArticleId();
-    const ports = {
-      ...defaultPorts,
-      getAllEvents: T.of([
-        groupJoined(group),
-        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
-        evaluationRecorded(group.id, articleId, arbitraryReviewId()),
-      ]),
-    };
-    const renderedPage = await pipe(
-      scietyFeedPage(ports)(20)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
-
-    expect(renderedPage).toContain('evaluated an article');
-  });
-
-  it('renders collapsed multiple article evaluated events as a single card', async () => {
-    const ports = {
-      ...defaultPorts,
-      getAllEvents: T.of([
-        groupJoined(group),
-        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
-        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
-      ]),
-    };
-    const renderedPage = await pipe(
-      scietyFeedPage(ports)(20)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
-
-    expect(renderedPage).toContain('evaluated 2 articles');
-  });
-
-  it('renders a single evaluation as a card', async () => {
-    const ports = {
-      ...defaultPorts,
-      getAllEvents: T.of([
-        groupJoined(group),
-        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
-      ]),
-    };
-    const renderedPage = await pipe(
-      scietyFeedPage(ports)(20)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
-
-    expect(renderedPage).toContain('evaluated an article');
-  });
 
   it('renders a single saved article as a card', async () => {
     const ports = {
@@ -155,11 +103,13 @@ describe('sciety-feed-page', () => {
   });
 
   it('does not render non-feed events', async () => {
+    const listId = arbitraryListId();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
         groupJoined(group),
-        evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromGroupId(group.id)),
+        articleAddedToList(arbitraryArticleId(), listId),
         userUnsavedArticle(arbitraryUserId(), arbitraryArticleId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
         userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
