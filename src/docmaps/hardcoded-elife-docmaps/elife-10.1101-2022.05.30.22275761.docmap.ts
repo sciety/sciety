@@ -55,34 +55,37 @@ export const hardcodedElifeArticle: Docmap = {
             },
           ],
         },
-        {
-          participants: [
-            {
-              actor: { name: 'anonymous', type: 'person' },
-              role: 'peer-reviewer',
-            },
-          ],
-          outputs: [
-            {
-              type: 'review-article',
-              published: '2022-09-03T15:30:43.006Z',
-              content: [
-                {
-                  type: 'web-page',
-                  url: 'https://hypothes.is/a/X37jXiudEe2J6rMKTY3gyQ',
-                },
-                {
-                  type: 'web-page',
-                  url: 'https://sciety.org/articles/activity/10.1101/2022.05.30.22275761#hypothesis:X37jXiudEe2J6rMKTY3gyQ',
-                },
-                {
-                  type: 'web-content',
-                  url: 'https://sciety.org/evaluations/hypothesis:X37jXiudEe2J6rMKTY3gyQ/content',
-                },
-              ],
-            },
-          ],
-        },
+        /* This annotation has been removed from hypothes.is,
+         there is an evaluation recorded event in our database. To automatically
+        generate this docmap we will need to work out how to model this. */
+        // {
+        //   participants: [
+        //     {
+        //       actor: { name: 'anonymous', type: 'person' },
+        //       role: 'peer-reviewer',
+        //     },
+        //   ],
+        //   outputs: [
+        //     {
+        //       type: 'review-article',
+        //       published: '2022-09-03T15:30:43.006Z',
+        //       content: [
+        //         {
+        //           type: 'web-page',
+        //           url: 'https://hypothes.is/a/X37jXiudEe2J6rMKTY3gyQ',
+        //         },
+        //         {
+        //           type: 'web-page',
+        //           url: 'https://sciety.org/articles/activity/10.1101/2022.05.30.22275761#hypothesis:X37jXiudEe2J6rMKTY3gyQ',
+        //         },
+        //         {
+        //           type: 'web-content',
+        //           url: 'https://sciety.org/evaluations/hypothesis:X37jXiudEe2J6rMKTY3gyQ/content',
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
         {
           participants: [
             {
