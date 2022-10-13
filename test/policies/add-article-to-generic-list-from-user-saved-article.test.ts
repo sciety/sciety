@@ -1,7 +1,8 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, userSavedArticle } from '../../src/domain-events';
+import { DomainEvent, isUserSavedArticleEvent, userSavedArticle } from '../../src/domain-events';
 import { AddArticleToList } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -16,9 +17,12 @@ type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: Dom
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
   ports,
-) => () => pipe(
-  { articleId: arbitraryArticleId(), listId: arbitraryListId() },
-  ports.addArticleToList,
+) => (event) => pipe(
+  event,
+  E.fromPredicate(isUserSavedArticleEvent, () => 'not interesting'),
+  E.map((e) => ({ articleId: e.articleId, listId: arbitraryListId() })),
+  TE.fromEither,
+  TE.chain(ports.addArticleToList),
   TE.match(
     () => undefined,
     () => undefined,
@@ -53,7 +57,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
 
       it.todo('calls the command with the generic list id owned by that user');
 
-      it.failing('calls the command with the article id in the UserSavedArticle event', () => {
+      it('calls the command with the article id in the UserSavedArticle event', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(expect.objectContaining({
           articleId,
         }));
