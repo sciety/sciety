@@ -96,10 +96,11 @@ export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtml
   );
 };
 
-const keyOfFirstMatch = <K extends string, V>(predicate: Predicate<V>) => flow(
-  R.collect(stringOrd)((k: K, v: V) => ({ ...v, id: k })),
+const keyOfFirstMatch = <K extends string, V>(predicate: Predicate<V>) => (record: Record<K, V>): O.Option<K> => pipe(
+  record,
+  R.collect(stringOrd)((k: K, v: V) => ({ ...v, key: k })),
   RA.findFirst(predicate),
-  O.map((server) => server.id),
+  O.map(({ key }) => key),
 );
 
 export const getServer = flow(
