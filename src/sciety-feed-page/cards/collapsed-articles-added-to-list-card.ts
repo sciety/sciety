@@ -38,10 +38,10 @@ type CollapsedArticlesAddedToListCard = (
   ports: Ports,
 ) => (event: CollapsedArticlesAddedToList) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
-export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (event) => pipe(
+export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (collapsedEvents) => pipe(
   ports.getAllEvents,
   TE.rightTask,
-  TE.chain(getList(event.listId)),
+  TE.chain(getList(collapsedEvents.listId)),
   TE.chain(addListOwnerName(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
@@ -51,10 +51,10 @@ export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard 
   })),
   TE.map(
     (viewModel) => ({
-      titleText: `${viewModel.ownerName} added multiple articles to a list`,
-      linkUrl: `/lists/${event.listId}`,
+      titleText: `${viewModel.ownerName} added ${collapsedEvents.articleCount} articles to a list`,
+      linkUrl: `/lists/${collapsedEvents.listId}`,
       avatarUrl: viewModel.ownerAvatarUrl,
-      date: event.date,
+      date: collapsedEvents.date,
       details: {
         title: toHtmlFragment(viewModel.listName),
         content: toHtmlFragment(viewModel.listDescription),
