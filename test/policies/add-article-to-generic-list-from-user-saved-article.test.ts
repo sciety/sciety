@@ -1,9 +1,11 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, userSavedArticle } from '../../src/domain-events';
 import { AddArticleToList } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type Ports = {
@@ -13,7 +15,15 @@ type Ports = {
 type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
-) => () => T.of(undefined);
+  ports,
+) => () => pipe(
+  { articleId: arbitraryArticleId(), listId: arbitraryListId() },
+  ports.addArticleToList,
+  TE.match(
+    () => undefined,
+    () => undefined,
+  ),
+);
 
 describe('add-article-to-generic-list-from-user-saved-article', () => {
   const defaultPorts = {
@@ -37,7 +47,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
         await addArticleToGenericListFromUserSavedArticle(ports)(event)();
       });
 
-      it.failing('calls the AddArticleToList command', () => {
+      it('calls the AddArticleToList command', () => {
         expect(ports.addArticleToList).toHaveBeenCalledWith(expect.anything());
       });
 
