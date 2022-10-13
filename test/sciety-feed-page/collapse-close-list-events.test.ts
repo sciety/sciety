@@ -95,7 +95,7 @@ describe('collapse-close-list-events', () => {
       expect(result).toHaveLength(1);
     });
 
-    it.failing('returns the number of article events collapsed', () => {
+    it('returns the number of article events collapsed', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           articleCount: 3,

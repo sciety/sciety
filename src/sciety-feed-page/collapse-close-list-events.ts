@@ -24,17 +24,26 @@ const collapsesIntoPreviousEvent = (
 );
 
 const replaceWithCollapseEvent = (
-  state: Array<StateEntry>,
+  entriesSoFar: Array<StateEntry>,
   event: ArticleAddedToListEvent,
 ) => {
-  const current = state.pop();
-  if (!current) { return; }
-  state.push({
-    type: 'CollapsedArticlesAddedToList',
-    listId: event.listId,
-    date: event.date,
-    articleCount: 2,
-  });
+  const mostRecentEntry = entriesSoFar.pop();
+  if (!mostRecentEntry) { return; }
+  if (isArticleAddedToListEvent(mostRecentEntry)) {
+    entriesSoFar.push({
+      type: 'CollapsedArticlesAddedToList',
+      listId: event.listId,
+      date: event.date,
+      articleCount: 2,
+    });
+  } else if (isCollapsedArticlesAddedToList(mostRecentEntry)) {
+    entriesSoFar.push({
+      type: 'CollapsedArticlesAddedToList',
+      listId: event.listId,
+      date: event.date,
+      articleCount: mostRecentEntry.articleCount + 1,
+    });
+  }
 };
 
 const processEvent = (
