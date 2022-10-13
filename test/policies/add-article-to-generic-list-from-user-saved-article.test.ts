@@ -53,7 +53,11 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
 
       it.todo('calls the command with the generic list id owned by that user');
 
-      it.todo('calls the command with the article id in the UserSavedArticle event');
+      it.failing('calls the command with the article id in the UserSavedArticle event', () => {
+        expect(ports.addArticleToList).toHaveBeenCalledWith(expect.objectContaining({
+          articleId,
+        }));
+      });
     });
 
     describe('and the user does not have a generic list', () => {
