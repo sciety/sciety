@@ -137,6 +137,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
   return pipe(
     event.articleId,
     ports.getBiorxivOrMedrxivSubjectArea,
+    TE.mapLeft(() => 'Subject Area available from neither bioRxiv nor medRxiv'),
     TE.chain((subjectArea) => pipe(
       mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
       R.lookup(subjectArea),
