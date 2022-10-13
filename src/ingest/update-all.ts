@@ -124,7 +124,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
   }),
 );
 
-const updateGroup = (group: GroupIngestionConfiguration): T.Task<void> => pipe(
+const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
   group.fetchFeed({
     fetchData,
     fetchGoogleSheet,
@@ -138,13 +138,15 @@ const updateGroup = (group: GroupIngestionConfiguration): T.Task<void> => pipe(
     reportSkippedItems(group),
   ),
   TE.chainW(sendRecordEvaluationCommands(group)),
-  TE.match(
+  TE.bimap(
     report('error', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
   ),
 );
 
-export const updateAll = (groups: ReadonlyArray<GroupIngestionConfiguration>): T.Task<ReadonlyArray<void>> => pipe(
+export const updateAll = (
+  groups: ReadonlyArray<GroupIngestionConfiguration>,
+): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   groups,
-  T.traverseArray(updateGroup),
+  TE.traverseArray(updateGroup),
 );
