@@ -535,6 +535,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
         () => {
           context.status = StatusCodes.NOT_FOUND;
           context.body = { message: 'No such hardcoded docmap.' };
+          ports.logger('error', 'No such hardcoded docmap.', { doi: context.params.doi });
         },
         (json) => {
           context.response.status = 200;
