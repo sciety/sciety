@@ -20,10 +20,22 @@ export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task
   ({
     id, type, date, ...payload
   }) => [id, type, date, payload],
-  (values) => async () => pool.query(
-    'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-    values,
-  ),
+  (values) => async () => {
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query(
+        'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+        values,
+      );
+      await client.query('COMMIT');
+    } catch (e: unknown) {
+      await client.query('ROLLBACK');
+      throw e;
+    } finally {
+      client.release();
+    }
+  },
   T.map(() => undefined),
 );
 
