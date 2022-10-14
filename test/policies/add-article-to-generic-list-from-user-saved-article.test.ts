@@ -79,6 +79,14 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       });
     });
 
+    describe('and the user has a generic list, but the command fails', () => {
+      it.todo('logs an error');
+    });
+
+    describe('and the user has a generic list, but the adapter for that information fails', () => {
+      it.todo('logs an error');
+    });
+
     describe('and the user does not have a generic list', () => {
       it.todo('logs an error');
     });
