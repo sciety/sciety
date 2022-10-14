@@ -53,7 +53,7 @@ describe('article-added-to-list-card', () => {
         )();
       });
 
-      it.failing('includes the user\'s handle in the title text', async () => {
+      it('includes the user\'s handle in the title text', async () => {
         expect(viewModel.titleText).toContain(handle);
       });
 

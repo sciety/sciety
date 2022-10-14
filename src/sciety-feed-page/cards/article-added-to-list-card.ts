@@ -7,9 +7,16 @@ import { getGroup } from '../../shared-read-models/groups';
 import { getList, List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { UserId } from '../../types/user-id';
+
+type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
+  handle: string,
+  avatarUrl: string,
+}>;
 
 type Ports = {
   getAllEvents: GetAllEvents,
+  getUserDetails: GetUserDetails,
 };
 
 const addListOwnerName = (ports: Ports) => (list: List) => {
@@ -26,11 +33,27 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
         })),
       );
     case 'user-id':
-      return TE.right({
-        ...list,
-        ownerName: 'A user',
-        ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-      });
+      return pipe(
+        list.ownerId.value,
+        ports.getUserDetails,
+        TE.match(
+          () => (
+            {
+              ...list,
+              ownerName: 'A user',
+              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+            }
+          ),
+          (userDetails) => (
+            {
+              ...list,
+              ownerName: userDetails.handle,
+              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+            }
+          ),
+        ),
+        TE.rightTask,
+      );
   }
 };
 
