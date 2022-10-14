@@ -3,14 +3,7 @@ import { RedisStore, setupCache } from 'axios-cache-adapter';
 import redis from 'redis';
 import { Logger } from './logger';
 
-type GetCachedAxiosRequest = (logger: Logger, maxAge?: number)
-=> <U>(url: string, headers?: Record<string, string>)
-=> Promise<U>;
-
-export const getCachedAxiosRequest: GetCachedAxiosRequest = (
-  logger: Logger,
-  maxAge = 24 * 60 * 60 * 1000,
-) => {
+const createCacheAdapter = (maxAge: number) => {
   let store;
   if (process.env.APP_CACHE === 'redis') {
     const client = redis.createClient({
@@ -22,12 +15,23 @@ export const getCachedAxiosRequest: GetCachedAxiosRequest = (
     maxAge,
     store,
   });
-  const api = axios.create({
-    adapter: cache.adapter,
+  return cache.adapter;
+};
+
+type GetCachedAxiosRequest = (logger: Logger, maxAge?: number)
+=> <U>(url: string, headers?: Record<string, string>)
+=> Promise<U>;
+
+export const getCachedAxiosRequest: GetCachedAxiosRequest = (
+  logger: Logger,
+  maxAge = 24 * 60 * 60 * 1000,
+) => {
+  const cachedAxios = axios.create({
+    adapter: createCacheAdapter(maxAge),
   });
   return async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
     const startTime = new Date();
-    const response = await api.get<U>(url, { headers });
+    const response = await cachedAxios.get<U>(url, { headers });
     if (response.request.fromCache) {
       logger('debug', 'Axios cache hit', {
         url,
