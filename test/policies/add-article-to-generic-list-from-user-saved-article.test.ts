@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
+  DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent, userUnsavedArticle,
 } from '../../src/domain-events';
 import { AddArticleToList, GetListsOwnedBy } from '../../src/shared-ports';
 import * as LOID from '../../src/types/list-owner-id';
@@ -42,6 +42,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
   const defaultPorts = {
     addArticleToList: () => TE.right(undefined),
     logger: dummyLogger,
+    getListsOwnedBy: () => TE.right([]),
   };
 
   let ports: Ports;
@@ -93,6 +94,19 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
   });
 
   describe('when any other event is received', () => {
-    it.todo('does not call the AddArticleToList command');
+    const event = userUnsavedArticle(arbitraryUserId(), arbitraryArticleId());
+    const adapters = {
+      ...defaultPorts,
+      addArticleToList: jest.fn(defaultPorts.addArticleToList),
+
+    };
+
+    beforeEach(async () => {
+      await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+    });
+
+    it('does not call the AddArticleToList command', () => {
+      expect(adapters.addArticleToList).not.toHaveBeenCalled();
+    });
   });
 });
