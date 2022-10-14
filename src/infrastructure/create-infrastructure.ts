@@ -68,6 +68,13 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
         payload jsonb,
         PRIMARY KEY (id)
       );
+      CREATE TABLE IF NOT EXISTS outbox (
+        id uuid,
+        type varchar,
+        date timestamp,
+        payload jsonb,
+        PRIMARY KEY (id)
+      );
     `),
   identity,
 );
