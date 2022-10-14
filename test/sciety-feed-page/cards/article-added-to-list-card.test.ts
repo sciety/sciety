@@ -57,7 +57,7 @@ describe('article-added-to-list-card', () => {
         expect(viewModel.titleText).toContain(handle);
       });
 
-      it.failing('includes the user\'s avatar', async () => {
+      it('includes the user\'s avatar', async () => {
         expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
       });
 

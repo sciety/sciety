@@ -48,7 +48,7 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
             {
               ...list,
               ownerName: userDetails.handle,
-              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+              ownerAvatarUrl: userDetails.avatarUrl,
             }
           ),
         ),
