@@ -28,6 +28,10 @@ export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task
         'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
         values,
       );
+      await client.query(
+        'INSERT INTO outbox (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+        values,
+      );
       await client.query('COMMIT');
     } catch (e: unknown) {
       await client.query('ROLLBACK');
