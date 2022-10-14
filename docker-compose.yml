@@ -50,6 +50,18 @@ services:
       - '8081:80'
     restart: "no"
 
+  events_publisher:
+    container_name: sciety_events_publisher
+    build:
+      context: .
+    environment:
+      EXPERIMENT_ENABLED: "true"
+      PGUSER: user
+      PGHOST: db
+      PGPASSWORD: secret
+      PGDATABASE: sciety
+    restart: "no"
+
   db:
     container_name: sciety_db
     image: postgres:12.3-alpine

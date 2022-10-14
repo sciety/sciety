@@ -27,3 +27,10 @@ services:
     volumes:
       - './src:/app/src'
     
+  events_publisher:
+    build:
+      target: dev
+    image: ${IMAGE}:${IMAGE_TAG}-dev
+    command: "npx ts-node-dev --transpile-only src/events-publisher"
+    volumes:
+      - './src:/app/src'

@@ -16,3 +16,9 @@ services:
     image: ${IMAGE}:${IMAGE_TAG}
     command: "node ./build/lists-service/index.js"
 
+  events_publisher:
+    build:
+      target: prod
+    image: ${IMAGE}:${IMAGE_TAG}
+    command: "node ./build/events-publisher.js"
+
