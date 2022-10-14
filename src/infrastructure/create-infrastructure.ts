@@ -141,7 +141,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const getAllEvents = T.of(events);
       const fetchers = {
         doi: fetchZenodoRecord(getJson, logger),
-        hypothesis: fetchHypothesisAnnotation(getJson, logger),
+        hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(logger), logger),
         ncrc: fetchNcrcReview(logger),
         prelights: fetchPrelightsHighlight(getHtml(logger)),
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),

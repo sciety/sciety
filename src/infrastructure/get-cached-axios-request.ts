@@ -21,7 +21,7 @@ const api = axios.create({
 
 export const getCachedAxiosRequest = (
   logger: Logger,
-) => async <U>(url: string, headers: Record<string, string>): Promise<U> => {
+) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
   const response = await api.get<U>(url, { headers });
   if (response.request.fromCache) {
