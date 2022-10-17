@@ -8,14 +8,13 @@ import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderAsHtml } from './render-as-html';
+import { renderAsHtml, toErrorPage } from './render-as-html';
 import { renderSaveArticle } from './render-save-article';
 import { DomainEvent } from '../domain-events';
 import { ArticleAuthors } from '../types/article-authors';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -42,15 +41,6 @@ type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
-
-const toErrorPage = (error: DE.DataError) => ({
-  type: error,
-  message: toHtmlFragment(`
-    The title and authors for this article are not available from our external data provider. 
-    We will be able to show you this page once the data becomes available.
-    We are sorry for the inconvenience. <a href="https://go.sciety.org/rprterrorpg">Report this error to us.</a>
-  `),
-});
 
 export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   {
