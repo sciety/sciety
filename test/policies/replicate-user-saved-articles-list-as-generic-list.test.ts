@@ -65,7 +65,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
   describe.each([
     ['UserSavedArticle',
       userSavedArticle(userId, articleId),
-      'addArticleToList'],
+      'addArticleToList' as const],
   ])('when a %s event is received', (eventName, event, relevantCommand) => {
     describe('and the user has a generic list', () => {
       beforeEach(async () => {
