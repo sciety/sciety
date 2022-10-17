@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { feedSummary } from '../../../src/article-page/construct-view-model/feed-summary';
 import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../helpers';
-import * as RFI from '../render-as-html/review-feed-item.helper';
+import * as RFI from '../review-feed-item.helper';
 
 const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) => ({
   type: 'article-version' as const,
