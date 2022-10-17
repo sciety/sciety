@@ -9,7 +9,6 @@ import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderArticleAbstract } from './render-article-abstract';
 import { renderArticleActions, renderFullArticleLink } from './render-article-actions';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderPage } from './render-page';
@@ -91,7 +90,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
         }),
         mainContent: renderFeed(feedItemsByDateDescending),
-        articleAbstract: renderArticleAbstract(articleDetails),
+        articleAbstract: articleDetails.abstract,
       })),
     )),
   ),

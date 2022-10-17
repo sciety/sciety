@@ -9,7 +9,10 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     ${renderAuthors(viewmodel.authors)}
   </header>
   ${viewmodel.articleActions}
-  ${viewmodel.articleAbstract}
+  <section role="doc-abstract" class="article-abstract">
+    <h2>Abstract</h2>
+    <div${langAttributeFor(viewmodel.articleAbstract)}>${viewmodel.articleAbstract}</div>
+  </section>
   <div class="main-content">
     ${viewmodel.mainContent}
   </div>
