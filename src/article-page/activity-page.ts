@@ -18,6 +18,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -40,6 +41,12 @@ type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
+
+const userListUrl = (userId: O.Option<UserId>, hasUserSavedArticle: boolean) => pipe(
+  userId,
+  O.filter(() => hasUserSavedArticle),
+  O.map((u) => `/users/${u}/lists`),
+);
 
 export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   {
@@ -69,6 +76,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         doi,
         userId,
         hasUserSavedArticle,
+        userListUrl: userListUrl(userId, hasUserSavedArticle),
         title: articleDetails.title,
         authors: articleDetails.authors,
         fullArticleUrl: `https://doi.org/${doi.value}`,

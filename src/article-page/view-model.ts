@@ -9,6 +9,7 @@ export type ViewModel = {
   hasUserSavedArticle: boolean,
   doi: Doi,
   title: string,
+  userListUrl: O.Option<string>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   articleAbstract: HtmlFragment,
