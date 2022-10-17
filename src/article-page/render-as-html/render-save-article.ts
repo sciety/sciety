@@ -3,11 +3,8 @@ import { pipe } from 'fp-ts/function';
 import { renderSaveForm } from '../../save-article/render-save-form';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserId } from '../../types/user-id';
 
 type ViewModel = {
-  userId: O.Option<UserId>,
-  hasUserSavedArticle: boolean,
   doi: Doi,
   userListUrl: O.Option<string>,
 };
