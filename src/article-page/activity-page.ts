@@ -79,8 +79,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
-        doi,
-        articleDetails,
         feedItemsByDateDescending,
         title: articleDetails.title,
         authors: articleDetails.authors,
