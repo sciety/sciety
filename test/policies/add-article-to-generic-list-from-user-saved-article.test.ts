@@ -105,7 +105,20 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user has a generic list, but the adapter for that information fails', () => {
-      it.todo('logs an error');
+      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
+
+      beforeEach(async () => {
+        ports = {
+          addArticleToList: defaultPorts.addArticleToList,
+          getListsOwnedBy: () => TE.left(DE.unavailable),
+          logger: jest.fn(dummyLogger),
+        };
+        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+      });
+
+      it('logs an error', () => {
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
 
     describe('and the user does not have a generic list', () => {
