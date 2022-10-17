@@ -25,13 +25,12 @@ const toCommand = (ports: Ports) => (event: UserSavedArticleEvent) => pipe(
   event.userId,
   LOID.fromUserId,
   ports.getListsOwnedBy,
-  TE.chain(
-    RA.match(
-      () => TE.left('user has no generic list'),
-      (lists) => TE.right({ articleId: event.articleId, listId: lists[0].id }),
-    ),
-  ),
-
+  TE.map(RA.head),
+  TE.chainW(TE.fromOption(() => 'user has no generic list' as const)),
+  TE.map((list) => ({
+    articleId: event.articleId,
+    listId: list.id,
+  })),
 );
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
