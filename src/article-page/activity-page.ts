@@ -12,7 +12,6 @@ import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { renderArticleAbstract } from './render-article-abstract';
 import { renderArticleActions, renderFullArticleLink } from './render-article-actions';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
-import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { renderSaveArticle } from './render-save-article';
 import { DomainEvent } from '../domain-events';
