@@ -6,7 +6,7 @@ import { collapsedArticlesAddedToListCard } from '../../../src/sciety-feed-page/
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -20,11 +20,12 @@ describe('collapsed-articles-added-to-list-card', () => {
     const userId = arbitraryUserId();
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
+    const articleCount = arbitraryNumber(2, 10);
     const event = {
       type: 'CollapsedArticlesAddedToList' as const,
       listId,
       date,
-      articleCount: 2,
+      articleCount,
     };
     const getAllEvents = T.of([
       listCreated(
@@ -72,7 +73,9 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.linkUrl).toBe(`/users/${handle}/lists/saved-articles`);
       });
 
-      it.todo('includes the article count');
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
+      });
     });
 
     describe('when user details are unavailable', () => {
@@ -108,7 +111,9 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.linkUrl).toBe(`/users/${userId}/lists/saved-articles`);
       });
 
-      it.todo('includes the article count');
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
+      });
     });
   });
 });
