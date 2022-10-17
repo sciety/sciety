@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -9,22 +8,9 @@ import { templateDate } from '../../shared-components/date';
 import { langAttributeFor } from '../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/review-id';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { ReviewFeedItem } from '../view-model';
 
 type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
-
-export type ReviewFeedItem = {
-  type: 'review',
-  id: RI.ReviewId,
-  source: O.Option<URL>,
-  publishedAt: Date,
-  groupName: string,
-  groupHref: string,
-  groupAvatar: string,
-  fullText: O.Option<SanitisedHtmlFragment>,
-  counts: { helpfulCount: number, notHelpfulCount: number },
-  current: O.Option<'helpful' | 'not-helpful'>,
-};
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
