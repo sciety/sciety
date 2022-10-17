@@ -97,16 +97,16 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   ),
   TE.bimap(
     toErrorPage,
-    (components) => ({
-      content: renderPage(components),
-      title: striptags(components.articleDetails.title),
+    (viewmodel) => ({
+      content: renderPage(viewmodel),
+      title: striptags(viewmodel.articleDetails.title),
       description: pipe(
-        articleMetaTagContent(components.feedItemsByDateDescending),
+        articleMetaTagContent(viewmodel.feedItemsByDateDescending),
         renderDescriptionMetaTagContent,
       ),
       openGraph: {
-        title: striptags(components.articleDetails.title),
-        description: striptags(components.articleDetails.abstract),
+        title: striptags(viewmodel.articleDetails.title),
+        description: striptags(viewmodel.articleDetails.abstract),
       },
     }),
   ),
