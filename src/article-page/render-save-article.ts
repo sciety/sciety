@@ -6,14 +6,17 @@ import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-// TODO overload so if `userId` is `O.None` `hasUserSavedArticle` must be `false`
-type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>, hasUserSavedArticle: boolean) => HtmlFragment;
+type ViewModel = {
+  userId: O.Option<UserId>,
+  hasUserSavedArticle: boolean,
+  doi: Doi,
+};
 
-export const renderSaveArticle: RenderSaveArticle = (doi, userId, hasUserSavedArticle) => pipe(
-  userId,
-  O.filter(constant(hasUserSavedArticle)),
+export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
+  viewmodel.userId,
+  O.filter(constant(viewmodel.hasUserSavedArticle)),
   O.fold(
-    () => renderSaveForm(doi),
+    () => renderSaveForm(viewmodel.doi),
     (u) => renderSavedLink(u),
   ),
 );

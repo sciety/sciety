@@ -9,7 +9,6 @@ import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { renderAsHtml, toErrorPage } from './render-as-html';
-import { renderSaveArticle } from './render-save-article';
 import { DomainEvent } from '../domain-events';
 import { ArticleAuthors } from '../types/article-authors';
 import { ArticleServer } from '../types/article-server';
@@ -67,12 +66,12 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
+        doi,
+        userId,
+        hasUserSavedArticle,
         title: articleDetails.title,
         authors: articleDetails.authors,
         fullArticleUrl: `https://doi.org/${doi.value}`,
-        articleActions: {
-          saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
-        },
         mainContent: renderFeed(feedItemsByDateDescending),
         articleAbstract: articleDetails.abstract,
         ...articleMetaTagContent(feedItemsByDateDescending),
