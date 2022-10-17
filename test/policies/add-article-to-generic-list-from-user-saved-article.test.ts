@@ -50,27 +50,26 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
 );
 
 describe('add-article-to-generic-list-from-user-saved-article', () => {
-  const defaultAdapters = {
+  const userId = arbitraryUserId();
+  const articleId = arbitraryArticleId();
+  const genericListOwnedByUser = arbitraryList();
+
+  const happyPathAdapters = {
     addArticleToList: () => TE.right(undefined),
     logger: dummyLogger,
-    getListsOwnedBy: () => TE.right([]),
+    getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
   };
 
   let adapters: Ports;
 
   describe('when a UserSavedArticle event is received', () => {
+    const event = userSavedArticle(userId, articleId);
+
     describe('and the user has a generic list', () => {
-      const userId = arbitraryUserId();
-      const articleId = arbitraryArticleId();
-      const genericListOwnedByUser = arbitraryList();
-
-      const event = userSavedArticle(userId, articleId);
-
       beforeEach(async () => {
         adapters = {
-          addArticleToList: jest.fn(defaultAdapters.addArticleToList),
-          getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
-          logger: dummyLogger,
+          ...happyPathAdapters,
+          addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
         };
         await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
@@ -93,13 +92,10 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user has a generic list, but the command fails', () => {
-      const genericListOwnedByUser = arbitraryList();
-      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
-
       beforeEach(async () => {
         adapters = {
+          ...happyPathAdapters,
           addArticleToList: () => TE.left(arbitraryDataError()),
-          getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
           logger: jest.fn(dummyLogger),
         };
         await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
@@ -111,11 +107,9 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user has a generic list, but the adapter for that information fails', () => {
-      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
-
       beforeEach(async () => {
         adapters = {
-          addArticleToList: defaultAdapters.addArticleToList,
+          ...happyPathAdapters,
           getListsOwnedBy: () => TE.left(arbitraryDataError()),
           logger: jest.fn(dummyLogger),
         };
@@ -128,11 +122,9 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user does not have a generic list', () => {
-      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
-
       beforeEach(async () => {
         adapters = {
-          addArticleToList: defaultAdapters.addArticleToList,
+          ...happyPathAdapters,
           getListsOwnedBy: () => TE.right([]),
           logger: jest.fn(dummyLogger),
         };
@@ -150,8 +142,8 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
 
     beforeEach(async () => {
       adapters = {
-        ...defaultAdapters,
-        addArticleToList: jest.fn(defaultAdapters.addArticleToList),
+        ...happyPathAdapters,
+        addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
       };
       await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
     });
