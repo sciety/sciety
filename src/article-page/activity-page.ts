@@ -3,14 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
-import striptags from 'striptags';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './activity-feed/get-article-feed-events';
 import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
-import { renderPage } from './render-page';
+import { renderAsHtml } from './render-as-html';
 import { renderSaveArticle } from './render-save-article';
 import { DomainEvent } from '../domain-events';
 import { ArticleAuthors } from '../types/article-authors';
@@ -91,16 +89,5 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       })),
     )),
   ),
-  TE.bimap(
-    toErrorPage,
-    (viewmodel) => ({
-      content: renderPage(viewmodel),
-      title: striptags(viewmodel.title),
-      description: renderDescriptionMetaTagContent(viewmodel),
-      openGraph: {
-        title: striptags(viewmodel.title),
-        description: striptags(viewmodel.articleAbstract),
-      },
-    }),
-  ),
+  TE.bimap(toErrorPage, renderAsHtml),
 );
