@@ -1,12 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { CollapsedArticlesAddedToList, StateEntry } from './collapse-close-events';
+import { isCollapsedArticlesAddedToList, StateEntry } from './collapse-close-events';
 import {
   ArticleAddedToListEvent, isArticleAddedToListEvent,
 } from '../domain-events';
-
-export const isCollapsedArticlesAddedToList = (
-  entry: StateEntry,
-): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
 
 const collapsesIntoPreviousEvent = (
   state: ReadonlyArray<StateEntry>, event: ArticleAddedToListEvent,

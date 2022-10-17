@@ -9,8 +9,8 @@ import {
 import { collapsedArticlesAddedToListCard } from './cards/collapsed-articles-added-to-list-card';
 import {
   CollapsedArticlesAddedToList,
+  isCollapsedArticlesAddedToList,
 } from './collapse-close-events';
-import { isCollapsedArticlesAddedToList } from './collapse-close-list-events';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,

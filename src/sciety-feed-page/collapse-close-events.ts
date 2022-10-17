@@ -8,4 +8,8 @@ export type CollapsedArticlesAddedToList = {
   articleCount: number,
 };
 
+export const isCollapsedArticlesAddedToList = (
+  entry: StateEntry,
+): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
+
 export type StateEntry = DomainEvent | CollapsedArticlesAddedToList;
