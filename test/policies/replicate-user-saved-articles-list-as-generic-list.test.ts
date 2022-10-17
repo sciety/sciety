@@ -13,8 +13,11 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
+type RemoveArticleFromList = () => TE.TaskEither<string, void>;
+
 type Ports = {
   addArticleToList: AddArticleToList,
+  removeArticleFromList: RemoveArticleFromList,
   getListsOwnedBy: GetListsOwnedBy,
   logger: Logger,
 };
@@ -56,6 +59,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
 
   const happyPathAdapters = {
     addArticleToList: () => TE.right(undefined),
+    removeArticleFromList: () => TE.right(undefined),
     logger: dummyLogger,
     getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
   };
@@ -146,12 +150,14 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       adapters = {
         ...happyPathAdapters,
         addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
+        removeArticleFromList: jest.fn(happyPathAdapters.removeArticleFromList),
       };
       await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
     });
 
-    it('does not call the RemoveArticleFromList command', () => {
+    it('does not call any command', () => {
       expect(adapters.addArticleToList).not.toHaveBeenCalled();
+      expect(adapters.removeArticleFromList).not.toHaveBeenCalled();
     });
   });
 });
