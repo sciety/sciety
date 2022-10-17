@@ -73,12 +73,22 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       'addArticleToList' as const],
   ])('when a %s event is received', (eventName, event, relevantCommand) => {
     describe('and the user has a generic list', () => {
-      beforeEach(async () => {
+      const addArticleToList = jest.fn(happyPathAdapters.addArticleToList);
+      const removeArticleFromList = jest.fn(happyPathAdapters.removeArticleFromList);
+
+      beforeAll(async () => {
         adapters = {
           ...happyPathAdapters,
-          addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
+          addArticleToList,
+          removeArticleFromList,
         };
         await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
+      });
+
+      it('calls one command once', () => {
+        const totalCommandCalls = addArticleToList.mock.calls.length + removeArticleFromList.mock.calls.length;
+
+        expect(totalCommandCalls).toBe(1);
       });
 
       it('calls the relevant command', () => {
