@@ -59,7 +59,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
           constant(T.of(false)),
           (u) => pipe(
             ports.getAllEvents,
-            projectHasUserSavedArticle(doi, u),
+            T.map(projectHasUserSavedArticle(doi, u)),
           ),
         ),
         TE.rightTask,
