@@ -2,6 +2,7 @@ import { renderAuthors } from './render-authors';
 import { renderSaveArticle } from './render-save-article';
 import { langAttributeFor } from '../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderFeed } from '../activity-feed/render-feed';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
@@ -18,6 +19,6 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     <div${langAttributeFor(viewmodel.articleAbstract)}>${viewmodel.articleAbstract}</div>
   </section>
   <div class="main-content">
-    ${viewmodel.mainContent}
+    ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
 `);

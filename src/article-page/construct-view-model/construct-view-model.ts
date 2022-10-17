@@ -13,7 +13,6 @@ import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from '../activity-feed/get-article-feed-events';
 import { FetchReview } from '../activity-feed/get-feed-events-content';
-import { renderFeed } from '../activity-feed/render-feed';
 import { articleMetaTagContent } from '../article-meta-tag-content';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { ViewModel } from '../view-model';
@@ -76,7 +75,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         title: articleDetails.title,
         authors: articleDetails.authors,
         fullArticleUrl: `https://doi.org/${doi.value}`,
-        mainContent: renderFeed(feedItemsByDateDescending),
+        feedItemsByDateDescending,
         articleAbstract: articleDetails.abstract,
         ...articleMetaTagContent(feedItemsByDateDescending),
       })),
