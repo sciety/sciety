@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -24,7 +25,13 @@ const toCommand = (ports: Ports) => (event: UserSavedArticleEvent) => pipe(
   event.userId,
   LOID.fromUserId,
   ports.getListsOwnedBy,
-  TE.map((lists) => ({ articleId: event.articleId, listId: lists[0].id })),
+  TE.chain(
+    RA.match(
+      () => TE.left('user has no generic list'),
+      (lists) => TE.right({ articleId: event.articleId, listId: lists[0].id }),
+    ),
+  ),
+
 );
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
@@ -122,7 +129,20 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user does not have a generic list', () => {
-      it.todo('logs an error');
+      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
+
+      beforeEach(async () => {
+        ports = {
+          addArticleToList: defaultPorts.addArticleToList,
+          getListsOwnedBy: () => TE.right([]),
+          logger: jest.fn(dummyLogger),
+        };
+        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+      });
+
+      it('logs an error', () => {
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
   });
 
