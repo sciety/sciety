@@ -43,7 +43,6 @@ const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
   TE.map((list) => ({
     articleId: event.articleId,
     listId: list.id,
-    type: event.type,
   })),
 );
 
@@ -58,11 +57,18 @@ const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArticleList
 ) => (event) => pipe(
   event,
   TE.fromPredicate(isRelevantEvent, () => 'not interesting'),
-  TE.chainW(toCommand(adapters)),
-  TE.chain((command) => {
-    switch (command.type) {
-      case 'UserUnsavedArticle': return adapters.removeArticleFromList(command);
-      case 'UserSavedArticle': return adapters.addArticleToList(command);
+  TE.chain((relevantEvent) => {
+    switch (relevantEvent.type) {
+      case 'UserUnsavedArticle': return pipe(
+        relevantEvent,
+        toCommand(adapters),
+        TE.chain(adapters.removeArticleFromList),
+      );
+      case 'UserSavedArticle': return pipe(
+        relevantEvent,
+        toCommand(adapters),
+        TE.chain(adapters.addArticleToList),
+      );
     }
   }),
   TE.match(
