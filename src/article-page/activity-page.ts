@@ -79,7 +79,6 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
-        feedItemsByDateDescending,
         title: articleDetails.title,
         authors: articleDetails.authors,
         fullArticleUrl: `https://doi.org/${doi.value}`,
@@ -88,6 +87,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         },
         mainContent: renderFeed(feedItemsByDateDescending),
         articleAbstract: articleDetails.abstract,
+        ...articleMetaTagContent(feedItemsByDateDescending),
       })),
     )),
   ),
@@ -96,10 +96,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     (viewmodel) => ({
       content: renderPage(viewmodel),
       title: striptags(viewmodel.title),
-      description: pipe(
-        articleMetaTagContent(viewmodel.feedItemsByDateDescending),
-        renderDescriptionMetaTagContent,
-      ),
+      description: renderDescriptionMetaTagContent(viewmodel),
       openGraph: {
         title: striptags(viewmodel.title),
         description: striptags(viewmodel.articleAbstract),
