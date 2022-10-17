@@ -35,7 +35,10 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
   TE.chainW(toCommand(ports)),
   TE.chain(ports.addArticleToList),
   TE.match(
-    () => undefined,
+    (reason) => {
+      ports.logger('error', 'addArticleToGenericListFromUserSavedArticle policy failed', { reason, event });
+      return undefined;
+    },
     () => undefined,
   ),
 );
@@ -96,7 +99,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
         await addArticleToGenericListFromUserSavedArticle(ports)(event)();
       });
 
-      it.failing('logs an error', () => {
+      it('logs an error', () => {
         expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
       });
     });
