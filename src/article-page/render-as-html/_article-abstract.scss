@@ -1,5 +1,5 @@
-@use '../sass/baseline';
-@use '../sass/card';
+@use '../../sass/baseline';
+@use '../../sass/card';
 
 .article-abstract {
   @include card.basics();
