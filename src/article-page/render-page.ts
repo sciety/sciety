@@ -9,7 +9,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     ${renderAuthors(viewmodel.authors)}
   </header>
   <div class="article-actions">
-    ${viewmodel.articleActions.fullArticleLink}
+    <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
     ${viewmodel.articleActions.saveArticle}
   </div>
   <section role="doc-abstract" class="article-abstract">

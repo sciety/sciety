@@ -9,7 +9,6 @@ import { FetchReview } from './activity-feed/get-feed-events-content';
 import { renderFeed } from './activity-feed/render-feed';
 import { articleMetaTagContent } from './article-meta-tag-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderFullArticleLink } from './render-article-actions';
 import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderPage } from './render-page';
 import { renderSaveArticle } from './render-save-article';
@@ -85,8 +84,8 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         feedItemsByDateDescending,
         title: articleDetails.title,
         authors: articleDetails.authors,
+        fullArticleUrl: `https://doi.org/${doi.value}`,
         articleActions: {
-          fullArticleLink: renderFullArticleLink(doi),
           saveArticle: renderSaveArticle(doi, userId, hasUserSavedArticle),
         },
         mainContent: renderFeed(feedItemsByDateDescending),

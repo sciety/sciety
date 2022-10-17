@@ -4,8 +4,8 @@ import { HtmlFragment } from '../types/html-fragment';
 export type ViewModel = {
   title: string,
   authors: ArticleAuthors,
+  fullArticleUrl: string,
   articleActions: {
-    fullArticleLink: HtmlFragment,
     saveArticle: HtmlFragment,
   },
   articleAbstract: HtmlFragment,
