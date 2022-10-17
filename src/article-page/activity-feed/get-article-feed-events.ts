@@ -13,7 +13,7 @@ import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { UserId } from '../../types/user-id';
-import { FeedItem } from '../render-as-html/render-feed';
+import { FeedItem } from '../view-model';
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,

@@ -15,7 +15,7 @@ import { ReviewId } from '../../types/review-id';
 import * as RI from '../../types/review-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
-import { FeedItem } from '../render-as-html/render-feed';
+import { FeedItem } from '../view-model';
 
 type ReviewEvent = {
   type: 'review',
