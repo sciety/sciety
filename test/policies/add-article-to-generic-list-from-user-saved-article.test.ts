@@ -4,7 +4,8 @@ import { pipe } from 'fp-ts/function';
 import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent, userUnsavedArticle,
 } from '../../src/domain-events';
-import { AddArticleToList, GetListsOwnedBy } from '../../src/shared-ports';
+import { AddArticleToList, GetListsOwnedBy, Logger } from '../../src/shared-ports';
+import * as DE from '../../src/types/data-error';
 import * as LOID from '../../src/types/list-owner-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
@@ -14,6 +15,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 type Ports = {
   addArticleToList: AddArticleToList,
   getListsOwnedBy: GetListsOwnedBy,
+  logger: Logger,
 };
 
 type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
@@ -59,6 +61,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
         ports = {
           addArticleToList: jest.fn(defaultPorts.addArticleToList),
           getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
+          logger: dummyLogger,
         };
         await addArticleToGenericListFromUserSavedArticle(ports)(event)();
       });
@@ -81,7 +84,21 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
     });
 
     describe('and the user has a generic list, but the command fails', () => {
-      it.todo('logs an error');
+      const genericListOwnedByUser = arbitraryList();
+      const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
+
+      beforeEach(async () => {
+        ports = {
+          addArticleToList: () => TE.left(DE.unavailable),
+          getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
+          logger: jest.fn(dummyLogger),
+        };
+        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+      });
+
+      it.failing('logs an error', () => {
+        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
 
     describe('and the user has a generic list, but the adapter for that information fails', () => {
