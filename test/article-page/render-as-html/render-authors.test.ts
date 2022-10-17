@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { renderAuthors } from '../../src/article-page/render-authors';
-import { arbitraryString } from '../helpers';
+import { renderAuthors } from '../../../src/article-page/render-as-html/render-authors';
+import { arbitraryString } from '../../helpers';
 
 describe('render-authors', () => {
   describe('when there are authors', () => {

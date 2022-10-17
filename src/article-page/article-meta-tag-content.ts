@@ -4,9 +4,14 @@ import { pipe } from 'fp-ts/function';
 import { ArticleVersionFeedItem } from './activity-feed/render-article-version-feed-item';
 import { FeedItem } from './activity-feed/render-feed';
 import { ReviewFeedItem } from './activity-feed/render-review-feed-item';
-import { MetaDescription } from './render-description-meta-tag-content';
 
-export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaDescription => ({
+type FeedSummary = {
+  evaluationCount: number,
+  latestVersion: O.Option<Date>,
+  latestActivity: O.Option<Date>,
+};
+
+export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => ({
   evaluationCount: feedItems.filter((item) => item.type === 'review').length,
   latestVersion: pipe(
     feedItems,

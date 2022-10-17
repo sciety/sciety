@@ -1,7 +1,7 @@
 import { renderAuthors } from './render-authors';
-import { ViewModel } from './view-model';
-import { langAttributeFor } from '../shared-components/lang-attribute-for';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { langAttributeFor } from '../../shared-components/lang-attribute-for';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
