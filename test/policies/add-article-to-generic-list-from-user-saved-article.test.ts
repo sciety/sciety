@@ -19,12 +19,12 @@ type Ports = {
   logger: Logger,
 };
 
-type AddArticleToGenericListFromUserSavedArticle = (ports: Ports) => (event: DomainEvent) => T.Task<undefined>;
+type AddArticleToGenericListFromUserSavedArticle = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
-const toCommand = (ports: Ports) => (event: UserSavedArticleEvent) => pipe(
+const toCommand = (adapters: Ports) => (event: UserSavedArticleEvent) => pipe(
   event.userId,
   LOID.fromUserId,
-  ports.getListsOwnedBy,
+  adapters.getListsOwnedBy,
   TE.map(RA.head),
   TE.chainW(TE.fromOption(() => 'user has no generic list' as const)),
   TE.map((list) => ({
@@ -34,15 +34,15 @@ const toCommand = (ports: Ports) => (event: UserSavedArticleEvent) => pipe(
 );
 
 const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
-  ports,
+  adapters,
 ) => (event) => pipe(
   event,
   TE.fromPredicate(isUserSavedArticleEvent, () => 'not interesting'),
-  TE.chainW(toCommand(ports)),
-  TE.chain(ports.addArticleToList),
+  TE.chainW(toCommand(adapters)),
+  TE.chain(adapters.addArticleToList),
   TE.match(
     (reason) => {
-      ports.logger('error', 'addArticleToGenericListFromUserSavedArticle policy failed', { reason, event });
+      adapters.logger('error', 'addArticleToGenericListFromUserSavedArticle policy failed', { reason, event });
       return undefined;
     },
     () => undefined,
@@ -50,13 +50,13 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
 );
 
 describe('add-article-to-generic-list-from-user-saved-article', () => {
-  const defaultPorts = {
+  const defaultAdapters = {
     addArticleToList: () => TE.right(undefined),
     logger: dummyLogger,
     getListsOwnedBy: () => TE.right([]),
   };
 
-  let ports: Ports;
+  let adapters: Ports;
 
   describe('when a UserSavedArticle event is received', () => {
     describe('and the user has a generic list', () => {
@@ -67,26 +67,26 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       const event = userSavedArticle(userId, articleId);
 
       beforeEach(async () => {
-        ports = {
-          addArticleToList: jest.fn(defaultPorts.addArticleToList),
+        adapters = {
+          addArticleToList: jest.fn(defaultAdapters.addArticleToList),
           getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
           logger: dummyLogger,
         };
-        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
 
       it('calls the AddArticleToList command', () => {
-        expect(ports.addArticleToList).toHaveBeenCalledWith(expect.anything());
+        expect(adapters.addArticleToList).toHaveBeenCalledWith(expect.anything());
       });
 
       it('calls the command with the generic list id owned by that user', () => {
-        expect(ports.addArticleToList).toHaveBeenCalledWith(
+        expect(adapters.addArticleToList).toHaveBeenCalledWith(
           expect.objectContaining({ listId: genericListOwnedByUser.id }),
         );
       });
 
       it('calls the command with the article id in the UserSavedArticle event', () => {
-        expect(ports.addArticleToList).toHaveBeenCalledWith(
+        expect(adapters.addArticleToList).toHaveBeenCalledWith(
           expect.objectContaining({ articleId }),
         );
       });
@@ -97,16 +97,16 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
 
       beforeEach(async () => {
-        ports = {
+        adapters = {
           addArticleToList: () => TE.left(arbitraryDataError()),
           getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
 
       it('logs an error', () => {
-        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        expect(adapters.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
       });
     });
 
@@ -114,16 +114,16 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
 
       beforeEach(async () => {
-        ports = {
-          addArticleToList: defaultPorts.addArticleToList,
+        adapters = {
+          addArticleToList: defaultAdapters.addArticleToList,
           getListsOwnedBy: () => TE.left(arbitraryDataError()),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
 
       it('logs an error', () => {
-        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        expect(adapters.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
       });
     });
 
@@ -131,29 +131,28 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
 
       beforeEach(async () => {
-        ports = {
-          addArticleToList: defaultPorts.addArticleToList,
+        adapters = {
+          addArticleToList: defaultAdapters.addArticleToList,
           getListsOwnedBy: () => TE.right([]),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(ports)(event)();
+        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
 
       it('logs an error', () => {
-        expect(ports.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        expect(adapters.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
       });
     });
   });
 
   describe('when any other event is received', () => {
     const event = userUnsavedArticle(arbitraryUserId(), arbitraryArticleId());
-    const adapters = {
-      ...defaultPorts,
-      addArticleToList: jest.fn(defaultPorts.addArticleToList),
-
-    };
 
     beforeEach(async () => {
+      adapters = {
+        ...defaultAdapters,
+        addArticleToList: jest.fn(defaultAdapters.addArticleToList),
+      };
       await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
     });
 
