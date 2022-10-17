@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/function';
-import { toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { UserId } from '../../types/user-id';
 
 const templateSavedLink = (userId: UserId) => `
   <a class="saved-to-list" href="/users/${userId}/lists">

@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import { renderSavedLink } from './render-saved-link';
-import { renderSaveForm } from '../save-article/render-save-form';
-import { Doi } from '../types/doi';
-import { HtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
+import { renderSaveForm } from '../../save-article/render-save-form';
+import { Doi } from '../../types/doi';
+import { HtmlFragment } from '../../types/html-fragment';
+import { UserId } from '../../types/user-id';
 
 type ViewModel = {
   userId: O.Option<UserId>,

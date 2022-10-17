@@ -1,7 +1,7 @@
 import { renderAuthors } from './render-authors';
+import { renderSaveArticle } from './render-save-article';
 import { langAttributeFor } from '../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { renderSaveArticle } from '../render-save-article';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
@@ -11,7 +11,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   </header>
   <div class="article-actions">
     <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
-  ${renderSaveArticle(viewmodel)}
+    ${renderSaveArticle(viewmodel)}
   </div>
   <section role="doc-abstract" class="article-abstract">
     <h2>Abstract</h2>

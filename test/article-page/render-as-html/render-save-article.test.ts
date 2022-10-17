@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { renderSaveArticle } from '../../src/article-page/render-save-article';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { renderSaveArticle } from '../../../src/article-page/render-as-html/render-save-article';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
