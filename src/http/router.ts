@@ -31,7 +31,7 @@ import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
-import { articleActivityPage } from '../article-page';
+import { articlePage } from '../article-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
@@ -306,7 +306,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(articleActivityPage(ports)),
+      TE.chain(articlePage(ports)),
     )),
   );
 

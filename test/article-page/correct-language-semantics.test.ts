@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { articleActivityPage } from '../../src/article-page';
+import { articlePage } from '../../src/article-page';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -34,7 +34,7 @@ describe('correct-language-semantics', () => {
           fetchArticle: createGetArticleDetails(title),
           ...irrelevantAdapters,
         };
-        const renderPage = articleActivityPage(adapters);
+        const renderPage = articlePage(adapters);
         const rendered = await renderPage({
           doi: arbitraryDoi(),
           user: O.none,
@@ -64,7 +64,7 @@ describe('correct-language-semantics', () => {
           fetchArticle: createGetArticleDetails(articleAbstract),
           ...irrelevantAdapters,
         };
-        const renderPage = articleActivityPage(adapters);
+        const renderPage = articlePage(adapters);
         const rendered = await renderPage({
           doi: arbitraryDoi(),
           user: O.none,
