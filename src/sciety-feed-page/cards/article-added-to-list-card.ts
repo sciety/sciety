@@ -30,6 +30,7 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
           ...list,
           ownerName: group.name,
           ownerAvatarUrl: group.avatarPath,
+          linkUrl: `/lists/${list.id}`,
         })),
       );
     case 'user-id':
@@ -42,6 +43,7 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
               ...list,
               ownerName: 'A user',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+              linkUrl: `/users/${list.ownerId.value}/lists/saved-articles`,
             }
           ),
           (userDetails) => (
@@ -49,6 +51,8 @@ const addListOwnerName = (ports: Ports) => (list: List) => {
               ...list,
               ownerName: userDetails.handle,
               ownerAvatarUrl: userDetails.avatarUrl,
+              linkUrl: `/users/${userDetails.handle}/lists/saved-articles`,
+
             }
           ),
         ),
@@ -71,11 +75,12 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
     listName: extendedListMetadata.name,
     listDescription: extendedListMetadata.description,
+    linkUrl: extendedListMetadata.linkUrl,
   })),
   TE.map(
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added an article to a list`,
-      linkUrl: `/lists/${event.listId}`,
+      linkUrl: viewModel.linkUrl,
       avatarUrl: viewModel.ownerAvatarUrl,
       date: event.date,
       details: {
