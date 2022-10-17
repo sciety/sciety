@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleVersionFeedItem } from './activity-feed/render-article-version-feed-item';
-import { FeedItem } from './activity-feed/render-feed';
-import { ReviewFeedItem } from './activity-feed/render-review-feed-item';
+import { ArticleVersionFeedItem } from './render-as-html/render-article-version-feed-item';
+import { FeedItem } from './render-as-html/render-feed';
+import { ReviewFeedItem } from './render-as-html/render-review-feed-item';
 
 type FeedSummary = {
   evaluationCount: number,

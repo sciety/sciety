@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
-import { renderReviewFeedItem } from '../../../src/article-page/activity-feed/render-review-feed-item';
-import { missingFullTextAndSourceLink } from '../../../src/article-page/activity-feed/static-messages';
+import { renderReviewFeedItem } from '../../../src/article-page/render-as-html/render-review-feed-item';
+import { missingFullTextAndSourceLink } from '../../../src/article-page/render-as-html/static-messages';
 import { reviewIdCodec } from '../../../src/types/review-id';
 import { arbitraryNumber } from '../../helpers';
 

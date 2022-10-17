@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { renderReviewResponses } from '../../../src/article-page/activity-feed/render-review-responses';
+import { renderReviewResponses } from '../../../src/article-page/render-as-html/render-review-responses';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('render-review-responses', () => {

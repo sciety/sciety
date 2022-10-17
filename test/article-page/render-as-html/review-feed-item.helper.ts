@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ReviewFeedItem } from '../../../src/article-page/activity-feed/render-review-feed-item';
+import { ReviewFeedItem } from '../../../src/article-page/render-as-html/render-review-feed-item';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import * as t from '../../helpers';

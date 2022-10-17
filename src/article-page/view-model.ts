@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { FeedItem } from './activity-feed/render-feed';
+import { FeedItem } from './render-as-html/render-feed';
 import { ArticleAuthors } from '../types/article-authors';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';

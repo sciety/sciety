@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import * as RFI from './review-feed-item.helper';
 import { handleArticleVersionErrors } from '../../../src/article-page/activity-feed/handle-article-version-errors';
-import { FeedItem } from '../../../src/article-page/activity-feed/render-feed';
+import { FeedItem } from '../../../src/article-page/render-as-html/render-feed';
+import * as RFI from '../render-as-html/review-feed-item.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {

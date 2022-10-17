@@ -1,8 +1,8 @@
 import { renderAuthors } from './render-authors';
+import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
 import { langAttributeFor } from '../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { renderFeed } from '../activity-feed/render-feed';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
