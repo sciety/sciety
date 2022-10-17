@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as RFI from './render-as-html/review-feed-item.helper';
-import { articleMetaTagContent } from '../../src/article-page/article-meta-tag-content';
-import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../helpers';
+import { feedSummary } from '../../../src/article-page/construct-view-model/feed-summary';
+import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../helpers';
+import * as RFI from '../render-as-html/review-feed-item.helper';
 
 const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) => ({
   type: 'article-version' as const,
@@ -15,7 +15,7 @@ const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) =>
 
 describe('article-meta-tag-content', () => {
   it('returns a count of the evaluations', () => {
-    const result = articleMetaTagContent([
+    const result = feedSummary([
       RFI.arbitrary(),
       RFI.arbitrary(),
     ]);
@@ -24,7 +24,7 @@ describe('article-meta-tag-content', () => {
   });
 
   it('ignores non-evaluation feed items', () => {
-    const result = articleMetaTagContent([
+    const result = feedSummary([
       arbitraryArticleVersionFeedItem(),
     ]);
 
@@ -33,7 +33,7 @@ describe('article-meta-tag-content', () => {
 
   it('returns a latest version', () => {
     const date = arbitraryDate();
-    const result = articleMetaTagContent([
+    const result = feedSummary([
       arbitraryArticleVersionFeedItem(date),
       arbitraryArticleVersionFeedItem(new Date('01-01-1970')),
     ]);
@@ -43,7 +43,7 @@ describe('article-meta-tag-content', () => {
 
   it('returns the latest activity date', () => {
     const date = arbitraryDate();
-    const result = articleMetaTagContent([
+    const result = feedSummary([
       pipe(RFI.arbitrary(), RFI.withDate(date)),
       pipe(RFI.arbitrary(), RFI.withDate(new Date('01-01-1970'))),
     ]);

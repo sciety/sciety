@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
+import { feedSummary } from './feed-summary';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
@@ -13,7 +14,6 @@ import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from '../activity-feed/get-article-feed-events';
 import { FetchReview } from '../activity-feed/get-feed-events-content';
-import { articleMetaTagContent } from '../article-meta-tag-content';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { ViewModel } from '../view-model';
 
@@ -77,7 +77,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         fullArticleUrl: `https://doi.org/${doi.value}`,
         feedItemsByDateDescending,
         articleAbstract: articleDetails.abstract,
-        ...articleMetaTagContent(feedItemsByDateDescending),
+        ...feedSummary(feedItemsByDateDescending),
       })),
     )),
   ),

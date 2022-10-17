@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleVersionFeedItem, FeedItem, ReviewFeedItem } from './view-model';
+import { ArticleVersionFeedItem, FeedItem, ReviewFeedItem } from '../view-model';
 
 type FeedSummary = {
   evaluationCount: number,
@@ -9,7 +9,7 @@ type FeedSummary = {
   latestActivity: O.Option<Date>,
 };
 
-export const articleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => ({
+export const feedSummary = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => ({
   evaluationCount: feedItems.filter((item) => item.type === 'review').length,
   latestVersion: pipe(
     feedItems,
