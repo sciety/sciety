@@ -97,14 +97,14 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     toErrorPage,
     (viewmodel) => ({
       content: renderPage(viewmodel),
-      title: striptags(viewmodel.articleDetails.title),
+      title: striptags(viewmodel.title),
       description: pipe(
         articleMetaTagContent(viewmodel.feedItemsByDateDescending),
         renderDescriptionMetaTagContent,
       ),
       openGraph: {
-        title: striptags(viewmodel.articleDetails.title),
-        description: striptags(viewmodel.articleDetails.abstract),
+        title: striptags(viewmodel.title),
+        description: striptags(viewmodel.articleAbstract),
       },
     }),
   ),
