@@ -6,11 +6,11 @@ import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent, userUnsavedArticle,
 } from '../../src/domain-events';
 import { AddArticleToList, GetListsOwnedBy, Logger } from '../../src/shared-ports';
-import * as DE from '../../src/types/data-error';
 import * as LOID from '../../src/types/list-owner-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type Ports = {
@@ -98,7 +98,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
 
       beforeEach(async () => {
         ports = {
-          addArticleToList: () => TE.left(DE.unavailable),
+          addArticleToList: () => TE.left(arbitraryDataError()),
           getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
           logger: jest.fn(dummyLogger),
         };
@@ -116,7 +116,7 @@ describe('add-article-to-generic-list-from-user-saved-article', () => {
       beforeEach(async () => {
         ports = {
           addArticleToList: defaultPorts.addArticleToList,
-          getListsOwnedBy: () => TE.left(DE.unavailable),
+          getListsOwnedBy: () => TE.left(arbitraryDataError()),
           logger: jest.fn(dummyLogger),
         };
         await addArticleToGenericListFromUserSavedArticle(ports)(event)();
