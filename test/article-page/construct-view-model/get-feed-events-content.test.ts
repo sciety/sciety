@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FeedEvent, getFeedEventsContent } from '../../../src/article-page/activity-feed/get-feed-events-content';
+import { FeedEvent, getFeedEventsContent } from '../../../src/article-page/construct-view-model/get-feed-events-content';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';

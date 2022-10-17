@@ -1,10 +1,9 @@
 import * as T from 'fp-ts/Task';
-import { projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
-import { userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
-import { Doi } from '../../src/types/doi';
-
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { projectHasUserSavedArticle } from '../../../src/article-page/construct-view-model/project-has-user-saved-article';
+import { userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
+import { Doi } from '../../../src/types/doi';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {

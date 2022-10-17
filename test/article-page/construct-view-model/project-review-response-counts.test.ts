@@ -1,4 +1,4 @@
-import { projectReviewResponseCounts } from '../../../src/article-page/activity-feed/project-review-response-counts';
+import { projectReviewResponseCounts } from '../../../src/article-page/construct-view-model/project-review-response-counts';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,

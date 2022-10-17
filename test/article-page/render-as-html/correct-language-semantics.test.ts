@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { articlePage } from '../../src/article-page';
-import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
-import { arbitrarySanitisedHtmlFragment } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { articlePage } from '../../../src/article-page';
+import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {

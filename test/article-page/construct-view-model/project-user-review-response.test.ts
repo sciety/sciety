@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { projectUserReviewResponse } from '../../../src/article-page/activity-feed/project-user-review-response';
+import { projectUserReviewResponse } from '../../../src/article-page/construct-view-model/project-user-review-response';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,

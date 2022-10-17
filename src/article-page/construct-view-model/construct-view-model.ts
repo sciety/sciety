@@ -4,6 +4,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import { feedSummary } from './feed-summary';
+import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
+import { FetchReview } from './get-feed-events-content';
+import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
@@ -12,9 +15,6 @@ import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
-import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from '../activity-feed/get-article-feed-events';
-import { FetchReview } from '../activity-feed/get-feed-events-content';
-import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { ViewModel } from '../view-model';
 
 export type Params = {
