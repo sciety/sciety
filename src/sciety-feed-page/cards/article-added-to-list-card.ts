@@ -19,7 +19,19 @@ type Ports = {
   getUserDetails: GetUserDetails,
 };
 
-export const addListOwnershipInformation = (ports: Ports) => (list: List) => {
+type ListWithAddedOwnershipInformation = {
+  name: string,
+  description: string,
+  ownerName: string,
+  ownerAvatarUrl: string,
+  linkUrl: string,
+};
+
+export const addListOwnershipInformation = (
+  ports: Ports,
+) => (
+  list: List,
+): TE.TaskEither<DE.DataError, ListWithAddedOwnershipInformation> => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
