@@ -5,10 +5,12 @@ import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   isUserSavedArticleEvent,
+  isUserUnsavedArticleEvent,
   userFoundReviewHelpful,
   userSavedArticle,
   UserSavedArticleEvent,
   userUnsavedArticle,
+  UserUnsavedArticleEvent,
 } from '../../src/domain-events';
 import { AddArticleToList, GetListsOwnedBy, Logger } from '../../src/shared-ports';
 import * as LOID from '../../src/types/list-owner-id';
@@ -30,7 +32,7 @@ type Ports = {
 
 type ReplicateUserSavedArticleListAsGenericList = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
-const toCommand = (adapters: Ports) => (event: UserSavedArticleEvent) => pipe(
+const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
   event.userId,
   LOID.fromUserId,
   adapters.getListsOwnedBy,
@@ -42,11 +44,17 @@ const toCommand = (adapters: Ports) => (event: UserSavedArticleEvent) => pipe(
   })),
 );
 
+type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
+
+const isRelevantEvent = (
+  event: DomainEvent,
+): event is RelevantEvent => isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event);
+
 const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArticleListAsGenericList = (
   adapters,
 ) => (event) => pipe(
   event,
-  TE.fromPredicate(isUserSavedArticleEvent, () => 'not interesting'),
+  TE.fromPredicate(isRelevantEvent, () => 'not interesting'),
   TE.chainW(toCommand(adapters)),
   TE.chain(adapters.addArticleToList),
   TE.match(
