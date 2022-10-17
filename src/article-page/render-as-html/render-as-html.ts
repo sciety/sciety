@@ -10,6 +10,6 @@ export const renderAsHtml = (viewmodel: ViewModel): Page => ({
   description: renderDescriptionMetaTagContent(viewmodel),
   openGraph: {
     title: striptags(viewmodel.title),
-    description: striptags(viewmodel.articleAbstract),
+    description: striptags(viewmodel.abstract),
   },
 });

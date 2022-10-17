@@ -45,7 +45,7 @@ export type ViewModel = {
   userListUrl: O.Option<string>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
-  articleAbstract: HtmlFragment,
+  abstract: HtmlFragment,
   evaluationCount: number,
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,

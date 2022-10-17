@@ -16,7 +16,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   </div>
   <section role="doc-abstract" class="article-abstract">
     <h2>Abstract</h2>
-    <div${langAttributeFor(viewmodel.articleAbstract)}>${viewmodel.articleAbstract}</div>
+    <div${langAttributeFor(viewmodel.abstract)}>${viewmodel.abstract}</div>
   </section>
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
