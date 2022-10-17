@@ -12,7 +12,7 @@ import { collapseCloseListEvents } from './collapse-close-list-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { paginate } from '../shared-components/paginate';
@@ -67,17 +67,11 @@ type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
-const isFeedRelevantEvent = (event: DomainEvent) => ((process.env.EXPERIMENT_ENABLED === 'true')
-  ? (
-    isUserSavedArticleEvent(event)
+const isFeedRelevantEvent = (event: DomainEvent) => (
+  isUserSavedArticleEvent(event)
     || isUserFollowedEditorialCommunityEvent(event)
     || isArticleAddedToListEvent(event)
-  )
-  : (
-    isEvaluationRecordedEvent(event)
-    || isUserSavedArticleEvent(event)
-    || isUserFollowedEditorialCommunityEvent(event)
-  ));
+);
 
 export const scietyFeedPage = (
   ports: Ports,
