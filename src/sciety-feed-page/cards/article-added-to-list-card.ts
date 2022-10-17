@@ -19,7 +19,7 @@ type Ports = {
   getUserDetails: GetUserDetails,
 };
 
-const addListOwnerName = (ports: Ports) => (list: List) => {
+const addListOwnershipInformation = (ports: Ports) => (list: List) => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
@@ -69,7 +69,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   ports.getAllEvents,
   TE.rightTask,
   TE.chain(getList(event.listId)),
-  TE.chain(addListOwnerName(ports)),
+  TE.chain(addListOwnershipInformation(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
