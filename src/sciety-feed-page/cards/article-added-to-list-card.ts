@@ -19,7 +19,7 @@ type Ports = {
   getUserDetails: GetUserDetails,
 };
 
-const addListOwnershipInformation = (ports: Ports) => (list: List) => {
+export const addListOwnershipInformation = (ports: Ports) => (list: List) => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(

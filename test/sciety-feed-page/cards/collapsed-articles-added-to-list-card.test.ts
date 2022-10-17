@@ -56,11 +56,11 @@ describe('collapsed-articles-added-to-list-card', () => {
         )();
       });
 
-      it.failing('includes the user\'s handle in the title text', async () => {
+      it('includes the user\'s handle in the title text', async () => {
         expect(viewModel.titleText).toContain(handle);
       });
 
-      it.failing('includes the user\'s avatar', async () => {
+      it('includes the user\'s avatar', async () => {
         expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
       });
 
@@ -68,7 +68,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it.failing('includes the link to the user list page because the generic list page is not releasable yet', async () => {
+      it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
         expect(viewModel.linkUrl).toBe(`/users/${handle}/lists/saved-articles`);
       });
 
@@ -104,7 +104,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it.failing('includes the link to the user list page because the generic list page is not releasable yet', async () => {
+      it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
         expect(viewModel.linkUrl).toBe(`/users/${userId}/lists/saved-articles`);
       });
 
