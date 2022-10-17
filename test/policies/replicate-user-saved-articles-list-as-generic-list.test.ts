@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent, userUnsavedArticle,
+  DomainEvent, isUserSavedArticleEvent, userFoundReviewHelpful, userSavedArticle, UserSavedArticleEvent,
 } from '../../src/domain-events';
 import { AddArticleToList, GetListsOwnedBy, Logger } from '../../src/shared-ports';
 import * as LOID from '../../src/types/list-owner-id';
@@ -11,6 +11,7 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type RemoveArticleFromList = () => TE.TaskEither<string, void>;
@@ -22,7 +23,7 @@ type Ports = {
   logger: Logger,
 };
 
-type AddArticleToGenericListFromUserSavedArticle = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
+type ReplicateUserSavedArticleListAsGenericList = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
 const toCommand = (adapters: Ports) => (event: UserSavedArticleEvent) => pipe(
   event.userId,
@@ -36,7 +37,7 @@ const toCommand = (adapters: Ports) => (event: UserSavedArticleEvent) => pipe(
   })),
 );
 
-const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUserSavedArticle = (
+const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArticleListAsGenericList = (
   adapters,
 ) => (event) => pipe(
   event,
@@ -45,7 +46,7 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
   TE.chain(adapters.addArticleToList),
   TE.match(
     (reason) => {
-      adapters.logger('error', 'addArticleToGenericListFromUserSavedArticle policy failed', { reason, event });
+      adapters.logger('error', 'replicateUserSavedArticlesListAsGenericList policy failed', { reason, event });
       return undefined;
     },
     () => undefined,
@@ -77,7 +78,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
           ...happyPathAdapters,
           addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
         };
-        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+        await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
       });
 
       it('calls the relevant command', () => {
@@ -104,7 +105,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
           addArticleToList: () => TE.left(arbitraryDataError()),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+        await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
       });
 
       it('logs an error', () => {
@@ -119,7 +120,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
           getListsOwnedBy: () => TE.left(arbitraryDataError()),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+        await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
       });
 
       it('logs an error', () => {
@@ -134,7 +135,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
           getListsOwnedBy: () => TE.right([]),
           logger: jest.fn(dummyLogger),
         };
-        await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+        await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
       });
 
       it('logs an error', () => {
@@ -144,7 +145,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
   });
 
   describe('when any other event is received', () => {
-    const event = userUnsavedArticle(arbitraryUserId(), arbitraryArticleId());
+    const event = userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId());
 
     beforeEach(async () => {
       adapters = {
@@ -152,7 +153,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
         addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
         removeArticleFromList: jest.fn(happyPathAdapters.removeArticleFromList),
       };
-      await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
+      await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
     });
 
     it('does not call any command', () => {
