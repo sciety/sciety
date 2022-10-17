@@ -49,7 +49,7 @@ const addArticleToGenericListFromUserSavedArticle: AddArticleToGenericListFromUs
   ),
 );
 
-describe('remove-article-from-generic-list-from-user-unsaved-article', () => {
+describe('replicate-user-saved-articles-list-as-generic-list', () => {
   const userId = arbitraryUserId();
   const articleId = arbitraryArticleId();
   const genericListOwnedByUser = arbitraryList();
@@ -62,9 +62,11 @@ describe('remove-article-from-generic-list-from-user-unsaved-article', () => {
 
   let adapters: Ports;
 
-  describe('when a UserUnsavedArticle event is received', () => {
-    const event = userSavedArticle(userId, articleId);
-
+  describe.each([
+    ['UserSavedArticle',
+      userSavedArticle(userId, articleId),
+      'addArticleToList'],
+  ])('when a %s event is received', (eventName, event, relevantCommand) => {
     describe('and the user has a generic list', () => {
       beforeEach(async () => {
         adapters = {
@@ -74,18 +76,18 @@ describe('remove-article-from-generic-list-from-user-unsaved-article', () => {
         await addArticleToGenericListFromUserSavedArticle(adapters)(event)();
       });
 
-      it('calls the RemoveArticleFromList command', () => {
-        expect(adapters.addArticleToList).toHaveBeenCalledWith(expect.anything());
+      it('calls the relevant command', () => {
+        expect(adapters[relevantCommand]).toHaveBeenCalledWith(expect.anything());
       });
 
       it('calls the command with the generic list id owned by that user', () => {
-        expect(adapters.addArticleToList).toHaveBeenCalledWith(
+        expect(adapters[relevantCommand]).toHaveBeenCalledWith(
           expect.objectContaining({ listId: genericListOwnedByUser.id }),
         );
       });
 
-      it('calls the command with the article id in the UserUnsavedArticle event', () => {
-        expect(adapters.addArticleToList).toHaveBeenCalledWith(
+      it('calls the command with the article id in the event', () => {
+        expect(adapters[relevantCommand]).toHaveBeenCalledWith(
           expect.objectContaining({ articleId }),
         );
       });
