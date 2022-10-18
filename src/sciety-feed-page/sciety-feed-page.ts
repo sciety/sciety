@@ -1,10 +1,12 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { StateEntry } from './collapse-close-events';
 import { collapseCloseListEvents } from './collapse-close-list-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import {
@@ -12,10 +14,11 @@ import {
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
-import { paginate } from '../shared-components/paginate';
+import { PageOfItems, paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -70,14 +73,22 @@ const isFeedRelevantEvent = (event: DomainEvent) => (
     || isArticleAddedToListEvent(event)
 );
 
+type IdentifyFeedItems = (pageSize: number, page: number)
+=> (events: ReadonlyArray<DomainEvent>)
+=> E.Either<DE.DataError, PageOfItems<StateEntry>>;
+
+const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
+  RA.filter(isFeedRelevantEvent),
+  RA.reverse,
+  collapseCloseListEvents,
+  paginate(pageSize, page),
+);
+
 export const scietyFeedPage = (
   ports: Ports,
 ) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
-  T.map(RA.filter(isFeedRelevantEvent)),
-  T.map(RA.reverse),
-  T.map(collapseCloseListEvents),
-  T.map(paginate(pageSize, params.page)),
+  T.map(identifyFeedItems(pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,
     TE.traverseArray(eventCard(ports)),
