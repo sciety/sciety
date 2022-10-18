@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { FeedItem, isCollapsedArticlesAddedToList } from './collapse-close-events';
 import {
-  ArticleAddedToListEvent, isArticleAddedToListEvent,
+  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
 } from '../domain-events';
 
 const collapsesIntoPreviousEvent = (
@@ -43,7 +43,7 @@ const replaceWithCollapseEvent = (
 };
 
 const processEvent = (
-  state: Array<FeedItem>, event: FeedItem,
+  state: Array<FeedItem>, event: DomainEvent,
 ) => {
   if (isArticleAddedToListEvent(event)) {
     if (collapsesIntoPreviousEvent(state, event)) {
@@ -58,5 +58,5 @@ const processEvent = (
 };
 
 export const collapseCloseListEvents = (
-  events: ReadonlyArray<FeedItem>,
+  events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<FeedItem> => events.reduce(processEvent, []);
