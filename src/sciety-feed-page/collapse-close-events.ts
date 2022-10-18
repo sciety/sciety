@@ -9,7 +9,7 @@ export type CollapsedArticlesAddedToList = {
 };
 
 export const isCollapsedArticlesAddedToList = (
-  entry: StateEntry,
+  entry: FeedItem,
 ): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
 
-export type StateEntry = DomainEvent | CollapsedArticlesAddedToList;
+export type FeedItem = DomainEvent | CollapsedArticlesAddedToList;

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import { StateEntry } from './collapse-close-events';
+import { FeedItem } from './collapse-close-events';
 import { collapseCloseListEvents } from './collapse-close-list-events';
 import {
   DomainEvent,
@@ -18,7 +18,7 @@ const isFeedRelevantEvent = (event: DomainEvent) => (
 
 type IdentifyFeedItems = (pageSize: number, page: number)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<DE.DataError, PageOfItems<StateEntry>>;
+=> E.Either<DE.DataError, PageOfItems<FeedItem>>;
 
 export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
   RA.filter(isFeedRelevantEvent),
