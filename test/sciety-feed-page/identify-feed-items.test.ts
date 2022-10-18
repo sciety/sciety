@@ -1,29 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { articleAddedToList, userSavedArticle } from '../../src/domain-events';
+import { articleAddedToList } from '../../src/domain-events';
 import { identifyFeedItems } from '../../src/sciety-feed-page/identify-feed-items';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('identify-feed-items', () => {
-  describe('when there is a uninteresting event', () => {
-    const events = [
-      userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
-    ];
-    const result = pipe(
-      events,
-      identifyFeedItems(20, 1),
-      E.match(shouldNotBeCalled, identity),
-      (pageOfItems) => pageOfItems.items,
-    );
-
-    it('returns it unchanged', () => {
-      expect(result).toStrictEqual(events);
-    });
-  });
-
   describe('when a single article is added to a list', () => {
     const events = [
       articleAddedToList(arbitraryArticleId(), arbitraryListId()),
