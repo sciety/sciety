@@ -133,11 +133,14 @@ describe('identify-feed-items', () => {
 
   describe('given two articles are added to a list separated by an article added to a different list', () => {
     const myList = arbitraryListId();
+    const date1 = new Date('2022-10-01');
+    const date2 = new Date('2022-10-02');
+    const date3 = new Date('2022-10-03');
 
     const events = [
-      articleAddedToList(arbitraryArticleId(), myList),
-      articleAddedToList(arbitraryArticleId(), arbitraryListId()),
-      articleAddedToList(arbitraryArticleId(), myList),
+      articleAddedToList(arbitraryArticleId(), myList, date1),
+      articleAddedToList(arbitraryArticleId(), arbitraryListId(), date2),
+      articleAddedToList(arbitraryArticleId(), myList, date3),
     ];
     const result = pipe(
       events,
@@ -150,6 +153,10 @@ describe('identify-feed-items', () => {
       expect(result).toHaveLength(3);
     });
 
-    it.todo('feed items are returned sorted newest to oldest');
+    it('feed items are returned sorted newest to oldest', () => {
+      expect(result[0].date).toStrictEqual(date3);
+      expect(result[1].date).toStrictEqual(date2);
+      expect(result[2].date).toStrictEqual(date1);
+    });
   });
 });
