@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { FeedItem, isCollapsedArticlesAddedToList } from './collapse-close-events';
+import { FeedItem, isCollapsedArticlesAddedToList } from './feed-item';
 import {
   ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
 } from '../domain-events';

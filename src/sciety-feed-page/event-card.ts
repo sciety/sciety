@@ -10,7 +10,7 @@ import { collapsedArticlesAddedToListCard } from './cards/collapsed-articles-add
 import {
   CollapsedArticlesAddedToList,
   isCollapsedArticlesAddedToList,
-} from './collapse-close-events';
+} from './feed-item';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,

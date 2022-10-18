@@ -6,7 +6,7 @@ import { GetAllEvents } from '../../shared-ports';
 import { getList } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { CollapsedArticlesAddedToList } from '../collapse-close-events';
+import { CollapsedArticlesAddedToList } from '../feed-item';
 
 type Ports = {
   getAllEvents: GetAllEvents,
