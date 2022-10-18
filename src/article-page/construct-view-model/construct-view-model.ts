@@ -46,7 +46,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   ({ doi, userId }) => pipe(
     {
       articleDetails: ports.fetchArticle(doi),
-      userListUrl: constructUserListUrl(ports)(doi, userId),
+      userListUrl: constructUserListUrl(ports)(doi, params.user),
     },
     sequenceS(TE.ApplyPar),
     TE.chainW(({ articleDetails, userListUrl }) => pipe(
