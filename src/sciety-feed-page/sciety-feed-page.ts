@@ -1,24 +1,18 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { StateEntry } from './collapse-close-events';
-import { collapseCloseListEvents } from './collapse-close-list-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
+import { identifyFeedItems } from './identify-feed-items';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
-import { PageOfItems, paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
-import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -66,23 +60,6 @@ type Ports = EventCardPorts & {
 };
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
-
-const isFeedRelevantEvent = (event: DomainEvent) => (
-  isUserSavedArticleEvent(event)
-    || isUserFollowedEditorialCommunityEvent(event)
-    || isArticleAddedToListEvent(event)
-);
-
-type IdentifyFeedItems = (pageSize: number, page: number)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<DE.DataError, PageOfItems<StateEntry>>;
-
-const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
-  RA.filter(isFeedRelevantEvent),
-  RA.reverse,
-  collapseCloseListEvents,
-  paginate(pageSize, page),
-);
 
 export const scietyFeedPage = (
   ports: Ports,
