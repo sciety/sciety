@@ -22,7 +22,7 @@ type IdentifyFeedItems = (pageSize: number, page: number)
 
 export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
   RA.filter(isFeedRelevantEvent),
-  RA.reverse,
   collapseCloseListEvents,
+  RA.reverse,
   paginate(pageSize, page),
 );

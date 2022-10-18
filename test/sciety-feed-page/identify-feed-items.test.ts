@@ -76,7 +76,7 @@ describe('identify-feed-items', () => {
       )]);
     });
 
-    it.failing('returns the most recent date', () => {
+    it('returns the most recent date', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           date: laterDate,
@@ -122,7 +122,7 @@ describe('identify-feed-items', () => {
       )]);
     });
 
-    it.failing('returns the most recent date', () => {
+    it('returns the most recent date', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           date: laterDate,
