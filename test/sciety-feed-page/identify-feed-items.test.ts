@@ -11,21 +11,44 @@ describe('identify-feed-items', () => {
   const earlierDate = new Date('2022-10-18');
   const laterDate = new Date('2022-10-19');
 
-  const events = [
-    articleAddedToList(arbitraryArticleId(), listId, earlierDate),
-    articleAddedToList(arbitraryArticleId(), listId, laterDate),
-  ];
+  const result = pipe(
+    [
+      articleAddedToList(arbitraryArticleId(), listId, earlierDate),
+      articleAddedToList(arbitraryArticleId(), listId, laterDate),
+    ],
+    identifyFeedItems(20, 1),
+    E.match(shouldNotBeCalled, identity),
+    (pageOfItems) => pageOfItems.items,
+  );
 
-  it.failing('uses the date of the latest event when collapsing', () => {
-    const firstFeedItem = pipe(
-      events,
-      identifyFeedItems(20, 1),
-      E.match(
-        shouldNotBeCalled,
-        identity,
-      ),
-    ).items[0];
+  describe('given two consecutive events adding articles to the same list', () => {
+    it('collapses into a single feed item', () => {
+      expect(result).toHaveLength(1);
+    });
 
-    expect(firstFeedItem.date).toStrictEqual(laterDate);
+    it('collapses into a CollapsedArticlesAddedToList item', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          type: 'CollapsedArticlesAddedToList',
+          listId,
+        },
+      )]);
+    });
+
+    it('returns the number of article events collapsed', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          articleCount: 2,
+        },
+      )]);
+    });
+
+    it.failing('returns the most recent date', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        {
+          date: laterDate,
+        },
+      )]);
+    });
   });
 });
