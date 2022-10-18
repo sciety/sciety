@@ -8,7 +8,7 @@ import { getList } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
-type Ports = {
+export type Ports = {
   getAllEvents: GetAllEvents,
 } & AddListOwnershipInformationPorts;
 

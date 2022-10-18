@@ -8,7 +8,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from '../feed-item';
 
-type Ports = {
+export type Ports = {
   getAllEvents: GetAllEvents,
 } & AddListOwnershipInformationPorts;
 

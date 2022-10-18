@@ -1,12 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToListCard,
+  articleAddedToListCard, ArticleAddedToListCardPorts,
+  collapsedArticlesAddedToListCard,
+  CollapsedArticlesAddedToListCardPorts,
   scietyFeedCard,
   userFollowedAGroupCard, UserFollowedAGroupCardPorts,
   userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
 } from './cards';
-import { collapsedArticlesAddedToListCard } from './cards/collapsed-articles-added-to-list-card';
 import {
   CollapsedArticlesAddedToList,
   isCollapsedArticlesAddedToList,
@@ -20,7 +21,9 @@ import { HtmlFragment } from '../types/html-fragment';
 
 export type Ports =
   UserSavedArticleToAListCardPorts
-  & UserFollowedAGroupCardPorts;
+  & UserFollowedAGroupCardPorts
+  & ArticleAddedToListCardPorts
+  & CollapsedArticlesAddedToListCardPorts;
 
 export const eventCard = (
   ports: Ports,
