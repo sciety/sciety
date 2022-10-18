@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import { FeedItem } from './feed-item';
 import { collapseCloseListEvents } from './collapse-close-list-events';
+import { FeedItem } from './feed-item';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
