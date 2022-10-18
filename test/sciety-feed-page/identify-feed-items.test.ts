@@ -149,5 +149,7 @@ describe('identify-feed-items', () => {
     it('does not collapse the events', () => {
       expect(result).toHaveLength(3);
     });
+
+    it.todo('feed items are returned sorted newest to oldest');
   });
 });
