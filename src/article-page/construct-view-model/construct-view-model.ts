@@ -40,25 +40,19 @@ type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   {
-    doi: params.doi,
-    userId: pipe(params.user, O.map((u) => u.id)),
+    articleDetails: ports.fetchArticle(params.doi),
+    userListUrl: constructUserListUrl(ports)(params.doi, params.user),
   },
-  ({ doi, userId }) => pipe(
-    {
-      articleDetails: ports.fetchArticle(doi),
-      userListUrl: constructUserListUrl(ports)(doi, params.user),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.chainW(({ articleDetails, userListUrl }) => pipe(
-      getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
-      TE.rightTask,
-      TE.map((feedItemsByDateDescending) => ({
-        ...articleDetails,
-        userListUrl,
-        fullArticleUrl: `https://doi.org/${doi.value}`,
-        feedItemsByDateDescending,
-        ...feedSummary(feedItemsByDateDescending),
-      })),
-    )),
-  ),
+  sequenceS(TE.ApplyPar),
+  TE.chainW(({ articleDetails, userListUrl }) => pipe(
+    getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
+    TE.rightTask,
+    TE.map((feedItemsByDateDescending) => ({
+      ...articleDetails,
+      userListUrl,
+      fullArticleUrl: `https://doi.org/${params.doi.value}`,
+      feedItemsByDateDescending,
+      ...feedSummary(feedItemsByDateDescending),
+    })),
+  )),
 );

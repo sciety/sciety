@@ -12,6 +12,7 @@ import {
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../domain-events';
 import * as RI from '../../types/review-id';
+import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -52,13 +53,13 @@ type ProjectUserReviewResponse = (
   getEvents: GetEvents
 ) => (
   reviewId: RI.ReviewId,
-  userId: O.Option<UserId>,
+  user: O.Option<User>,
 ) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
-export const projectUserReviewResponse: ProjectUserReviewResponse = (getEvents) => (reviewId, userId) => pipe(
-  userId,
+export const projectUserReviewResponse: ProjectUserReviewResponse = (getEvents) => (reviewId, user) => pipe(
+  user,
   O.fold(
     () => TO.none,
-    (u) => projectResponse(getEvents)(reviewId, u),
+    (u) => projectResponse(getEvents)(reviewId, u.id),
   ),
 );

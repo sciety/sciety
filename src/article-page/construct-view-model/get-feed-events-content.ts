@@ -14,7 +14,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 import { ReviewId } from '../../types/review-id';
 import * as RI from '../../types/review-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { UserId } from '../../types/user-id';
+import { User } from '../../types/user';
 import { FeedItem } from '../view-model';
 
 type ReviewEvent = {
@@ -53,7 +53,7 @@ export type Ports = {
 const reviewToFeedItem = (
   ports: Ports,
   feedEvent: ReviewEvent,
-  userId: O.Option<UserId>,
+  user: O.Option<User>,
 ) => pipe(
   {
     groupDetails: pipe(
@@ -91,7 +91,7 @@ const reviewToFeedItem = (
       ports.getAllEvents,
       T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
-    userReviewResponse: projectUserReviewResponse(ports.getAllEvents)(feedEvent.reviewId, userId),
+    userReviewResponse: projectUserReviewResponse(ports.getAllEvents)(feedEvent.reviewId, user),
   },
   sequenceS(T.ApplyPar),
   T.map(({
@@ -108,17 +108,17 @@ const reviewToFeedItem = (
   })),
 );
 
-type GetFeedEventsContent = (ports: Ports, server: ArticleServer, userId: O.Option<UserId>)
+type GetFeedEventsContent = (ports: Ports, server: ArticleServer, userId: O.Option<User>)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = (ports, server, userId) => (feedEvents) => {
+export const getFeedEventsContent: GetFeedEventsContent = (ports, server, user) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
-        return reviewToFeedItem(ports, feedEvent, userId);
+        return reviewToFeedItem(ports, feedEvent, user);
     }
   };
   return pipe(
