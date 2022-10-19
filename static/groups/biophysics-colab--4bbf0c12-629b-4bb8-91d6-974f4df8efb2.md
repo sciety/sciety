@@ -70,6 +70,7 @@ Members of the Biophysics Colab community include:
 - Merritt Maduke
 - Medha M Pathak
 - Stephan A Pless
+- Michael Pusch
 - Janice L Robertson
 - Gary Rudnick
 - Renae M Ryan
