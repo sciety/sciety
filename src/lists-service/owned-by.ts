@@ -1,16 +1,36 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
+import * as Ord from 'fp-ts/Ord';
+import * as RM from 'fp-ts/ReadonlyMap';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { GetListsEvents } from './get-lists-events';
-import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
+import { ListsEvent } from './lists-event';
 import { Logger } from '../shared-ports';
+import { List } from '../shared-read-models/lists';
+import { constructReadModel } from '../shared-read-models/lists/construct-read-model';
 import { OwnedByQuery } from '../types/codecs/OwnedByQuery';
 import * as DE from '../types/data-error';
 import * as LOID from '../types/list-owner-id';
+import { eqListOwnerId, ListOwnerId } from '../types/list-owner-id';
+
+const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((list) => list.lastUpdated),
+);
+
+type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (events: ReadonlyArray<ListsEvent>) => ReadonlyArray<List>;
+
+export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
+  constructReadModel,
+  RM.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
+  RM.values(orderByLastUpdatedDescending),
+);
 
 type Ports = {
   getListsEvents: GetListsEvents,
