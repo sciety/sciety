@@ -34,6 +34,22 @@ const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
   })),
 );
 
+const processRelevantEvent = (adapters: Ports) => (candidateEvent: DomainEvent) => {
+  switch (candidateEvent.type) {
+    case 'UserUnsavedArticle': return pipe(
+      candidateEvent,
+      toCommand(adapters),
+      TE.chain(adapters.removeArticleFromList),
+    );
+    case 'UserSavedArticle': return pipe(
+      candidateEvent,
+      toCommand(adapters),
+      TE.chain(adapters.addArticleToList),
+    );
+    default: return TE.right(undefined);
+  }
+};
+
 type ReplicateUserSavedArticleListAsGenericList = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
 
 // ts-unused-exports:disable-next-line
@@ -41,21 +57,7 @@ export const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArti
   adapters,
 ) => (event) => pipe(
   event,
-  (candidateEvent) => {
-    switch (candidateEvent.type) {
-      case 'UserUnsavedArticle': return pipe(
-        candidateEvent,
-        toCommand(adapters),
-        TE.chain(adapters.removeArticleFromList),
-      );
-      case 'UserSavedArticle': return pipe(
-        candidateEvent,
-        toCommand(adapters),
-        TE.chain(adapters.addArticleToList),
-      );
-      default: return TE.right(undefined);
-    }
-  },
+  processRelevantEvent(adapters),
   TE.match(
     (reason) => {
       adapters.logger('error', 'replicateUserSavedArticlesListAsGenericList policy failed', { reason, event });
