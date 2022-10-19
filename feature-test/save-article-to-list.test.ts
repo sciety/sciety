@@ -187,30 +187,4 @@ describe('save-article-to-list', () => {
       });
     });
   });
-
-  describe('a user has a user list page with one article and an empty generic list', () => {
-    const testUserId = '56806677';
-    const articleId = '10.1101/2022.10.01.510447';
-    const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
-
-    beforeAll(async () => {
-      await openBrowser();
-    });
-
-    afterAll(async () => {
-      await closeBrowser();
-    });
-
-    it('that article appears on their generic list page', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
-      const genericListPage = `localhost:8080/lists/${listId}`;
-      await goto(genericListPage);
-      const articleIsDisplayed = await $(articleCardSelector).exists();
-      expect(articleIsDisplayed).toBe(true);
-    });
-  });
-
-  describe('a user has unsaved an article', () => {
-    it.todo('that article does not appear on their generic list page');
-  });
 });
