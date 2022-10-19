@@ -13,13 +13,53 @@ import { GetListsEvents } from './get-lists-events';
 import { ListsEvent } from './lists-event';
 import { DomainEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
-import { ReadModel, updateReadmodel } from '../shared-read-models/lists/construct-read-model';
 import { List } from '../shared-read-models/lists/list';
 import { OwnedByQuery } from '../types/codecs/OwnedByQuery';
 import * as DE from '../types/data-error';
 import { ListId } from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { eqListOwnerId, ListOwnerId } from '../types/list-owner-id';
+import * as O from 'fp-ts/Option';
+
+export type ReadModel = Map<ListId, List>;
+
+export const updateReadmodel = (state: ReadModel, event: DomainEvent): ReadModel => {
+  switch (event.type) {
+    case 'ListCreated':
+      return state.set(event.listId, {
+        id: event.listId,
+        name: event.name,
+        description: event.description,
+        ownerId: event.ownerId,
+        articleCount: 0,
+        lastUpdated: event.date,
+      });
+    case 'ArticleAddedToList':
+      return pipe(
+        state.get(event.listId),
+        O.fromNullable,
+        O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
+        (existing) => state.set(event.listId, {
+          ...existing,
+          articleCount: existing.articleCount + 1,
+          lastUpdated: event.date,
+        }),
+      );
+    case 'ArticleRemovedFromList':
+      return pipe(
+        state.get(event.listId),
+        O.fromNullable,
+        O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
+        (existing) => state.set(event.listId, {
+          ...existing,
+          articleCount: existing.articleCount - 1,
+          lastUpdated: event.date,
+        }),
+      );
+    default:
+      return state;
+  }
+};
 
 export const constructReadModel = (
   events: ReadonlyArray<DomainEvent>,
