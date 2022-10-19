@@ -1,5 +1,4 @@
 import * as TE from 'fp-ts/TaskEither';
-import { Doi } from '../types/doi';
-import { ListId } from '../types/list-id';
+import { RemoveArticleFromListCommand } from '../commands';
 
-export type RemoveArticleFromList = (command: { listId: ListId, articleId: Doi }) => TE.TaskEither<string, void>;
+export type RemoveArticleFromList = (command: RemoveArticleFromListCommand) => TE.TaskEither<string, void>;
