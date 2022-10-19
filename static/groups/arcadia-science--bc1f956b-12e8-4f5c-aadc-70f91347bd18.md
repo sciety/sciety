@@ -32,8 +32,33 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
 
 ## People
 
-TBC
+- **Prachee Avasthi**
+- Adair Borges
+- Atanas Radkov
+- Austin Patton
+- Behnom Farboud
+- Brae Bigge
+- Cameron Macquarrie
+- Dave Matus
+- Dave Mets
+- Dennis Sun
+- Elizabeth McDaniel
+- Emily Weiss
+- Galo Garcia
+- Januka Athukoralage
+- Jase Gehring
+- Jean Davidson
+- Kira Poskanzer
+- Manon Morin
+- Maryclare Rollins
+- Megan Hochstrasser
+- Mert Celebi
+- Peter Thuyboun
+- Rachel Dutton
+- Ryan York
+- Seemay Chou
+- Taylor Reiter
 
 ## Content license
 
-Our reviews are not licensed and will be publicly available on Sciety and bioRxiv.
+Our reviews are not licensed and are publicly available on Sciety and bioRxiv.
