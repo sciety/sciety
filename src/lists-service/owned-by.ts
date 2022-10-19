@@ -103,22 +103,27 @@ type Ports = {
 };
 
 export const ownedBy = (ports: Ports): Middleware => {
-  const readModelAtStartup = constructReadModel(ports.eventsAvailableAtStartup);
+  let statefulReadModel = constructReadModel(ports.eventsAvailableAtStartup);
+  const latestReadModel = () => pipe(
+    ports.getNewListsEvents,
+    TE.map((newEvents) => pipe(
+      newEvents,
+      RA.reduce(
+        statefulReadModel,
+        updateReadmodel,
+      ),
+    )),
+    TE.map((updatedReadModel) => {
+      statefulReadModel = updatedReadModel;
+      return updatedReadModel;
+    }),
+  );
   ports.logger('debug', 'Constructed read model at startup');
   return async ({ params, response }, next) => {
     ports.logger('debug', 'Started ownedBy query');
     await pipe(
       {
-        readModel: pipe(
-          ports.getNewListsEvents,
-          TE.map((newEvents) => pipe(
-            newEvents,
-            RA.reduce(
-              readModelAtStartup,
-              updateReadmodel,
-            ),
-          )),
-        ),
+        readModel: latestReadModel(),
         ownerId: pipe(
           params.ownerId,
           LOID.fromStringCodec.decode,
