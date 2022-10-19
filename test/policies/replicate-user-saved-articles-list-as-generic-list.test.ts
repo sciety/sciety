@@ -135,7 +135,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       expect(adapters.removeArticleFromList).not.toHaveBeenCalled();
     });
 
-    it.failing('does not log', () => {
+    it('does not log', () => {
       expect(adapters.logger).not.toHaveBeenCalled();
     });
   });

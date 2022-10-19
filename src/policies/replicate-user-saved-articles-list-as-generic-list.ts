@@ -4,8 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
-  isUserSavedArticleEvent,
-  isUserUnsavedArticleEvent,
   UserSavedArticleEvent,
   UserUnsavedArticleEvent,
 } from '../domain-events';
@@ -23,10 +21,6 @@ export type Ports = {
 };
 
 type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
-
-const isRelevantEvent = (
-  event: DomainEvent,
-): event is RelevantEvent => isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event);
 
 const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
   event.userId,
@@ -47,7 +41,7 @@ export const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArti
   adapters,
 ) => (event) => pipe(
   event,
-  TE.fromPredicate(isRelevantEvent, () => 'not interesting'),
+  TE.right,
   TE.chain((relevantEvent) => {
     switch (relevantEvent.type) {
       case 'UserUnsavedArticle': return pipe(
@@ -60,6 +54,7 @@ export const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArti
         toCommand(adapters),
         TE.chain(adapters.addArticleToList),
       );
+      default: return TE.right(undefined);
     }
   }),
   TE.match(
