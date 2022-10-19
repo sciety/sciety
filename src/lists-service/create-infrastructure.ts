@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -55,11 +54,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       TE.map(sortEvents),
     ),
     eventsAvailableAtStartup,
-    getNewListsEvents: pipe(
-      eventsAvailableAtStartup,
-      RA.last,
-      O.map((event) => event.date),
-      O.getOrElse(defaultCheckpoint),
+    getNewListsEvents: (checkpoint) => pipe(
+      checkpoint,
       queryDatabaseForEventsWithNewerDate(pool, logger),
       TE.map(RA.toArray),
       TE.map(sortEvents),

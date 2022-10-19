@@ -98,14 +98,14 @@ export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
 type Ports = {
   getListsEvents: GetListsEvents,
   eventsAvailableAtStartup: ReadonlyArray<ListsEvent>,
-  getNewListsEvents: TE.TaskEither<DE.DataError, ReadonlyArray<ListsEvent>>,
+  getNewListsEvents: (checkpoint: Date) => TE.TaskEither<DE.DataError, ReadonlyArray<ListsEvent>>,
   logger: Logger,
 };
 
 export const ownedBy = (ports: Ports): Middleware => {
   let statefulReadModel = constructReadModel(ports.eventsAvailableAtStartup);
   const latestReadModel = () => pipe(
-    ports.getNewListsEvents,
+    ports.getNewListsEvents(statefulReadModel.checkpoint),
     TE.map((newEvents) => pipe(
       newEvents,
       RA.reduce(
