@@ -44,6 +44,7 @@ export const createTestServer = async (): Promise<TestServer> => {
 
   const adapters: CollectedPorts = {
     addArticleToList: () => TE.left(''),
+    removeArticleFromList: () => TE.left(''),
     createList: () => TE.left(DE.unavailable),
     fetchArticle,
     fetchReview: fetchReview(fetchers),

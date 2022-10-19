@@ -9,12 +9,10 @@ import {
   UserSavedArticleEvent,
   UserUnsavedArticleEvent,
 } from '../domain-events';
-import { AddArticleToList, GetListsOwnedBy, Logger } from '../shared-ports';
-import { Doi } from '../types/doi';
-import { ListId } from '../types/list-id';
+import {
+  AddArticleToList, GetListsOwnedBy, Logger, RemoveArticleFromList,
+} from '../shared-ports';
 import * as LOID from '../types/list-owner-id';
-
-type RemoveArticleFromList = (command: { listId: ListId, articleId: Doi }) => TE.TaskEither<string, void>;
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
