@@ -37,46 +37,60 @@ const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
   Ord.contramap((list) => list.lastUpdated),
 );
 
-type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (events: ReadonlyArray<ListsEvent>) => ReadonlyArray<List>;
+type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (readModel: ReadModel) => ReadonlyArray<List>;
 
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
-  constructReadModel,
   RM.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
   RM.values(orderByLastUpdatedDescending),
 );
 
 type Ports = {
   getListsEvents: GetListsEvents,
+  eventsAvailableAtStartup: ReadonlyArray<ListsEvent>,
+  getNewListsEvents: TE.TaskEither<DE.DataError, ReadonlyArray<ListsEvent>>,
   logger: Logger,
 };
 
-export const ownedBy = (ports: Ports): Middleware => async ({ params, response }, next) => {
-  ports.logger('debug', 'Started ownedBy query');
-  await pipe(
-    {
-      events: ports.getListsEvents,
-      ownerId: pipe(
-        params.ownerId,
-        LOID.fromStringCodec.decode,
-        E.mapLeft(() => DE.unavailable),
-        TE.fromEither,
+export const ownedBy = (ports: Ports): Middleware => {
+  const readModelAtStartup = constructReadModel(ports.eventsAvailableAtStartup);
+  ports.logger('debug', 'Constructed read model at startup');
+  return async ({ params, response }, next) => {
+    ports.logger('debug', 'Started ownedBy query');
+    await pipe(
+      {
+        readModel: pipe(
+          ports.getNewListsEvents,
+          TE.map((newEvents) => pipe(
+            newEvents,
+            RA.reduce(
+              readModelAtStartup,
+              updateReadmodel,
+            ),
+          )),
+        ),
+        ownerId: pipe(
+          params.ownerId,
+          LOID.fromStringCodec.decode,
+          E.mapLeft(() => DE.unavailable),
+          TE.fromEither,
+        ),
+      },
+      sequenceS(TE.ApplyPar),
+      TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded new lists events and updated read model'))),
+      TE.map(({ readModel, ownerId }) => selectAllListsOwnedBy(ownerId)(readModel)),
+      TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Queried read model'))),
+      TE.match(
+        () => {
+          response.status = StatusCodes.SERVICE_UNAVAILABLE;
+        },
+        (items) => {
+          response.status = StatusCodes.OK;
+          response.set({ 'Content-Type': 'application/json' });
+          response.body = OwnedByQuery.encode({ items });
+        },
       ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Loaded lists events'))),
-    TE.map(({ events, ownerId }) => selectAllListsOwnedBy(ownerId)(events)),
-    TE.chainFirstTaskK(() => T.of(ports.logger('debug', 'Constructed and queried read model'))),
-    TE.match(
-      () => {
-        response.status = StatusCodes.SERVICE_UNAVAILABLE;
-      },
-      (items) => {
-        response.status = StatusCodes.OK;
-        response.set({ 'Content-Type': 'application/json' });
-        response.body = OwnedByQuery.encode({ items });
-      },
-    ),
-  )();
+    )();
 
-  await next();
+    await next();
+  };
 };

@@ -49,6 +49,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       TE.map(RA.toArray),
       TE.map(sortEvents),
     ),
+    eventsAvailableAtStartup,
+    getNewListsEvents: pipe(
+      [],
+      appendNewListsEventsFromDatabase(pool, logger),
+      TE.map(RA.toArray),
+      TE.map(sortEvents),
+    ),
     logger,
   })),
 );
