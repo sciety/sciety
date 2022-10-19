@@ -1,84 +1,16 @@
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent,
-  isUserSavedArticleEvent,
-  isUserUnsavedArticleEvent,
   userFoundReviewHelpful,
   userSavedArticle,
-  UserSavedArticleEvent,
   userUnsavedArticle,
-  UserUnsavedArticleEvent,
 } from '../../src/domain-events';
-import { AddArticleToList, GetListsOwnedBy, Logger } from '../../src/shared-ports';
-import { Doi } from '../../src/types/doi';
-import { ListId } from '../../src/types/list-id';
-import * as LOID from '../../src/types/list-owner-id';
+import { Ports, replicateUserSavedArticlesListAsGenericList } from '../../src/policies/replicate-user-saved-articles-list-as-generic-list';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
-
-type RemoveArticleFromList = (command: { listId: ListId, articleId: Doi }) => TE.TaskEither<string, void>;
-
-type Ports = {
-  addArticleToList: AddArticleToList,
-  removeArticleFromList: RemoveArticleFromList,
-  getListsOwnedBy: GetListsOwnedBy,
-  logger: Logger,
-};
-
-type ReplicateUserSavedArticleListAsGenericList = (adapters: Ports) => (event: DomainEvent) => T.Task<undefined>;
-
-const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
-  event.userId,
-  LOID.fromUserId,
-  adapters.getListsOwnedBy,
-  TE.map(RA.head),
-  TE.chainW(TE.fromOption(() => 'user has no generic list' as const)),
-  TE.map((list) => ({
-    articleId: event.articleId,
-    listId: list.id,
-  })),
-);
-
-type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
-
-const isRelevantEvent = (
-  event: DomainEvent,
-): event is RelevantEvent => isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event);
-
-const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArticleListAsGenericList = (
-  adapters,
-) => (event) => pipe(
-  event,
-  TE.fromPredicate(isRelevantEvent, () => 'not interesting'),
-  TE.chain((relevantEvent) => {
-    switch (relevantEvent.type) {
-      case 'UserUnsavedArticle': return pipe(
-        relevantEvent,
-        toCommand(adapters),
-        TE.chain(adapters.removeArticleFromList),
-      );
-      case 'UserSavedArticle': return pipe(
-        relevantEvent,
-        toCommand(adapters),
-        TE.chain(adapters.addArticleToList),
-      );
-    }
-  }),
-  TE.match(
-    (reason) => {
-      adapters.logger('error', 'replicateUserSavedArticlesListAsGenericList policy failed', { reason, event });
-      return undefined;
-    },
-    () => undefined,
-  ),
-);
 
 describe('replicate-user-saved-articles-list-as-generic-list', () => {
   const userId = arbitraryUserId();
