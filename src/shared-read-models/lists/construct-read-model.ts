@@ -5,9 +5,9 @@ import { List } from './list';
 import { DomainEvent } from '../../domain-events';
 import { ListId } from '../../types/list-id';
 
-type ReadModel = Map<ListId, List>;
+export type ReadModel = Map<ListId, List>;
 
-const updateReadmodel = (state: ReadModel, event: DomainEvent) => {
+export const updateReadmodel = (state: ReadModel, event: DomainEvent): ReadModel => {
   switch (event.type) {
     case 'ListCreated':
       return state.set(event.listId, {
