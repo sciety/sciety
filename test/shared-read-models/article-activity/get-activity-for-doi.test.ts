@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, evaluationRecorded, userSavedArticle, userUnsavedArticle,
+  articleAddedToList, articleRemovedFromList, evaluationRecorded,
 } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDate } from '../../helpers';
@@ -9,7 +9,6 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
@@ -112,17 +111,18 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and the list is a featured articles list and it was saved and unsaved by a user', () => {
-      const userId = arbitraryUserId();
+      const userListId = arbitraryListId();
+      const groupListId = arbitraryListId();
       const articleActivity = pipe(
         [
-          userSavedArticle(userId, articleId),
-          userUnsavedArticle(userId, articleId),
-          articleAddedToList(articleId, arbitraryListId()),
+          articleAddedToList(articleId, userListId),
+          articleRemovedFromList(articleId, userListId),
+          articleAddedToList(articleId, groupListId),
         ],
         getActivityForDoi(articleId),
       );
 
-      it('has a listMemberShipCount of 1', () => {
+      it.failing('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
@@ -130,7 +130,7 @@ describe('get-activity-for-doi', () => {
     describe('and the list is user list', () => {
       const articleActivity = pipe(
         [
-          userSavedArticle(arbitraryUserId(), articleId),
+          articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
       );
@@ -146,7 +146,7 @@ describe('get-activity-for-doi', () => {
       const articleActivity = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
-          userSavedArticle(arbitraryUserId(), articleId),
+          articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
       );
@@ -170,25 +170,11 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('first in a user list and then in a group list', () => {
-      const articleActivity = pipe(
-        [
-          userSavedArticle(arbitraryUserId(), articleId),
-          articleAddedToList(articleId, arbitraryListId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
-      });
-    });
-
     describe('first in two user lists and then in a featured articles list', () => {
       const articleActivity = pipe(
         [
-          userSavedArticle(arbitraryUserId(), articleId),
-          userSavedArticle(arbitraryUserId(), articleId),
+          articleAddedToList(articleId, arbitraryListId()),
+          articleAddedToList(articleId, arbitraryListId()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
@@ -196,34 +182,6 @@ describe('get-activity-for-doi', () => {
 
       it('has a listMemberShipCount of 3', () => {
         expect(articleActivity.listMembershipCount).toBe(3);
-      });
-    });
-
-    describe('multiple lists from different users', () => {
-      const articleActivity = pipe(
-        [
-          userSavedArticle(arbitraryUserId(), articleId),
-          userSavedArticle(arbitraryUserId(), articleId),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
-      });
-    });
-
-    describe('multiple lists from different groups', () => {
-      const articleActivity = pipe(
-        [
-          articleAddedToList(articleId, arbitraryListId()),
-          articleAddedToList(articleId, arbitraryListId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
   });
