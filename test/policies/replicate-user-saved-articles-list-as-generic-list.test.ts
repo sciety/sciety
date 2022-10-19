@@ -125,6 +125,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
         ...happyPathAdapters,
         addArticleToList: jest.fn(happyPathAdapters.addArticleToList),
         removeArticleFromList: jest.fn(happyPathAdapters.removeArticleFromList),
+        logger: jest.fn(dummyLogger),
       };
       await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
     });
@@ -132,6 +133,10 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
     it('does not call any command', () => {
       expect(adapters.addArticleToList).not.toHaveBeenCalled();
       expect(adapters.removeArticleFromList).not.toHaveBeenCalled();
+    });
+
+    it.failing('does not log', () => {
+      expect(adapters.logger).not.toHaveBeenCalled();
     });
   });
 });
