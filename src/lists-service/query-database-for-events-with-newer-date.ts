@@ -21,7 +21,7 @@ export const queryDatabaseForEventsWithNewerDate: QueryDatabaseForEventsWithNewe
     async () => pool.query<EventRow>(selectListsEventsWithNewerDate, [date]),
     identity,
   ),
-  TE.chainFirstTaskK((result) => T.of(logger('debug', 'Reading NEW events from database', { count: result.rows.length }))),
+  TE.chainFirstTaskK((result) => T.of(logger('debug', 'Reading NEW events from database', { date, count: result.rows.length }))),
   TE.map((result) => result.rows),
   TE.chainEitherKW(flow(
     RA.map((row) => ({ ...row, ...row.payload })),

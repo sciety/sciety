@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -6,16 +7,20 @@ import { Pool } from 'pg';
 import { appendNewListsEventsFromDatabase } from './append-new-lists-events-from-database';
 import { getListsEventsFromDatabase } from './get-lists-events-from-database';
 import { Ports } from './ports';
+import { queryDatabaseForEventsWithNewerDate } from './query-database-for-events-with-newer-date';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import { sort as sortEvents } from '../domain-events';
 import {
-  jsonSerializer, rTracerLogger, streamLogger,
+  jsonSerializer, rTracerLogger,
+  streamLogger,
 } from '../infrastructure/logger';
 
 type Dependencies = {
   prettyLog: boolean,
   logLevel: string, // TODO: Make this a level name
 };
+
+const defaultCheckpoint = () => new Date('1970');
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Ports> => pipe(
   {
@@ -51,8 +56,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     ),
     eventsAvailableAtStartup,
     getNewListsEvents: pipe(
-      [],
-      appendNewListsEventsFromDatabase(pool, logger),
+      eventsAvailableAtStartup,
+      RA.last,
+      O.map((event) => event.date),
+      O.getOrElse(defaultCheckpoint),
+      queryDatabaseForEventsWithNewerDate(pool, logger),
       TE.map(RA.toArray),
       TE.map(sortEvents),
     ),
