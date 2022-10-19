@@ -159,8 +159,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         payload: AddArticleToListCommandPayload
       ) => TE.TaskEither<string, void>;
 
-      const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (command) => pipe(
-        command,
+      const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (payload) => pipe(
+        {
+          articleId: payload.articleId.value,
+          listId: payload.listId.toString(),
+        },
         removeArticleFromListCommandHandler({
           getAllEvents,
           commitEvents: commitEventsWithoutListeners,
