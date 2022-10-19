@@ -20,7 +20,7 @@ type Dependencies = {
   logLevel: string, // TODO: Make this a level name
 };
 
-const defaultCheckpoint = () => new Date('1970');
+export const defaultCheckpoint = (): Date => new Date('1970');
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Ports> => pipe(
   {
