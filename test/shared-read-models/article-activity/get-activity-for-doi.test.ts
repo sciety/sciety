@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, evaluationRecorded, userSavedArticle, userUnsavedArticle,
+  articleAddedToList, articleRemovedFromList, evaluationRecorded, userSavedArticle, userUnsavedArticle,
 } from '../../../src/domain-events';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDate } from '../../helpers';
@@ -241,16 +241,16 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('because it has been Saved and Unsaved in a user list', () => {
-      const userId = arbitraryUserId();
+      const listId = arbitraryListId();
       const articleActivity = pipe(
         [
-          userSavedArticle(userId, articleId),
-          userUnsavedArticle(userId, articleId),
+          articleAddedToList(articleId, listId),
+          articleRemovedFromList(articleId, listId),
         ],
         getActivityForDoi(articleId),
       );
 
-      it('has a listMemberShipCount of 0', () => {
+      it.failing('has a listMemberShipCount of 0', () => {
         expect(articleActivity.listMembershipCount).toBe(0);
       });
     });
