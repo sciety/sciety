@@ -228,7 +228,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getListsOwnedBy: collectedAdapters.getListsOwnedBy,
         getUserDetails: collectedAdapters.getUserDetails,
         addArticleToList: collectedAdapters.addArticleToList,
-        remmoveArticleFromList: collectedAdapters.removeArticleFromList,
+        removeArticleFromList: collectedAdapters.removeArticleFromList,
         createList: collectedAdapters.createList,
       };
 

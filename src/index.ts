@@ -11,9 +11,6 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
-import {
-  replicateUserSavedArticlesListAsGenericList,
-} from './policies/replicate-user-saved-articles-list-as-generic-list';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -33,13 +30,12 @@ type ExecuteBackgroundPolicies = (ports: CollectedPorts) => T.Task<void>;
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async () => {
   const events = await ports.getAllEvents();
-  const amountOfEventsToProcess = events.length;
-  // const amountOfEventsToProcess = 0;
+  // const amountOfEventsToProcess = events.length;
+  const amountOfEventsToProcess = 0;
   const start = performance.now();
   // eslint-disable-next-line no-loops/no-loops
   for (let i = 0; i < amountOfEventsToProcess; i += 1) {
     await noopPolicy(events[i])();
-    await replicateUserSavedArticlesListAsGenericList(ports)(events[i])();
     await new Promise((resolve) => {
       setTimeout(resolve, 0);
     });
