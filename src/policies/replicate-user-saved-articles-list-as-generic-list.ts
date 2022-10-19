@@ -41,22 +41,21 @@ export const replicateUserSavedArticlesListAsGenericList: ReplicateUserSavedArti
   adapters,
 ) => (event) => pipe(
   event,
-  TE.right,
-  TE.chain((relevantEvent) => {
-    switch (relevantEvent.type) {
+  (candidateEvent) => {
+    switch (candidateEvent.type) {
       case 'UserUnsavedArticle': return pipe(
-        relevantEvent,
+        candidateEvent,
         toCommand(adapters),
         TE.chain(adapters.removeArticleFromList),
       );
       case 'UserSavedArticle': return pipe(
-        relevantEvent,
+        candidateEvent,
         toCommand(adapters),
         TE.chain(adapters.addArticleToList),
       );
       default: return TE.right(undefined);
     }
-  }),
+  },
   TE.match(
     (reason) => {
       adapters.logger('error', 'replicateUserSavedArticlesListAsGenericList policy failed', { reason, event });
