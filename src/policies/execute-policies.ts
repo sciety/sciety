@@ -15,17 +15,13 @@ type PoliciesPorts = AddArticleToEvaluatedArticlePorts
 
 type ExecutePolicies = (ports: PoliciesPorts) => (event: DomainEvent) => T.Task<void>;
 
-export const executePolicies: ExecutePolicies = (ports) => (event) => {
-  const policiesExecutionTask = pipe(
-    [
-      addArticleToEvaluatedArticlesList(ports)(event),
-      addArticleToElifeSubjectAreaLists(ports)(event),
-      createUserSavedArticlesListAsGenericList(ports)(event),
-      replicateUserSavedArticlesListAsGenericList(ports)(event),
-    ],
-    T.sequenceArray,
-    T.map(() => undefined),
-  );
-  void policiesExecutionTask();
-  return T.of(undefined);
-};
+export const executePolicies: ExecutePolicies = (ports) => (event) => pipe(
+  [
+    addArticleToEvaluatedArticlesList(ports)(event),
+    addArticleToElifeSubjectAreaLists(ports)(event),
+    createUserSavedArticlesListAsGenericList(ports)(event),
+    replicateUserSavedArticlesListAsGenericList(ports)(event),
+  ],
+  T.sequenceArray,
+  T.map(() => undefined),
+);
