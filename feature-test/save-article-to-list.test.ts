@@ -135,8 +135,16 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it('the article appears in the list page', async () => {
+        it('the article appears in the user list page', async () => {
           await goto(userSavedArticlesPage);
+          const articleIsDisplayed = await $(articleCardSelector).exists();
+          expect(articleIsDisplayed).toBe(true);
+        });
+
+        it.skip('the article appears in the generic list page', async () => {
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
         });
