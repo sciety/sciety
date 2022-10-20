@@ -20,6 +20,7 @@ describe('save-article-to-list', () => {
       const testUserId = '931653361';
       const userProfilePage = `localhost:8080/users/${userHandle}`;
       const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
+      const userSavedArticlesPage = `localhost:8080/users/${userHandle}/lists/saved-articles`;
       const scietyFeedPage = 'localhost:8080/sciety-feed';
 
       beforeAll(async () => {
@@ -46,7 +47,13 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it('the article appears in the list page', async () => {
+        it('the article appears in the user list page', async () => {
+          await goto(userSavedArticlesPage);
+          const articleIsDisplayed = await $(articleCardSelector).exists();
+          expect(articleIsDisplayed).toBe(true);
+        });
+
+        it('the article appears in the generic list page', async () => {
           await goto(genericListPage);
           const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
