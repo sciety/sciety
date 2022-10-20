@@ -22,6 +22,6 @@ export const executePolicies: ExecutePolicies = (ports) => (event) => pipe(
     createUserSavedArticlesListAsGenericList(ports)(event),
     replicateUserSavedArticlesListAsGenericList(ports)(event),
   ],
-  T.sequenceArray,
+  T.sequenceSeqArray,
   T.map(() => undefined),
 );

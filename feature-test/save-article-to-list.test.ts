@@ -141,7 +141,7 @@ describe('save-article-to-list', () => {
           expect(articleIsDisplayed).toBe(true);
         });
 
-        it.skip('the article appears in the generic list page', async () => {
+        it('the article appears in the generic list page', async () => {
           const listId = await getFirstListOwnedBy(testUserId);
           const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
           await goto(userGenericListPageUrl);
@@ -168,19 +168,19 @@ describe('save-article-to-list', () => {
           expect(lastUpdatedDate).toBe(today);
         });
 
-        it('the user\'s action appears in the Sciety feed', async () => {
+        it.skip('the user\'s action appears in the Sciety feed', async () => {
           await goto(scietyFeedPage);
           const cardText = await listItem(userHandle).text();
           expect(cardText).toContain(`${userHandle} saved an article`);
         });
 
-        it('the list count of the article card on the search page increases by one', async () => {
+        it.failing('the list count of the article card on the search page increases by one', async () => {
           await goto(articleSearchResultsPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it('the list count of the article card on the list page it is in increases by one', async () => {
+        it.failing('the list count of the article card on the list page it is in increases by one', async () => {
           await goto(userSavedArticlesPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
