@@ -169,6 +169,25 @@ taiko: node_modules clean-db
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
+dump-taiko-as-sql:
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/taiko.csv' with CSV" sciety user
+	${DOCKER_COMPOSE} exec db /bin/bash -c "pg_dump --username user sciety" > data/taiko.sql
+
+taiko-from-sql-seed: export TARGET = dev
+taiko-from-sql-seed: export AUTHENTICATION_STRATEGY = local
+taiko-from-sql-seed: export USE_STUB_ADAPTERS = true
+taiko-from-sql-seed: export SCIETY_TEAM_API_BEARER_TOKEN = secret
+taiko-from-sql-seed: node_modules clean-db
+	${DOCKER_COMPOSE} up -d db
+	scripts/wait-for-healthy-db.sh
+	${DOCKER_COMPOSE} exec -T db /bin/bash -c "PGPASSWORD=secret psql --username user sciety" < data/taiko.sql
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
+	${DOCKER_COMPOSE} down
+
 download-exploratory-test-from-prod:
 	kubectl run --rm --attach ship-events \
 		--image=amazon/aws-cli:2.4.23 \
