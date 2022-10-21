@@ -5,14 +5,13 @@ import { collapseCloseListEvents } from './collapse-close-list-events';
 import { FeedItem } from './feed-item';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
 } from '../domain-events';
 import { PageOfItems, paginate } from '../shared-components/paginate';
 import * as DE from '../types/data-error';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
-  isUserSavedArticleEvent(event)
-    || isUserFollowedEditorialCommunityEvent(event)
+  isUserFollowedEditorialCommunityEvent(event)
     || isArticleAddedToListEvent(event)
 );
 

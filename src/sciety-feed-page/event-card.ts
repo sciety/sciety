@@ -5,8 +5,7 @@ import {
   collapsedArticlesAddedToListCard,
   CollapsedArticlesAddedToListCardPorts,
   scietyFeedCard,
-  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
-  userSavedArticleToAListCard, UserSavedArticleToAListCardPorts,
+  userFollowedAGroupCard, UserFollowedAGroupCardPorts, UserSavedArticleToAListCardPorts,
 } from './cards';
 import {
   CollapsedArticlesAddedToList,
@@ -14,7 +13,7 @@ import {
 } from './feed-item';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
+  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
@@ -30,14 +29,6 @@ export const eventCard = (
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
-  if (isUserSavedArticleEvent(event)) {
-    return pipe(
-      event,
-      userSavedArticleToAListCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
-
   if (isUserFollowedEditorialCommunityEvent(event)) {
     return pipe(
       event,

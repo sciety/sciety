@@ -11,6 +11,7 @@ import {
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
+  userSavedArticle,
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
@@ -118,7 +119,7 @@ describe('sciety-feed-page', () => {
         userFoundReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
-        // userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
+        userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
       ]),
     };
     const renderedPage = await pipe(
