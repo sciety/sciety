@@ -90,7 +90,7 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.skip('the list count of the article card on the list page it is in increases by one', async () => {
+        it.failing('the list count of the article card on the list page it is in increases by one', async () => {
           await goto(genericListPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
