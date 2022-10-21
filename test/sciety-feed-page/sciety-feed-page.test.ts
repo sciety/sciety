@@ -11,7 +11,6 @@ import {
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
-  userSavedArticle,
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
@@ -26,6 +25,7 @@ import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -46,11 +46,13 @@ describe('sciety-feed-page', () => {
     }),
   };
 
-  it('renders a single saved article as a card', async () => {
+  it('renders a single article added to a list as a card', async () => {
+    const listId = arbitraryListId();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
+        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+        articleAddedToList(arbitraryArticleId(), listId),
       ]),
     };
     const renderedPage = await pipe(
@@ -59,7 +61,7 @@ describe('sciety-feed-page', () => {
       T.map((page) => page.content),
     )();
 
-    expect(renderedPage).toContain('saved an article to a list');
+    expect(renderedPage).toContain('added an article to a list');
   });
 
   it('renders a single user followed editorial community as a card', async () => {
@@ -102,7 +104,7 @@ describe('sciety-feed-page', () => {
     expect(itemCount).toStrictEqual(pageSize);
   });
 
-  it('does not render non-feed events', async () => {
+  it('does not render uninteresting events', async () => {
     const listId = arbitraryListId();
     const ports = {
       ...defaultPorts,
@@ -116,6 +118,7 @@ describe('sciety-feed-page', () => {
         userFoundReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
         userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
+        // userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
       ]),
     };
     const renderedPage = await pipe(
