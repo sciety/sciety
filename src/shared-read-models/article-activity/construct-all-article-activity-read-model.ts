@@ -5,19 +5,17 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
-import { UserId } from '../../types/user-id';
 
 const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
 
 type ArticleState = ArticleActivity & {
   evaluatingGroups: Set<GroupId>,
-  savingUsers: Set<UserId>,
   lists: Set<ListId>,
 };
 
 type AllArticleActivityReadModel = Map<string, ArticleState>;
 
-const deleteFromSet = (set: Set<UserId>, element: UserId) => {
+const deleteFromSet = (set: Set<ListId>, element: ListId) => {
   set.delete(element);
   return set;
 };
@@ -34,15 +32,13 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.none,
             evaluationCount: 0,
             evaluatingGroups: new Set(),
-            savingUsers: new Set(),
             lists: new Set([event.listId]),
             listMembershipCount: 1,
           }),
           (entry) => state.set(event.articleId.value, {
             ...entry,
             lists: entry.lists.add(event.listId),
-            listMembershipCount: entry.savingUsers.size
-              + entry.lists.add(event.listId).size,
+            listMembershipCount: entry.lists.add(event.listId).size,
           }),
         ),
       );
@@ -57,7 +53,6 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
             latestActivityDate: O.some(event.publishedAt),
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
-            savingUsers: new Set(),
             lists: new Set(),
             listMembershipCount: 0,
           }),
@@ -73,7 +68,7 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
         ),
       );
 
-    case 'UserUnsavedArticle':
+    case 'ArticleRemovedFromList':
       return pipe(
         state.get(event.articleId.value),
         O.fromNullable,
@@ -81,9 +76,8 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
           () => state,
           (entry) => state.set(event.articleId.value, {
             ...entry,
-            savingUsers: deleteFromSet(entry.savingUsers, event.userId),
-            listMembershipCount: deleteFromSet(entry.savingUsers, event.userId).size
-              + entry.lists.size,
+            lists: deleteFromSet(entry.lists, event.listId),
+            listMembershipCount: deleteFromSet(entry.lists, event.listId).size,
           }),
         ),
       );

@@ -42,7 +42,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.failing('has a listMemberShipCount of 0', () => {
+      it('has a listMemberShipCount of 0', () => {
         expect(articleActivity.listMembershipCount).toBe(0);
       });
     });
@@ -141,7 +141,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });

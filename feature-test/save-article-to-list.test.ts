@@ -84,13 +84,13 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain(`${userHandle} saved an article`);
         });
 
-        it.failing('the list count of the article card on the search page increases by one', async () => {
+        it('the list count of the article card on the search page increases by one', async () => {
           await goto(articleSearchResultsPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.failing('the list count of the article card on the list page it is in increases by one', async () => {
+        it('the list count of the article card on the list page it is in increases by one', async () => {
           await goto(genericListPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
@@ -174,13 +174,13 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain(`${userHandle} saved an article`);
         });
 
-        it.failing('the list count of the article card on the search page increases by one', async () => {
+        it('the list count of the article card on the search page increases by one', async () => {
           await goto(articleSearchResultsPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.failing('the list count of the article card on the list page it is in increases by one', async () => {
+        it('the list count of the article card on the list page it is in increases by one', async () => {
           await goto(userSavedArticlesPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
