@@ -155,7 +155,7 @@ describe('get-activity-for-doi', () => {
         getActivityForDoi(articleId),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });

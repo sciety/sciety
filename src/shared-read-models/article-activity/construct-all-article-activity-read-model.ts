@@ -73,29 +73,6 @@ const addEventToActivities = (state: AllArticleActivityReadModel, event: DomainE
         ),
       );
 
-    case 'UserSavedArticle':
-      return pipe(
-        state.get(event.articleId.value),
-        O.fromNullable,
-        O.fold(
-          () => state.set(event.articleId.value, {
-            articleId: event.articleId,
-            latestActivityDate: O.none,
-            evaluationCount: 0,
-            evaluatingGroups: new Set(),
-            savingUsers: new Set([event.userId]),
-            lists: new Set(),
-            listMembershipCount: 1,
-          }),
-          (entry) => state.set(event.articleId.value, {
-            ...entry,
-            savingUsers: entry.savingUsers.add(event.userId),
-            listMembershipCount: entry.savingUsers.add(event.userId).size
-              + entry.lists.size,
-          }),
-        ),
-      );
-
     case 'UserUnsavedArticle':
       return pipe(
         state.get(event.articleId.value),
