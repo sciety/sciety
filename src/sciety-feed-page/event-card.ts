@@ -5,7 +5,7 @@ import {
   collapsedArticlesAddedToListCard,
   CollapsedArticlesAddedToListCardPorts,
   scietyFeedCard,
-  userFollowedAGroupCard, UserFollowedAGroupCardPorts, UserSavedArticleToAListCardPorts,
+  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
 } from './cards';
 import {
   CollapsedArticlesAddedToList,
@@ -19,8 +19,7 @@ import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
 
 export type Ports =
-  UserSavedArticleToAListCardPorts
-  & UserFollowedAGroupCardPorts
+  UserFollowedAGroupCardPorts
   & ArticleAddedToListCardPorts
   & CollapsedArticlesAddedToListCardPorts;
 
