@@ -78,10 +78,10 @@ describe('save-article-to-list', () => {
           expect(lastUpdatedDate).toBe(today);
         });
 
-        it.skip('the user\'s action appears in the Sciety feed', async () => {
+        it('the user\'s action appears in the Sciety feed', async () => {
           await goto(scietyFeedPage);
           const cardText = await listItem(userHandle).text();
-          expect(cardText).toContain(`${userHandle} saved an article`);
+          expect(cardText).toContain(`${userHandle} added an article`);
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
@@ -168,10 +168,10 @@ describe('save-article-to-list', () => {
           expect(lastUpdatedDate).toBe(today);
         });
 
-        it.skip('the user\'s action appears in the Sciety feed', async () => {
+        it('the user\'s action appears in the Sciety feed', async () => {
           await goto(scietyFeedPage);
           const cardText = await listItem(userHandle).text();
-          expect(cardText).toContain(`${userHandle} saved an article`);
+          expect(cardText).toContain(`${userHandle} added an article`);
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
