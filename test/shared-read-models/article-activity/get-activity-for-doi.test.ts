@@ -3,12 +3,14 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded,
 } from '../../../src/domain-events';
+import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
@@ -96,8 +98,8 @@ describe('get-activity-for-doi', () => {
     });
   });
 
-  describe('when an article appears in one list', () => {
-    describe('and the list is a group list', () => {
+  describe('when an article appears in one generic list', () => {
+    describe('and the article has been added to a single generic list and not removed', () => {
       const articleActivity = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
@@ -110,14 +112,14 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('and the list is a featured articles list and it was saved and unsaved by a user', () => {
-      const userListId = arbitraryListId();
-      const groupListId = arbitraryListId();
+    describe('and the article was added and removed from a different generic list', () => {
+      const listAId = arbitraryListId();
+      const listBId = arbitraryListId();
       const articleActivity = pipe(
         [
-          articleAddedToList(articleId, userListId),
-          articleRemovedFromList(articleId, userListId),
-          articleAddedToList(articleId, groupListId),
+          articleAddedToList(articleId, listAId),
+          articleRemovedFromList(articleId, listAId),
+          articleAddedToList(articleId, listBId),
         ],
         getActivityForDoi(articleId),
       );
@@ -127,15 +129,16 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('and the list is user list', () => {
+    describe('and the article was saved by a user with a legacy command', () => {
       const articleActivity = pipe(
         [
+          userSavedArticle(arbitraryUserId(), articleId),
           articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
       );
 
-      it('has a listMemberShipCount of 1', () => {
+      it.failing('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
