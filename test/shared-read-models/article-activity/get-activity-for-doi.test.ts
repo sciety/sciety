@@ -15,18 +15,35 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
 
-  describe('when an article is not in any list', () => {
-    const articleActivity = pipe(
-      [],
-      getActivityForDoi(articleId),
-    );
+  describe('when an article has no evaluations and is in no list', () => {
+    describe('because it has never been added to a generic list', () => {
+      const articleActivity = pipe(
+        [],
+        getActivityForDoi(articleId),
+      );
 
-    it('article has no activity', () => {
-      expect(articleActivity).toStrictEqual({
-        articleId,
-        latestActivityDate: O.none,
-        evaluationCount: 0,
-        listMembershipCount: 0,
+      it('article has no activity', () => {
+        expect(articleActivity).toStrictEqual({
+          articleId,
+          latestActivityDate: O.none,
+          evaluationCount: 0,
+          listMembershipCount: 0,
+        });
+      });
+    });
+
+    describe('because it has been added and removed from a generic list', () => {
+      const listId = arbitraryListId();
+      const articleActivity = pipe(
+        [
+          articleAddedToList(articleId, listId),
+          articleRemovedFromList(articleId, listId),
+        ],
+        getActivityForDoi(articleId),
+      );
+
+      it.failing('has a listMemberShipCount of 0', () => {
+        expect(articleActivity.listMembershipCount).toBe(0);
       });
     });
   });
@@ -142,24 +159,8 @@ describe('get-activity-for-doi', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
     });
-  });
 
-  describe('when an article appears in multiple lists', () => {
-    describe('first in a group list and then in a user list', () => {
-      const articleActivity = pipe(
-        [
-          articleAddedToList(articleId, arbitraryListId()),
-          articleAddedToList(articleId, arbitraryListId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
-      });
-    });
-
-    describe('added to the evaluated articles list by a policy, after being evaluated', () => {
+    describe('added to a generic list, after being evaluated', () => {
       const articleActivity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
@@ -171,48 +172,25 @@ describe('get-activity-for-doi', () => {
       it('has a listMemberShipCount of 1', () => {
         expect(articleActivity.listMembershipCount).toBe(1);
       });
-    });
 
-    describe('first in two user lists and then in a featured articles list', () => {
-      const articleActivity = pipe(
-        [
-          articleAddedToList(articleId, arbitraryListId()),
-          articleAddedToList(articleId, arbitraryListId()),
-          articleAddedToList(articleId, arbitraryListId()),
-        ],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 3', () => {
-        expect(articleActivity.listMembershipCount).toBe(3);
+      it('has an evaluationCount of 1', () => {
+        expect(articleActivity.evaluationCount).toBe(1);
       });
     });
   });
 
-  describe('when an article does not appear in any list', () => {
-    describe('because it was never added to a list', () => {
-      const articleActivity = pipe(
-        [],
-        getActivityForDoi(articleId),
-      );
-
-      it('has a listMemberShipCount of 0', () => {
-        expect(articleActivity.listMembershipCount).toBe(0);
-      });
-    });
-
-    describe('because it has been Saved and Unsaved in a user list', () => {
-      const listId = arbitraryListId();
+  describe('when an article appears in multiple lists', () => {
+    describe('in two different generic lists', () => {
       const articleActivity = pipe(
         [
-          articleAddedToList(articleId, listId),
-          articleRemovedFromList(articleId, listId),
+          articleAddedToList(articleId, arbitraryListId()),
+          articleAddedToList(articleId, arbitraryListId()),
         ],
         getActivityForDoi(articleId),
       );
 
-      it.failing('has a listMemberShipCount of 0', () => {
-        expect(articleActivity.listMembershipCount).toBe(0);
+      it('has a listMemberShipCount of 2', () => {
+        expect(articleActivity.listMembershipCount).toBe(2);
       });
     });
   });
