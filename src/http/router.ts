@@ -32,6 +32,8 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articleActivityPage } from '../article-page';
+import { addArticleToListCommandCodec } from '../commands';
+import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
@@ -71,8 +73,6 @@ import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
-import {addArticleToListCommandCodec} from '../commands';
-import {validateInputShape} from '../commands/validate-input-shape';
 
 const toNotFound = () => ({
   type: DE.notFound,

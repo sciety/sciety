@@ -175,10 +175,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
         payload,
       ) => pipe(
-        {
-          articleId: payload.articleId.value,
-          listId: payload.listId.toString(),
-        },
+        payload,
         addArticleToListCommandHandler({
           getAllEvents,
           commitEvents: commitEventsWithoutListeners,
