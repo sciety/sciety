@@ -71,6 +71,8 @@ import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
 import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
+import {addArticleToListCommandCodec} from '../commands';
+import {validateInputShape} from '../commands/validate-input-shape';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -441,7 +443,11 @@ export const createRouter = (ports: CollectedPorts): Router => {
 
   router.post('/record-evaluation', handleScietyApiCommand(ports, recordEvaluationCommandHandler(ports)));
 
-  router.post('/add-article-to-list', handleScietyApiCommand(ports, addArticleToListCommandHandler(ports)));
+  router.post('/add-article-to-list', handleScietyApiCommand(ports, flow(
+    validateInputShape(addArticleToListCommandCodec),
+    TE.fromEither,
+    TE.chain(addArticleToListCommandHandler(ports)),
+  )));
 
   router.post('/remove-article-from-list', handleScietyApiCommand(ports, removeArticleFromListCommandHandler(ports)));
 

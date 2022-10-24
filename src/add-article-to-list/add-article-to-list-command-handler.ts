@@ -1,8 +1,8 @@
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
-import { addArticleToListCommandCodec } from '../commands';
-import { validateInputShape } from '../commands/validate-input-shape';
+import { AddArticleToListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
 import { CommandResult } from '../types/command-result';
@@ -15,22 +15,16 @@ export type Ports = {
 type AddArticleToListCommandHandler = (
   ports: Ports
 ) => (
-  input: unknown,
+  input: AddArticleToListCommand,
 ) => TE.TaskEither<string, CommandResult>;
 
 export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   ports,
 ) => (
-  input,
+  command,
 ) => pipe(
-  input,
-  validateInputShape(addArticleToListCommandCodec),
-  TE.fromEither,
-  TE.chainW((command) => pipe(
-    ports.getAllEvents,
-    TE.rightTask,
-    TE.chainEitherK(replayListAggregate(command.listId)),
-    TE.map(executeCommand(command)),
-  )),
+  ports.getAllEvents,
+  T.map(replayListAggregate(command.listId)),
+  TE.map(executeCommand(command)),
   TE.chainTaskK(ports.commitEvents),
 );
