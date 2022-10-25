@@ -568,7 +568,10 @@ export const createRouter = (ports: CollectedPorts): Router => {
     context.response.body = await pipe(
       elifeArticleMissingFromSubjectAreaLists(ports),
       T.map(RA.map((articleId) => articleId.value)),
-      T.map((articleIds) => ({ articleIds })),
+      T.map((articleIds) => ({
+        articleIds,
+        articleCount: articleIds.length,
+      })),
     )();
 
     await next();
