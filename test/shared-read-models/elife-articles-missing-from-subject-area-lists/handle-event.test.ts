@@ -65,7 +65,7 @@ describe('handle-event', () => {
     });
   });
 
-  describe.skip('when there is an evaluation by eLife on an article that has been added to an eLife subject area list', () => {
+  describe('when there is an evaluation by eLife on an article that has been added to an eLife subject area list', () => {
     it.each([
       [LID.fromValidatedString('3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4')],
       [LID.fromValidatedString('b2b55ddd-c0f2-4406-b304-b744af989e72')],
