@@ -104,6 +104,24 @@ describe('handle-event', () => {
     });
   });
 
+  describe('when there is an evaluation by eLife on an article that has already been added to an eLife subject area list', () => {
+    it.failing('does not include the article in the read model', () => {
+      const articleId = arbitraryArticleId();
+      const elifeListId = LID.fromValidatedString('a059f20a-366d-4790-b1f2-03bfb9b915b6');
+      const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
+      const readModel = pipe(
+        [
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          articleAddedToList(articleId, elifeListId),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        ],
+        RA.reduce([], handleEvent),
+      );
+
+      expect(readModel).toHaveLength(0);
+    });
+  });
+
   describe('when there is an evaluation by another group', () => {
     it('does not affect the read model', () => {
       const readModel = pipe(
