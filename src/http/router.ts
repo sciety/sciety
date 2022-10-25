@@ -565,14 +565,14 @@ export const createRouter = (ports: CollectedPorts): Router => {
   // OBSERVABILITY
 
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
-    context.response.body = pipe(
-      elifeArticleMissingFromSubjectAreaLists(),
-      ({ articleIds }) => pipe(
+    context.response.body = await pipe(
+      elifeArticleMissingFromSubjectAreaLists(ports),
+      T.map(({ articleIds }) => pipe(
         articleIds,
         RA.map((articleId) => articleId.value),
-      ),
-      (articleIds) => ({ articleIds }),
-    );
+      )),
+      T.map((articleIds) => ({ articleIds })),
+    )();
 
     await next();
   });
