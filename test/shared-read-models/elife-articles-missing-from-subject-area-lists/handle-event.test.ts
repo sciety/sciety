@@ -29,7 +29,7 @@ describe('handle-event', () => {
   });
 
   describe('when there is an evaluation by another group', () => {
-    it.failing('does not affect the read model', () => {
+    it('does not affect the read model', () => {
       const readModel = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
