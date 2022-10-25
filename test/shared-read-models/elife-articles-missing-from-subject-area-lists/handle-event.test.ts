@@ -48,7 +48,7 @@ describe('handle-event', () => {
   });
 
   describe('when there are multiple evaluations by eLife on the same article that have not been added to an eLife subject area list', () => {
-    it.failing('includes the article once in the read model', () => {
+    it('includes the article once in the read model', () => {
       const articleId = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
       const readModel = pipe(
