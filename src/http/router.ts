@@ -560,6 +560,15 @@ export const createRouter = (ports: CollectedPorts): Router => {
     await next();
   });
 
+  // OBSERVABILITY
+
+  router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
+    context.response.body = {
+    };
+
+    await next();
+  });
+
   // MISC
 
   router.get('/ping', ping());
