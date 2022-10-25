@@ -28,6 +28,25 @@ describe('handle-event', () => {
     });
   });
 
+  describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
+    it.failing('includes the articles in the read model', () => {
+      const articleId = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+      const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
+      const readModel = pipe(
+        [
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
+        ],
+        RA.reduce({ articleIds: [] }, handleEvent),
+      );
+
+      expect(readModel.articleIds).toHaveLength(2);
+      expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
+      expect(readModel.articleIds[1].value).toStrictEqual(articleId2.value);
+    });
+  });
+
   describe('when there is an evaluation by another group', () => {
     it('does not affect the read model', () => {
       const readModel = pipe(
