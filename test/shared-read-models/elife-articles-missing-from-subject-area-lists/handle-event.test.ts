@@ -6,6 +6,7 @@ import { handleEvent } from '../../../src/shared-read-models/elife-articles-miss
 import * as GroupId from '../../../src/types/group-id';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -24,6 +25,19 @@ describe('handle-event', () => {
 
       expect(readModel.articleIds).toHaveLength(1);
       expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
+    });
+  });
+
+  describe('when there is an evaluation by another group', () => {
+    it.failing('does not affect the read model', () => {
+      const readModel = pipe(
+        [
+          evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
+        ],
+        RA.reduce({ articleIds: [] }, handleEvent),
+      );
+
+      expect(readModel.articleIds).toHaveLength(0);
     });
   });
 
