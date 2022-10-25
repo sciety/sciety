@@ -2,6 +2,7 @@ import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -564,7 +565,14 @@ export const createRouter = (ports: CollectedPorts): Router => {
   // OBSERVABILITY
 
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
-    context.response.body = elifeArticleMissingFromSubjectAreaLists();
+    context.response.body = pipe(
+      elifeArticleMissingFromSubjectAreaLists(),
+      ({ articleIds }) => pipe(
+        articleIds,
+        RA.map((articleId) => articleId.value),
+      ),
+      (articleIds) => ({ articleIds }),
+    );
 
     await next();
   });
