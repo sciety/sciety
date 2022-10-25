@@ -66,7 +66,7 @@ describe('handle-event', () => {
   });
 
   describe('when there is an evaluation by eLife on an article that has been added to an eLife subject area list', () => {
-    it.failing('does not include the article in the read model', () => {
+    it('does not include the article in the read model', () => {
       const articleId = arbitraryArticleId();
       const elifeBiochemistryAndChemicalBiologyListId = LID.fromValidatedString('3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4');
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
