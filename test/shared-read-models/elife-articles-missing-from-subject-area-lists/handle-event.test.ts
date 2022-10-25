@@ -8,7 +8,7 @@ describe('handle-event', () => {
   describe('when there is no articles missing', () => {
     describe('there is an EvaluationRecorded by eLife event', () => {
       describe('and it has not been added to an eLife subject area list', () => {
-        it.failing('appears in the read model', () => {
+        it('appears in the read model', () => {
           const articleId = arbitraryArticleId();
           const readModel = handleEvent(
             { articleIds: [] },
