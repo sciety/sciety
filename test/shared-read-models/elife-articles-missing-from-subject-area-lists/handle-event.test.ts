@@ -29,7 +29,7 @@ describe('handle-event', () => {
   });
 
   describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
-    it.failing('includes the articles in the read model', () => {
+    it('includes the articles in the read model', () => {
       const articleId = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
