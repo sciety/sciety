@@ -7,26 +7,19 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-event', () => {
-  describe('when there are currently no articles missing', () => {
-    describe('and next there is an EvaluationRecorded by eLife event', () => {
-      describe('and it has not been added to an eLife subject area list', () => {
-        it('appears in the read model', () => {
-          const articleId = arbitraryArticleId();
-          const readModel = pipe(
-            [
-              evaluationRecorded(
-                GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-                articleId,
-                arbitraryReviewId(),
-              ),
-            ],
-            RA.reduce({ articleIds: [] }, handleEvent),
-          );
+  describe('when there is an evaluation by eLife on an article that has not been added to an eLife subject area list', () => {
+    it('appears in the read model', () => {
+      const articleId = arbitraryArticleId();
+      const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
+      const readModel = pipe(
+        [
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        ],
+        RA.reduce({ articleIds: [] }, handleEvent),
+      );
 
-          expect(readModel.articleIds).toHaveLength(1);
-          expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
-        });
-      });
+      expect(readModel.articleIds).toHaveLength(1);
+      expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
     });
   });
 });
