@@ -22,23 +22,27 @@ const updateReadmodel = (state: ReadModel, event: DomainEvent) => {
       return pipe(
         state.get(event.listId),
         O.fromNullable,
-        O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
-        (existing) => state.set(event.listId, {
-          ...existing,
-          articleCount: existing.articleCount + 1,
-          lastUpdated: event.date,
-        }),
+        O.fold(
+          () => state,
+          (existing) => state.set(event.listId, {
+            ...existing,
+            articleCount: existing.articleCount + 1,
+            lastUpdated: event.date,
+          }),
+        ),
       );
     case 'ArticleRemovedFromList':
       return pipe(
         state.get(event.listId),
         O.fromNullable,
-        O.getOrElseW(() => { throw new Error(`Can't find list with following listId in the read model: ${event.listId}`); }),
-        (existing) => state.set(event.listId, {
-          ...existing,
-          articleCount: existing.articleCount - 1,
-          lastUpdated: event.date,
-        }),
+        O.fold(
+          () => state,
+          (existing) => state.set(event.listId, {
+            ...existing,
+            articleCount: existing.articleCount - 1,
+            lastUpdated: event.date,
+          }),
+        ),
       );
     default:
       return state;

@@ -3,9 +3,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import {
-  AddArticleToList, CommitEvents, CreateList, FetchArticle, GetAllEvents,
-  GetListsOwnedBy,
+  AddArticleToList,
+  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetListsOwnedBy,
   Logger,
+  RemoveArticleFromList,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
@@ -28,6 +29,7 @@ export type CollectedPorts = {
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
   logger: Logger,
+  removeArticleFromList: RemoveArticleFromList,
   searchEuropePmc: (
     pageSize: number,
   ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>,

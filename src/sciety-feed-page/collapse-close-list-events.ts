@@ -1,15 +1,11 @@
 import { pipe } from 'fp-ts/function';
-import { CollapsedArticlesAddedToList, StateEntry } from './collapse-close-events';
+import { FeedItem, isCollapsedArticlesAddedToList } from './feed-item';
 import {
-  ArticleAddedToListEvent, isArticleAddedToListEvent,
+  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
 } from '../domain-events';
 
-export const isCollapsedArticlesAddedToList = (
-  entry: StateEntry,
-): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
-
 const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<StateEntry>, event: ArticleAddedToListEvent,
+  state: ReadonlyArray<FeedItem>, event: ArticleAddedToListEvent,
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
@@ -24,7 +20,7 @@ const collapsesIntoPreviousEvent = (
 );
 
 const replaceWithCollapseEvent = (
-  entriesSoFar: Array<StateEntry>,
+  entriesSoFar: Array<FeedItem>,
   event: ArticleAddedToListEvent,
 ) => {
   const mostRecentEntry = entriesSoFar.pop();
@@ -47,7 +43,7 @@ const replaceWithCollapseEvent = (
 };
 
 const processEvent = (
-  state: Array<StateEntry>, event: StateEntry,
+  state: Array<FeedItem>, event: DomainEvent,
 ) => {
   if (isArticleAddedToListEvent(event)) {
     if (collapsesIntoPreviousEvent(state, event)) {
@@ -61,7 +57,6 @@ const processEvent = (
   return state;
 };
 
-// ts-unused-exports:disable-next-line
 export const collapseCloseListEvents = (
-  events: ReadonlyArray<StateEntry>,
-): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<FeedItem> => events.reduce(processEvent, []);

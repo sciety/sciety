@@ -1,21 +1,15 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import {
-  collapseCloseEvents,
-} from './collapse-close-events';
-import { collapseCloseListEvents } from './collapse-close-list-events';
 import { eventCard, Ports as EventCardPorts } from './event-card';
+import { identifyFeedItems } from './identify-feed-items';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isEvaluationRecordedEvent, isUserFollowedEditorialCommunityEvent, isUserSavedArticleEvent,
 } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
-import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
@@ -67,27 +61,11 @@ type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
-const isFeedRelevantEvent = (event: DomainEvent) => ((process.env.EXPERIMENT_ENABLED === 'true')
-  ? (
-    isUserSavedArticleEvent(event)
-    || isUserFollowedEditorialCommunityEvent(event)
-    || isArticleAddedToListEvent(event)
-  )
-  : (
-    isEvaluationRecordedEvent(event)
-    || isUserSavedArticleEvent(event)
-    || isUserFollowedEditorialCommunityEvent(event)
-  ));
-
 export const scietyFeedPage = (
   ports: Ports,
 ) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
-  T.map(RA.filter(isFeedRelevantEvent)),
-  T.map(RA.reverse),
-  T.map(collapseCloseEvents),
-  T.map(collapseCloseListEvents),
-  T.map(paginate(pageSize, params.page)),
+  T.map(identifyFeedItems(pageSize, params.page)),
   TE.chain(({ items, ...rest }) => pipe(
     items,
     TE.traverseArray(eventCard(ports)),

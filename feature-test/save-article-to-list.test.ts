@@ -20,6 +20,7 @@ describe('save-article-to-list', () => {
       const testUserId = '931653361';
       const userProfilePage = `localhost:8080/users/${userHandle}`;
       const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
+      const userSavedArticlesPage = `localhost:8080/users/${userHandle}/lists/saved-articles`;
       const scietyFeedPage = 'localhost:8080/sciety-feed';
 
       beforeAll(async () => {
@@ -46,7 +47,13 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it.skip('the article appears in the list page', async () => {
+        it('the article appears in the user list page', async () => {
+          await goto(userSavedArticlesPage);
+          const articleIsDisplayed = await $(articleCardSelector).exists();
+          expect(articleIsDisplayed).toBe(true);
+        });
+
+        it('the article appears in the generic list page', async () => {
           await goto(genericListPage);
           const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
@@ -74,7 +81,7 @@ describe('save-article-to-list', () => {
         it('the user\'s action appears in the Sciety feed', async () => {
           await goto(scietyFeedPage);
           const cardText = await listItem(userHandle).text();
-          expect(cardText).toContain(`${userHandle} saved an article`);
+          expect(cardText).toContain(`${userHandle} added an article`);
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
@@ -83,7 +90,7 @@ describe('save-article-to-list', () => {
           expect(cardText).toContain('Appears in 1 list');
         });
 
-        it.skip('the list count of the article card on the list page it is in increases by one', async () => {
+        it('the list count of the article card on the list page it is in increases by one', async () => {
           await goto(genericListPage);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
@@ -128,8 +135,16 @@ describe('save-article-to-list', () => {
           await click('Save to my list');
         });
 
-        it('the article appears in the list page', async () => {
+        it('the article appears in the user list page', async () => {
           await goto(userSavedArticlesPage);
+          const articleIsDisplayed = await $(articleCardSelector).exists();
+          expect(articleIsDisplayed).toBe(true);
+        });
+
+        it('the article appears in the generic list page', async () => {
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
         });
@@ -156,7 +171,7 @@ describe('save-article-to-list', () => {
         it('the user\'s action appears in the Sciety feed', async () => {
           await goto(scietyFeedPage);
           const cardText = await listItem(userHandle).text();
-          expect(cardText).toContain(`${userHandle} saved an article`);
+          expect(cardText).toContain(`${userHandle} added an article`);
         });
 
         it('the list count of the article card on the search page increases by one', async () => {
@@ -186,31 +201,5 @@ describe('save-article-to-list', () => {
         });
       });
     });
-  });
-
-  describe('a user has a user list page with one article and an empty generic list', () => {
-    const testUserId = '56806677';
-    const articleId = '10.1101/2022.10.01.510447';
-    const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
-
-    beforeAll(async () => {
-      await openBrowser();
-    });
-
-    afterAll(async () => {
-      await closeBrowser();
-    });
-
-    it.failing('that article appears on their generic list page', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
-      const genericListPage = `localhost:8080/lists/${listId}`;
-      await goto(genericListPage);
-      const articleIsDisplayed = await $(articleCardSelector).exists();
-      expect(articleIsDisplayed).toBe(true);
-    });
-  });
-
-  describe('a user has unsaved an article', () => {
-    it.todo('that article does not appear on their generic list page');
   });
 });

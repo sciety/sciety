@@ -32,6 +32,8 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articlePage } from '../article-page';
+import { addArticleToListCommandCodec } from '../commands';
+import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
@@ -439,13 +441,17 @@ export const createRouter = (ports: CollectedPorts): Router => {
     redirectBack,
   );
 
-  router.post('/record-evaluation', handleScietyApiCommand(ports, recordEvaluationCommandHandler));
+  router.post('/record-evaluation', handleScietyApiCommand(ports, recordEvaluationCommandHandler(ports)));
 
-  router.post('/add-article-to-list', handleScietyApiCommand(ports, addArticleToListCommandHandler));
+  router.post('/add-article-to-list', handleScietyApiCommand(ports, flow(
+    validateInputShape(addArticleToListCommandCodec),
+    TE.fromEither,
+    TE.chain(addArticleToListCommandHandler(ports)),
+  )));
 
-  router.post('/remove-article-from-list', handleScietyApiCommand(ports, removeArticleFromListCommandHandler));
+  router.post('/remove-article-from-list', handleScietyApiCommand(ports, removeArticleFromListCommandHandler(ports)));
 
-  router.post('/add-group', handleScietyApiCommand(ports, addGroupCommandHandler));
+  router.post('/add-group', handleScietyApiCommand(ports, addGroupCommandHandler(ports)));
 
   router.post(
     '/annotations/create-annotation',

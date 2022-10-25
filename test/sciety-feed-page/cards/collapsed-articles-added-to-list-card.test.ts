@@ -1,19 +1,17 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../../src/domain-events';
 import { listCreated } from '../../../src/domain-events/list-created-event';
-import { articleAddedToListCard } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
+import { collapsedArticlesAddedToListCard } from '../../../src/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
 import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-describe('article-added-to-list-card', () => {
+describe('collapsed-articles-added-to-list-card', () => {
   describe('when a group owns the list', () => {
     it.todo('write tests');
   });
@@ -22,7 +20,13 @@ describe('article-added-to-list-card', () => {
     const userId = arbitraryUserId();
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
-    const event = articleAddedToList(arbitraryArticleId(), listId, date);
+    const articleCount = arbitraryNumber(2, 10);
+    const event = {
+      type: 'CollapsedArticlesAddedToList' as const,
+      listId,
+      date,
+      articleCount,
+    };
     const getAllEvents = T.of([
       listCreated(
         listId,
@@ -48,7 +52,7 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         viewModel = await pipe(
           event,
-          articleAddedToListCard(ports),
+          collapsedArticlesAddedToListCard(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -68,6 +72,10 @@ describe('article-added-to-list-card', () => {
       it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
         expect(viewModel.linkUrl).toBe(`/users/${handle}/lists/saved-articles`);
       });
+
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
+      });
     });
 
     describe('when user details are unavailable', () => {
@@ -82,7 +90,7 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         viewModel = await pipe(
           event,
-          articleAddedToListCard(ports),
+          collapsedArticlesAddedToListCard(ports),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -101,6 +109,10 @@ describe('article-added-to-list-card', () => {
 
       it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
         expect(viewModel.linkUrl).toBe(`/users/${userId}/lists/saved-articles`);
+      });
+
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
       });
     });
   });

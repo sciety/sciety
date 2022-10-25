@@ -6,3 +6,5 @@ export const addArticleToListCommandCodec = t.type({
   articleId: DoiFromString,
   listId: ListIdFromString,
 });
+
+export type AddArticleToListCommand = t.TypeOf<typeof addArticleToListCommandCodec>;

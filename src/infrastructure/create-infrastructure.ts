@@ -32,6 +32,8 @@ import {
 } from '../domain-events';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
+import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
+import { RemoveArticleFromList } from '../shared-ports';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -157,13 +159,23 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         payload: AddArticleToListCommandPayload
       ) => TE.TaskEither<string, void>;
 
-      const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
-        payload,
-      ) => pipe(
+      const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (payload) => pipe(
         {
           articleId: payload.articleId.value,
           listId: payload.listId.toString(),
         },
+        removeArticleFromListCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+          ...partialAdapters,
+        }),
+        TE.map(() => undefined),
+      );
+
+      const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
+        payload,
+      ) => pipe(
+        payload,
         addArticleToListCommandHandler({
           getAllEvents,
           commitEvents: commitEventsWithoutListeners,
@@ -200,6 +212,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         addArticleToList: executeAddArticleToListCommandInProcess,
+        removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
         createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
         ...partialAdapters,
       };
@@ -212,6 +225,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getListsOwnedBy: collectedAdapters.getListsOwnedBy,
         getUserDetails: collectedAdapters.getUserDetails,
         addArticleToList: collectedAdapters.addArticleToList,
+        removeArticleFromList: collectedAdapters.removeArticleFromList,
         createList: collectedAdapters.createList,
       };
 

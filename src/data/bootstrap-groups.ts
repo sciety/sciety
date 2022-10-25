@@ -162,7 +162,7 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoined
     name: 'PeerRef',
     avatarPath: '/static/groups/peerref--b5f31635-d32b-4df9-92a5-0325a1524343.png',
     descriptionPath: descriptionPathFromValidatedString('peerref--b5f31635-d32b-4df9-92a5-0325a1524343.md'),
-    shortDescription: 'PeerRef organizes journal-independent open peer review for all research.',
+    shortDescription: 'PeerRef is a journal-independent open peer review platform for all research.',
     homepage: 'https://www.peerref.com/',
     slug: 'peerref',
   }, new Date('2022-01-20T09:41:00Z')),

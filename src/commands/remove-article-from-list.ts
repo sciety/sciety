@@ -6,3 +6,5 @@ export const removeArticleFromListCommandCodec = t.type({
   articleId: DoiFromString,
   listId: ListIdFromString,
 });
+
+export type RemoveArticleFromListCommand = t.TypeOf<typeof removeArticleFromListCommandCodec>;

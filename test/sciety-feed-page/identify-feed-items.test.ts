@@ -1,32 +1,21 @@
-import { pipe } from 'fp-ts/function';
-import { articleAddedToList, userSavedArticle } from '../../src/domain-events';
-import { collapseCloseListEvents } from '../../src/sciety-feed-page/collapse-close-list-events';
+import * as E from 'fp-ts/Either';
+import { identity, pipe } from 'fp-ts/function';
+import { articleAddedToList } from '../../src/domain-events';
+import { identifyFeedItems } from '../../src/sciety-feed-page/identify-feed-items';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
 
-describe('collapse-close-list-events', () => {
-  describe('when there is a uninteresting event', () => {
-    const events = [
-      userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
-    ];
-    const result = pipe(
-      events,
-      collapseCloseListEvents,
-    );
-
-    it('returns it unchanged', () => {
-      expect(result).toStrictEqual(events);
-    });
-  });
-
+describe('identify-feed-items', () => {
   describe('when a single article is added to a list', () => {
     const events = [
       articleAddedToList(arbitraryArticleId(), arbitraryListId()),
     ];
     const result = pipe(
       events,
-      collapseCloseListEvents,
+      identifyFeedItems(20, 1),
+      E.match(shouldNotBeCalled, identity),
+      (pageOfItems) => pageOfItems.items,
     );
 
     it('returns it unchanged', () => {
@@ -35,16 +24,18 @@ describe('collapse-close-list-events', () => {
   });
 
   describe('given two consecutive events adding articles to the same list', () => {
-    const laterDate = new Date('2021-09-14 12:00');
-    const earlierDate = new Date('2021-09-14 11:00');
-    const myListId = arbitraryListId();
+    const listId = arbitraryListId();
+    const earlierDate = new Date('2022-10-18');
+    const laterDate = new Date('2022-10-19');
 
     const result = pipe(
       [
-        articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
-        articleAddedToList(arbitraryArticleId(), myListId, laterDate),
+        articleAddedToList(arbitraryArticleId(), listId, earlierDate),
+        articleAddedToList(arbitraryArticleId(), listId, laterDate),
       ],
-      collapseCloseListEvents,
+      identifyFeedItems(20, 1),
+      E.match(shouldNotBeCalled, identity),
+      (pageOfItems) => pageOfItems.items,
     );
 
     it('collapses into a single feed item', () => {
@@ -55,7 +46,7 @@ describe('collapse-close-list-events', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         {
           type: 'CollapsedArticlesAddedToList',
-          listId: myListId,
+          listId,
         },
       )]);
     });
@@ -88,7 +79,9 @@ describe('collapse-close-list-events', () => {
         articleAddedToList(arbitraryArticleId(), myListId, earlierDate),
         articleAddedToList(arbitraryArticleId(), myListId, laterDate),
       ],
-      collapseCloseListEvents,
+      identifyFeedItems(20, 1),
+      E.match(shouldNotBeCalled, identity),
+      (pageOfItems) => pageOfItems.items,
     );
 
     it('collapses into a single feed item', () => {
@@ -123,19 +116,30 @@ describe('collapse-close-list-events', () => {
 
   describe('given two articles are added to a list separated by an article added to a different list', () => {
     const myList = arbitraryListId();
+    const date1 = new Date('2022-10-01');
+    const date2 = new Date('2022-10-02');
+    const date3 = new Date('2022-10-03');
 
     const events = [
-      articleAddedToList(arbitraryArticleId(), myList),
-      articleAddedToList(arbitraryArticleId(), arbitraryListId()),
-      articleAddedToList(arbitraryArticleId(), myList),
+      articleAddedToList(arbitraryArticleId(), myList, date1),
+      articleAddedToList(arbitraryArticleId(), arbitraryListId(), date2),
+      articleAddedToList(arbitraryArticleId(), myList, date3),
     ];
     const result = pipe(
       events,
-      collapseCloseListEvents,
+      identifyFeedItems(20, 1),
+      E.match(shouldNotBeCalled, identity),
+      (pageOfItems) => pageOfItems.items,
     );
 
     it('does not collapse the events', () => {
-      expect(result).toStrictEqual(events);
+      expect(result).toHaveLength(3);
+    });
+
+    it('feed items are returned sorted newest to oldest', () => {
+      expect(result[0].date).toStrictEqual(date3);
+      expect(result[1].date).toStrictEqual(date2);
+      expect(result[2].date).toStrictEqual(date1);
     });
   });
 });
