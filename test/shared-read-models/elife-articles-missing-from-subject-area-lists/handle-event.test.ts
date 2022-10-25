@@ -20,11 +20,11 @@ describe('handle-event', () => {
         [
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         ],
-        RA.reduce({ articleIds: [] }, handleEvent),
+        RA.reduce([], handleEvent),
       );
 
-      expect(readModel.articleIds).toHaveLength(1);
-      expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
+      expect(readModel).toHaveLength(1);
+      expect(readModel[0].value).toStrictEqual(articleId.value);
     });
   });
 
@@ -38,12 +38,12 @@ describe('handle-event', () => {
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
         ],
-        RA.reduce({ articleIds: [] }, handleEvent),
+        RA.reduce([], handleEvent),
       );
 
-      expect(readModel.articleIds).toHaveLength(2);
-      expect(readModel.articleIds[0].value).toStrictEqual(articleId.value);
-      expect(readModel.articleIds[1].value).toStrictEqual(articleId2.value);
+      expect(readModel).toHaveLength(2);
+      expect(readModel[0].value).toStrictEqual(articleId.value);
+      expect(readModel[1].value).toStrictEqual(articleId2.value);
     });
   });
 
@@ -53,10 +53,10 @@ describe('handle-event', () => {
         [
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
         ],
-        RA.reduce({ articleIds: [] }, handleEvent),
+        RA.reduce([], handleEvent),
       );
 
-      expect(readModel.articleIds).toHaveLength(0);
+      expect(readModel).toHaveLength(0);
     });
   });
 
@@ -66,10 +66,10 @@ describe('handle-event', () => {
         [
           listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
-        RA.reduce({ articleIds: [] }, handleEvent),
+        RA.reduce([], handleEvent),
       );
 
-      expect(readModel.articleIds).toHaveLength(0);
+      expect(readModel).toHaveLength(0);
     });
   });
 });

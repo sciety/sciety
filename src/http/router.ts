@@ -567,10 +567,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
     context.response.body = await pipe(
       elifeArticleMissingFromSubjectAreaLists(ports),
-      T.map(({ articleIds }) => pipe(
-        articleIds,
-        RA.map((articleId) => articleId.value),
-      )),
+      T.map(RA.map((articleId) => articleId.value)),
       T.map((articleIds) => ({ articleIds })),
     )();
 

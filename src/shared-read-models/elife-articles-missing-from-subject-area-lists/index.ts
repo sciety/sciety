@@ -10,8 +10,5 @@ type Ports = {
 
 export const elifeArticleMissingFromSubjectAreaLists = (ports: Ports): T.Task<MissingArticles> => pipe(
   ports.getAllEvents,
-  T.map(RA.reduce(
-    { articleIds: [] },
-    handleEvent,
-  )),
+  T.map(RA.reduce([], handleEvent)),
 );
