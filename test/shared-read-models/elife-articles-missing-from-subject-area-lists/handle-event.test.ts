@@ -24,8 +24,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(1);
-      expect(readModel[0].value).toStrictEqual(articleId.value);
+      expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
     });
   });
 
@@ -42,9 +41,10 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(2);
-      expect(readModel[0].value).toStrictEqual(articleId.value);
-      expect(readModel[1].value).toStrictEqual(articleId2.value);
+      expect(readModel).toStrictEqual({
+        [articleId.value]: 'missing',
+        [articleId2.value]: 'missing',
+      });
     });
   });
 
@@ -60,8 +60,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(1);
-      expect(readModel[0].value).toStrictEqual(articleId.value);
+      expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
     });
   });
 
@@ -100,7 +99,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(0);
+      expect(readModel).toStrictEqual({});
     });
   });
 
@@ -118,7 +117,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(0);
+      expect(readModel).toStrictEqual({});
     });
   });
 
@@ -131,7 +130,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(0);
+      expect(readModel).toStrictEqual({});
     });
   });
 
@@ -144,7 +143,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toHaveLength(0);
+      expect(readModel).toStrictEqual({});
     });
   });
 });

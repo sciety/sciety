@@ -1,25 +1,27 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isArticleAddedToListEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { Doi } from '../../types/doi';
 import * as GroupId from '../../types/group-id';
 import * as LID from '../../types/list-id';
 
-export type MissingArticles = ReadonlyArray<Doi>;
+type ArticleState = 'missing';
+type MissingArticles = Record<string, ArticleState>;
 
-export const initialState: MissingArticles = [];
+export const initialState: MissingArticles = {};
 
 export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
       return pipe(
         readmodel,
-        RA.some((doi) => doi.value === event.articleId.value),
+        R.keys,
+        RA.some((doi) => doi === event.articleId.value),
         B.match(
           () => pipe(
             readmodel,
-            RA.append(event.articleId),
+            R.upsertAt(event.articleId.value, 'missing' as const),
           ),
           () => readmodel,
         ),
@@ -53,7 +55,7 @@ export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): Mis
     if (elifeSubjectAreaLists.includes(event.listId)) {
       return pipe(
         readmodel,
-        RA.filter((doi) => doi.value !== event.articleId.value),
+        R.deleteAt(event.articleId.value),
       );
     }
   }
