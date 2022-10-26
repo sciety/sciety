@@ -2,7 +2,6 @@ import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -64,7 +63,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
-import { elifeArticleMissingFromSubjectAreaLists } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
+import { calculateElifeArticlesMissingFromSubjectAreaLists } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/calculate-elife-articles-missing-from-subject-area-lists';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -565,15 +564,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   // OBSERVABILITY
 
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
-    context.response.body = await pipe(
-      elifeArticleMissingFromSubjectAreaLists(ports),
-      T.map(RA.map((articleId) => articleId.value)),
-      T.map((articleIds) => ({
-        articleIds,
-        articleCount: articleIds.length,
-      })),
-    )();
-
+    context.response.body = await calculateElifeArticlesMissingFromSubjectAreaLists(ports)();
     await next();
   });
 

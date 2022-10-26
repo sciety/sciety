@@ -6,7 +6,7 @@ import { ArticleState, handleEvent, initialState } from './handle-event';
 import { GetAllEvents } from '../../shared-ports';
 import { Doi } from '../../types/doi';
 
-type Ports = {
+export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
