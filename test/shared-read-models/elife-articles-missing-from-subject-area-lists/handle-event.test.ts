@@ -117,7 +117,7 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toStrictEqual({});
+      expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
     });
   });
 
