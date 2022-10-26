@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { elifeArticleMissingFromSubjectAreaLists, Ports } from '.';
+import { elifeArticleMissingFromSubjectAreaLists, Ports } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
 
-export const calculateElifeArticlesMissingFromSubjectAreaLists = (ports: Ports):
+export const elifeArticlesMissingFromSubjectAreaListsJson = (ports: Ports):
 T.Task<{ articleIds: ReadonlyArray<string>, articleCount: number }> => pipe(
   elifeArticleMissingFromSubjectAreaLists(ports),
   T.map(RA.map((articleId) => articleId.value)),
