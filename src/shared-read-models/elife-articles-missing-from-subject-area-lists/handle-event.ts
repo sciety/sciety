@@ -6,7 +6,7 @@ import { DomainEvent, isArticleAddedToListEvent, isEvaluationRecordedEvent } fro
 import * as GroupId from '../../types/group-id';
 import * as LID from '../../types/list-id';
 
-type ArticleState = 'missing';
+type ArticleState = 'missing' | 'added';
 type MissingArticles = Record<string, ArticleState>;
 
 export const initialState: MissingArticles = {};
@@ -21,7 +21,7 @@ export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): Mis
         B.match(
           () => pipe(
             readmodel,
-            R.upsertAt(event.articleId.value, 'missing' as const),
+            R.upsertAt(event.articleId.value, 'missing' as ArticleState),
           ),
           () => readmodel,
         ),
