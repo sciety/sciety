@@ -7,7 +7,7 @@ import * as GroupId from '../../types/group-id';
 import * as LID from '../../types/list-id';
 
 export type ArticleState = 'missing' | 'added';
-type MissingArticles = Record<string, ArticleState>;
+export type MissingArticles = Record<string, ArticleState>;
 
 export const initialState: MissingArticles = {};
 
