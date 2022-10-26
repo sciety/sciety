@@ -8,6 +8,8 @@ import * as LID from '../../types/list-id';
 
 export type MissingArticles = ReadonlyArray<Doi>;
 
+export const initialState: MissingArticles = [];
+
 export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
