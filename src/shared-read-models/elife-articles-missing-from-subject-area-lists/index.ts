@@ -12,12 +12,14 @@ export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
-const readModelBuiltWithAllCurrentEvents = (ports: Ports) => pipe(
+type ReadModelBuiltWithAllCurrentEvents = (ports: Ports) => T.Task<MissingArticles>;
+
+export const readModelBuiltWithAllCurrentEvents: ReadModelBuiltWithAllCurrentEvents = (ports) => pipe(
   ports.getAllEvents,
   T.map(RA.reduce(initialState, handleEvent)),
 );
 
-const getAllMissingArticleIds = (readModel: MissingArticles) => pipe(
+export const getAllMissingArticleIds = (readModel: MissingArticles): ReadonlyArray<Doi> => pipe(
   readModel,
   R.filter((item) => item === 'missing' as ArticleState),
   R.keys,
