@@ -55,7 +55,7 @@ export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): Mis
     if (elifeSubjectAreaLists.includes(event.listId)) {
       return pipe(
         readmodel,
-        R.deleteAt(event.articleId.value),
+        R.upsertAt(event.articleId.value, 'added' as ArticleState),
       );
     }
   }

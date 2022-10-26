@@ -14,7 +14,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-event', () => {
   describe('when there is an evaluation by eLife on an article that has not been added to an eLife subject area list', () => {
-    it('includes the article in the read model', () => {
+    it('considers the article as missing', () => {
       const articleId = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
       const readModel = pipe(
@@ -29,7 +29,7 @@ describe('handle-event', () => {
   });
 
   describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
-    it('includes the articles in the read model', () => {
+    it('considers the articles as missing', () => {
       const articleId = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
@@ -49,7 +49,7 @@ describe('handle-event', () => {
   });
 
   describe('when there are multiple evaluations by eLife on the same article that have not been added to an eLife subject area list', () => {
-    it('includes the article once in the read model', () => {
+    it('still considers the article as missing', () => {
       const articleId = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
       const readModel = pipe(
@@ -88,7 +88,7 @@ describe('handle-event', () => {
       [LID.fromValidatedString('a059f20a-366d-4790-b1f2-03bfb9b915b6')],
       [LID.fromValidatedString('c743bc3d-955a-4e97-b897-5e423ef0d3bc')],
       [LID.fromValidatedString('86a14824-8a48-4194-b75a-efbca28b90ae')],
-    ])('does not include the article in the read model', (elifeListId) => {
+    ])('considers the article as added', (elifeListId) => {
       const articleId = arbitraryArticleId();
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
       const readModel = pipe(
@@ -99,12 +99,12 @@ describe('handle-event', () => {
         RA.reduce(initialState, handleEvent),
       );
 
-      expect(readModel).toStrictEqual({});
+      expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
     });
   });
 
   describe('when there is an evaluation by eLife on an article that has already been added to an eLife subject area list', () => {
-    it.failing('does not include the article in the read model', () => {
+    it('still considers the article as added', () => {
       const articleId = arbitraryArticleId();
       const elifeListId = LID.fromValidatedString('a059f20a-366d-4790-b1f2-03bfb9b915b6');
       const elifeGroupId = GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
@@ -122,7 +122,7 @@ describe('handle-event', () => {
   });
 
   describe('when there is an evaluation by another group', () => {
-    it('does not affect the read model', () => {
+    it('does not consider the article', () => {
       const readModel = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
@@ -135,7 +135,7 @@ describe('handle-event', () => {
   });
 
   describe('when the event is not relevant', () => {
-    it('does not affect the readmodel', () => {
+    it('does not consider the event', () => {
       const readModel = pipe(
         [
           listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
