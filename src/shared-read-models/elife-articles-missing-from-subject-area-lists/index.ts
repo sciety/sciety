@@ -10,9 +10,13 @@ export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
-export const elifeArticleMissingFromSubjectAreaLists = (ports: Ports): T.Task<ReadonlyArray<Doi>> => pipe(
+const readModelBuiltWithAllCurrentEvents = (ports: Ports) => pipe(
   ports.getAllEvents,
   T.map(RA.reduce(initialState, handleEvent)),
+);
+
+export const elifeArticleMissingFromSubjectAreaLists = (ports: Ports): T.Task<ReadonlyArray<Doi>> => pipe(
+  readModelBuiltWithAllCurrentEvents(ports),
   T.map(R.filter((item) => item === 'missing' as ArticleState)),
   T.map(R.keys),
   T.map(RA.map((value) => new Doi(value))),
