@@ -155,8 +155,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         articleId: Doi, listId: ListId,
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const dispatchToAllReadModels = (es: ReadonlyArray<DomainEvent>) => undefined;
+      let readModel = initialState();
+
+      const dispatchToAllReadModels = (es: ReadonlyArray<DomainEvent>) => {
+        readModel = RA.reduce(readModel, handleEvent)(es);
+      };
+
+      dispatchToAllReadModels(events);
 
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: events,
@@ -192,11 +197,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           ...partialAdapters,
         }),
         TE.map(() => undefined),
-      );
-
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
       );
 
       const collectedAdapters = {
