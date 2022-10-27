@@ -27,21 +27,28 @@ export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task
   T.map(() => undefined),
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const dispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => undefined;
+
 type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
 export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
   events,
-  T.traverseArray(flow(
-    T.of,
-    T.chainFirst(writeEventToDatabase(pool)),
-    T.chainFirst((event) => {
-      logger('info', 'Event committed', { event });
-      return T.of(undefined);
-    }),
-    T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
-  )),
-  T.map(RA.match(
-    () => 'no-events-created',
-    () => 'events-created',
-  )),
+  RA.match(
+    () => T.of('no-events-created' as CommandResult),
+    (es) => pipe(
+      es,
+      T.traverseArray(flow(
+        T.of,
+        T.chainFirst(writeEventToDatabase(pool)),
+        T.chainFirst((event) => {
+          logger('info', 'Event committed', { event });
+          return T.of(undefined);
+        }),
+        T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
+      )),
+      T.map(dispatchToAllReadModels),
+      T.map(() => 'events-created' as CommandResult),
+    ),
+  ),
 );
