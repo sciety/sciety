@@ -7,6 +7,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents, writeEventToDatabase } from './commit-events';
+import { dispatcher } from './dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
@@ -35,7 +36,6 @@ import { executePolicies } from '../policies/execute-policies';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { RemoveArticleFromList } from '../shared-ports';
 import { getAllMissingArticleIds } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
-import { handleEvent, initialState } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -155,11 +155,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         articleId: Doi, listId: ListId,
       };
 
-      let readModel = initialState();
-
-      const dispatchToAllReadModels = (es: ReadonlyArray<DomainEvent>) => {
-        readModel = RA.reduce(readModel, handleEvent)(es);
-      };
+      const { dispatchToAllReadModels, readModel } = dispatcher();
 
       dispatchToAllReadModels(events);
 
