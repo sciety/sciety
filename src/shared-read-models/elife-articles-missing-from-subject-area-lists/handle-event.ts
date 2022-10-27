@@ -9,7 +9,7 @@ import * as LID from '../../types/list-id';
 export type ArticleState = 'missing' | 'added';
 export type MissingArticles = Record<string, ArticleState>;
 
-export const initialState: MissingArticles = {};
+export const initialState = (): MissingArticles => ({});
 
 export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
   if (isEvaluationRecordedEvent(event)) {

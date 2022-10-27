@@ -16,7 +16,7 @@ type ReadModelBuiltWithAllCurrentEvents = (ports: Ports) => T.Task<MissingArticl
 
 export const readModelBuiltWithAllCurrentEvents: ReadModelBuiltWithAllCurrentEvents = (ports) => pipe(
   ports.getAllEvents,
-  T.map(RA.reduce(initialState, handleEvent)),
+  T.map(RA.reduce(initialState(), handleEvent)),
 );
 
 export const getAllMissingArticleIds = (readModel: MissingArticles): ReadonlyArray<Doi> => pipe(

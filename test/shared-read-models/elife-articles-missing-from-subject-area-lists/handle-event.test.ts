@@ -21,7 +21,7 @@ describe('handle-event', () => {
         [
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
@@ -38,7 +38,7 @@ describe('handle-event', () => {
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({
@@ -57,7 +57,7 @@ describe('handle-event', () => {
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
@@ -96,7 +96,7 @@ describe('handle-event', () => {
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
           articleAddedToList(articleId, elifeListId),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
@@ -114,7 +114,7 @@ describe('handle-event', () => {
           articleAddedToList(articleId, elifeListId),
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
@@ -127,7 +127,7 @@ describe('handle-event', () => {
         [
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({});
@@ -140,7 +140,7 @@ describe('handle-event', () => {
         [
           listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
         ],
-        RA.reduce(initialState, handleEvent),
+        RA.reduce(initialState(), handleEvent),
       );
 
       expect(readModel).toStrictEqual({});
