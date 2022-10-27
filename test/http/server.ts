@@ -11,6 +11,7 @@ import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypoth
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import { FetchArticle } from '../../src/shared-ports';
+import { initialState } from '../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import * as DE from '../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
@@ -71,7 +72,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     findVersionsForArticleDoi: () => T.of(O.none),
   };
 
-  const router = createRouter(adapters);
+  const router = createRouter(initialState)(adapters);
   const server = pipe(
     createApplicationServer(router, adapters),
     E.getOrElseW((e) => {
