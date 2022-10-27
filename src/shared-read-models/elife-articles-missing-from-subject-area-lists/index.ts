@@ -8,7 +8,7 @@ import {
 import { GetAllEvents } from '../../shared-ports';
 import { Doi } from '../../types/doi';
 
-export type Ports = {
+type Ports = {
   getAllEvents: GetAllEvents,
 };
 
@@ -24,9 +24,4 @@ export const getAllMissingArticleIds = (readModel: MissingArticles): ReadonlyArr
   R.filter((item) => item === 'missing' as ArticleState),
   R.keys,
   RA.map((value) => new Doi(value)),
-);
-
-export const elifeArticleMissingFromSubjectAreaLists = (ports: Ports): T.Task<ReadonlyArray<Doi>> => pipe(
-  readModelBuiltWithAllCurrentEvents(ports),
-  T.map(getAllMissingArticleIds),
 );
