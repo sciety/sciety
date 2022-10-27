@@ -3,13 +3,21 @@ import { DomainEvent } from '../domain-events';
 import {
   handleEvent,
   initialState,
+  MissingArticles,
 } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 
-export const dispatcher = () => {
+type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
+
+type Dispatcher = {
+  readModel: MissingArticles,
+  dispatchToAllReadModels: DispatchToAllReadModels,
+};
+
+export const dispatcher = (): Dispatcher => {
   let readModel = initialState();
 
-  const dispatchToAllReadModels = (es: ReadonlyArray<DomainEvent>) => {
-    readModel = RA.reduce(readModel, handleEvent)(es);
+  const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
+    readModel = RA.reduce(readModel, handleEvent)(events);
   };
 
   return {
