@@ -11,9 +11,9 @@ export const initialState = (): MissingArticles => ({});
 export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
-      const keys = Object.keys(readmodel);
-      if (!keys.includes(event.articleId.value)) {
-        readmodel[event.articleId.value] = 'missing' as ArticleState;
+      const key = event.articleId.value;
+      if (readmodel[key] === undefined) {
+        readmodel[key] = 'missing' as ArticleState;
       }
     }
   } else if (isArticleAddedToListEvent(event)) {
