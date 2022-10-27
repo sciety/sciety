@@ -1,7 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { getAllMissingArticleIds } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
-import { MissingArticles } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import { Doi } from '../types/doi';
 
 const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
@@ -12,13 +10,17 @@ const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
     articleCount: ids.length,
   }),
 );
-type ELifeArticleMissingFromSubjectAreaListsJson = (readModel: MissingArticles)
+
+type Ports = {
+  getAllMissingArticleIds: () => ReadonlyArray<Doi>,
+};
+
+type ELifeArticleMissingFromSubjectAreaListsJson = (ports: Ports)
 => { articleIds: ReadonlyArray<string>, articleCount: number };
 
 export const elifeArticlesMissingFromSubjectAreaListsJson: ELifeArticleMissingFromSubjectAreaListsJson = (
-  readModel,
+  ports,
 ) => pipe(
-  readModel,
-  getAllMissingArticleIds,
+  ports.getAllMissingArticleIds(),
   formatForJson,
 );

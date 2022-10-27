@@ -34,6 +34,8 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { RemoveArticleFromList } from '../shared-ports';
+import { getAllMissingArticleIds } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
+import { handleEvent, initialState } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -193,6 +195,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       const collectedAdapters = {
+        getAllMissingArticleIds: () => pipe(
+          events,
+          RA.reduce(initialState(), handleEvent),
+          getAllMissingArticleIds,
+        ),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
