@@ -10,6 +10,7 @@ import { CommandResult } from '../types/command-result';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
+  dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
   pool: Pool,
   logger: L.Logger,
 };
@@ -27,12 +28,14 @@ export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task
   T.map(() => undefined),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const dispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => undefined;
-
 type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
-export const commitEvents = ({ inMemoryEvents, pool, logger }: Dependencies): CommitEvents => (events) => pipe(
+export const commitEvents = ({
+  inMemoryEvents,
+  dispatchToAllReadModels,
+  pool,
+  logger,
+}: Dependencies): CommitEvents => (events) => pipe(
   events,
   RA.match(
     () => T.of('no-events-created' as CommandResult),

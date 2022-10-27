@@ -153,7 +153,15 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         articleId: Doi, listId: ListId,
       };
 
-      const commitEventsWithoutListeners = commitEvents({ inMemoryEvents: events, pool, logger });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const dispatchToAllReadModels = (es: ReadonlyArray<DomainEvent>) => undefined;
+
+      const commitEventsWithoutListeners = commitEvents({
+        inMemoryEvents: events,
+        dispatchToAllReadModels,
+        pool,
+        logger,
+      });
 
       type ExecuteAddArticleToListCommandInProcess = (
         payload: AddArticleToListCommandPayload
