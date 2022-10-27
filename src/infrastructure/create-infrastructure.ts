@@ -194,12 +194,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         TE.map(() => undefined),
       );
 
+      const readModel = pipe(
+        events,
+        RA.reduce(initialState(), handleEvent),
+      );
+
       const collectedAdapters = {
-        getAllMissingArticleIds: () => pipe(
-          events,
-          RA.reduce(initialState(), handleEvent),
-          getAllMissingArticleIds,
-        ),
+        getAllMissingArticleIds: () => getAllMissingArticleIds(readModel),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
