@@ -1,7 +1,4 @@
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
-import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+/* eslint-disable no-param-reassign */
 import { DomainEvent, isArticleAddedToListEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import * as GroupId from '../../types/group-id';
 import * as LID from '../../types/list-id';
@@ -14,18 +11,10 @@ export const initialState = (): MissingArticles => ({});
 export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
-      return pipe(
-        readmodel,
-        R.keys,
-        RA.some((doi) => doi === event.articleId.value),
-        B.match(
-          () => pipe(
-            readmodel,
-            R.upsertAt(event.articleId.value, 'missing' as ArticleState),
-          ),
-          () => readmodel,
-        ),
-      );
+      const keys = Object.keys(readmodel);
+      if (!keys.includes(event.articleId.value)) {
+        readmodel[event.articleId.value] = 'missing' as ArticleState;
+      }
     }
   } else if (isArticleAddedToListEvent(event)) {
     const elifeSubjectAreaLists = [
@@ -53,10 +42,7 @@ export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): Mis
       LID.fromValidatedString('86a14824-8a48-4194-b75a-efbca28b90ae'),
     ];
     if (elifeSubjectAreaLists.includes(event.listId)) {
-      return pipe(
-        readmodel,
-        R.upsertAt(event.articleId.value, 'added' as ArticleState),
-      );
+      readmodel[event.articleId.value] = 'added' as ArticleState;
     }
   }
   return readmodel;
