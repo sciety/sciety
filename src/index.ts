@@ -11,6 +11,7 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
+import { readModelBuiltWithAllCurrentEvents } from './shared-read-models/elife-articles-missing-from-subject-area-lists';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -51,9 +52,16 @@ void pipe(
     prettyLog: !!process.env.PRETTY_LOG,
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   }),
-  TE.map((adapters) => pipe(
+  TE.chainTaskK((adapters) => pipe(
+    readModelBuiltWithAllCurrentEvents(adapters),
+    T.map((readModel) => ({
+      adapters,
+      readModel,
+    })),
+  )),
+  TE.map(({ adapters, readModel }) => pipe(
     adapters,
-    createRouter,
+    createRouter(readModel),
     (router) => ({ router, adapters }),
   )),
   TE.chainEitherKW(({ adapters, router }) => pipe(

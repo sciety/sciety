@@ -64,7 +64,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
-import { readModelBuiltWithAllCurrentEvents } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
+import { MissingArticles } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -102,7 +102,7 @@ const userPageParams = t.type({
   })),
 });
 
-export const createRouter = (ports: CollectedPorts): Router => {
+export const createRouter = (readModel: MissingArticles) => (ports: CollectedPorts): Router => {
   const router = new Router();
 
   const toSuccessResponse = (body: string) => ({
@@ -564,13 +564,11 @@ export const createRouter = (ports: CollectedPorts): Router => {
 
   // OBSERVABILITY
 
-  const builtReadModel = readModelBuiltWithAllCurrentEvents(ports);
-
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
-    context.response.body = await pipe(
-      builtReadModel,
-      T.map(elifeArticlesMissingFromSubjectAreaListsJson),
-    )();
+    context.response.body = pipe(
+      readModel,
+      elifeArticlesMissingFromSubjectAreaListsJson,
+    );
     await next();
   });
 
