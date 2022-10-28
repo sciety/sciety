@@ -85,7 +85,7 @@ describe('handle-event', () => {
   describe('when there is an evaluation by eLife on an article that has already been added to an eLife subject area list', () => {
     it('still considers the article as added', () => {
       const articleId = arbitraryArticleId();
-      const elifeListId = LID.fromValidatedString('a059f20a-366d-4790-b1f2-03bfb9b915b6');
+      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
       const readModel = pipe(
         [
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
