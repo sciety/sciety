@@ -46,12 +46,14 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 
 const aSaga = (ports: CollectedPorts) => {
   ports.logger('info', 'Saga starting');
+  const missingIds = ports.getAllMissingArticleIds();
+  ports.logger('info', '>>>> missingIds count', { count: missingIds.length });
   ports.logger('info', 'Saga finished');
 };
 
 const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Starting sagas');
-  setInterval(() => aSaga(ports), 2000);
+  setInterval(() => aSaga(ports), 10000);
   ports.logger('info', 'Sagas started');
 };
 
