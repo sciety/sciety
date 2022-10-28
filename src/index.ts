@@ -44,16 +44,18 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
 
-const aSaga = (ports: CollectedPorts) => {
+const aSaga = async (ports: CollectedPorts) => {
   ports.logger('info', 'Saga starting');
   const missingIds = ports.getAllMissingArticleIds();
   ports.logger('info', '>>>> missingIds count', { count: missingIds.length });
+  const result = await ports.getBiorxivOrMedrxivSubjectArea(missingIds[missingIds.length - 1])();
+  ports.logger('info', 'result from biorxiv', { result });
   ports.logger('info', 'Saga finished');
 };
 
 const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Starting sagas');
-  setInterval(() => aSaga(ports), 10000);
+  setInterval(async () => aSaga(ports), 10000);
   ports.logger('info', 'Sagas started');
 };
 
