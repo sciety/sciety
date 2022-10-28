@@ -4,11 +4,11 @@ import { DomainEvent, isArticleAddedToListEvent, isEvaluationRecordedEvent } fro
 import * as GroupId from '../../types/group-id';
 
 export type ArticleState = 'missing' | 'added';
-export type MissingArticles = Record<string, ArticleState>;
+export type ReadModel = Record<string, ArticleState>;
 
-export const initialState = (): MissingArticles => ({});
+export const initialState = (): ReadModel => ({});
 
-export const handleEvent = (readmodel: MissingArticles, event: DomainEvent): MissingArticles => {
+export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === GroupId.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
       const key = event.articleId.value;
