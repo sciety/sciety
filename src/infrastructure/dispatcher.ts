@@ -4,7 +4,7 @@ import {
   handleEvent,
   initialState,
   ReadModel,
-} from '../shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
+} from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 

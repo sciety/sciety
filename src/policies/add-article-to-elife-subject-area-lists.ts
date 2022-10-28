@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { AddArticleToList, Logger } from '../shared-ports';
-import { elifeGroupId, mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists } from '../shared-read-models/elife-articles-missing-from-subject-area-lists/data';
+import { elifeGroupId, mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import * as Lid from '../types/list-id';
