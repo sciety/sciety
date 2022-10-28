@@ -20,6 +20,12 @@ export type Ports = {
 
 type AddArticleToElifeSubjectAreaLists = (ports: Ports) => (event: DomainEvent) => T.Task<void>;
 
+const getCorrespondingListId = (subjectArea: string): O.Option<Lid.ListId> => pipe(
+  mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
+  R.lookup(subjectArea),
+  O.map(Lid.fromValidatedString),
+);
+
 export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaLists = (ports) => (event) => {
   if (!isEvaluationRecordedEvent(event)) {
     return T.of(undefined);
@@ -33,9 +39,8 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     ports.getBiorxivOrMedrxivSubjectArea,
     TE.mapLeft(() => 'Subject Area available from neither bioRxiv nor medRxiv'),
     TE.chain((subjectArea) => pipe(
-      mappingOfBiorxivAndMedrxivSubjectAreasToELifeLists,
-      R.lookup(subjectArea),
-      O.map(Lid.fromValidatedString),
+      subjectArea,
+      getCorrespondingListId,
       O.foldW(
         () => {
           ports.logger('info', 'addArticleToElifeSubjectAreaLists policy: unsupported subject area', { event, subjectArea });
