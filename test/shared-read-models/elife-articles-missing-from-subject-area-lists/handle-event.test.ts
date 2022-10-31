@@ -1,24 +1,24 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { articleAddedToList } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/data';
-import { handleEvent, initialState } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
+import { handleEvent, initialState, ReadModel } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import * as LID from '../../../src/types/list-id';
-import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     const articleId = arbitraryArticleId();
+    let currentState: ReadModel;
 
     describe('when the article is in the unknown state', () => {
-      const currentState = initialState();
+      beforeEach(() => {
+        currentState = initialState();
+      });
 
       it('EvaluationRecorded -> missing', () => {
         const readModel = handleEvent(
@@ -28,15 +28,26 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBe('missing');
       });
+
+      it('EvaluationRecorded (not eLife) -> unknown', () => {
+        const readModel = handleEvent(
+          currentState,
+          evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
+        );
+
+        expect(readModel[articleId.value]).toBeUndefined();
+      });
     });
 
     describe('when the article is in the missing state', () => {
-      const currentState = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
+      beforeEach(() => {
+        currentState = pipe(
+          [
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+      });
 
       it('EvaluationRecorded -> missing', () => {
         const readModel = handleEvent(
@@ -60,13 +71,16 @@ describe('handle-event', () => {
 
     describe('when the article is in the added state', () => {
       const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
-      const currentState = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          articleAddedToList(articleId, elifeListId),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
+
+      beforeEach(() => {
+        currentState = pipe(
+          [
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            articleAddedToList(articleId, elifeListId),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+      });
 
       it('EvaluationRecorded -> added', () => {
         const readModel = handleEvent(
@@ -97,32 +111,6 @@ describe('handle-event', () => {
           [articleId2.value]: 'missing',
         });
       });
-    });
-  });
-
-  describe('when there is an evaluation by another group', () => {
-    it('does not consider the article', () => {
-      const readModel = pipe(
-        [
-          evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      expect(readModel).toStrictEqual({});
-    });
-  });
-
-  describe('when the event is not relevant', () => {
-    it('does not consider the event', () => {
-      const readModel = pipe(
-        [
-          listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      expect(readModel).toStrictEqual({});
     });
   });
 });
