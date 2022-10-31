@@ -47,27 +47,35 @@ describe('handle-event', () => {
         expect(readModel[articleId.value]).toBe('missing');
       });
 
-      const cases = pipe(
-        elifeSubjectAreaListIds,
-        Object.values,
-        RA.map((key) => [LID.fromValidatedString(key)]),
-      );
-
-      it.each(cases)('EvaluationRecorded -> added', (elifeListId) => {
-        const readModel = pipe(
-          [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-            articleAddedToList(articleId, elifeListId),
-          ],
-          RA.reduce(initialState(), handleEvent),
+      it('ArticleAddedToList -> added', () => {
+        const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
+        const readModel = handleEvent(
+          currentState,
+          articleAddedToList(articleId, elifeListId),
         );
 
-        expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
+        expect(readModel[articleId.value]).toBe('added');
       });
     });
 
     describe('when the article is in the added state', () => {
+      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
+      const currentState = pipe(
+        [
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          articleAddedToList(articleId, elifeListId),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
 
+      it('EvaluationRecorded -> added', () => {
+        const readModel = handleEvent(
+          currentState,
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        );
+
+        expect(readModel[articleId.value]).toBe('added');
+      });
     });
   });
 
@@ -89,23 +97,6 @@ describe('handle-event', () => {
           [articleId2.value]: 'missing',
         });
       });
-    });
-  });
-
-  describe('when there is an evaluation by eLife on an article that has already been added to an eLife subject area list', () => {
-    it('still considers the article as added', () => {
-      const articleId = arbitraryArticleId();
-      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
-      const readModel = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          articleAddedToList(articleId, elifeListId),
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
     });
   });
 
