@@ -36,12 +36,20 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (readmodel[event.articleId.value] === 'listed') {
       return readmodel;
     }
-    readmodel[event.articleId.value] = 'category-known' as const;
+    if (readmodel[event.articleId.value] === 'evaluated') {
+      readmodel[event.articleId.value] = 'evaluated-and-category-known' as const;
+    } else {
+      readmodel[event.articleId.value] = 'category-known' as const;
+    }
   } else if (isMedrxivCategoryRecordedEvent(event)) {
     if (readmodel[event.articleId.value] === 'listed') {
       return readmodel;
     }
-    readmodel[event.articleId.value] = 'category-known' as const;
+    if (readmodel[event.articleId.value] === 'evaluated') {
+      readmodel[event.articleId.value] = 'evaluated-and-category-known' as const;
+    } else {
+      readmodel[event.articleId.value] = 'category-known' as const;
+    }
   }
   return readmodel;
 };

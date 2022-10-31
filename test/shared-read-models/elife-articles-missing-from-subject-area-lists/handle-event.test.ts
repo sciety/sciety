@@ -113,15 +113,21 @@ describe('handle-event', () => {
           'evaluated' as const,
         ],
         [
+          'BiorxivCategoryRecorded -> evaluated-and-category-known',
+          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'evaluated-and-category-known' as const,
+        ],
+        [
+          'MedrxivCategoryRecorded -> evaluated-and-category-known',
+          medrxivCategoryRecorded(articleId, arbitraryWord()),
+          'evaluated-and-category-known' as const,
+        ],
+        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
-
-      it.todo('BiorxivCategoryRecorded -> evaluated-and-category-known');
-
-      it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
     });
 
     describe('when the article is in the evaluated-and-category-known state', () => {
