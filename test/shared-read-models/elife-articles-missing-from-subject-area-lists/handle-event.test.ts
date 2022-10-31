@@ -20,13 +20,13 @@ describe('handle-event', () => {
         currentState = initialState();
       });
 
-      it('EvaluationRecorded -> missing', () => {
+      it('EvaluationRecorded -> evaluated', () => {
         const readModel = handleEvent(
           currentState,
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         );
 
-        expect(readModel[articleId.value]).toBe('missing');
+        expect(readModel[articleId.value]).toBe('evaluated');
       });
 
       it('EvaluationRecorded (not eLife) -> unknown', () => {
@@ -38,18 +38,18 @@ describe('handle-event', () => {
         expect(readModel[articleId.value]).toBeUndefined();
       });
 
-      it('ArticleAddedToList -> added', () => {
+      it('ArticleAddedToList -> listed', () => {
         const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
         const readModel = handleEvent(
           currentState,
           articleAddedToList(articleId, elifeListId),
         );
 
-        expect(readModel[articleId.value]).toBe('added');
+        expect(readModel[articleId.value]).toBe('listed');
       });
     });
 
-    describe('when the article is in the missing state', () => {
+    describe('when the article is in the evaluated state', () => {
       beforeEach(() => {
         currentState = pipe(
           [
@@ -59,27 +59,27 @@ describe('handle-event', () => {
         );
       });
 
-      it('EvaluationRecorded -> missing', () => {
+      it('EvaluationRecorded -> evaluated', () => {
         const readModel = handleEvent(
           currentState,
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         );
 
-        expect(readModel[articleId.value]).toBe('missing');
+        expect(readModel[articleId.value]).toBe('evaluated');
       });
 
-      it('ArticleAddedToList -> added', () => {
+      it('ArticleAddedToList -> listed', () => {
         const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
         const readModel = handleEvent(
           currentState,
           articleAddedToList(articleId, elifeListId),
         );
 
-        expect(readModel[articleId.value]).toBe('added');
+        expect(readModel[articleId.value]).toBe('listed');
       });
     });
 
-    describe('when the article is in the added state', () => {
+    describe('when the article is in the listed state', () => {
       const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
 
       beforeEach(() => {
@@ -92,30 +92,30 @@ describe('handle-event', () => {
         );
       });
 
-      it('EvaluationRecorded -> added', () => {
+      it('EvaluationRecorded -> listed', () => {
         const readModel = handleEvent(
           currentState,
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
         );
 
-        expect(readModel[articleId.value]).toBe('added');
+        expect(readModel[articleId.value]).toBe('listed');
       });
 
-      it('ArticleAddedToList -> added', () => {
+      it('ArticleAddedToList -> listed', () => {
         const anotherElifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.immunologyAndInflammationListId);
         const readModel = handleEvent(
           currentState,
           articleAddedToList(articleId, anotherElifeListId),
         );
 
-        expect(readModel[articleId.value]).toBe('added');
+        expect(readModel[articleId.value]).toBe('listed');
       });
     });
   });
 
   describe('interactions between different articles', () => {
     describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
-      it('considers the articles as missing', () => {
+      it('considers the articles as evaluated', () => {
         const articleId = arbitraryArticleId();
         const articleId2 = arbitraryArticleId();
         const readModel = pipe(
@@ -127,8 +127,8 @@ describe('handle-event', () => {
         );
 
         expect(readModel).toStrictEqual({
-          [articleId.value]: 'missing',
-          [articleId2.value]: 'missing',
+          [articleId.value]: 'evaluated',
+          [articleId2.value]: 'evaluated',
         });
       });
     });

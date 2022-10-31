@@ -8,7 +8,7 @@ import { Doi } from '../../types/doi';
 
 export const getAllMissingArticleIds = (readModel: ReadModel): ReadonlyArray<Doi> => pipe(
   readModel,
-  R.filter((item) => item === 'missing' as ArticleState),
+  R.filter((item) => item === 'evaluated' as ArticleState),
   R.keys,
   RA.map((value) => new Doi(value)),
 );
