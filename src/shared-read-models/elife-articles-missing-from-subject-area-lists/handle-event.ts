@@ -36,24 +36,16 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (elifeSubjectAreaLists.includes(event.listId)) {
       readmodel[event.articleId.value] = 'listed' as const;
     }
-  } else if (isBiorxivCategoryRecordedEvent(event)) {
-    if (readmodel[event.articleId.value] === 'listed' || readmodel[event.articleId.value] === 'evaluated-and-category-known') {
-      return readmodel;
-    }
-    if (readmodel[event.articleId.value] === 'evaluated') {
-      readmodel[event.articleId.value] = 'evaluated-and-category-known' as const;
-    } else {
-      readmodel[event.articleId.value] = 'category-known' as const;
-    }
-  } else if (isMedrxivCategoryRecordedEvent(event)) {
-    if (readmodel[event.articleId.value] === 'listed' || readmodel[event.articleId.value] === 'evaluated-and-category-known') {
-      return readmodel;
-    }
-    if (readmodel[event.articleId.value] === 'evaluated') {
-      readmodel[event.articleId.value] = 'evaluated-and-category-known' as const;
-    } else {
-      readmodel[event.articleId.value] = 'category-known' as const;
-    }
+  } else if (isBiorxivCategoryRecordedEvent(event) || isMedrxivCategoryRecordedEvent(event)) {
+    const key = event.articleId.value;
+    const transitions = {
+      undefined: 'category-known' as const,
+      'category-known': 'category-known' as const,
+      'evaluated': 'evaluated-and-category-known' as const,
+      'evaluated-and-category-known': 'evaluated-and-category-known' as const,
+      'listed': 'listed' as const,
+    };
+    readmodel[key] = transitions[readmodel[key]];
   }
   return readmodel;
 };
