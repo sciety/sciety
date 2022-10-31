@@ -131,9 +131,28 @@ describe('handle-event', () => {
     });
 
     describe('when the article is in the evaluated-and-category-known state', () => {
-      it.todo('EvaluationRecorded -> evaluated-and-category-known');
+      beforeEach(() => {
+        currentState = pipe(
+          [
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            medrxivCategoryRecorded(articleId, arbitraryWord()),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+      });
 
-      it.todo('BiorxivCategoryRecorded -> evaluated-and-category-known');
+      it.each([
+        [
+          'EvaluationRecorded -> evaluated-and-category-known',
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          'evaluated-and-category-known' as const,
+        ],
+        // [
+        //   'BiorxivCategoryRecorded -> evaluated-and-category-known',
+        //   biorxivCategoryRecorded(articleId, arbitraryWord()),
+        //   'evaluated-and-category-known' as const,
+        // ],
+      ])('%s', testNextStateTransition);
 
       it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
 
