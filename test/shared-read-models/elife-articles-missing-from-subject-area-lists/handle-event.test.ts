@@ -20,22 +20,21 @@ describe('handle-event', () => {
         currentState = initialState();
       });
 
-      it('EvaluationRecorded -> evaluated', () => {
-        const readModel = handleEvent(
-          currentState,
+      it.each([
+        [
+          'EvaluationRecorded (eLife) -> evaluated',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        );
-
-        expect(readModel[articleId.value]).toBe('evaluated');
-      });
-
-      it('EvaluationRecorded (not eLife) -> unknown', () => {
-        const readModel = handleEvent(
-          currentState,
+          'evaluated',
+        ],
+        [
+          'EvaluationRecorded (not eLife) -> unknown',
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
-        );
+          undefined,
+        ],
+      ])('%s', (_, event, nextState) => {
+        const readModel = handleEvent(currentState, event);
 
-        expect(readModel[articleId.value]).toBeUndefined();
+        expect(readModel[articleId.value]).toBe(nextState);
       });
 
       it.todo('BiorxivCategoryRecorded -> category-known');
