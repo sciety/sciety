@@ -149,11 +149,17 @@ describe('handle-event', () => {
           articleAddedToList(articleId, anotherElifeListId),
           'listed' as ArticleState,
         ],
+        [
+          'BiorxivCategoryRecorded -> listed',
+          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'listed' as ArticleState,
+        ],
+        [
+          'MedrxivCategoryRecorded -> listed',
+          medrxivCategoryRecorded(articleId, arbitraryWord()),
+          'listed' as ArticleState,
+        ],
       ])('%s', testNextStateTransition);
-
-      it.todo('BiorxivCategoryRecorded -> listed');
-
-      it.todo('MedrxivCategoryRecorded -> listed');
     });
   });
 

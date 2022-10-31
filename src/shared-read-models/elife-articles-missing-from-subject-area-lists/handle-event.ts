@@ -26,8 +26,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel[event.articleId.value] = 'listed' as const;
     }
   } else if (isBiorxivCategoryRecordedEvent(event)) {
+    if (readmodel[event.articleId.value] === 'listed') {
+      return readmodel;
+    }
     readmodel[event.articleId.value] = 'category-known' as const;
   } else if (isMedrxivCategoryRecordedEvent(event)) {
+    if (readmodel[event.articleId.value] === 'listed') {
+      return readmodel;
+    }
     readmodel[event.articleId.value] = 'category-known' as const;
   }
   return readmodel;
