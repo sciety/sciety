@@ -74,6 +74,16 @@ describe('handle-event', () => {
 
       it.each([
         [
+          'BiorxivCategoryRecorded -> category-known',
+          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'category-known' as ArticleState,
+        ],
+        [
+          'MedrxivCategoryRecorded -> category-known',
+          medrxivCategoryRecorded(articleId, arbitraryWord()),
+          'category-known' as ArticleState,
+        ],
+        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as ArticleState,
@@ -81,10 +91,6 @@ describe('handle-event', () => {
       ])('%s', testNextStateTransition);
 
       it.todo('EvaluationRecorded -> evaluated-and-category-known');
-
-      it.todo('BiorxivCategoryRecorded -> category-known');
-
-      it.todo('MedrxivCategoryRecorded -> category-known');
     });
 
     describe('when the article is in the evaluated state', () => {
