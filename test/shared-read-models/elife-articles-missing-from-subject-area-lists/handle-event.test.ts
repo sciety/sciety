@@ -20,6 +20,7 @@ describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     let currentState: ReadModel;
     const articleId = arbitraryArticleId();
+    const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
 
     const testNextStateTransition = (_: string, event: DomainEvent, nextState: ArticleState | undefined) => {
       const readModel = handleEvent(currentState, event);
@@ -28,8 +29,6 @@ describe('handle-event', () => {
     };
 
     describe('when the article is in the unknown state', () => {
-      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
-
       beforeEach(() => {
         currentState = initialState();
       });
@@ -64,13 +63,28 @@ describe('handle-event', () => {
     });
 
     describe('when the article is in the category-known state', () => {
+      beforeEach(() => {
+        currentState = pipe(
+          [
+            biorxivCategoryRecorded(articleId, arbitraryWord()),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+      });
+
+      it.each([
+        [
+          'ArticleAddedToList -> listed',
+          articleAddedToList(articleId, elifeListId),
+          'listed' as ArticleState,
+        ],
+      ])('%s', testNextStateTransition);
+
       it.todo('EvaluationRecorded -> evaluated-and-category-known');
 
       it.todo('BiorxivCategoryRecorded -> category-known');
 
       it.todo('MedrxivCategoryRecorded -> category-known');
-
-      it.todo('ArticleAddedToList -> listed');
     });
 
     describe('when the article is in the evaluated state', () => {
@@ -82,8 +96,6 @@ describe('handle-event', () => {
           RA.reduce(initialState(), handleEvent),
         );
       });
-
-      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
 
       it.each([
         [
@@ -114,8 +126,6 @@ describe('handle-event', () => {
     });
 
     describe('when the article is in the listed state', () => {
-      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.zoologyListId);
-
       beforeEach(() => {
         currentState = pipe(
           [
