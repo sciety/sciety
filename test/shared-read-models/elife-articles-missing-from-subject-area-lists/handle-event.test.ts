@@ -1,3 +1,4 @@
+/* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, listCreated } from '../../../src/domain-events';
@@ -13,51 +14,59 @@ import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-event', () => {
-  describe('when there is an evaluation by eLife on an article that has not been added to an eLife subject area list', () => {
-    it('considers the article as missing', () => {
-      const articleId = arbitraryArticleId();
-      const readModel = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
+  describe('the state machine of a single article', () => {
+    const articleId = arbitraryArticleId();
 
-      expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
+    describe('when the article is in the unknown state', () => {
+      const currentState = initialState();
+
+      it('EvaluationRecorded -> missing', () => {
+        const readModel = handleEvent(
+          currentState,
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        );
+
+        expect(readModel[articleId.value]).toBe('missing');
+      });
     });
-  });
 
-  describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
-    it('considers the articles as missing', () => {
-      const articleId = arbitraryArticleId();
-      const articleId2 = arbitraryArticleId();
-      const readModel = pipe(
+    describe('when the article is in the missing state', () => {
+      const currentState = pipe(
         [
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
-      expect(readModel).toStrictEqual({
-        [articleId.value]: 'missing',
-        [articleId2.value]: 'missing',
+      it('EvaluationRecorded -> missing', () => {
+        const readModel = handleEvent(
+          currentState,
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        );
+
+        expect(readModel[articleId.value]).toBe('missing');
       });
     });
   });
 
-  describe('when there are multiple evaluations by eLife on the same article that have not been added to an eLife subject area list', () => {
-    it('still considers the article as missing', () => {
-      const articleId = arbitraryArticleId();
-      const readModel = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
+  describe('interactions between different articles', () => {
+    describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
+      it('considers the articles as missing', () => {
+        const articleId = arbitraryArticleId();
+        const articleId2 = arbitraryArticleId();
+        const readModel = pipe(
+          [
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
 
-      expect(readModel).toStrictEqual({ [articleId.value]: 'missing' });
+        expect(readModel).toStrictEqual({
+          [articleId.value]: 'missing',
+          [articleId2.value]: 'missing',
+        });
+      });
     });
   });
 
