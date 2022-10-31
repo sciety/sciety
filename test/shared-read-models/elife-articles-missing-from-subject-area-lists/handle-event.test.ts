@@ -2,10 +2,12 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../../src/domain-events';
+import { articleAddedToList, DomainEvent } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/data';
-import { handleEvent, initialState, ReadModel } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
+import {
+  ArticleState, handleEvent, initialState, ReadModel,
+} from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -15,7 +17,8 @@ describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     let currentState: ReadModel;
     const articleId = arbitraryArticleId();
-    const testNextStateTransition = (_, event, nextState) => {
+
+    const testNextStateTransition = (_: string, event: DomainEvent, nextState: ArticleState | undefined) => {
       const readModel = handleEvent(currentState, event);
 
       expect(readModel[articleId.value]).toBe(nextState);
@@ -32,7 +35,7 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded (eLife) -> evaluated',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated',
+          'evaluated' as ArticleState,
         ],
         [
           'EvaluationRecorded (not eLife) -> unknown',
@@ -42,7 +45,7 @@ describe('handle-event', () => {
         [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
-          'listed',
+          'listed' as ArticleState,
         ],
       ])('%s', testNextStateTransition);
 
