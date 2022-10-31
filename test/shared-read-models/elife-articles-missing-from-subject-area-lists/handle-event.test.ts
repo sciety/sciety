@@ -38,6 +38,10 @@ describe('handle-event', () => {
         expect(readModel[articleId.value]).toBeUndefined();
       });
 
+      it.todo('BiorxivCategoryRecorded -> category-known');
+
+      it.todo('MedrxivCategoryRecorded -> category-known');
+
       it('ArticleAddedToList -> listed', () => {
         const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
         const readModel = handleEvent(
@@ -47,6 +51,16 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBe('listed');
       });
+    });
+
+    describe('when the article is in the category-known state', () => {
+      it.todo('EvaluationRecorded -> evaluated-and-category-known');
+
+      it.todo('BiorxivCategoryRecorded -> category-known');
+
+      it.todo('MedrxivCategoryRecorded -> category-known');
+
+      it.todo('ArticleAddedToList -> listed');
     });
 
     describe('when the article is in the evaluated state', () => {
@@ -68,6 +82,10 @@ describe('handle-event', () => {
         expect(readModel[articleId.value]).toBe('evaluated');
       });
 
+      it.todo('BiorxivCategoryRecorded -> evaluated-and-category-known');
+
+      it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
+
       it('ArticleAddedToList -> listed', () => {
         const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
         const readModel = handleEvent(
@@ -77,6 +95,16 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBe('listed');
       });
+    });
+
+    describe('when the article is in the evaluated-and-category-known state', () => {
+      it.todo('EvaluationRecorded -> evaluated-and-category-known');
+
+      it.todo('BiorxivCategoryRecorded -> evaluated-and-category-known');
+
+      it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
+
+      it.todo('ArticleAddedToList -> listed');
     });
 
     describe('when the article is in the listed state', () => {
@@ -100,6 +128,10 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBe('listed');
       });
+
+      it.todo('BiorxivCategoryRecorded -> listed');
+
+      it.todo('MedrxivCategoryRecorded -> listed');
 
       it('ArticleAddedToList -> listed', () => {
         const anotherElifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.immunologyAndInflammationListId);
