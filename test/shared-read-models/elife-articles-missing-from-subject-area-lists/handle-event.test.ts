@@ -74,28 +74,24 @@ describe('handle-event', () => {
         );
       });
 
-      it('EvaluationRecorded -> evaluated', () => {
-        const readModel = handleEvent(
-          currentState,
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        );
+      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
 
-        expect(readModel[articleId.value]).toBe('evaluated');
-      });
+      it.each([
+        [
+          'EvaluationRecorded -> evaluated',
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          'evaluated' as ArticleState,
+        ],
+        [
+          'ArticleAddedToList -> listed',
+          articleAddedToList(articleId, elifeListId),
+          'listed' as ArticleState,
+        ],
+      ])('%s', testNextStateTransition);
 
       it.todo('BiorxivCategoryRecorded -> evaluated-and-category-known');
 
       it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
-
-      it('ArticleAddedToList -> listed', () => {
-        const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.ecologyListId);
-        const readModel = handleEvent(
-          currentState,
-          articleAddedToList(articleId, elifeListId),
-        );
-
-        expect(readModel[articleId.value]).toBe('listed');
-      });
     });
 
     describe('when the article is in the evaluated-and-category-known state', () => {
@@ -121,28 +117,24 @@ describe('handle-event', () => {
         );
       });
 
-      it('EvaluationRecorded -> listed', () => {
-        const readModel = handleEvent(
-          currentState,
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-        );
+      const anotherElifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.immunologyAndInflammationListId);
 
-        expect(readModel[articleId.value]).toBe('listed');
-      });
+      it.each([
+        [
+          'EvaluationRecorded -> listed',
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          'listed' as ArticleState,
+        ],
+        [
+          'ArticleAddedToList -> listed',
+          articleAddedToList(articleId, anotherElifeListId),
+          'listed' as ArticleState,
+        ],
+      ])('%s', testNextStateTransition);
 
       it.todo('BiorxivCategoryRecorded -> listed');
 
       it.todo('MedrxivCategoryRecorded -> listed');
-
-      it('ArticleAddedToList -> listed', () => {
-        const anotherElifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.immunologyAndInflammationListId);
-        const readModel = handleEvent(
-          currentState,
-          articleAddedToList(articleId, anotherElifeListId),
-        );
-
-        expect(readModel[articleId.value]).toBe('listed');
-      });
     });
   });
 
