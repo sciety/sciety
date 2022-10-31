@@ -33,7 +33,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel[event.articleId.value] = 'listed' as const;
     }
   } else if (isBiorxivCategoryRecordedEvent(event)) {
-    if (readmodel[event.articleId.value] === 'listed') {
+    if (readmodel[event.articleId.value] === 'listed' || readmodel[event.articleId.value] === 'evaluated-and-category-known') {
       return readmodel;
     }
     if (readmodel[event.articleId.value] === 'evaluated') {
@@ -42,7 +42,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel[event.articleId.value] = 'category-known' as const;
     }
   } else if (isMedrxivCategoryRecordedEvent(event)) {
-    if (readmodel[event.articleId.value] === 'listed') {
+    if (readmodel[event.articleId.value] === 'listed' || readmodel[event.articleId.value] === 'evaluated-and-category-known') {
       return readmodel;
     }
     if (readmodel[event.articleId.value] === 'evaluated') {

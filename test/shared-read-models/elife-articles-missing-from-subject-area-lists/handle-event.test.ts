@@ -147,14 +147,17 @@ describe('handle-event', () => {
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
           'evaluated-and-category-known' as const,
         ],
-        // [
-        //   'BiorxivCategoryRecorded -> evaluated-and-category-known',
-        //   biorxivCategoryRecorded(articleId, arbitraryWord()),
-        //   'evaluated-and-category-known' as const,
-        // ],
+        [
+          'BiorxivCategoryRecorded -> evaluated-and-category-known',
+          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'evaluated-and-category-known' as const,
+        ],
+        [
+          'MedrxivCategoryRecorded -> evaluated-and-category-known',
+          medrxivCategoryRecorded(articleId, arbitraryWord()),
+          'evaluated-and-category-known' as const,
+        ],
       ])('%s', testNextStateTransition);
-
-      it.todo('MedrxivCategoryRecorded -> evaluated-and-category-known');
 
       it.todo('ArticleAddedToList -> listed');
     });
