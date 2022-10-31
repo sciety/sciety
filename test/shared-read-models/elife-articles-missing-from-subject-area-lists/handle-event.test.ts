@@ -46,6 +46,28 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBe('missing');
       });
+
+      const cases = pipe(
+        elifeSubjectAreaListIds,
+        Object.values,
+        RA.map((key) => [LID.fromValidatedString(key)]),
+      );
+
+      it.each(cases)('EvaluationRecorded -> added', (elifeListId) => {
+        const readModel = pipe(
+          [
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            articleAddedToList(articleId, elifeListId),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+
+        expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
+      });
+    });
+
+    describe('when the article is in the added state', () => {
+
     });
   });
 
@@ -67,27 +89,6 @@ describe('handle-event', () => {
           [articleId2.value]: 'missing',
         });
       });
-    });
-  });
-
-  describe('when there is an evaluation by eLife on an article that has been added to an eLife subject area list', () => {
-    const cases = pipe(
-      elifeSubjectAreaListIds,
-      Object.values,
-      RA.map((key) => [LID.fromValidatedString(key)]),
-    );
-
-    it.each(cases)('considers the article as added', (elifeListId) => {
-      const articleId = arbitraryArticleId();
-      const readModel = pipe(
-        [
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          articleAddedToList(articleId, elifeListId),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      expect(readModel).toStrictEqual({ [articleId.value]: 'added' });
     });
   });
 
