@@ -37,7 +37,7 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded (eLife) -> evaluated',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated' as ArticleState,
+          'evaluated' as const,
         ],
         [
           'EvaluationRecorded (not eLife) -> unknown',
@@ -47,17 +47,17 @@ describe('handle-event', () => {
         [
           'BiorxivCategoryRecorded -> category-known',
           biorxivCategoryRecorded(articleId, arbitraryWord()),
-          'category-known' as ArticleState,
+          'category-known' as const,
         ],
         [
           'MedrxivCategoryRecorded -> category-known',
           medrxivCategoryRecorded(articleId, arbitraryWord()),
-          'category-known' as ArticleState,
+          'category-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
       ])('%s', testNextStateTransition);
     });
@@ -76,17 +76,17 @@ describe('handle-event', () => {
         [
           'BiorxivCategoryRecorded -> category-known',
           biorxivCategoryRecorded(articleId, arbitraryWord()),
-          'category-known' as ArticleState,
+          'category-known' as const,
         ],
         [
           'MedrxivCategoryRecorded -> category-known',
           medrxivCategoryRecorded(articleId, arbitraryWord()),
-          'category-known' as ArticleState,
+          'category-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
       ])('%s', testNextStateTransition);
 
@@ -107,12 +107,12 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded -> evaluated',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated' as ArticleState,
+          'evaluated' as const,
         ],
         [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
       ])('%s', testNextStateTransition);
 
@@ -148,22 +148,22 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded -> listed',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
         [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, anotherElifeListId),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
         [
           'BiorxivCategoryRecorded -> listed',
           biorxivCategoryRecorded(articleId, arbitraryWord()),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
         [
           'MedrxivCategoryRecorded -> listed',
           medrxivCategoryRecorded(articleId, arbitraryWord()),
-          'listed' as ArticleState,
+          'listed' as const,
         ],
       ])('%s', testNextStateTransition);
     });
