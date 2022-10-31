@@ -16,6 +16,8 @@ describe('handle-event', () => {
     let currentState: ReadModel;
 
     describe('when the article is in the unknown state', () => {
+      const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
+
       beforeEach(() => {
         currentState = initialState();
       });
@@ -31,6 +33,11 @@ describe('handle-event', () => {
           evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
           undefined,
         ],
+        [
+          'ArticleAddedToList -> listed',
+          articleAddedToList(articleId, elifeListId),
+          'listed',
+        ],
       ])('%s', (_, event, nextState) => {
         const readModel = handleEvent(currentState, event);
 
@@ -40,16 +47,6 @@ describe('handle-event', () => {
       it.todo('BiorxivCategoryRecorded -> category-known');
 
       it.todo('MedrxivCategoryRecorded -> category-known');
-
-      it('ArticleAddedToList -> listed', () => {
-        const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
-        const readModel = handleEvent(
-          currentState,
-          articleAddedToList(articleId, elifeListId),
-        );
-
-        expect(readModel[articleId.value]).toBe('listed');
-      });
     });
 
     describe('when the article is in the category-known state', () => {
