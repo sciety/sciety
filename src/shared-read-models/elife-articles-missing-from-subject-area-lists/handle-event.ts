@@ -8,7 +8,12 @@ import {
   isMedrxivCategoryRecordedEvent,
 } from '../../domain-events';
 
-export type ArticleState = 'evaluated' | 'listed' | 'category-known';
+export type ArticleState =
+ | 'evaluated'
+ | 'listed'
+ | 'category-known'
+ | 'evaluated-and-category-known';
+
 export type ReadModel = Record<string, ArticleState>;
 
 export const initialState = (): ReadModel => ({});
@@ -19,6 +24,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       const key = event.articleId.value;
       if (readmodel[key] === undefined) {
         readmodel[key] = 'evaluated' as const;
+      } else if (readmodel[key] === 'category-known') {
+        readmodel[key] = 'evaluated-and-category-known' as const;
       }
     }
   } else if (isArticleAddedToListEvent(event)) {

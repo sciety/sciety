@@ -84,13 +84,16 @@ describe('handle-event', () => {
           'category-known' as const,
         ],
         [
+          'EvaluationRecorded -> evaluated-and-category-known',
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          'evaluated-and-category-known' as const,
+        ],
+        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
-
-      it.todo('EvaluationRecorded -> evaluated-and-category-known');
     });
 
     describe('when the article is in the evaluated state', () => {
