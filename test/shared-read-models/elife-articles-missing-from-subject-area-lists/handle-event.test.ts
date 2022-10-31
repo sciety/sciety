@@ -37,6 +37,16 @@ describe('handle-event', () => {
 
         expect(readModel[articleId.value]).toBeUndefined();
       });
+
+      it('ArticleAddedToList -> added', () => {
+        const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
+        const readModel = handleEvent(
+          currentState,
+          articleAddedToList(articleId, elifeListId),
+        );
+
+        expect(readModel[articleId.value]).toBe('added');
+      });
     });
 
     describe('when the article is in the missing state', () => {
@@ -86,6 +96,16 @@ describe('handle-event', () => {
         const readModel = handleEvent(
           currentState,
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+        );
+
+        expect(readModel[articleId.value]).toBe('added');
+      });
+
+      it('ArticleAddedToList -> added', () => {
+        const anotherElifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.immunologyAndInflammationListId);
+        const readModel = handleEvent(
+          currentState,
+          articleAddedToList(articleId, anotherElifeListId),
         );
 
         expect(readModel[articleId.value]).toBe('added');
