@@ -1,7 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
-  DomainEvent, isArticleAddedToListEvent, isBiorxivCategoryRecordedEvent, isEvaluationRecordedEvent,
+  DomainEvent,
+  isArticleAddedToListEvent,
+  isBiorxivCategoryRecordedEvent,
+  isEvaluationRecordedEvent,
+  isMedrxivCategoryRecordedEvent,
 } from '../../domain-events';
 
 export type ArticleState = 'evaluated' | 'listed' | 'category-known';
@@ -22,6 +26,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel[event.articleId.value] = 'listed' as const;
     }
   } else if (isBiorxivCategoryRecordedEvent(event)) {
+    readmodel[event.articleId.value] = 'category-known' as const;
+  } else if (isMedrxivCategoryRecordedEvent(event)) {
     readmodel[event.articleId.value] = 'category-known' as const;
   }
   return readmodel;

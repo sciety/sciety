@@ -2,7 +2,9 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, biorxivCategoryRecorded, DomainEvent } from '../../../src/domain-events';
+import {
+  articleAddedToList, biorxivCategoryRecorded, DomainEvent, medrxivCategoryRecorded,
+} from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/data';
 import {
@@ -49,13 +51,16 @@ describe('handle-event', () => {
           'category-known' as ArticleState,
         ],
         [
+          'MedrxivCategoryRecorded -> category-known',
+          medrxivCategoryRecorded(articleId, arbitraryWord()),
+          'category-known' as ArticleState,
+        ],
+        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as ArticleState,
         ],
       ])('%s', testNextStateTransition);
-
-      it.todo('MedrxivCategoryRecorded -> category-known');
     });
 
     describe('when the article is in the category-known state', () => {
