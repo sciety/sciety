@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -12,8 +13,13 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {
-    const articleId = arbitraryArticleId();
     let currentState: ReadModel;
+    const articleId = arbitraryArticleId();
+    const testNextStateTransition = (_, event, nextState) => {
+      const readModel = handleEvent(currentState, event);
+
+      expect(readModel[articleId.value]).toBe(nextState);
+    };
 
     describe('when the article is in the unknown state', () => {
       const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
@@ -38,11 +44,7 @@ describe('handle-event', () => {
           articleAddedToList(articleId, elifeListId),
           'listed',
         ],
-      ])('%s', (_, event, nextState) => {
-        const readModel = handleEvent(currentState, event);
-
-        expect(readModel[articleId.value]).toBe(nextState);
-      });
+      ])('%s', testNextStateTransition);
 
       it.todo('BiorxivCategoryRecorded -> category-known');
 
