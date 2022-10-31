@@ -1,4 +1,10 @@
-# Recommendations for markdown use with Sciety
+# Recommendations for Markdown use with Sciety
+
+[Markdown](https://daringfireball.net/projects/markdown/) is a simple way of formatting text within documents using typed tags.
+Sciety uses Markdown formatting to display text on the website, for example when we ingest content from services like Hypothes.is.
+
+Adhering to these reccomendations when you write Markdown for Sciety ensures that content appears in a consistent and easily readable
+format across the site.
 
 ## Headings
 
