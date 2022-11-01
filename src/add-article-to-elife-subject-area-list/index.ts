@@ -1,1 +1,1 @@
-export { readModelStatus } from './read-model-status';
+export { readModelStatus, ArticleIdsByState } from './read-model-status';

@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
+import { ArticleIdsByState } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
   CommitEvents, CreateList, FetchArticle, GetAllEvents, GetListsOwnedBy,
@@ -17,6 +18,7 @@ import { Doi } from '../types/doi';
 
 export type CollectedPorts = {
   getAllMissingArticleIds: () => ReadonlyArray<Doi>,
+  getArticleIdsByState: () => ArticleIdsByState,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,

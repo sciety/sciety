@@ -197,6 +197,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const collectedAdapters = {
         getAllMissingArticleIds: () => getAllMissingArticleIds(readModel),
+        getArticleIdsByState: () => ({
+          evaluated: [],
+          listed: [],
+          'category-known': [],
+          'evaluated-and-category-known': [],
+        }),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,

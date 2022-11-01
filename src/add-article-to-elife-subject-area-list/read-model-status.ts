@@ -16,8 +16,16 @@ const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
   }),
 );
 
+export type ArticleIdsByState = {
+  evaluated: ReadonlyArray<string>,
+  listed: ReadonlyArray<string>,
+  'category-known': ReadonlyArray<string>,
+  'evaluated-and-category-known': ReadonlyArray<string>,
+};
+
 type Ports = {
   getAllMissingArticleIds: () => ReadonlyArray<Doi>,
+  getArticleIdsByState: () => ArticleIdsByState,
 };
 
 type ReadModelStatus = {
