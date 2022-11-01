@@ -10,6 +10,9 @@ const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
       articleIds: ids,
       articleCount: ids.length,
     },
+    listed: { articleIds: [], articleCount: 0 },
+    'category-known': { articleIds: [], articleCount: 0 },
+    'evaluated-and-category-known': { articleIds: [], articleCount: 0 },
   }),
 );
 
@@ -19,6 +22,9 @@ type Ports = {
 
 type ReadModelStatus = {
   evaluated: { articleIds: ReadonlyArray<string>, articleCount: number },
+  listed: { articleIds: ReadonlyArray<string>, articleCount: number },
+  'category-known': { articleIds: ReadonlyArray<string>, articleCount: number },
+  'evaluated-and-category-known': { articleIds: ReadonlyArray<string>, articleCount: number },
 };
 
 export const readModelStatus = (
