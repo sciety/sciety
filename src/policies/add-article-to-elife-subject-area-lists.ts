@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { elifeGroupId, getCorrespondingListId } from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { AddArticleToList, Logger } from '../shared-ports';
-import { elifeGroupId, getCorrespondingListId } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 

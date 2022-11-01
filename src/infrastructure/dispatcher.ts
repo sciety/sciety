@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import { DomainEvent } from '../domain-events';
 import {
   handleEvent,
   initialState,
   ReadModel,
-} from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
+} from '../add-article-to-elife-subject-area-list/read-model';
+import { DomainEvent } from '../domain-events';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 

@@ -2,14 +2,13 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { handleEvent, initialState, ReadModel } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
+import { ArticleState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import {
   articleAddedToList, biorxivCategoryRecorded, DomainEvent, medrxivCategoryRecorded,
 } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
-import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/data';
-import {
-  ArticleState, handleEvent, initialState, ReadModel,
-} from '../../../src/shared-read-models/elife-articles-missing-from-subject-area-lists/handle-event';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';

@@ -24,6 +24,7 @@ import {
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
+import { getAllMissingArticleIds } from '../add-article-to-elife-subject-area-list/read-model';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
@@ -35,7 +36,6 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { RemoveArticleFromList } from '../shared-ports';
-import { getAllMissingArticleIds } from '../shared-read-models/elife-articles-missing-from-subject-area-lists';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
