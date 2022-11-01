@@ -1,20 +1,24 @@
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 
-const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
-  articleIds,
-  RA.map((articleId) => articleId.value),
-  (ids) => ({
-    evaluated: {
-      articleIds: ids,
-      articleCount: ids.length,
-    },
-    listed: { articleIds: [], articleCount: 0 },
-    'category-known': { articleIds: [], articleCount: 0 },
-    'evaluated-and-category-known': { articleIds: [], articleCount: 0 },
-  }),
-);
+const formatForJson = (articleIds: ArticleIdsByState) => ({
+  evaluated: {
+    articleIds: articleIds.evaluated,
+    articleCount: articleIds.evaluated.length,
+  },
+  listed: {
+    articleIds: articleIds.listed,
+    articleCount: articleIds.listed.length,
+  },
+  'category-known': {
+    articleIds: articleIds['category-known'],
+    articleCount: articleIds['category-known'].length,
+  },
+  'evaluated-and-category-known': {
+    articleIds: articleIds['evaluated-and-category-known'],
+    articleCount: articleIds['evaluated-and-category-known'].length,
+  },
+});
 
 export type ArticleIdsByState = {
   evaluated: ReadonlyArray<string>,
@@ -38,6 +42,6 @@ type ReadModelStatus = {
 export const readModelStatus = (
   ports: Ports,
 ): ReadModelStatus => pipe(
-  ports.getAllMissingArticleIds(),
+  ports.getArticleIdsByState(),
   formatForJson,
 );
