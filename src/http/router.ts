@@ -26,7 +26,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { elifeArticlesMissingFromSubjectAreaListsJson } from '../add-article-to-elife-subject-area-list';
+import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
@@ -564,7 +564,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
   // OBSERVABILITY
 
   router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
-    context.response.body = elifeArticlesMissingFromSubjectAreaListsJson(ports);
+    context.response.body = readModelStatus(ports);
 
     await next();
   });
