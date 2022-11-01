@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { handleEvent, initialState, ReadModel } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { ArticleIdsByState } from '../../../src/add-article-to-elife-subject-area-list/read-model-status';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
 import { biorxivCategoryRecorded } from '../../../src/domain-events/biorxiv-category-recorded-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
@@ -10,7 +11,8 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const getArticleIdsByState = () => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getArticleIdsByState = (readModel: ReadModel) => (): ArticleIdsByState => ({
   evaluated: [],
   listed: [],
   'category-known': [],
@@ -24,7 +26,7 @@ describe('get-article-ids-by-state', () => {
     const articleIdC = arbitraryArticleId();
     const articleIdD = arbitraryArticleId();
 
-    const result = pipe(
+    const readModel = pipe(
       [
         evaluationRecorded(arbitraryGroupId(), articleIdA, arbitraryReviewId()),
         articleAddedToList(articleIdB, arbitraryListId()),
@@ -33,12 +35,10 @@ describe('get-article-ids-by-state', () => {
         biorxivCategoryRecorded(articleIdD, arbitraryWord()),
       ],
       RA.reduce(initialState(), handleEvent),
-      getArticleIdsByState,
-
     );
 
     it.failing('groups articles by state', () => {
-      expect(result).toStrictEqual({
+      expect(getArticleIdsByState(readModel)()).toStrictEqual({
         evaluated: [articleIdA],
         listed: [articleIdB],
         'category-known': [articleIdC],
