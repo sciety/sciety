@@ -5,6 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { discoverElifeArticleCategory } from './add-article-to-elife-subject-area-list/discover-elife-article-category';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
@@ -42,11 +43,6 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
   }
   const stop = performance.now();
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
-};
-
-const discoverElifeArticleCategory = async (ports: CollectedPorts) => {
-  ports.logger('info', 'discoverElifeArticleCategory starting');
-  ports.logger('info', 'discoverElifeArticleCategory finished');
 };
 
 const startSagas = (ports: CollectedPorts) => async () => {
