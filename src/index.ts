@@ -44,6 +44,17 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
 
+const discoverElifeArticleCategory = async (ports: CollectedPorts) => {
+  ports.logger('info', 'discoverElifeArticleCategory starting');
+  ports.logger('info', 'discoverElifeArticleCategory finished');
+};
+
+const startSagas = (ports: CollectedPorts) => async () => {
+  ports.logger('info', 'Starting sagas');
+  setInterval(async () => discoverElifeArticleCategory(ports), 10000);
+  ports.logger('info', 'Sagas started');
+};
+
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
@@ -75,5 +86,6 @@ void pipe(
     },
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
-  T.chain(executeBackgroundPolicies),
+  T.chainFirst(executeBackgroundPolicies),
+  T.chain(startSagas),
 )();
