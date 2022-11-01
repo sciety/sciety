@@ -563,7 +563,7 @@ export const createRouter = (ports: CollectedPorts): Router => {
 
   // OBSERVABILITY
 
-  router.get('/elife-articles-missing-from-subject-area-lists', async (context, next) => {
+  router.get('/elife-subject-area-read-model-status', async (context, next) => {
     context.response.body = readModelStatus(ports);
 
     await next();

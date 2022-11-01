@@ -6,8 +6,10 @@ const formatForJson = (articleIds: ReadonlyArray<Doi>) => pipe(
   articleIds,
   RA.map((articleId) => articleId.value),
   (ids) => ({
-    articleIds: ids,
-    articleCount: ids.length,
+    evaluated: {
+      articleIds: ids,
+      articleCount: ids.length,
+    },
   }),
 );
 
@@ -15,12 +17,13 @@ type Ports = {
   getAllMissingArticleIds: () => ReadonlyArray<Doi>,
 };
 
-type ReadModelStatus = (ports: Ports)
-=> { articleIds: ReadonlyArray<string>, articleCount: number };
+type ReadModelStatus = {
+  evaluated: { articleIds: ReadonlyArray<string>, articleCount: number },
+};
 
-export const readModelStatus: ReadModelStatus = (
-  ports,
-) => pipe(
+export const readModelStatus = (
+  ports: Ports,
+): ReadModelStatus => pipe(
   ports.getAllMissingArticleIds(),
   formatForJson,
 );
