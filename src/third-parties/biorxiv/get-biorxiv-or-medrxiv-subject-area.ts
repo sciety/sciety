@@ -9,6 +9,7 @@ import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
+import { ReturnObject } from '../../policies/add-article-to-elife-subject-area-lists';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 
@@ -28,10 +29,10 @@ const mapResponse = flow(
   (response: BiorxivArticleDetails) => response.collection,
   RNEA.sort(byVersionAscending),
   RNEA.last,
-  ({ category }) => category,
+  ({ category }) => ({ category, server: 'biorxiv' as const }),
 );
 
-export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, ReturnObject>;
 
 export const getBiorxivOrMedrxivSubjectArea = (ports: Ports): GetBiorxivOrMedrxivSubjectArea => (articleId) => pipe(
   [

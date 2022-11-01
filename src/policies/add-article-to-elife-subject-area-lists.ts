@@ -5,10 +5,16 @@ import { pipe } from 'fp-ts/function';
 import { elifeGroupId, getCorrespondingListId } from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { AddArticleToList, Logger } from '../shared-ports';
+import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 
-type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, string>;
+export type ReturnObject = {
+  category: string,
+  server: ArticleServer,
+};
+
+type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, ReturnObject>;
 
 export type Ports = {
   logger: Logger,
@@ -29,7 +35,10 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
   return pipe(
     event.articleId,
     ports.getBiorxivOrMedrxivSubjectArea,
-    TE.mapLeft(() => 'Subject Area available from neither bioRxiv nor medRxiv'),
+    TE.bimap(
+      () => 'Subject Area available from neither bioRxiv nor medRxiv',
+      ({ category }) => category,
+    ),
     TE.chain((subjectArea) => pipe(
       subjectArea,
       getCorrespondingListId,

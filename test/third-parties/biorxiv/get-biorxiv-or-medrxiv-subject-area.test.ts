@@ -1,8 +1,11 @@
 import * as E from 'fp-ts/Either';
-import { getBiorxivOrMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { getBiorxivOrMedrxivSubjectArea, ReturnObject } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('get-biorxiv-or-medrxiv-subject-area', () => {
@@ -20,14 +23,18 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+    let result: ReturnObject;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await pipe(
+        arbitraryDoi(),
+        getBiorxivOrMedrxivSubjectArea(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns the subject area', () => {
-      expect(result).toStrictEqual(E.right(subjectArea));
+      expect(result.category).toStrictEqual(subjectArea);
     });
   });
 
@@ -45,14 +52,18 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+    let result: ReturnObject;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await pipe(
+        arbitraryDoi(),
+        getBiorxivOrMedrxivSubjectArea(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns the subject area', () => {
-      expect(result).toStrictEqual(E.right(subjectArea));
+      expect(result.category).toStrictEqual(subjectArea);
     });
   });
 
@@ -61,7 +72,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       getJson: async () => ({ collection: [] }),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+    let result: E.Either<DE.DataError, ReturnObject>;
 
     beforeEach(async () => {
       result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
@@ -85,14 +96,19 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+
+    let result: ReturnObject;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await pipe(
+        arbitraryDoi(),
+        getBiorxivOrMedrxivSubjectArea(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns the subject area', () => {
-      expect(result).toStrictEqual(E.right('addiction medicine'));
+      expect(result.category).toBe('addiction medicine');
     });
   });
 
@@ -116,14 +132,18 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+    let result: ReturnObject;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
+      result = await pipe(
+        arbitraryDoi(),
+        getBiorxivOrMedrxivSubjectArea(ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
-    it('returns the subject area of the most recent version', () => {
-      expect(result).toStrictEqual(E.right('addiction medicine'));
+    it('returns the subject area', () => {
+      expect(result.category).toBe('addiction medicine');
     });
   });
 
@@ -132,7 +152,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       getJson: async () => ({}),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, string>;
+    let result: E.Either<DE.DataError, ReturnObject>;
 
     beforeEach(async () => {
       result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
