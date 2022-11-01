@@ -14,10 +14,8 @@ import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-bio
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
 
 export type CollectedPorts = {
-  getAllMissingArticleIds: () => ReadonlyArray<Doi>,
   getArticleIdsByState: () => ArticleIdsByState,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,

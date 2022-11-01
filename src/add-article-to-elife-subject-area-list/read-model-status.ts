@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../types/doi';
 
 const formatForJson = (articleIds: ArticleIdsByState) => ({
   evaluated: {
@@ -28,7 +27,6 @@ export type ArticleIdsByState = {
 };
 
 type Ports = {
-  getAllMissingArticleIds: () => ReadonlyArray<Doi>,
   getArticleIdsByState: () => ArticleIdsByState,
 };
 

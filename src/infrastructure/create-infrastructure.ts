@@ -24,7 +24,7 @@ import {
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
-import { getAllMissingArticleIds, getArticleIdsByState } from '../add-article-to-elife-subject-area-list/read-model';
+import { getArticleIdsByState } from '../add-article-to-elife-subject-area-list/read-model';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
@@ -196,7 +196,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       const collectedAdapters = {
-        getAllMissingArticleIds: () => getAllMissingArticleIds(readModel),
         getArticleIdsByState: getArticleIdsByState(readModel),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),

@@ -43,7 +43,6 @@ export const createTestServer = async (): Promise<TestServer> => {
   };
 
   const adapters: CollectedPorts = {
-    getAllMissingArticleIds: () => [],
     getArticleIdsByState: () => ({
       evaluated: [],
       listed: [],
