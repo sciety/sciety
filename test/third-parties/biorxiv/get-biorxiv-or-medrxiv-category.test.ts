@@ -9,7 +9,7 @@ import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 
-describe('get-biorxiv-or-medrxiv-subject-area', () => {
+describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
     const subjectArea = 'cell biology';
     const ports = {
