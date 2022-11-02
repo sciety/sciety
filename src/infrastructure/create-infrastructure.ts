@@ -37,7 +37,7 @@ import { executePolicies } from '../policies/execute-policies';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { RemoveArticleFromList } from '../shared-ports';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
-import { getBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
+import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
@@ -131,7 +131,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   )),
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
-    getArticleSubjectArea: getBiorxivOrMedrxivSubjectArea({
+    getArticleSubjectArea: getBiorxivOrMedrxivCategory({
       getJson: createGetJsonWithTimeout(lowLevelAdapters.logger, 10000),
       logger: lowLevelAdapters.logger,
     }),

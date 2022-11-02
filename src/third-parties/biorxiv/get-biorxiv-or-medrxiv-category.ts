@@ -31,7 +31,7 @@ const mapResponse = flow(
   ({ category }) => ({ value: category, server: 'biorxiv' as const }),
 );
 
-export const getBiorxivOrMedrxivSubjectArea = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(
+export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(
   [
     'biorxiv' as const,
     'medrxiv' as const,
