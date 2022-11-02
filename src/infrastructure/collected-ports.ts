@@ -5,7 +5,7 @@ import { FetchStaticFile } from './fetch-static-file';
 import { ArticleIdsByState } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
-  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetBiorxivOrMedrxivSubjectArea, GetListsOwnedBy,
+  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleSubjectArea, GetListsOwnedBy,
   Logger,
   RemoveArticleFromList,
 } from '../shared-ports';
@@ -24,7 +24,7 @@ export type CollectedPorts = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: GetAllEvents,
-  getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
+  getArticleSubjectArea: GetArticleSubjectArea,
   getListsOwnedBy: GetListsOwnedBy,
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,

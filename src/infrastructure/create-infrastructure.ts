@@ -131,7 +131,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   )),
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
-    getBiorxivOrMedrxivSubjectArea: getBiorxivOrMedrxivSubjectArea({
+    getArticleSubjectArea: getBiorxivOrMedrxivSubjectArea({
       getJson: createGetJsonWithTimeout(lowLevelAdapters.logger, 10000),
       logger: lowLevelAdapters.logger,
     }),
@@ -233,7 +233,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
-        getBiorxivOrMedrxivSubjectArea: collectedAdapters.getBiorxivOrMedrxivSubjectArea,
+        getArticleSubjectArea: collectedAdapters.getArticleSubjectArea,
         getListsOwnedBy: collectedAdapters.getListsOwnedBy,
         getUserDetails: collectedAdapters.getUserDetails,
         addArticleToList: collectedAdapters.addArticleToList,

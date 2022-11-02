@@ -5,12 +5,12 @@ import { pipe } from 'fp-ts/function';
 import { elifeGroupId, getCorrespondingListId } from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import {
-  AddArticleToList, GetBiorxivOrMedrxivSubjectArea, Logger,
+  AddArticleToList, GetArticleSubjectArea, Logger,
 } from '../shared-ports';
 
 export type Ports = {
   logger: Logger,
-  getBiorxivOrMedrxivSubjectArea: GetBiorxivOrMedrxivSubjectArea,
+  getArticleSubjectArea: GetArticleSubjectArea,
   addArticleToList: AddArticleToList,
 };
 
@@ -26,7 +26,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
 
   return pipe(
     event.articleId,
-    ports.getBiorxivOrMedrxivSubjectArea,
+    ports.getArticleSubjectArea,
     TE.bimap(
       () => 'Subject Area available from neither bioRxiv nor medRxiv',
       ({ value }) => value,
