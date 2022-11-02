@@ -5,8 +5,8 @@ import {
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeSubjectAreaLists } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
-import { biorxivCategoryRecorded } from '../../../src/domain-events/biorxiv-category-recorded-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
+import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
 import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -22,9 +22,9 @@ describe('get-article-ids-by-state', () => {
       [
         evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId()),
         articleAddedToList(articleIdB, elifeSubjectAreaLists[0]),
-        biorxivCategoryRecorded(articleIdC, arbitraryWord()),
+        subjectAreaRecorded(articleIdC, arbitraryWord()),
         evaluationRecorded(elifeGroupId, articleIdD, arbitraryReviewId()),
-        biorxivCategoryRecorded(articleIdD, arbitraryWord()),
+        subjectAreaRecorded(articleIdD, arbitraryWord()),
       ],
       RA.reduce(initialState(), handleEvent),
     );

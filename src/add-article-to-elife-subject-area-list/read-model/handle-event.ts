@@ -4,9 +4,9 @@ import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
   DomainEvent,
   isArticleAddedToListEvent,
-  isBiorxivCategoryRecordedEvent,
   isEvaluationRecordedEvent,
   isMedrxivCategoryRecordedEvent,
+  isSubjectAreaRecordedEvent,
 } from '../../domain-events';
 
 export type ArticleState =
@@ -36,7 +36,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (elifeSubjectAreaLists.includes(event.listId)) {
       readmodel[event.articleId.value] = 'listed' as const;
     }
-  } else if (isBiorxivCategoryRecordedEvent(event) || isMedrxivCategoryRecordedEvent(event)) {
+  } else if (isSubjectAreaRecordedEvent(event) || isMedrxivCategoryRecordedEvent(event)) {
     const key = event.articleId.value;
     const transitions = {
       undefined: 'category-known' as const,

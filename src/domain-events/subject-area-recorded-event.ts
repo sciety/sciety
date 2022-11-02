@@ -5,26 +5,26 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
 
-export const biorxivCategoryRecordedEventCodec = t.type({
+export const subjectAreaRecordedEventCodec = t.type({
   id: EventIdFromString,
-  type: t.literal('BiorxivCategoryRecorded'),
+  type: t.literal('SubjectAreaRecorded'),
   date: tt.DateFromISOString,
   articleId: DoiFromString,
   category: t.string,
 });
 
-export type BiorxivCategoryRecordedEvent = t.TypeOf<typeof biorxivCategoryRecordedEventCodec>;
+export type SubjectAreaRecordedEvent = t.TypeOf<typeof subjectAreaRecordedEventCodec>;
 
-export const isBiorxivCategoryRecordedEvent = (event: { type: string }):
-  event is BiorxivCategoryRecordedEvent => event.type === 'BiorxivCategoryRecorded';
+export const isSubjectAreaRecordedEvent = (event: { type: string }):
+  event is SubjectAreaRecordedEvent => event.type === 'SubjectAreaRecorded';
 
-export const biorxivCategoryRecorded = (
+export const subjectAreaRecorded = (
   articleId: Doi,
   category: string,
   date = new Date(),
-): BiorxivCategoryRecordedEvent => ({
+): SubjectAreaRecordedEvent => ({
   id: generate(),
-  type: 'BiorxivCategoryRecorded',
+  type: 'SubjectAreaRecorded',
   date,
   articleId,
   category,

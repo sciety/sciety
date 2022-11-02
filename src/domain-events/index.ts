@@ -22,11 +22,11 @@ export {
 } from './article-removed-from-list-event';
 
 export {
-  isBiorxivCategoryRecordedEvent,
-  BiorxivCategoryRecordedEvent,
-  biorxivCategoryRecorded,
-  biorxivCategoryRecordedEventCodec,
-} from './biorxiv-category-recorded-event';
+  isSubjectAreaRecordedEvent,
+  SubjectAreaRecordedEvent,
+  subjectAreaRecorded,
+  subjectAreaRecordedEventCodec,
+} from './subject-area-recorded-event';
 
 export {
   isGroupJoinedEvent,

@@ -6,7 +6,7 @@ import { handleEvent, initialState, ReadModel } from '../../../src/add-article-t
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 import { ArticleState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import {
-  articleAddedToList, biorxivCategoryRecorded, DomainEvent, medrxivCategoryRecorded,
+  articleAddedToList, DomainEvent, medrxivCategoryRecorded, subjectAreaRecorded,
 } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import * as LID from '../../../src/types/list-id';
@@ -44,8 +44,8 @@ describe('handle-event', () => {
           undefined,
         ],
         [
-          'BiorxivCategoryRecorded -> category-known',
-          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'SubjectAreaRecorded -> category-known',
+          subjectAreaRecorded(articleId, arbitraryWord()),
           'category-known' as const,
         ],
         [
@@ -65,7 +65,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            biorxivCategoryRecorded(articleId, arbitraryWord()),
+            subjectAreaRecorded(articleId, arbitraryWord()),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -73,8 +73,8 @@ describe('handle-event', () => {
 
       it.each([
         [
-          'BiorxivCategoryRecorded -> category-known',
-          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'SubjectAreaRecorded -> category-known',
+          subjectAreaRecorded(articleId, arbitraryWord()),
           'category-known' as const,
         ],
         [
@@ -112,8 +112,8 @@ describe('handle-event', () => {
           'evaluated' as const,
         ],
         [
-          'BiorxivCategoryRecorded -> evaluated-and-category-known',
-          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'SubjectAreaRecorded -> evaluated-and-category-known',
+          subjectAreaRecorded(articleId, arbitraryWord()),
           'evaluated-and-category-known' as const,
         ],
         [
@@ -147,8 +147,8 @@ describe('handle-event', () => {
           'evaluated-and-category-known' as const,
         ],
         [
-          'BiorxivCategoryRecorded -> evaluated-and-category-known',
-          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'SubjectAreaRecorded -> evaluated-and-category-known',
+          subjectAreaRecorded(articleId, arbitraryWord()),
           'evaluated-and-category-known' as const,
         ],
         [
@@ -189,8 +189,8 @@ describe('handle-event', () => {
           'listed' as const,
         ],
         [
-          'BiorxivCategoryRecorded -> listed',
-          biorxivCategoryRecorded(articleId, arbitraryWord()),
+          'SubjectAreaRecorded -> listed',
+          subjectAreaRecorded(articleId, arbitraryWord()),
           'listed' as const,
         ],
         [
