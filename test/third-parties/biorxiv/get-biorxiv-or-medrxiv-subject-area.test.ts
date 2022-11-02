@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getBiorxivOrMedrxivSubjectArea, ReturnObject } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
+import { ReturnObject } from '../../../src/policies/add-article-to-elife-subject-area-lists';
+import { getBiorxivOrMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
