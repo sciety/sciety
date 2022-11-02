@@ -51,6 +51,10 @@ lint: export TARGET = dev
 lint: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint
 
+lint-eslint: export TARGET=dev
+lint-eslint:
+	${DOCKER_COMPOSE} run --rm app node_modules/.bin/eslint . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0
+
 lint-fix: export TARGET = dev
 lint-fix: build unused-sass
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
