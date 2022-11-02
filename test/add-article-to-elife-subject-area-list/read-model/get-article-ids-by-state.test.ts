@@ -7,11 +7,15 @@ import { elifeSubjectAreaLists } from '../../../src/add-article-to-elife-subject
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
+import { SubjectArea } from '../../../src/types/subject-area';
 import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const arbitrarySubjectArea = () => arbitraryWord();
+const arbitrarySubjectArea = (): SubjectArea => ({
+  value: arbitraryWord(),
+  server: 'biorxiv',
+});
 
 describe('get-article-ids-by-state', () => {
   describe('given a bunch of events', () => {
