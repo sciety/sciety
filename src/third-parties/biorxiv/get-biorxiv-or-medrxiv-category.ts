@@ -28,7 +28,7 @@ const mapResponse = flow(
   (response: BiorxivArticleDetails) => response.collection,
   RNEA.sort(byVersionAscending),
   RNEA.last,
-  ({ category }) => ({ value: category, server: 'biorxiv' as const }),
+  ({ category, server }) => ({ value: category, server }),
 );
 
 export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(

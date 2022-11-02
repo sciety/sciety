@@ -7,6 +7,7 @@ const biorxivArticleVersion = t.type({
   date: DateFromISOString,
   version: NumberFromString,
   category: t.string,
+  server: t.union([t.literal('biorxiv'), t.literal('medrxiv')]),
 });
 
 export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;

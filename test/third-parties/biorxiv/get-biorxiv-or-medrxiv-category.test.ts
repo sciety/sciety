@@ -19,6 +19,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             category: subjectArea,
             version: '1',
             date: arbitraryDate().toISOString(),
+            server: 'biorxiv',
           }],
         })
         : ({ collection: [] })),
@@ -52,6 +53,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             category: subjectArea,
             version: '1',
             date: arbitraryDate().toISOString(),
+            server: 'medrxiv',
           }],
         })
         : ({ collection: [] })),
@@ -71,7 +73,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
       expect(result.value).toStrictEqual(subjectArea);
     });
 
-    it.failing('returns the server', () => {
+    it('returns the server', () => {
       expect(result.server).toBe('medrxiv');
     });
   });
@@ -100,6 +102,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             category: 'addiction medicine',
             version: '1',
             date: arbitraryDate().toISOString(),
+            server: 'medrxiv',
           }],
         })
         : ({ collection: [] })),
@@ -130,11 +133,13 @@ describe('get-biorxiv-or-medrxiv-category', () => {
               category: 'allergy and immunology',
               version: '1',
               date: arbitraryDate().toISOString(),
+              server: 'medrxiv',
             },
             {
               category: 'addiction medicine',
               version: '2',
               date: arbitraryDate().toISOString(),
+              server: 'medrxiv',
             },
           ],
         })
