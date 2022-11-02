@@ -9,12 +9,12 @@ import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 
-export type ReturnObject = {
+export type SubjectArea = {
   category: string,
   server: ArticleServer,
 };
 
-type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, ReturnObject>;
+type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 export type Ports = {
   logger: Logger,

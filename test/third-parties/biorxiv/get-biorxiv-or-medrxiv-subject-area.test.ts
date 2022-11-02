@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ReturnObject } from '../../../src/policies/add-article-to-elife-subject-area-lists';
+import { SubjectArea } from '../../../src/policies/add-article-to-elife-subject-area-lists';
 import { getBiorxivOrMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
@@ -24,7 +24,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: ReturnObject;
+    let result: SubjectArea;
 
     beforeEach(async () => {
       result = await pipe(
@@ -53,7 +53,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: ReturnObject;
+    let result: SubjectArea;
 
     beforeEach(async () => {
       result = await pipe(
@@ -73,7 +73,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       getJson: async () => ({ collection: [] }),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, ReturnObject>;
+    let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
       result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
@@ -98,7 +98,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       logger: dummyLogger,
     };
 
-    let result: ReturnObject;
+    let result: SubjectArea;
 
     beforeEach(async () => {
       result = await pipe(
@@ -133,7 +133,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
         : ({ collection: [] })),
       logger: dummyLogger,
     };
-    let result: ReturnObject;
+    let result: SubjectArea;
 
     beforeEach(async () => {
       result = await pipe(
@@ -153,7 +153,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
       getJson: async () => ({}),
       logger: dummyLogger,
     };
-    let result: E.Either<DE.DataError, ReturnObject>;
+    let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
       result = await getBiorxivOrMedrxivSubjectArea(ports)(arbitraryDoi())();
