@@ -10,7 +10,7 @@ export const subjectAreaRecordedEventCodec = t.type({
   type: t.literal('SubjectAreaRecorded'),
   date: tt.DateFromISOString,
   articleId: DoiFromString,
-  category: t.string,
+  subjectArea: t.string,
 });
 
 export type SubjectAreaRecordedEvent = t.TypeOf<typeof subjectAreaRecordedEventCodec>;
@@ -20,12 +20,12 @@ export const isSubjectAreaRecordedEvent = (event: { type: string }):
 
 export const subjectAreaRecorded = (
   articleId: Doi,
-  category: string,
+  subjectArea: string,
   date = new Date(),
 ): SubjectAreaRecordedEvent => ({
   id: generate(),
   type: 'SubjectAreaRecorded',
   date,
   articleId,
-  category,
+  subjectArea,
 });

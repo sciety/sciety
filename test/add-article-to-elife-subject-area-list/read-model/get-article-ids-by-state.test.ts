@@ -11,6 +11,8 @@ import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
+const arbitrarySubjectArea = () => arbitraryWord();
+
 describe('get-article-ids-by-state', () => {
   describe('given a bunch of events', () => {
     const articleIdA = arbitraryArticleId();
@@ -22,9 +24,9 @@ describe('get-article-ids-by-state', () => {
       [
         evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId()),
         articleAddedToList(articleIdB, elifeSubjectAreaLists[0]),
-        subjectAreaRecorded(articleIdC, arbitraryWord()),
+        subjectAreaRecorded(articleIdC, arbitrarySubjectArea()),
         evaluationRecorded(elifeGroupId, articleIdD, arbitraryReviewId()),
-        subjectAreaRecorded(articleIdD, arbitraryWord()),
+        subjectAreaRecorded(articleIdD, arbitrarySubjectArea()),
       ],
       RA.reduce(initialState(), handleEvent),
     );

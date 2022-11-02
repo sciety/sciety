@@ -15,6 +15,8 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
+const arbitrarySubjectArea = () => arbitraryWord();
+
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     let currentState: ReadModel;
@@ -45,7 +47,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> category-known',
-          subjectAreaRecorded(articleId, arbitraryWord()),
+          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           'category-known' as const,
         ],
         [
@@ -60,7 +62,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            subjectAreaRecorded(articleId, arbitraryWord()),
+            subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -69,7 +71,7 @@ describe('handle-event', () => {
       it.each([
         [
           'SubjectAreaRecorded -> category-known',
-          subjectAreaRecorded(articleId, arbitraryWord()),
+          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           'category-known' as const,
         ],
         [
@@ -103,7 +105,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-category-known',
-          subjectAreaRecorded(articleId, arbitraryWord()),
+          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           'evaluated-and-category-known' as const,
         ],
         [
@@ -119,7 +121,7 @@ describe('handle-event', () => {
         currentState = pipe(
           [
             evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-            subjectAreaRecorded(articleId, arbitraryWord()),
+            subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -133,7 +135,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-category-known',
-          subjectAreaRecorded(articleId, arbitraryWord()),
+          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           'evaluated-and-category-known' as const,
         ],
         [
@@ -170,7 +172,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> listed',
-          subjectAreaRecorded(articleId, arbitraryWord()),
+          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
