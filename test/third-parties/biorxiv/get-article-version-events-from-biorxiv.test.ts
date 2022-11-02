@@ -20,11 +20,13 @@ describe('get-article-version-events-from-biorxiv', () => {
               date: '2020-01-02',
               version: '2',
               category: arbitraryString(),
+              server: 'biorxiv',
             },
             {
               date: '2019-12-31',
               version: '1',
               category: arbitraryString(),
+              server: 'biorxiv',
             },
           ],
         }));
@@ -61,11 +63,13 @@ describe('get-article-version-events-from-biorxiv', () => {
               date: '2020-01-02',
               version: '2',
               category: arbitraryString(),
+              server: 'medrxiv',
             },
             {
               date: '2019-12-31',
               version: '1',
               category: arbitraryString(),
+              server: 'medrxiv',
             },
           ],
         }));
@@ -125,6 +129,7 @@ describe('get-article-version-events-from-biorxiv', () => {
               date: 'tree',
               version: '2',
               category: arbitraryString(),
+              server: 'biorxiv',
             },
           ],
         });
@@ -143,6 +148,7 @@ describe('get-article-version-events-from-biorxiv', () => {
               date: '2020-01-01',
               version: 'v1',
               category: arbitraryString(),
+              server: 'biorxiv',
             },
           ],
         });
