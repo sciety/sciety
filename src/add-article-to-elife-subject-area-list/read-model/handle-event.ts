@@ -5,7 +5,6 @@ import {
   DomainEvent,
   isArticleAddedToListEvent,
   isEvaluationRecordedEvent,
-  isMedrxivCategoryRecordedEvent,
   isSubjectAreaRecordedEvent,
 } from '../../domain-events';
 
@@ -36,7 +35,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (elifeSubjectAreaLists.includes(event.listId)) {
       readmodel[event.articleId.value] = 'listed' as const;
     }
-  } else if (isSubjectAreaRecordedEvent(event) || isMedrxivCategoryRecordedEvent(event)) {
+  } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
     const transitions = {
       undefined: 'category-known' as const,

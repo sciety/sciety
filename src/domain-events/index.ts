@@ -50,13 +50,6 @@ export {
 } from './list-created-event';
 
 export {
-  isMedrxivCategoryRecordedEvent,
-  MedrxivCategoryRecordedEvent,
-  medrxivCategoryRecorded,
-  medrxivCategoryRecordedEventCodec,
-} from './medrxiv-category-recorded-event';
-
-export {
   isUserCreatedAccountEvent,
   userCreatedAccount,
   userCreatedAccountEventCodec,

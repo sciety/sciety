@@ -6,7 +6,7 @@ import { handleEvent, initialState, ReadModel } from '../../../src/add-article-t
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 import { ArticleState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import {
-  articleAddedToList, DomainEvent, medrxivCategoryRecorded, subjectAreaRecorded,
+  articleAddedToList, DomainEvent, subjectAreaRecorded,
 } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import * as LID from '../../../src/types/list-id';
@@ -49,11 +49,6 @@ describe('handle-event', () => {
           'category-known' as const,
         ],
         [
-          'MedrxivCategoryRecorded -> category-known',
-          medrxivCategoryRecorded(articleId, arbitraryWord()),
-          'category-known' as const,
-        ],
-        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as const,
@@ -75,11 +70,6 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> category-known',
           subjectAreaRecorded(articleId, arbitraryWord()),
-          'category-known' as const,
-        ],
-        [
-          'MedrxivCategoryRecorded -> category-known',
-          medrxivCategoryRecorded(articleId, arbitraryWord()),
           'category-known' as const,
         ],
         [
@@ -117,11 +107,6 @@ describe('handle-event', () => {
           'evaluated-and-category-known' as const,
         ],
         [
-          'MedrxivCategoryRecorded -> evaluated-and-category-known',
-          medrxivCategoryRecorded(articleId, arbitraryWord()),
-          'evaluated-and-category-known' as const,
-        ],
-        [
           'ArticleAddedToList -> listed',
           articleAddedToList(articleId, elifeListId),
           'listed' as const,
@@ -134,7 +119,7 @@ describe('handle-event', () => {
         currentState = pipe(
           [
             evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-            medrxivCategoryRecorded(articleId, arbitraryWord()),
+            subjectAreaRecorded(articleId, arbitraryWord()),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -149,11 +134,6 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> evaluated-and-category-known',
           subjectAreaRecorded(articleId, arbitraryWord()),
-          'evaluated-and-category-known' as const,
-        ],
-        [
-          'MedrxivCategoryRecorded -> evaluated-and-category-known',
-          medrxivCategoryRecorded(articleId, arbitraryWord()),
           'evaluated-and-category-known' as const,
         ],
         [
@@ -191,11 +171,6 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> listed',
           subjectAreaRecorded(articleId, arbitraryWord()),
-          'listed' as const,
-        ],
-        [
-          'MedrxivCategoryRecorded -> listed',
-          medrxivCategoryRecorded(articleId, arbitraryWord()),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
