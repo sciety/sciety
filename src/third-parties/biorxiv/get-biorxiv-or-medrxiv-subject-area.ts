@@ -29,7 +29,7 @@ const mapResponse = flow(
   (response: BiorxivArticleDetails) => response.collection,
   RNEA.sort(byVersionAscending),
   RNEA.last,
-  ({ category }) => ({ category, server: 'biorxiv' as const }),
+  ({ category }) => ({ value: category, server: 'biorxiv' as const }),
 );
 
 export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;

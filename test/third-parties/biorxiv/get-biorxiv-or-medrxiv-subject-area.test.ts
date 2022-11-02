@@ -35,7 +35,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
     });
 
     it('returns the subject area', () => {
-      expect(result.category).toStrictEqual(subjectArea);
+      expect(result.value).toStrictEqual(subjectArea);
     });
   });
 
@@ -64,7 +64,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
     });
 
     it('returns the subject area', () => {
-      expect(result.category).toStrictEqual(subjectArea);
+      expect(result.value).toStrictEqual(subjectArea);
     });
   });
 
@@ -109,7 +109,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
     });
 
     it('returns the subject area', () => {
-      expect(result.category).toBe('addiction medicine');
+      expect(result.value).toBe('addiction medicine');
     });
   });
 
@@ -144,7 +144,7 @@ describe('get-biorxiv-or-medrxiv-subject-area', () => {
     });
 
     it('returns the subject area', () => {
-      expect(result.category).toBe('addiction medicine');
+      expect(result.value).toBe('addiction medicine');
     });
   });
 

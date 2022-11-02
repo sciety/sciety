@@ -10,7 +10,7 @@ import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 
 export type SubjectArea = {
-  category: string,
+  value: string,
   server: ArticleServer,
 };
 
@@ -37,7 +37,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     ports.getBiorxivOrMedrxivSubjectArea,
     TE.bimap(
       () => 'Subject Area available from neither bioRxiv nor medRxiv',
-      ({ category }) => category,
+      ({ value }) => value,
     ),
     TE.chain((subjectArea) => pipe(
       subjectArea,
