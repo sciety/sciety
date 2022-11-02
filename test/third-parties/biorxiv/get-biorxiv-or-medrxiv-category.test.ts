@@ -37,6 +37,10 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     it('returns the subject area', () => {
       expect(result.value).toStrictEqual(subjectArea);
     });
+
+    it('returns the server', () => {
+      expect(result.server).toBe('biorxiv');
+    });
   });
 
   describe('when the subject area is available on medrxiv', () => {
@@ -65,6 +69,10 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     it('returns the subject area', () => {
       expect(result.value).toStrictEqual(subjectArea);
+    });
+
+    it.failing('returns the server', () => {
+      expect(result.server).toBe('medrxiv');
     });
   });
 
