@@ -9,9 +9,8 @@ import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
+import { GetBiorxivOrMedrxivSubjectArea } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
-import { SubjectArea } from '../../types/subject-area';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 
@@ -31,8 +30,6 @@ const mapResponse = flow(
   RNEA.last,
   ({ category }) => ({ value: category, server: 'biorxiv' as const }),
 );
-
-export type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 export const getBiorxivOrMedrxivSubjectArea = (ports: Ports): GetBiorxivOrMedrxivSubjectArea => (articleId) => pipe(
   [

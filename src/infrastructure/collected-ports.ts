@@ -5,12 +5,11 @@ import { FetchStaticFile } from './fetch-static-file';
 import { ArticleIdsByState } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
-  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetListsOwnedBy,
+  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetBiorxivOrMedrxivSubjectArea, GetListsOwnedBy,
   Logger,
   RemoveArticleFromList,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
-import { GetBiorxivOrMedrxivSubjectArea } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
