@@ -5,14 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { elifeGroupId, getCorrespondingListId } from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { AddArticleToList, Logger } from '../shared-ports';
-import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
-
-export type SubjectArea = {
-  value: string,
-  server: ArticleServer,
-};
+import { SubjectArea } from '../types/subject-area';
 
 type GetBiorxivOrMedrxivSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
 

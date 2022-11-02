@@ -9,9 +9,9 @@ import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
-import { SubjectArea } from '../../policies/add-article-to-elife-subject-area-lists';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
+import { SubjectArea } from '../../types/subject-area';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 

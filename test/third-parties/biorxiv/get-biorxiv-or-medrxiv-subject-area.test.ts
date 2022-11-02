@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { SubjectArea } from '../../../src/policies/add-article-to-elife-subject-area-lists';
 import { getBiorxivOrMedrxivSubjectArea } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-subject-area';
 import * as DE from '../../../src/types/data-error';
+import { SubjectArea } from '../../../src/types/subject-area';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
