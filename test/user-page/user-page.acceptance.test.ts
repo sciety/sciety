@@ -28,6 +28,7 @@ const arbitraryUserDetails = {
   avatarUrl: arbitraryUri(),
   displayName: arbitraryString(),
   handle: arbitraryWord(),
+  userId: arbitraryUserId(),
 };
 
 const defaultPorts = {
@@ -50,6 +51,7 @@ describe('user-page', () => {
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
+          userId: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -62,18 +64,10 @@ describe('user-page', () => {
     });
 
     it('accepts handle as a string', async () => {
-      const ports = {
-        ...defaultPorts,
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-          handle: arbitraryWord(),
-        }),
-      };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
-        userPage(ports)(tabName),
+        userPage(defaultPorts)(tabName),
       )();
 
       expect(E.isRight(page)).toBe(true);
@@ -87,6 +81,7 @@ describe('user-page', () => {
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
+          userId: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -135,6 +130,7 @@ describe('user-page', () => {
           avatarUrl,
           displayName,
           handle,
+          userId: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -276,11 +272,7 @@ describe('user-page', () => {
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
       const ports = {
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-          handle: arbitraryWord(),
-        }),
+        getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
         getListsOwnedBy: shouldNotBeCalled,
@@ -304,6 +296,7 @@ describe('user-page', () => {
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
+          userId: arbitraryUserId(),
         }),
         getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
@@ -329,6 +322,7 @@ describe('user-page', () => {
             avatarUrl: arbitraryUri(),
             displayName: arbitraryWord(),
             handle: params.handle,
+            userId: arbitraryUserId(),
           }),
         })('lists'),
         contentOf,
