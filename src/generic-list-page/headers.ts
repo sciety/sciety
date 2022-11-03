@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from './get-user-information';
+import { getUserOwnerInformation, Ports } from './get-user-information';
 import { ViewModel } from './header/render-component';
 import { DomainEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
@@ -21,9 +21,11 @@ const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupI
   })),
 );
 
-type Headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, ViewModel>;
+type Headers = (ports: Ports, listId: ListId)
+=> (events: ReadonlyArray<DomainEvent>)
+=> TE.TaskEither<DE.DataError, ViewModel>;
 
-export const headers: Headers = (listId) => (events) => pipe(
+export const headers: Headers = (ports, listId) => (events) => pipe(
   events,
   getList(listId),
   TE.chainEitherK((partial) => pipe(
@@ -41,7 +43,7 @@ export const headers: Headers = (listId) => (events) => pipe(
         case 'group-id':
           return getGroupOwnerInformation(events)(ownerId.value);
         case 'user-id':
-          return getUserOwnerInformation(ownerId.value);
+          return getUserOwnerInformation(ports)(ownerId.value);
       }
     },
     E.map((ownerInformation) => ({

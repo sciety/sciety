@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
 
@@ -8,7 +9,19 @@ export type OwnerInfo = {
   ownerAvatarPath: string,
 };
 
-export const getUserOwnerInformation = (userId: UserId): E.Either<DE.DataError, OwnerInfo> => {
+type UserDetails = {
+  avatarUrl: string,
+  displayName: string,
+  handle: string,
+};
+
+export type Ports = {
+  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
+};
+
+type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => E.Either<DE.DataError, OwnerInfo>;
+
+export const getUserOwnerInformation: GetUserOwnerInformation = () => (userId) => {
   switch (userId) {
     case '931653361':
       return E.right({
