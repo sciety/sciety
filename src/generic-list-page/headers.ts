@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation, Ports } from './get-user-information';
+import { getUserOwnerInformation, Ports } from './get-user-owner-information';
 import { ViewModel } from './header/render-component';
 import { DomainEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';

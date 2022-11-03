@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
-import { Ports as GetUserInformationPorts } from './get-user-information';
+import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
 import { renderErrorPage, renderPage } from './render-page';
@@ -18,7 +18,7 @@ export const paramsCodec = t.type({
   id: ListIdFromString,
 });
 
-type Ports = ArticlesListPorts & GetUserInformationPorts;
+type Ports = ArticlesListPorts & GetUserOwnerInformationPorts;
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
