@@ -1,21 +1,24 @@
-## Summary
+## Who we are
 
-GigaScience aims to revolutionize publishing by promoting reproducibility of analyses and data dissemination, organization, understanding, and use. As an open access and open-data journal, we publish ALL research objects (data, software tools and workflows) from 'big data' studies across the entire spectrum of life and biomedical sciences. These resources are managed using the FAIR Principles for scientific data management and stewardship that state that research data should be Findable, Accessible, Interoperable and Reusable. See: [gigasciencejournal.com](http://gigasciencejournal.com)
+We are an open access, open data, open peer-review journal that publishes all research objects, such as data, software tools, and workflows.
 
-[Blog](http://gigasciencejournal.com/blog/)
+You can [visit our site](http://gigasciencejournal.com) or [read our blog](http://gigasciencejournal.com/blog/). You can also find us on [Facebook](https://www.facebook.com/GigaScience/) and [Twitter](https://twitter.com/gigaScience).
 
-[Facebook](https://www.facebook.com/GigaScience/)
+**Editor-in-chief Scott Edmunds**
+Scott Edmunds leads the GigaScience peer review efforts, working alongside the team through the evaluation and publishing process.
 
-[Twitter](https://twitter.com/gigaScience)
+[Meet the rest of our team](https://academic.oup.com/gigascience/pages/Editorial_Board)
 
-## Evaluation model
 
-Open, transparent peer review. See the [reviewer guidelines](https://academic.oup.com/gigascience/pages/reviewer_guidelines).
+## Our evaluation model
+
+Resources are managed using the FAIR principles that state that all scientific data management and stewardship should be Findable, Accessible, Interoperable, and Reusable.
+
+If you would like to review a manuscript submitted to Gigascience, please review our [open peer-review policy](https://academic.oup.com/gigascience/pages/reviewer_guidelines).
 
 ## PReF
 
-Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
-[Learn more](https://osf.io/8zj9w/).
+The Preprint Review Features (PReF) describes key elements of each group’s evaluation activities. [Read the paper to learn about PReF](https://osf.io/8zj9w/).
 
 <dl class="group-page-pref">
     <dt>Review requested by</dt>
@@ -36,9 +39,15 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dd>Checked</dd>
 </dl>
 
-## People
+## Our team
 
-We have a team of in-house Editors handling peer review, who invite external peer reviewers. Alongside an [Editorial Board](https://academic.oup.com/gigascience/pages/Editorial_Board) on hand to help with difficult decisions and designing thresholds.
+We have a team of in-house editors who handle peer reviews and invite external peer reviewers.
+
+[Meet our editorial board](https://academic.oup.com/gigascience/pages/Editorial_Board)
+
+## Our goal
+
+We aim to revolutionise publishing by promoting reproducibility of analyses and data dissemination, organisation, understanding, and use.
 
 ## Content license
 
