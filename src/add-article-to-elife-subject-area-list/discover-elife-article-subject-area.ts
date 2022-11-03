@@ -12,23 +12,23 @@ type Ports = {
   getArticleIdsByState: () => ArticleIdsByState,
 };
 
-export const discoverElifeArticleSubjectArea = async (ports: Ports): Promise<void> => {
-  ports.logger('info', 'discoverElifeArticleSubjectArea starting');
+export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<void> => {
+  adapters.logger('info', 'discoverElifeArticleSubjectArea starting');
   await pipe(
-    ports.getArticleIdsByState(),
+    adapters.getArticleIdsByState(),
     (articleIdsByState) => articleIdsByState.evaluated,
     RA.head,
     TE.fromOption(() => 'no work to do'),
     TE.map((articleId) => new Doi(articleId)),
     TE.chainW((articleId) => pipe(
       articleId,
-      ports.getArticleSubjectArea,
+      adapters.getArticleSubjectArea,
       TE.map((subjectArea) => ({
         articleId,
         subjectArea,
       })),
     )),
-    TE.chainW(ports.recordSubjectArea),
+    TE.chainW(adapters.recordSubjectArea),
   )();
-  ports.logger('info', 'discoverElifeArticleSubjectArea finished');
+  adapters.logger('info', 'discoverElifeArticleSubjectArea finished');
 };
