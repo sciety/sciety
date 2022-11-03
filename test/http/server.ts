@@ -44,7 +44,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   };
 
   const adapters: CollectedPorts = {
-    getArticleIdsByState: IO.of({
+    getArticleIdsByState: () => IO.of({
       evaluated: [],
       listed: [],
       'category-known': [],

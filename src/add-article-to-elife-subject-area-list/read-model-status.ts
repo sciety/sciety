@@ -41,7 +41,9 @@ type ReadModelStatus = {
 
 export const readModelStatus = (
   ports: Ports,
+  myqueryparameter: string,
 ): IO.IO<ReadModelStatus> => pipe(
+  myqueryparameter,
   ports.getArticleIdsByState,
   IO.map(formatForJson),
 );

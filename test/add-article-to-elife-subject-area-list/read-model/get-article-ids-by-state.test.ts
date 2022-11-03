@@ -36,7 +36,7 @@ describe('get-article-ids-by-state', () => {
     );
 
     it('groups articles by state', () => {
-      expect(getArticleIdsByState(readModel)).toStrictEqual({
+      expect(getArticleIdsByState('myexamplequeryparameter')(readModel)).toStrictEqual({
         evaluated: [articleIdA.value],
         listed: [articleIdB.value],
         'category-known': [articleIdC.value],

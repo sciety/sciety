@@ -198,7 +198,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       const collectedAdapters = {
-        getArticleIdsByState: pipe(readModel, IO.map(getArticleIdsByState)),
+        getArticleIdsByState: (myqueryparameter: string) => pipe(
+          readModel,
+          IO.map(getArticleIdsByState(myqueryparameter)),
+        ),
         getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel()),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
