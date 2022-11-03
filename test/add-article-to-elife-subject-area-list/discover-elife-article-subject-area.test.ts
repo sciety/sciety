@@ -19,12 +19,6 @@ describe('discover-elife-article-subject-area', () => {
       const adapters = {
         getArticleSubjectArea: () => TE.right(subjectArea),
         getOneArticleIdInEvaluatedState: () => O.some(articleId),
-        getArticleIdsByState: () => ({
-          evaluated: [articleId.value],
-          listed: [],
-          'category-known': [],
-          'evaluated-and-category-known': [],
-        }),
         recordSubjectArea: jest.fn(() => TE.right(undefined)),
         logger: dummyLogger,
       };
