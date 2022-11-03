@@ -1,15 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleIdsByState } from './read-model-status';
-import { GetArticleSubjectArea, Logger, RecordSubjectArea } from '../shared-ports';
+import {
+  GetArticleIdsByState, GetArticleSubjectArea, Logger, RecordSubjectArea,
+} from '../shared-ports';
 import { Doi } from '../types/doi';
 
 type Ports = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getArticleIdsByState: () => ArticleIdsByState,
+  getArticleIdsByState: GetArticleIdsByState,
 };
 
 export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<void> => {

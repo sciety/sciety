@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { GetArticleIdsByState } from '../shared-ports';
 
 const formatForJson = (articleIds: ArticleIdsByState) => ({
   evaluated: {
@@ -27,7 +28,7 @@ export type ArticleIdsByState = {
 };
 
 type Ports = {
-  getArticleIdsByState: () => ArticleIdsByState,
+  getArticleIdsByState: GetArticleIdsByState,
 };
 
 type ReadModelStatus = {

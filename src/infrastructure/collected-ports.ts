@@ -2,10 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { ArticleIdsByState } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
-  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleSubjectArea, GetListsOwnedBy,
+  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleIdsByState, GetArticleSubjectArea, GetListsOwnedBy,
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
@@ -16,7 +15,7 @@ import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '..
 import * as DE from '../types/data-error';
 
 export type CollectedPorts = {
-  getArticleIdsByState: () => ArticleIdsByState,
+  getArticleIdsByState: GetArticleIdsByState,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,
