@@ -224,6 +224,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         addArticleToList: executeAddArticleToListCommandInProcess,
+        recordSubjectArea: () => TE.left('not implemented'),
         removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
         createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
         ...partialAdapters,

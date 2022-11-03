@@ -1,7 +1,8 @@
-import { Logger } from '../shared-ports';
+import { Logger, RecordSubjectArea } from '../shared-ports';
 
 type Ports = {
   logger: Logger,
+  recordSubjectArea: RecordSubjectArea,
 };
 
 export const discoverElifeArticleSubjectArea = async (ports: Ports): Promise<void> => {

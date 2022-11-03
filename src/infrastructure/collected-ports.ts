@@ -7,6 +7,7 @@ import {
   AddArticleToList,
   CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleSubjectArea, GetListsOwnedBy,
   Logger,
+  RecordSubjectArea,
   RemoveArticleFromList,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -29,6 +30,7 @@ export type CollectedPorts = {
   getUserDetails: GetTwitterUserDetails,
   getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
+  recordSubjectArea: RecordSubjectArea,
   logger: Logger,
   removeArticleFromList: RemoveArticleFromList,
   searchEuropePmc: (

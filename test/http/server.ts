@@ -53,6 +53,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     removeArticleFromList: () => TE.left(''),
     createList: () => TE.left(DE.unavailable),
     fetchArticle,
+    recordSubjectArea: () => TE.left('not implemented'),
     fetchReview: fetchReview(fetchers),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
