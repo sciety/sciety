@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
