@@ -1,3 +1,4 @@
+import * as IO from 'fp-ts/IO';
 import * as RA from 'fp-ts/ReadonlyArray';
 import {
   handleEvent,
@@ -9,7 +10,7 @@ import { DomainEvent } from '../domain-events';
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
-  readModel: ReadModel,
+  readModel: IO.IO<ReadModel>,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
@@ -21,7 +22,7 @@ export const dispatcher = (): Dispatcher => {
   };
 
   return {
-    readModel,
+    readModel: IO.of(readModel),
     dispatchToAllReadModels,
   };
 };

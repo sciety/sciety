@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents, writeEventToDatabase } from './commit-events';
@@ -198,8 +198,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       const collectedAdapters = {
-        getArticleIdsByState: flow(getArticleIdsByState(readModel), IO.of),
-        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel),
+        getArticleIdsByState: pipe(readModel, IO.map(getArticleIdsByState)),
+        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel()),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
