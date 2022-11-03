@@ -38,7 +38,7 @@ describe('discover-elife-article-subject-area', () => {
         getArticleSubjectArea: () => TE.left(arbitraryDataError()),
         getOneArticleIdInEvaluatedState: () => O.some(articleId),
         recordSubjectArea: jest.fn(() => TE.right(undefined)),
-        logger: dummyLogger,
+        logger: jest.fn(dummyLogger),
       };
 
       it('does not invoke a command', async () => {
@@ -47,7 +47,11 @@ describe('discover-elife-article-subject-area', () => {
         expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
       });
 
-      it.todo('logs a warning');
+      it.skip('logs a warning', async () => {
+        await discoverElifeArticleSubjectArea(adapters);
+
+        expect(adapters.logger).toHaveBeenCalledWith('warn', expect.anything(), expect.anything());
+      });
     });
   });
 
