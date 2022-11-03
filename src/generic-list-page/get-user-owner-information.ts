@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { GetUserDetails } from '../shared-ports/get-user-details';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
 
@@ -9,14 +10,8 @@ type OwnerInfo = {
   ownerAvatarPath: string,
 };
 
-type UserDetails = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
-};
-
 export type Ports = {
-  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
+  getUserDetails: GetUserDetails,
 };
 
 type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => TE.TaskEither<DE.DataError, OwnerInfo>;
