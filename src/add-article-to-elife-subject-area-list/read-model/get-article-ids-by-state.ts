@@ -9,7 +9,7 @@ const getArticleIds = (readModel: ReadModel, state: ArticleState): ReadonlyArray
   R.keys,
 );
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getArticleIdsByState = (myqueryparameter: string) => (readModel: ReadModel): ArticleIdsByState => ({
+export const getArticleIdsByState = (readModel: ReadModel) => (myqueryparameter: string): ArticleIdsByState => ({
   evaluated: getArticleIds(readModel, 'evaluated'),
   listed: getArticleIds(readModel, 'listed'),
   'category-known': getArticleIds(readModel, 'category-known'),
