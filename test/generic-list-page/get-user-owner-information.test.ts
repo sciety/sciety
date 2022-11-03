@@ -19,6 +19,7 @@ describe('get-user-owner-information', () => {
           displayName: userDisplayName,
           handle: userHandle,
           avatarUrl: userAvatarUrl,
+          userId,
         }),
       };
 
