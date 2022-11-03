@@ -19,6 +19,7 @@ const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupI
     ownerHref: `/groups/${group.slug}`,
     ownerAvatarPath: group.avatarPath,
   })),
+  TE.fromEither,
 );
 
 type Headers = (ports: Ports, listId: ListId)
@@ -36,7 +37,7 @@ export const headers: Headers = (ports, listId) => (events) => pipe(
       articleCount: articleIds.length,
     })),
   )),
-  TE.chainEitherKW((partial) => pipe(
+  TE.chain((partial) => pipe(
     partial.ownerId,
     (ownerId) => {
       switch (ownerId.tag) {
@@ -46,7 +47,7 @@ export const headers: Headers = (ports, listId) => (events) => pipe(
           return getUserOwnerInformation(ports)(ownerId.value);
       }
     },
-    E.map((ownerInformation) => ({
+    TE.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
     })),
