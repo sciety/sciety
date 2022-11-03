@@ -51,8 +51,10 @@ describe('discover-elife-article-subject-area', () => {
         expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
       });
 
-      it.skip('logs a warning', () => {
-        expect(adapters.logger).toHaveBeenCalledWith('warn', expect.anything(), expect.anything());
+      it.failing('logs a warning', () => {
+        expect(adapters.logger.mock.calls).toStrictEqual(expect.arrayContaining([
+          ['warn', expect.anything()],
+        ]));
       });
     });
   });
