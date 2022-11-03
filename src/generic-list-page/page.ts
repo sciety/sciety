@@ -23,19 +23,15 @@ type Ports = ArticlesListPorts & GetUserOwnerInformationPorts;
 type Params = t.TypeOf<typeof paramsCodec>;
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
-  {
-    header: pipe(
-      ports.getAllEvents,
-      T.chain(headers(ports, params.id)),
-      TE.map(renderComponent),
-    ),
-    content: articlesList(ports, params.id, params.page),
-    title: pipe(
-      ports.getAllEvents,
-      T.chain(headers(ports, params.id)),
-      TE.map((header) => header.name),
-    ),
-  },
-  sequenceS(TE.ApplyPar),
+  ports.getAllEvents,
+  T.chain(headers(ports, params.id)),
+  TE.chain((h) => pipe(
+    ({
+      header: TE.right(renderComponent(h)),
+      content: articlesList(ports, params.id, params.page),
+      title: TE.right(h.name),
+    }),
+    sequenceS(TE.ApplyPar),
+  )),
   TE.bimap(renderErrorPage, renderPage),
 );
