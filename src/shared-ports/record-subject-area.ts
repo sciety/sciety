@@ -1,5 +1,4 @@
 import * as TE from 'fp-ts/TaskEither';
-import { Doi } from '../types/doi';
-import { SubjectArea } from '../types/subject-area';
+import { RecordSubjectAreaCommand } from '../commands';
 
-export type RecordSubjectArea = (command: { articleId: Doi, subjectArea: SubjectArea }) => TE.TaskEither<string, void>;
+export type RecordSubjectArea = (command: RecordSubjectAreaCommand) => TE.TaskEither<string, void>;

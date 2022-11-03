@@ -3,3 +3,4 @@ export { addArticleToListCommandCodec, AddArticleToListCommand } from './add-art
 export { CreateListCommand } from './create-list';
 export { addGroupCommandCodec, AddGroupCommand } from './add-group';
 export { recordEvaluationCommandCodec } from './record-evaluation';
+export { RecordSubjectAreaCommand } from './record-subject-area';
