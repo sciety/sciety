@@ -17,6 +17,12 @@ describe('discover-elife-article-subject-area', () => {
       const subjectArea = arbitrarySubjectArea();
       const adapters = {
         getArticleSubjectArea: () => TE.right(subjectArea),
+        getArticleIdsByState: () => TE.right({
+          evaluated: [articleId.value],
+          listed: [],
+          'category-known': [],
+          'evaluated-and-category-known': [],
+        }),
         recordSubjectArea: jest.fn(),
         logger: dummyLogger,
       };
