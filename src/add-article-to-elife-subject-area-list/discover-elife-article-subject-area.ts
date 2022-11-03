@@ -16,10 +16,20 @@ type Ports = {
 const foo = (adapters: Ports) => (articleId: Doi) => pipe(
   articleId,
   adapters.getArticleSubjectArea,
-  TE.map((subjectArea) => ({
-    articleId,
-    subjectArea,
-  })),
+  TE.bimap(
+    (error) => {
+      adapters.logger(
+        'warn',
+        'discoverElifeArticleSubjectArea: failed to get article subject area',
+        { articleId, error },
+      );
+      return error;
+    },
+    (subjectArea) => ({
+      articleId,
+      subjectArea,
+    }),
+  ),
 );
 
 export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<void> => {
