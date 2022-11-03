@@ -6,7 +6,7 @@ import { createUserSavedArticlesListAsGenericList, Ports } from '../../src/polic
 import * as LOID from '../../src/types/list-owner-id';
 import { UserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryWord } from '../helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -16,7 +16,12 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('create-user-saved-articles-list-as-generic-list', () => {
   const defaultPorts = {
     createList: () => TE.right(undefined),
-    getUserDetails: (userId: UserId) => TE.right({ handle: arbitraryWord(), userId }),
+    getUserDetails: (userId: UserId) => TE.right({
+      handle: arbitraryWord(),
+      userId,
+      avatarUrl: arbitraryUri(),
+      displayName: arbitraryString(),
+    }),
     getListsOwnedBy: () => TE.right([]),
     logger: dummyLogger,
   };
@@ -33,7 +38,12 @@ describe('create-user-saved-articles-list-as-generic-list', () => {
           ports = {
             ...defaultPorts,
             createList: jest.fn(defaultPorts.createList),
-            getUserDetails: () => TE.right({ handle, userId }),
+            getUserDetails: () => TE.right({
+              handle,
+              userId,
+              avatarUrl: arbitraryUri(),
+              displayName: arbitraryString(),
+            }),
             getListsOwnedBy: () => TE.right([]),
           };
           await createUserSavedArticlesListAsGenericList(ports)(event)();
