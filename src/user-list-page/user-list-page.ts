@@ -14,6 +14,7 @@ import { paginate } from '../shared-components/paginate';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import { GetUserDetails, UserDetails } from '../shared-ports/get-user-details';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -32,15 +33,10 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-type UserDetails = {
-  avatarUrl: string,
-  handle: string,
-};
-
 type Ports = SavedArticlePorts & {
   getAllEvents: GetAllEvents,
   getUserId: (handle: string) => TE.TaskEither<DE.DataError, UserId>,
-  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
+  getUserDetails: GetUserDetails,
 };
 
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;

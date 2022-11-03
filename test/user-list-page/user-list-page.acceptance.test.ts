@@ -32,6 +32,7 @@ const arbitraryUserDetails = {
   avatarUrl: arbitraryUri(),
   displayName: arbitraryString(),
   handle: arbitraryWord(),
+  userId: arbitraryUserId(),
 };
 
 const defaultPorts = {
@@ -56,6 +57,7 @@ describe('user-list-page', () => {
         avatarUrl: arbitraryUri(),
         displayName: arbitraryString(),
         handle,
+        userId: arbitraryUserId(),
       }),
       getAllEvents: T.of([]),
       fetchArticle: shouldNotBeCalled,
@@ -84,6 +86,7 @@ describe('user-list-page', () => {
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
           handle: arbitraryWord(),
+          userId,
         }),
         getAllEvents: T.of([
           userSavedArticle(userId, arbitraryArticleId()),
@@ -148,6 +151,7 @@ describe('user-list-page', () => {
             avatarUrl: arbitraryUri(),
             displayName: arbitraryString(),
             handle: arbitraryWord(),
+            userId,
           }),
           getAllEvents: T.of([
             userSavedArticle(userId, arbitraryArticleId()),
@@ -190,6 +194,7 @@ describe('user-list-page', () => {
             avatarUrl: arbitraryUri(),
             displayName: arbitraryString(),
             handle: arbitraryWord(),
+            userId: owningUserId,
           }),
           getAllEvents: T.of([
             userSavedArticle(owningUserId, arbitraryArticleId()),
@@ -224,11 +229,7 @@ describe('user-list-page', () => {
         const owningUserId = arbitraryUserId();
         const loggedInUserId = arbitraryUserId();
         const ports = {
-          getUserDetails: () => TE.right({
-            avatarUrl: arbitraryUri(),
-            displayName: arbitraryString(),
-            handle: arbitraryWord(),
-          }),
+          getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([
             userSavedArticle(owningUserId, arbitraryArticleId()),
             userSavedArticle(owningUserId, arbitraryArticleId()),
