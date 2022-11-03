@@ -1,15 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetAllEvents } from '../../shared-ports';
+import { GetUserDetails } from '../../shared-ports/get-user-details';
 import { getGroup } from '../../shared-read-models/groups';
 import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
-import { UserId } from '../../types/user-id';
-
-type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, {
-  handle: string,
-  avatarUrl: string,
-}>;
 
 export type Ports = {
   getAllEvents: GetAllEvents,

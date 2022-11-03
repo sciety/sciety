@@ -34,6 +34,8 @@ describe('sciety-feed-page', () => {
   const getUserDetails = () => TE.right({
     handle: arbitraryWord(),
     avatarUrl: arbitraryUri(),
+    userId: arbitraryUserId(),
+    displayName: arbitraryString(),
   });
 
   const group = arbitraryGroup();

@@ -44,6 +44,8 @@ describe('collapsed-articles-added-to-list-card', () => {
         getUserDetails: () => TE.right({
           handle,
           avatarUrl,
+          userId: arbitraryUserId(),
+          displayName: arbitraryString(),
         }),
       };
 
