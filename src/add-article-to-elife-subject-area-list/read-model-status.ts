@@ -42,6 +42,6 @@ type ReadModelStatus = {
 export const readModelStatus = (
   ports: Ports,
 ): IO.IO<ReadModelStatus> => pipe(
-  ports.getArticleIdsByState(),
+  ports.getArticleIdsByState,
   IO.map(formatForJson),
 );
