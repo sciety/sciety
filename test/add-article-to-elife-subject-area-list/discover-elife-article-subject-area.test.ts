@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-subject-area-list';
 import { SubjectArea } from '../../src/types/subject-area';
@@ -17,6 +18,7 @@ describe('discover-elife-article-subject-area', () => {
       const subjectArea = arbitrarySubjectArea();
       const adapters = {
         getArticleSubjectArea: () => TE.right(subjectArea),
+        getOneArticleIdInEvaluatedState: () => O.some(articleId),
         getArticleIdsByState: () => ({
           evaluated: [articleId.value],
           listed: [],

@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -6,11 +7,14 @@ import {
 } from '../shared-ports';
 import { Doi } from '../types/doi';
 
+export type GetOneArticleIdInEvaluatedState = () => O.Option<Doi>;
+
 type Ports = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   getArticleSubjectArea: GetArticleSubjectArea,
   getArticleIdsByState: GetArticleIdsByState,
+  getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
 };
 
 export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<void> => {

@@ -197,6 +197,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const collectedAdapters = {
         getArticleIdsByState: getArticleIdsByState(readModel),
+        getOneArticleIdInEvaluatedState: () => O.none,
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,

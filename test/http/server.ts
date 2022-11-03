@@ -49,6 +49,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       'category-known': [],
       'evaluated-and-category-known': [],
     }),
+    getOneArticleIdInEvaluatedState: () => O.none,
     addArticleToList: () => TE.left(''),
     removeArticleFromList: () => TE.left(''),
     createList: () => TE.left(DE.unavailable),
