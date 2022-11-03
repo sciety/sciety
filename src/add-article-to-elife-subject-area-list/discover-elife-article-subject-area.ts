@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
@@ -20,11 +19,8 @@ type Ports = {
 export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<void> => {
   adapters.logger('info', 'discoverElifeArticleSubjectArea starting');
   await pipe(
-    adapters.getArticleIdsByState(),
-    (articleIdsByState) => articleIdsByState.evaluated,
-    RA.head,
+    adapters.getOneArticleIdInEvaluatedState(),
     TE.fromOption(() => 'no work to do'),
-    TE.map((articleId) => new Doi(articleId)),
     TE.chainW((articleId) => pipe(
       articleId,
       adapters.getArticleSubjectArea,
