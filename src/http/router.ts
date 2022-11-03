@@ -564,7 +564,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   // OBSERVABILITY
 
   router.get('/elife-subject-area-read-model-status', async (context, next) => {
-    context.response.body = readModelStatus(adapters);
+    context.response.body = readModelStatus(adapters)();
 
     await next();
   });

@@ -1,5 +1,6 @@
 import { Server } from 'http';
 import * as E from 'fp-ts/Either';
+import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -43,7 +44,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   };
 
   const adapters: CollectedPorts = {
-    getArticleIdsByState: () => ({
+    getArticleIdsByState: () => IO.of({
       evaluated: [],
       listed: [],
       'category-known': [],

@@ -1,3 +1,4 @@
+import * as IO from 'fp-ts/IO';
 import { pipe } from 'fp-ts/function';
 import { GetArticleIdsByState } from '../shared-ports';
 
@@ -40,7 +41,7 @@ type ReadModelStatus = {
 
 export const readModelStatus = (
   ports: Ports,
-): ReadModelStatus => pipe(
+): IO.IO<ReadModelStatus> => pipe(
   ports.getArticleIdsByState(),
-  formatForJson,
+  IO.map(formatForJson),
 );

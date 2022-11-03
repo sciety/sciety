@@ -1,9 +1,10 @@
+import * as IO from 'fp-ts/IO';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { identity, pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents, writeEventToDatabase } from './commit-events';
@@ -197,7 +198,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       );
 
       const collectedAdapters = {
-        getArticleIdsByState: getArticleIdsByState(readModel),
+        getArticleIdsByState: flow(getArticleIdsByState(readModel), IO.of),
         getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
