@@ -9,7 +9,7 @@ const renderArticleCount = (articleCount: number) => pipe(
 
 const renderLastUpdated = (date: Date) => `<span>Last updated ${templateDate(date)}</span>`;
 
-type ViewModel = {
+export type ViewModel = {
   name: string,
   description: string,
   ownerName: string,

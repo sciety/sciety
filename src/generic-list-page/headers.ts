@@ -1,10 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ViewModel } from './header/render-component';
 import { DomainEvent } from '../domain-events';
 import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
 import { getList } from '../shared-read-models/lists';
+import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 import { UserId } from '../types/user-id';
@@ -48,7 +50,9 @@ const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupI
   })),
 );
 
-export const headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type Headers = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, ViewModel>;
+
+export const headers: Headers = (listId) => (events) => pipe(
   events,
   getList(listId),
   TE.chainEitherK((partial) => pipe(
