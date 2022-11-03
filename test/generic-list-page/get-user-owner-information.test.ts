@@ -10,7 +10,7 @@ describe('get-user-owner-information', () => {
   const userId = arbitraryUserId();
 
   describe('when Twitter finds the given user', () => {
-    it.failing('returns the corresponding owner info', async () => {
+    it('returns the corresponding owner info', async () => {
       const userDisplayName = arbitraryString();
       const userAvatarUrl = arbitraryUri().toString();
       const userHandle = arbitraryWord();
@@ -37,7 +37,7 @@ describe('get-user-owner-information', () => {
   });
 
   describe('when Twitter does not find the given user', () => {
-    it.failing('returns a not-found error', async () => {
+    it('returns a not-found error', async () => {
       const ports = {
         getUserDetails: () => TE.left(DE.notFound),
       };
