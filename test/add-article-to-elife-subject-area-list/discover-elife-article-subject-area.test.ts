@@ -25,9 +25,11 @@ describe('discover-elife-article-subject-area', () => {
         logger: dummyLogger,
       };
 
-      it('records the subject area via a command', async () => {
+      beforeAll(async () => {
         await discoverElifeArticleSubjectArea(adapters);
+      });
 
+      it('records the subject area via a command', () => {
         expect(adapters.recordSubjectArea).toHaveBeenCalledWith({ articleId, subjectArea });
       });
     });
@@ -41,15 +43,15 @@ describe('discover-elife-article-subject-area', () => {
         logger: jest.fn(dummyLogger),
       };
 
-      it('does not invoke a command', async () => {
+      beforeAll(async () => {
         await discoverElifeArticleSubjectArea(adapters);
+      });
 
+      it('does not invoke a command', () => {
         expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
       });
 
-      it.skip('logs a warning', async () => {
-        await discoverElifeArticleSubjectArea(adapters);
-
+      it.skip('logs a warning', () => {
         expect(adapters.logger).toHaveBeenCalledWith('warn', expect.anything(), expect.anything());
       });
     });
@@ -63,9 +65,11 @@ describe('discover-elife-article-subject-area', () => {
       logger: dummyLogger,
     };
 
-    it('does not invoke a command', async () => {
+    beforeAll(async () => {
       await discoverElifeArticleSubjectArea(adapters);
+    });
 
+    it('does not invoke a command', () => {
       expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
     });
   });
