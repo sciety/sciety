@@ -4,6 +4,7 @@ import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-
 import { SubjectArea } from '../../src/types/subject-area';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
 const arbitrarySubjectArea = (): SubjectArea => ({
@@ -28,8 +29,6 @@ describe('discover-elife-article-subject-area', () => {
 
         expect(adapters.recordSubjectArea).toHaveBeenCalledWith({ articleId, subjectArea });
       });
-
-      it.todo('invokes only one command');
     });
 
     describe('when the subject area cannot be retrieved', () => {
@@ -40,6 +39,17 @@ describe('discover-elife-article-subject-area', () => {
   });
 
   describe('when there is no work to do', () => {
-    it.todo('does not invoke a command');
+    const adapters = {
+      getArticleSubjectArea: shouldNotBeCalled,
+      getOneArticleIdInEvaluatedState: () => O.none,
+      recordSubjectArea: jest.fn(() => TE.right(undefined)),
+      logger: dummyLogger,
+    };
+
+    it('does not invoke a command', async () => {
+      await discoverElifeArticleSubjectArea(adapters);
+
+      expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
+    });
   });
 });
