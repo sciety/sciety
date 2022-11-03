@@ -23,11 +23,11 @@ describe('discover-elife-article-subject-area', () => {
           'category-known': [],
           'evaluated-and-category-known': [],
         }),
-        recordSubjectArea: jest.fn(),
+        recordSubjectArea: jest.fn(() => TE.right(undefined)),
         logger: dummyLogger,
       };
 
-      it.failing('records the subject area via a command', async () => {
+      it('records the subject area via a command', async () => {
         await discoverElifeArticleSubjectArea(adapters);
 
         expect(adapters.recordSubjectArea).toHaveBeenCalledWith({ articleId, subjectArea });
