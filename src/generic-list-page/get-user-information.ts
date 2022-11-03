@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
 
-export type OwnerInfo = {
+type OwnerInfo = {
   ownerName: string,
   ownerHref: string,
   ownerAvatarPath: string,
