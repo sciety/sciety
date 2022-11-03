@@ -27,7 +27,7 @@ describe('discover-elife-article-subject-area', () => {
         logger: dummyLogger,
       };
 
-      it.failing('records the subject area via a command', async () => {
+      it('records the subject area via a command', async () => {
         await discoverElifeArticleSubjectArea(adapters);
 
         expect(adapters.recordSubjectArea).toHaveBeenCalledWith({ articleId, subjectArea });

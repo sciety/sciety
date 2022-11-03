@@ -20,14 +20,15 @@ export const discoverElifeArticleSubjectArea = async (ports: Ports): Promise<voi
     RA.head,
     TE.fromOption(() => 'no work to do'),
     TE.map((articleId) => new Doi(articleId)),
-    TE.chainW(ports.getArticleSubjectArea),
-    TE.chain((subjectArea) => pipe(
-      {
-        articleId: new Doi('10.1101/1234'),
+    TE.chainW((articleId) => pipe(
+      articleId,
+      ports.getArticleSubjectArea,
+      TE.map((subjectArea) => ({
+        articleId,
         subjectArea,
-      },
-      ports.recordSubjectArea,
+      })),
     )),
+    TE.chainW(ports.recordSubjectArea),
   )();
   ports.logger('info', 'discoverElifeArticleSubjectArea finished');
 };
