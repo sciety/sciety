@@ -6,6 +6,7 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryDataError } from '../types/data-error.helper';
 
 const arbitrarySubjectArea = (): SubjectArea => ({
   value: arbitraryWord(),
@@ -32,7 +33,19 @@ describe('discover-elife-article-subject-area', () => {
     });
 
     describe('when the subject area cannot be retrieved', () => {
-      it.todo('does not invoke a command');
+      const articleId = arbitraryArticleId();
+      const adapters = {
+        getArticleSubjectArea: () => TE.left(arbitraryDataError()),
+        getOneArticleIdInEvaluatedState: () => O.some(articleId),
+        recordSubjectArea: jest.fn(() => TE.right(undefined)),
+        logger: dummyLogger,
+      };
+
+      it('does not invoke a command', async () => {
+        await discoverElifeArticleSubjectArea(adapters);
+
+        expect(adapters.recordSubjectArea).not.toHaveBeenCalled();
+      });
 
       it.todo('logs a warning');
     });
