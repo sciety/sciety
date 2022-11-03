@@ -6,7 +6,9 @@ import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
-import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
+} from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -22,7 +24,12 @@ describe('user-followed-a-group-card', () => {
     const handle = arbitraryWord();
     const ports = {
       getAllEvents: T.of([groupJoined(group)]),
-      getUserDetails: () => TE.right({ handle, avatarUrl }),
+      getUserDetails: () => TE.right({
+        handle,
+        avatarUrl,
+        userId: arbitraryUserId(),
+        displayName: arbitraryString(),
+      }),
     };
 
     let viewModel: ScietyFeedCard;
@@ -103,6 +110,8 @@ describe('user-followed-a-group-card', () => {
       getUserDetails: () => TE.right({
         handle: arbitraryWord(),
         avatarUrl: arbitraryUri(),
+        userId: arbitraryUserId(),
+        displayName: arbitraryString(),
       }),
     };
 
