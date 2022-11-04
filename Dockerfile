@@ -35,6 +35,7 @@ COPY .eslintignore \
   jest.config.js \
   tsconfig.json \
   tsconfig.dev.json \
+  .swcrc \
   ./
 COPY --from=npm-dev /app/ .
 COPY test/ test/
