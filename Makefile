@@ -17,11 +17,16 @@ export AWS_DEFAULT_REGION
 .PHONY: backstop* build checks* clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 checks-fast: node_modules \
+	checks/typescript-compiles \
 	checks/jest-tests \
 	checks/unused-production-code \
 	checks/sass-compiles \
 	checks/unused-sass \
 	checks/unused-styling
+
+checks/typescript-compiles: src/**/*.ts
+	@npx swc src -q -d build
+	@touch checks/typescript-compiles
 
 checks/jest-tests: src/**/*.ts test/**/*.ts
 	@APP_ORIGIN=foo APP_SECRET=foo PGUSER=foo PGHOST=foo PGPASSWORD=foo PGDATABASE=foo TWITTER_API_KEY=foo TWITTER_API_SECRET_KEY=foo TWITTER_API_BEARER_TOKEN=foo npx jest --only-changed --reporters=jest-silent-reporter
