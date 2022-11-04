@@ -3,10 +3,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
+import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
@@ -32,6 +33,11 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
+const addArticleControls = (articleViewModel: ArticleViewModel) => ({
+  articleViewModel,
+  controls: O.none,
+});
+
 export const toPageOfCards = (
   ports: Ports,
   basePath: string,
@@ -39,6 +45,10 @@ export const toPageOfCards = (
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
+  TE.map(RA.map(E.bimap(
+    identity,
+    addArticleControls,
+  ))),
   TE.map(flow(
     renderComponent,
     addPaginationControls(pageOfArticles.nextPage, basePath),

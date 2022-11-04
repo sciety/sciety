@@ -6,14 +6,19 @@ import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-arti
 import { ArticleViewModel, renderArticleCardWithControlsAndOptionalAnnotation } from '../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
+type ArticleCardWithControlsViewModel = {
+  articleViewModel: ArticleViewModel,
+  controls: O.Option<HtmlFragment>,
+};
+
 type RenderArticlesList = (
-  articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleViewModel>>,
+  articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>,
 ) => HtmlFragment;
 
 export const renderComponent: RenderArticlesList = flow(
   RA.map(E.fold(
     renderArticleErrorCard,
-    renderArticleCardWithControlsAndOptionalAnnotation(O.none),
+    ({ articleViewModel, controls }) => renderArticleCardWithControlsAndOptionalAnnotation(controls)(articleViewModel),
   )),
   RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
   (renderedActivities) => `
