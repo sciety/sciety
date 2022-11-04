@@ -49,7 +49,7 @@ describe('discover-elife-article-subject-area', () => {
           await discoverElifeArticleSubjectArea(adapters);
         });
 
-        it.failing('logs an error', () => {
+        it('logs an error', () => {
           expect(adapters.logger.mock.calls).toStrictEqual(expect.arrayContaining([
             ['error', expect.anything(), expect.anything()],
           ]));

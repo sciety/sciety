@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { GetArticleSubjectArea, Logger, RecordSubjectArea } from '../shared-ports';
 import { Doi } from '../types/doi';
 
@@ -38,7 +38,20 @@ export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<
     adapters.getOneArticleIdInEvaluatedState(),
     TE.fromOption(() => 'no work to do'),
     TE.chainW(foo(adapters)),
-    TE.chainW(adapters.recordSubjectArea),
+    TE.chainW((command) => pipe(
+      command,
+      adapters.recordSubjectArea,
+      TE.mapLeft(
+        (error) => {
+          adapters.logger(
+            'error',
+            'discoverElifeArticleSubjectArea: the command has failed',
+            { command, error },
+          );
+          return error;
+        },
+      ),
+    )),
   )();
   adapters.logger('info', 'discoverElifeArticleSubjectArea finished');
 };
