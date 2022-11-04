@@ -5,6 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { flow, identity, pipe } from 'fp-ts/function';
+import { articleControls } from './article-controls';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
@@ -37,13 +38,6 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
       </p>`
     : ''
 );
-
-const articleControls = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  listOwnerId: ListOwnerId,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  loggedInUserId: O.Option<UserId>,
-) => false;
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
