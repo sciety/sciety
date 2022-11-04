@@ -1,25 +1,15 @@
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ArticleState } from './read-model/handle-event';
 import { GetArticleIdsByState } from '../shared-ports';
 
-const formatForJson = (articleIds: ArticleIdsByState) => ({
-  evaluated: {
-    articleIds: articleIds.evaluated,
-    articleCount: articleIds.evaluated.length,
-  },
-  listed: {
-    articleIds: articleIds.listed,
-    articleCount: articleIds.listed.length,
-  },
-  'category-known': {
-    articleIds: articleIds['category-known'],
-    articleCount: articleIds['category-known'].length,
-  },
-  'evaluated-and-category-known': {
-    articleIds: articleIds['evaluated-and-category-known'],
-    articleCount: articleIds['evaluated-and-category-known'].length,
-  },
-});
+const formatForJson = (articleIds: ArticleIdsByState) => pipe(
+  articleIds,
+  R.map((ids) => ({
+    articleIds: ids,
+    articleCount: ids.length,
+  })),
+);
 
 export type ArticleIdsByState = Record<ArticleState, ReadonlyArray<string>>;
 
