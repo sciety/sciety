@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as B from 'fp-ts/boolean';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
@@ -42,9 +43,9 @@ const articleControls = (
   listOwnerId: ListOwnerId,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loggedInUserId: O.Option<UserId>,
-) => O.none;
+) => false;
 
-const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => () => pipe(
+const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
   (id) => `<form method="post" action="/remove-article-from-list-from-form">
       <input type="hidden" name="articleid" value="${id}">
@@ -68,7 +69,10 @@ const toArticleCardWithControlsViewModel = (
   articleViewModel,
   controls: pipe(
     articleControls(listOwnerId, loggedInUserId),
-    O.map(renderRemoveArticleForm(articleViewModel.articleId, listId)),
+    B.fold(
+      () => O.none,
+      () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),
+    ),
   ),
 });
 
