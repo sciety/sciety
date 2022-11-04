@@ -35,14 +35,19 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const addArticleControls = (
+const articleControls = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   listOwnerId: ListOwnerId,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loggedInUserId: O.Option<UserId>,
+) => O.none;
+
+const toArticleCardWithControlsViewModel = (
+  listOwnerId: ListOwnerId,
+  loggedInUserId: O.Option<UserId>,
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
-  controls: O.none,
+  controls: articleControls(listOwnerId, loggedInUserId),
 });
 
 export const toPageOfCards = (
@@ -56,7 +61,7 @@ export const toPageOfCards = (
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(RA.map(E.bimap(
     identity,
-    addArticleControls(listOwnerId, loggedInUserId),
+    toArticleCardWithControlsViewModel(listOwnerId, loggedInUserId),
   ))),
   TE.map(flow(
     renderComponent,
