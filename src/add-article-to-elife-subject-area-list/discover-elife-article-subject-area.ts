@@ -13,7 +13,7 @@ type Ports = {
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
 };
 
-const foo = (adapters: Ports) => (articleId: Doi) => pipe(
+const buildRecordSubjectAreaCommand = (adapters: Ports) => (articleId: Doi) => pipe(
   articleId,
   adapters.getArticleSubjectArea,
   TE.bimap(
@@ -37,7 +37,7 @@ export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<
   await pipe(
     adapters.getOneArticleIdInEvaluatedState(),
     TE.fromOption(() => 'no work to do'),
-    TE.chainW(foo(adapters)),
+    TE.chainW(buildRecordSubjectAreaCommand(adapters)),
     TE.chainW((command) => pipe(
       command,
       adapters.recordSubjectArea,
