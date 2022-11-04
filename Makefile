@@ -21,6 +21,7 @@ checks-fast: node_modules \
 	checks/jest-tests \
 	checks/unused-production-code \
 	checks/sass-compiles \
+	checks/sass-lints \
 	checks/unused-sass \
 	checks/unused-styling
 
@@ -39,6 +40,10 @@ checks/unused-production-code: src/**/*.ts
 checks/sass-compiles: src/**/*.scss
 	@npx sass --no-source-map src/sass/style.scss:static/style.css
 	@touch checks/sass-compiles
+
+checks/sass-lints: src/**/*.scss
+	@npx stylelint 'src/**/*.scss' --cache --cache-location .stylelint/
+	@touch checks/sass-lints
 
 checks/unused-sass: src/**/*.scss
 	@npx sass-unused 'src/**/*.scss'
