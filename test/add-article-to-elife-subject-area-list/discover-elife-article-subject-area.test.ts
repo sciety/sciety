@@ -15,10 +15,12 @@ const arbitrarySubjectArea = (): SubjectArea => ({
 
 describe('discover-elife-article-subject-area', () => {
   describe('when there is work to do', () => {
+    const articleId = arbitraryArticleId();
+
     describe('when the subject area can be retrieved', () => {
+      const subjectArea = arbitrarySubjectArea();
+
       describe('and the command is successful', () => {
-        const articleId = arbitraryArticleId();
-        const subjectArea = arbitrarySubjectArea();
         const adapters = {
           getArticleSubjectArea: () => TE.right(subjectArea),
           getOneArticleIdInEvaluatedState: () => O.some(articleId),
@@ -36,8 +38,6 @@ describe('discover-elife-article-subject-area', () => {
       });
 
       describe('and the command is not successful', () => {
-        const articleId = arbitraryArticleId();
-        const subjectArea = arbitrarySubjectArea();
         const adapters = {
           getArticleSubjectArea: () => TE.right(subjectArea),
           getOneArticleIdInEvaluatedState: () => O.some(articleId),
@@ -58,7 +58,6 @@ describe('discover-elife-article-subject-area', () => {
     });
 
     describe('when the subject area cannot be retrieved', () => {
-      const articleId = arbitraryArticleId();
       const adapters = {
         getArticleSubjectArea: () => TE.left(arbitraryDataError()),
         getOneArticleIdInEvaluatedState: () => O.some(articleId),
