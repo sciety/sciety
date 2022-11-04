@@ -1,21 +1,17 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articleServerCodec } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
-import { SubjectArea } from '../types/subject-area';
+import { SubjectArea, subjectAreaCodec } from '../types/subject-area';
 
 export const subjectAreaRecordedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('SubjectAreaRecorded'),
   date: tt.DateFromISOString,
   articleId: DoiFromString,
-  subjectArea: t.type({
-    value: t.string,
-    server: articleServerCodec,
-  }),
+  subjectArea: subjectAreaCodec,
 });
 
 export type SubjectAreaRecordedEvent = t.TypeOf<typeof subjectAreaRecordedEventCodec>;
