@@ -24,6 +24,6 @@ services:
       target: dev
     image: ${IMAGE}:${IMAGE_TAG}-dev
     command: "npx ts-node-dev --transpile-only src/lists-service/index"
+    #command: "npm run start:dev-lists-service"
     volumes:
       - './src:/app/src'
-    
