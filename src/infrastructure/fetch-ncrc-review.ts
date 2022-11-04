@@ -1,8 +1,8 @@
+import { auth, sheets, sheets_v4 } from '@googleapis/sheets';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { google, sheets_v4 } from 'googleapis';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
@@ -60,18 +60,14 @@ const querySheet = (logger: Logger) => <A>(
   params: Params$Resource$Spreadsheets$Values$Get,
   decoder: t.Decoder<unknown, A>,
 ) => {
-  const auth = new google.auth.GoogleAuth({
+  const myauth = new auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
-  google.options({
-    auth,
-  });
-
   return pipe(
     TE.tryCatch(
-      async () => google.sheets('v4').spreadsheets.values.get(params),
+      async () => sheets({ version: 'v4', auth: myauth }).spreadsheets.values.get(params),
       (error) => {
         logger('error', 'Error fetching Google sheet', { error });
         return DE.unavailable;
