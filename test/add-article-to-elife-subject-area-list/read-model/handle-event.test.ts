@@ -10,16 +10,10 @@ import {
 } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import * as LID from '../../../src/types/list-id';
-import { SubjectArea } from '../../../src/types/subject-area';
-import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-
-const arbitrarySubjectArea = (): SubjectArea => ({
-  value: arbitraryWord(),
-  server: 'biorxiv',
-});
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {

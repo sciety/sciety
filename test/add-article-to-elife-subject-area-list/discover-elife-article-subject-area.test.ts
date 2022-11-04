@@ -1,17 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-subject-area-list';
-import { SubjectArea } from '../../src/types/subject-area';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryString, arbitraryWord } from '../helpers';
+import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
-
-const arbitrarySubjectArea = (): SubjectArea => ({
-  value: arbitraryWord(),
-  server: 'biorxiv',
-});
+import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
 describe('discover-elife-article-subject-area', () => {
   describe('when there is work to do', () => {
