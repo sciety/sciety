@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { articleServerCodec } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { Doi } from '../types/doi';
@@ -13,14 +14,7 @@ export const subjectAreaRecordedEventCodec = t.type({
   articleId: DoiFromString,
   subjectArea: t.type({
     value: t.string,
-    server: t.union(
-      [
-        t.literal('biorxiv'),
-        t.literal('medrxiv'),
-        t.literal('researchsquare'),
-        t.literal('scielopreprints'),
-      ],
-    ),
+    server: articleServerCodec,
   }),
 });
 

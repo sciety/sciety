@@ -1,3 +1,5 @@
+import * as t from 'io-ts';
+
 type ServerInfo = {
   name: string,
   avatarUrl: string,
@@ -31,6 +33,15 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     domain: 'preprints.scielo.org',
   },
 };
+
+export const articleServerCodec = t.union(
+  [
+    t.literal('biorxiv'),
+    t.literal('medrxiv'),
+    t.literal('researchsquare'),
+    t.literal('scielopreprints'),
+  ],
+);
 
 export type ArticleServer = 'biorxiv'
 | 'medrxiv'
