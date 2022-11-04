@@ -24,7 +24,7 @@ checks-fast: node_modules \
 	checks/unused-styling
 
 checks/jest-tests: src/**/*.ts test/**/*.ts
-	@npx jest --only-changed --reporters=jest-silent-reporter
+	@APP_ORIGIN=foo APP_SECRET=foo PGUSER=foo PGHOST=foo PGPASSWORD=foo PGDATABASE=foo TWITTER_API_KEY=foo TWITTER_API_SECRET_KEY=foo TWITTER_API_BEARER_TOKEN=foo npx jest --only-changed --reporters=jest-silent-reporter
 	@touch checks/jest-tests
 
 checks/unused-production-code: src/**/*.ts
