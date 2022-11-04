@@ -16,10 +16,24 @@ export AWS_DEFAULT_REGION
 
 .PHONY: backstop* build checks* clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
-checks-fast: node_modules unused-sass
+checks-fast: node_modules checks/sass-compiles checks/unused-sass checks/unused-styling
 	npx jest --only-changed --reporters=jest-silent-reporter
 	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
-	npx sass --no-source-map src/sass/style.scss:static/style.css
+
+checks/sass-compiles: src/**/*.scss
+	@npx sass --no-source-map src/sass/style.scss:static/style.css
+	@touch checks/sass-compiles
+
+checks/unused-sass: src/**/*.scss
+	@npx sass-unused 'src/**/*.scss'
+	@touch checks/unused-sass
+
+checks/unused-styling: src/**/*.scss src/**/*.ts
+	@rm -f .purgecss/{full,purged}.css
+	@npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
+	@npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
+	@diff .purgecss/full.css .purgecss/purged.css
+	@touch checks/unused-styling
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
