@@ -11,7 +11,7 @@ describe('article-controls', () => {
       const listOwnerId = fromUserId(userId);
       const loggedInUserId = O.some(userId);
 
-      it.failing('has controls', () => {
+      it('has controls', () => {
         expect(articleControls(listOwnerId, loggedInUserId)).toBe(true);
       });
     });

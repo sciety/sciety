@@ -1,10 +1,20 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { ListOwnerId } from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export const articleControls = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   listOwnerId: ListOwnerId,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loggedInUserId: O.Option<UserId>,
-): boolean => false;
+): boolean => {
+  if (listOwnerId.tag === 'group-id') {
+    return false;
+  }
+  return pipe(
+    loggedInUserId,
+    O.fold(
+      () => false,
+      (userId) => listOwnerId.value === userId,
+    ),
+  );
+};
