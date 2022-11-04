@@ -14,7 +14,12 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
+.PHONY: backstop* build checks* clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
+
+checks-fast: node_modules unused-sass
+	npx jest --only-changed --reporters=jest-silent-reporter
+	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
+	npx sass --no-source-map src/sass/style.scss:static/style.css
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
