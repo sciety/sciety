@@ -12,6 +12,6 @@ const getArticleIds = (readModel: ReadModel, state: ArticleState): ReadonlyArray
 export const getArticleIdsByState = (readModel: ReadModel) => (): ArticleIdsByState => ({
   evaluated: getArticleIds(readModel, 'evaluated'),
   listed: getArticleIds(readModel, 'listed'),
-  'category-known': getArticleIds(readModel, 'category-known'),
-  'evaluated-and-category-known': getArticleIds(readModel, 'evaluated-and-category-known'),
+  'subject-area-known': getArticleIds(readModel, 'subject-area-known'),
+  'evaluated-and-subject-area-known': getArticleIds(readModel, 'evaluated-and-subject-area-known'),
 });

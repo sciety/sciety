@@ -44,9 +44,9 @@ describe('handle-event', () => {
           undefined,
         ],
         [
-          'SubjectAreaRecorded -> category-known',
+          'SubjectAreaRecorded -> subject-area-known',
           subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'category-known' as const,
+          'subject-area-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',
@@ -56,7 +56,7 @@ describe('handle-event', () => {
       ])('%s', testNextStateTransition);
     });
 
-    describe('when the article is in the category-known state', () => {
+    describe('when the article is in the subject-area-known state', () => {
       beforeEach(() => {
         currentState = pipe(
           [
@@ -68,14 +68,14 @@ describe('handle-event', () => {
 
       it.each([
         [
-          'SubjectAreaRecorded -> category-known',
+          'SubjectAreaRecorded -> subject-area-known',
           subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'category-known' as const,
+          'subject-area-known' as const,
         ],
         [
-          'EvaluationRecorded -> evaluated-and-category-known',
+          'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated-and-category-known' as const,
+          'evaluated-and-subject-area-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',
@@ -102,9 +102,9 @@ describe('handle-event', () => {
           'evaluated' as const,
         ],
         [
-          'SubjectAreaRecorded -> evaluated-and-category-known',
+          'SubjectAreaRecorded -> evaluated-and-subject-area-known',
           subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'evaluated-and-category-known' as const,
+          'evaluated-and-subject-area-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',
@@ -114,7 +114,7 @@ describe('handle-event', () => {
       ])('%s', testNextStateTransition);
     });
 
-    describe('when the article is in the evaluated-and-category-known state', () => {
+    describe('when the article is in the evaluated-and-subject-area-known state', () => {
       beforeEach(() => {
         currentState = pipe(
           [
@@ -127,14 +127,14 @@ describe('handle-event', () => {
 
       it.each([
         [
-          'EvaluationRecorded -> evaluated-and-category-known',
+          'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated-and-category-known' as const,
+          'evaluated-and-subject-area-known' as const,
         ],
         [
-          'SubjectAreaRecorded -> evaluated-and-category-known',
+          'SubjectAreaRecorded -> evaluated-and-subject-area-known',
           subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'evaluated-and-category-known' as const,
+          'evaluated-and-subject-area-known' as const,
         ],
         [
           'ArticleAddedToList -> listed',

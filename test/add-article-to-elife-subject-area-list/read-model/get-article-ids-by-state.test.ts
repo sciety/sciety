@@ -33,8 +33,8 @@ describe('get-article-ids-by-state', () => {
       expect(getArticleIdsByState(readModel)()).toStrictEqual({
         evaluated: [articleIdA.value],
         listed: [articleIdB.value],
-        'category-known': [articleIdC.value],
-        'evaluated-and-category-known': [articleIdD.value],
+        'subject-area-known': [articleIdC.value],
+        'evaluated-and-subject-area-known': [articleIdD.value],
       });
     });
   });

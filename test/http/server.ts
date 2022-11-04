@@ -46,8 +46,8 @@ export const createTestServer = async (): Promise<TestServer> => {
     getArticleIdsByState: () => ({
       evaluated: [],
       listed: [],
-      'category-known': [],
-      'evaluated-and-category-known': [],
+      'subject-area-known': [],
+      'evaluated-and-subject-area-known': [],
     }),
     getOneArticleIdInEvaluatedState: () => O.none,
     addArticleToList: () => TE.left(''),

@@ -11,8 +11,8 @@ import {
 export type ArticleState =
  | 'evaluated'
  | 'listed'
- | 'category-known'
- | 'evaluated-and-category-known';
+ | 'subject-area-known'
+ | 'evaluated-and-subject-area-known';
 
 export type ReadModel = Record<string, ArticleState>;
 
@@ -24,9 +24,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       const key = event.articleId.value;
       const transitions = {
         undefined: 'evaluated' as const,
-        'category-known': 'evaluated-and-category-known' as const,
+        'subject-area-known': 'evaluated-and-subject-area-known' as const,
         'evaluated': 'evaluated' as const,
-        'evaluated-and-category-known': 'evaluated-and-category-known' as const,
+        'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
         'listed': 'listed' as const,
       };
       readmodel[key] = transitions[readmodel[key]];
@@ -38,10 +38,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
     const transitions = {
-      undefined: 'category-known' as const,
-      'category-known': 'category-known' as const,
-      'evaluated': 'evaluated-and-category-known' as const,
-      'evaluated-and-category-known': 'evaluated-and-category-known' as const,
+      undefined: 'subject-area-known' as const,
+      'subject-area-known': 'subject-area-known' as const,
+      'evaluated': 'evaluated-and-subject-area-known' as const,
+      'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
       'listed': 'listed' as const,
     };
     readmodel[key] = transitions[readmodel[key]];
