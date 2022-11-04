@@ -14,6 +14,7 @@ import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
+import { UserId } from '../../types/user-id';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -23,6 +24,7 @@ export const articlesList = (
   ports: Ports,
   listId: ListId,
   pageNumber: number,
+  loggedInUserId: O.Option<UserId>,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(selectArticlesBelongingToList(listId)),
@@ -36,7 +38,7 @@ export const articlesList = (
         toPageOfCards(ports,
           `/lists/${listId}`,
           LOID.fromGroupId('not a real group id' as GroupId),
-          O.none,
+          loggedInUserId,
           listId),
       ),
     ),

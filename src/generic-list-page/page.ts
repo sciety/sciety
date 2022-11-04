@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -10,12 +11,16 @@ import { renderComponent } from './header/render-component';
 import { headers } from './headers';
 import { renderErrorPage, renderPage } from './render-page';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
   id: ListIdFromString,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
 });
 
 type Ports = ArticlesListPorts & GetUserOwnerInformationPorts;
@@ -28,7 +33,12 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   TE.chain((h) => pipe(
     ({
       header: TE.right(renderComponent(h)),
-      content: articlesList(ports, params.id, params.page),
+      content: articlesList(
+        ports,
+        params.id,
+        params.page,
+        pipe(params.user, O.map((user) => user.id)),
+      ),
       title: TE.right(h.name),
     }),
     sequenceS(TE.ApplyPar),
