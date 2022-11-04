@@ -42,12 +42,17 @@ const articleControls = (
   loggedInUserId: O.Option<UserId>,
 ) => O.none;
 
+const renderRemoveArticleForm = () => toHtmlFragment('');
+
 const toArticleCardWithControlsViewModel = (
   listOwnerId: ListOwnerId,
   loggedInUserId: O.Option<UserId>,
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
-  controls: articleControls(listOwnerId, loggedInUserId),
+  controls: pipe(
+    articleControls(listOwnerId, loggedInUserId),
+    O.map(renderRemoveArticleForm),
+  ),
 });
 
 export const toPageOfCards = (
