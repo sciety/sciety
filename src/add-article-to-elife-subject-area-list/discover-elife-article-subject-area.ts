@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { GetArticleSubjectArea, Logger, RecordSubjectArea } from '../shared-ports';
 import { Doi } from '../types/doi';
 
