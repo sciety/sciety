@@ -23,7 +23,8 @@ checks-fast: node_modules \
 	checks/sass-compiles \
 	checks/sass-lints \
 	checks/unused-sass \
-	checks/unused-styling
+	checks/unused-styling \
+	checks/eslint-rules-that-do-not-require-compilation
 
 checks/typescript-compiles: src/**/*.ts
 	@npx swc src -q -d build
@@ -55,6 +56,10 @@ checks/unused-styling: src/**/*.scss src/**/*.ts
 	@npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
 	@diff .purgecss/full.css .purgecss/purged.css
 	@touch checks/unused-styling
+
+checks/eslint-rules-that-do-not-require-compilation: ./**/*.ts
+	@npx eslint . --ext .ts --cache --cache-location .eslint/ --color --max-warnings 0 -c .eslintrc-fast.js --no-eslintrc
+	@touch checks/eslint-rules-that-do-not-require-compilation
 
 fix: node_modules \
 	checks/fix-sass
