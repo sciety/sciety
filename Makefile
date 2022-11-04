@@ -14,7 +14,7 @@ export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
 
-.PHONY: backstop* build checks* clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
+.PHONY: backstop* build checks* clean* dev find-* fix get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 checks-fast: node_modules \
 	checks/typescript-compiles \
@@ -55,6 +55,13 @@ checks/unused-styling: src/**/*.scss src/**/*.ts
 	@npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
 	@diff .purgecss/full.css .purgecss/purged.css
 	@touch checks/unused-styling
+
+fix: node_modules \
+	checks/fix-sass
+
+checks/fix-sass: src/**/*.scss
+	@npx stylelint 'src/**/*.scss' --cache --cache-location .stylelint/ --fix
+	@touch checks/fix-sass
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
