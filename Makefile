@@ -16,9 +16,12 @@ export AWS_DEFAULT_REGION
 
 .PHONY: backstop* build checks* clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
-checks-fast: node_modules checks/sass-compiles checks/unused-sass checks/unused-styling
-	npx jest --only-changed --reporters=jest-silent-reporter
+checks-fast: node_modules checks/jest-tests checks/sass-compiles checks/unused-sass checks/unused-styling
 	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
+
+checks/jest-tests: src/**/*.ts test/**/*.ts
+	@npx jest --only-changed --reporters=jest-silent-reporter
+	@touch checks/jest-tests
 
 checks/sass-compiles: src/**/*.scss
 	@npx sass --no-source-map src/sass/style.scss:static/style.css
