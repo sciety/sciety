@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -9,8 +10,10 @@ import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import * as DE from '../../types/data-error';
+import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import * as LOID from '../../types/list-owner-id';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -29,7 +32,12 @@ export const articlesList = (
       paginate(20, pageNumber),
       TE.fromEither,
       TE.chainTaskK(populateArticleActivities(ports)),
-      TE.chainTaskK(toPageOfCards(ports, `/lists/${listId}`)),
+      TE.chainTaskK(
+        toPageOfCards(ports,
+          `/lists/${listId}`,
+          LOID.fromGroupId('not a real group id' as GroupId),
+          O.none),
+      ),
     ),
   )),
 );

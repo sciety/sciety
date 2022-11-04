@@ -12,6 +12,8 @@ import { PageOfItems } from '../../shared-components/paginate';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { ListOwnerId } from '../../types/list-owner-id';
+import { UserId } from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts;
 
@@ -33,7 +35,12 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-const addArticleControls = (articleViewModel: ArticleViewModel) => ({
+const addArticleControls = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  listOwnerId: ListOwnerId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  loggedInUserId: O.Option<UserId>,
+) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
   controls: O.none,
 });
@@ -41,13 +48,15 @@ const addArticleControls = (articleViewModel: ArticleViewModel) => ({
 export const toPageOfCards = (
   ports: Ports,
   basePath: string,
+  listOwnerId: ListOwnerId,
+  loggedInUserId: O.Option<UserId>,
 ) => (pageOfArticles: PageOfItems<ArticleActivity>): T.Task<HtmlFragment> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(RA.map(E.bimap(
     identity,
-    addArticleControls,
+    addArticleControls(listOwnerId, loggedInUserId),
   ))),
   TE.map(flow(
     renderComponent,
