@@ -47,6 +47,7 @@ import {
 } from '../third-parties/twitter';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
+import { CommandHandlers } from '../command-handlers';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -102,10 +103,6 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
     ...eventsToAdd,
   ]),
 );
-
-type CommandHandlers = {
-  removeArticleFromList: RemoveArticleFromList,
-};
 
 export const createInfrastructure = (dependencies: Dependencies):
 TE.TaskEither<unknown, { adapters: CollectedPorts, commandHandlers: CommandHandlers }> => pipe(
