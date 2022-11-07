@@ -1,5 +1,5 @@
-import { RemoveArticleFromList } from './shared-ports';
+import { AddArticleToList } from './shared-ports';
 
 export type CommandHandlers = {
-  removeArticleFromList: RemoveArticleFromList,
+  addArticleToList: AddArticleToList,
 };

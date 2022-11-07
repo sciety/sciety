@@ -265,14 +265,14 @@ TE.TaskEither<unknown, { adapters: CollectedPorts, commandHandlers: CommandHandl
             ...stubAdapters,
           },
           commandHandlers: {
-            removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
+            addArticleToList: allAdapters.addArticleToList,
           },
         };
       }
       return {
         adapters: allAdapters,
         commandHandlers: {
-          removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
+          addArticleToList: allAdapters.addArticleToList,
         },
       };
     },
