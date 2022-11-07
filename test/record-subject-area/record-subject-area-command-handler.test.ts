@@ -9,7 +9,7 @@ type ExecuteCommand = (command: RecordSubjectAreaCommand)
 => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent> ;
 
 const executeCommand: ExecuteCommand = (command) => () => [
-  subjectAreaRecorded(command.articleId, arbitrarySubjectArea()),
+  subjectAreaRecorded(command.articleId, command.subjectArea),
 ];
 
 describe('record-subject-area-command-handler', () => {
@@ -38,7 +38,7 @@ describe('record-subject-area-command-handler', () => {
       )]);
     });
 
-    it.failing('raises an event, containing the subject area from the command', () => {
+    it('raises an event, containing the subject area from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { subjectArea },
       )]);
