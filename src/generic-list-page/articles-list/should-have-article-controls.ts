@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { ListOwnerId } from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
-export const articleControls = (
+export const shouldHaveArticleControls = (
   listOwnerId: ListOwnerId,
   loggedInUserId: O.Option<UserId>,
 ): boolean => {

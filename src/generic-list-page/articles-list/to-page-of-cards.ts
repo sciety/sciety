@@ -5,8 +5,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { identity, pipe } from 'fp-ts/function';
-import { articleControls } from './article-controls';
 import { ComponentWithPaginationViewModel } from './render-component-with-pagination';
+import { shouldHaveArticleControls } from './should-have-article-controls';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
@@ -43,7 +43,7 @@ const toArticleCardWithControlsViewModel = (
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
   controls: pipe(
-    articleControls(listOwnerId, loggedInUserId),
+    shouldHaveArticleControls(listOwnerId, loggedInUserId),
     B.fold(
       () => O.none,
       () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),

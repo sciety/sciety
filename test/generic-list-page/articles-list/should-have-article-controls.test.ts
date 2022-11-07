@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
-import { articleControls } from '../../../src/generic-list-page/articles-list/article-controls';
+import { shouldHaveArticleControls } from '../../../src/generic-list-page/articles-list/should-have-article-controls';
 import { fromGroupId, fromUserId } from '../../../src/types/list-owner-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-describe('article-controls', () => {
+describe('should-have-article-controls', () => {
   describe('when the list owner is a user', () => {
     describe('when the logged in user is the list owner', () => {
       const userId = arbitraryUserId();
@@ -12,7 +12,7 @@ describe('article-controls', () => {
       const loggedInUserId = O.some(userId);
 
       it('has controls', () => {
-        expect(articleControls(listOwnerId, loggedInUserId)).toBe(true);
+        expect(shouldHaveArticleControls(listOwnerId, loggedInUserId)).toBe(true);
       });
     });
 
@@ -21,7 +21,7 @@ describe('article-controls', () => {
       const loggedInUserId = O.some(arbitraryUserId());
 
       it('has no controls', () => {
-        expect(articleControls(listOwnerId, loggedInUserId)).toBe(false);
+        expect(shouldHaveArticleControls(listOwnerId, loggedInUserId)).toBe(false);
       });
     });
 
@@ -30,7 +30,7 @@ describe('article-controls', () => {
       const loggedInUserId = O.none;
 
       it('has no controls', () => {
-        expect(articleControls(listOwnerId, loggedInUserId)).toBe(false);
+        expect(shouldHaveArticleControls(listOwnerId, loggedInUserId)).toBe(false);
       });
     });
   });
@@ -40,7 +40,7 @@ describe('article-controls', () => {
     const irrelevantLoggedInUserId = O.none;
 
     it('has no controls', () => {
-      expect(articleControls(listOwnerId, irrelevantLoggedInUserId)).toBe(false);
+      expect(shouldHaveArticleControls(listOwnerId, irrelevantLoggedInUserId)).toBe(false);
     });
   });
 });
