@@ -64,7 +64,16 @@ describe('record-subject-area-command-handler', () => {
   });
 
   describe('the same subject area was recorded', () => {
-    it.todo('raises no events');
+    const result = pipe(
+      [
+        subjectAreaRecorded(articleId, subjectArea),
+      ],
+      executeCommand(command),
+    );
+
+    it.failing('raises no events', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('a different subject area was recorded', () => {
