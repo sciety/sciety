@@ -1,0 +1,6 @@
+#!/bin/bash
+command time -ao ./make-log -f "%E [$*]" bash "$@"
+
+# TO USE THIS:
+# time bash -c "make -j 8 SHELL=./timing checks-fast"
+# tail -f make-log | grep -v '0:00.00'
