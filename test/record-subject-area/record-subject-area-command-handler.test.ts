@@ -6,13 +6,14 @@ import { DomainEvent } from '../../src/domain-events/domain-event';
 import { evaluationRecorded } from '../../src/domain-events/evaluation-recorded-event';
 import { isSubjectAreaRecordedEvent, subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
 import { eqDoi } from '../../src/types/doi';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
-=> (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent> ;
+=> (events: ReadonlyArray<DomainEvent>) => E.Either<string, ReadonlyArray<DomainEvent>> ;
 
 const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
@@ -24,6 +25,7 @@ const executeCommand: ExecuteCommand = (command) => (events) => pipe(
     ],
     () => [],
   ),
+  E.right,
 );
 
 describe('record-subject-area-command-handler', () => {
@@ -38,6 +40,7 @@ describe('record-subject-area-command-handler', () => {
     const result = pipe(
       [subjectAreaRecorded(arbitraryArticleId(), arbitrarySubjectArea())],
       executeCommand(command),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('raises an event', () => {
@@ -65,6 +68,7 @@ describe('record-subject-area-command-handler', () => {
         evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
       ],
       executeCommand(command),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('raises an event', () => {
@@ -80,6 +84,7 @@ describe('record-subject-area-command-handler', () => {
         subjectAreaRecorded(articleId, subjectArea),
       ],
       executeCommand(command),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('raises no events', () => {
