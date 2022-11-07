@@ -37,13 +37,12 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
 );
 
 const toArticleCardWithControlsViewModel = (
-  listOwnerId: ListOwnerId,
-  loggedInUserId: O.Option<UserId>,
+  hasArticleControls: boolean,
   listId: ListId,
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
   controls: pipe(
-    shouldHaveArticleControls(listOwnerId, loggedInUserId),
+    hasArticleControls,
     B.fold(
       () => O.none,
       () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),
@@ -53,8 +52,7 @@ const toArticleCardWithControlsViewModel = (
 
 export const toPageOfCards = (
   ports: Ports,
-  listOwnerId: ListOwnerId,
-  loggedInUserId: O.Option<UserId>,
+  hasArticleControls: boolean,
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
@@ -64,6 +62,9 @@ export const toPageOfCards = (
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
   TE.map(RA.map(E.bimap(
     identity,
-    toArticleCardWithControlsViewModel(listOwnerId, loggedInUserId, listId),
+    toArticleCardWithControlsViewModel(
+      hasArticleControls,
+      listId,
+    ),
   ))),
 );

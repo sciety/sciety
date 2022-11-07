@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { populateArticleActivities } from './populate-article-activities';
 import { renderComponentWithPagination } from './render-component-with-pagination';
+import { shouldHaveArticleControls } from './should-have-article-controls';
 import { noArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
@@ -38,8 +39,7 @@ export const articlesList = (
       TE.chainTaskK((pageOfArticles) => pipe(
         pageOfArticles,
         toPageOfCards(ports,
-          listOwnerId,
-          loggedInUserId,
+          shouldHaveArticleControls(listOwnerId, loggedInUserId),
           listId),
         TE.map(renderComponentWithPagination(pageOfArticles, `/lists/${listId}`)),
         TE.toUnion,
