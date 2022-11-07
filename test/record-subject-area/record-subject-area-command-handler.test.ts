@@ -1,8 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../../src/commands';
 import { DomainEvent } from '../../src/domain-events/domain-event';
+import { evaluationRecorded } from '../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
@@ -13,14 +16,14 @@ const executeCommand: ExecuteCommand = (command) => () => [
 ];
 
 describe('record-subject-area-command-handler', () => {
-  describe('given no events', () => {
-    const articleId = arbitraryArticleId();
-    const subjectArea = arbitrarySubjectArea();
-    const command = {
-      articleId,
-      subjectArea,
-    };
+  const articleId = arbitraryArticleId();
+  const subjectArea = arbitrarySubjectArea();
+  const command = {
+    articleId,
+    subjectArea,
+  };
 
+  describe('given no events', () => {
     const result = pipe(
       [],
       executeCommand(command),
@@ -46,7 +49,18 @@ describe('record-subject-area-command-handler', () => {
   });
 
   describe('when an evaluation was recorded', () => {
-    it.todo('raises an event');
+    const result = pipe(
+      [
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+      ],
+      executeCommand(command),
+    );
+
+    it('raises an event', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        { type: 'SubjectAreaRecorded' },
+      )]);
+    });
   });
 
   describe('the same subject area was recorded', () => {
