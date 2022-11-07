@@ -4,6 +4,7 @@ import { RecordSubjectAreaCommand } from '../../src/commands';
 import { DomainEvent } from '../../src/domain-events/domain-event';
 import { evaluationRecorded } from '../../src/domain-events/evaluation-recorded-event';
 import { isSubjectAreaRecordedEvent, subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
+import { eqDoi } from '../../src/types/doi';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -15,6 +16,7 @@ type ExecuteCommand = (command: RecordSubjectAreaCommand)
 const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
   RA.filter(isSubjectAreaRecordedEvent),
+  RA.filter((event) => eqDoi.equals(event.articleId, command.articleId)),
   RA.match(
     () => [
       subjectAreaRecorded(command.articleId, command.subjectArea),
@@ -37,19 +39,19 @@ describe('record-subject-area-command-handler', () => {
       executeCommand(command),
     );
 
-    it.failing('raises an event', () => {
+    it('raises an event', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { type: 'SubjectAreaRecorded' },
       )]);
     });
 
-    it.failing('raises an event, containing the article id from the command', () => {
+    it('raises an event, containing the article id from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { articleId },
       )]);
     });
 
-    it.failing('raises an event, containing the subject area from the command', () => {
+    it('raises an event, containing the subject area from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { subjectArea },
       )]);
