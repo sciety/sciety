@@ -6,7 +6,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { identity, pipe } from 'fp-ts/function';
 import { ComponentWithPaginationViewModel } from './render-component-with-pagination';
-import { shouldHaveArticleControls } from './should-have-article-controls';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
@@ -15,8 +14,6 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { ListOwnerId } from '../../types/list-owner-id';
-import { UserId } from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts;
 
