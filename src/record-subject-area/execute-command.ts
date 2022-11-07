@@ -5,9 +5,10 @@ import { RecordSubjectAreaCommand } from '../commands';
 import { DomainEvent } from '../domain-events/domain-event';
 import { isSubjectAreaRecordedEvent, subjectAreaRecorded } from '../domain-events/subject-area-recorded-event';
 import { eqDoi } from '../types/doi';
+import { ErrorMessage, toErrorMessage } from '../types/error-message';
 
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
-=> (events: ReadonlyArray<DomainEvent>) => E.Either<string, ReadonlyArray<DomainEvent>> ;
+=> (events: ReadonlyArray<DomainEvent>) => E.Either<ErrorMessage, ReadonlyArray<DomainEvent>> ;
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
@@ -19,6 +20,6 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
     () => E.right([subjectAreaRecorded(command.articleId, command.subjectArea)]),
     (event) => (event.subjectArea === command.subjectArea
       ? E.right([])
-      : E.left('changing of subject area not possible according to domain model')),
+      : E.left(toErrorMessage('changing of subject area not possible according to domain model'))),
   ),
 );
