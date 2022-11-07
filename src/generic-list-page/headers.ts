@@ -1,15 +1,18 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation, Ports } from './get-user-owner-information';
+import { flow, pipe } from 'fp-ts/function';
+import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './header/render-component';
 import { DomainEvent } from '../domain-events';
+import { GetAllEvents } from '../shared-ports';
 import { getGroup } from '../shared-read-models/groups';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles/select-articles-belonging-to-list';
-import { getList } from '../shared-read-models/lists';
+import { List } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
-import { ListId } from '../types/list-id';
+
+type Ports = GetUserOwnerInformationPorts & { getAllEvents: GetAllEvents };
 
 const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => pipe(
   events,
@@ -22,27 +25,31 @@ const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupI
   TE.fromEither,
 );
 
-type Headers = (ports: Ports, listId: ListId)
-=> (events: ReadonlyArray<DomainEvent>)
+type Headers = (ports: Ports) => (list: List)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const headers: Headers = (ports, listId) => (events) => pipe(
-  events,
-  getList(listId),
-  TE.chainEitherK((partial) => pipe(
-    events,
-    selectArticlesBelongingToList(listId),
-    E.map((articleIds) => ({
-      ...partial,
-      articleCount: articleIds.length,
-    })),
+export const headers: Headers = (ports) => (list) => pipe(
+  list,
+  TE.right,
+  TE.chain((partial) => pipe(
+    ports.getAllEvents,
+    T.map(flow(
+      selectArticlesBelongingToList(list.id),
+      E.map((articleIds) => ({
+        ...partial,
+        articleCount: articleIds.length,
+      })),
+    )),
   )),
   TE.chain((partial) => pipe(
     partial.ownerId,
     (ownerId) => {
       switch (ownerId.tag) {
         case 'group-id':
-          return getGroupOwnerInformation(events)(ownerId.value);
+          return pipe(
+            ports.getAllEvents,
+            T.chain((events) => getGroupOwnerInformation(events)(ownerId.value)),
+          );
         case 'user-id':
           return getUserOwnerInformation(ports)(ownerId.value);
       }

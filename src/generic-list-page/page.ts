@@ -10,6 +10,7 @@ import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-informat
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
 import { renderErrorPage, renderPage } from './render-page';
+import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Page } from '../types/page';
@@ -29,7 +30,8 @@ type Params = t.TypeOf<typeof paramsCodec>;
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
-  T.chain(headers(ports, params.id)),
+  T.chain(getList(params.id)),
+  TE.chain(headers(ports)),
   TE.chain((h) => pipe(
     ({
       header: TE.right(renderComponent(h)),
