@@ -4,15 +4,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { articleControls } from './article-controls';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { ArticleCardWithControlsViewModel, renderComponent } from './render-component';
+import { ArticleCardWithControlsViewModel } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
-import { paginationControls } from '../../shared-components/pagination-controls';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -21,24 +20,6 @@ import { ListOwnerId } from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts;
-
-const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
-  (pageOfContent: HtmlFragment) => `
-    <div>
-      ${pageOfContent}
-      ${paginationControls(`${basePath}?`, nextPageNumber)}
-    </div>
-  `,
-  toHtmlFragment,
-);
-
-const renderPageNumbers = (page: number, articleCount: number, numberOfPages: number) => (
-  articleCount > 0
-    ? `<p class="articles-page-count">
-        Showing page <b>${page}</b> of <b>${numberOfPages}</b><span class="visually-hidden"> pages of list content</span>
-      </p>`
-    : ''
-);
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
@@ -71,27 +52,18 @@ const toArticleCardWithControlsViewModel = (
   ),
 });
 
-const renderComponentWithPagination = (
-  pageOfArticles: PageOfItems<unknown>,
-  basePath: string,
-) => (articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>) => pipe(
-  articleViewModels,
-  renderComponent,
-  addPaginationControls(pageOfArticles.nextPage, basePath),
-  (content) => `
-      ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
-      ${content}
-    `,
-  toHtmlFragment,
-);
-
 export const toPageOfCards = (
   ports: Ports,
   basePath: string,
   listOwnerId: ListOwnerId,
   loggedInUserId: O.Option<UserId>,
   listId: ListId,
-) => (pageOfArticles: PageOfItems<ArticleActivity>): T.Task<HtmlFragment> => pipe(
+) => (
+  pageOfArticles: PageOfItems<ArticleActivity>,
+): TE.TaskEither<
+HtmlFragment,
+ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>
+> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
@@ -99,6 +71,4 @@ export const toPageOfCards = (
     identity,
     toArticleCardWithControlsViewModel(listOwnerId, loggedInUserId, listId),
   ))),
-  TE.map(renderComponentWithPagination(pageOfArticles, basePath)),
-  TE.toUnion,
 );
