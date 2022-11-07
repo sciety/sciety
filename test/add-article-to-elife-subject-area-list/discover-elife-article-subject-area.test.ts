@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-subject-area-list';
+import { toErrorMessage } from '../../src/types/error-message';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -36,7 +37,7 @@ describe('discover-elife-article-subject-area', () => {
         const adapters = {
           getArticleSubjectArea: () => TE.right(subjectArea),
           getOneArticleIdInEvaluatedState: () => O.some(articleId),
-          recordSubjectArea: jest.fn(() => TE.left(arbitraryString())),
+          recordSubjectArea: jest.fn(() => TE.left(toErrorMessage(arbitraryString()))),
           logger: jest.fn(dummyLogger),
         };
 

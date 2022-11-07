@@ -12,6 +12,7 @@ import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import { FetchArticle } from '../../src/shared-ports';
 import * as DE from '../../src/types/data-error';
+import { toErrorMessage } from '../../src/types/error-message';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
@@ -54,7 +55,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     removeArticleFromList: () => TE.left(''),
     createList: () => TE.left(DE.unavailable),
     fetchArticle,
-    recordSubjectArea: () => TE.left('not implemented'),
+    recordSubjectArea: () => TE.left(toErrorMessage('not implemented')),
     fetchReview: fetchReview(fetchers),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
