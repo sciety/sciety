@@ -58,7 +58,7 @@ checks/unused-styling: src/**/*.scss src/**/*.ts
 	@touch checks/unused-styling
 
 checks/eslint-rules-that-do-not-require-compilation: ./**/*.ts
-	@npx eslint . --ext .ts --cache --cache-location .eslint/ --color --max-warnings 0 -c .eslintrc-fast.js --no-eslintrc
+	@npx eslint . --ext .ts --cache --cache-location .eslint/ --color --max-warnings 0 -c .eslintrc-no-compilation.js --no-eslintrc
 	@touch checks/eslint-rules-that-do-not-require-compilation
 
 fix: node_modules \
