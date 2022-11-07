@@ -103,8 +103,12 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
+type Commands = {
+  removeArticleFromList: RemoveArticleFromList,
+};
+
 export const createInfrastructure = (dependencies: Dependencies):
-TE.TaskEither<unknown, { adapters: CollectedPorts }> => pipe(
+TE.TaskEither<unknown, { adapters: CollectedPorts, commands: Commands }> => pipe(
   {
     pool: new Pool(),
     logger: createLogger(dependencies),
@@ -263,9 +267,17 @@ TE.TaskEither<unknown, { adapters: CollectedPorts }> => pipe(
             ...allAdapters,
             ...stubAdapters,
           },
+          commands: {
+            removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
+          },
         };
       }
-      return { adapters: allAdapters };
+      return {
+        adapters: allAdapters,
+        commands: {
+          removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
+        },
+      };
     },
     identity,
   )),
