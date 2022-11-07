@@ -1,13 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../../src/commands';
 import { DomainEvent } from '../../src/domain-events/domain-event';
+import { subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
 => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent> ;
 
-const executeCommand: ExecuteCommand = () => () => [];
+const executeCommand: ExecuteCommand = () => () => [subjectAreaRecorded(arbitraryArticleId(), arbitrarySubjectArea())];
 
 describe('record-subject-area-command-handler', () => {
   describe('given no events', () => {
@@ -21,7 +22,7 @@ describe('record-subject-area-command-handler', () => {
       executeCommand(command),
     );
 
-    it.failing('raises an event', () => {
+    it('raises an event', () => {
       expect(result).toStrictEqual([expect.objectContaining({ type: 'SubjectAreaRecorded' })]);
     });
   });
