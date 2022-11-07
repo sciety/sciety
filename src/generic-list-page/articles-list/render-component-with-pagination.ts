@@ -29,19 +29,19 @@ export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel
 
 type ComponentWithPaginationViewModel = {
   articles: ArticlesViewModel,
+  pagination: PageOfItems<unknown>,
 };
 
 export const renderComponentWithPagination = (
-  pageOfArticles: PageOfItems<unknown>,
   basePath: string,
 ) => (
   viewModel: ComponentWithPaginationViewModel,
 ): HtmlFragment => pipe(
   viewModel.articles,
   renderComponent,
-  addPaginationControls(pageOfArticles.nextPage, basePath),
+  addPaginationControls(viewModel.pagination.nextPage, basePath),
   (content) => `
-      ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
+      ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}
       ${content}
     `,
   toHtmlFragment,

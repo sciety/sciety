@@ -34,8 +34,8 @@ export const articlesList = (
       TE.chainTaskK((pageOfArticles) => pipe(
         pageOfArticles,
         toPageOfCards(ports, hasArticleControls, listId),
-        TE.map((articles) => ({ articles })),
-        TE.map(renderComponentWithPagination(pageOfArticles, `/lists/${listId}`)),
+        TE.map((articles) => ({ articles, pagination: pageOfArticles })),
+        TE.map(renderComponentWithPagination(`/lists/${listId}`)),
         TE.toUnion,
       )),
     ),
