@@ -6,7 +6,7 @@ import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-arti
 import { ArticleViewModel, renderArticleCardWithControlsAndOptionalAnnotation } from '../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type ArticleCardWithControlsViewModel = {
+export type ArticleCardWithControlsViewModel = {
   articleViewModel: ArticleViewModel,
   controls: O.Option<HtmlFragment>,
 };

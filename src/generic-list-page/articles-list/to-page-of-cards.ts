@@ -6,7 +6,8 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { articleControls } from './article-controls';
-import { renderComponent } from './render-component';
+import { ArticleErrorCardViewModel } from './render-article-error-card';
+import { ArticleCardWithControlsViewModel, renderComponent } from './render-component';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
@@ -70,6 +71,20 @@ const toArticleCardWithControlsViewModel = (
   ),
 });
 
+const renderComponentWithPagination = (
+  pageOfArticles: PageOfItems<unknown>,
+  basePath: string,
+) => (articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>) => pipe(
+  articleViewModels,
+  renderComponent,
+  addPaginationControls(pageOfArticles.nextPage, basePath),
+  (content) => `
+      ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
+      ${content}
+    `,
+  toHtmlFragment,
+);
+
 export const toPageOfCards = (
   ports: Ports,
   basePath: string,
@@ -84,14 +99,6 @@ export const toPageOfCards = (
     identity,
     toArticleCardWithControlsViewModel(listOwnerId, loggedInUserId, listId),
   ))),
-  TE.map(flow(
-    renderComponent,
-    addPaginationControls(pageOfArticles.nextPage, basePath),
-    (content) => `
-      ${renderPageNumbers(pageOfArticles.pageNumber, pageOfArticles.numberOfOriginalItems, pageOfArticles.numberOfPages)}
-      ${content}
-    `,
-    toHtmlFragment,
-  )),
+  TE.map(renderComponentWithPagination(pageOfArticles, basePath)),
   TE.toUnion,
 );
