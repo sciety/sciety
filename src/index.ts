@@ -47,7 +47,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 
 const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Starting sagas');
-  setInterval(async () => discoverElifeArticleSubjectArea(ports), 11 * 60 * 1000);
+  setInterval(async () => discoverElifeArticleSubjectArea(ports), 7 * 1000);
   ports.logger('info', 'Sagas started');
 };
 

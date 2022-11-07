@@ -35,6 +35,7 @@ import {
 } from '../domain-events';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
+import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
 import { RemoveArticleFromList } from '../shared-ports';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -226,7 +227,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         addArticleToList: executeAddArticleToListCommandInProcess,
-        recordSubjectArea: () => TE.left('not implemented'),
+        recordSubjectArea: recordSubjectAreaCommandHandler(
+          { getAllEvents, commitEvents: commitEventsWithoutListeners },
+        ),
         removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
         createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
         ...partialAdapters,
