@@ -25,18 +25,19 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-export type ComponentWithPaginationViewModel = ReadonlyArray<E.Either<
-ArticleErrorCardViewModel,
-ArticleCardWithControlsViewModel
->>;
+export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;
+
+type ComponentWithPaginationViewModel = {
+  articles: ArticlesViewModel,
+};
 
 export const renderComponentWithPagination = (
   pageOfArticles: PageOfItems<unknown>,
   basePath: string,
 ) => (
-  articleViewModels: ComponentWithPaginationViewModel,
+  viewModel: ComponentWithPaginationViewModel,
 ): HtmlFragment => pipe(
-  articleViewModels,
+  viewModel.articles,
   renderComponent,
   addPaginationControls(pageOfArticles.nextPage, basePath),
   (content) => `
