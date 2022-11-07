@@ -10,10 +10,9 @@ import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
 import { selectArticlesBelongingToList } from '../../shared-read-models/list-articles';
 import * as DE from '../../types/data-error';
-import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import * as LOID from '../../types/list-owner-id';
+import { ListOwnerId } from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = ToPageOfCardsPorts & {
@@ -25,6 +24,7 @@ export const articlesList = (
   listId: ListId,
   pageNumber: number,
   loggedInUserId: O.Option<UserId>,
+  listOwnerId: ListOwnerId,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(selectArticlesBelongingToList(listId)),
@@ -37,7 +37,7 @@ export const articlesList = (
       TE.chainTaskK(
         toPageOfCards(ports,
           `/lists/${listId}`,
-          LOID.fromGroupId('not a real group id' as GroupId),
+          listOwnerId,
           loggedInUserId,
           listId),
       ),

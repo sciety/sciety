@@ -31,17 +31,22 @@ type Params = t.TypeOf<typeof paramsCodec>;
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.chain(getList(params.id)),
-  TE.chain(headers(ports)),
-  TE.chain((h) => pipe(
+  TE.chain((list) => pipe(
+    list,
+    headers(ports),
+    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId })),
+  )),
+  TE.chain(({ headerViewModel, listOwnerId }) => pipe(
     ({
-      header: TE.right(renderComponent(h)),
+      header: TE.right(renderComponent(headerViewModel)),
       content: articlesList(
         ports,
         params.id,
         params.page,
         pipe(params.user, O.map((user) => user.id)),
+        listOwnerId,
       ),
-      title: TE.right(h.name),
+      title: TE.right(headerViewModel.name),
     }),
     sequenceS(TE.ApplyPar),
   )),
