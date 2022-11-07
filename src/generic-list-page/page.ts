@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
+import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
@@ -15,6 +16,7 @@ import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { UserId } from '../types/user-id';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -27,6 +29,11 @@ export const paramsCodec = t.type({
 type Ports = ArticlesListPorts & GetUserOwnerInformationPorts;
 
 type Params = t.TypeOf<typeof paramsCodec>;
+
+const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
+  user,
+  O.map(({ id }) => id),
+);
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
@@ -43,8 +50,10 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
         ports,
         params.id,
         params.page,
-        pipe(params.user, O.map((user) => user.id)),
-        listOwnerId,
+        shouldHaveArticleControls(
+          listOwnerId,
+          getLoggedInUserIdFromParam(params.user),
+        ),
       ),
       title: TE.right(headerViewModel.name),
     }),

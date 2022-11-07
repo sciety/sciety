@@ -1,11 +1,9 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { populateArticleActivities } from './populate-article-activities';
 import { renderComponentWithPagination } from './render-component-with-pagination';
-import { shouldHaveArticleControls } from './should-have-article-controls';
 import { noArticlesMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
@@ -14,8 +12,6 @@ import { selectArticlesBelongingToList } from '../../shared-read-models/list-art
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { ListOwnerId } from '../../types/list-owner-id';
-import { UserId } from '../../types/user-id';
 
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -25,8 +21,7 @@ export const articlesList = (
   ports: Ports,
   listId: ListId,
   pageNumber: number,
-  loggedInUserId: O.Option<UserId>,
-  listOwnerId: ListOwnerId,
+  hasArticleControls: boolean,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
   T.map(selectArticlesBelongingToList(listId)),
@@ -38,9 +33,7 @@ export const articlesList = (
       TE.chainTaskK(populateArticleActivities(ports)),
       TE.chainTaskK((pageOfArticles) => pipe(
         pageOfArticles,
-        toPageOfCards(ports,
-          shouldHaveArticleControls(listOwnerId, loggedInUserId),
-          listId),
+        toPageOfCards(ports, hasArticleControls, listId),
         TE.map(renderComponentWithPagination(pageOfArticles, `/lists/${listId}`)),
         TE.toUnion,
       )),
