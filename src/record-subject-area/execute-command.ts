@@ -21,8 +21,7 @@ type ExecuteCommand = (command: RecordSubjectAreaCommand)
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
   buildUpArticleSubjectAreaResourceFor(command.articleId),
-  E.fromOption(() => 'no subject area recorded for this article'),
-  E.match(
+  O.match(
     () => E.right([subjectAreaRecorded(command.articleId, command.subjectArea)]),
     (subjectArea) => (subjectArea === command.subjectArea
       ? E.right([])
