@@ -19,13 +19,14 @@ const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
   RA.filter(isSubjectAreaRecordedEvent),
   RA.filter((event) => eqDoi.equals(event.articleId, command.articleId)),
-  RA.match(
-    () => [
-      subjectAreaRecorded(command.articleId, command.subjectArea),
-    ],
-    () => [],
+  RA.head,
+  E.fromOption(() => 'no subject area recorded for this article'),
+  E.match(
+    () => E.right([subjectAreaRecorded(command.articleId, command.subjectArea)]),
+    (event) => (event.subjectArea === command.subjectArea
+      ? E.right([])
+      : E.left('changing of subject area not possible according to domain model')),
   ),
-  E.right,
 );
 
 describe('record-subject-area-command-handler', () => {
@@ -100,7 +101,7 @@ describe('record-subject-area-command-handler', () => {
       executeCommand(command),
     );
 
-    it.failing('returns an error message', () => {
+    it('returns an error message', () => {
       expect(result).toStrictEqual(E.left(expect.anything()));
     });
   });
