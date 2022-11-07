@@ -15,9 +15,10 @@ const executeCommand: ExecuteCommand = (command) => () => [
 describe('record-subject-area-command-handler', () => {
   describe('given no events', () => {
     const articleId = arbitraryArticleId();
+    const subjectArea = arbitrarySubjectArea();
     const command = {
       articleId,
-      subjectArea: arbitrarySubjectArea(),
+      subjectArea,
     };
 
     const result = pipe(
@@ -34,6 +35,12 @@ describe('record-subject-area-command-handler', () => {
     it('raises an event, containing the article id from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { articleId },
+      )]);
+    });
+
+    it.failing('raises an event, containing the subject area from the command', () => {
+      expect(result).toStrictEqual([expect.objectContaining(
+        { subjectArea },
       )]);
     });
   });
