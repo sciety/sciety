@@ -31,25 +31,25 @@ describe('record-subject-area-command-handler', () => {
     subjectArea,
   };
 
-  describe('given no events', () => {
+  describe('given no events for the given article id', () => {
     const result = pipe(
-      [],
+      [subjectAreaRecorded(arbitraryArticleId(), arbitrarySubjectArea())],
       executeCommand(command),
     );
 
-    it('raises an event', () => {
+    it.failing('raises an event', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { type: 'SubjectAreaRecorded' },
       )]);
     });
 
-    it('raises an event, containing the article id from the command', () => {
+    it.failing('raises an event, containing the article id from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { articleId },
       )]);
     });
 
-    it('raises an event, containing the subject area from the command', () => {
+    it.failing('raises an event, containing the subject area from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { subjectArea },
       )]);
