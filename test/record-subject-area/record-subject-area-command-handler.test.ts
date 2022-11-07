@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../../src/commands';
@@ -86,7 +87,16 @@ describe('record-subject-area-command-handler', () => {
     });
   });
 
-  describe('a different subject area was recorded', () => {
-    it.todo('returns an error message');
+  describe('a different subject area was recorded for the article', () => {
+    const result = pipe(
+      [
+        subjectAreaRecorded(articleId, arbitrarySubjectArea()),
+      ],
+      executeCommand(command),
+    );
+
+    it.failing('returns an error message', () => {
+      expect(result).toStrictEqual(E.left(expect.anything()));
+    });
   });
 });
