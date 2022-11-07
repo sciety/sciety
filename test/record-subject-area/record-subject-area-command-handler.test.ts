@@ -8,7 +8,9 @@ import { arbitrarySubjectArea } from '../types/subject-area.helper';
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
 => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent> ;
 
-const executeCommand: ExecuteCommand = () => () => [subjectAreaRecorded(arbitraryArticleId(), arbitrarySubjectArea())];
+const executeCommand: ExecuteCommand = (command) => () => [
+  subjectAreaRecorded(command.articleId, arbitrarySubjectArea()),
+];
 
 describe('record-subject-area-command-handler', () => {
   describe('given no events', () => {
@@ -29,7 +31,7 @@ describe('record-subject-area-command-handler', () => {
       )]);
     });
 
-    it.failing('raises an event, containing the article id from the command', () => {
+    it('raises an event, containing the article id from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
         { articleId },
       )]);
