@@ -1,8 +1,9 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../../src/commands';
 import { DomainEvent } from '../../src/domain-events/domain-event';
 import { evaluationRecorded } from '../../src/domain-events/evaluation-recorded-event';
-import { subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
+import { isSubjectAreaRecordedEvent, subjectAreaRecorded } from '../../src/domain-events/subject-area-recorded-event';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -11,9 +12,16 @@ import { arbitrarySubjectArea } from '../types/subject-area.helper';
 type ExecuteCommand = (command: RecordSubjectAreaCommand)
 => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent> ;
 
-const executeCommand: ExecuteCommand = (command) => () => [
-  subjectAreaRecorded(command.articleId, command.subjectArea),
-];
+const executeCommand: ExecuteCommand = (command) => (events) => pipe(
+  events,
+  RA.filter(isSubjectAreaRecordedEvent),
+  RA.match(
+    () => [
+      subjectAreaRecorded(command.articleId, command.subjectArea),
+    ],
+    () => [],
+  ),
+);
 
 describe('record-subject-area-command-handler', () => {
   const articleId = arbitraryArticleId();
@@ -71,7 +79,7 @@ describe('record-subject-area-command-handler', () => {
       executeCommand(command),
     );
 
-    it.failing('raises no events', () => {
+    it('raises no events', () => {
       expect(result).toStrictEqual([]);
     });
   });
