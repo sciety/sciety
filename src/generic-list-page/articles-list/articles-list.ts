@@ -38,7 +38,6 @@ export const articlesList = (
       TE.chainTaskK((pageOfArticles) => pipe(
         pageOfArticles,
         toPageOfCards(ports,
-          `/lists/${listId}`,
           listOwnerId,
           loggedInUserId,
           listId),

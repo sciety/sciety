@@ -53,7 +53,6 @@ const toArticleCardWithControlsViewModel = (
 
 export const toPageOfCards = (
   ports: Ports,
-  basePath: string,
   listOwnerId: ListOwnerId,
   loggedInUserId: O.Option<UserId>,
   listId: ListId,
