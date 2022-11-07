@@ -58,7 +58,7 @@ void pipe(
     prettyLog: !!process.env.PRETTY_LOG,
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   }),
-  TE.map((adapters) => pipe(
+  TE.map(({ adapters }) => pipe(
     adapters,
     createRouter,
     (router) => ({ router, adapters }),

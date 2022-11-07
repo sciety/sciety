@@ -103,7 +103,8 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
+export const createInfrastructure = (dependencies: Dependencies):
+TE.TaskEither<unknown, { adapters: CollectedPorts }> => pipe(
   {
     pool: new Pool(),
     logger: createLogger(dependencies),
@@ -258,11 +259,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       if (process.env.USE_STUB_ADAPTERS === 'true') {
         return {
-          ...allAdapters,
-          ...stubAdapters,
+          adapters: {
+            ...allAdapters,
+            ...stubAdapters,
+          },
         };
       }
-      return allAdapters;
+      return { adapters: allAdapters };
     },
     identity,
   )),
