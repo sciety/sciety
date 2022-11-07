@@ -79,7 +79,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     findVersionsForArticleDoi: () => T.of(O.none),
   };
 
-  const router = createRouter(adapters);
+  const router = createRouter({ adapters, commandHandlers: { addArticleToList: adapters.addArticleToList } });
   const server = pipe(
     createApplicationServer(router, adapters),
     E.getOrElseW((e) => {

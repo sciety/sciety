@@ -27,12 +27,12 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
-import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articleActivityPage } from '../article-page';
+import { CommandHandlers } from '../command-handlers';
 import { addArticleToListCommandCodec } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -101,7 +101,12 @@ const userPageParams = t.type({
   })),
 });
 
-export const createRouter = (adapters: CollectedPorts): Router => {
+type RouterDependencies = {
+  adapters: CollectedPorts,
+  commandHandlers: CommandHandlers,
+};
+
+export const createRouter = ({ adapters, commandHandlers }: RouterDependencies): Router => {
   const router = new Router();
 
   const toSuccessResponse = (body: string) => ({
@@ -447,7 +452,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post('/add-article-to-list', handleScietyApiCommand(adapters, flow(
     validateInputShape(addArticleToListCommandCodec),
     TE.fromEither,
-    TE.chain(addArticleToListCommandHandler(adapters)),
+    TE.chain(flow(
+      commandHandlers.addArticleToList,
+      // this could easily come out the command handler
+      TE.map(() => 'no-events-created'),
+    )),
   )));
 
   router.post('/remove-article-from-list', handleScietyApiCommand(adapters, removeArticleFromListCommandHandler(adapters)));

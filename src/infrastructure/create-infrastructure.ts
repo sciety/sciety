@@ -27,6 +27,7 @@ import { stubAdapters } from './stub-adapters';
 import { getArticleIdsByState } from '../add-article-to-elife-subject-area-list/read-model';
 import { getOneArticleIdInEvaluatedState } from '../add-article-to-elife-subject-area-list/read-model/get-one-article-id-in-evaluated-state';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
+import { CommandHandlers } from '../command-handlers';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
@@ -47,7 +48,6 @@ import {
 } from '../third-parties/twitter';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
-import { CommandHandlers } from '../command-handlers';
 
 type Dependencies = {
   prettyLog: boolean,
