@@ -6,8 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { identity, pipe } from 'fp-ts/function';
 import { articleControls } from './article-controls';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { ArticleCardWithControlsViewModel } from './render-component';
+import { ComponentWithPaginationViewModel } from './render-component-with-pagination';
 import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
@@ -60,10 +59,7 @@ export const toPageOfCards = (
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
-): TE.TaskEither<
-HtmlFragment,
-ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>
-> => pipe(
+): TE.TaskEither<HtmlFragment, ComponentWithPaginationViewModel> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
