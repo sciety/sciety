@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -7,10 +8,12 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
+import { noArticlesMessage } from './articles-list/static-messages';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
 import { renderErrorPage, renderPage } from './render-page';
+import { selectArticlesBelongingToList } from '../shared-read-models/list-articles';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -41,19 +44,26 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   TE.chain((list) => pipe(
     list,
     headers(ports),
-    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId })),
+    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId, listId: list.id })),
   )),
-  TE.chain(({ headerViewModel, listOwnerId }) => pipe(
+  TE.chain(({ headerViewModel, listOwnerId, listId }) => pipe(
     ({
       header: TE.right(renderComponent(headerViewModel)),
-      content: articlesList(
-        ports,
-        params.id,
-        params.page,
-        shouldHaveArticleControls(
-          listOwnerId,
-          getLoggedInUserIdFromParam(params.user),
-        ),
+      content: pipe(
+        ports.getAllEvents,
+        T.map(selectArticlesBelongingToList(listId)),
+        TE.chain(RA.match(
+          () => TE.right(noArticlesMessage),
+          articlesList(
+            ports,
+            params.id,
+            params.page,
+            shouldHaveArticleControls(
+              listOwnerId,
+              getLoggedInUserIdFromParam(params.user),
+            ),
+          ),
+        )),
       ),
       title: TE.right(headerViewModel.name),
     }),
