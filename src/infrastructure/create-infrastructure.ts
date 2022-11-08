@@ -161,6 +161,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         logger,
       });
 
+      const commandHandlerAdapters = {
+        getAllEvents,
+        commitEvents: commitEventsWithoutListeners,
+      };
+
       const collectedAdapters = {
         getArticleIdsByState: getArticleIdsByState(readModel),
         getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel),
@@ -190,21 +195,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getJson: getCachedAxiosRequest(logger),
           logger,
         }),
-        recordSubjectArea: recordSubjectAreaCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-        }),
-        createList: createListCommandHandler({
-          commitEvents: commitEventsWithoutListeners,
-        }),
-        addArticleToList: addArticleToListCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-        }),
-        removeArticleFromList: removeArticleFromListCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-        }),
+        recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
+        createList: createListCommandHandler(commandHandlerAdapters),
+        addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
+        removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),
         ...partialAdapters,
       };
 
