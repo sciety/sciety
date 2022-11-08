@@ -6,13 +6,13 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { identity, pipe } from 'fp-ts/function';
 import { ArticlesViewModel } from './render-component-with-pagination';
-import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { ArticleActivity } from '../../types/article-activity';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 
 export type Ports = ToCardViewModelPorts;
@@ -53,10 +53,10 @@ export const toPageOfCards = (
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
-): TE.TaskEither<HtmlFragment, ArticlesViewModel> => pipe(
+): TE.TaskEither<DE.DataError, ArticlesViewModel> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
-  T.map(E.fromPredicate(RA.some(E.isRight), () => noArticlesCanBeFetchedMessage)),
+  T.map(E.fromPredicate(RA.some(E.isRight), () => DE.unavailable)),
   TE.map(RA.map(E.bimap(
     identity,
     toArticleCardWithControlsViewModel(

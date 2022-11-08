@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { populateArticleActivities } from './populate-article-activities';
 import { renderComponentWithPagination } from './render-component-with-pagination';
+import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
@@ -29,7 +30,10 @@ export const articlesList = (
     pageOfArticles,
     toPageOfCards(ports, hasArticleControls, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
-    TE.map(renderComponentWithPagination(`/lists/${listId}`)),
+    TE.bimap(
+      () => noArticlesCanBeFetchedMessage,
+      renderComponentWithPagination(`/lists/${listId}`),
+    ),
     TE.toUnion,
   )),
 );
