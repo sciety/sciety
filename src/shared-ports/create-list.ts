@@ -1,5 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { CreateListCommand } from '../commands';
-import * as DE from '../types/data-error';
+import { CommandResult } from '../types/command-result';
+import { ErrorMessage } from '../types/error-message';
 
-export type CreateList = (command: CreateListCommand) => TE.TaskEither<DE.DataError, void>;
+type CommandHandler<C> = (command: C) => TE.TaskEither<ErrorMessage, CommandResult>;
+
+export type CreateList = CommandHandler<CreateListCommand>;

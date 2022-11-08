@@ -53,7 +53,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     getOneArticleIdInEvaluatedState: () => O.none,
     addArticleToList: () => TE.left(''),
     removeArticleFromList: () => TE.left(''),
-    createList: () => TE.left(DE.unavailable),
+    createList: () => TE.left(toErrorMessage('not implemented')),
     fetchArticle,
     recordSubjectArea: () => TE.left(toErrorMessage('not implemented')),
     fetchReview: fetchReview(fetchers),

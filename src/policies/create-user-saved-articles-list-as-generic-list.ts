@@ -59,6 +59,8 @@ export const createUserSavedArticlesListAsGenericList: CreateUserSavedArticlesLi
         case DE.unavailable:
           ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { reason, event });
           break;
+        default:
+          ports.logger('error', 'createUserSavedArticlesListAsGenericList policy failed', { reason, event });
       }
       return undefined;
     },

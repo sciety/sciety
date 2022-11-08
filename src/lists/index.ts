@@ -12,5 +12,4 @@ export const createListCommandHandler = (ports: Ports): CreateList => (command) 
   executeCreateListCommand,
   ports.commitEvents,
   TE.rightTask,
-  TE.map(() => undefined),
 );
