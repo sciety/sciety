@@ -34,7 +34,7 @@ COPY .eslintignore \
   .stylelintrc \
   jest.config.js \
   tsconfig.json \
-  tsconfig.dev.json \
+  tsconfig.json \
   .swcrc \
   ./
 COPY --from=npm-dev /app/ .

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es2020",
     "lib": [
-      "es2020"
+      "es2020",
+      "DOM"
     ],
     "module": "commonjs",
     "outDir": "build",
@@ -12,11 +13,12 @@
     "sourceMap": true,
     "incremental": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ]
   },
   "include": [
-    "src", 
-    "static/docmaps" 
+    "**/*",
+    "**/.*"
   ]
 }
