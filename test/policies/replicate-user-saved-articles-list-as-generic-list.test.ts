@@ -5,12 +5,12 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { Ports, replicateUserSavedArticlesListAsGenericList } from '../../src/policies/replicate-user-saved-articles-list-as-generic-list';
-import { CommandResult } from '../../src/types/command-result';
 import { toErrorMessage } from '../../src/types/error-message';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryCommandResult } from '../types/command-result.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -21,8 +21,8 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
   const genericListOwnedByUser = arbitraryList();
 
   const happyPathAdapters = {
-    addArticleToList: () => TE.right('events-created' as CommandResult),
-    removeArticleFromList: () => TE.right('events-created' as CommandResult),
+    addArticleToList: () => TE.right(arbitraryCommandResult()),
+    removeArticleFromList: () => TE.right(arbitraryCommandResult()),
     logger: dummyLogger,
     getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
   };

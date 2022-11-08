@@ -1,17 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
 import { addArticleToSpecificUserList, Ports, specificUserListId } from '../../src/policies/add-article-to-specific-user-list';
-import { CommandResult } from '../../src/types/command-result';
 import { toErrorMessage } from '../../src/types/error-message';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryCommandResult } from '../types/command-result.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
   const defaultPorts = {
-    addArticleToList: () => TE.right('events-created' as CommandResult),
+    addArticleToList: () => TE.right(arbitraryCommandResult()),
     logger: dummyLogger,
   };
 
