@@ -19,6 +19,8 @@ export const fromGroupId = (groupId: GroupId): ListOwnerId => ({ value: groupId,
 
 export const fromUserId = (userId: UserId): ListOwnerId => ({ value: userId, tag: 'user-id' });
 
+export const isGroupId = (listOwnerId: ListOwnerId): boolean => listOwnerId.tag === 'group-id';
+
 export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S.Eq });
 
 const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
