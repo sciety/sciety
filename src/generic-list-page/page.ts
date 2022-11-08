@@ -3,10 +3,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
+import { renderComponentWithPagination } from './articles-list/render-component-with-pagination';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
@@ -54,14 +55,17 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
         T.map(selectArticlesBelongingToList(listId)),
         TE.chain(RA.match(
           () => TE.right(noArticlesMessage),
-          articlesList(
-            ports,
-            params.id,
-            params.page,
-            shouldHaveArticleControls(
-              listOwnerId,
-              getLoggedInUserIdFromParam(params.user),
+          flow(
+            articlesList(
+              ports,
+              params.id,
+              params.page,
+              shouldHaveArticleControls(
+                listOwnerId,
+                getLoggedInUserIdFromParam(params.user),
+              ),
             ),
+            TE.map(renderComponentWithPagination(`/lists/${listId}`)),
           ),
         )),
         TE.orElse((left) => {

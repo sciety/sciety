@@ -27,7 +27,7 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 
 export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;
 
-type ComponentWithPaginationViewModel = {
+export type ComponentWithPaginationViewModel = {
   articles: ArticlesViewModel,
   pagination: PageOfItems<unknown>,
 };
