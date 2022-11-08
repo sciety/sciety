@@ -37,7 +37,6 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { RemoveArticleFromList } from '../shared-ports';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -162,18 +161,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         logger,
       });
 
-      const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (payload) => pipe(
-        {
-          articleId: payload.articleId.value,
-          listId: payload.listId.toString(),
-        },
-        removeArticleFromListCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-          ...partialAdapters,
-        }),
-      );
-
       const collectedAdapters = {
         getArticleIdsByState: getArticleIdsByState(readModel),
         getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel),
@@ -203,16 +190,21 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getJson: getCachedAxiosRequest(logger),
           logger,
         }),
-        addArticleToList: addArticleToListCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-        }),
         recordSubjectArea: recordSubjectAreaCommandHandler({
           getAllEvents,
           commitEvents: commitEventsWithoutListeners,
         }),
-        removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
-        createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
+        createList: createListCommandHandler({
+          commitEvents: commitEventsWithoutListeners,
+        }),
+        addArticleToList: addArticleToListCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+        }),
+        removeArticleFromList: removeArticleFromListCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+        }),
         ...partialAdapters,
       };
 
