@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { populateArticleActivities } from './populate-article-activities';
 import { renderComponentWithPagination } from './render-component-with-pagination';
-import { noArticlesCanBeFetchedMessage } from './static-messages';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
 import { paginate } from '../../shared-components/paginate';
@@ -21,19 +20,15 @@ export const articlesList = (
   listId: ListId,
   pageNumber: number,
   hasArticleControls: boolean,
-) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', HtmlFragment> => pipe(
   articleIds,
   paginate(20, pageNumber),
   TE.fromEither,
   TE.chainTaskK(populateArticleActivities(ports)),
-  TE.chainTaskK((pageOfArticles) => pipe(
+  TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
     toPageOfCards(ports, hasArticleControls, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
-    TE.bimap(
-      () => noArticlesCanBeFetchedMessage,
-      renderComponentWithPagination(`/lists/${listId}`),
-    ),
-    TE.toUnion,
+    TE.map(renderComponentWithPagination(`/lists/${listId}`)),
   )),
 );

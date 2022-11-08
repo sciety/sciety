@@ -8,7 +8,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
-import { noArticlesMessage } from './articles-list/static-messages';
+import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
@@ -64,6 +64,12 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
             ),
           ),
         )),
+        TE.orElse((left) => {
+          if (left === 'no-articles-can-be-fetched') {
+            return TE.right(noArticlesCanBeFetchedMessage);
+          }
+          return TE.left(left);
+        }),
       ),
       title: TE.right(headerViewModel.name),
     }),

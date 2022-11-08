@@ -10,7 +10,6 @@ import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-m
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { ArticleActivity } from '../../types/article-activity';
-import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
@@ -53,10 +52,10 @@ export const toPageOfCards = (
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
-): TE.TaskEither<DE.DataError, ArticlesViewModel> => pipe(
+): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
-  T.map(E.fromPredicate(RA.some(E.isRight), () => DE.unavailable)),
+  T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.map(RA.map(E.bimap(
     identity,
     toArticleCardWithControlsViewModel(
