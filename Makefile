@@ -62,11 +62,16 @@ checks/eslint-rules-that-do-not-require-compilation: ./**/*.ts
 	@touch checks/eslint-rules-that-do-not-require-compilation
 
 fix: node_modules \
-	checks/fix-sass
+	checks/fix-sass \
+	checks/fix-ts
 
 checks/fix-sass: src/**/*.scss
 	@npx stylelint 'src/**/*.scss' --cache --cache-location .stylelint/ --fix
 	@touch checks/fix-sass
+
+checks/fix-ts: src/**/*.ts
+	@npx eslint . --ext .ts --cache --cache-location .eslint/ --color --max-warnings 0 -c .eslintrc-no-compilation.js --no-eslintrc --fix
+	@touch checks/fix-ts
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
