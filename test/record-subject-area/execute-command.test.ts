@@ -9,7 +9,7 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
-describe('record-subject-area-command-handler', () => {
+describe('execute-command', () => {
   const articleId = arbitraryArticleId();
   const subjectArea = arbitrarySubjectArea();
   const command = {
