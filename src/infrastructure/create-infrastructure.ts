@@ -46,10 +46,6 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
-import { CommandResult } from '../types/command-result';
-import { Doi } from '../types/doi';
-import { ErrorMessage } from '../types/error-message';
-import { ListId } from '../types/list-id';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -155,10 +151,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
-      type AddArticleToListCommandPayload = {
-        articleId: Doi, listId: ListId,
-      };
-
       const { dispatchToAllReadModels, readModel } = dispatcher();
 
       dispatchToAllReadModels(events);
@@ -170,27 +162,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         logger,
       });
 
-      type ExecuteAddArticleToListCommandInProcess = (
-        payload: AddArticleToListCommandPayload
-      ) => TE.TaskEither<ErrorMessage, CommandResult>;
-
       const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (payload) => pipe(
         {
           articleId: payload.articleId.value,
           listId: payload.listId.toString(),
         },
         removeArticleFromListCommandHandler({
-          getAllEvents,
-          commitEvents: commitEventsWithoutListeners,
-          ...partialAdapters,
-        }),
-      );
-
-      const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
-        payload,
-      ) => pipe(
-        payload,
-        addArticleToListCommandHandler({
           getAllEvents,
           commitEvents: commitEventsWithoutListeners,
           ...partialAdapters,
@@ -226,10 +203,14 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getJson: getCachedAxiosRequest(logger),
           logger,
         }),
-        addArticleToList: executeAddArticleToListCommandInProcess,
-        recordSubjectArea: recordSubjectAreaCommandHandler(
-          { getAllEvents, commitEvents: commitEventsWithoutListeners },
-        ),
+        addArticleToList: addArticleToListCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+        }),
+        recordSubjectArea: recordSubjectAreaCommandHandler({
+          getAllEvents,
+          commitEvents: commitEventsWithoutListeners,
+        }),
         removeArticleFromList: executeRemoveArticleFromListCommandInProcess,
         createList: createListCommandHandler({ commitEvents: commitEventsWithoutListeners }),
         ...partialAdapters,
