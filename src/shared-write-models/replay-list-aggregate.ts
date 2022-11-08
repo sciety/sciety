@@ -8,9 +8,12 @@ import {
 } from '../domain-events';
 import { ListCreatedEvent } from '../domain-events/list-created-event';
 import { eqDoi } from '../types/doi';
+import { ErrorMessage, toErrorMessage } from '../types/error-message';
 import { ListId } from '../types/list-id';
 
-type ReplayListAggregate = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => E.Either<string, ListAggregate>;
+type ReplayListAggregate = (listId: ListId)
+=> (events: ReadonlyArray<DomainEvent>)
+=> E.Either<ErrorMessage, ListAggregate>;
 
 type RelevantEvent = ListCreatedEvent | ArticleAddedToListEvent | ArticleRemovedFromListEvent;
 
@@ -26,7 +29,7 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
   events,
   RA.filter(isARelevantEventForTheWriteModel),
   RA.filter(isAnEventOfThisAggregate(listId)),
-  RA.reduce(E.left(`List with list id ${listId} not found`), (aggregate, event) => {
+  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (aggregate, event) => {
     switch (event.type) {
       case 'ListCreated':
         return E.right({ articleIds: [] });

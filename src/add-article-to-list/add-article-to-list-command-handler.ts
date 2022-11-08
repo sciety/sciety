@@ -6,6 +6,7 @@ import { AddArticleToListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
 import { CommandResult } from '../types/command-result';
+import { ErrorMessage } from '../types/error-message';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
@@ -16,7 +17,7 @@ type AddArticleToListCommandHandler = (
   ports: Ports
 ) => (
   input: AddArticleToListCommand,
-) => TE.TaskEither<string, CommandResult>;
+) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   ports,

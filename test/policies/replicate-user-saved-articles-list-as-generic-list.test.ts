@@ -5,8 +5,11 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { Ports, replicateUserSavedArticlesListAsGenericList } from '../../src/policies/replicate-user-saved-articles-list-as-generic-list';
+import { CommandResult } from '../../src/types/command-result';
+import { toErrorMessage } from '../../src/types/error-message';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
+import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -18,8 +21,8 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
   const genericListOwnedByUser = arbitraryList();
 
   const happyPathAdapters = {
-    addArticleToList: () => TE.right(undefined),
-    removeArticleFromList: () => TE.right(undefined),
+    addArticleToList: () => TE.right('events-created' as CommandResult),
+    removeArticleFromList: () => TE.right('events-created' as CommandResult),
     logger: dummyLogger,
     getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
   };
@@ -74,8 +77,8 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       beforeEach(async () => {
         adapters = {
           ...happyPathAdapters,
-          addArticleToList: () => TE.left(arbitraryDataError()),
-          removeArticleFromList: () => TE.left(arbitraryDataError()),
+          addArticleToList: () => TE.left(toErrorMessage(arbitraryString())),
+          removeArticleFromList: () => TE.left(toErrorMessage(arbitraryString())),
           logger: jest.fn(dummyLogger),
         };
         await replicateUserSavedArticlesListAsGenericList(adapters)(event)();

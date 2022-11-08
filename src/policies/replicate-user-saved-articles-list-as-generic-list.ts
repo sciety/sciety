@@ -10,6 +10,7 @@ import {
 import {
   AddArticleToList, GetListsOwnedBy, Logger, RemoveArticleFromList,
 } from '../shared-ports';
+import { CommandResult } from '../types/command-result';
 import * as LOID from '../types/list-owner-id';
 
 // ts-unused-exports:disable-next-line
@@ -39,14 +40,14 @@ const processRelevantEvent = (adapters: Ports) => (candidateEvent: DomainEvent) 
     case 'UserUnsavedArticle': return pipe(
       candidateEvent,
       toCommand(adapters),
-      TE.chain(adapters.removeArticleFromList),
+      TE.chainW(adapters.removeArticleFromList),
     );
     case 'UserSavedArticle': return pipe(
       candidateEvent,
       toCommand(adapters),
-      TE.chain(adapters.addArticleToList),
+      TE.chainW(adapters.addArticleToList),
     );
-    default: return TE.right(undefined);
+    default: return TE.right('no-events-created' as CommandResult);
   }
 };
 

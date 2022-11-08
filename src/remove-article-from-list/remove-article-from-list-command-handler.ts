@@ -6,6 +6,7 @@ import { validateInputShape } from '../commands/validate-input-shape';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
 import { CommandResult } from '../types/command-result';
+import { ErrorMessage } from '../types/error-message';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -16,7 +17,7 @@ type RemoveArticleFromListCommandHandler = (
   ports: Ports
 ) => (
   input: unknown,
-) => TE.TaskEither<string, CommandResult>;
+) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
   ports,

@@ -1,4 +1,4 @@
-import * as TE from 'fp-ts/TaskEither';
 import { RemoveArticleFromListCommand } from '../commands';
+import { CommandHandler } from '../types/command-handler';
 
-export type RemoveArticleFromList = (command: RemoveArticleFromListCommand) => TE.TaskEither<string, void>;
+export type RemoveArticleFromList = CommandHandler<RemoveArticleFromListCommand>;

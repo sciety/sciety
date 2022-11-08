@@ -46,7 +46,9 @@ import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
+import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
+import { ErrorMessage } from '../types/error-message';
 import { ListId } from '../types/list-id';
 
 type Dependencies = {
@@ -170,7 +172,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       type ExecuteAddArticleToListCommandInProcess = (
         payload: AddArticleToListCommandPayload
-      ) => TE.TaskEither<string, void>;
+      ) => TE.TaskEither<ErrorMessage, CommandResult>;
 
       const executeRemoveArticleFromListCommandInProcess: RemoveArticleFromList = (payload) => pipe(
         {
@@ -182,7 +184,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           commitEvents: commitEventsWithoutListeners,
           ...partialAdapters,
         }),
-        TE.map(() => undefined),
       );
 
       const executeAddArticleToListCommandInProcess: ExecuteAddArticleToListCommandInProcess = (
@@ -194,7 +195,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           commitEvents: commitEventsWithoutListeners,
           ...partialAdapters,
         }),
-        TE.map(() => undefined),
       );
 
       const collectedAdapters = {

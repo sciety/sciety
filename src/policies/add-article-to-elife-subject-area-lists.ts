@@ -7,6 +7,7 @@ import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
 import {
   AddArticleToList, GetArticleSubjectArea, Logger,
 } from '../shared-ports';
+import { toErrorMessage } from '../types/error-message';
 
 export type Ports = {
   logger: Logger,
@@ -28,7 +29,7 @@ export const addArticleToElifeSubjectAreaLists: AddArticleToElifeSubjectAreaList
     event.articleId,
     ports.getArticleSubjectArea,
     TE.bimap(
-      () => 'Subject Area available from neither bioRxiv nor medRxiv',
+      () => toErrorMessage('Subject Area available from neither bioRxiv nor medRxiv'),
       ({ value }) => value,
     ),
     TE.chain((subjectArea) => pipe(
