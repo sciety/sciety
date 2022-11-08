@@ -5,13 +5,12 @@ import {
   userUnsavedArticle,
 } from '../../src/domain-events';
 import { Ports, replicateUserSavedArticlesListAsGenericList } from '../../src/policies/replicate-user-saved-articles-list-as-generic-list';
-import { toErrorMessage } from '../../src/types/error-message';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryList } from '../group-page/about/to-our-lists-view-model.test';
-import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
+import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -77,8 +76,8 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       beforeEach(async () => {
         adapters = {
           ...happyPathAdapters,
-          addArticleToList: () => TE.left(toErrorMessage(arbitraryString())),
-          removeArticleFromList: () => TE.left(toErrorMessage(arbitraryString())),
+          addArticleToList: () => TE.left(arbitraryErrorMessage()),
+          removeArticleFromList: () => TE.left(arbitraryErrorMessage()),
           logger: jest.fn(dummyLogger),
         };
         await replicateUserSavedArticlesListAsGenericList(adapters)(event)();

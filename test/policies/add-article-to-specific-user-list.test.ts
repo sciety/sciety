@@ -1,12 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle, userUnsavedArticle } from '../../src/domain-events';
 import { addArticleToSpecificUserList, Ports, specificUserListId } from '../../src/policies/add-article-to-specific-user-list';
-import { toErrorMessage } from '../../src/types/error-message';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
+import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add-article-to-specific-user-list', () => {
@@ -51,7 +50,7 @@ describe('add-article-to-specific-user-list', () => {
       describe('an unsuccessful call to the addArticleToList port', () => {
         beforeEach(async () => {
           ports = {
-            addArticleToList: () => TE.left(toErrorMessage(arbitraryString())),
+            addArticleToList: () => TE.left(arbitraryErrorMessage()),
             logger: jest.fn(dummyLogger),
           };
           await addArticleToSpecificUserList(ports)(event)();

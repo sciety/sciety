@@ -1,12 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-subject-area-list';
-import { toErrorMessage } from '../../src/types/error-message';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
+import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
 describe('discover-elife-article-subject-area', () => {
@@ -37,7 +36,7 @@ describe('discover-elife-article-subject-area', () => {
         const adapters = {
           getArticleSubjectArea: () => TE.right(subjectArea),
           getOneArticleIdInEvaluatedState: () => O.some(articleId),
-          recordSubjectArea: jest.fn(() => TE.left(toErrorMessage(arbitraryString()))),
+          recordSubjectArea: jest.fn(() => TE.left(arbitraryErrorMessage())),
           logger: jest.fn(dummyLogger),
         };
 

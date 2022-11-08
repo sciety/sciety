@@ -12,12 +12,12 @@ import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import { FetchArticle } from '../../src/shared-ports';
 import * as DE from '../../src/types/data-error';
-import { toErrorMessage } from '../../src/types/error-message';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 type TestServer = {
@@ -51,11 +51,11 @@ export const createTestServer = async (): Promise<TestServer> => {
       'evaluated-and-subject-area-known': [],
     }),
     getOneArticleIdInEvaluatedState: () => O.none,
-    addArticleToList: () => TE.left(toErrorMessage('not implemented')),
-    removeArticleFromList: () => TE.left(toErrorMessage('not implemented')),
-    createList: () => TE.left(toErrorMessage('not implemented')),
+    addArticleToList: () => TE.left(arbitraryErrorMessage()),
+    removeArticleFromList: () => TE.left(arbitraryErrorMessage()),
+    createList: () => TE.left(arbitraryErrorMessage()),
     fetchArticle,
-    recordSubjectArea: () => TE.left(toErrorMessage('not implemented')),
+    recordSubjectArea: () => TE.left(arbitraryErrorMessage()),
     fetchReview: fetchReview(fetchers),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
