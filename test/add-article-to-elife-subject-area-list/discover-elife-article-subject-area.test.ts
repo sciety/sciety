@@ -20,7 +20,7 @@ describe('discover-elife-article-subject-area', () => {
         const adapters = {
           getArticleSubjectArea: () => TE.right(subjectArea),
           getOneArticleIdInEvaluatedState: () => O.some(articleId),
-          recordSubjectArea: jest.fn(() => TE.right(undefined)),
+          recordSubjectArea: jest.fn(() => TE.right('events-created' as const)),
           logger: dummyLogger,
         };
 
@@ -57,7 +57,7 @@ describe('discover-elife-article-subject-area', () => {
       const adapters = {
         getArticleSubjectArea: () => TE.left(arbitraryDataError()),
         getOneArticleIdInEvaluatedState: () => O.some(articleId),
-        recordSubjectArea: jest.fn(() => TE.right(undefined)),
+        recordSubjectArea: jest.fn(() => TE.right('no-events-created' as const)),
         logger: jest.fn(dummyLogger),
       };
 
@@ -81,7 +81,7 @@ describe('discover-elife-article-subject-area', () => {
     const adapters = {
       getArticleSubjectArea: shouldNotBeCalled,
       getOneArticleIdInEvaluatedState: () => O.none,
-      recordSubjectArea: jest.fn(() => TE.right(undefined)),
+      recordSubjectArea: jest.fn(() => TE.right('no-events-created' as const)),
       logger: dummyLogger,
     };
 

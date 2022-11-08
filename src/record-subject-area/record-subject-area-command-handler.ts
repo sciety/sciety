@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { RecordSubjectAreaCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
+import { CommandResult } from '../types/command-result';
 import { ErrorMessage } from '../types/error-message';
 
 type Ports = {
@@ -15,7 +16,7 @@ type RecordSubjectAreaCommandHandler = (
   ports: Ports
 ) => (
   input: RecordSubjectAreaCommand,
-) => TE.TaskEither<ErrorMessage, void>;
+) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = (
   ports,
@@ -25,5 +26,4 @@ export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = 
   ports.getAllEvents,
   T.map(executeCommand(command)),
   TE.chainTaskK(ports.commitEvents),
-  TE.map(() => undefined),
 );
