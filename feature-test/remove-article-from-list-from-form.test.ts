@@ -6,7 +6,7 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
-import {arbitraryArticleId} from '../test/types/article-id.helper';
+import { arbitraryArticleId } from '../test/types/article-id.helper';
 
 const getFirstListOwnedBy = async (userId: string) => {
   const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
