@@ -26,6 +26,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
+import { actionFailedPage } from '../action-failed/action-failed-page';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -173,6 +174,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/about',
     pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+  );
+
+  router.get(
+    '/action-failed',
+    pageHandler(() => actionFailedPage),
   );
 
   router.get(
