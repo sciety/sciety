@@ -50,7 +50,11 @@ export const removeArticleFromListFromForm = (adapters: Ports): Middleware => as
       }),
     )),
     TE.chainW(removeArticleFromListCommandHandler(adapters)),
-    (foo) => foo,
+    TE.mapLeft(() => {
+      context.redirect('/action-failed');
+    }),
+    TE.chainTaskK(() => async () => {
+      await next();
+    }),
   )();
-  await next();
 };
