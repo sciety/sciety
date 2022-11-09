@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   $,
   click, closeBrowser,
+  currentURL,
   goto,
   openBrowser,
 } from 'taiko';
@@ -52,13 +53,16 @@ describe('remove-article-from-list-from-form', () => {
           const articleCardDeleteButtonSelector = '.article-card form[action="/remove-article-from-list-from-form"]';
           const deleteButton = $(articleCardDeleteButtonSelector);
           await click(deleteButton);
-          await goto(genericListPage);
-          content = await $(contentSelector).text();
         });
 
-        it.todo('they should be redirected to the generic list page');
+        it('they should be redirected to the generic list page', async () => {
+          expect(await currentURL()).toContain(genericListPage);
+        });
 
         it('the article should no longer be in the list', async () => {
+          await goto(genericListPage);
+          content = await $(contentSelector).text();
+
           expect(content).toContain('This list is currently empty. Try coming back later!');
         });
       });
