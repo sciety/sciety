@@ -6,6 +6,7 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
+import {arbitraryArticleId} from '../test/types/article-id.helper';
 
 const getFirstListOwnedBy = async (userId: string) => {
   const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
@@ -33,7 +34,7 @@ describe('remove-article-from-list-from-form', () => {
     });
 
     describe('and has saved an article', () => {
-      const articleId = '10.1101/2022.06.06.494969';
+      const articleId = arbitraryArticleId().value;
       const articlePage = `localhost:8080/articles/activity/${articleId}`;
 
       beforeAll(async () => {
