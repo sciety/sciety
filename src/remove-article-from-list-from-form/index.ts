@@ -5,13 +5,14 @@ import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { removeArticleFromListCommandCodec } from '../commands/remove-article-from-list';
-import { GetAllEvents, Logger } from '../shared-ports';
+import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
+import { CommitEvents, GetAllEvents, Logger } from '../shared-ports';
 import { getList } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import * as LOID from '../types/list-owner-id';
 import { User } from '../types/user';
 
-type Ports = { logger: Logger, getAllEvents: GetAllEvents };
+type Ports = { logger: Logger, getAllEvents: GetAllEvents, commitEvents: CommitEvents };
 
 export const removeArticleFromListFromForm = (adapters: Ports): Middleware => async (context, next) => {
   const user = context.state.user as User;
@@ -48,6 +49,8 @@ export const removeArticleFromListFromForm = (adapters: Ports): Middleware => as
         return E.right(command);
       }),
     )),
+    TE.chainW(removeArticleFromListCommandHandler(adapters)),
+    (foo) => foo,
   )();
   await next();
 };
