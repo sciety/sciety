@@ -457,7 +457,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     redirectBack,
   );
 
+  // deprecated
   router.post('/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
+
+  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
 
   router.post('/add-article-to-list', handleScietyApiCommand(adapters, flow(
     validateInputShape(addArticleToListCommandCodec),
