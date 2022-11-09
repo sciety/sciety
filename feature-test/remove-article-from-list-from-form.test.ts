@@ -5,7 +5,6 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
-import { noArticlesMessage } from '../src/generic-list-page/articles-list/static-messages';
 
 const getFirstListOwnedBy = async (userId: string) => {
   const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
@@ -39,22 +38,24 @@ describe('remove-article-from-list-from-form', () => {
 
       describe('and they click the trash can', () => {
         const contentSelector = 'main';
+        let genericListPage: string;
+        let content: string;
 
         beforeAll(async () => {
           const listId = await getFirstListOwnedBy(testUserId);
-          const genericListPage = `localhost:8080/lists/${listId}`;
+          genericListPage = `localhost:8080/lists/${listId}`;
           await goto(genericListPage);
           const articleCardDeleteButtonSelector = '.article-card form[action="/remove-article-from-list-from-form"]';
           const deleteButton = $(articleCardDeleteButtonSelector);
           await click(deleteButton);
+          await goto(genericListPage);
+          content = await $(contentSelector).text();
         });
 
         it.todo('they should be redirected to the generic list page');
 
         it.failing('the article should no longer be in the list', async () => {
-          const content = await $(contentSelector).text();
-
-          expect(content).toContain(noArticlesMessage);
+          expect(content).toContain('This list is currently empty. Try coming back later!');
         });
       });
     });
