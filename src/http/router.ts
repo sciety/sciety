@@ -55,6 +55,7 @@ import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluationCommandHandler } from '../record-evaluation';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
+import { removeArticleFromListFromForm } from '../remove-article-from-list-from-form';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -439,6 +440,14 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     bodyParser({ enableTypes: ['form'] }),
     requireAuthentication,
     unsaveArticle(adapters),
+    redirectBack,
+  );
+
+  router.post(
+    '/remove-article-from-list-from-form',
+    bodyParser({ enableTypes: ['form'] }),
+    requireAuthentication,
+    removeArticleFromListFromForm(adapters),
     redirectBack,
   );
 
