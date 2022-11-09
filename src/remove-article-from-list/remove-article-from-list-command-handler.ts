@@ -1,8 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
-import { removeArticleFromListCommandCodec } from '../commands';
-import { validateInputShape } from '../commands/validate-input-shape';
+import { RemoveArticleFromListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
 import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
 import { CommandResult } from '../types/command-result';
@@ -16,7 +15,7 @@ type Ports = {
 type RemoveArticleFromListCommandHandler = (
   ports: Ports
 ) => (
-  input: unknown,
+  input: RemoveArticleFromListCommand,
 ) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
@@ -25,8 +24,7 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
   input,
 ) => pipe(
   input,
-  validateInputShape(removeArticleFromListCommandCodec),
-  TE.fromEither,
+  TE.right,
   TE.chainW((command) => pipe(
     ports.getAllEvents,
     TE.rightTask,

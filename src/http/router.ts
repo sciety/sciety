@@ -33,7 +33,7 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articleActivityPage } from '../article-page';
-import { addArticleToListCommandCodec } from '../commands';
+import { addArticleToListCommandCodec, removeArticleFromListCommandCodec } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -459,7 +459,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     TE.chain(addArticleToListCommandHandler(adapters)),
   )));
 
-  router.post('/remove-article-from-list', handleScietyApiCommand(adapters, removeArticleFromListCommandHandler(adapters)));
+  router.post('/remove-article-from-list', handleScietyApiCommand(adapters, flow(
+    validateInputShape(removeArticleFromListCommandCodec),
+    TE.fromEither,
+    TE.chain(removeArticleFromListCommandHandler(adapters)),
+  )));
 
   router.post('/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
 
