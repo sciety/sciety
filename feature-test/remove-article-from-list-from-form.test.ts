@@ -54,7 +54,7 @@ describe('remove-article-from-list-from-form', () => {
 
         it.todo('they should be redirected to the generic list page');
 
-        it('the article should no longer be in the list', async () => {
+        it.failing('the article should no longer be in the list', async () => {
           expect(content).toContain('This list is currently empty. Try coming back later!');
         });
       });
