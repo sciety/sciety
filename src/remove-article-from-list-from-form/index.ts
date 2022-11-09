@@ -7,6 +7,7 @@ import { Middleware } from 'koa';
 import { removeArticleFromListCommandCodec } from '../commands/remove-article-from-list';
 import { GetAllEvents, Logger } from '../shared-ports';
 import { getList } from '../shared-read-models/lists';
+import * as DE from '../types/data-error';
 import * as LOID from '../types/list-owner-id';
 import { User } from '../types/user';
 
@@ -36,13 +37,15 @@ export const removeArticleFromListFromForm = (adapters: Ports): Middleware => as
     TE.chainW((command) => pipe(
       adapters.getAllEvents,
       T.chain(getList(command.listId)),
-      TE.map((list) => {
+      TE.chainEitherK((list) => {
         if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
           adapters.logger('error', 'List owner id does not match user id', { list, userId });
-        } else {
-          adapters.logger('info', 'List owner id matches user id', { list, userId });
+
+          return E.left(DE.unavailable);
         }
-        return command;
+        adapters.logger('info', 'List owner id matches user id', { list, userId });
+
+        return E.right(command);
       }),
     )),
   )();
