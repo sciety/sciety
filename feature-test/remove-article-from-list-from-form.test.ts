@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   $,
-  click,
+  click, closeBrowser,
   goto,
   openBrowser,
 } from 'taiko';
@@ -18,6 +18,10 @@ const getFirstListOwnedBy = async (userId: string) => {
 describe('remove-article-from-list-from-form', () => {
   beforeAll(async () => {
     await openBrowser();
+  });
+
+  afterAll(async () => {
+    await closeBrowser();
   });
 
   describe('when the user is logged in', () => {
