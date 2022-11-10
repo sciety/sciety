@@ -31,7 +31,7 @@ describe('save-article-to-list', () => {
         const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
-        const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+        const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
         const listCardSelector = '.list-card';
         const listCardTimeSelector = '.list-card time';
 
@@ -52,7 +52,7 @@ describe('save-article-to-list', () => {
           expect(articleIsDisplayed).toBe(true);
         });
 
-        it.skip('the article card on the list page offers a delete button', async () => {
+        it('the article card on the list page offers a delete button', async () => {
           await goto(genericListPage);
           const deleteButton = $(articleCardDeleteButtonSelector);
           expect(await deleteButton.exists()).toBe(true);
@@ -119,7 +119,7 @@ describe('save-article-to-list', () => {
         const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
         const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
-        const articleCardDeleteButtonSelector = '.article-card form[action="/unsave-article"]';
+        const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
         const listCardSelector = '.list-card';
         const listCardTimeSelector = '.list-card time';
 
@@ -143,7 +143,9 @@ describe('save-article-to-list', () => {
         });
 
         it('the article card on the list page offers a delete button', async () => {
-          await goto(userSavedArticlesPage);
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const deleteButton = $(articleCardDeleteButtonSelector);
           expect(await deleteButton.exists()).toBe(true);
         });
