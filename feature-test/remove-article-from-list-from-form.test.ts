@@ -51,7 +51,7 @@ describe('remove-article-from-list-from-form', () => {
           const listId = await getFirstListOwnedBy(testUserId);
           genericListPage = `localhost:8080/lists/${listId}`;
           await goto(genericListPage);
-          const articleCardDeleteButtonSelector = '.article-card form[action="/remove-article-from-list-from-form"]';
+          const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
           const deleteButton = $(articleCardDeleteButtonSelector);
           await click(deleteButton);
         });

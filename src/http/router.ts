@@ -450,7 +450,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.post(
-    '/remove-article-from-list-from-form',
+    '/forms/remove-article-from-list',
     bodyParser({ enableTypes: ['form'] }),
     requireAuthentication,
     removeArticleFromListFromForm(adapters),

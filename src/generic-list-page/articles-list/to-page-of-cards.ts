@@ -18,7 +18,7 @@ export type Ports = ToCardViewModelPorts;
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
-  (id) => `<form method="post" action="/remove-article-from-list-from-form">
+  (id) => `<form method="post" action="/forms/remove-article-from-list">
       <input type="hidden" name="articleid" value="${id}">
       <input type="hidden" name="listid" value="${listId}">
       <button aria-label="Remove this article from the list" class="saved-articles-control">
