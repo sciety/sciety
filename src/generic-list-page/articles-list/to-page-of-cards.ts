@@ -5,6 +5,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
+import { ArticleErrorCardViewModel } from './render-article-error-card';
+import { ArticleCardWithControlsViewModel } from './render-component';
 import { ArticlesViewModel } from './render-component-with-pagination';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
@@ -62,13 +64,13 @@ export const toPageOfCards = (
   pageOfArticles.items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
-  TE.chainTaskK(T.traverseArray(flow(
-    E.map(
-      toArticleCardWithControlsViewModel(
-        hasArticleControls,
-        listId,
+  TE.chainTaskK(T.traverseArray(
+    E.foldW(
+      TE.left,
+      flow(
+        toArticleCardWithControlsViewModel(hasArticleControls, listId),
+        TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>,
       ),
     ),
-    T.of,
-  ))),
+  )),
 );
