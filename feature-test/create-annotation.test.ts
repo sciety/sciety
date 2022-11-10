@@ -4,7 +4,7 @@ import {
 import { toUserId } from '../src/types/user-id';
 import { arbitraryString } from '../test/helpers';
 
-describe.skip('create-annotation', () => {
+describe('create-annotation', () => {
   beforeAll(async () => {
     await openBrowser();
   });
@@ -24,7 +24,7 @@ describe.skip('create-annotation', () => {
       const articleId = '10.1101/2022.09.20.508647';
 
       beforeAll(async () => {
-        await goto(`localhost:8080/articles/${articleId}}`);
+        await goto(`localhost:8080/articles/${articleId}`);
         await click('Save to my list');
       });
 
