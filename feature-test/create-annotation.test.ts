@@ -1,8 +1,18 @@
+import axios from 'axios';
 import {
   $, click, closeBrowser, goto, into, openBrowser, textBox, write,
 } from 'taiko';
 import { toUserId } from '../src/types/user-id';
 import { arbitraryString } from '../test/helpers';
+
+const getFirstListOwnedBy = async (userId: string) => {
+  const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
+
+  expect(userList.data.items).toHaveLength(1);
+
+  const listId = userList.data.items[0].id as unknown as string;
+  return listId;
+};
 
 describe('create-annotation', () => {
   beforeAll(async () => {
@@ -36,10 +46,18 @@ describe('create-annotation', () => {
           await write(annotationText, into(textBox('Annotation content')));
           await write(articleId, into(textBox('Article DOI')));
           await click('Create annotation');
-          await goto('localhost:8080/users/AvasthiReading/lists/saved-articles');
         });
 
         it('the article card on the user saved articles list page has the annotation attached', async () => {
+          await goto('localhost:8080/users/AvasthiReading/lists/saved-articles');
+          const annotationSectionText = await $('.article-card-annotation').text();
+
+          expect(annotationSectionText).toContain(annotationText);
+        });
+
+        it.skip('the article card on the generic list page has the annotation attached', async () => {
+          const genericListId = await getFirstListOwnedBy(avasthiReadingUserId);
+          await goto(`localhost:8080/lists/${genericListId}`);
           const annotationSectionText = await $('.article-card-annotation').text();
 
           expect(annotationSectionText).toContain(annotationText);
