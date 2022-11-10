@@ -54,7 +54,7 @@
   "devDependencies": {
     "@types/clownface": "^1.5.1",
     "@types/jest": "^29.2.2",
-    "@types/jsdom": "^20.0.0",
+    "@types/jsdom": "^20.0.1",
     "@types/koa": "^2.13.5",
     "@types/koa-bodyparser": "^4.3.9",
     "@types/koa-compose": "^3.2.5",
