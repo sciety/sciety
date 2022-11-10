@@ -19,7 +19,6 @@ import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
-import * as UID from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 
@@ -43,15 +42,14 @@ const toArticleCardWithControlsViewModel = (
   ports: Ports,
   hasArticleControls: boolean,
   listId: ListId,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   listOwnerId: ListOwnerId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
     articleViewModel: T.of(articleViewModel),
-    annotationContent: pipe(
+    annotationContent: listOwnerId.tag === 'user-id' ? pipe(
       ports.getAllEvents,
-      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456'))),
-    ),
+      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId.value)),
+    ) : T.of(undefined),
     controls: pipe(
       hasArticleControls,
       B.fold(
