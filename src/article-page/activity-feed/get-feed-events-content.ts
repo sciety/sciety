@@ -51,13 +51,13 @@ export type Ports = {
 };
 
 const reviewToFeedItem = (
-  ports: Ports,
+  adapters: Ports,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
 ) => pipe(
   {
     groupDetails: pipe(
-      ports.getAllEvents,
+      adapters.getAllEvents,
       T.map(getGroup(feedEvent.groupId)),
       TE.match(
         () => ({
@@ -74,7 +74,7 @@ const reviewToFeedItem = (
     ),
     review: pipe(
       feedEvent.reviewId,
-      ports.fetchReview,
+      adapters.fetchReview,
       TE.match(
         () => ({
           url: RI.inferredSourceUrl(feedEvent.reviewId),
@@ -88,10 +88,10 @@ const reviewToFeedItem = (
       ),
     ),
     reviewResponses: pipe(
-      ports.getAllEvents,
+      adapters.getAllEvents,
       T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
-    userReviewResponse: projectUserReviewResponse(ports.getAllEvents)(feedEvent.reviewId, userId),
+    userReviewResponse: projectUserReviewResponse(adapters.getAllEvents)(feedEvent.reviewId, userId),
   },
   sequenceS(T.ApplyPar),
   T.map(({
@@ -108,17 +108,17 @@ const reviewToFeedItem = (
   })),
 );
 
-type GetFeedEventsContent = (ports: Ports, server: ArticleServer, userId: O.Option<UserId>)
+type GetFeedEventsContent = (adapters: Ports, server: ArticleServer, userId: O.Option<UserId>)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = (ports, server, userId) => (feedEvents) => {
+export const getFeedEventsContent: GetFeedEventsContent = (adapters, server, userId) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
-        return reviewToFeedItem(ports, feedEvent, userId);
+        return reviewToFeedItem(adapters, feedEvent, userId);
     }
   };
   return pipe(

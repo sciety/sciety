@@ -22,7 +22,7 @@ export type Ports = {
 };
 
 type GetPublishedDateOfMostRecentArticleVersion = (
-  ports: Ports,
+  adapters: Ports,
   articleId: Doi,
 ) => TE.TaskEither<DE.DataError, O.Option<Date>>;
 

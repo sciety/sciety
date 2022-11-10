@@ -31,7 +31,7 @@ type DocmapIdentifier = {
 };
 
 type GenerateDocmapViewModel = (
-  ports: Ports
+  adapters: Ports
 ) => (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
@@ -49,13 +49,13 @@ export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe(
+const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(
   review.reviewId,
   inferredSourceUrl,
   O.fold(
     () => pipe(
       review.reviewId,
-      ports.fetchReview,
+      adapters.fetchReview,
       TE.map((fetchedReview) => ({
         ...review,
         sourceUrl: fetchedReview.url,
@@ -68,23 +68,23 @@ const extendWithSourceUrl = (ports: Ports) => (review: ReviewForArticle) => pipe
   ),
 );
 
-export const generateDocmapViewModel: GenerateDocmapViewModel = (ports) => ({ articleId, groupId }) => pipe(
+export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({ articleId, groupId }) => pipe(
   {
     articleId: TE.right(articleId),
     evaluations: pipe(
-      ports.getAllEvents,
+      adapters.getAllEvents,
       TE.rightTask,
       TE.map(getEvaluationsForDoi(articleId)),
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
-      TE.chainW(TE.traverseArray(extendWithSourceUrl(ports))),
+      TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
       )),
     ),
-    inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(ports, articleId),
+    inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(adapters, articleId),
     group: pipe(
-      ports.getAllEvents,
+      adapters.getAllEvents,
       T.map(getGroup(groupId)),
     ),
   },

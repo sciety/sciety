@@ -26,7 +26,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
-type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type ActivityPage = (adapters: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -57,20 +57,20 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
+export const articleActivityPage: ActivityPage = (adapters) => (params) => pipe(
   {
     doi: params.doi,
     userId: pipe(params.user, O.map((u) => u.id)),
   },
   ({ doi, userId }) => pipe(
     {
-      articleDetails: ports.fetchArticle(doi),
+      articleDetails: adapters.fetchArticle(doi),
       hasUserSavedArticle: pipe(
         userId,
         O.fold(
           constant(T.of(false)),
           (u) => pipe(
-            ports.getAllEvents,
+            adapters.getAllEvents,
             projectHasUserSavedArticle(doi, u),
           ),
         ),
@@ -79,7 +79,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
     },
     sequenceS(TE.ApplyPar),
     TE.chainW(({ articleDetails, hasUserSavedArticle }) => pipe(
-      getArticleFeedEventsByDateDescending(ports)(doi, articleDetails.server, userId),
+      getArticleFeedEventsByDateDescending(adapters)(doi, articleDetails.server, userId),
       TE.rightTask,
       TE.map((feedItemsByDateDescending) => ({
         doi,

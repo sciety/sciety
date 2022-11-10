@@ -38,12 +38,12 @@ export type Ports = {
 
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
-  ports: Ports,
+  adapters: Ports,
 ) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (
   supportedGroups,
-  ports,
+  adapters,
 ) => (
   events,
 ) => pipe(
@@ -56,7 +56,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     updated: date,
   })),
   TE.traverseArray((incompleteEntry) => pipe(
-    ports.getAllEvents,
+    adapters.getAllEvents,
     T.map(getGroup(incompleteEntry.groupId)),
     TE.map((group) => ({
       ...incompleteEntry,

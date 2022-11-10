@@ -14,13 +14,13 @@ type Ports = {
 };
 
 type AddGroupCommandHandler = (
-  ports: Ports
+  adapters: Ports
 ) => (
   input: unknown,
 ) => TE.TaskEither<string, CommandResult>;
 
 export const addGroupCommandHandler: AddGroupCommandHandler = (
-  ports,
+  adapters,
 ) => (
   input,
 ) => pipe(
@@ -28,8 +28,8 @@ export const addGroupCommandHandler: AddGroupCommandHandler = (
   validateInputShape(addGroupCommandCodec),
   TE.fromEither,
   TE.chainW((command) => pipe(
-    ports.getAllEvents,
+    adapters.getAllEvents,
     T.map(executeCommand(command)),
   )),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(adapters.commitEvents),
 );

@@ -30,7 +30,7 @@ type Ports = GetFeedEventsContentPorts & {
 };
 
 type GetArticleFeedEventsByDateDescending = (
-  ports: Ports
+  adapters: Ports
 ) => (
   doi: Doi,
   server: ArticleServer,
@@ -38,18 +38,18 @@ type GetArticleFeedEventsByDateDescending = (
 ) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
-  ports,
+  adapters,
 ) => (
   doi, server, userId,
 ) => pipe(
   [
     pipe(
-      ports.getAllEvents,
+      adapters.getAllEvents,
       T.map(getEvaluationsForDoi(doi)),
       T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
     pipe(
-      ports.findVersionsForArticleDoi(doi, server),
+      adapters.findVersionsForArticleDoi(doi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
@@ -57,6 +57,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     ),
   ] as const,
   mergeFeeds,
-  T.chain(getFeedEventsContent(ports, server, userId)),
+  T.chain(getFeedEventsContent(adapters, server, userId)),
   T.map(handleArticleVersionErrors(server)),
 );

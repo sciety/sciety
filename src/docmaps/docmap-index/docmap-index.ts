@@ -20,18 +20,18 @@ type DocmapIndexBody = {
   error?: string,
 };
 
-type DocmapIndex = (ports: Ports) => (query: Record<string, unknown>) => T.Task<{
+type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Task<{
   body: DocmapIndexBody,
   status: StatusCodes,
 }>;
 
-export const docmapIndex: DocmapIndex = (ports) => (query) => pipe(
-  ports.getAllEvents,
+export const docmapIndex: DocmapIndex = (adapters) => (query) => pipe(
+  adapters.getAllEvents,
   TE.rightTask,
-  TE.chain(identifyAllPossibleIndexEntries(supportedGroups, ports)),
+  TE.chain(identifyAllPossibleIndexEntries(supportedGroups, adapters)),
   TE.chainEitherK(filterByParams(query)),
   TE.chainW(flow(
-    TE.traverseArray(generateDocmapViewModel(ports)),
+    TE.traverseArray(generateDocmapViewModel(adapters)),
     TE.mapLeft(() => ER.internalServerError),
   )),
   TE.map(RA.map(toDocmap)),

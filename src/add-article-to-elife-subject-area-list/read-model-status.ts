@@ -22,8 +22,8 @@ type ArticlesInState = { articleIds: ReadonlyArray<string>, articleCount: number
 type ReadModelStatus = Record<ArticleState, ArticlesInState>;
 
 export const readModelStatus = (
-  ports: Ports,
+  adapters: Ports,
 ): ReadModelStatus => pipe(
-  ports.getArticleIdsByState(),
+  adapters.getArticleIdsByState(),
   formatForJson,
 );

@@ -13,16 +13,16 @@ export type Ports = {
 };
 
 type AddArticleToListCommandHandler = (
-  ports: Ports
+  adapters: Ports
 ) => CommandHandler<AddArticleToListCommand>;
 
 export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
-  ports,
+  adapters,
 ) => (
   command,
 ) => pipe(
-  ports.getAllEvents,
+  adapters.getAllEvents,
   T.map(replayListAggregate(command.listId)),
   TE.map(executeCommand(command)),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(adapters.commitEvents),
 );

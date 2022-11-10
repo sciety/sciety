@@ -35,22 +35,22 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type HandleCreateAnnotationCommand = (ports: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
+type HandleCreateAnnotationCommand = (adapters: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
-export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (ports) => (input) => pipe(
+export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => (input) => pipe(
   input,
   bodyCodec.decode,
   E.map(transformToCommand),
   TE.fromEither,
   TE.chainFirstTaskK(
     (command) => T.of(
-      ports.logger('debug', 'Received CreateAnnotation command', { command }),
+      adapters.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
   TE.chainTaskK((command) => pipe(
-    ports.getAllEvents,
+    adapters.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
   )),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(adapters.commitEvents),
   TE.map(() => 'no-events-created'),
 );
