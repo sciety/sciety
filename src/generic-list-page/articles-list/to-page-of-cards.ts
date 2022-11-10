@@ -18,6 +18,7 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import { ListOwnerId } from '../../types/list-owner-id';
 import * as UID from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
@@ -42,6 +43,8 @@ const toArticleCardWithControlsViewModel = (
   ports: Ports,
   hasArticleControls: boolean,
   listId: ListId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  listOwnerId: ListOwnerId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
     articleViewModel: T.of(articleViewModel),
@@ -65,6 +68,7 @@ export const toPageOfCards = (
   ports: Ports,
   hasArticleControls: boolean,
   listId: ListId,
+  listOwnerId: ListOwnerId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
@@ -75,7 +79,7 @@ export const toPageOfCards = (
     E.foldW(
       TE.left,
       flow(
-        toArticleCardWithControlsViewModel(ports, hasArticleControls, listId),
+        toArticleCardWithControlsViewModel(ports, hasArticleControls, listId, listOwnerId),
         T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),

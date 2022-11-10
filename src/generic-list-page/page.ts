@@ -64,6 +64,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
                 listOwnerId,
                 getLoggedInUserIdFromParam(params.user),
               ),
+              listOwnerId,
             ),
             TE.map(renderComponentWithPagination(`/lists/${listId}`)),
           ),
