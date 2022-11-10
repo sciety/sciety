@@ -37,6 +37,7 @@ const toArticleCardWithControlsViewModel = (
   listId: ListId,
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
+  annotationContent: undefined,
   controls: pipe(
     hasArticleControls,
     B.fold(
