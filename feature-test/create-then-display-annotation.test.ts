@@ -14,7 +14,7 @@ const getFirstListOwnedBy = async (userId: string) => {
   return listId;
 };
 
-describe('create-annotation', () => {
+describe('create-then-display-annotation', () => {
   beforeAll(async () => {
     await openBrowser();
   });
