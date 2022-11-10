@@ -9,10 +9,12 @@ import { ArticlesViewModel } from './render-component-with-pagination';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
+import { getAnnotationContentByUserListTarget } from '../../shared-read-models/annotations';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import * as UID from '../../types/user-id';
 
 export type Ports = ToCardViewModelPorts;
 
@@ -37,7 +39,10 @@ const toArticleCardWithControlsViewModel = (
   listId: ListId,
 ) => (articleViewModel: ArticleViewModel) => ({
   articleViewModel,
-  annotationContent: undefined,
+  annotationContent: pipe(
+    [],
+    getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456')),
+  ),
   controls: pipe(
     hasArticleControls,
     B.fold(
