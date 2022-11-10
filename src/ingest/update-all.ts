@@ -66,7 +66,7 @@ type EvaluationCommand = {
 };
 
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
-  async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/record-evaluation`, JSON.stringify(evaluationCommand), {
+  async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation`, JSON.stringify(evaluationCommand), {
     headers: {
       Authorization: `Bearer ${process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret'}`,
       'Content-Type': 'application/json',

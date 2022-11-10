@@ -19,7 +19,7 @@ describe('record an evaluation', () => {
     const evaluationLocator = RI.serialize(arbitraryReviewId());
 
     beforeEach(async () => {
-      await callApi('record-evaluation', {
+      await callApi('api/record-evaluation', {
         evaluationLocator,
         articleId,
         groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',

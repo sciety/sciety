@@ -12,7 +12,7 @@ describe('respond', () => {
 
   beforeEach(async () => {
     await openBrowser();
-    await callApi('record-evaluation', {
+    await callApi('api/record-evaluation', {
       groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
       publishedAt: new Date(),
       evaluationLocator: arbitraryReviewId(),
