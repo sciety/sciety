@@ -16,7 +16,7 @@ describe('add an article to a list', () => {
     const listId = '5ac3a439-e5c6-4b15-b109-92928a740812';
 
     beforeEach(async () => {
-      await callApi('add-article-to-list', { articleId, listId });
+      await callApi('api/add-article-to-list', { articleId, listId });
     });
 
     it('displays the article', async () => {

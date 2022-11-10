@@ -16,7 +16,7 @@ describe('add-group', () => {
 
   beforeAll(async () => {
     await openBrowser();
-    await callApi('add-group', newGroup);
+    await callApi('api/add-group', newGroup);
   });
 
   afterAll(async () => {

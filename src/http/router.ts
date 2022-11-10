@@ -459,19 +459,19 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
 
-  router.post('/add-article-to-list', handleScietyApiCommand(adapters, flow(
+  router.post('/api/add-article-to-list', handleScietyApiCommand(adapters, flow(
     validateInputShape(addArticleToListCommandCodec),
     TE.fromEither,
     TE.chain(addArticleToListCommandHandler(adapters)),
   )));
 
-  router.post('/remove-article-from-list', handleScietyApiCommand(adapters, flow(
+  router.post('/api/remove-article-from-list', handleScietyApiCommand(adapters, flow(
     validateInputShape(removeArticleFromListCommandCodec),
     TE.fromEither,
     TE.chain(removeArticleFromListCommandHandler(adapters)),
   )));
 
-  router.post('/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
+  router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
 
   router.post(
     '/annotations/create-annotation',

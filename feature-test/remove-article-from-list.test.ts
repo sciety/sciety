@@ -16,8 +16,8 @@ describe('remove an article from a list', () => {
     const listId = '5498e813-ddad-414d-88df-d1f84696cecd';
 
     beforeEach(async () => {
-      await callApi('add-article-to-list', { articleId, listId });
-      await callApi('remove-article-from-list', { articleId, listId });
+      await callApi('api/add-article-to-list', { articleId, listId });
+      await callApi('api/remove-article-from-list', { articleId, listId });
     });
 
     it('does not display the article', async () => {
