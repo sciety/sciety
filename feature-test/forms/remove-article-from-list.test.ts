@@ -6,7 +6,7 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
+import { arbitraryArticleId } from '../../test/types/article-id.helper';
 
 const getFirstListOwnedBy = async (userId: string) => {
   const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
@@ -17,7 +17,7 @@ const getFirstListOwnedBy = async (userId: string) => {
   return listId;
 };
 
-describe('remove-article-from-list-from-form', () => {
+describe('remove-article-from-list', () => {
   beforeAll(async () => {
     await openBrowser();
   });

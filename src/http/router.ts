@@ -15,6 +15,7 @@ import send from 'koa-send';
 import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
+import { removeArticleFromList } from './forms/remove-article-from-list';
 import { handleScietyApiCommand } from './handle-sciety-api-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
@@ -56,7 +57,6 @@ import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluationCommandHandler } from '../record-evaluation';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { removeArticleFromListFromForm } from '../remove-article-from-list-from-form';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -453,7 +453,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/forms/remove-article-from-list',
     bodyParser({ enableTypes: ['form'] }),
     requireAuthentication,
-    removeArticleFromListFromForm(adapters),
+    removeArticleFromList(adapters),
     redirectBack,
   );
 

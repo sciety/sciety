@@ -4,17 +4,17 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { removeArticleFromListCommandCodec } from '../commands/remove-article-from-list';
-import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { CommitEvents, GetAllEvents, Logger } from '../shared-ports';
-import { getList } from '../shared-read-models/lists';
-import * as DE from '../types/data-error';
-import * as LOID from '../types/list-owner-id';
-import { User } from '../types/user';
+import { removeArticleFromListCommandCodec } from '../../commands/remove-article-from-list';
+import { removeArticleFromListCommandHandler } from '../../remove-article-from-list';
+import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
+import { getList } from '../../shared-read-models/lists';
+import * as DE from '../../types/data-error';
+import * as LOID from '../../types/list-owner-id';
+import { User } from '../../types/user';
 
 type Ports = { logger: Logger, getAllEvents: GetAllEvents, commitEvents: CommitEvents };
 
-export const removeArticleFromListFromForm = (adapters: Ports): Middleware => async (context, next) => {
+export const removeArticleFromList = (adapters: Ports): Middleware => async (context, next) => {
   const user = context.state.user as User;
   const userId = user.id;
   await pipe(
