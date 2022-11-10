@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -11,6 +12,7 @@ import { ArticlesViewModel } from './render-component-with-pagination';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
+import { GetAllEvents } from '../../shared-ports';
 import { getAnnotationContentByUserListTarget } from '../../shared-read-models/annotations';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
@@ -18,7 +20,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import * as UID from '../../types/user-id';
 
-export type Ports = ToCardViewModelPorts;
+export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
@@ -37,14 +39,15 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
 );
 
 const toArticleCardWithControlsViewModel = (
+  ports: Ports,
   hasArticleControls: boolean,
   listId: ListId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
-    articleViewModel,
+    articleViewModel: T.of(articleViewModel),
     annotationContent: pipe(
-      [],
-      getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456')),
+      ports.getAllEvents,
+      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456'))),
     ),
     controls: pipe(
       hasArticleControls,
@@ -52,9 +55,10 @@ const toArticleCardWithControlsViewModel = (
         () => O.none,
         () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),
       ),
+      T.of,
     ),
   },
-  T.of,
+  sequenceS(T.ApplyPar),
 );
 
 export const toPageOfCards = (
@@ -71,7 +75,7 @@ export const toPageOfCards = (
     E.foldW(
       TE.left,
       flow(
-        toArticleCardWithControlsViewModel(hasArticleControls, listId),
+        toArticleCardWithControlsViewModel(ports, hasArticleControls, listId),
         T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),
