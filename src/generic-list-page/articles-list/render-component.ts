@@ -9,6 +9,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export type ArticleCardWithControlsViewModel = {
   articleViewModel: ArticleViewModel,
   controls: O.Option<HtmlFragment>,
+  annotationContent?: HtmlFragment,
 };
 
 type RenderArticlesList = (
@@ -18,7 +19,10 @@ type RenderArticlesList = (
 export const renderComponent: RenderArticlesList = flow(
   RA.map(E.fold(
     renderArticleErrorCard,
-    ({ articleViewModel, controls }) => renderArticleCardWithControlsAndOptionalAnnotation(controls)(articleViewModel),
+    (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
+      viewModel.controls,
+      viewModel.annotationContent,
+    )(viewModel.articleViewModel),
   )),
   RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
   (renderedActivities) => `
