@@ -6,8 +6,8 @@ import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { logRequestBody } from './log-request-body';
 import { requireBearerToken } from './require-bearer-token';
-import { CollectedPorts } from '../infrastructure';
-import { CommandResult } from '../types/command-result';
+import { CollectedPorts } from '../../infrastructure';
+import { CommandResult } from '../../types/command-result';
 
 type ScietyApiCommandHandler = (input: unknown) => TE.TaskEither<string, CommandResult>;
 
