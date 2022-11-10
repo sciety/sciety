@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   $,
   click, closeBrowser,
@@ -7,15 +6,7 @@ import {
   openBrowser,
 } from 'taiko';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
-
-const getFirstListOwnedBy = async (userId: string) => {
-  const userList = await axios.get(`http://localhost:8081/owned-by/user-id:${userId}`);
-
-  expect(userList.data.items).toHaveLength(1);
-
-  const listId = userList.data.items[0].id as unknown as string;
-  return listId;
-};
+import { getFirstListOwnedBy } from '../get-first-list-owned-by.helper';
 
 describe('remove-article-from-list', () => {
   beforeAll(async () => {
