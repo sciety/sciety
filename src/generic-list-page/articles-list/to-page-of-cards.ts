@@ -39,20 +39,23 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
 const toArticleCardWithControlsViewModel = (
   hasArticleControls: boolean,
   listId: ListId,
-) => (articleViewModel: ArticleViewModel) => ({
-  articleViewModel,
-  annotationContent: pipe(
-    [],
-    getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456')),
-  ),
-  controls: pipe(
-    hasArticleControls,
-    B.fold(
-      () => O.none,
-      () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),
+) => (articleViewModel: ArticleViewModel) => pipe(
+  {
+    articleViewModel,
+    annotationContent: pipe(
+      [],
+      getAnnotationContentByUserListTarget(articleViewModel.articleId, UID.fromValidatedString('123456')),
     ),
-  ),
-});
+    controls: pipe(
+      hasArticleControls,
+      B.fold(
+        () => O.none,
+        () => O.some(renderRemoveArticleForm(articleViewModel.articleId, listId)),
+      ),
+    ),
+  },
+  T.of,
+);
 
 export const toPageOfCards = (
   ports: Ports,
@@ -69,7 +72,7 @@ export const toPageOfCards = (
       TE.left,
       flow(
         toArticleCardWithControlsViewModel(hasArticleControls, listId),
-        TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>,
+        T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),
   )),
