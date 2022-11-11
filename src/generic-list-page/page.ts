@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
-import { renderContentWithPagination } from './articles-list/render-content-with-pagination';
+import { ContentWithPaginationViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
@@ -18,6 +18,8 @@ import { selectArticlesBelongingToList } from '../shared-read-models/list-articl
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { DataError } from '../types/data-error';
+import { Doi } from '../types/doi';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
@@ -39,6 +41,10 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   O.map(({ id }) => id),
 );
 
+type Message = 'no-articles' | 'no-articles-can-be-fetched';
+
+type ContentViewModel = Message | ContentWithPaginationViewModel;
+
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.chain(getList(params.id)),
@@ -50,6 +56,29 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   TE.chain(({ headerViewModel, listOwnerId, listId }) => pipe(
     ({
       header: TE.right(renderComponent(headerViewModel)),
+      contentViewModel: pipe(
+        ports.getAllEvents,
+        T.map(selectArticlesBelongingToList(listId)),
+        TE.chainW(RA.match<TE.TaskEither<DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+          () => TE.right('no-articles' as const),
+          articlesList(
+            ports,
+            params.id,
+            params.page,
+            shouldHaveArticleControls(
+              listOwnerId,
+              getLoggedInUserIdFromParam(params.user),
+            ),
+            listOwnerId,
+          ),
+        )),
+        TE.orElse((left) => {
+          if (left === 'no-articles-can-be-fetched') {
+            return TE.right('no-articles-can-be-fetched' as const);
+          }
+          return TE.left(left);
+        }),
+      ),
       content: pipe(
         ports.getAllEvents,
         T.map(selectArticlesBelongingToList(listId)),
