@@ -76,32 +76,6 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
         }),
       ),
       basePath: TE.right(`/lists/${listId}`),
-      content: pipe(
-        ports.getAllEvents,
-        T.map(selectArticlesBelongingToList(listId)),
-        TE.chain(RA.match(
-          () => TE.right(noArticlesMessage),
-          flow(
-            articlesList(
-              ports,
-              params.id,
-              params.page,
-              shouldHaveArticleControls(
-                listOwnerId,
-                getLoggedInUserIdFromParam(params.user),
-              ),
-              listOwnerId,
-            ),
-            TE.map(renderContentWithPagination(`/lists/${listId}`)),
-          ),
-        )),
-        TE.orElse((left) => {
-          if (left === 'no-articles-can-be-fetched') {
-            return TE.right(noArticlesCanBeFetchedMessage);
-          }
-          return TE.left(left);
-        }),
-      ),
       title: TE.right(headerViewModel.name),
     }),
     sequenceS(TE.ApplyPar),
