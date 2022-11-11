@@ -4,14 +4,14 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-type Components = {
+type ViewModel = {
   title: string,
   header: HtmlFragment,
   content: HtmlFragment,
   supplementary?: HtmlFragment,
 };
 
-type Render = (components: Components) => HtmlFragment;
+type Render = (viewModel: ViewModel) => HtmlFragment;
 
 const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
   ${header}
@@ -34,7 +34,7 @@ export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   }),
 );
 
-export const renderPage = (components: Components): Page => ({
-  title: components.title,
-  content: pipe(components, render, toHtmlFragment),
+export const renderPage = (viewModel: ViewModel): Page => ({
+  title: viewModel.title,
+  content: pipe(viewModel, render, toHtmlFragment),
 });
