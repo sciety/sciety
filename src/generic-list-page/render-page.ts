@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { ContentWithPaginationViewModel } from './articles-list/render-content-with-pagination';
+import { ContentWithPaginationViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
+import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -13,17 +14,27 @@ type ViewModel = {
   title: string,
   header: HtmlFragment,
   basePath: string,
-  content: HtmlFragment,
   contentViewModel: ContentViewModel,
   supplementary?: HtmlFragment,
 };
 
 type Render = (viewModel: ViewModel) => HtmlFragment;
 
-const render: Render = ({ header, content, supplementary = toHtmlFragment('') }) => toHtmlFragment(`
+const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: string) => {
+  if (contentViewModel === 'no-articles') {
+    return noArticlesMessage;
+  } if (contentViewModel === 'no-articles-can-be-fetched') {
+    return noArticlesCanBeFetchedMessage;
+  }
+  return renderContentWithPagination(basePath)(contentViewModel);
+};
+
+const render: Render = ({
+  header, contentViewModel, basePath, supplementary = toHtmlFragment(''),
+}) => toHtmlFragment(`
   ${header}
   <section>
-    ${content}
+    ${renderListOrMessage(contentViewModel, basePath)}
   </section>
   ${supplementary}
 `);
