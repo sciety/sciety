@@ -16,7 +16,7 @@ type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>,
 ) => HtmlFragment;
 
-export const renderComponent: RenderArticlesList = flow(
+export const renderArticlesList: RenderArticlesList = flow(
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(

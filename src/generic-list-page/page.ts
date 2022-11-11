@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
-import { renderComponentWithPagination } from './articles-list/render-component-with-pagination';
+import { renderContentWithPagination } from './articles-list/render-content-with-pagination';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
@@ -66,7 +66,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
               ),
               listOwnerId,
             ),
-            TE.map(renderComponentWithPagination(`/lists/${listId}`)),
+            TE.map(renderContentWithPagination(`/lists/${listId}`)),
           ),
         )),
         TE.orElse((left) => {
