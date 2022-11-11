@@ -1,13 +1,19 @@
 import { pipe } from 'fp-ts/function';
+import { ContentWithPaginationViewModel } from './articles-list/render-content-with-pagination';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
+type Message = 'no-articles' | 'no-articles-can-be-fetched';
+
+export type ContentViewModel = Message | ContentWithPaginationViewModel;
+
 type ViewModel = {
   title: string,
   header: HtmlFragment,
   content: HtmlFragment,
+  contentViewModel: ContentViewModel,
   supplementary?: HtmlFragment,
 };
 

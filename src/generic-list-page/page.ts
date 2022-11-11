@@ -13,7 +13,7 @@ import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-lis
 import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
-import { renderErrorPage, renderPage } from './render-page';
+import {ContentViewModel, renderErrorPage, renderPage} from './render-page';
 import { selectArticlesBelongingToList } from '../shared-read-models/list-articles';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
@@ -40,10 +40,6 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
   O.map(({ id }) => id),
 );
-
-type Message = 'no-articles' | 'no-articles-can-be-fetched';
-
-type ContentViewModel = Message | ContentWithPaginationViewModel;
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
