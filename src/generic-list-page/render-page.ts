@@ -12,6 +12,7 @@ export type ContentViewModel = Message | ContentWithPaginationViewModel;
 type ViewModel = {
   title: string,
   header: HtmlFragment,
+  basePath: string,
   content: HtmlFragment,
   contentViewModel: ContentViewModel,
   supplementary?: HtmlFragment,

@@ -75,6 +75,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
           return TE.left(left);
         }),
       ),
+      basePath: TE.right(`/lists/${listId}`),
       content: pipe(
         ports.getAllEvents,
         T.map(selectArticlesBelongingToList(listId)),
