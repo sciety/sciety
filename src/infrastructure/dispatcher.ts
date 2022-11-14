@@ -9,19 +9,22 @@ import { DomainEvent } from '../domain-events';
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
-  readModel: ReadModel,
+  addArticleToElifeSubjectAreaListReadModel: ReadModel,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
 export const dispatcher = (): Dispatcher => {
-  let readModel = initialState();
+  let addArticleToElifeSubjectAreaListReadModel = initialState();
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    readModel = RA.reduce(readModel, handleEvent)(events);
+    addArticleToElifeSubjectAreaListReadModel = RA.reduce(
+      addArticleToElifeSubjectAreaListReadModel,
+      handleEvent,
+    )(events);
   };
 
   return {
-    readModel,
+    addArticleToElifeSubjectAreaListReadModel,
     dispatchToAllReadModels,
   };
 };

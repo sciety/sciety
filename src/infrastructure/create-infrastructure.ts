@@ -150,7 +150,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
-      const { dispatchToAllReadModels, readModel } = dispatcher();
+      const { dispatchToAllReadModels, addArticleToElifeSubjectAreaListReadModel } = dispatcher();
 
       dispatchToAllReadModels(events);
 
@@ -167,8 +167,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const collectedAdapters = {
-        getArticleIdsByState: getArticleIdsByState(readModel),
-        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(readModel),
+        getArticleIdsByState: getArticleIdsByState(addArticleToElifeSubjectAreaListReadModel),
+        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(addArticleToElifeSubjectAreaListReadModel),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
