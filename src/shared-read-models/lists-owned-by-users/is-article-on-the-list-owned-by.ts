@@ -5,4 +5,4 @@ import { UserId } from '../../types/user-id';
 type IsArticleOnTheListOwnedBy = (userId: UserId) => (articleId: Doi) => boolean;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const isArticleOnTheListOwnedBy = (readmodel: ReadModel): IsArticleOnTheListOwnedBy => () => () => false;
+export const isArticleOnTheListOwnedBy = (readmodel: ReadModel): IsArticleOnTheListOwnedBy => () => () => true;
