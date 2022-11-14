@@ -1,11 +1,10 @@
 import { DomainEvent } from '../../domain-events';
-import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
 type ListState = {
   ownerId: ListOwnerId,
-  articleIds: ReadonlyArray<Doi>,
+  articleIds: ReadonlyArray<string>,
 };
 export type ReadModel = Record<ListId, ListState>;
 
