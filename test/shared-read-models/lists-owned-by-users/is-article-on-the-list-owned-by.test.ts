@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { articleRemovedFromList } from '../../../src/domain-events';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { handleEvent, initialState, isArticleOnTheListOwnedBy } from '../../../src/shared-read-models/lists-owned-by-users';
@@ -29,7 +30,18 @@ describe('is-article-on-the-list-owned-by', () => {
   });
 
   describe('when the user has added and removed an article', () => {
-    it.todo('the query returns false');
+    const readModel = pipe(
+      [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+        articleAddedToList(articleId, listId),
+        articleRemovedFromList(articleId, listId),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('the query returns false', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(false);
+    });
   });
 
   describe('when two users have added articles', () => {
