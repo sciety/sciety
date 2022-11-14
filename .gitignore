@@ -1,5 +1,6 @@
 coverage/
 /.eslint/
+.eslint-cache
 /.jest/
 /.jest-taiko/
 /.jest-non-taiko-feature-test/
@@ -14,6 +15,7 @@ coverage/
 /.gcp-ncrc-key.json
 /helm/*/charts/
 *.log
+.mk-*
 /static/*.css
 /static/*.css.map
 /.purgecss/

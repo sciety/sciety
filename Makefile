@@ -13,7 +13,6 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-
 .PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 dev: export TARGET = dev
@@ -119,7 +118,7 @@ node_modules: package.json package-lock.json
 git-lfs:
 	git lfs install
 
-clean:
+clean-old:
 	rm -rf .eslint .jest .stylelint build node_modules static/style.css static/style.css.map
 
 clean-db: stop
@@ -234,3 +233,42 @@ dev-replay-events-for-elife-subject-area-policy: build
 	$(DOCKER_COMPOSE) run --name elife-subject-area-policy --rm \
 	app \
 	npx ts-node --project tsconfig.dev.json --transpile-only src/policies/run-elife-subject-area-policy
+
+#------------------------------------------------------------------------------
+
+MK_LINTED_TS := .mk-linted-ts
+MK_LINTED_SASS := .mk-linted-sass
+TS_SOURCES := $(shell find src test feature-test -name '*.ts')
+SASS_SOURCES := $(shell find src test feature-test -name '*.scss')
+LINT_CACHE := .eslint-cache
+
+check: $(MK_LINTED_TS) $(MK_LINTED_SASS)
+
+$(MK_LINTED_TS): node_modules $(TS_SOURCES)
+	npx eslint src test feature-test \
+		--ext .js,.ts \
+		--cache --cache-location $(LINT_CACHE) \
+		--color --max-warnings 0
+	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
+	@touch $@
+
+$(MK_LINTED_SASS): node_modules $(SASS_SOURCES)
+	npx sass-unused 'src/**/*.scss'
+	rm -f .purgecss/{full,purged}.css
+	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
+	npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
+	diff .purgecss/full.css .purgecss/purged.css
+	rm -f .purgecss/{full,purged}.css
+	@touch $@
+
+clean:
+	rm -rf $(MK_LINTED_SASS) $(MK_LINTED_TS)
+	rm -rf $(LINT_CACHE)
+
+clobber: clean
+	rm -rf build node_modules
+
+check-ci: compile-prod check
+
+compile-prod: export TARGET = prod
+compile-prod: .env build
