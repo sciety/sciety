@@ -45,8 +45,24 @@ describe('is-article-on-the-list-owned-by', () => {
   });
 
   describe('when two users have added articles', () => {
-    it.todo('the query returns true for the first user id');
+    const userId2 = arbitraryUserId();
+    const listId2 = arbitraryListId();
+    const readModel = pipe(
+      [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+        articleAddedToList(articleId, listId),
+        listCreated(listId2, arbitraryString(), arbitraryString(), LOID.fromUserId(userId2)),
+        articleAddedToList(articleId, listId2),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
 
-    it.todo('the query returns true for the second user id');
+    it('the query returns true for the first user id', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(true);
+    });
+
+    it('the query returns true for the second user id', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toBe(true);
+    });
   });
 });
