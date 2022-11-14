@@ -1,8 +1,13 @@
 import { DomainEvent } from '../../domain-events';
 import { Doi } from '../../types/doi';
-import { UserId } from '../../types/user-id';
+import { ListId } from '../../types/list-id';
+import { ListOwnerId } from '../../types/list-owner-id';
 
-export type ReadModel = Record<UserId, ReadonlyArray<Doi>>;
+type ListState = {
+  ownerId: ListOwnerId,
+  articleIds: ReadonlyArray<Doi>,
+};
+export type ReadModel = Record<ListId, ListState>;
 
 export const initialState = (): ReadModel => ({});
 
