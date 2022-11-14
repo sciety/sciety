@@ -39,7 +39,7 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the query returns false', () => {
+    it('the query returns false', () => {
       expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(false);
     });
   });
