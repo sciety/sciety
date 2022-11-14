@@ -6,11 +6,13 @@ type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
   addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.ReadModel,
+  listsOwnedByUsersReadModel: unknown,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
 export const dispatcher = (): Dispatcher => {
   let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
+  const listsOwnedByUsersReadModel = undefined;
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
     addArticleToElifeSubjectAreaListReadModel = RA.reduce(
@@ -21,6 +23,7 @@ export const dispatcher = (): Dispatcher => {
 
   return {
     addArticleToElifeSubjectAreaListReadModel,
+    listsOwnedByUsersReadModel,
     dispatchToAllReadModels,
   };
 };
