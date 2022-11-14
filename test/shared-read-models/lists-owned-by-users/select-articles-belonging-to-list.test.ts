@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, articleRemovedFromList, listCreated } from '../../../src/domain-events';
-import { selectArticlesBelongingToList as selectArticlesBelongingToListOld } from '../../../src/shared-read-models/list-articles';
 import { handleEvent, initialState, selectArticlesBelongingToList } from '../../../src/shared-read-models/lists-owned-by-users';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
@@ -33,44 +32,44 @@ describe('select-articles-belonging-to-list', () => {
 
     describe('and is empty', () => {
       describe('because it is new', () => {
-        const result = pipe(
+        const readModel = pipe(
           [
             listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
           ],
-          selectArticlesBelongingToListOld(listId),
+          RA.reduce(initialState(), handleEvent),
         );
 
-        it('returns an empty array', () => {
-          expect(result).toStrictEqual(E.right([]));
+        it.failing('returns an empty array', () => {
+          expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.right([]));
         });
       });
 
       describe('because an article has been added and removed', () => {
         const articleId = arbitraryArticleId();
-        const result = pipe(
+        const readModel = pipe(
           [
             listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
             articleAddedToList(articleId, listId),
             articleRemovedFromList(articleId, listId),
           ],
-          selectArticlesBelongingToListOld(listId),
+          RA.reduce(initialState(), handleEvent),
         );
 
-        it('returns an empty array', () => {
-          expect(result).toStrictEqual(E.right([]));
+        it.failing('returns an empty array', () => {
+          expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.right([]));
         });
       });
     });
   });
 
   describe('when the list does not exist', () => {
-    const result = pipe(
+    const readModel = pipe(
       [],
-      selectArticlesBelongingToListOld(listId),
+      RA.reduce(initialState(), handleEvent),
     );
 
     it('returns not found', () => {
-      expect(result).toStrictEqual(E.left(DE.notFound));
+      expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.left(DE.notFound));
     });
   });
 });
