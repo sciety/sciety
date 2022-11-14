@@ -1,0 +1,34 @@
+@use '../../sass/baseline';
+@use '../../sass/breakpoints';
+@use '../../sass/list';
+
+@use 'local-settings';
+
+.page-header.page-header--article {
+  margin-top: 0;
+  margin-bottom: local-settings.$component-vertical-spacing;
+}
+
+.article-author-list {
+  @include list.basics();
+  margin-top: 0;
+  margin-bottom: 0;
+  
+  + * {
+    clear: left;
+  }
+
+  @supports (display: flow-root) {
+    display: flow-root;
+
+    + * {
+      clear: unset;
+    }
+  }
+}
+
+.article-author-list > li {
+  @include list.author-separator-terminator();
+  float: left;
+  font-weight: bold;
+}

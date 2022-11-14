@@ -16,7 +16,7 @@
 @use '../user-list-page';
 @use '../my-feed-page';
 @use 'button';
-@use '../article-page';
+@use '../article-page/render-as-html';
 @use '../home-page';
 @use '../follow/follow-toggle';
 @use '../http/error-page';

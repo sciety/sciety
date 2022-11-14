@@ -1,0 +1,170 @@
+@use '../../sass/baseline';
+@use '../../sass/breakpoints';
+@use '../../sass/button';
+@use '../../sass/card';
+@use '../../sass/functions';
+@use '../../sass/layout';
+@use '../../sass/list';
+@use '../../sass/settings';
+@use '../../sass/states';
+@use '../../sass/typography';
+
+.activity-feed__header {
+  @include layout.page-content-horizontal-margins();
+}
+
+.activity-feed__list {
+  @include card.list();
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.activity-feed__item {
+  @include card.basics();
+  @include card.list-item();
+
+  // TODO: needed due to .responses background color
+  // being incompatible with padding coming from card.basics()
+  padding: unset;
+
+  @include breakpoints.not-narrow {
+    padding: unset;
+  }
+}
+
+.activity-feed__item__contents {
+  padding: baseline.increments(2) functions.px-to-rem(16px) 0;
+  margin-bottom: baseline.increments(3);
+  @include breakpoints.not-narrow {
+    grid-column: 1 / 9;
+    padding: baseline.increments(3) functions.px-to-rem(24px) 0;
+  }
+}
+
+.activity-feed__item__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: baseline.increments(2);
+}
+
+.activity-feed__item__avatar {
+  @include card.avatar();
+  margin-right: functions.px-to-rem(8px);
+}
+
+.activity-feed__item__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.activity-feed__item__date {
+  color: settings.$colour-text-secondary;
+  flex-shrink: 0;
+}
+
+.activity-feed__item__title,
+p.activity-feed__item__title {
+  padding-right: functions.px-to-rem(8px);
+}
+
+.activity-feed__item__toggle {
+  font-weight: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  color: settings.$colour-accent;
+  margin-bottom: baseline.increments(2);
+
+  @include states.link {
+    text-decoration: underline;
+  }
+}
+
+.activity-feed__item__read_original_source:link {
+  @include states.link {
+    text-decoration: underline;
+  }
+}
+
+.activity-feed__item__body {
+  position: relative;
+  width: 100%;
+  margin-right: functions.px-to-rem(24px);
+
+  h3 {
+    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+    font-weight: bold;
+  }
+
+  ol,
+  ul {
+    margin-bottom: baseline.increments(3);
+  }
+
+  blockquote {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+.responses {
+  display: flex;
+  align-items: center;
+  padding: baseline.increments(1.5) functions.px-to-rem(16px);
+  background-color: settings.$colour-component-background;
+  border-top: settings.$border-width solid settings.$colour-furniture;
+  @include breakpoints.not-narrow {
+    padding-left: functions.px-to-rem(24px);
+    padding-right: functions.px-to-rem(24px);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+.activity-feed__item__title {
+  a:link,
+  a:visited {
+    font-weight: bold;
+
+    @include states.link {
+      text-decoration: underline;
+    }
+  }
+}
+
+.responses__question {
+  padding-right: functions.px-to-rem(8px);
+}
+
+.responses__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.responses__action {
+  display: flex;
+  margin-right: 4px;
+  align-items: center;
+}
+
+.responses__button {
+  @include button.basics();
+  min-width: functions.px-to-rem(52px);
+  padding: functions.px-to-rem(5px);
+  border: settings.$border-width solid settings.$colour-brand;
+  border-radius: settings.$border-radius;
+  background-color: settings.$colour-brand;
+  color: settings.$colour-white;
+}
+
+.responses__button__icon {
+  margin-left: 0.25rem;
+  width: 15px;
+  height: 14px;
+  margin-bottom: -2px;
+}

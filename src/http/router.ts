@@ -34,7 +34,7 @@ import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
-import { articleActivityPage } from '../article-page';
+import { articlePage } from '../article-page';
 import { addArticleToListCommandCodec, removeArticleFromListCommandCodec } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -316,7 +316,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(articleActivityPage(adapters)),
+      TE.chain(articlePage(adapters)),
     )),
   );
 
