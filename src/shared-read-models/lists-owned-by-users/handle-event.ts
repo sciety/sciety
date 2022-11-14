@@ -1,6 +1,8 @@
 import { DomainEvent } from '../../domain-events';
+import { Doi } from '../../types/doi';
+import { UserId } from '../../types/user-id';
 
-export type ReadModel = Record<string, unknown>;
+export type ReadModel = Record<UserId, ReadonlyArray<Doi>>;
 
 export const initialState = (): ReadModel => ({});
 
