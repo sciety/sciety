@@ -159,6 +159,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       dispatchToAllReadModels(events);
 
+      const queries = {
+        getArticleIdsByState: getArticleIdsByState(addArticleToElifeSubjectAreaListReadModel),
+        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(addArticleToElifeSubjectAreaListReadModel),
+        isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(listsContentReadModel),
+        selectArticlesBelongingToList: selectArticlesBelongingToList(listsContentReadModel),
+      };
+
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: events,
         dispatchToAllReadModels,
@@ -172,10 +179,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const collectedAdapters = {
-        getArticleIdsByState: getArticleIdsByState(addArticleToElifeSubjectAreaListReadModel),
-        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(addArticleToElifeSubjectAreaListReadModel),
-        isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(listsContentReadModel),
-        selectArticlesBelongingToList: selectArticlesBelongingToList(listsContentReadModel),
+        ...queries,
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
