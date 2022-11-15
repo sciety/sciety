@@ -14,6 +14,7 @@ describe('correct-language-semantics', () => {
       fetchReview: () => TE.left(undefined),
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),
+      isArticleOnTheListOwnedBy: () => () => false,
     };
 
     describe('the article title', () => {

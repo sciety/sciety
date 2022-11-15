@@ -6,6 +6,7 @@ import { UserId } from '../../types/user-id';
 
 type Projection = (doi: Doi, userId: UserId) => (events: ReadonlyArray<DomainEvent>) => boolean;
 
+// ts-unused-exports:disable-next-line
 export const projectHasUserSavedArticle: Projection = (doi, userId) => (events) => pipe(
   events,
   articleSaveState(userId, doi),

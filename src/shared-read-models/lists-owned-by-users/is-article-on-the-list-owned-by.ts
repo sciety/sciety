@@ -1,13 +1,9 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { Doi } from '../../types/doi';
+import { IsArticleOnTheListOwnedBy } from '../../shared-ports';
 import * as LOID from '../../types/list-owner-id';
-import { UserId } from '../../types/user-id';
 
-type IsArticleOnTheListOwnedBy = (userId: UserId) => (articleId: Doi) => boolean;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const isArticleOnTheListOwnedBy = (
   readModel: ReadModel,
 ): IsArticleOnTheListOwnedBy => (

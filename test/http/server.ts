@@ -54,6 +54,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     addArticleToList: () => TE.left(arbitraryErrorMessage()),
     removeArticleFromList: () => TE.left(arbitraryErrorMessage()),
     selectArticlesBelongingToList: () => E.left(DE.notFound),
+    isArticleOnTheListOwnedBy: () => () => false,
     createList: () => TE.left(arbitraryErrorMessage()),
     fetchArticle,
     recordSubjectArea: () => TE.left(arbitraryErrorMessage()),

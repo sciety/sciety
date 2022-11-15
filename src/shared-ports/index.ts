@@ -10,3 +10,4 @@ export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { GetArticleIdsByState } from './get-article-ids-by-state';
 export { SelectArticlesBelongingToList } from './select-articles-belonging-to-list';
+export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';

@@ -6,6 +6,7 @@ import { GetOneArticleIdInEvaluatedState } from '../add-article-to-elife-subject
 import {
   AddArticleToList,
   CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleIdsByState, GetArticleSubjectArea, GetListsOwnedBy,
+  IsArticleOnTheListOwnedBy,
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
@@ -20,6 +21,7 @@ export type CollectedPorts = {
   getArticleIdsByState: GetArticleIdsByState,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   selectArticlesBelongingToList: SelectArticlesBelongingToList,
+  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,
