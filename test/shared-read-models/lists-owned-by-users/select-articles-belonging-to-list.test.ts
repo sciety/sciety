@@ -25,7 +25,7 @@ describe('select-articles-belonging-to-list', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('returns the articleIds, sorted by date added, descending', () => {
+      it('returns the articleIds, sorted by date added, descending', () => {
         expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.right([articleId2, articleId1]));
       });
     });
