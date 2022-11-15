@@ -13,13 +13,12 @@ describe('fp-ts-sequence', () => {
           (left) => TE.left(left),
           (right) => pipe(
             right,
-            T.map((value) => `the number is ${value}`),
             TE.rightTask,
           ),
         ),
       );
 
-      expect(await result()).toStrictEqual(E.right('the number is 42'));
+      expect(await result()).toStrictEqual(E.right(42));
     });
   });
 
@@ -28,20 +27,18 @@ describe('fp-ts-sequence', () => {
       const result = pipe(
         [T.of(42)],
         RA.sequence(T.ApplicativeSeq),
-        T.map(RA.map((value) => `the number is ${value}`)),
       );
 
-      expect(await result()).toStrictEqual(['the number is 42']);
+      expect(await result()).toStrictEqual([42]);
     });
 
     it('takes out a Task from inside an Either', async () => {
       const result = pipe(
         E.right(T.of(42)),
         E.sequence(T.ApplicativeSeq),
-        TE.map((value) => `the number is ${value}`),
       );
 
-      expect(await result()).toStrictEqual(E.right('the number is 42'));
+      expect(await result()).toStrictEqual(E.right(42));
     });
   });
 });
