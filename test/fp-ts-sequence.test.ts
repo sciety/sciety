@@ -5,7 +5,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 
 describe('fp-ts-sequence', () => {
-  describe('folding', () => {
+  describe('folding aka reducing', () => {
+    it('takes out a Task from inside a ReadonlyArray', async () => {
+      const result = pipe(
+        [T.of(42), T.of(43)],
+        RA.reduce(
+          T.of<ReadonlyArray<number>>([]),
+          (accumulator, task) => pipe(
+            accumulator,
+            T.chain((acc) => pipe(
+              task,
+              T.map((taskValue) => [...acc, taskValue]),
+            )),
+          ),
+        ),
+      );
+
+      expect(await result()).toStrictEqual([42, 43]);
+    });
+
     it('takes out a Task from inside an Either', async () => {
       const result = pipe(
         E.right(T.of(42)),
