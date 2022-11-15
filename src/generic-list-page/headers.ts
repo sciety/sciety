@@ -32,16 +32,13 @@ type Headers = (ports: Ports) => (list: List)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const headers: Headers = (ports) => (list) => pipe(
-  list,
-  TE.right,
-  TE.chain((partial) => pipe(
-    ports.selectArticlesBelongingToList(list.id),
-    T.of,
-    T.map(E.map((articleIds) => ({
-      ...partial,
-      articleCount: articleIds.length,
-    }))),
-  )),
+  list.id,
+  ports.selectArticlesBelongingToList,
+  E.map((articleIds) => ({
+    ...list,
+    articleCount: articleIds.length,
+  })),
+  T.of,
   TE.chain((partial) => pipe(
     partial.ownerId,
     (ownerId) => {
