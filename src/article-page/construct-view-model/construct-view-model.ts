@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -39,17 +38,13 @@ export type Ports = ConstructUserListUrlPorts & {
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
-  {
-    articleDetails: ports.fetchArticle(params.doi),
-    isArticleInList: checkIfArticleInList(ports)(params.doi, params.user),
-  },
-  sequenceS(TE.ApplyPar),
-  TE.chainW(({ articleDetails, isArticleInList }) => pipe(
+  ports.fetchArticle(params.doi),
+  TE.chainW((articleDetails) => pipe(
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
-      isArticleInList,
+      isArticleInList: checkIfArticleInList(ports)(params.doi, params.user),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),

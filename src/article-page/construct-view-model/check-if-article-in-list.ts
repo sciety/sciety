@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { IsArticleOnTheListOwnedBy } from '../../shared-ports';
 import { Doi } from '../../types/doi';
@@ -13,7 +12,7 @@ export type Ports = {
 export const checkIfArticleInList = (ports: Ports) => (
   doi: Doi,
   user: O.Option<User>,
-): TE.TaskEither<never, O.Option<UserId>> => pipe(
+): O.Option<UserId> => pipe(
   user,
   O.chain((u) => pipe(
     doi,
@@ -21,5 +20,4 @@ export const checkIfArticleInList = (ports: Ports) => (
     O.guard,
     O.map(() => u.id),
   )),
-  TE.right,
 );
