@@ -12,7 +12,7 @@ import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-informat
 import { renderComponent } from './header/render-component';
 import { headers } from './headers';
 import { ContentViewModel, renderErrorPage, renderPage } from './render-page';
-import { selectArticlesBelongingToList } from '../shared-read-models/list-articles';
+import { SelectArticlesBelongingToList } from '../shared-ports';
 import { getList } from '../shared-read-models/lists';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -30,7 +30,9 @@ export const paramsCodec = t.type({
   })),
 });
 
-type Ports = ArticlesListPorts & GetUserOwnerInformationPorts;
+type Ports = ArticlesListPorts
+& GetUserOwnerInformationPorts
+& { selectArticlesBelongingToList: SelectArticlesBelongingToList };
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
@@ -51,8 +53,8 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
     ({
       header: TE.right(renderComponent(headerViewModel)),
       contentViewModel: pipe(
-        ports.getAllEvents,
-        T.map(selectArticlesBelongingToList(listId)),
+        ports.selectArticlesBelongingToList(listId),
+        T.of,
         TE.chainW(RA.match<TE.TaskEither<DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
           () => TE.right('no-articles' as const),
           articlesList(

@@ -9,6 +9,7 @@ import {
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
+  SelectArticlesBelongingToList,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { SearchResults } from '../third-parties/europe-pmc';
@@ -18,6 +19,7 @@ import * as DE from '../types/data-error';
 export type CollectedPorts = {
   getArticleIdsByState: GetArticleIdsByState,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
+  selectArticlesBelongingToList: SelectArticlesBelongingToList,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,

@@ -4,12 +4,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
+import { SelectArticlesBelongingToList } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { Doi, fromString } from '../../types/doi';
-import { ListId } from '../../types/list-id';
-
-type SelectArticlesBelongingToList = (listId: ListId)
-=> E.Either<DE.DataError, ReadonlyArray<Doi>>;
+import { fromString } from '../../types/doi';
 
 export const selectArticlesBelongingToList = (
   readModel: ReadModel,
