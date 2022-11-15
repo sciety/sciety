@@ -7,6 +7,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import * as RI from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { UserId } from '../types/user-id';
 
 export type ReviewFeedItem = {
   type: 'review',
@@ -42,7 +43,7 @@ export type FeedItem =
 export type ViewModel = {
   doi: Doi,
   title: string,
-  userListUrl: O.Option<string>,
+  isArticleInList: O.Option<UserId>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,

@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructUserListUrl, Ports as ConstructUserListUrlPorts } from './construct-user-list-url';
+import { checkIfArticleInList, Ports as ConstructUserListUrlPorts } from './check-if-article-in-list';
 import { feedSummary } from './feed-summary';
 import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
@@ -41,15 +41,15 @@ type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   {
     articleDetails: ports.fetchArticle(params.doi),
-    userListUrl: constructUserListUrl(ports)(params.doi, params.user),
+    isArticleInList: checkIfArticleInList(ports)(params.doi, params.user),
   },
   sequenceS(TE.ApplyPar),
-  TE.chainW(({ articleDetails, userListUrl }) => pipe(
+  TE.chainW(({ articleDetails, isArticleInList }) => pipe(
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
-      userListUrl,
+      isArticleInList,
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
