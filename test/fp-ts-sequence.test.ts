@@ -1,3 +1,4 @@
+/* eslint-disable jest/prefer-lowercase-title */
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -54,6 +55,17 @@ describe('fp-ts-sequence', () => {
       );
 
       expect(await result()).toStrictEqual(E.right(42));
+    });
+  });
+
+  describe('T.sequenceArray', () => {
+    it('takes out a Task from inside a ReadonlyArray', async () => {
+      const result = pipe(
+        [T.of(42)],
+        T.sequenceArray,
+      );
+
+      expect(await result()).toStrictEqual([42]);
     });
   });
 });
