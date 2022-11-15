@@ -43,6 +43,7 @@ const isListMembershipEvent = (
   isArticleAddedToListEvent(event) || isArticleRemovedFromListEvent(event)
 );
 
+// ts-unused-exports:disable-next-line
 export const selectArticlesBelongingToList: SelectArticlesBelongingToList = (listId) => (events) => pipe(
   events,
   RA.filter(isListCreatedEvent),
