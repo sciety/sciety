@@ -37,7 +37,7 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { isArticleOnTheListOwnedBy, selectArticlesBelongingToList } from '../shared-read-models/lists-owned-by-users';
+import { isArticleOnTheListOwnedBy, selectArticlesBelongingToList } from '../shared-read-models/lists-content';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -154,7 +154,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const {
         dispatchToAllReadModels,
         addArticleToElifeSubjectAreaListReadModel,
-        listsOwnedByUsersReadModel,
+        listsContentReadModel,
       } = dispatcher();
 
       dispatchToAllReadModels(events);
@@ -174,8 +174,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const collectedAdapters = {
         getArticleIdsByState: getArticleIdsByState(addArticleToElifeSubjectAreaListReadModel),
         getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(addArticleToElifeSubjectAreaListReadModel),
-        isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(listsOwnedByUsersReadModel),
-        selectArticlesBelongingToList: selectArticlesBelongingToList(listsOwnedByUsersReadModel),
+        isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(listsContentReadModel),
+        selectArticlesBelongingToList: selectArticlesBelongingToList(listsContentReadModel),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
