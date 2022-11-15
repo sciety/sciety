@@ -10,11 +10,8 @@ describe('fp-ts-sequence', () => {
       const result = pipe(
         E.right(T.of(42)),
         E.foldW(
-          (left) => TE.left(left),
-          (right) => pipe(
-            right,
-            TE.rightTask,
-          ),
+          TE.left,
+          TE.rightTask,
         ),
       );
 
