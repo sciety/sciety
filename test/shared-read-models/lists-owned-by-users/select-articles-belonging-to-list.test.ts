@@ -39,7 +39,7 @@ describe('select-articles-belonging-to-list', () => {
           RA.reduce(initialState(), handleEvent),
         );
 
-        it.failing('returns an empty array', () => {
+        it('returns an empty array', () => {
           expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.right([]));
         });
       });
@@ -55,7 +55,7 @@ describe('select-articles-belonging-to-list', () => {
           RA.reduce(initialState(), handleEvent),
         );
 
-        it.failing('returns an empty array', () => {
+        it('returns an empty array', () => {
           expect(selectArticlesBelongingToList(readModel)(listId)).toStrictEqual(E.right([]));
         });
       });
