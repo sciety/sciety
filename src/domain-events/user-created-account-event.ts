@@ -20,7 +20,6 @@ export type UserCreatedAccountEvent = t.TypeOf<typeof userCreatedAccountEventCod
 export const isUserCreatedAccountEvent = (event: { type: string }):
   event is UserCreatedAccountEvent => event.type === 'UserCreatedAccount';
 
-// ts-unused-exports:disable-next-line
 export const userCreatedAccount = (
   userId: UserId,
   handle: string,
