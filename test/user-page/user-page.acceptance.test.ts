@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { groupJoined, userFollowedEditorialCommunity } from '../../src/domain-events';
+import { ListOwnerId } from '../../src/types/list-owner-id';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
@@ -14,6 +15,7 @@ import {
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -36,6 +38,11 @@ const defaultPorts = {
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
   getListsOwnedBy: () => TE.right([]),
+  selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
+    listId: arbitraryListId(),
+    ownerId,
+    articleIds: [],
+  }],
 };
 
 describe('user-page', () => {
@@ -241,8 +248,8 @@ describe('user-page', () => {
 
       beforeAll(async () => {
         const ports = {
+          ...defaultPorts,
           getUserDetails: () => TE.right(arbitraryUserDetails),
-          getAllEvents: T.of([]),
           getUserId: () => TE.right(arbitraryUserId()),
           getListsOwnedBy: shouldNotBeCalled,
         };
@@ -272,8 +279,8 @@ describe('user-page', () => {
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
       const ports = {
+        ...defaultPorts,
         getUserDetails: () => TE.right(arbitraryUserDetails),
-        getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
         getListsOwnedBy: shouldNotBeCalled,
       };
@@ -292,13 +299,13 @@ describe('user-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
+        ...defaultPorts,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
           userId: arbitraryUserId(),
         }),
-        getAllEvents: T.of([]),
         getUserId: () => TE.right(arbitraryUserId()),
         getListsOwnedBy: shouldNotBeCalled,
       };
