@@ -24,8 +24,6 @@ import {
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
-import { getArticleIdsByState } from '../add-article-to-elife-subject-area-list/read-model';
-import { getOneArticleIdInEvaluatedState } from '../add-article-to-elife-subject-area-list/read-model/get-one-article-id-in-evaluated-state';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
@@ -37,7 +35,6 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { isArticleOnTheListOwnedBy, selectArticlesBelongingToList } from '../shared-read-models/lists-content';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -153,18 +150,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const {
         dispatchToAllReadModels,
-        addArticleToElifeSubjectAreaListReadModel,
-        listsContentReadModel,
+        queries,
       } = dispatcher();
 
       dispatchToAllReadModels(events);
-
-      const queries = {
-        getArticleIdsByState: getArticleIdsByState(addArticleToElifeSubjectAreaListReadModel),
-        getOneArticleIdInEvaluatedState: getOneArticleIdInEvaluatedState(addArticleToElifeSubjectAreaListReadModel),
-        isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(listsContentReadModel),
-        selectArticlesBelongingToList: selectArticlesBelongingToList(listsContentReadModel),
-      };
 
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: events,
