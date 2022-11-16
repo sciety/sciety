@@ -5,11 +5,15 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetOneArticleIdInEvaluatedState } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
-  CommitEvents, CreateList, FetchArticle, GetAllEvents, GetArticleIdsByState, GetArticleSubjectArea, GetListsOwnedBy,
-  IsArticleOnTheListOwnedBy,
+  CommitEvents,
+  CreateList, FetchArticle,
+  GetAllEvents, GetArticleIdsByState,
+  GetArticleSubjectArea,
+  GetListsOwnedBy, IsArticleOnTheListOwnedBy,
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
+  SelectAllListsOwnedBy,
   SelectArticlesBelongingToList,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
@@ -22,6 +26,7 @@ export type CollectedPorts = {
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   selectArticlesBelongingToList: SelectArticlesBelongingToList,
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,

@@ -1,4 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -10,11 +12,13 @@ import { renderPage } from './render-page';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
 import { tabs } from '../shared-components/tabs';
+import { SelectAllListsOwnedBy } from '../shared-ports';
 import { GetUserDetails } from '../shared-ports/get-user-details';
 import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import * as LID from '../types/list-id';
+import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
@@ -24,6 +28,7 @@ type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 type Ports = FollowListPorts & {
   getUserDetails: GetUserDetails,
   getUserId: GetUserId,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 type Params = {
@@ -34,18 +39,27 @@ type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageErr
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   params.handle,
-  ports.getUserId, // TODO: get the user details (extended to include the id) from Twitter here instead
-  TE.chain((id) => pipe(
+  ports.getUserId,
+  TE.chain((userId) => pipe(
     {
       groupIds: pipe(
         ports.getAllEvents,
-        T.map(getGroupIdsFollowedBy(id)),
+        T.map(getGroupIdsFollowedBy(userId)),
         TE.rightTask,
       ),
-      userDetails: ports.getUserDetails(id),
+      userDetails: ports.getUserDetails(userId),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
-      userId: TE.right(id),
-      listId: TE.right(LID.fromValidatedString('abcd')),
+      userId: TE.right(userId),
+      listId: pipe(
+        userId,
+        LOID.fromUserId,
+        ports.selectAllListsOwnedBy,
+        RA.head,
+        E.fromOption(() => DE.notFound),
+        E.map((list) => list.listId),
+        T.of,
+        () => TE.right(LID.fromValidatedString('1234')),
+      ),
     },
     sequenceS(TE.ApplyPar),
   )),
