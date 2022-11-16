@@ -18,7 +18,7 @@ describe('get-user-list-details', () => {
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
       ],
-      getUserListDetails(userId),
+      getUserListDetails(userId, listId),
     );
 
     it('returns a count of 0', () => {
@@ -29,7 +29,7 @@ describe('get-user-list-details', () => {
       expect(details.lastUpdated).toStrictEqual(O.none);
     });
 
-    it.failing('returns a list id', () => {
+    it('returns a list id', () => {
       expect(details.listId).toStrictEqual(listId);
     });
   });
@@ -43,7 +43,7 @@ describe('get-user-list-details', () => {
         userSavedArticle(userId, arbitraryArticleId(), earlierDate),
         userSavedArticle(userId, arbitraryArticleId(), laterDate),
       ],
-      getUserListDetails(userId),
+      getUserListDetails(userId, listId),
     );
 
     it('returns a count of the articles', () => {
@@ -54,7 +54,7 @@ describe('get-user-list-details', () => {
       expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
     });
 
-    it.failing('returns a list id', () => {
+    it('returns a list id', () => {
       expect(details.listId).toStrictEqual(listId);
     });
   });
@@ -70,7 +70,7 @@ describe('get-user-list-details', () => {
         userSavedArticle(userId, articleId, earlierDate),
         userUnsavedArticle(userId, articleId, laterDate),
       ],
-      getUserListDetails(userId),
+      getUserListDetails(userId, listId),
     );
 
     it('returns a count of the remaining articles', () => {
@@ -81,7 +81,7 @@ describe('get-user-list-details', () => {
       expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
     });
 
-    it.failing('returns a list id', () => {
+    it('returns a list id', () => {
       expect(details.listId).toStrictEqual(listId);
     });
   });
@@ -93,7 +93,7 @@ describe('get-user-list-details', () => {
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
         userSavedArticle(differentUserId, arbitraryArticleId()),
       ],
-      getUserListDetails(userId),
+      getUserListDetails(userId, listId),
     );
 
     it('returns a count of 0', () => {
@@ -104,7 +104,7 @@ describe('get-user-list-details', () => {
       expect(details.lastUpdated).toStrictEqual(O.none);
     });
 
-    it.failing('returns a list id', () => {
+    it('returns a list id', () => {
       expect(details.listId).toStrictEqual(listId);
     });
   });

@@ -6,6 +6,7 @@ import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
+import * as LID from '../../types/list-id';
 import { UserId } from '../../types/user-id';
 import { getUserListDetails } from '../../user-page/user-list-card/get-user-list-details';
 
@@ -25,7 +26,7 @@ export const userListCard = (
     userDetails: ports.getUserDetails(userId),
     listDetails: pipe(
       ports.getAllEvents,
-      T.map(getUserListDetails(userId)),
+      T.map(getUserListDetails(userId, LID.fromValidatedString('abcd'))),
       TE.rightTask,
     ),
   },

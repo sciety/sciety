@@ -21,12 +21,15 @@ const isRelevantEvent = (event: DomainEvent): event is UserSavedArticleEvent | U
   isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event)
 );
 
-export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<DomainEvent>): UserListDetails => pipe(
+export const getUserListDetails = (
+  userId: UserId,
+  listId: LID.ListId,
+) => (events: ReadonlyArray<DomainEvent>): UserListDetails => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.userId === userId),
   (relevantEvents) => ({
-    listId: LID.fromValidatedString('abcd'),
+    listId,
     articleCount: pipe(
       relevantEvents,
       RA.reduce(0, (state, event) => (isUserSavedArticleEvent(event) ? state + 1 : state - 1)),
