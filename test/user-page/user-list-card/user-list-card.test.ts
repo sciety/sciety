@@ -5,12 +5,13 @@ import { userSavedArticle } from '../../../src/domain-events';
 import { userListCard } from '../../../src/user-page/user-list-card';
 import { arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('user-list-card', () => {
   it('displays the title of the list', async () => {
     const rendered = await pipe(
-      userListCard(T.of([]))(arbitraryWord(), arbitraryUserId()),
+      userListCard(T.of([]))(arbitraryWord(), arbitraryUserId(), arbitraryListId()),
       T.map(JSDOM.fragment),
     )();
 
@@ -20,7 +21,7 @@ describe('user-list-card', () => {
   it('displays the list owner\'s handle in the description', async () => {
     const handle = arbitraryWord();
     const rendered = await pipe(
-      userListCard(T.of([]))(handle, arbitraryUserId()),
+      userListCard(T.of([]))(handle, arbitraryUserId(), arbitraryListId()),
       T.map(JSDOM.fragment),
     )();
     const description = rendered.querySelector('p');
@@ -37,7 +38,7 @@ describe('user-list-card', () => {
         userSavedArticle(userId, arbitraryArticleId(), new Date('2021-07-23')),
       ];
       const rendered = await pipe(
-        userListCard(T.of(events))(handle, userId),
+        userListCard(T.of(events))(handle, userId, arbitraryListId()),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');
@@ -53,7 +54,7 @@ describe('user-list-card', () => {
         userSavedArticle(userId, arbitraryArticleId()),
       ];
       const rendered = await pipe(
-        userListCard(T.of(events))(handle, userId),
+        userListCard(T.of(events))(handle, userId, arbitraryListId()),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');
@@ -68,7 +69,7 @@ describe('user-list-card', () => {
 
     it('does not display last updated date', async () => {
       const rendered = await pipe(
-        userListCard(T.of([]))(handle, userId),
+        userListCard(T.of([]))(handle, userId, arbitraryListId()),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');
@@ -78,7 +79,7 @@ describe('user-list-card', () => {
 
     it('displays an article count of 0', async () => {
       const rendered = await pipe(
-        userListCard(T.of([]))(handle, userId),
+        userListCard(T.of([]))(handle, userId, arbitraryListId()),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');

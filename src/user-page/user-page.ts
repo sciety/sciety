@@ -14,6 +14,7 @@ import { GetUserDetails } from '../shared-ports/get-user-details';
 import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
+import * as LID from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
@@ -49,7 +50,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId)
+      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, LID.fromValidatedString('abcd'))
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
