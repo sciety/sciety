@@ -45,12 +45,13 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
       userDetails: ports.getUserDetails(id),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       userId: TE.right(id),
+      listId: TE.right(LID.fromValidatedString('abcd')),
     },
     sequenceS(TE.ApplyPar),
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, LID.fromValidatedString('abcd'))
+      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, inputs.listId)
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
