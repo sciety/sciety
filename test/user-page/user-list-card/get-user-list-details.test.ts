@@ -1,15 +1,22 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
+import { listCreated } from '../../../src/domain-events/list-created-event';
+import * as LOID from '../../../src/types/list-owner-id';
 import { getUserListDetails } from '../../../src/user-page/user-list-card/get-user-list-details';
+import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-user-list-details', () => {
   describe('when the list contains no articles', () => {
     const userId = arbitraryUserId();
+    const listId = arbitraryListId();
     const details = pipe(
-      [],
+      [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+      ],
       getUserListDetails(userId),
     );
 
@@ -19,6 +26,10 @@ describe('get-user-list-details', () => {
 
     it('returns no last updated date', () => {
       expect(details.lastUpdated).toStrictEqual(O.none);
+    });
+
+    it.failing('returns a list id', () => {
+      expect(details.listId).toStrictEqual(listId);
     });
   });
 

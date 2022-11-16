@@ -8,9 +8,11 @@ import {
   UserSavedArticleEvent,
   UserUnsavedArticleEvent,
 } from '../../domain-events';
+import * as LID from '../../types/list-id';
 import { UserId } from '../../types/user-id';
 
 type UserListDetails = {
+  listId: LID.ListId,
   articleCount: number,
   lastUpdated: O.Option<Date>,
 };
@@ -24,6 +26,7 @@ export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<Dom
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.userId === userId),
   (relevantEvents) => ({
+    listId: LID.fromValidatedString('abcd'),
     articleCount: pipe(
       relevantEvents,
       RA.reduce(0, (state, event) => (isUserSavedArticleEvent(event) ? state + 1 : state - 1)),
