@@ -35,7 +35,7 @@ describe('select-all-lists-owned-by', () => {
     );
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
-    it.failing('returns the list id', () => {
+    it('returns the list id', () => {
       expect(result.listId).toBe(listId);
     });
   });
@@ -55,7 +55,7 @@ describe('select-all-lists-owned-by', () => {
     );
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
-    it.failing('returns the list id', () => {
+    it('returns the list id', () => {
       expect(result.listId).toBe(listId);
     });
   });
