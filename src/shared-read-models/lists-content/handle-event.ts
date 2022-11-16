@@ -5,6 +5,7 @@ import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
 type ListState = {
+  listId: ListId,
   ownerId: ListOwnerId,
   articleIds: Array<string>,
 };
@@ -15,6 +16,7 @@ export const initialState = (): ReadModel => ({});
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isListCreatedEvent(event)) {
     readmodel[event.listId] = {
+      listId: event.listId,
       ownerId: event.ownerId,
       articleIds: [],
     };
