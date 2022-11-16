@@ -10,9 +10,10 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-user-list-details', () => {
+  const userId = arbitraryUserId();
+  const listId = arbitraryListId();
+
   describe('when the list contains no articles', () => {
-    const userId = arbitraryUserId();
-    const listId = arbitraryListId();
     const details = pipe(
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
@@ -34,11 +35,11 @@ describe('get-user-list-details', () => {
   });
 
   describe('when the list contains some articles', () => {
-    const userId = arbitraryUserId();
     const earlierDate = new Date('1970');
     const laterDate = new Date('2020');
     const details = pipe(
       [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
         userSavedArticle(userId, arbitraryArticleId(), earlierDate),
         userSavedArticle(userId, arbitraryArticleId(), laterDate),
       ],
@@ -52,15 +53,19 @@ describe('get-user-list-details', () => {
     it('returns the last updated date', () => {
       expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
     });
+
+    it.failing('returns a list id', () => {
+      expect(details.listId).toStrictEqual(listId);
+    });
   });
 
   describe('when the list has had articles removed', () => {
-    const userId = arbitraryUserId();
     const earlierDate = new Date('1970');
     const laterDate = new Date('2020');
     const articleId = arbitraryArticleId();
     const details = pipe(
       [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
         userSavedArticle(userId, arbitraryArticleId(), new Date(1950)),
         userSavedArticle(userId, articleId, earlierDate),
         userUnsavedArticle(userId, articleId, laterDate),
@@ -75,13 +80,17 @@ describe('get-user-list-details', () => {
     it('returns the date of the last activity', () => {
       expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
     });
+
+    it.failing('returns a list id', () => {
+      expect(details.listId).toStrictEqual(listId);
+    });
   });
 
   describe('when only a different user has saved articles', () => {
-    const userId = arbitraryUserId();
     const differentUserId = arbitraryUserId();
     const details = pipe(
       [
+        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
         userSavedArticle(differentUserId, arbitraryArticleId()),
       ],
       getUserListDetails(userId),
@@ -93,6 +102,10 @@ describe('get-user-list-details', () => {
 
     it('returns no last updated date', () => {
       expect(details.lastUpdated).toStrictEqual(O.none);
+    });
+
+    it.failing('returns a list id', () => {
+      expect(details.listId).toStrictEqual(listId);
     });
   });
 });
