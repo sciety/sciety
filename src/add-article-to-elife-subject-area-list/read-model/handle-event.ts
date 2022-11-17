@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
+import { MakeADT } from 'ts-adt/MakeADT';
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
   DomainEvent,
@@ -9,24 +11,17 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-type Evaluated = {
-  name: 'evaluated',
-};
-
-type Listed = {
-  name: 'listed',
-};
-
 type SubjectAreaKnown = { name: 'subject-area-known', subjectArea: SubjectArea };
 
 type EvaluatedAndSubjectAreaKnown = { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
 
 // ts-unused-exports:disable-next-line
-export type ArticleState =
- | Evaluated
- | Listed
- | SubjectAreaKnown
- | EvaluatedAndSubjectAreaKnown;
+export type ArticleState = MakeADT<'name', {
+  evaluated: {},
+  listed: {},
+  'subject-area-known': { subjectArea: SubjectArea },
+  'evaluated-and-subject-area-known': { subjectArea: SubjectArea },
+}>;
 
 export type ArticleStateName = ArticleState['name'];
 

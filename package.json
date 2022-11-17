@@ -48,6 +48,7 @@
     "striptags": "^3.2.0",
     "text-clipper": "^2.2.0",
     "tinyld": "1.3.1",
+    "ts-adt": "^2.1.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
