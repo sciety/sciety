@@ -25,7 +25,7 @@ describe('handle-event', () => {
       const readModel = handleEvent(currentState, event);
 
       if (nextStateName) {
-        expect(readModel[articleId.value]).toStrictEqual({ name: nextStateName });
+        expect(readModel[articleId.value].name).toStrictEqual(nextStateName);
       } else {
         expect(readModel[articleId.value]).toBeUndefined();
       }

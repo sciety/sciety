@@ -7,6 +7,7 @@ import {
   isEvaluationRecordedEvent,
   isSubjectAreaRecordedEvent,
 } from '../../domain-events';
+import { SubjectArea } from '../../types/subject-area';
 
 export type ArticleStateName =
 | 'evaluated'
@@ -17,7 +18,7 @@ export type ArticleStateName =
 type ArticleState =
  | { name: 'evaluated' }
  | { name: 'listed' }
- | { name: 'subject-area-known' }
+ | { name: 'subject-area-known', subjectArea: SubjectArea }
  | { name: 'evaluated-and-subject-area-known' };
 
 export type ReadModel = Record<string, ArticleState>;
@@ -52,7 +53,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       'listed': 'listed' as const,
     };
     const currentStateName = readmodel[key] ? readmodel[key].name : 'initial';
-    readmodel[key] = { name: transitions[currentStateName] };
+    readmodel[key] = { name: transitions[currentStateName], subjectArea: event.subjectArea };
   }
   return readmodel;
 };
