@@ -30,6 +30,24 @@ describe('backfill-lists-for-users-without-lists', () => {
   });
 
   describe('given a user who has no lists', () => {
-    it.todo('returns the user to be backfilled');
+    it.failing('returns the user to be backfilled', () => {
+      const user = {
+        id: arbitraryUserId(),
+        handle: arbitraryString(),
+        avatarUrl: arbitraryString(),
+      };
+      const adapters = {
+        selectAllListsOwnedBy: () => [],
+      };
+      const events = [
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, arbitraryString()),
+      ];
+      const users = pipe(
+        events,
+        determineUsersInNeedOfLists(adapters),
+      );
+
+      expect(users).toStrictEqual([user]);
+    });
   });
 });
