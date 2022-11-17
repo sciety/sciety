@@ -68,7 +68,7 @@ describe('set-up-user-if-necessary', () => {
   describe('when the user has not already created an account', () => {
     const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
 
-    it.failing('raises a UserCreatedAccount event and a ListCreated event', () => {
+    it('raises a UserCreatedAccount event and a ListCreated event', () => {
       expect(eventsToCommit).toStrictEqual([
         expect.objectContaining({
           userId: userAccount.id,
@@ -98,7 +98,7 @@ describe('set-up-user-if-necessary', () => {
 
     const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
-    it.failing('raises a UserCreatedAccount event and a ListCreated event', () => {
+    it('raises a UserCreatedAccount event and a ListCreated event', () => {
       expect(eventsToCommit).toStrictEqual([
         expect.objectContaining({
           userId: userAccount.id,

@@ -2,6 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { CreateListCommand } from '../commands';
 import { DomainEvent } from '../domain-events';
 import { isUserSavedArticleEvent, UserSavedArticleEvent } from '../domain-events/user-saved-article-event';
 import { Logger } from '../shared-ports';
@@ -27,7 +28,7 @@ const filterOutUsersWithGenericLists = (getListsOwnedBy: Ports['getListsOwnedBy'
   TE.filterOrElseW(RA.isEmpty, () => 'user already owns a list' as const),
 );
 
-const constructCommand = (userDetails: { userId: UserId, handle: string }) => ({
+export const constructCommand = (userDetails: { userId: UserId, handle: string }): CreateListCommand => ({
   ownerId: LOID.fromUserId(userDetails.userId),
   name: `@${userDetails.handle}'s saved articles`,
   description: `Articles that have been saved by @${userDetails.handle}`,

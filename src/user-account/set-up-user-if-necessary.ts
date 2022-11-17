@@ -14,6 +14,8 @@ import {
   isUserUnsavedArticleEvent,
   userCreatedAccount,
 } from '../domain-events';
+import { executeCreateListCommand } from '../lists/execute-create-list-command';
+import { constructCommand } from '../policies/create-user-saved-articles-list-as-generic-list';
 import { UserId } from '../types/user-id';
 
 export type UserAccount = {
@@ -54,6 +56,12 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (user) => (events) => 
   shouldCreateAccount(user.id),
   B.fold(
     () => [],
-    () => [userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName)],
+    () => [
+      userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+      ...pipe(
+        constructCommand({ userId: user.id, handle: user.handle }),
+        executeCreateListCommand,
+      ),
+    ],
   ),
 );
