@@ -4,15 +4,22 @@ import { pipe } from 'fp-ts/function';
 import { executeCreateListCommand } from './execute-create-list-command';
 import { DomainEvent } from '../domain-events';
 import { constructCommand } from '../policies/create-user-saved-articles-list-as-generic-list';
-import { CommitEvents, Logger } from '../shared-ports';
+import { CommitEvents, Logger, SelectAllListsOwnedBy } from '../shared-ports';
 import { User } from '../types/user';
+
+type Queries = {
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
+};
 
 type Ports = {
   commitEvents: CommitEvents,
   logger: Logger,
-};
+} & Queries;
 
-const determineUsersInNeedOfLists = () => (): ReadonlyArray<User> => [];
+type DetermineUsersInNeedOfLists = (ports: Queries) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<User>;
+
+// ts-unused-exports:disable-next-line
+export const determineUsersInNeedOfLists: DetermineUsersInNeedOfLists = () => () => [];
 
 const createListEvent = (user: User) => pipe(
   constructCommand({ userId: user.id, handle: user.handle }),
@@ -23,7 +30,7 @@ type Backfill = (ports: Ports, events: ReadonlyArray<DomainEvent>) => T.Task<voi
 
 export const backfillListsForUsersWithoutLists: Backfill = (ports, events) => pipe(
   events,
-  determineUsersInNeedOfLists(),
+  determineUsersInNeedOfLists(ports),
   RA.chain(createListEvent),
   (eventsToBeCommitted) => {
     ports.logger('debug', 'backfillListsForUsersWithoutLists', { eventToBeCommitted: eventsToBeCommitted.length });
