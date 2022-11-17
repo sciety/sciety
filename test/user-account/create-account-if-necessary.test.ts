@@ -10,7 +10,8 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
-import { createAccountIfNecessary, UserAccount } from '../../src/user-account/create-account-if-necessary';
+import { createAccountIfNecessary } from '../../src/user-account/create-account-if-necessary';
+import { UserAccount } from '../../src/user-account/set-up-user-if-necessary';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
