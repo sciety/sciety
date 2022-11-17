@@ -6,14 +6,14 @@ import { SubjectArea } from '../../src/types/subject-area';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
-type GetOneArticleInEvaluatedAndSubjectAreaKnownState = () => O.Option<{
+type GetOneArticleReadyToBeListed = () => O.Option<{
   articleId: Doi,
   subjectArea: SubjectArea,
 }>;
 
 type Ports = {
   addArticleToList: AddArticleToList,
-  getOneArticleIdInEvaluatedAndSubjectAreaKnownState: GetOneArticleInEvaluatedAndSubjectAreaKnownState,
+  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,7 +27,7 @@ describe('add-elife-article-to-subject-area-list', () => {
     const listId = getCorrespondingListId(knownSubjectAreaValue);
     const adapters = {
       addArticleToList: jest.fn(),
-      getOneArticleIdInEvaluatedAndSubjectAreaKnownState: () => O.some({
+      getOneArticleReadyToBeListed: () => O.some({
         articleId,
         subjectArea: arbitrarySubjectArea(knownSubjectAreaValue),
       }),

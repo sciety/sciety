@@ -13,7 +13,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
-const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
+const getOneArticleReadyToBeListed = (readModel: ReadModel) => () => pipe(
   readModel,
   R.filter((state): state is ArticleStateWithSubjectArea => state.name === 'evaluated-and-subject-area-known'),
   R.toEntries,
@@ -27,7 +27,7 @@ const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel
   )),
 );
 
-describe('get-one-article-id-in-evaluated-and-subject-area-known-state', () => {
+describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {
     const articleIdA = arbitraryArticleId();
     const subjectArea = arbitrarySubjectArea();
@@ -41,7 +41,7 @@ describe('get-one-article-id-in-evaluated-and-subject-area-known-state', () => {
     );
 
     it('returns one article', () => {
-      expect(getOneArticleIdInEvaluatedAndSubjectAreaKnownState(readModel)()).toStrictEqual(O.some({
+      expect(getOneArticleReadyToBeListed(readModel)()).toStrictEqual(O.some({
         articleId: articleIdA,
         subjectArea,
       }));

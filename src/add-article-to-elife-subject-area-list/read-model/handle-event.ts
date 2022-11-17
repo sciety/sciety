@@ -15,6 +15,7 @@ export type ArticleStateName =
 | 'subject-area-known'
 | 'evaluated-and-subject-area-known';
 
+// ts-unused-exports:disable-next-line
 export type ArticleStateWithSubjectArea =
  | { name: 'subject-area-known', subjectArea: SubjectArea }
  | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
