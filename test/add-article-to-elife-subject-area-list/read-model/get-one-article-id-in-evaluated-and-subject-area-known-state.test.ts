@@ -15,8 +15,7 @@ import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
   readModel,
-  R.filter((item) => item === 'evaluated-and-subject-area-known'),
-  (foo) => foo,
+  R.filter((state) => state.name === 'evaluated-and-subject-area-known'),
   R.toEntries,
   RA.head,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

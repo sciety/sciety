@@ -8,11 +8,17 @@ import {
   isSubjectAreaRecordedEvent,
 } from '../../domain-events';
 
-export type ArticleState =
- | 'evaluated'
- | 'listed'
- | 'subject-area-known'
- | 'evaluated-and-subject-area-known';
+export type ArticleStateName =
+| 'evaluated'
+| 'listed'
+| 'subject-area-known'
+| 'evaluated-and-subject-area-known';
+
+type ArticleState =
+ | { name: 'evaluated' }
+ | { name: 'listed' }
+ | { name: 'subject-area-known' }
+ | { name: 'evaluated-and-subject-area-known' };
 
 export type ReadModel = Record<string, ArticleState>;
 
@@ -23,28 +29,30 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (event.groupId === elifeGroupId) {
       const key = event.articleId.value;
       const transitions = {
-        undefined: 'evaluated' as const,
+        'initial': 'evaluated' as const,
         'subject-area-known': 'evaluated-and-subject-area-known' as const,
         'evaluated': 'evaluated' as const,
         'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
         'listed': 'listed' as const,
       };
-      readmodel[key] = transitions[readmodel[key]];
+      const currentStateName = readmodel[key] ? readmodel[key].name : 'initial';
+      readmodel[key] = { name: transitions[currentStateName] };
     }
   } else if (isArticleAddedToListEvent(event)) {
     if (elifeSubjectAreaLists.includes(event.listId)) {
-      readmodel[event.articleId.value] = 'listed' as const;
+      readmodel[event.articleId.value] = { name: 'listed' as const };
     }
   } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
     const transitions = {
-      undefined: 'subject-area-known' as const,
+      'initial': 'subject-area-known' as const,
       'subject-area-known': 'subject-area-known' as const,
       'evaluated': 'evaluated-and-subject-area-known' as const,
       'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
       'listed': 'listed' as const,
     };
-    readmodel[key] = transitions[readmodel[key]];
+    const currentStateName = readmodel[key] ? readmodel[key].name : 'initial';
+    readmodel[key] = { name: transitions[currentStateName] };
   }
   return readmodel;
 };

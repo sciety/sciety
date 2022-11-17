@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState, ReadModel } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
-import { ArticleState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
+import { ArticleStateName } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import {
   articleAddedToList, DomainEvent, subjectAreaRecorded,
 } from '../../../src/domain-events';
@@ -21,10 +21,14 @@ describe('handle-event', () => {
     const articleId = arbitraryArticleId();
     const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
 
-    const testNextStateTransition = (_: string, event: DomainEvent, nextState: ArticleState | undefined) => {
+    const testNextStateTransition = (_: string, event: DomainEvent, nextStateName: ArticleStateName | undefined) => {
       const readModel = handleEvent(currentState, event);
 
-      expect(readModel[articleId.value]).toBe(nextState);
+      if (nextStateName) {
+        expect(readModel[articleId.value]).toStrictEqual({ name: nextStateName });
+      } else {
+        expect(readModel[articleId.value]).toBeUndefined();
+      }
     };
 
     describe('when the article is in the unknown state', () => {
@@ -191,8 +195,8 @@ describe('handle-event', () => {
         );
 
         expect(readModel).toStrictEqual({
-          [articleId.value]: 'evaluated',
-          [articleId2.value]: 'evaluated',
+          [articleId.value]: { name: 'evaluated' },
+          [articleId2.value]: { name: 'evaluated' },
         });
       });
     });
