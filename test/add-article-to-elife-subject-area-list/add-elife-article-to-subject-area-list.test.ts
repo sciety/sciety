@@ -1,14 +1,19 @@
 import * as O from 'fp-ts/Option';
 import { AddArticleToList } from '../../src/shared-ports';
 import { Doi } from '../../src/types/doi';
+import { SubjectArea } from '../../src/types/subject-area';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { arbitrarySubjectArea } from '../types/subject-area.helper';
 
-type GetOneArticleInEvaluatedAndCategoryKnownState = () => O.Option<Doi>;
+type GetOneArticleInEvaluatedAndSubjectAreaKnownState = () => O.Option<{
+  articleId: Doi,
+  subjectArea: SubjectArea,
+}>;
 
 type Ports = {
   addArticleToList: AddArticleToList,
-  getOneArticleIdInEvaluatedAndCategoryKnownState: GetOneArticleInEvaluatedAndCategoryKnownState,
+  getOneArticleIdInEvaluatedAndSubjectAreaKnownState: GetOneArticleInEvaluatedAndSubjectAreaKnownState,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +25,10 @@ describe('add-elife-article-to-subject-area-list', () => {
     const articleId = arbitraryArticleId();
     const adapters = {
       addArticleToList: jest.fn(),
-      getOneArticleIdInEvaluatedAndCategoryKnownState: () => O.some(articleId),
+      getOneArticleIdInEvaluatedAndSubjectAreaKnownState: () => O.some({
+        articleId,
+        subjectArea: arbitrarySubjectArea('neuroscience'),
+      }),
     };
 
     beforeAll(async () => {
