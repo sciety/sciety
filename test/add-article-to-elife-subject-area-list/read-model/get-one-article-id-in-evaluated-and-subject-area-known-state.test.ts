@@ -16,9 +16,17 @@ import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
   readModel,
   R.filter((item) => item === 'evaluated-and-subject-area-known'),
-  R.keys,
+  (foo) => foo,
+  R.toEntries,
   RA.head,
-  O.chain(doiFromString),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  O.chain(([articleIdAsString, state]) => pipe(
+    doiFromString(articleIdAsString),
+    O.map((articleId) => ({
+      articleId,
+      subjectArea: arbitrarySubjectArea(),
+    })),
+  )),
 );
 
 describe('get-one-article-id-in-evaluated-and-subject-area-known-state', () => {
