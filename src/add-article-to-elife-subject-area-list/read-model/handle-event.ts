@@ -9,25 +9,34 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-export type ArticleStateName =
-| 'evaluated'
-| 'listed'
-| 'subject-area-known'
-| 'evaluated-and-subject-area-known';
+type Evaluated = {
+  name: 'evaluated',
+};
 
-export type ArticleStateWithSubjectArea =
- | { name: 'subject-area-known', subjectArea: SubjectArea }
- | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
+type Listed = {
+  name: 'listed',
+};
+
+type SubjectAreaKnown = { name: 'subject-area-known', subjectArea: SubjectArea };
+
+type EvaluatedAndSubjectAreaKnown = { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
 
 // ts-unused-exports:disable-next-line
 export type ArticleState =
- | { name: 'evaluated' }
- | { name: 'listed' }
- | ArticleStateWithSubjectArea;
+ | Evaluated
+ | Listed
+ | SubjectAreaKnown
+ | EvaluatedAndSubjectAreaKnown;
 
-export type ReadModel = Record<string, ArticleState>;
+export type ArticleStateName = ArticleState['name'];
 
-export const initialState = (): ReadModel => ({});
+type ArticleId = string;
+
+export type ReadModel = Record<ArticleId, ArticleState>;
+
+export type ArticleStateWithSubjectArea =
+| SubjectAreaKnown
+| EvaluatedAndSubjectAreaKnown;
 
 const isStateWithSubjectArea = (state: ArticleState):
   state is ArticleStateWithSubjectArea => {
@@ -36,6 +45,8 @@ const isStateWithSubjectArea = (state: ArticleState):
   }
   return state.name === 'subject-area-known' || state.name === 'evaluated-and-subject-area-known';
 };
+
+export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
