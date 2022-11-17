@@ -9,6 +9,7 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
+import * as LOID from '../../src/types/list-owner-id';
 import { setUpUserIfNecessary, UserAccount } from '../../src/user-account/set-up-user-if-necessary';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -67,13 +68,19 @@ describe('set-up-user-if-necessary', () => {
   describe('when the user has not already created an account', () => {
     const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
 
-    it('raises a UserCreatedAccount event', () => {
-      expect(eventsToCommit).toStrictEqual([expect.objectContaining({
-        userId: userAccount.id,
-        handle: userAccount.handle,
-        avatarUrl: userAccount.avatarUrl,
-        displayName: userAccount.displayName,
-      })]);
+    it.failing('raises a UserCreatedAccount event and a ListCreated event', () => {
+      expect(eventsToCommit).toStrictEqual([
+        expect.objectContaining({
+          userId: userAccount.id,
+          handle: userAccount.handle,
+          avatarUrl: userAccount.avatarUrl,
+          displayName: userAccount.displayName,
+        }),
+        expect.objectContaining({
+          type: 'ListCreated',
+          ownerId: LOID.fromUserId(userAccount.id),
+        }),
+      ]);
     });
   });
 
@@ -91,13 +98,19 @@ describe('set-up-user-if-necessary', () => {
 
     const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
-    it('raises a UserCreatedAccount event', () => {
-      expect(eventsToCommit).toStrictEqual([expect.objectContaining({
-        userId: userAccount.id,
-        handle: userAccount.handle,
-        avatarUrl: userAccount.avatarUrl,
-        displayName: userAccount.displayName,
-      })]);
+    it.failing('raises a UserCreatedAccount event and a ListCreated event', () => {
+      expect(eventsToCommit).toStrictEqual([
+        expect.objectContaining({
+          userId: userAccount.id,
+          handle: userAccount.handle,
+          avatarUrl: userAccount.avatarUrl,
+          displayName: userAccount.displayName,
+        }),
+        expect.objectContaining({
+          type: 'ListCreated',
+          ownerId: LOID.fromUserId(userAccount.id),
+        }),
+      ]);
     });
   });
 });
