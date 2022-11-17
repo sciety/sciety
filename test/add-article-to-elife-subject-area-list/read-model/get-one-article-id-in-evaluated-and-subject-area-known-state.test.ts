@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import {
   elifeGroupId, handleEvent, initialState, ReadModel,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { ArticleStateWithSubjectArea } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
 import { fromString as doiFromString } from '../../../src/types/doi';
@@ -12,18 +13,16 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
   readModel,
-  R.filter((state) => state.name === 'evaluated-and-subject-area-known'),
+  R.filter((state): state is ArticleStateWithSubjectArea => state.name === 'evaluated-and-subject-area-known'),
   R.toEntries,
   RA.head,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   O.chain(([articleIdAsString, state]) => pipe(
     doiFromString(articleIdAsString),
     O.map((articleId) => ({
       articleId,
-      subjectArea: arbitrarySubjectArea(),
+      subjectArea: state.subjectArea,
     })),
   )),
 );
@@ -41,7 +40,7 @@ describe('get-one-article-id-in-evaluated-and-subject-area-known-state', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns one article', () => {
+    it('returns one article', () => {
       expect(getOneArticleIdInEvaluatedAndSubjectAreaKnownState(readModel)()).toStrictEqual(O.some({
         articleId: articleIdA,
         subjectArea,
