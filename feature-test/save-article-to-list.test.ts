@@ -192,7 +192,7 @@ describe('save-article-to-list', () => {
           const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
           await goto(userGenericListPageUrl);
           const description = await $(pageHeaderDescriptionSelector).text();
-          expect(description).toContain(userHandle);
+          expect(description).toContain('Articles that have been saved by');
         });
       });
     });
