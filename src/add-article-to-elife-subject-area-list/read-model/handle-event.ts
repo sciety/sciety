@@ -15,15 +15,26 @@ export type ArticleStateName =
 | 'subject-area-known'
 | 'evaluated-and-subject-area-known';
 
+type ArticleStateWithSubjectArea =
+ | { name: 'subject-area-known', subjectArea: SubjectArea }
+ | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
+
 type ArticleState =
  | { name: 'evaluated' }
  | { name: 'listed' }
- | { name: 'subject-area-known', subjectArea: SubjectArea }
- | { name: 'evaluated-and-subject-area-known' };
+ | ArticleStateWithSubjectArea;
 
 export type ReadModel = Record<string, ArticleState>;
 
 export const initialState = (): ReadModel => ({});
+
+const isStateWithSubjectArea = (state: ArticleState):
+  state is ArticleStateWithSubjectArea => {
+  if (state === undefined) {
+    return false;
+  }
+  return state.name === 'subject-area-known' || state.name === 'evaluated-and-subject-area-known';
+};
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
@@ -31,13 +42,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       const key = event.articleId.value;
       const transitions = {
         'initial': 'evaluated' as const,
-        'subject-area-known': 'evaluated-and-subject-area-known' as const,
         'evaluated': 'evaluated' as const,
-        'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
         'listed': 'listed' as const,
       };
-      const currentStateName = readmodel[key] ? readmodel[key].name : 'initial';
-      readmodel[key] = { name: transitions[currentStateName] };
+      const currentState = readmodel[key];
+      if (isStateWithSubjectArea(currentState)) {
+        readmodel[key] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
+      } else {
+        readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
+      }
     }
   } else if (isArticleAddedToListEvent(event)) {
     if (elifeSubjectAreaLists.includes(event.listId)) {
