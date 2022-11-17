@@ -47,7 +47,9 @@ describe('save-article-to-list', () => {
         });
 
         it('the article appears in the generic list page', async () => {
-          await goto(genericListPage);
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const articleIsDisplayed = await $(articleCardSelector).exists();
           expect(articleIsDisplayed).toBe(true);
         });
