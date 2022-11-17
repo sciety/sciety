@@ -20,6 +20,7 @@ describe('handle-event', () => {
     let currentState: ReadModel;
     const articleId = arbitraryArticleId();
     const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
+    const subjectArea = arbitrarySubjectArea();
 
     const testNextStateTransition = (
       _: string,
@@ -38,8 +39,6 @@ describe('handle-event', () => {
     };
 
     describe('when the article is in the unknown state', () => {
-      const subjectArea = arbitrarySubjectArea();
-
       beforeEach(() => {
         currentState = initialState();
       });
@@ -72,7 +71,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            subjectAreaRecorded(articleId, arbitrarySubjectArea()),
+            subjectAreaRecorded(articleId, subjectArea),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -81,13 +80,13 @@ describe('handle-event', () => {
       it.each([
         [
           'SubjectAreaRecorded -> subject-area-known',
-          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'subject-area-known' as const,
+          subjectAreaRecorded(articleId, subjectArea),
+          { name: 'subject-area-known' as const, subjectArea },
         ],
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated-and-subject-area-known' as const,
+          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -115,8 +114,8 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'evaluated-and-subject-area-known' as const,
+          subjectAreaRecorded(articleId, subjectArea),
+          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -131,7 +130,7 @@ describe('handle-event', () => {
         currentState = pipe(
           [
             evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-            subjectAreaRecorded(articleId, arbitrarySubjectArea()),
+            subjectAreaRecorded(articleId, subjectArea),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -141,12 +140,12 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          'evaluated-and-subject-area-known' as const,
+          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
-          'evaluated-and-subject-area-known' as const,
+          subjectAreaRecorded(articleId, subjectArea),
+          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
