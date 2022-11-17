@@ -12,7 +12,6 @@ describe('save-article-to-list', () => {
       const userHandle = 'DavidAshbrook';
       const testUserId = '931653361';
       const userProfilePage = `localhost:8080/users/${userHandle}`;
-      const genericListPage = `localhost:8080/lists/list-id-${testUserId}`;
       const userSavedArticlesPage = `localhost:8080/users/${userHandle}/lists/saved-articles`;
       const scietyFeedPage = 'localhost:8080/sciety-feed';
 
@@ -55,7 +54,9 @@ describe('save-article-to-list', () => {
         });
 
         it('the article card on the list page offers a delete button', async () => {
-          await goto(genericListPage);
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const deleteButton = $(articleCardDeleteButtonSelector);
           expect(await deleteButton.exists()).toBe(true);
         });
@@ -86,15 +87,19 @@ describe('save-article-to-list', () => {
         });
 
         it('the list count of the article card on the list page it is in increases by one', async () => {
-          await goto(genericListPage);
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+          await goto(userGenericListPageUrl);
           const cardText = await $('.article-card').text();
           expect(cardText).toContain('Appears in 1 list');
         });
 
         it.skip('the save article button on the article page is replaced with a link to the list', async () => {
+          const listId = await getFirstListOwnedBy(testUserId);
+          const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
           await goto(articlePage);
           await click('Saved to my list');
-          expect(await currentURL()).toBe(genericListPage);
+          expect(await currentURL()).toBe(userGenericListPageUrl);
         });
       });
     });
