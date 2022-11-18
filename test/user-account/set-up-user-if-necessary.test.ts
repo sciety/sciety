@@ -48,7 +48,7 @@ describe('set-up-user-if-necessary', () => {
 
     const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
-    it.failing('raises a ListCreated event', () => {
+    it('raises a ListCreated event', () => {
       expect(eventsToCommit).toStrictEqual([expect.objectContaining({
         type: 'ListCreated',
         ownerId: LOID.fromUserId(userAccount.id),
@@ -63,7 +63,7 @@ describe('set-up-user-if-necessary', () => {
 
     const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
-    it.failing('raises UserAccountCreated event', () => {
+    it('raises UserAccountCreated event', () => {
       expect(eventsToCommit).toStrictEqual([
         expect.objectContaining({
           userId: userAccount.id,

@@ -5,16 +5,9 @@ import { CreateListCommand } from '../commands';
 import {
   DomainEvent,
   isUserCreatedAccountEvent,
-  isUserFollowedEditorialCommunityEvent,
-  isUserFoundReviewHelpfulEvent,
-  isUserFoundReviewNotHelpfulEvent,
-  isUserRevokedFindingReviewHelpfulEvent,
-  isUserRevokedFindingReviewNotHelpfulEvent,
-  isUserSavedArticleEvent,
-  isUserUnfollowedEditorialCommunityEvent,
-  isUserUnsavedArticleEvent,
   userCreatedAccount,
 } from '../domain-events';
+import { isListCreatedEvent } from '../domain-events/list-created-event';
 import { executeCreateListCommand } from '../lists/execute-create-list-command';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
@@ -26,27 +19,23 @@ export type UserAccount = {
   displayName: string,
 };
 
-const isBreadcrumbInitiatedBy = (userId: UserId) => (event: DomainEvent) => (
-  isUserFollowedEditorialCommunityEvent(event)
-  || isUserUnfollowedEditorialCommunityEvent(event)
-  || isUserSavedArticleEvent(event)
-  || isUserUnsavedArticleEvent(event)
-  || isUserFoundReviewHelpfulEvent(event)
-  || isUserRevokedFindingReviewHelpfulEvent(event)
-  || isUserFoundReviewNotHelpfulEvent(event)
-  || isUserRevokedFindingReviewNotHelpfulEvent(event)
-) && event.userId === userId;
-
 const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
   isUserCreatedAccountEvent(event)
 ) && event.userId === userId;
 
 const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event) => (
-    isBreadcrumbInitiatedBy(userId)(event)
-     || isAccountCreatedBy(userId)(event)
-  )),
+  RA.filter((event) => (isAccountCreatedBy(userId)(event))),
+  RA.isEmpty,
+);
+
+const isListOwnedBy = (userId: UserId) => (event: DomainEvent) => (
+  isListCreatedEvent(event)
+) && LOID.eqListOwnerId.equals(event.ownerId, LOID.fromUserId(userId));
+
+const shouldCreateList = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter(isListOwnedBy(userId)),
   RA.isEmpty,
 );
 
@@ -57,17 +46,26 @@ const constructCommand = (userDetails: { userId: UserId, handle: string }): Crea
 });
 type SetUpUserIfNecessary = (user: UserAccount) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent>;
 
-export const setUpUserIfNecessary: SetUpUserIfNecessary = (user) => (events) => pipe(
-  events,
-  shouldCreateAccount(user.id),
-  B.fold(
-    () => [],
-    () => [
-      userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-      ...pipe(
+export const setUpUserIfNecessary: SetUpUserIfNecessary = (user) => (events) => [
+  ...pipe(
+    events,
+    shouldCreateAccount(user.id),
+    B.fold(
+      () => [],
+      () => [
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+      ],
+    ),
+  ),
+  ...pipe(
+    events,
+    shouldCreateList(user.id),
+    B.fold(
+      () => [],
+      () => pipe(
         constructCommand({ userId: user.id, handle: user.handle }),
         executeCreateListCommand,
       ),
-    ],
+    ),
   ),
-);
+];
