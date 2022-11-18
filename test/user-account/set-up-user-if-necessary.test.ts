@@ -28,24 +28,24 @@ describe('set-up-user-if-necessary', () => {
   const userAccount = arbitraryUserAccount();
 
   describe('when the user has already created an account', () => {
-    describe('because there is a UserCreatedAccount event', () => {
-      const events = [
-        userCreatedAccount(
-          userAccount.id,
-          userAccount.handle,
-          userAccount.avatarUrl,
-          userAccount.displayName,
-        ),
-      ];
+    const events = [
+      userCreatedAccount(
+        userAccount.id,
+        userAccount.handle,
+        userAccount.avatarUrl,
+        userAccount.displayName,
+      ),
+    ];
 
-      const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
+    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
-      it('raises no events', () => {
-        expect(eventsToCommit).toStrictEqual([]);
-      });
+    it('raises no events', () => {
+      expect(eventsToCommit).toStrictEqual([]);
     });
+  });
 
-    describe('because there are already events initiated by this user, but no UserCreatedAccount event', () => {
+  describe('when the user has not created an account', () => {
+    describe('and has created breadcrumbs on Sciety', () => {
       describe.each([
         ['UserFollowedEditorialCommunityEvent', userFollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
         ['UserUnfollowedEditorialCommunityEvent', userUnfollowedEditorialCommunity(userAccount.id, arbitraryGroupId())],
@@ -58,29 +58,36 @@ describe('set-up-user-if-necessary', () => {
       ])('when the existing event is %s', (_, event) => {
         const eventsToCommit = setUpUserIfNecessary(userAccount)([event]);
 
-        it('raises no events', () => {
-          expect(eventsToCommit).toStrictEqual([]);
+        it.failing('raises UserAccountCreated event', () => {
+          expect(eventsToCommit).toStrictEqual([
+            expect.objectContaining({
+              userId: userAccount.id,
+              handle: userAccount.handle,
+              avatarUrl: userAccount.avatarUrl,
+              displayName: userAccount.displayName,
+            }),
+          ]);
         });
       });
     });
-  });
 
-  describe('when the user has not already created an account', () => {
-    const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
+    describe('and has not created breadcrumbs on Sciety', () => {
+      const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
 
-    it('raises a UserCreatedAccount event and a ListCreated event', () => {
-      expect(eventsToCommit).toStrictEqual([
-        expect.objectContaining({
-          userId: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
-          displayName: userAccount.displayName,
-        }),
-        expect.objectContaining({
-          type: 'ListCreated',
-          ownerId: LOID.fromUserId(userAccount.id),
-        }),
-      ]);
+      it('raises a UserCreatedAccount event and a ListCreated event', () => {
+        expect(eventsToCommit).toStrictEqual([
+          expect.objectContaining({
+            userId: userAccount.id,
+            handle: userAccount.handle,
+            avatarUrl: userAccount.avatarUrl,
+            displayName: userAccount.displayName,
+          }),
+          expect.objectContaining({
+            type: 'ListCreated',
+            ownerId: LOID.fromUserId(userAccount.id),
+          }),
+        ]);
+      });
     });
   });
 
