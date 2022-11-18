@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
-import { ADT } from 'ts-adt';
+import { pipe } from 'fp-ts/function';
+import { ADT, match } from 'ts-adt';
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
   DomainEvent,
@@ -33,16 +34,15 @@ export type ArticleStateWithSubjectArea =
 | SubjectAreaKnown
 | EvaluatedAndSubjectAreaKnown;
 
-const transition = (state: ArticleState): ArticleState => {
-  switch (state._type) {
-    case 'subject-area-known':
-      return { _type: 'evaluated-and-subject-area-known', subjectArea: state.subjectArea };
-    case 'listed':
-    case 'evaluated-and-subject-area-known':
-    case 'evaluated':
-      return state;
-  }
-};
+const transition = (state: ArticleState): ArticleState => pipe(
+  state,
+  match({
+    'subject-area-known': (s) => ({ _type: 'evaluated-and-subject-area-known' as const, subjectArea: s.subjectArea }),
+    'evaluated': (s) => s,
+    'evaluated-and-subject-area-known': (s) => s,
+    'listed': (s) => s,
+  }),
+);
 
 export const initialState = (): ReadModel => ({});
 
