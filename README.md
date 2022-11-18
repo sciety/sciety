@@ -166,7 +166,7 @@ make exploratory-test-from-prod
 - adjust `articleId` and `listId` as needed
 
 ```sh
-curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST https://sciety.org/add-article-to-list -H "Content-type: application/json" -d '{"articleId": "10.21203/rs.3.rs-955726/v1", "listId": "5ac3a439-e5c6-4b15-b109-92928a740812"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST https://sciety.org/api/add-article-to-list -H "Content-type: application/json" -d '{"articleId": "10.21203/rs.3.rs-955726/v1", "listId": "5ac3a439-e5c6-4b15-b109-92928a740812"}'
 ```
 
 License
