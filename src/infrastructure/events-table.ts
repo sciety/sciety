@@ -1,6 +1,6 @@
 import { JsonRecord } from 'fp-ts/Json';
 import * as t from 'io-ts';
-import { domainEventCodec } from '../types/codecs/DomainEvent';
+import { domainEventCodec } from '../domain-events';
 
 export const domainEventsCodec = t.readonlyArray(domainEventCodec);
 
