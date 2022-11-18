@@ -33,12 +33,15 @@ export type ArticleStateWithSubjectArea =
 | SubjectAreaKnown
 | EvaluatedAndSubjectAreaKnown;
 
-const isStateWithSubjectArea = (state: ArticleState):
-  state is ArticleStateWithSubjectArea => {
-  if (state === undefined) {
-    return false;
+const transition = (state: ArticleState): ArticleState => {
+  switch (state.name) {
+    case 'subject-area-known':
+      return { name: 'evaluated-and-subject-area-known', subjectArea: state.subjectArea };
+    case 'listed':
+    case 'evaluated-and-subject-area-known':
+    case 'evaluated':
+      return state;
   }
-  return state.name === 'subject-area-known' || state.name === 'evaluated-and-subject-area-known';
 };
 
 export const initialState = (): ReadModel => ({});
@@ -47,16 +50,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   if (isEvaluationRecordedEvent(event)) {
     if (event.groupId === elifeGroupId) {
       const key = event.articleId.value;
-      const transitions = {
-        'initial': 'evaluated' as const,
-        'evaluated': 'evaluated' as const,
-        'listed': 'listed' as const,
-      };
       const currentState = readmodel[key];
-      if (isStateWithSubjectArea(currentState)) {
-        readmodel[key] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
+      if (currentState === undefined) {
+        readmodel[key] = { name: 'evaluated' };
       } else {
-        readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
+        readmodel[key] = transition(currentState);
       }
     }
   } else if (isArticleAddedToListEvent(event)) {
