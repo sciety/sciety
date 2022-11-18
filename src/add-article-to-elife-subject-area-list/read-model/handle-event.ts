@@ -14,10 +14,6 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-type SubjectAreaKnown = { _type: 'subject-area-known', subjectArea: SubjectArea };
-
-export type EvaluatedAndSubjectAreaKnown = { _type: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
-
 // ts-unused-exports:disable-next-line
 export type ArticleState = ADT<{
   evaluated: {},
@@ -26,15 +22,13 @@ export type ArticleState = ADT<{
   'evaluated-and-subject-area-known': { subjectArea: SubjectArea },
 }>;
 
+export type EvaluatedAndSubjectAreaKnown = ArticleState & ({ _type: 'evaluated-and-subject-area-known' });
+
 export type ArticleStateName = ArticleState['_type'];
 
 type ArticleId = string;
 
 export type ReadModel = Record<ArticleId, ArticleState>;
-
-export type ArticleStateWithSubjectArea =
-| SubjectAreaKnown
-| EvaluatedAndSubjectAreaKnown;
 
 export const initialState = (): ReadModel => ({});
 

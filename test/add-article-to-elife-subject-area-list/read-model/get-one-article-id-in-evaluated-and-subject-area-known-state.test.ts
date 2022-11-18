@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import {
   elifeGroupId, handleEvent, initialState, ReadModel,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
-import { ArticleStateWithSubjectArea } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
+import { EvaluatedAndSubjectAreaKnown } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
 import { fromString as doiFromString } from '../../../src/types/doi';
@@ -15,7 +15,7 @@ import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
   readModel,
-  R.filter((state): state is ArticleStateWithSubjectArea => state._type === 'evaluated-and-subject-area-known'),
+  R.filter((state): state is EvaluatedAndSubjectAreaKnown => state._type === 'evaluated-and-subject-area-known'),
   R.toEntries,
   RA.head,
   O.chain(([articleIdAsString, state]) => pipe(
