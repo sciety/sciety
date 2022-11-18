@@ -7,12 +7,7 @@ export {
   annotationCreatedEventCodec,
 } from './annotation-created-event';
 
-export {
-  isArticleAddedToListEvent,
-  ArticleAddedToListEvent,
-  articleAddedToList,
-  articleAddedToListEventCodec,
-} from './article-added-to-list-event';
+export * from './article-added-to-list-event';
 
 export {
   isArticleRemovedFromListEvent,
