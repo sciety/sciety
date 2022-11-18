@@ -17,7 +17,6 @@ import { GetUserDetails } from '../shared-ports/get-user-details';
 import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
-import * as LID from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -58,7 +57,6 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
         E.fromOption(() => DE.notFound),
         E.map((list) => list.listId),
         T.of,
-        () => TE.right(LID.fromValidatedString('1234')),
       ),
     },
     sequenceS(TE.ApplyPar),
