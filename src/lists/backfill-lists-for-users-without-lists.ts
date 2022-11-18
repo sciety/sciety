@@ -29,7 +29,6 @@ export const determineUsersInNeedOfLists: DetermineUsersInNeedOfLists = (ports) 
     handle: event.handle,
     avatarUrl: event.avatarUrl,
   })),
-  () => [],
 );
 
 const createListEvent = (user: User) => pipe(

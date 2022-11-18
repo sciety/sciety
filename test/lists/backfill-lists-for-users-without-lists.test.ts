@@ -30,7 +30,7 @@ describe('backfill-lists-for-users-without-lists', () => {
   });
 
   describe('given a user who has no lists', () => {
-    it.failing('returns the user to be backfilled', () => {
+    it('returns the user to be backfilled', () => {
       const user = {
         id: arbitraryUserId(),
         handle: arbitraryString(),
