@@ -1,5 +1,5 @@
 import {
-  $, goto, openBrowser, text, within,
+  $, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 
@@ -16,15 +16,6 @@ describe('legacy redirects', () => {
       const result = await $('.search-form').exists();
 
       expect(result).toBe(true);
-    });
-  });
-
-  describe('user page', () => {
-    it('redirects to the list tab', async () => {
-      await goto('localhost:8080/users/scietyHQ');
-      const isSavedArticlesTab = await text('Lists', within($('.tab--active'))).exists();
-
-      expect(isSavedArticlesTab).toBe(true);
     });
   });
 });
