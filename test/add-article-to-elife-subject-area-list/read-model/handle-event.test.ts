@@ -30,7 +30,7 @@ describe('handle-event', () => {
       const readModel = handleEvent(currentState, event);
 
       if (typeof nextStateOrNextStateName === 'string') {
-        expect(readModel[articleId.value].name).toStrictEqual(nextStateOrNextStateName);
+        expect(readModel[articleId.value]._type).toStrictEqual(nextStateOrNextStateName);
       } else if (typeof nextStateOrNextStateName === 'object') {
         expect(readModel[articleId.value]).toStrictEqual(nextStateOrNextStateName);
       } else {
@@ -57,7 +57,7 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> subject-area-known',
           subjectAreaRecorded(articleId, subjectArea),
-          { name: 'subject-area-known' as const, subjectArea },
+          { _type: 'subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -81,12 +81,12 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> subject-area-known',
           subjectAreaRecorded(articleId, subjectArea),
-          { name: 'subject-area-known' as const, subjectArea },
+          { _type: 'subject-area-known' as const, subjectArea },
         ],
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
+          { _type: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -115,7 +115,7 @@ describe('handle-event', () => {
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
           subjectAreaRecorded(articleId, subjectArea),
-          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
+          { _type: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -140,12 +140,12 @@ describe('handle-event', () => {
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
+          { _type: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
           subjectAreaRecorded(articleId, subjectArea),
-          { name: 'evaluated-and-subject-area-known' as const, subjectArea },
+          { _type: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
@@ -202,8 +202,8 @@ describe('handle-event', () => {
         );
 
         expect(readModel).toStrictEqual({
-          [articleId.value]: { name: 'evaluated' },
-          [articleId2.value]: { name: 'evaluated' },
+          [articleId.value]: { _type: 'evaluated' },
+          [articleId2.value]: { _type: 'evaluated' },
         });
       });
     });

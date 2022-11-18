@@ -15,7 +15,7 @@ import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 const getOneArticleIdInEvaluatedAndSubjectAreaKnownState = (readModel: ReadModel) => () => pipe(
   readModel,
-  R.filter((state): state is ArticleStateWithSubjectArea => state.name === 'evaluated-and-subject-area-known'),
+  R.filter((state): state is ArticleStateWithSubjectArea => state._type === 'evaluated-and-subject-area-known'),
   R.toEntries,
   RA.head,
   O.chain(([articleIdAsString, state]) => pipe(

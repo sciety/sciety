@@ -6,7 +6,7 @@ import { ArticleIdsByState } from '../read-model-status';
 const getArticleIds = (readModel: ReadModel,
   selectedState: ArticleStateName): ReadonlyArray<string> => pipe(
   readModel,
-  R.filter((item) => item.name === selectedState),
+  R.filter((item) => item._type === selectedState),
   R.keys,
 );
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

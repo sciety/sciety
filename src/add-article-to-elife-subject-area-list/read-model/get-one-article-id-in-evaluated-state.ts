@@ -7,7 +7,7 @@ import { Doi, fromString as doiFromString } from '../../types/doi';
 
 export const getOneArticleIdInEvaluatedState = (readModel: ReadModel) => (): O.Option<Doi> => pipe(
   readModel,
-  R.filter((item) => item.name === 'evaluated'),
+  R.filter((item) => item._type === 'evaluated'),
   R.keys,
   RA.head,
   O.chain(doiFromString),

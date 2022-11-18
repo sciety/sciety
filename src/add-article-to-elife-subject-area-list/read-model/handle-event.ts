@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
-import { MakeADT } from 'ts-adt/MakeADT';
+import { ADT } from 'ts-adt';
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
   DomainEvent,
@@ -11,19 +11,19 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-type SubjectAreaKnown = { name: 'subject-area-known', subjectArea: SubjectArea };
+type SubjectAreaKnown = { _type: 'subject-area-known', subjectArea: SubjectArea };
 
-type EvaluatedAndSubjectAreaKnown = { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
+export type EvaluatedAndSubjectAreaKnown = { _type: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
 
 // ts-unused-exports:disable-next-line
-export type ArticleState = MakeADT<'name', {
+export type ArticleState = ADT<{
   evaluated: {},
   listed: {},
   'subject-area-known': { subjectArea: SubjectArea },
   'evaluated-and-subject-area-known': { subjectArea: SubjectArea },
 }>;
 
-export type ArticleStateName = ArticleState['name'];
+export type ArticleStateName = ArticleState['_type'];
 
 type ArticleId = string;
 
@@ -34,9 +34,9 @@ export type ArticleStateWithSubjectArea =
 | EvaluatedAndSubjectAreaKnown;
 
 const transition = (state: ArticleState): ArticleState => {
-  switch (state.name) {
+  switch (state._type) {
     case 'subject-area-known':
-      return { name: 'evaluated-and-subject-area-known', subjectArea: state.subjectArea };
+      return { _type: 'evaluated-and-subject-area-known', subjectArea: state.subjectArea };
     case 'listed':
     case 'evaluated-and-subject-area-known':
     case 'evaluated':
@@ -52,14 +52,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       const key = event.articleId.value;
       const currentState = readmodel[key];
       if (currentState === undefined) {
-        readmodel[key] = { name: 'evaluated' };
+        readmodel[key] = { _type: 'evaluated' };
       } else {
         readmodel[key] = transition(currentState);
       }
     }
   } else if (isArticleAddedToListEvent(event)) {
     if (elifeSubjectAreaLists.includes(event.listId)) {
-      readmodel[event.articleId.value] = { name: 'listed' as const };
+      readmodel[event.articleId.value] = { _type: 'listed' as const };
     }
   } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
@@ -70,8 +70,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
       'listed': 'listed' as const,
     };
-    const currentStateName = readmodel[key] ? readmodel[key].name : 'initial';
-    readmodel[key] = { name: transitions[currentStateName], subjectArea: event.subjectArea };
+    const currentStateName = readmodel[key] ? readmodel[key]._type : 'initial';
+    readmodel[key] = { _type: transitions[currentStateName], subjectArea: event.subjectArea };
   }
   return readmodel;
 };
