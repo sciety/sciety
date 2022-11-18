@@ -29,7 +29,7 @@ const arbitraryUserAccount = (): UserAccount => ({
 describe('set-up-user-if-necessary', () => {
   const userAccount = arbitraryUserAccount();
 
-  describe('when the user has already created an account', () => {
+  describe('when the user has been fully set up', () => {
     const events = [
       userCreatedAccount(
         userAccount.id,
@@ -44,6 +44,26 @@ describe('set-up-user-if-necessary', () => {
 
     it('raises no events', () => {
       expect(eventsToCommit).toStrictEqual([]);
+    });
+  });
+
+  describe('when the user has only created an account but has no list', () => {
+    const events = [
+      userCreatedAccount(
+        userAccount.id,
+        userAccount.handle,
+        userAccount.avatarUrl,
+        userAccount.displayName,
+      ),
+    ];
+
+    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
+
+    it.failing('raises a ListCreated event', () => {
+      expect(eventsToCommit).toStrictEqual([expect.objectContaining({
+        type: 'ListCreated',
+        ownerId: LOID.fromUserId(userAccount.id),
+      })]);
     });
   });
 
