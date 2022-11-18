@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { CreateListCommand } from '../commands';
 import {
   DomainEvent,
   isUserCreatedAccountEvent,
@@ -15,7 +16,7 @@ import {
   userCreatedAccount,
 } from '../domain-events';
 import { executeCreateListCommand } from '../lists/execute-create-list-command';
-import { constructCommand } from '../policies/create-user-saved-articles-list-as-generic-list';
+import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
 export type UserAccount = {
@@ -49,6 +50,11 @@ const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEve
   RA.isEmpty,
 );
 
+const constructCommand = (userDetails: { userId: UserId, handle: string }): CreateListCommand => ({
+  ownerId: LOID.fromUserId(userDetails.userId),
+  name: `@${userDetails.handle}'s saved articles`,
+  description: `Articles that have been saved by @${userDetails.handle}`,
+});
 type SetUpUserIfNecessary = (user: UserAccount) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent>;
 
 export const setUpUserIfNecessary: SetUpUserIfNecessary = (user) => (events) => pipe(
