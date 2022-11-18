@@ -62,15 +62,19 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
-    const transitions = {
-      'initial': 'subject-area-known' as const,
-      'subject-area-known': 'subject-area-known' as const,
-      'evaluated': 'evaluated-and-subject-area-known' as const,
-      'evaluated-and-subject-area-known': 'evaluated-and-subject-area-known' as const,
-      'listed': 'listed' as const,
-    };
-    const currentStateName = readmodel[key] ? readmodel[key]._type : 'initial';
-    readmodel[key] = { _type: transitions[currentStateName], subjectArea: event.subjectArea };
+    readmodel[key] = pipe(
+      readmodel,
+      R.lookup(key),
+      O.fold(
+        () => ({ _type: 'subject-area-known', subjectArea: event.subjectArea }),
+        match({
+          'subject-area-known': (s) => (s),
+          'evaluated': () => ({ _type: 'evaluated-and-subject-area-known' as const, subjectArea: event.subjectArea }),
+          'evaluated-and-subject-area-known': (s) => s,
+          'listed': (s) => s,
+        }),
+      ),
+    );
   }
   return readmodel;
 };
