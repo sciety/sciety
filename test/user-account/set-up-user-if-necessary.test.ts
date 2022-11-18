@@ -112,24 +112,24 @@ describe('set-up-user-if-necessary', () => {
         });
       });
     });
+  });
 
-    describe('and has not created breadcrumbs on Sciety', () => {
-      const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
+  describe('sciety has no events related to this user', () => {
+    const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
 
-      it('raises a UserCreatedAccount event and a ListCreated event', () => {
-        expect(eventsToCommit).toStrictEqual([
-          expect.objectContaining({
-            userId: userAccount.id,
-            handle: userAccount.handle,
-            avatarUrl: userAccount.avatarUrl,
-            displayName: userAccount.displayName,
-          }),
-          expect.objectContaining({
-            type: 'ListCreated',
-            ownerId: LOID.fromUserId(userAccount.id),
-          }),
-        ]);
-      });
+    it('raises a UserCreatedAccount event and a ListCreated event', () => {
+      expect(eventsToCommit).toStrictEqual([
+        expect.objectContaining({
+          userId: userAccount.id,
+          handle: userAccount.handle,
+          avatarUrl: userAccount.avatarUrl,
+          displayName: userAccount.displayName,
+        }),
+        expect.objectContaining({
+          type: 'ListCreated',
+          ownerId: LOID.fromUserId(userAccount.id),
+        }),
+      ]);
     });
   });
 
