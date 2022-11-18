@@ -237,12 +237,13 @@ dev-replay-events-for-elife-subject-area-policy: build
 #------------------------------------------------------------------------------
 
 MK_LINTED_TS := .mk-linted-ts
+MK_TESTED_TS := .mk-tested-ts
 MK_LINTED_SASS := .mk-linted-sass
 TS_SOURCES := $(shell find src test feature-test -name '*.ts')
 SASS_SOURCES := $(shell find src test feature-test -name '*.scss')
 LINT_CACHE := .eslint-cache
 
-check: $(MK_LINTED_TS) $(MK_LINTED_SASS)
+check: $(MK_LINTED_TS) $(MK_LINTED_SASS) $(MK_TESTED_TS)
 
 $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx eslint src test feature-test \
@@ -250,6 +251,10 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 		--cache --cache-location $(LINT_CACHE) \
 		--color --max-warnings 0
 	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
+	@touch $@
+
+$(MK_TESTED_TS): node_modules $(TS_SOURCES)
+	npx jest --onlyChanged
 	@touch $@
 
 $(MK_LINTED_SASS): node_modules $(SASS_SOURCES)
