@@ -9,11 +9,13 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
+import { listCreated } from '../../src/domain-events/list-created-event';
 import * as LOID from '../../src/types/list-owner-id';
 import { setUpUserIfNecessary, UserAccount } from '../../src/user-account/set-up-user-if-necessary';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -35,6 +37,7 @@ describe('set-up-user-if-necessary', () => {
         userAccount.avatarUrl,
         userAccount.displayName,
       ),
+      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(userAccount.id)),
     ];
 
     const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
