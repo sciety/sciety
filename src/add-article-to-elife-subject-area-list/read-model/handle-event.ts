@@ -39,27 +39,23 @@ export type ArticleStateWithSubjectArea =
 export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEvaluationRecordedEvent(event)) {
-    if (event.groupId === elifeGroupId) {
-      const key = event.articleId.value;
-      readmodel[key] = pipe(
-        readmodel,
-        R.lookup(key),
-        O.fold(
-          () => ({ _type: 'evaluated' }),
-          match({
-            'subject-area-known': (s) => ({ _type: 'evaluated-and-subject-area-known' as const, subjectArea: s.subjectArea }),
-            'evaluated': (s) => s,
-            'evaluated-and-subject-area-known': (s) => s,
-            'listed': (s) => s,
-          }),
-        ),
-      );
-    }
-  } else if (isArticleAddedToListEvent(event)) {
-    if (elifeSubjectAreaLists.includes(event.listId)) {
-      readmodel[event.articleId.value] = { _type: 'listed' as const };
-    }
+  if (isEvaluationRecordedEvent(event) && event.groupId === elifeGroupId) {
+    const key = event.articleId.value;
+    readmodel[key] = pipe(
+      readmodel,
+      R.lookup(key),
+      O.fold(
+        () => ({ _type: 'evaluated' }),
+        match({
+          'subject-area-known': (s) => ({ _type: 'evaluated-and-subject-area-known' as const, subjectArea: s.subjectArea }),
+          'evaluated': (s) => s,
+          'evaluated-and-subject-area-known': (s) => s,
+          'listed': (s) => s,
+        }),
+      ),
+    );
+  } else if (isArticleAddedToListEvent(event) && elifeSubjectAreaLists.includes(event.listId)) {
+    readmodel[event.articleId.value] = { _type: 'listed' as const };
   } else if (isSubjectAreaRecordedEvent(event)) {
     const key = event.articleId.value;
     readmodel[key] = pipe(
