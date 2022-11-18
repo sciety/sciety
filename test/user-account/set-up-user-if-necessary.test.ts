@@ -67,6 +67,25 @@ describe('set-up-user-if-necessary', () => {
     });
   });
 
+  describe('when the user owns a list, but no account was created', () => {
+    const events = [
+      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(userAccount.id)),
+    ];
+
+    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
+
+    it.failing('raises UserAccountCreated event', () => {
+      expect(eventsToCommit).toStrictEqual([
+        expect.objectContaining({
+          userId: userAccount.id,
+          handle: userAccount.handle,
+          avatarUrl: userAccount.avatarUrl,
+          displayName: userAccount.displayName,
+        }),
+      ]);
+    });
+  });
+
   describe('when the user has not created an account', () => {
     describe('and has created breadcrumbs on Sciety', () => {
       describe.each([
