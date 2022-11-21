@@ -53,15 +53,15 @@ describe('user-list-card', () => {
       expect(meta?.textContent).toContain('Last updated Jul 23, 2021');
     });
 
-    it('displays the number of articles in the list', async () => {
+    it.failing('displays the number of articles in the list', async () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
-      const events = [
-        userSavedArticle(userId, arbitraryArticleId()),
-        userSavedArticle(userId, arbitraryArticleId()),
-      ];
+      const list = {
+        ...arbitraryList(),
+        articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
+      };
       const rendered = await pipe(
-        userListCard(T.of(events))(handle, userId, arbitraryList()),
+        userListCard(T.of([]))(handle, userId, list),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');
@@ -85,8 +85,12 @@ describe('user-list-card', () => {
     });
 
     it('displays an article count of 0', async () => {
+      const list = {
+        ...arbitraryList(),
+        articleIds: [],
+      };
       const rendered = await pipe(
-        userListCard(T.of([]))(handle, userId, arbitraryList()),
+        userListCard(T.of([]))(handle, userId, list),
         T.map(JSDOM.fragment),
       )();
       const meta = rendered.querySelector('.list-card__meta');
