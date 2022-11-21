@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { GetOneArticleIdInEvaluatedState } from '../add-article-to-elife-subject-area-list';
+import { GetOneArticleIdInEvaluatedState, GetOneArticleReadyToBeListed } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
   CommitEvents,
@@ -22,6 +22,7 @@ import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '..
 import * as DE from '../types/data-error';
 
 export type CollectedPorts = {
+  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
   getArticleIdsByState: GetArticleIdsByState,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   selectArticlesBelongingToList: SelectArticlesBelongingToList,

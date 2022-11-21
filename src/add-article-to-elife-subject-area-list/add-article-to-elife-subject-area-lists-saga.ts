@@ -13,11 +13,12 @@ import { SubjectArea } from '../types/subject-area';
 type Ports = {
   logger: Logger,
   addArticleToList: AddArticleToList,
+  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
 };
 
-const getOneArticleReadyToBeListed = (): O.Option<ArticleWithSubjectArea> => O.none;
+export type GetOneArticleReadyToBeListed = () => O.Option<ArticleWithSubjectArea>;
 
-type ArticleWithSubjectArea = { articleId: Doi, subjectArea: SubjectArea };
+export type ArticleWithSubjectArea = { articleId: Doi, subjectArea: SubjectArea };
 
 type BuildAddArticleToSubjectAreaListCommand = (adapters: Ports)
 => (input: ArticleWithSubjectArea)
@@ -38,7 +39,7 @@ const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListC
 export const addArticleToElifeSubjectAreaListsSaga = async (adapters: Ports): Promise<void> => {
   adapters.logger('info', 'addArticleToElifeSubjectAreaListsSaga starting');
   await pipe(
-    getOneArticleReadyToBeListed(),
+    adapters.getOneArticleReadyToBeListed(),
     TE.fromOption(() => 'no work to do'),
     TE.chainW(buildAddArticleToSubjectAreaListCommand(adapters)),
     TE.chainW((command) => pipe(
