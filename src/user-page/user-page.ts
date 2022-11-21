@@ -49,13 +49,12 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
       userDetails: ports.getUserDetails(userId),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       userId: TE.right(userId),
-      listId: pipe(
+      list: pipe(
         userId,
         LOID.fromUserId,
         ports.selectAllListsOwnedBy,
         RA.head,
         E.fromOption(() => DE.notFound),
-        E.map((list) => list.listId),
         T.of,
       ),
     },
@@ -63,7 +62,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, inputs.listId)
+      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, inputs.list)
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
