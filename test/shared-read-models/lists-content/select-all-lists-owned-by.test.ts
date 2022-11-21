@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { articleAddedToList, articleRemovedFromList, listCreated } from '../../../src/domain-events';
 import { handleEvent, initialState, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists-content';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -44,16 +44,16 @@ describe('select-all-lists-owned-by', () => {
     });
   });
 
-  describe('when the owner owns a non-empty list', () => {
+  describe('when the owner owns a list where some articles have been added', () => {
     const listId = arbitraryListId();
     const listName = arbitraryString();
     const listDescription = arbitraryString();
-    const newerDate = new Date('2021-07-08');
+    const dateOfLastEvent = new Date('2021-07-08');
     const readmodel = pipe(
       [
         listCreated(listId, listName, listDescription, ownerId),
         articleAddedToList(arbitraryArticleId(), listId),
-        articleAddedToList(arbitraryArticleId(), listId, newerDate),
+        articleAddedToList(arbitraryArticleId(), listId, dateOfLastEvent),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -63,8 +63,34 @@ describe('select-all-lists-owned-by', () => {
       expect(result.listId).toBe(listId);
     });
 
-    it('returns the most recent date an article was added as the last updated date', () => {
-      expect(result.lastUpdated).toStrictEqual(newerDate);
+    it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(dateOfLastEvent);
+    });
+  });
+
+  describe('when the owner owns a list where some articles have been removed', () => {
+    const listId = arbitraryListId();
+    const listName = arbitraryString();
+    const listDescription = arbitraryString();
+    const dateOfLastEvent = arbitraryDate();
+    const removedArticleId = arbitraryArticleId();
+    const readmodel = pipe(
+      [
+        listCreated(listId, listName, listDescription, ownerId),
+        articleAddedToList(arbitraryArticleId(), listId),
+        articleAddedToList(removedArticleId, listId),
+        articleRemovedFromList(removedArticleId, listId, dateOfLastEvent),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+
+    it('returns the list id', () => {
+      expect(result.listId).toBe(listId);
+    });
+
+    it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(dateOfLastEvent);
     });
   });
 
