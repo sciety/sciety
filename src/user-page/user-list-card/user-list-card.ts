@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { getUserListDetails } from './get-user-list-details';
@@ -19,6 +20,7 @@ export const userListCard = (
     (listDetails) => ({
       ...listDetails,
       articleCount: list.articleIds.length,
+      lastUpdated: O.some(list.lastUpdated),
       href: `/users/${handle}/lists/saved-articles`,
       title: 'Saved articles',
       description: defaultUserListDescription(`@${handle}`),

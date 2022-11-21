@@ -36,7 +36,7 @@ describe('user-list-card', () => {
     expect(description?.textContent).toContain(handle);
   });
 
-  it.failing('displays when the list was last updated', async () => {
+  it('displays when the list was last updated', async () => {
     const handle = arbitraryWord();
     const userId = arbitraryUserId();
     const rendered = await pipe(
