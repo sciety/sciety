@@ -53,7 +53,7 @@ describe('user-list-card', () => {
       expect(meta?.textContent).toContain('Last updated Jul 23, 2021');
     });
 
-    it.failing('displays the number of articles in the list', async () => {
+    it('displays the number of articles in the list', async () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
       const list = {
