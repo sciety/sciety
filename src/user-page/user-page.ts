@@ -62,7 +62,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? userListCard(ports.getAllEvents)(inputs.userDetails.handle, inputs.userId, inputs.list)
+      ? T.of(userListCard(inputs.userDetails.handle, inputs.list))
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
