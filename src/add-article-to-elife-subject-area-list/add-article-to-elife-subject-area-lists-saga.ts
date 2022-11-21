@@ -5,20 +5,26 @@ import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
   AddArticleToList, Logger,
 } from '../shared-ports';
+import { Doi } from '../types/doi';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
+import { SubjectArea } from '../types/subject-area';
 
 type Ports = {
   logger: Logger,
   addArticleToList: AddArticleToList,
 };
 
-const getOneArticleReadyToBeListed = (): O.Option<unknown> => O.none;
+const getOneArticleReadyToBeListed = (): O.Option<ArticleWithSubjectArea> => O.none;
+
+type ArticleWithSubjectArea = { articleId: Doi, subjectArea: SubjectArea };
 
 type BuildAddArticleToSubjectAreaListCommand = (adapters: Ports)
-=> ()
+=> (input: ArticleWithSubjectArea)
 => TE.TaskEither<ErrorMessage, AddArticleToListCommand>;
 
-const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListCommand = () => () => TE.left(toErrorMessage('could not build command'));
+const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListCommand = () => () => pipe(
+  TE.left(toErrorMessage('could not build command')),
+);
 
 export const addArticleToElifeSubjectAreaListsSaga = async (adapters: Ports): Promise<void> => {
   adapters.logger('info', 'addArticleToElifeSubjectAreaListsSaga starting');
