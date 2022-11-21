@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { getCorrespondingListId } from './read-model';
 import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
   AddArticleToList, Logger,
@@ -22,8 +23,16 @@ type BuildAddArticleToSubjectAreaListCommand = (adapters: Ports)
 => (input: ArticleWithSubjectArea)
 => TE.TaskEither<ErrorMessage, AddArticleToListCommand>;
 
-const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListCommand = () => () => pipe(
-  TE.left(toErrorMessage('could not build command')),
+const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListCommand = () => (
+  input,
+) => pipe(
+  input.subjectArea.value,
+  getCorrespondingListId,
+  O.map((listId) => ({
+    articleId: input.articleId,
+    listId,
+  })),
+  TE.fromOption(() => toErrorMessage('could not build command')),
 );
 
 export const addArticleToElifeSubjectAreaListsSaga = async (adapters: Ports): Promise<void> => {
