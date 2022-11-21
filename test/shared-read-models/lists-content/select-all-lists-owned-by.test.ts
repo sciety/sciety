@@ -63,7 +63,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.listId).toBe(listId);
     });
 
-    it.failing('returns the most recent date an article was added as the last updated date', () => {
+    it('returns the most recent date an article was added as the last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(newerDate);
     });
   });

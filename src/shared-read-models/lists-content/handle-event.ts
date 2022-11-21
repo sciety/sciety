@@ -24,10 +24,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     };
   } else if (isArticleAddedToListEvent(event)) {
     readmodel[event.listId].articleIds.push(event.articleId.value);
+    readmodel[event.listId].lastUpdated = event.date;
   } else if (isArticleRemovedFromListEvent(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
       (id) => id !== event.articleId.value,
     );
+    readmodel[event.listId].lastUpdated = event.date;
   }
 
   return readmodel;
