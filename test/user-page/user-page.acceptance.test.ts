@@ -10,6 +10,7 @@ import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
 import { userPage } from '../../src/user-page/user-page';
 import {
+  arbitraryDate,
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -42,6 +43,7 @@ const defaultPorts = {
     listId: arbitraryListId(),
     ownerId,
     articleIds: [],
+    lastUpdated: arbitraryDate(),
   }],
 };
 

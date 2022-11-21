@@ -38,6 +38,10 @@ describe('select-all-lists-owned-by', () => {
     it('returns the list id', () => {
       expect(result.listId).toBe(listId);
     });
+
+    it('returns the list creation date as the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(listCreationDate);
+    });
   });
 
   describe('when the owner owns a non-empty list', () => {
@@ -57,6 +61,10 @@ describe('select-all-lists-owned-by', () => {
 
     it('returns the list id', () => {
       expect(result.listId).toBe(listId);
+    });
+
+    it.failing('returns the most recent date an article was added as the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(newerDate);
     });
   });
 

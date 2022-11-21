@@ -8,22 +8,17 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-const arbitraryList = () => ({
-  listId: arbitraryListId(),
-  ownerId: arbitraryListOwnerId(),
-  articleIds: [],
-});
-
 describe('user-list-card', () => {
   const list = {
-    ...arbitraryList(),
+    listId: arbitraryListId(),
+    ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
   };
 
   it('displays the title of the list', async () => {
     const rendered = await pipe(
-      userListCard(T.of([]))(arbitraryWord(), arbitraryUserId(), arbitraryList()),
+      userListCard(T.of([]))(arbitraryWord(), arbitraryUserId(), list),
       T.map(JSDOM.fragment),
     )();
 
@@ -33,7 +28,7 @@ describe('user-list-card', () => {
   it('displays the list owner\'s handle in the description', async () => {
     const handle = arbitraryWord();
     const rendered = await pipe(
-      userListCard(T.of([]))(handle, arbitraryUserId(), arbitraryList()),
+      userListCard(T.of([]))(handle, arbitraryUserId(), list),
       T.map(JSDOM.fragment),
     )();
     const description = rendered.querySelector('p');
