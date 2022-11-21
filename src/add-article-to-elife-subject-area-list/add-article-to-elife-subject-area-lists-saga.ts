@@ -4,21 +4,15 @@ import { pipe } from 'fp-ts/function';
 import { getCorrespondingListId } from './read-model';
 import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
-  AddArticleToList, Logger,
+  AddArticleToList, ArticleWithSubjectArea, GetOneArticleReadyToBeListed, Logger,
 } from '../shared-ports';
-import { Doi } from '../types/doi';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
-import { SubjectArea } from '../types/subject-area';
 
 type Ports = {
   logger: Logger,
   addArticleToList: AddArticleToList,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
 };
-
-export type GetOneArticleReadyToBeListed = () => O.Option<ArticleWithSubjectArea>;
-
-export type ArticleWithSubjectArea = { articleId: Doi, subjectArea: SubjectArea };
 
 type BuildAddArticleToSubjectAreaListCommand = (adapters: Ports)
 => (input: ArticleWithSubjectArea)

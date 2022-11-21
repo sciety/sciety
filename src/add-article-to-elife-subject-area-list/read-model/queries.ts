@@ -2,9 +2,7 @@ import { getArticleIdsByState } from './get-article-ids-by-state';
 import { getOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { getOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { ReadModel } from './handle-event';
-import { GetArticleIdsByState } from '../../shared-ports';
-import { GetOneArticleReadyToBeListed } from '../add-article-to-elife-subject-area-lists-saga';
-import { GetOneArticleIdInEvaluatedState } from '../discover-elife-article-subject-area';
+import { GetArticleIdsByState, GetOneArticleIdInEvaluatedState, GetOneArticleReadyToBeListed } from '../../shared-ports';
 
 export type Queries = {
   getArticleIdsByState: GetArticleIdsByState,

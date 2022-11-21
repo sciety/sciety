@@ -1,10 +1,11 @@
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetArticleSubjectArea, Logger, RecordSubjectArea } from '../shared-ports';
+import {
+  GetArticleSubjectArea,
+  GetOneArticleIdInEvaluatedState,
+  Logger, RecordSubjectArea,
+} from '../shared-ports';
 import { Doi } from '../types/doi';
-
-export type GetOneArticleIdInEvaluatedState = () => O.Option<Doi>;
 
 type Ports = {
   logger: Logger,

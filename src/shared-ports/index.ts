@@ -12,3 +12,5 @@ export { GetArticleIdsByState } from './get-article-ids-by-state';
 export { SelectArticlesBelongingToList } from './select-articles-belonging-to-list';
 export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
+export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
+export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';

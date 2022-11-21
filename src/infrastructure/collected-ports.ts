@@ -2,14 +2,15 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { GetOneArticleIdInEvaluatedState, GetOneArticleReadyToBeListed } from '../add-article-to-elife-subject-area-list';
 import {
   AddArticleToList,
   CommitEvents,
   CreateList, FetchArticle,
   GetAllEvents, GetArticleIdsByState,
   GetArticleSubjectArea,
-  GetListsOwnedBy, IsArticleOnTheListOwnedBy,
+  GetListsOwnedBy, GetOneArticleIdInEvaluatedState,
+  GetOneArticleReadyToBeListed,
+  IsArticleOnTheListOwnedBy,
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
