@@ -44,6 +44,7 @@ const defaultPorts = {
     ownerId,
     articleIds: [],
     lastUpdated: arbitraryDate(),
+    name: arbitraryString(),
   }],
 };
 

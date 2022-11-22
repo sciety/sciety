@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { userListCard } from '../../../src/user-page/user-list-card';
-import { arbitraryWord } from '../../helpers';
+import { arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
@@ -12,6 +12,7 @@ describe('user-list-card', () => {
     ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
+    name: arbitraryString(),
   };
 
   it('displays the title of the list', () => {
