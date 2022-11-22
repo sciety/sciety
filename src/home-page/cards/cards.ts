@@ -12,17 +12,14 @@ export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
     first: userListCard({ ...ports, getUserDetails: () => TE.right(card1) })(
       card1.userId,
       card1.description,
-      card1.listId,
     ),
     second: userListCard({ ...ports, getUserDetails: () => TE.right(card2) })(
       card2.userId,
       card2.description,
-      card2.listId,
     ),
     third: userListCard({ ...ports, getUserDetails: () => TE.right(card3) })(
       card3.userId,
       card3.description,
-      card3.listId,
     ),
   },
   sequenceS(TE.ApplyPar),
