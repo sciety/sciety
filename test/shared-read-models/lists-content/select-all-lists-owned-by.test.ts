@@ -42,6 +42,10 @@ describe('select-all-lists-owned-by', () => {
     it('returns the list creation date as the last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(listCreationDate);
     });
+
+    it.failing('returns the name of the list', () => {
+      expect(result.name).toStrictEqual(listName);
+    });
   });
 
   describe('when the owner owns a list where some articles have been added', () => {
