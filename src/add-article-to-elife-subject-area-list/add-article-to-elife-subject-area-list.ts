@@ -30,7 +30,7 @@ const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListC
   TE.fromOption(() => toErrorMessage('could not build command')),
 );
 
-export const addArticleToElifeSubjectAreaListsSaga = async (adapters: Ports): Promise<void> => {
+export const addArticleToElifeSubjectAreaList = async (adapters: Ports): Promise<void> => {
   adapters.logger('info', 'addArticleToElifeSubjectAreaListsSaga starting');
   await pipe(
     adapters.getOneArticleReadyToBeListed(),

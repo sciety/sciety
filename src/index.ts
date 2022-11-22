@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { addArticleToElifeSubjectAreaListsSaga, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
+import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
@@ -48,7 +48,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Starting sagas');
   setInterval(async () => discoverElifeArticleSubjectArea(ports), 661 * 1000);
-  setInterval(async () => addArticleToElifeSubjectAreaListsSaga(ports), 13 * 60 * 1000);
+  setInterval(async () => addArticleToElifeSubjectAreaList(ports), 13 * 60 * 1000);
   ports.logger('info', 'Sagas started');
 };
 
