@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { renderListOfListCardsWithFallback } from '../../../src/group-page/lists/render-list-of-list-cards-with-fallback';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('render-list-of-list-cards-with-fallback', () => {
   describe('when the group owns no lists', () => {
@@ -16,6 +17,7 @@ describe('render-list-of-list-cards-with-fallback', () => {
     const rendered = renderListOfListCardsWithFallback([
       {
         title: listTitle,
+        listId: arbitraryListId(),
         description: arbitraryString(),
         articleCount: 0,
         lastUpdated: O.some(arbitraryDate()),
