@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderOurLists } from './render-our-lists';
 import { toOurListsViewModel } from './to-our-lists-view-model';
-import { GetListsOwnedBy } from '../../shared-ports';
+import { SelectAllListsOwnedBy } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -12,13 +12,14 @@ import * as LOID from '../../types/list-owner-id';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
-  getListsOwnedBy: GetListsOwnedBy,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
-  ports.getListsOwnedBy,
+  ports.selectAllListsOwnedBy,
+  TE.right,
   TE.map(toOurListsViewModel(group.slug)),
   TE.map(renderOurLists),
 );

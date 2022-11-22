@@ -1,18 +1,16 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../src/group-page/about/to-our-lists-view-model';
-import { List } from '../../../src/shared-read-models/lists';
-import { arbitraryDate, arbitraryNumber, arbitraryString } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
-// eslint-disable-next-line jest/no-export
-export const arbitraryList = (): List => ({
-  id: arbitraryListId(),
+const arbitraryList = () => ({
+  listId: arbitraryListId(),
   name: arbitraryString(),
   description: arbitraryString(),
-  articleCount: arbitraryNumber(0, 100),
+  articleIds: [],
   lastUpdated: arbitraryDate(),
   ownerId: arbitraryListOwnerId(),
 });
