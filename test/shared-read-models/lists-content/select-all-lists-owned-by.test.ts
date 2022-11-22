@@ -43,7 +43,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.lastUpdated).toStrictEqual(listCreationDate);
     });
 
-    it.failing('returns the name of the list', () => {
+    it('returns the name of the list', () => {
       expect(result.name).toStrictEqual(listName);
     });
   });
