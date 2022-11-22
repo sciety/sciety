@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { renderListOfListCardsWithFallback } from '../../../src/group-page/lists/render-list-of-list-cards-with-fallback';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('render-list-of-list-cards-with-fallback', () => {
@@ -21,7 +21,6 @@ describe('render-list-of-list-cards-with-fallback', () => {
         description: arbitraryString(),
         articleCount: 0,
         lastUpdated: O.some(arbitraryDate()),
-        href: arbitraryUri(),
         articleCountLabel: arbitraryString(),
       },
     ]);

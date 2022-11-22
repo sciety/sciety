@@ -8,7 +8,6 @@ export type ListCardViewModel = {
   userHandle?: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
-  href: string,
   title: string,
   description: string,
   articleCountLabel: string,
