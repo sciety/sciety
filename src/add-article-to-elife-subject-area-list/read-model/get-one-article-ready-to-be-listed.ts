@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
+import { getCorrespondingListId } from './get-corresponding-list-id';
 import { ArticleStateWithSubjectArea, ReadModel } from './handle-event';
 import { ArticleWithSubjectArea } from '../../shared-ports';
 import { fromString as doiFromString } from '../../types/doi';
@@ -16,6 +17,14 @@ export const getOneArticleReadyToBeListed = (readModel: ReadModel) => (): O.Opti
     O.map((articleId) => ({
       articleId,
       subjectArea: state.subjectArea,
+    })),
+  )),
+  O.chain(({ articleId, subjectArea }) => pipe(
+    subjectArea.value,
+    getCorrespondingListId,
+    O.map((listId) => ({
+      articleId,
+      listId,
     })),
   )),
 );

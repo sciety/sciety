@@ -1,12 +1,8 @@
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getCorrespondingListId } from './read-model';
-import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
-  AddArticleToList, ArticleWithSubjectArea, GetOneArticleReadyToBeListed, Logger,
+  AddArticleToList, GetOneArticleReadyToBeListed, Logger,
 } from '../shared-ports';
-import { ErrorMessage, toErrorMessage } from '../types/error-message';
 
 type Ports = {
   logger: Logger,
@@ -14,28 +10,11 @@ type Ports = {
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
 };
 
-type BuildAddArticleToSubjectAreaListCommand = (adapters: Ports)
-=> (input: ArticleWithSubjectArea)
-=> TE.TaskEither<ErrorMessage, AddArticleToListCommand>;
-
-const buildAddArticleToSubjectAreaListCommand: BuildAddArticleToSubjectAreaListCommand = () => (
-  input,
-) => pipe(
-  input.subjectArea.value,
-  getCorrespondingListId,
-  O.map((listId) => ({
-    articleId: input.articleId,
-    listId,
-  })),
-  TE.fromOption(() => toErrorMessage('could not build command')),
-);
-
 export const addArticleToElifeSubjectAreaList = async (adapters: Ports): Promise<void> => {
   adapters.logger('info', 'addArticleToElifeSubjectAreaListsSaga starting');
   await pipe(
     adapters.getOneArticleReadyToBeListed(),
     TE.fromOption(() => 'no work to do'),
-    TE.chainW(buildAddArticleToSubjectAreaListCommand(adapters)),
     TE.chainW((command) => pipe(
       command,
       adapters.addArticleToList,
