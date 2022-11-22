@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
+import { renderListPageLinkHref } from '../render-list-page-link-href';
 
 export type ListCardViewModel = {
   listId: ListId,
@@ -17,13 +18,6 @@ const lastUpdated = O.fold(
   () => '',
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
-
-type ListPageLinkHrefViewModel = {
-  listId: ListId,
-  userHandle?: string,
-};
-
-const renderListPageLinkHref = (viewModel: ListPageLinkHrefViewModel) => (viewModel.userHandle ? `/users/${viewModel.userHandle}/lists/saved-articles` : `/lists/${viewModel.listId}`);
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
