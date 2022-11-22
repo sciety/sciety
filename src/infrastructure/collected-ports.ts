@@ -9,21 +9,20 @@ import {
   GetAllEvents, GetArticleIdsByState,
   GetArticleSubjectArea,
   GetListsOwnedBy, GetOneArticleIdInEvaluatedState,
-  GetOneArticleReadyToBeListed,
   IsArticleOnTheListOwnedBy,
   Logger,
   RecordSubjectArea,
   RemoveArticleFromList,
   SelectAllListsOwnedBy,
   SelectArticlesBelongingToList,
+  SharedPorts,
 } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { SearchResults } from '../third-parties/europe-pmc';
 import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
 
-export type CollectedPorts = {
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
+export type CollectedPorts = SharedPorts & {
   getArticleIdsByState: GetArticleIdsByState,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   selectArticlesBelongingToList: SelectArticlesBelongingToList,

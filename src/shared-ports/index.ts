@@ -1,3 +1,5 @@
+import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
+
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
 export { Logger } from './logger';
@@ -14,3 +16,7 @@ export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
+
+export type SharedPorts = {
+  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
+};
