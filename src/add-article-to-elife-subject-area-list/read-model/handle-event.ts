@@ -27,7 +27,7 @@ export type ReadModel = Record<string, ArticleState>;
 
 export const initialState = (): ReadModel => ({});
 
-const isStateWithSubjectArea = (state: ArticleState):
+export const isStateWithSubjectArea = (state: ArticleState):
   state is ArticleStateWithSubjectArea => {
   if (state === undefined) {
     return false;
