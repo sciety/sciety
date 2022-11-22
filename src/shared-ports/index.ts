@@ -1,4 +1,16 @@
-import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
+import { AddArticleToList } from './add-article-to-list';
+import { CommitEvents } from './commit-events';
+import { CreateList } from './create-list';
+import { FetchArticle } from './fetch-article';
+import { GetAllEvents } from './get-all-events';
+import { GetArticleSubjectArea } from './get-article-subject-area';
+import { GetListsOwnedBy } from './get-lists-owned-by';
+import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
+import { Logger } from './logger';
+import { RecordSubjectArea } from './record-subject-area';
+import { RemoveArticleFromList } from './remove-article-from-list';
+import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
+import { SelectArticlesBelongingToList } from './select-articles-belonging-to-list';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -18,5 +30,17 @@ export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 
 export type SharedPorts = {
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
+  selectArticlesBelongingToList: SelectArticlesBelongingToList,
+  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  addArticleToList: AddArticleToList,
+  commitEvents: CommitEvents,
+  createList: CreateList,
+  fetchArticle: FetchArticle,
+  getAllEvents: GetAllEvents,
+  getArticleSubjectArea: GetArticleSubjectArea,
+  getListsOwnedBy: GetListsOwnedBy,
+  recordSubjectArea: RecordSubjectArea,
+  logger: Logger,
+  removeArticleFromList: RemoveArticleFromList,
 };
