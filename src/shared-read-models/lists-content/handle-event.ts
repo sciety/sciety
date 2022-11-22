@@ -10,6 +10,7 @@ type ListState = {
   articleIds: Array<string>,
   lastUpdated: Date,
   name: string,
+  description: string,
 };
 export type ReadModel = Record<ListId, ListState>;
 
@@ -23,6 +24,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       articleIds: [],
       lastUpdated: event.date,
       name: event.name,
+      description: event.description,
     };
   } else if (isArticleAddedToListEvent(event)) {
     readmodel[event.listId].articleIds.push(event.articleId.value);

@@ -43,6 +43,10 @@ describe('select-all-lists-owned-by', () => {
       expect(result.name).toStrictEqual(listName);
     });
 
+    it('returns the description of the list', () => {
+      expect(result.description).toStrictEqual(listDescription);
+    });
+
     it('returns the list creation date as the last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(listCreationDate);
     });
@@ -69,6 +73,10 @@ describe('select-all-lists-owned-by', () => {
 
     it('returns the name of the list', () => {
       expect(result.name).toStrictEqual(listName);
+    });
+
+    it('returns the description of the list', () => {
+      expect(result.description).toStrictEqual(listDescription);
     });
 
     it('returns the last updated date', () => {
@@ -99,6 +107,10 @@ describe('select-all-lists-owned-by', () => {
 
     it('returns the name of the list', () => {
       expect(result.name).toStrictEqual(listName);
+    });
+
+    it('returns the description of the list', () => {
+      expect(result.description).toStrictEqual(listDescription);
     });
 
     it('returns the last updated date', () => {

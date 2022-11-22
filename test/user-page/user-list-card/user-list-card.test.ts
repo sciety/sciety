@@ -13,6 +13,7 @@ describe('user-list-card', () => {
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
     name: arbitraryString(),
+    description: arbitraryString(),
   };
 
   it('displays the title of the list', () => {

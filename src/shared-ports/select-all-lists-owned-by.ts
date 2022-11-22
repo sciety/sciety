@@ -8,6 +8,7 @@ export type List = {
   articleIds: Array<string>,
   lastUpdated: Date,
   name: string,
+  description: string,
 };
 
 export type SelectAllListsOwnedBy = (listOwnerId: ListOwnerId) => ReadonlyArray<List>;
