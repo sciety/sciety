@@ -3,6 +3,7 @@ import { CommitEvents } from './commit-events';
 import { CreateList } from './create-list';
 import { FetchArticle } from './fetch-article';
 import { GetAllEvents } from './get-all-events';
+import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetListsOwnedBy } from './get-lists-owned-by';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
@@ -31,6 +32,7 @@ export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluat
 
 export type SharedPorts = {
   selectArticlesBelongingToList: SelectArticlesBelongingToList,
+  getArticleIdsByState: GetArticleIdsByState,
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
