@@ -22,7 +22,7 @@ export type ReadModel = Record<string, ArticleState>;
 
 export const initialState = (): ReadModel => ({});
 
-type ArticleStateWithSubjectArea = ArticleState & { subjectArea: SubjectArea };
+type ArticleStateWithSubjectArea = Extract<ArticleState, { name: ArticleStateName, subjectArea: SubjectArea }>;
 
 export const isStateWithSubjectArea = (state: ArticleState):
   state is ArticleStateWithSubjectArea => typeof state === 'object' && state !== null && 'subjectArea' in state;
