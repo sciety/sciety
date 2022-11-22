@@ -9,17 +9,15 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-// ts-unused-exports:disable-next-line
-export type ArticleStateWithSubjectArea =
+type ArticleStateWithSubjectArea =
  | { name: 'subject-area-known', subjectArea: SubjectArea }
  | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
 
 // ts-unused-exports:disable-next-line
 export type ArticleState =
+ | ArticleStateWithSubjectArea
  | { name: 'evaluated' }
- | { name: 'listed' }
- | { name: 'subject-area-known', subjectArea: SubjectArea }
- | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
+ | { name: 'listed' };
 
 export type ArticleStateName = ArticleState['name'];
 
