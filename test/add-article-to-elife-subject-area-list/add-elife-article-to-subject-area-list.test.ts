@@ -34,6 +34,18 @@ describe('add-elife-article-to-subject-area-list', () => {
   });
 
   describe('when there is no work to do', () => {
-    it.todo('does not invoke a command');
+    const adapters = {
+      addArticleToList: jest.fn(),
+      getOneArticleReadyToBeListed: () => O.none,
+      logger: dummyLogger,
+    };
+
+    beforeAll(async () => {
+      await addArticleToElifeSubjectAreaList(adapters);
+    });
+
+    it('does not invoke a command', () => {
+      expect(adapters.addArticleToList).not.toHaveBeenCalled();
+    });
   });
 });
