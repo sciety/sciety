@@ -17,7 +17,7 @@ describe('get-one-article-ready-to-be-listed', () => {
     const articleIdA = arbitraryArticleId();
     const knownSubjectAreaValue = 'neuroscience';
     const subjectArea = arbitrarySubjectArea(knownSubjectAreaValue);
-    const listId = O.getOrElseW(shouldNotBeCalled)(getCorrespondingListId(knownSubjectAreaValue));
+    const listId = O.getOrElseW(shouldNotBeCalled)(getCorrespondingListId(subjectArea));
 
     const readModel = pipe(
       [

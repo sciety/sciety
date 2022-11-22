@@ -20,7 +20,7 @@ export const getOneArticleReadyToBeListed = (readModel: ReadModel) => (): O.Opti
     })),
   )),
   O.chain(({ articleId, subjectArea }) => pipe(
-    subjectArea.value,
+    subjectArea,
     getCorrespondingListId,
     O.map((listId) => ({
       articleId,
