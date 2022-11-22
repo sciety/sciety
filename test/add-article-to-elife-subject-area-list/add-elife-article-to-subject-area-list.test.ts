@@ -1,43 +1,31 @@
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
+import { addArticleToElifeSubjectAreaList } from '../../src/add-article-to-elife-subject-area-list';
 import { getCorrespondingListId } from '../../src/add-article-to-elife-subject-area-list/read-model';
-import { AddArticleToList } from '../../src/shared-ports';
-import { Doi } from '../../src/types/doi';
-import { SubjectArea } from '../../src/types/subject-area';
+import { dummyLogger } from '../dummy-logger';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
-
-type GetOneArticleReadyToBeListed = () => O.Option<{
-  articleId: Doi,
-  subjectArea: SubjectArea,
-}>;
-
-type Ports = {
-  addArticleToList: AddArticleToList,
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addELifeArticleToSubjectAreaList = async (adapters: Ports): Promise<void> => {
-};
 
 describe('add-elife-article-to-subject-area-list', () => {
   describe('when there is work to do', () => {
     const articleId = arbitraryArticleId();
     const knownSubjectAreaValue = 'neuroscience';
-    const listId = getCorrespondingListId(knownSubjectAreaValue);
+    const listId = O.getOrElseW(shouldNotBeCalled)(getCorrespondingListId(knownSubjectAreaValue));
     const adapters = {
-      addArticleToList: jest.fn(),
+      addArticleToList: jest.fn(() => TE.right('events-created' as const)),
       getOneArticleReadyToBeListed: () => O.some({
         articleId,
         subjectArea: arbitrarySubjectArea(knownSubjectAreaValue),
       }),
+      logger: dummyLogger,
     };
 
     beforeAll(async () => {
-      await addELifeArticleToSubjectAreaList(adapters);
+      await addArticleToElifeSubjectAreaList(adapters);
     });
 
-    it.failing('invokes addArticleToList command', () => {
+    it('invokes addArticleToList command', () => {
       expect(adapters.addArticleToList).toHaveBeenCalledWith({
         articleId,
         listId,
