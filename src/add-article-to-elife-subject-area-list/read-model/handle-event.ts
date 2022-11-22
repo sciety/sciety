@@ -9,13 +9,10 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-type ArticleStateWithSubjectArea =
- | { name: 'subject-area-known', subjectArea: SubjectArea }
- | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
-
 // ts-unused-exports:disable-next-line
 export type ArticleState =
- | ArticleStateWithSubjectArea
+ { name: 'subject-area-known', subjectArea: SubjectArea }
+ | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea }
  | { name: 'evaluated' }
  | { name: 'listed' };
 
@@ -25,13 +22,10 @@ export type ReadModel = Record<string, ArticleState>;
 
 export const initialState = (): ReadModel => ({});
 
+type ArticleStateWithSubjectArea = ArticleState & { subjectArea: SubjectArea };
+
 export const isStateWithSubjectArea = (state: ArticleState):
-  state is ArticleStateWithSubjectArea => {
-  if (state === undefined) {
-    return false;
-  }
-  return state.name === 'subject-area-known' || state.name === 'evaluated-and-subject-area-known';
-};
+  state is ArticleStateWithSubjectArea => typeof state === 'object' && state !== null && 'subjectArea' in state;
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
