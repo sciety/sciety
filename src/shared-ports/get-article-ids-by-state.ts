@@ -1,3 +1,3 @@
-import { ArticleIdsByState } from '../add-article-to-elife-subject-area-list';
+export type ArticleIdsByState = Record<string, ReadonlyArray<string>>;
 
 export type GetArticleIdsByState = () => ArticleIdsByState;

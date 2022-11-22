@@ -1,7 +1,6 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { ArticleStateName } from './read-model/handle-event';
-import { GetArticleIdsByState } from '../shared-ports';
+import { ArticleIdsByState, GetArticleIdsByState } from '../shared-ports';
 
 const formatForJson = (articleIds: ArticleIdsByState) => pipe(
   articleIds,
@@ -11,15 +10,13 @@ const formatForJson = (articleIds: ArticleIdsByState) => pipe(
   })),
 );
 
-export type ArticleIdsByState = Record<ArticleStateName, ReadonlyArray<string>>;
-
 type Ports = {
   getArticleIdsByState: GetArticleIdsByState,
 };
 
 type ArticlesInState = { articleIds: ReadonlyArray<string>, articleCount: number };
 
-type ReadModelStatus = Record<ArticleStateName, ArticlesInState>;
+type ReadModelStatus = Record<string, ArticlesInState>;
 
 export const readModelStatus = (
   adapters: Ports,
