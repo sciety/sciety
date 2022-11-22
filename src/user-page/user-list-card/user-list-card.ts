@@ -11,6 +11,7 @@ export const userListCard = (handle: string, list: List): HtmlFragment => pipe(
     articleCount: list.articleIds.length,
     lastUpdated: O.some(list.lastUpdated),
     href: `/users/${handle}/lists/saved-articles`,
+    userHandle: handle,
     title: 'Saved articles',
     description: defaultUserListDescription(`@${handle}`),
     articleCountLabel: 'This list contains',
