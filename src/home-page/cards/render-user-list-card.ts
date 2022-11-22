@@ -1,8 +1,11 @@
 import * as O from 'fp-ts/Option';
 import { templateDate } from '../../shared-components/date';
+import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { ListId } from '../../types/list-id';
 
 type UserListCardViewModel = {
+  listId: ListId,
   articleCount: number,
   lastUpdated: O.Option<Date>,
   handle: string,
@@ -16,7 +19,7 @@ const lastUpdated = O.fold(
 );
 
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
-  <a href="/users/${viewModel.handle}/lists/saved-articles" class="user-list-card__link">
+  <a href="${renderListPageLinkHref({ userHandle: viewModel.handle, listId: viewModel.listId })}" class="user-list-card__link">
     <article class="user-list-card">
       <div class="user-list-card__body">
         <div>
