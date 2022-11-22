@@ -9,12 +9,6 @@ import {
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
-export type ArticleStateName =
-| 'evaluated'
-| 'listed'
-| 'subject-area-known'
-| 'evaluated-and-subject-area-known';
-
 // ts-unused-exports:disable-next-line
 export type ArticleStateWithSubjectArea =
  | { name: 'subject-area-known', subjectArea: SubjectArea }
@@ -24,7 +18,10 @@ export type ArticleStateWithSubjectArea =
 export type ArticleState =
  | { name: 'evaluated' }
  | { name: 'listed' }
- | ArticleStateWithSubjectArea;
+ | { name: 'subject-area-known', subjectArea: SubjectArea }
+ | { name: 'evaluated-and-subject-area-known', subjectArea: SubjectArea };
+
+export type ArticleStateName = ArticleState['name'];
 
 export type ReadModel = Record<string, ArticleState>;
 
