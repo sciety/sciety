@@ -23,6 +23,7 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
     title: list.name,
     lastUpdated: list.lastUpdated,
   })),
+  RA.reverse,
   (listViewModels) => (listViewModels.length > maxLists
     ? truncatedView(listViewModels, groupSlug)
     : { lists: listViewModels, allListsUrl: O.none }

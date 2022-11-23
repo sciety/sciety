@@ -34,7 +34,7 @@ describe('to-our-lists-view-model', () => {
       expect(model.lists).toHaveLength(3);
     });
 
-    it.failing('returns list view models in reverse order', () => {
+    it('returns list view models in reverse order', () => {
       expect(model.lists[0].title).toStrictEqual(nameOfMostRecentlyUpdatedList);
     });
 
