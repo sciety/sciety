@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { userSavedArticle } from '../../src/domain-events';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
+import { ListOwnerId } from '../../src/types/list-owner-id';
 import { User } from '../../src/types/user';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -12,7 +13,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
-  const selectAllListsOwnedBy = (listOwnerId) => [{
+  const selectAllListsOwnedBy = (listOwnerId: ListOwnerId) => [{
     listId,
     ownerId: listOwnerId,
     articleIds: [arbitraryDoi().value],
