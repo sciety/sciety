@@ -254,6 +254,7 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
 	@touch $@
 
+$(MK_TESTED_TS): export EXPERIMENT_ENABLED = true
 $(MK_TESTED_TS): node_modules $(TS_SOURCES)
 	npx jest --onlyChanged
 	@touch $@
