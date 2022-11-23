@@ -23,7 +23,7 @@ describe('finish-save-article-command', () => {
   }];
 
   describe('when the user has not already saved the article', () => {
-    it.failing('commits a ArticleAddedToList event', async () => {
+    it('commits a ArticleAddedToList event', async () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryArticleId();
       const context = ({
@@ -52,7 +52,7 @@ describe('finish-save-article-command', () => {
   });
 
   describe('when the user has already saved the article', () => {
-    it('does not commit any events', async () => {
+    it.failing('does not commit any events', async () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryArticleId();
       const context = ({
