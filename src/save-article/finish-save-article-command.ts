@@ -35,6 +35,8 @@ const handleWithSaveArticleCommand: HandleWithSaveArticleCommand = (
   )),
 );
 
+const handleWithAddArticleToListCommand = () => T.of('no-events-created' as CommandResult);
+
 export const finishSaveArticleCommand = (
   { getAllEvents, commitEvents }: Ports,
 ): Middleware => async (context, next) => {
@@ -48,7 +50,9 @@ export const finishSaveArticleCommand = (
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(
-        handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents),
+        process.env.EXPERIMENT_ENABLED === 'true'
+          ? handleWithAddArticleToListCommand()
+          : handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;
