@@ -75,6 +75,7 @@ test-coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
+jest-test: export EXPERIMENT_ENABLED = true
 jest-test:
 	npx jest ${TEST}
 
