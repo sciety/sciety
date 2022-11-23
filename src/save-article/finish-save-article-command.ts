@@ -6,6 +6,7 @@ import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
+import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
 
@@ -15,6 +16,24 @@ type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
+
+type HandleWithSaveArticleCommand = (
+  getAllEvents: GetAllEvents, user: User, articleId: Doi.Doi, commitEvents: CommitEvents) => T.Task<CommandResult>;
+
+const handleWithSaveArticleCommand: HandleWithSaveArticleCommand = (
+  getAllEvents, user, articleId, commitEvents,
+) => pipe(
+  getAllEvents,
+  T.chain(flow(
+    articleSaveState(user.id, articleId),
+    commandHandler({
+      articleId,
+      userId: user.id,
+      type: 'SaveArticle' as const,
+    }),
+    commitEvents,
+  )),
+);
 
 export const finishSaveArticleCommand = (
   { getAllEvents, commitEvents }: Ports,
@@ -29,16 +48,7 @@ export const finishSaveArticleCommand = (
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(
-        getAllEvents,
-        T.chain(flow(
-          articleSaveState(user.id, articleId),
-          commandHandler({
-            articleId,
-            userId: user.id,
-            type: 'SaveArticle' as const,
-          }),
-          commitEvents,
-        )),
+        handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;

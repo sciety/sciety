@@ -44,7 +44,7 @@ describe('add-previously-removed-article-to-list', () => {
     await closeBrowser();
   });
 
-  it.failing('saves the article again', async () => {
+  it('saves the article again', async () => {
     const contentSelector = '.article-actions';
     const content = await $(contentSelector).text();
 
