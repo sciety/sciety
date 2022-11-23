@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
-import { CommitEvents, GetAllEvents } from '../shared-ports';
+import { CommitEvents, GetAllEvents, SelectAllListsOwnedBy } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import { User } from '../types/user';
@@ -15,6 +15,7 @@ const isCommand = (command: string): command is 'save-article' => command === 's
 type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 type HandleWithSaveArticleCommand = (

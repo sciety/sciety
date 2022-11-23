@@ -4,12 +4,25 @@ import { ParameterizedContext } from 'koa';
 import { userSavedArticle } from '../../src/domain-events';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
 import { User } from '../../src/types/user';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('finish-save-article-command', () => {
+  const listId = arbitraryListId();
+  const selectAllListsOwnedBy = (listOwnerId) => [{
+    listId,
+    ownerId: listOwnerId,
+    articleIds: [arbitraryDoi().value],
+    lastUpdated: arbitraryDate(),
+    name: arbitraryWord(),
+    description: arbitraryString(),
+  }];
+
   describe('when the user has not already saved the article', () => {
-    it.failing('commits a UserSavedArticle event', async () => {
+    it.failing('commits a ArticleAddedToList event', async () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryArticleId();
       const context = ({
@@ -27,11 +40,11 @@ describe('finish-save-article-command', () => {
       const getAllEvents = T.of([]);
       const commitEvents = jest.fn().mockImplementation(() => T.of('events-created' as const));
 
-      await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
+      await finishSaveArticleCommand({ getAllEvents, commitEvents, selectAllListsOwnedBy })(context, jest.fn());
 
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
-        type: 'UserSavedArticle',
-        userId,
+        type: 'ArticleAddedToList',
+        listId,
         articleId,
       })]);
     });
@@ -58,7 +71,7 @@ describe('finish-save-article-command', () => {
       ]);
       const commitEvents = jest.fn().mockImplementation(() => T.of('no-events-created' as const));
 
-      await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
+      await finishSaveArticleCommand({ getAllEvents, commitEvents, selectAllListsOwnedBy })(context, jest.fn());
 
       expect(commitEvents).toHaveBeenCalledWith([]);
     });
@@ -83,6 +96,7 @@ describe('finish-save-article-command', () => {
       await finishSaveArticleCommand({
         commitEvents: () => T.of('no-events-created' as const),
         getAllEvents: async () => [],
+        selectAllListsOwnedBy,
       })(context, jest.fn());
 
       expect(context.session).toStrictEqual({});
