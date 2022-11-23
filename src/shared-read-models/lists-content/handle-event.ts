@@ -4,7 +4,7 @@ import { isListCreatedEvent } from '../../domain-events/list-created-event';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
-type ListState = {
+export type ListState = {
   listId: ListId,
   ownerId: ListOwnerId,
   articleIds: Array<string>,

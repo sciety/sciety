@@ -148,7 +148,7 @@ describe('select-all-lists-owned-by', () => {
     );
     const result = selectAllListsOwnedBy(readmodel)(ownerId);
 
-    it.failing('returns the lists in ascending order by last updated', () => {
+    it('returns the lists in ascending order by last updated', () => {
       expect(result[0].lastUpdated).toStrictEqual(new Date('2022-01-02'));
       expect(result[0].listId).toStrictEqual(list2Id);
 
