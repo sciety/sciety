@@ -7,4 +7,9 @@ type ListPageLinkHrefViewModel = {
 
 export const renderListPageLinkHref = (
   viewModel: ListPageLinkHrefViewModel,
-): string => (viewModel.userHandle ? `/users/${viewModel.userHandle}/lists/saved-articles` : `/lists/${viewModel.listId}`);
+): string => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    return `/lists/${viewModel.listId}`;
+  }
+  return viewModel.userHandle ? `/users/${viewModel.userHandle}/lists/saved-articles` : `/lists/${viewModel.listId}`;
+};

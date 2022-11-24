@@ -67,8 +67,8 @@ describe('article-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
-        expect(viewModel.linkUrl).toBe(`/users/${handle}/lists/saved-articles`);
+      it('includes the link to the generic list page', async () => {
+        expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
     });
 
@@ -101,8 +101,8 @@ describe('article-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the user list page because the generic list page is not releasable yet', async () => {
-        expect(viewModel.linkUrl).toBe(`/users/${userId}/lists/saved-articles`);
+      it('includes the link to the generic list page', async () => {
+        expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
     });
   });

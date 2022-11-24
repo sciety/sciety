@@ -34,13 +34,15 @@ const arbitraryUserDetails = {
   userId: arbitraryUserId(),
 };
 
+const listId = arbitraryListId();
+
 const defaultPorts = {
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
   getListsOwnedBy: () => TE.right([]),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
-    listId: arbitraryListId(),
+    listId,
     ownerId,
     articleIds: [],
     lastUpdated: arbitraryDate(),
@@ -341,7 +343,7 @@ describe('user-page', () => {
       )();
       const link = page.querySelector('.tab-panel a');
 
-      expect(link?.getAttribute('href')).toBe(`/users/${params.handle}/lists/saved-articles`);
+      expect(link?.getAttribute('href')).toBe(`/lists/${listId}`);
     });
   });
 });
