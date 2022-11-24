@@ -7,7 +7,9 @@ import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
 import { articleAddedToList } from '../domain-events';
-import { CommitEvents, GetAllEvents, SelectAllListsOwnedBy } from '../shared-ports';
+import {
+  AddArticleToList, CommitEvents, GetAllEvents, SelectAllListsOwnedBy,
+} from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import * as LOID from '../types/list-owner-id';
@@ -20,6 +22,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  addArticleToList: AddArticleToList,
 };
 
 type HandleWithSaveArticleCommand = (
