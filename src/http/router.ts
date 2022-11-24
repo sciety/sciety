@@ -76,7 +76,6 @@ import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
-import { userListPage, paramsCodec as userListPageParams } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
 const toNotFound = () => ({
@@ -275,21 +274,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     )();
   };
 
-  // eslint-disable-next-line no-constant-condition
-  if (true) {
-    router.get(
-      `/users/:handle(${matchHandle})/lists/saved-articles`,
-      redirectUserListPageToGenericListPage,
-    );
-  } else {
-    router.get(
-      `/users/:handle(${matchHandle})/lists/saved-articles`,
-      pageHandler(createPageFromParams(
-        userListPageParams,
-        userListPage(adapters),
-      )),
-    );
-  }
+  router.get(
+    `/users/:handle(${matchHandle})/lists/saved-articles`,
+    redirectUserListPageToGenericListPage,
+  );
 
   router.get(
     '/users/:id([0-9]+)/lists/saved-articles',

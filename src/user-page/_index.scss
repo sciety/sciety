@@ -43,16 +43,6 @@
   @include card.list-item();
 }
 
-.saved-articles-list {
-  @include card.list();
-
-  margin-bottom: 3rem;
-}
-
-.saved-articles-list__item {
-  @include card.list-item();
-}
-
 .static-message {
   padding-top: baseline.increments(2);
   margin-left: 1rem;

@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
 
-export type UserDetails = {
+type UserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string,

@@ -16,7 +16,7 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-export const articleIdFieldName = 'articleid';
+const articleIdFieldName = 'articleid';
 
 export const unsaveArticle = (
   { getAllEvents, commitEvents }: Ports,

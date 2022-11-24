@@ -10,20 +10,6 @@
 $_icon-size: 24px;
 $_icon-inline-offset: 6px;
 
-.page-header--user-list .page-header__subheading {
-  @include typography.subheading();
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.page-header--user-list .page-header__avatar {
-  @include avatar.border();
-  width: avatar.$size--medium;
-  height: avatar.$size--medium;
-  margin-right: 0.5rem;
-}
-
 svg.saved-articles-control__icon {
   fill: settings.$colour-text-primary;
 }
@@ -39,13 +25,4 @@ svg.saved-articles-control__icon {
   &:hover svg.saved-articles-control__icon {
     fill: settings.$colour-accent;
   }
-}
-
-.user-list-subscribe {
-  @include button.button-link();
-  background-image: url('/static/images/subscribe-bell.svg');
-  background-size: functions.px-to-rem($_icon-size);
-  background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_icon-inline-offset) center;
-  padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
 }
