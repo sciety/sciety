@@ -48,7 +48,7 @@ export const addListOwnershipInformation = (
               ...list,
               ownerName: 'A user',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-              linkUrl: renderListPageLinkHref({ userHandle: list.ownerId.value, listId: list.id }),
+              linkUrl: renderListPageLinkHref(list.id),
             }
           ),
           (userDetails) => (
@@ -56,7 +56,7 @@ export const addListOwnershipInformation = (
               ...list,
               ownerName: userDetails.handle,
               ownerAvatarUrl: userDetails.avatarUrl,
-              linkUrl: renderListPageLinkHref({ userHandle: userDetails.handle, listId: list.id }),
+              linkUrl: renderListPageLinkHref(list.id),
 
             }
           ),

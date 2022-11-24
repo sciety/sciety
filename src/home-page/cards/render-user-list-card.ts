@@ -19,7 +19,7 @@ const lastUpdated = O.fold(
 );
 
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
-  <a href="${renderListPageLinkHref({ userHandle: viewModel.handle, listId: viewModel.listId })}" class="user-list-card__link">
+  <a href="${renderListPageLinkHref(viewModel.listId)}" class="user-list-card__link">
     <article class="user-list-card">
       <div class="user-list-card__body">
         <div>
