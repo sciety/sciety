@@ -252,13 +252,25 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       adapters.getUserId,
       TE.map(LOID.fromUserId),
       TE.map(adapters.selectAllListsOwnedBy),
-      TE.map(RA.head),
-      TE.map(
-        O.map((list) => {
+      TE.chainEitherK(flow(
+        RA.head,
+        E.fromOption(() => 'User has no list'),
+      )),
+      TE.match(
+        () => {
+          const response = toErrorResponse(O.fromNullable(context.state.user))({
+            type: DE.notFound,
+            message: toHtmlFragment('Sorry, we can\'t find this user or their list.'),
+          });
+          context.response.status = response.status;
+          context.response.type = 'html';
+          context.response.body = response.body;
+        },
+        (list) => {
           context.status = StatusCodes.PERMANENT_REDIRECT;
           context.redirect(`/lists/${list.listId}`);
           return undefined;
-        }),
+        },
       ),
     )();
   };
