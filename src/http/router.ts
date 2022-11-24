@@ -2,6 +2,7 @@ import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -9,7 +10,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ParameterizedContext } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
@@ -71,6 +72,7 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
+import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
@@ -244,13 +246,37 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     redirectUserIdToHandle(adapters, 'following'),
   );
 
-  router.get(
-    `/users/:handle(${matchHandle})/lists/saved-articles`,
-    pageHandler(createPageFromParams(
-      userListPageParams,
-      userListPage(adapters),
-    )),
-  );
+  const redirectUserListPageToGenericListPage: Middleware = async (context) => {
+    await pipe(
+      context.params.handle as string,
+      adapters.getUserId,
+      TE.map(LOID.fromUserId),
+      TE.map(adapters.selectAllListsOwnedBy),
+      TE.map(RA.head),
+      TE.map(
+        O.map((list) => {
+          context.status = StatusCodes.PERMANENT_REDIRECT;
+          context.redirect(`/lists/${list.listId}`);
+          return undefined;
+        }),
+      ),
+    )();
+  };
+
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    router.get(
+      `/users/:handle(${matchHandle})/lists/saved-articles`,
+      redirectUserListPageToGenericListPage,
+    );
+  } else {
+    router.get(
+      `/users/:handle(${matchHandle})/lists/saved-articles`,
+      pageHandler(createPageFromParams(
+        userListPageParams,
+        userListPage(adapters),
+      )),
+    );
+  }
 
   router.get(
     '/users/:id([0-9]+)/lists/saved-articles',
