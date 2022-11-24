@@ -23,32 +23,26 @@ type Ports = {
 };
 
 type HandleWithAddArticleToListCommand = (
+  ports: Ports,
   userId: UserId,
   articleId: Doi.Doi,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-  addArticleToList: AddArticleToList
 ) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 const handleWithAddArticleToListCommand: HandleWithAddArticleToListCommand = (
+  ports,
   userId,
   articleId,
-  selectAllListsOwnedBy,
-  addArticleToList,
 ) => pipe(
   userId,
   LOID.fromUserId,
-  selectAllListsOwnedBy,
+  ports.selectAllListsOwnedBy,
   RA.head,
   TE.fromOption(() => toErrorMessage('finishSaveArticleCommand: Cannot find list for user')),
   TE.map((list) => ({ articleId, listId: list.listId })),
-  TE.chain(addArticleToList),
+  TE.chain(ports.addArticleToList),
 );
 
-export const finishSaveArticleCommand = (
-  {
-    selectAllListsOwnedBy, addArticleToList,
-  }: Ports,
-): Middleware => async (context, next) => {
+export const finishSaveArticleCommand = (ports: Ports): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
     {
@@ -59,7 +53,7 @@ export const finishSaveArticleCommand = (
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(
-        handleWithAddArticleToListCommand(user.id, articleId, selectAllListsOwnedBy, addArticleToList),
+        handleWithAddArticleToListCommand(ports, user.id, articleId),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;
