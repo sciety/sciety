@@ -5,7 +5,6 @@ import { finishSaveArticleCommand } from '../../src/save-article/finish-save-art
 import { ListOwnerId } from '../../src/types/list-owner-id';
 import { User } from '../../src/types/user';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -22,8 +21,6 @@ describe('finish-save-article-command', () => {
     name: arbitraryWord(),
     description: arbitraryString(),
   }];
-  const getAllEvents = shouldNotBeCalled;
-  const commitEvents = shouldNotBeCalled;
 
   describe('when the user tries to save an article', () => {
     const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
@@ -43,8 +40,6 @@ describe('finish-save-article-command', () => {
 
     it('calls the add article to list command with the list id owned by the user', async () => {
       await finishSaveArticleCommand({
-        getAllEvents,
-        commitEvents,
         selectAllListsOwnedBy,
         addArticleToList,
       })(context, jest.fn());
@@ -72,8 +67,6 @@ describe('finish-save-article-command', () => {
       } as unknown) as ParameterizedContext;
 
       await finishSaveArticleCommand({
-        commitEvents,
-        getAllEvents,
         selectAllListsOwnedBy,
         addArticleToList,
       })(context, jest.fn());
