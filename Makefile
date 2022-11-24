@@ -75,7 +75,6 @@ test-coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
-jest-test: export EXPERIMENT_ENABLED = true
 jest-test:
 	npx jest ${TEST}
 
@@ -254,7 +253,6 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
 	@touch $@
 
-$(MK_TESTED_TS): export EXPERIMENT_ENABLED = true
 $(MK_TESTED_TS): node_modules $(TS_SOURCES)
 	npx jest --onlyChanged
 	@touch $@
