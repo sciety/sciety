@@ -22,7 +22,7 @@ describe('journey-to-user-list', () => {
       await click('Saved articles');
       const pageTitle = await $('h1').text();
 
-      expect(pageTitle).toContain('Saved Articles');
+      expect(pageTitle).toContain('saved articles');
     });
 
     it('navigates to the saved articles list from an article page', async () => {
@@ -32,7 +32,7 @@ describe('journey-to-user-list', () => {
       await click('Saved articles');
       const pageTitle = await $('h1').text();
 
-      expect(pageTitle).toContain('Saved Articles');
+      expect(pageTitle).toContain('saved articles');
     });
   });
 });
