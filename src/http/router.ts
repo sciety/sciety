@@ -61,7 +61,6 @@ import { removeArticleFromListCommandHandler } from '../remove-article-from-list
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
-import { unsaveArticle } from '../save-article/execute-unsave-article-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
@@ -465,14 +464,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     saveSaveArticleCommand,
     requireAuthentication,
     finishSaveArticleCommand(adapters),
-    redirectBack,
-  );
-
-  router.post(
-    '/unsave-article',
-    bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication,
-    unsaveArticle(adapters),
     redirectBack,
   );
 
