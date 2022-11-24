@@ -8,8 +8,10 @@ type ListPageLinkHrefViewModel = {
 export const renderListPageLinkHref = (
   viewModel: ListPageLinkHrefViewModel,
 ): string => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  // eslint-disable-next-line no-constant-condition
+  if (true) {
     return `/lists/${viewModel.listId}`;
   }
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   return viewModel.userHandle ? `/users/${viewModel.userHandle}/lists/saved-articles` : `/lists/${viewModel.listId}`;
 };

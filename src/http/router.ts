@@ -275,7 +275,8 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     )();
   };
 
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  // eslint-disable-next-line no-constant-condition
+  if (true) {
     router.get(
       `/users/:handle(${matchHandle})/lists/saved-articles`,
       redirectUserListPageToGenericListPage,

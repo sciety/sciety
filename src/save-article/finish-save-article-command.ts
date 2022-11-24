@@ -81,7 +81,8 @@ export const finishSaveArticleCommand = (
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(
-        process.env.EXPERIMENT_ENABLED === 'true'
+        // eslint-disable-next-line no-constant-condition
+        true
           ? handleWithAddArticleToListCommand(user.id, articleId, selectAllListsOwnedBy, addArticleToList)
           : TE.rightTask(handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents)),
         T.map(() => {
