@@ -41,7 +41,7 @@ describe('finish-save-article-command', () => {
       },
     } as unknown) as RouterContext<{ user: User }>;
 
-    it.failing('calls the add article to list command with the list id owned by the user', async () => {
+    it('calls the add article to list command with the list id owned by the user', async () => {
       await finishSaveArticleCommand({
         getAllEvents,
         commitEvents,
@@ -56,7 +56,7 @@ describe('finish-save-article-command', () => {
   describe('after saving', () => {
     const addArticleToList = () => TE.right(arbitraryCommandResult());
 
-    it.failing('deletes session parameters', async () => {
+    it('deletes session parameters', async () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryArticleId();
       const context = ({

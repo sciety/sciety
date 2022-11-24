@@ -2,16 +2,17 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
-import { articleAddedToList } from '../domain-events';
 import {
   AddArticleToList, CommitEvents, GetAllEvents, SelectAllListsOwnedBy,
 } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
+import { ErrorMessage, toErrorMessage } from '../types/error-message';
 import * as LOID from '../types/list-owner-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
@@ -44,29 +45,31 @@ const handleWithSaveArticleCommand: HandleWithSaveArticleCommand = (
 );
 
 type HandleWithAddArticleToListCommand = (
-  commitEvents: CommitEvents,
   userId: UserId,
   articleId: Doi.Doi,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
-) => T.Task<CommandResult>;
+  addArticleToList: AddArticleToList
+) => TE.TaskEither<ErrorMessage, CommandResult>;
 
 const handleWithAddArticleToListCommand: HandleWithAddArticleToListCommand = (
-  commitEvents,
   userId,
   articleId,
   selectAllListsOwnedBy,
+  addArticleToList,
 ) => pipe(
   userId,
   LOID.fromUserId,
   selectAllListsOwnedBy,
   RA.head,
-  O.map((list) => articleAddedToList(articleId, list.listId)),
-  RA.fromOption,
-  commitEvents,
+  TE.fromOption(() => toErrorMessage('finishSaveArticleCommand: Cannot find list for user')),
+  TE.map((list) => ({ articleId, listId: list.listId })),
+  TE.chain(addArticleToList),
 );
 
 export const finishSaveArticleCommand = (
-  { getAllEvents, commitEvents, selectAllListsOwnedBy }: Ports,
+  {
+    getAllEvents, commitEvents, selectAllListsOwnedBy, addArticleToList,
+  }: Ports,
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
@@ -79,8 +82,8 @@ export const finishSaveArticleCommand = (
       () => T.of(undefined),
       ({ articleId }) => pipe(
         process.env.EXPERIMENT_ENABLED === 'true'
-          ? handleWithAddArticleToListCommand(commitEvents, user.id, articleId, selectAllListsOwnedBy)
-          : handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents),
+          ? handleWithAddArticleToListCommand(user.id, articleId, selectAllListsOwnedBy, addArticleToList)
+          : TE.rightTask(handleWithSaveArticleCommand(getAllEvents, user, articleId, commitEvents)),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;
