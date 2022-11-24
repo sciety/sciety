@@ -159,11 +159,11 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-taiko: export TARGET = dev
+taiko: export TARGET = prod
 taiko: export AUTHENTICATION_STRATEGY = local
 taiko: export USE_STUB_ADAPTERS = true
 taiko: export SCIETY_TEAM_API_BEARER_TOKEN = secret
-taiko: node_modules clean-db
+taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/taiko.csv' with CSV" sciety user
