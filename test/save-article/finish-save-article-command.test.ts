@@ -22,6 +22,10 @@ describe('finish-save-article-command', () => {
     description: arbitraryString(),
   }];
 
+  describe('when the user tries to save an article', () => {
+    it.todo('calls the add article to list command with the list id owned by the user');
+  });
+
   describe('when the user has not already saved the article', () => {
     it('commits a ArticleAddedToList event', async () => {
       const userId = arbitraryUserId();
