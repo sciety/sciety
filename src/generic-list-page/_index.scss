@@ -5,6 +5,10 @@
 @use '../sass/typography';
 @use '../sass/page-header';
 @use '../sass/avatar';
+@use '../sass/button';
+
+$_icon-size: 24px;
+$_icon-inline-offset: 6px;
 
 .articles-list {
   @include card.list();
@@ -49,4 +53,21 @@
 
 .articles-static-message {
   @include layout.page-content-horizontal-margins();
+}
+
+svg.saved-articles-control__icon {
+  fill: settings.$colour-text-primary;
+}
+
+.saved-articles-control {
+  @include button.basics();
+  padding: 0;
+  display: block;
+  height: $_icon-size;
+  width: $_icon-size;
+  background-color: transparent;
+
+  &:hover svg.saved-articles-control__icon {
+    fill: settings.$colour-accent;
+  }
 }
