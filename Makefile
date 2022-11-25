@@ -257,7 +257,7 @@ $(MK_TESTED_TS): node_modules $(TS_SOURCES)
 	npx jest --onlyChanged
 	@touch $@
 
-$(MK_LINTED_SASS): node_modules $(SASS_SOURCES)
+$(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	npx sass-unused 'src/**/*.scss'
 	rm -f .purgecss/{full,purged}.css
 	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
