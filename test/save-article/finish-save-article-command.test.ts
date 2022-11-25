@@ -4,6 +4,7 @@ import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
 import { ListOwnerId } from '../../src/types/list-owner-id';
 import { User } from '../../src/types/user';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
@@ -42,6 +43,7 @@ describe('finish-save-article-command', () => {
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
         addArticleToList,
+        logger: dummyLogger,
       })(context, jest.fn());
 
       expect(addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId, articleId }));
@@ -69,6 +71,7 @@ describe('finish-save-article-command', () => {
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
         addArticleToList,
+        logger: dummyLogger,
       })(context, jest.fn());
 
       expect(context.session).toStrictEqual({});
