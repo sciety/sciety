@@ -5,11 +5,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
+import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
   AddArticleToList, Logger, SelectAllListsOwnedBy,
 } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { CommandResult } from '../types/command-result';
 import * as Doi from '../types/doi';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
 import * as LOID from '../types/list-owner-id';
@@ -22,13 +22,13 @@ type Ports = {
   logger: Logger,
 };
 
-type HandleWithAddArticleToListCommand = (
+type ConstructCommand = (
   ports: Ports,
   userId: UserId,
   articleId: Doi.Doi,
-) => TE.TaskEither<ErrorMessage, CommandResult>;
+) => TE.TaskEither<ErrorMessage, AddArticleToListCommand>;
 
-const handleWithAddArticleToListCommand: HandleWithAddArticleToListCommand = (
+const constructCommand: ConstructCommand = (
   ports,
   userId,
   articleId,
@@ -39,7 +39,6 @@ const handleWithAddArticleToListCommand: HandleWithAddArticleToListCommand = (
   RA.head,
   TE.fromOption(() => toErrorMessage('finishSaveArticleCommand: Cannot find list for user')),
   TE.map((list) => ({ articleId, listId: list.listId })),
-  TE.chain(ports.addArticleToList),
 );
 
 const contextCodec = t.type({
@@ -58,7 +57,8 @@ export const finishSaveArticleCommand = (ports: Ports): Middleware => async (con
     E.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(
-        handleWithAddArticleToListCommand(ports, user.id, articleId),
+        constructCommand(ports, user.id, articleId),
+        TE.chain(ports.addArticleToList),
         TE.getOrElseW((error) => {
           ports.logger('error', 'finishSaveArticleCommand failed', { error });
           return T.of(error);
