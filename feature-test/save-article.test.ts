@@ -1,5 +1,5 @@
 import {
-  $, click, goto, openBrowser, text,
+  $, below, click, goto, openBrowser, text,
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 
@@ -49,13 +49,18 @@ describe('unsave article', () => {
       await click('Log in');
     });
 
+    const doi = '10.1101/2021.02.16.431437';
+
     it('removes the article from the list', async () => {
-      await goto('localhost:8080/articles/10.1101/2021.02.16.431437');
+      await goto(`localhost:8080/articles/${doi}`);
       await click('Save to my list');
       await click('Saved to my list');
       await click('Saved articles');
-      await click($('.article-card button'));
-      await goto('localhost:8080/articles/10.1101/2021.02.16.431437');
+      await click(
+        $('.article-card button'),
+        below($(`.article-card__link[href="/articles/activity/${doi}"]`)),
+      );
+      await goto(`localhost:8080/articles/${doi}`);
       const result = await text('Save to my list').exists();
 
       expect(result).toBe(true);
