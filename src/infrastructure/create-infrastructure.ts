@@ -18,7 +18,6 @@ import { fetchData } from './fetchers';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
-import { getListsOwnedByFromListsReadModelService } from './get-lists-owned-by-from-lists-read-model-service';
 import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
@@ -178,7 +177,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        getListsOwnedBy: getListsOwnedByFromListsReadModelService(logger, `http://${process.env.LISTS_READ_MODEL_HOST ?? 'lists'}`),
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
@@ -208,7 +206,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
         getArticleSubjectArea: collectedAdapters.getArticleSubjectArea,
-        getListsOwnedBy: collectedAdapters.getListsOwnedBy,
         getUserDetails: collectedAdapters.getUserDetails,
         addArticleToList: collectedAdapters.addArticleToList,
         removeArticleFromList: collectedAdapters.removeArticleFromList,
