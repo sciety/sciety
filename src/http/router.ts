@@ -2,7 +2,6 @@ import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -10,7 +9,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Middleware, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
@@ -25,6 +24,7 @@ import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
+import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
@@ -71,7 +71,6 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
-import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
@@ -243,35 +242,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/users/:id([0-9]+)/following',
     redirectUserIdToHandle(adapters, 'following'),
   );
-
-  const redirectUserListPageToGenericListPage: Middleware = async (context) => {
-    await pipe(
-      context.params.handle as string,
-      adapters.getUserId,
-      TE.map(LOID.fromUserId),
-      TE.map(adapters.selectAllListsOwnedBy),
-      TE.chainEitherK(flow(
-        RA.head,
-        E.fromOption(() => 'User has no list'),
-      )),
-      TE.match(
-        () => {
-          const response = toErrorResponse(O.fromNullable(context.state.user))({
-            type: DE.notFound,
-            message: toHtmlFragment('Sorry, we can\'t find this user or their list.'),
-          });
-          context.response.status = response.status;
-          context.response.type = 'html';
-          context.response.body = response.body;
-        },
-        (list) => {
-          context.status = StatusCodes.PERMANENT_REDIRECT;
-          context.redirect(`/lists/${list.listId}`);
-          return undefined;
-        },
-      ),
-    )();
-  };
 
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
