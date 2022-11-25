@@ -245,7 +245,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/lists/saved-articles`,
-    redirectUserListPageToGenericListPage,
+    redirectUserListPageToGenericListPage(adapters),
   );
 
   router.get(
