@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import {
-  AddArticleToList, SelectAllListsOwnedBy,
+  AddArticleToList, Logger, SelectAllListsOwnedBy,
 } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
@@ -19,6 +19,7 @@ import { UserId } from '../types/user-id';
 type Ports = {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
+  logger: Logger,
 };
 
 type HandleWithAddArticleToListCommand = (
@@ -58,6 +59,10 @@ export const finishSaveArticleCommand = (ports: Ports): Middleware => async (con
       () => T.of(undefined),
       ({ articleId }) => pipe(
         handleWithAddArticleToListCommand(ports, user.id, articleId),
+        TE.getOrElseW((error) => {
+          ports.logger('error', 'finishSaveArticleCommand failed', { error });
+          return T.of(error);
+        }),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;
