@@ -9,6 +9,7 @@ import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -22,6 +23,35 @@ describe('finish-save-article-command', () => {
     name: arbitraryWord(),
     description: arbitraryString(),
   }];
+
+  describe('when the user tried to save an article and the command handler fails', () => {
+    const addArticleToList = () => TE.left(arbitraryErrorMessage());
+    const userId = arbitraryUserId();
+    const articleId = arbitraryArticleId();
+    const context = ({
+      session: {
+        command: 'save-article',
+        articleId: articleId.toString(),
+      },
+      state: {
+        user: {
+          id: userId,
+        },
+      },
+    } as unknown) as RouterContext<{ user: User }>;
+
+    const logger = jest.fn(dummyLogger);
+
+    it('logs an error', async () => {
+      await finishSaveArticleCommand({
+        selectAllListsOwnedBy,
+        addArticleToList,
+        logger,
+      })(context, jest.fn());
+
+      expect(logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+    });
+  });
 
   describe('when the user tries to save an article', () => {
     const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
