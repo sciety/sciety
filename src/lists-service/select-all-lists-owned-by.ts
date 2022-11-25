@@ -15,6 +15,7 @@ const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
 
 type SelectAllListsOwnedBy = (ownerId: ListOwnerId) => (events: ReadonlyArray<ListsEvent>) => ReadonlyArray<List>;
 
+// ts-unused-exports:disable-next-line
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => flow(
   constructReadModel,
   RM.filter((list) => eqListOwnerId.equals(list.ownerId, ownerId)),
