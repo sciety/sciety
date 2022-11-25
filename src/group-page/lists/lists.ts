@@ -16,6 +16,7 @@ export const lists = (ports: Ports) => (group: Group): TE.TaskEither<never, Html
   group.id,
   LOID.fromGroupId,
   ports.selectAllListsOwnedBy,
+  RA.reverse,
   RA.map(toListCardViewModel),
   renderListOfListCardsWithFallback,
   TE.right,
