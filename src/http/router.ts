@@ -20,6 +20,7 @@ import { removeArticleFromList } from './forms/remove-article-from-list';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
+import { ownedBy } from './owned-by-api';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
@@ -444,6 +445,8 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     removeArticleFromList(adapters),
     redirectBack,
   );
+
+  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
   router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
 

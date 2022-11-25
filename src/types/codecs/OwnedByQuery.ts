@@ -5,10 +5,10 @@ import * as LOID from '../list-owner-id';
 
 export const OwnedByQuery = t.type({
   items: t.readonlyArray(t.type({
-    id: ListIdFromString,
+    listId: ListIdFromString,
     name: t.string,
     description: t.string,
-    articleCount: t.number,
+    articleIds: t.array(t.string),
     lastUpdated: tt.DateFromISOString,
     ownerId: LOID.fromStringCodec,
   })),
