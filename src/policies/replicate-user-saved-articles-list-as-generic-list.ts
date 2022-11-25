@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,7 +9,7 @@ import {
   UserUnsavedArticleEvent,
 } from '../domain-events';
 import {
-  AddArticleToList, GetListsOwnedBy, Logger, RemoveArticleFromList,
+  AddArticleToList, Logger, RemoveArticleFromList, SelectAllListsOwnedBy,
 } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import * as LOID from '../types/list-owner-id';
@@ -17,7 +18,7 @@ import * as LOID from '../types/list-owner-id';
 export type Ports = {
   addArticleToList: AddArticleToList,
   removeArticleFromList: RemoveArticleFromList,
-  getListsOwnedBy: GetListsOwnedBy,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
   logger: Logger,
 };
 
@@ -26,12 +27,12 @@ type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
 const toCommand = (adapters: Ports) => (event: RelevantEvent) => pipe(
   event.userId,
   LOID.fromUserId,
-  adapters.getListsOwnedBy,
-  TE.map(RA.head),
-  TE.chainW(TE.fromOption(() => 'user has no generic list' as const)),
-  TE.map((list) => ({
+  adapters.selectAllListsOwnedBy,
+  RA.head,
+  E.fromOption(() => 'user has no generic list' as const),
+  E.map(({ listId }) => ({
     articleId: event.articleId,
-    listId: list.id,
+    listId,
   })),
 );
 
@@ -40,11 +41,13 @@ const processRelevantEvent = (adapters: Ports) => (candidateEvent: DomainEvent) 
     case 'UserUnsavedArticle': return pipe(
       candidateEvent,
       toCommand(adapters),
+      TE.fromEither,
       TE.chainW(adapters.removeArticleFromList),
     );
     case 'UserSavedArticle': return pipe(
       candidateEvent,
       toCommand(adapters),
+      TE.fromEither,
       TE.chainW(adapters.addArticleToList),
     );
     default: return TE.right('no-events-created' as CommandResult);

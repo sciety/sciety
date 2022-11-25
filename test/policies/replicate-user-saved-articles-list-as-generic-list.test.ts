@@ -9,7 +9,6 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryDate, arbitraryNumber, arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryCommandResult } from '../types/command-result.helper';
-import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
@@ -17,10 +16,10 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const arbitraryList = () => ({
-  id: arbitraryListId(),
+  listId: arbitraryListId(),
   name: arbitraryString(),
   description: arbitraryString(),
-  articleCount: arbitraryNumber(0, 100),
+  articleIds: [...Array(arbitraryNumber(1, 100))].map(() => arbitraryString()),
   lastUpdated: arbitraryDate(),
   ownerId: arbitraryListOwnerId(),
 });
@@ -34,7 +33,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
     addArticleToList: () => TE.right(arbitraryCommandResult()),
     removeArticleFromList: () => TE.right(arbitraryCommandResult()),
     logger: dummyLogger,
-    getListsOwnedBy: () => TE.right([genericListOwnedByUser]),
+    selectAllListsOwnedBy: () => [genericListOwnedByUser],
   };
 
   let adapters: Ports;
@@ -72,7 +71,7 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
 
       it('calls the command with the generic list id owned by that user', () => {
         expect(adapters[relevantCommand]).toHaveBeenCalledWith(
-          expect.objectContaining({ listId: genericListOwnedByUser.id }),
+          expect.objectContaining({ listId: genericListOwnedByUser.listId }),
         );
       });
 
@@ -99,26 +98,11 @@ describe('replicate-user-saved-articles-list-as-generic-list', () => {
       });
     });
 
-    describe('and the user has a generic list, but the adapter for that information fails', () => {
-      beforeEach(async () => {
-        adapters = {
-          ...happyPathAdapters,
-          getListsOwnedBy: () => TE.left(arbitraryDataError()),
-          logger: jest.fn(dummyLogger),
-        };
-        await replicateUserSavedArticlesListAsGenericList(adapters)(event)();
-      });
-
-      it('logs an error', () => {
-        expect(adapters.logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
-      });
-    });
-
     describe('and the user does not have a generic list', () => {
       beforeEach(async () => {
         adapters = {
           ...happyPathAdapters,
-          getListsOwnedBy: () => TE.right([]),
+          selectAllListsOwnedBy: () => [],
           logger: jest.fn(dummyLogger),
         };
         await replicateUserSavedArticlesListAsGenericList(adapters)(event)();

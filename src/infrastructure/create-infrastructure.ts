@@ -203,6 +203,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const policiesAdapters = {
+        ...queries,
         commitEvents: commitEventsWithoutListeners,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,

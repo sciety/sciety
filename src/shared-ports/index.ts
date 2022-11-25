@@ -5,7 +5,6 @@ import { FetchArticle } from './fetch-article';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
-import { GetListsOwnedBy } from './get-lists-owned-by';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
@@ -21,7 +20,6 @@ export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
-export { GetListsOwnedBy } from './get-lists-owned-by';
 export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
@@ -45,7 +43,6 @@ export type SharedPorts = {
   fetchArticle: FetchArticle,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getListsOwnedBy: GetListsOwnedBy,
   recordSubjectArea: RecordSubjectArea,
   logger: Logger,
   removeArticleFromList: RemoveArticleFromList,
