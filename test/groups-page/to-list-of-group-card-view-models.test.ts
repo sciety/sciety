@@ -22,7 +22,7 @@ describe('to-list-of-group-card-view-models', () => {
       evaluationRecorded(leastActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
       evaluationRecorded(mostActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
     ]),
-    getListsOwnedBy: () => TE.right([]),
+    selectAllListsOwnedBy: () => [],
   };
   let groupNames: ReadonlyArray<string>;
 
