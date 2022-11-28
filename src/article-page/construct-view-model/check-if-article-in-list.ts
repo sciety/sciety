@@ -17,7 +17,6 @@ export const checkIfArticleInList = (ports: Ports) => (
   O.chain((u) => pipe(
     doi,
     ports.isArticleOnTheListOwnedBy(u.id),
-    O.guard,
     O.map(() => u.id),
   )),
 );

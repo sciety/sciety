@@ -25,7 +25,7 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the query returns the first list id', () => {
+    it('the query returns the first list id', () => {
       expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
     });
   });
@@ -40,8 +40,8 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the query returns false', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(false);
+    it('the query returns nothing', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.none);
     });
   });
 
@@ -58,11 +58,11 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the query returns the first list id belonging to the first user', () => {
+    it('the query returns the first list id belonging to the first user', () => {
       expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
     });
 
-    it.failing('the query returns the first list id belonging to the second user', () => {
+    it('the query returns the first list id belonging to the second user', () => {
       expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toStrictEqual(O.some(listId2));
     });
   });

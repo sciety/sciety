@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
@@ -14,6 +16,7 @@ export const isArticleOnTheListOwnedBy = (
   readModel,
   R.filter((listState) => LOID.eqListOwnerId.equals(listState.ownerId, LOID.fromUserId(userId))),
   R.filter((listState) => listState.articleIds.includes(articleId.value)),
-  R.isEmpty,
-  (b) => !b,
+  (result) => Object.values(result),
+  RA.head,
+  O.map((list) => list.listId),
 );
