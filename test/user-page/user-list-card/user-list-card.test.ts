@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { userListCard } from '../../../src/user-page/user-list-card';
-import { arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
@@ -20,7 +20,7 @@ describe('user-list-card', () => {
 
   it('displays the title of the list', () => {
     const rendered = pipe(
-      userListCard(arbitraryWord(), list),
+      userListCard(list),
       JSDOM.fragment,
     );
 
@@ -29,7 +29,7 @@ describe('user-list-card', () => {
 
   it('displays the list description', () => {
     const rendered = pipe(
-      userListCard(arbitraryWord(), list),
+      userListCard(list),
       JSDOM.fragment,
     );
     const description = rendered.querySelector('p');
@@ -38,9 +38,8 @@ describe('user-list-card', () => {
   });
 
   it('displays when the list was last updated', () => {
-    const handle = arbitraryWord();
     const rendered = pipe(
-      userListCard(handle, list),
+      userListCard(list),
       JSDOM.fragment,
     );
     const meta = rendered.querySelector('.list-card__meta');
@@ -49,9 +48,8 @@ describe('user-list-card', () => {
   });
 
   it('displays the number of articles in the list', () => {
-    const handle = arbitraryWord();
     const rendered = pipe(
-      userListCard(handle, list),
+      userListCard(list),
       JSDOM.fragment,
     );
     const meta = rendered.querySelector('.list-card__meta');

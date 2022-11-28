@@ -6,7 +6,6 @@ import { renderListPageLinkHref } from '../render-list-page-link-href';
 
 export type ListCardViewModel = {
   listId: ListId,
-  userHandle?: string,
   articleCount: number,
   lastUpdated: O.Option<Date>,
   title: string,

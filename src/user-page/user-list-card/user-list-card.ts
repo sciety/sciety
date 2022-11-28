@@ -4,16 +4,14 @@ import { renderListCard } from '../../shared-components/list-card/render-list-ca
 import { List } from '../../shared-ports/select-all-lists-owned-by';
 import { HtmlFragment } from '../../types/html-fragment';
 
-export const userListCard = (handle: string, list: List): HtmlFragment => pipe(
+export const userListCard = (list: List): HtmlFragment => pipe(
   {
     listId: list.listId,
     articleCount: list.articleIds.length,
     lastUpdated: O.some(list.lastUpdated),
-    userHandle: handle,
     title: list.name,
     description: list.description,
     articleCountLabel: 'This list contains',
   },
   renderListCard,
-
 );
