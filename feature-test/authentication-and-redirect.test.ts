@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goBack, goto, link, openBrowser,
+  $, click, currentURL, goBack, goto, link, openBrowser, text,
 } from 'taiko';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
@@ -29,6 +29,14 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('not logged in', () => {
+    it('save article command returns to the article page after saving the article', async () => {
+      await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
+      await click('Save to my list');
+      const result = await text('Saved to my list').exists();
+
+      expect(result).toBe(true);
+    });
+
     it('log in from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log in');
