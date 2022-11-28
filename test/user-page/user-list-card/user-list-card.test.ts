@@ -7,12 +7,13 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('user-list-card', () => {
+  const listName = arbitraryString();
   const list = {
     listId: arbitraryListId(),
     ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
-    name: arbitraryString(),
+    name: listName,
     description: arbitraryString(),
   };
 
@@ -22,7 +23,7 @@ describe('user-list-card', () => {
       JSDOM.fragment,
     );
 
-    expect(rendered?.textContent).toContain('Saved articles');
+    expect(rendered?.textContent).toContain(listName);
   });
 
   it('displays the list owner\'s handle in the description', () => {
