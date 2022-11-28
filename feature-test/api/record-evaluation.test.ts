@@ -1,11 +1,11 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { callApi } from './call-api.helper';
-import { screenshotTeardown } from './utilities';
-import * as RI from '../src/types/review-id';
-import { arbitraryDate, arbitraryString } from '../test/helpers';
-import { arbitraryReviewId } from '../test/types/review-id.helper';
+import * as RI from '../../src/types/review-id';
+import { arbitraryDate, arbitraryString } from '../../test/helpers';
+import { arbitraryReviewId } from '../../test/types/review-id.helper';
+import { callApi } from '../call-api.helper';
+import { screenshotTeardown } from '../utilities';
 
 describe('record an evaluation', () => {
   beforeEach(async () => {

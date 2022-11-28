@@ -1,8 +1,8 @@
 import {
   $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
-import { callApi } from './call-api.helper';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../test/helpers';
+import { callApi } from '../call-api.helper';
 
 describe('add-group', () => {
   const newGroup = {

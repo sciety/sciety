@@ -1,8 +1,8 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { callApi } from './call-api.helper';
-import { screenshotTeardown } from './utilities';
+import { callApi } from '../call-api.helper';
+import { screenshotTeardown } from '../utilities';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {
