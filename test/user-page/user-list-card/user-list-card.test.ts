@@ -18,7 +18,7 @@ describe('user-list-card', () => {
     description: listDescription,
   };
 
-  it('displays the title of the list', () => {
+  it('displays the name of the list as card title', () => {
     const rendered = pipe(
       userListCard(list),
       JSDOM.fragment,
