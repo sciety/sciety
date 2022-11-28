@@ -468,7 +468,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post('/api/edit-list-details', handleScietyApiCommand(adapters, flow(
     validateInputShape(editListDetailsCommandCodec),
     TE.fromEither,
-    TE.chain(editListDetailsCommandHandler()),
+    TE.chain(editListDetailsCommandHandler(adapters)),
   )));
 
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
