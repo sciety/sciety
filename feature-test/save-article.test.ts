@@ -55,7 +55,6 @@ describe('unsave article', () => {
       await goto(`localhost:8080/articles/${doi}`);
       await click('Save to my list');
       await click('Saved to my list');
-      await click('Saved articles');
       await click(
         $('.article-card button'),
         below($(`.article-card__link[href="/articles/activity/${doi}"]`)),

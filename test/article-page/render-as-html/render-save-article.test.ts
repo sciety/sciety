@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { renderSaveArticle } from '../../../src/article-page/render-as-html/render-save-article';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
@@ -19,7 +19,7 @@ describe('render-save-article', () => {
     it('renders is-saved-link', async () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
-        isArticleInList: O.some(arbitraryUserId()),
+        isArticleInList: O.some(arbitraryListId()),
       });
 
       expect(rendered).toContain('Saved to my list');

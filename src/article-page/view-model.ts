@@ -5,9 +5,9 @@ import { ArticleAuthors } from '../types/article-authors';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
+import { ListId } from '../types/list-id';
 import * as RI from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-import { UserId } from '../types/user-id';
 
 export type ReviewFeedItem = {
   type: 'review',
@@ -43,7 +43,7 @@ export type FeedItem =
 export type ViewModel = {
   doi: Doi,
   title: string,
-  isArticleInList: O.Option<UserId>,
+  isArticleInList: O.Option<ListId>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,

@@ -80,9 +80,9 @@ describe('save-article-to-list', () => {
       expect(cardText).toContain('Appears in 1 list');
     });
 
-    it.skip('the save article button on the article page is replaced with a link to the list', async () => {
+    it('the save article button on the article page is replaced with a link to the list', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
+      const userGenericListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
       await click('Saved to my list');
       expect(await currentURL()).toBe(userGenericListPageUrl);
