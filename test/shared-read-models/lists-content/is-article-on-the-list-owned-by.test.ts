@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { articleRemovedFromList } from '../../../src/domain-events';
@@ -24,8 +25,8 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the query returns true', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(true);
+    it.failing('the query returns the first list id', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
     });
   });
 
@@ -57,12 +58,12 @@ describe('is-article-on-the-list-owned-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the query returns true for the first user id', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toBe(true);
+    it.failing('the query returns the first list id belonging to the first user', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
     });
 
-    it('the query returns true for the second user id', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toBe(true);
+    it.failing('the query returns the first list id belonging to the second user', () => {
+      expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toStrictEqual(O.some(listId2));
     });
   });
 });
