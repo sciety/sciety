@@ -1,14 +1,13 @@
 import { pipe } from 'fp-ts/function';
-import { ContentWithPaginationViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
+import { ArticleCardViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
 import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
+import { PageOfItems } from '../shared-components/paginate';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-type Message = 'no-articles' | 'no-articles-can-be-fetched';
-
-export type ContentViewModel = Message | ContentWithPaginationViewModel;
+export type ContentViewModel = PageOfItems<ArticleCardViewModel> | 'no-articles' | 'no-articles-can-be-fetched';
 
 type ViewModel = {
   title: string,

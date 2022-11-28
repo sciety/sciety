@@ -8,7 +8,7 @@ import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ArticleCardWithControlsViewModel } from './render-articles-list';
-import { ArticlesViewModel } from './render-content-with-pagination';
+import { ArticleCardViewModel } from './render-content-with-pagination';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { GetAllEvents } from '../../shared-ports';
@@ -68,7 +68,7 @@ export const toPageOfCards = (
   listOwnerId: ListOwnerId,
 ) => (
   items: ReadonlyArray<ArticleActivity>,
-): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
+): TE.TaskEither<'no-articles-can-be-fetched', ReadonlyArray<ArticleCardViewModel>> => pipe(
   items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),

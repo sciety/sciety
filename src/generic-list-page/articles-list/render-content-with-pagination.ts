@@ -25,23 +25,18 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
     : ''
 );
 
-export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;
-
-export type ContentWithPaginationViewModel = {
-  articles: ArticlesViewModel,
-  pagination: PageOfItems<unknown>,
-};
+export type ArticleCardViewModel = E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>;
 
 export const renderContentWithPagination = (
   basePath: string,
 ) => (
-  viewModel: ContentWithPaginationViewModel,
+  viewModel: PageOfItems<ArticleCardViewModel>,
 ): HtmlFragment => pipe(
-  viewModel.articles,
+  viewModel.items,
   renderArticlesList,
-  addPaginationControls(viewModel.pagination.nextPage, basePath),
+  addPaginationControls(viewModel.nextPage, basePath),
   (content) => `
-      ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}
+      ${renderPageNumbers(viewModel.pageNumber, viewModel.numberOfOriginalItems, viewModel.numberOfPages)}
       ${content}
     `,
   toHtmlFragment,
