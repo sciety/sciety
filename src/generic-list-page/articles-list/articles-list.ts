@@ -1,3 +1,5 @@
+import { Functor1 } from 'fp-ts/Functor';
+import { Kind, URIS } from 'fp-ts/HKT';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -15,16 +17,20 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const modifyPageItemsTask = <A, B>(
-  f: (a: ReadonlyArray<A>) => T.Task<ReadonlyArray<B>>,
-) => (pageOfItems: PageOfItems<A>): T.Task<PageOfItems<B>> => pipe(
-    pageOfItems.items,
-    f,
-    T.map((modifiedItems) => ({
-      ...pageOfItems,
-      items: modifiedItems,
-    })),
-  );
+type ModifyPageItemsF = <F extends URIS>(FT: Functor1<F>)
+=> <A, B>(f: (a: ReadonlyArray<A>) => Kind<F, ReadonlyArray<B>>,)
+=> (pageOfItems: PageOfItems<A>)
+=> Kind<F, PageOfItems<B>>;
+
+export const modifyPageItemsF: ModifyPageItemsF = (FT) => (mod) => (pageOfItems) => pipe(
+  pageOfItems.items,
+  mod,
+  (fa) => FT.map(fa, (modifiedItems) => ({
+    ...pageOfItems,
+    items: modifiedItems,
+  })),
+  (foo) => foo,
+);
 
 const modifyPageItemsTaskEither = <A, B, E>(
   f: (a: ReadonlyArray<A>) => TE.TaskEither<E, ReadonlyArray<B>>,
@@ -47,6 +53,6 @@ export const articlesList = (
   articleIds,
   paginate(20, pageNumber),
   TE.fromEither,
-  TE.chainTaskK(modifyPageItemsTask(populateArticleActivities(ports))),
+  TE.chainTaskK(modifyPageItemsF(T.ApplicativePar)(populateArticleActivities(ports))),
   TE.chainW(modifyPageItemsTaskEither(toPageOfCards(ports, hasArticleControls, listId, listOwnerId))),
 );
