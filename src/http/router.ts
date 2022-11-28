@@ -37,7 +37,9 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articlePage } from '../article-page';
-import { addArticleToListCommandCodec, removeArticleFromListCommandCodec } from '../commands';
+import {
+  addArticleToListCommandCodec, EditListDetailsCommand, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
+} from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -464,8 +466,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     TE.chain(removeArticleFromListCommandHandler(adapters)),
   )));
 
-  const editListDetailsCommandCodec = t.type({});
-  const editListDetailsCommandHandler = (): CommandHandler<Record<string, unknown>> => () => TE.left(toErrorMessage('not implemented'));
+  const editListDetailsCommandHandler = (): CommandHandler<EditListDetailsCommand> => () => TE.left(toErrorMessage('not implemented'));
 
   router.post('/api/edit-list-details', handleScietyApiCommand(adapters, flow(
     validateInputShape(editListDetailsCommandCodec),
