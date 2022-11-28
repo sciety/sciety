@@ -73,7 +73,7 @@ FROM node AS prod
 ENV NODE_ENV=production
 
 COPY --from=npm-prod /app/ .
-COPY --from=build-prod /app/build/ build/
+COPY --from=build-prod /app/build/src/ build/
 COPY --from=build-prod /app/static/ static/
 COPY data/ data/
 
