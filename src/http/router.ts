@@ -38,12 +38,13 @@ import { handleCreateAnnotationCommand } from '../annotations/handle-create-anno
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import { articlePage } from '../article-page';
 import {
-  addArticleToListCommandCodec, EditListDetailsCommand, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
+  addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
+import { editListDetailsCommandHandler } from '../edit-list-details';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
@@ -72,9 +73,7 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
-import { CommandHandler } from '../types/command-handler';
 import * as DE from '../types/data-error';
-import { toErrorMessage } from '../types/error-message';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -465,8 +464,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     TE.fromEither,
     TE.chain(removeArticleFromListCommandHandler(adapters)),
   )));
-
-  const editListDetailsCommandHandler = (): CommandHandler<EditListDetailsCommand> => () => TE.left(toErrorMessage('not implemented'));
 
   router.post('/api/edit-list-details', handleScietyApiCommand(adapters, flow(
     validateInputShape(editListDetailsCommandCodec),
