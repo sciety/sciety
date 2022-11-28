@@ -1,5 +1,9 @@
-import { Functor1 } from 'fp-ts/Functor';
-import { Kind, URIS } from 'fp-ts/HKT';
+import {
+  Functor, Functor1, Functor2,
+} from 'fp-ts/Functor';
+import {
+  HKT, Kind, Kind2, URIS, URIS2,
+} from 'fp-ts/HKT';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -17,31 +21,34 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-type ModifyPageItemsF = <F extends URIS>(FT: Functor1<F>)
-=> <A, B>(f: (a: ReadonlyArray<A>) => Kind<F, ReadonlyArray<B>>,)
+// HKT Boilerplate needed to support different Functors e.g. Task and TaskEither
+function modifyPageItemsF<F extends URIS2>(FA: Functor2<F>):
+<A, B, E>(mod: (a: ReadonlyArray<A>) => Kind2<F, E, ReadonlyArray<B>>)
+=> (pageOfItems: PageOfItems<A>)
+=> Kind2<F, E, PageOfItems<B>>;
+function modifyPageItemsF<F extends URIS>(FA: Functor1<F>):
+<A, B>(mod: (a: ReadonlyArray<A>) => Kind<F, ReadonlyArray<B>>)
 => (pageOfItems: PageOfItems<A>)
 => Kind<F, PageOfItems<B>>;
+function modifyPageItemsF<F>(FA: Functor<F>):
+<A, B>(mod: (a: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>)
+=> (pageOfItems: PageOfItems<A>)
+=> HKT<F, PageOfItems<B>>;
 
-export const modifyPageItemsF: ModifyPageItemsF = (FT) => (mod) => (pageOfItems) => pipe(
-  pageOfItems.items,
-  mod,
-  (fa) => FT.map(fa, (modifiedItems) => ({
-    ...pageOfItems,
-    items: modifiedItems,
-  })),
-  (foo) => foo,
-);
-
-const modifyPageItemsTaskEither = <A, B, E>(
-  f: (a: ReadonlyArray<A>) => TE.TaskEither<E, ReadonlyArray<B>>,
-) => (pageOfItems: PageOfItems<A>): TE.TaskEither<E, PageOfItems<B>> => pipe(
+// Actual implementation. Read this instead of the boilerplate.
+function modifyPageItemsF<F>(FA: Functor<F>):
+<A, B>(mod: (a: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>)
+=> (pageOfItems: PageOfItems<A>)
+=> HKT<F, PageOfItems<B>> {
+  return (mod) => (pageOfItems) => pipe(
     pageOfItems.items,
-    f,
-    TE.map((modifiedItems) => ({
+    mod,
+    (fa) => FA.map(fa, (modifiedItems) => ({
       ...pageOfItems,
       items: modifiedItems,
     })),
   );
+}
 
 export const articlesList = (
   ports: Ports,
@@ -54,5 +61,5 @@ export const articlesList = (
   paginate(20, pageNumber),
   TE.fromEither,
   TE.chainTaskK(modifyPageItemsF(T.ApplicativePar)(populateArticleActivities(ports))),
-  TE.chainW(modifyPageItemsTaskEither(toPageOfCards(ports, hasArticleControls, listId, listOwnerId))),
+  TE.chainW(modifyPageItemsF(TE.ApplicativePar)(toPageOfCards(ports, hasArticleControls, listId, listOwnerId))),
 );
