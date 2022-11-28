@@ -9,10 +9,3 @@ services:
     image: ${IMAGE}:${IMAGE_TAG}
     volumes:
       - './.gcp-ncrc-key.json:/var/run/secrets/app/.gcp-ncrc-key.json'
-
-  lists:
-    build:
-      target: prod
-    image: ${IMAGE}:${IMAGE_TAG}
-    command: "node ./build/lists-service/index.js"
-

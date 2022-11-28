@@ -37,8 +37,6 @@ spec:
               value: {{ .Values.fathomSiteId }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
-            - name: LISTS_READ_MODEL_HOST
-              value: {{ .Release.Name }}--lists-read-model
             - name: SCIETY_API
               value: "https://{{ .Values.hostname }}"
             - name: SCIETY_TEAM_API_BEARER_TOKEN

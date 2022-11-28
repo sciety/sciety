@@ -22,7 +22,6 @@ services:
       INGEST_DEBUG:
       INGEST_ONLY:
       INGEST_DAYS:
-      LISTS_READ_MODEL_HOST: lists
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db
@@ -35,20 +34,6 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
-
-  lists:
-    container_name: sciety_lists
-    build:
-      context: .
-    environment:
-      EXPERIMENT_ENABLED: "true"
-      PGUSER: user
-      PGHOST: db
-      PGPASSWORD: secret
-      PGDATABASE: sciety
-    ports:
-      - '8081:80'
-    restart: "no"
 
   db:
     container_name: sciety_db
