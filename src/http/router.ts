@@ -70,7 +70,9 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { CommandHandler } from '../types/command-handler';
 import * as DE from '../types/data-error';
+import { toErrorMessage } from '../types/error-message';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -460,6 +462,15 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     validateInputShape(removeArticleFromListCommandCodec),
     TE.fromEither,
     TE.chain(removeArticleFromListCommandHandler(adapters)),
+  )));
+
+  const editListDetailsCommandCodec = t.type({});
+  const editListDetailsCommandHandler = (): CommandHandler<Record<string, unknown>> => () => TE.left(toErrorMessage('not implemented'));
+
+  router.post('/api/edit-list-details', handleScietyApiCommand(adapters, flow(
+    validateInputShape(editListDetailsCommandCodec),
+    TE.fromEither,
+    TE.chain(editListDetailsCommandHandler()),
   )));
 
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
