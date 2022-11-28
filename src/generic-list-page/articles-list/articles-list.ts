@@ -26,6 +26,17 @@ const modifyPageItemsTask = <A, B>(
     })),
   );
 
+const modifyPageItemsTaskEither = <A, B, E>(
+  f: (a: ReadonlyArray<A>) => TE.TaskEither<E, ReadonlyArray<B>>,
+) => (pageOfItems: PageOfItems<A>): TE.TaskEither<E, PageOfItems<B>> => pipe(
+    pageOfItems.items,
+    f,
+    TE.map((modifiedItems) => ({
+      ...pageOfItems,
+      items: modifiedItems,
+    })),
+  );
+
 export const articlesList = (
   ports: Ports,
   listId: ListId,
@@ -37,9 +48,6 @@ export const articlesList = (
   paginate(20, pageNumber),
   TE.fromEither,
   TE.chainTaskK(modifyPageItemsTask(populateArticleActivities(ports))),
-  TE.chainW((pageOfArticles) => pipe(
-    pageOfArticles,
-    toPageOfCards(ports, hasArticleControls, listId, listOwnerId),
-    TE.map((articles) => ({ articles, pagination: pageOfArticles })),
-  )),
+  TE.chainW(modifyPageItemsTaskEither(toPageOfCards(ports, hasArticleControls, listId, listOwnerId))),
+  TE.map((pageOfArticles) => ({ articles: pageOfArticles.items, pagination: pageOfArticles })),
 );

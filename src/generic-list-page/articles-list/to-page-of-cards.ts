@@ -11,7 +11,6 @@ import { ArticleCardWithControlsViewModel } from './render-articles-list';
 import { ArticlesViewModel } from './render-content-with-pagination';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../shared-components/article-card';
-import { PageOfItems } from '../../shared-components/paginate';
 import { GetAllEvents } from '../../shared-ports';
 import { getAnnotationContentByUserListTarget } from '../../shared-read-models/annotations';
 import { ArticleActivity } from '../../types/article-activity';
@@ -68,9 +67,9 @@ export const toPageOfCards = (
   listId: ListId,
   listOwnerId: ListOwnerId,
 ) => (
-  pageOfArticles: PageOfItems<ArticleActivity>,
+  items: ReadonlyArray<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
-  pageOfArticles.items,
+  items,
   T.traverseArray(toCardViewModel(ports)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
