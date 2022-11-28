@@ -50,6 +50,21 @@ function modifyPageItemsF<F>(FA: Functor<F>):
   );
 }
 
+type ModifyPageOfItems = <A, B>(mod: (a: ReadonlyArray<A>)
+=> ReadonlyArray<B>,)
+=> (pageOfItems: PageOfItems<A>)
+=> PageOfItems<B>;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const modifyPageItems: ModifyPageOfItems = (mod) => (pageOfItems) => pipe(
+  pageOfItems.items,
+  mod,
+  (modifiedItems) => ({
+    ...pageOfItems,
+    items: modifiedItems,
+  }),
+);
+
 export const articlesList = (
   ports: Ports,
   listId: ListId,
