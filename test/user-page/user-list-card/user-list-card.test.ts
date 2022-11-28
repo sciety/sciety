@@ -8,13 +8,14 @@ import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('user-list-card', () => {
   const listName = arbitraryString();
+  const listDescription = arbitraryString();
   const list = {
     listId: arbitraryListId(),
     ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
     name: listName,
-    description: arbitraryString(),
+    description: listDescription,
   };
 
   it('displays the title of the list', () => {
@@ -26,15 +27,14 @@ describe('user-list-card', () => {
     expect(rendered?.textContent).toContain(listName);
   });
 
-  it('displays the list owner\'s handle in the description', () => {
-    const handle = arbitraryWord();
+  it('displays the list description', () => {
     const rendered = pipe(
-      userListCard(handle, list),
+      userListCard(arbitraryWord(), list),
       JSDOM.fragment,
     );
     const description = rendered.querySelector('p');
 
-    expect(description?.textContent).toContain(handle);
+    expect(description?.textContent).toContain(listDescription);
   });
 
   it('displays when the list was last updated', () => {

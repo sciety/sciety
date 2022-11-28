@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
 import { List } from '../../shared-ports/select-all-lists-owned-by';
 import { HtmlFragment } from '../../types/html-fragment';
-import { defaultUserListDescription } from '../static-messages';
 
 export const userListCard = (handle: string, list: List): HtmlFragment => pipe(
   {
@@ -12,7 +11,7 @@ export const userListCard = (handle: string, list: List): HtmlFragment => pipe(
     lastUpdated: O.some(list.lastUpdated),
     userHandle: handle,
     title: list.name,
-    description: defaultUserListDescription(`@${handle}`),
+    description: list.description,
     articleCountLabel: 'This list contains',
   },
   renderListCard,
