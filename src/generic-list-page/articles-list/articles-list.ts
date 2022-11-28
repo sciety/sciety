@@ -5,7 +5,7 @@ import { populateArticleActivities } from './populate-article-activities';
 import { ContentWithPaginationViewModel } from './render-content-with-pagination';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { DomainEvent } from '../../domain-events';
-import { paginate } from '../../shared-components/paginate';
+import { PageOfItems, paginate } from '../../shared-components/paginate';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
@@ -14,6 +14,17 @@ import { ListOwnerId } from '../../types/list-owner-id';
 export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
+
+const modifyPageItemsTask = <A, B>(
+  f: (a: ReadonlyArray<A>) => T.Task<ReadonlyArray<B>>,
+) => (pageOfItems: PageOfItems<A>): T.Task<PageOfItems<B>> => pipe(
+    pageOfItems.items,
+    f,
+    T.map((modifiedItems) => ({
+      ...pageOfItems,
+      items: modifiedItems,
+    })),
+  );
 
 export const articlesList = (
   ports: Ports,
@@ -25,7 +36,7 @@ export const articlesList = (
   articleIds,
   paginate(20, pageNumber),
   TE.fromEither,
-  TE.chainTaskK(populateArticleActivities(ports)),
+  TE.chainTaskK(modifyPageItemsTask(populateArticleActivities(ports))),
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
     toPageOfCards(ports, hasArticleControls, listId, listOwnerId),
