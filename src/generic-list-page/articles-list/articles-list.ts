@@ -1,7 +1,6 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { modifyF } from 'spectacles-ts';
 import { populateArticleActivities } from './populate-article-activities';
 import { ContentWithPaginationViewModel } from './render-content-with-pagination';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
@@ -26,9 +25,7 @@ export const articlesList = (
   articleIds,
   paginate(20, pageNumber),
   TE.fromEither,
-  TE.chainTaskK(
-    modifyF(T.ApplicativePar)('items', populateArticleActivities(ports)),
-  ),
+  TE.chainTaskK(populateArticleActivities(ports)),
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
     toPageOfCards(ports, hasArticleControls, listId, listOwnerId),
