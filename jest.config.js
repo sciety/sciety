@@ -12,7 +12,6 @@ module.exports = {
     '^.+\\.ts$': ['ts-jest', {
       diagnostics: false,
       isolatedModules: true,
-      tsconfig: 'tsconfig.dev.json',
     }],
   },
   verbose: true,

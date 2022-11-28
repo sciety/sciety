@@ -224,16 +224,6 @@ crossref-response:
 		-H 'User-Agent: Sciety (https://sciety.org; mailto:team@sciety.org)' \
 		'https://api.crossref.org/works/${DOI}/transform'
 
-replay-events-for-elife-subject-area-policy:
-	kubectl delete job elife-subject-area-policy || true
-	kubectl create job --from=cronjob/sciety--prod--elife-subject-area-policy elife-subject-area-policy 
-
-dev-replay-events-for-elife-subject-area-policy: export TARGET = dev
-dev-replay-events-for-elife-subject-area-policy: build
-	$(DOCKER_COMPOSE) run --name elife-subject-area-policy --rm \
-	app \
-	npx ts-node --project tsconfig.dev.json --transpile-only src/policies/run-elife-subject-area-policy
-
 #------------------------------------------------------------------------------
 
 MK_LINTED_TS := .mk-linted-ts
@@ -250,7 +240,7 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 		--ext .js,.ts \
 		--cache --cache-location $(LINT_CACHE) \
 		--color --max-warnings 0
-	npx ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles
+	npx ts-unused-exports tsconfig.json --silent --ignoreTestFiles
 	@touch $@
 
 $(MK_TESTED_TS): node_modules $(TS_SOURCES)
