@@ -21,10 +21,11 @@ export const isListNameEditedEvent = (event: { type: string }):
 export const listNameEdited = (
   listId: ListId,
   name: string,
+  date: Date = new Date(),
 ): ListNameEditedEvent => ({
   id: generate(),
   type: 'ListNameEdited',
-  date: new Date(),
+  date,
   listId,
   name,
 });

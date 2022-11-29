@@ -1,6 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, articleRemovedFromList, listCreated } from '../../../src/domain-events';
+import {
+  articleAddedToList, articleRemovedFromList, listCreated, listNameEdited,
+} from '../../../src/domain-events';
 import { handleEvent, initialState, selectAllListsOwnedBy } from '../../../src/shared-read-models/lists-content';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -80,6 +82,37 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(dateOfLastEvent);
+    });
+  });
+
+  describe('when the owner owns a list where the list name has been changed', () => {
+    const listId = arbitraryListId();
+    const listName = arbitraryString();
+    const listDescription = arbitraryString();
+    const dateOfLastEvent = new Date('2021-07-08');
+    const readmodel = pipe(
+      [
+        listCreated(listId, arbitraryString(), listDescription, ownerId),
+        listNameEdited(listId, listName, dateOfLastEvent),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+
+    it('returns the list id', () => {
+      expect(result.listId).toBe(listId);
+    });
+
+    it.failing('returns the updated name of the list', () => {
+      expect(result.name).toStrictEqual(listName);
+    });
+
+    it('returns the description of the list', () => {
+      expect(result.description).toStrictEqual(listDescription);
+    });
+
+    it.failing('returns the last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(dateOfLastEvent);
     });
   });
