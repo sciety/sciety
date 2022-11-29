@@ -109,4 +109,11 @@ export {
   userUnsavedArticleEventCodec,
 } from './user-unsaved-article-event';
 
+export {
+  isListNameEditedEvent,
+  listNameEdited,
+  ListNameEditedEvent,
+  listNameEditedEventCodec,
+} from './list-name-edited-event';
+
 export { sort } from './domain-event';
