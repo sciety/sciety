@@ -8,7 +8,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
-import { Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { renderComponent } from './header/render-component';
 import { headers, Ports as HeadersPorts } from './headers';
 import { ContentViewModel, renderErrorPage, renderPage } from './render-page';
@@ -32,7 +31,6 @@ export const paramsCodec = t.type({
 
 type Ports = ArticlesListPorts
 & HeadersPorts
-& GetUserOwnerInformationPorts
 & { selectArticlesBelongingToList: SelectArticlesBelongingToList };
 
 type Params = t.TypeOf<typeof paramsCodec>;
