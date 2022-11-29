@@ -26,13 +26,13 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('raises an event with the new name', () => {
+    it('raises an event with the new name', () => {
       expect(raisedEvents).toStrictEqual([expect.objectContaining({ name: newName })]);
     });
   });
 
   describe('when the new name is the same as the current name', () => {
-    it('raises no events', () => {
+    it.failing('raises no events', () => {
       const listName = arbitraryString();
       const listId = arbitraryListId();
       const command = {
