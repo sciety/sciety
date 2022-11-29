@@ -36,7 +36,7 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
       case 'ArticleAddedToList':
         return pipe(
           aggregate,
-          E.map(({ articleIds }) => ({ articleIds: [...articleIds, event.articleId], name: '' })),
+          E.map(({ articleIds, name }) => ({ articleIds: [...articleIds, event.articleId], name })),
         );
       case 'ArticleRemovedFromList':
         return pipe(
