@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-article-to-list/execute-command';
+import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
@@ -10,7 +11,7 @@ describe('execute-command', () => {
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
       const result = pipe(
-        { articleIds: [articleId] },
+        { articleIds: [articleId], name: arbitraryString() },
         executeCommand({
           listId,
           articleId,
@@ -24,7 +25,7 @@ describe('execute-command', () => {
 
     describe('and the article is not in the list', () => {
       const result = pipe(
-        { articleIds: [] },
+        { articleIds: [], name: arbitraryString() },
         executeCommand({
           listId,
           articleId,

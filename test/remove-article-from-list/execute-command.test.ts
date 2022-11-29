@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/remove-article-from-list/execute-command';
+import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
@@ -9,7 +10,7 @@ describe('execute-command', () => {
 
   describe('the article is in the list', () => {
     const result = pipe(
-      { articleIds: [articleId] },
+      { articleIds: [articleId], name: arbitraryString() },
       executeCommand({
         listId,
         articleId,
@@ -27,7 +28,7 @@ describe('execute-command', () => {
 
   describe('the article is not in the list', () => {
     const result = pipe(
-      { articleIds: [] },
+      { articleIds: [], name: arbitraryString() },
       executeCommand({
         listId,
         articleId,

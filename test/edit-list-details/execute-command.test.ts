@@ -10,12 +10,14 @@ describe('execute-command', () => {
 
   describe('when the new name is the same as the current name', () => {
     it('raises no events', () => {
+      const listName = arbitraryString();
       const command = {
         listId: arbitraryListId(),
-        name: arbitraryString(),
+        name: listName,
       };
       const listAggregate = {
         articleIds: [],
+        name: listName,
       };
       const eventsToBeRaised = pipe(
         listAggregate,

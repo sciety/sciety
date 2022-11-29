@@ -22,7 +22,7 @@ describe('replay-aggregate', () => {
       );
 
       it('the article id is in the aggregate', () => {
-        expect(result).toStrictEqual(E.right({ articleIds: [articleId] }));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [articleId] })));
       });
     });
 
@@ -35,7 +35,7 @@ describe('replay-aggregate', () => {
       );
 
       it('the article id is not in the aggregate', () => {
-        expect(result).toStrictEqual(E.right({ articleIds: [] }));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
       });
     });
 
@@ -50,7 +50,7 @@ describe('replay-aggregate', () => {
       );
 
       it('the article id is not in the aggregate', () => {
-        expect(result).toStrictEqual(E.right({ articleIds: [] }));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
       });
     });
   });

@@ -32,11 +32,11 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
   RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (aggregate, event) => {
     switch (event.type) {
       case 'ListCreated':
-        return E.right({ articleIds: [] });
+        return E.right({ articleIds: [], name: '' });
       case 'ArticleAddedToList':
         return pipe(
           aggregate,
-          E.map(({ articleIds }) => ({ articleIds: [...articleIds, event.articleId] })),
+          E.map(({ articleIds }) => ({ articleIds: [...articleIds, event.articleId], name: '' })),
         );
       case 'ArticleRemovedFromList':
         return pipe(
@@ -44,7 +44,7 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
           E.map(({ articleIds }) => pipe(
             articleIds,
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
-            (ids) => ({ articleIds: ids }),
+            (ids) => ({ articleIds: ids, name: '' }),
           )),
         );
     }
