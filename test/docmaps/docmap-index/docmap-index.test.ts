@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -52,6 +53,10 @@ describe('docmap-index', () => {
 
       beforeEach(async () => {
         const ports = {
+          getGroup: () => E.right({
+            ...arbitraryGroup(),
+            id: ncrcGroupId,
+          }),
           getAllEvents: T.of([
             groupJoined({
               ...arbitraryGroup(),
@@ -101,6 +106,10 @@ describe('docmap-index', () => {
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.left(DE.unavailable),
+        getGroup: () => E.right({
+          ...arbitraryGroup(),
+          id: ncrcGroupId,
+        }),
       };
       response = await docmapIndex(ports)({})();
     });
