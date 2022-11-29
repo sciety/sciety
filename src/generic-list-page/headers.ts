@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './header/render-component';
 import { GetAllEvents, GetGroup, SelectArticlesBelongingToList } from '../shared-ports';
-import { List } from '../shared-read-models/lists';
+import { List } from '../shared-ports/select-all-lists-owned-by';
 import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 
@@ -30,7 +30,7 @@ type Headers = (ports: Ports) => (list: List)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const headers: Headers = (ports) => (list) => pipe(
-  list.id,
+  list.listId,
   ports.selectArticlesBelongingToList,
   E.map((articleIds) => ({
     ...list,

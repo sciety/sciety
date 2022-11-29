@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/Option';
+import { getList } from './get-list';
 import { ReadModel } from './handle-event';
 import { isArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
@@ -18,5 +18,5 @@ export const queries = (instance: ReadModel): Queries => ({
   isArticleOnTheListOwnedBy: isArticleOnTheListOwnedBy(instance),
   selectArticlesBelongingToList: selectArticlesBelongingToList(instance),
   selectAllListsOwnedBy: selectAllListsOwnedBy(instance),
-  getList: () => O.none,
+  getList: getList(instance),
 });

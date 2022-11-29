@@ -11,11 +11,10 @@ import { shouldHaveArticleControls } from './articles-list/should-have-article-c
 import { renderComponent } from './header/render-component';
 import { headers, Ports as HeadersPorts } from './headers';
 import { ContentViewModel, renderErrorPage, renderPage } from './render-page';
-import { SelectArticlesBelongingToList } from '../shared-ports';
-import { getList } from '../shared-read-models/lists';
+import { GetList, SelectArticlesBelongingToList } from '../shared-ports';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
-import { DataError } from '../types/data-error';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -31,7 +30,10 @@ export const paramsCodec = t.type({
 
 type Ports = ArticlesListPorts
 & HeadersPorts
-& { selectArticlesBelongingToList: SelectArticlesBelongingToList };
+& {
+  selectArticlesBelongingToList: SelectArticlesBelongingToList,
+  getList: GetList,
+};
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
@@ -41,12 +43,13 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
 );
 
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
-  ports.getAllEvents,
-  T.chain(getList(params.id)),
+  params.id,
+  ports.getList,
+  TE.fromOption(() => DE.notFound),
   TE.chain((list) => pipe(
     list,
     headers(ports),
-    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId, listId: list.id })),
+    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId, listId: list.listId })),
   )),
   TE.chain(({ headerViewModel, listOwnerId, listId }) => pipe(
     ({
@@ -54,7 +57,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       contentViewModel: pipe(
         ports.selectArticlesBelongingToList(listId),
         T.of,
-        TE.chainW(RA.match<TE.TaskEither<DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+        TE.chainW(RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
           () => TE.right('no-articles' as const),
           articlesList(
             ports,
