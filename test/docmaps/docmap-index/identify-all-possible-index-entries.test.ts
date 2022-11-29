@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { ErrorResponse } from '../../../src/docmaps/docmap-index/error-response';
 import {
   DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
@@ -10,7 +10,6 @@ import {
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -35,22 +34,21 @@ describe('identify-all-possible-index-entries', () => {
       evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), [], new Date(), earlierDate),
       evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
     ];
-    let result: ReadonlyArray<DocmapIndexEntryModel>;
+    let result: E.Either<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       const ports = {
         ...defaultPorts,
         getGroup: () => E.right(supportedGroups[0]),
       };
-      result = await pipe(
+      result = pipe(
         events,
         identifyAllPossibleIndexEntries(supportedGroupIds, ports),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      );
     });
 
     it('returns a list of all the evaluated index entry models', () => {
-      expect(result).toStrictEqual([
+      expect(result).toStrictEqual(E.right([
         {
           articleId: articleId2,
           groupId: supportedGroupIds[0],
@@ -63,7 +61,7 @@ describe('identify-all-possible-index-entries', () => {
           updated: earlierDate,
           publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
-      ]);
+      ]));
     });
   });
 
@@ -78,26 +76,21 @@ describe('identify-all-possible-index-entries', () => {
       evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), middleDate),
     ];
 
-    let result: ReadonlyArray<DocmapIndexEntryModel>;
+    let result: E.Either<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
-    beforeEach(async () => {
-      result = await pipe(
+    beforeEach(() => {
+      result = pipe(
         events,
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns a single index entry model', () => {
-      expect(result).toHaveLength(1);
+      );
     });
 
     it('returns the latest updated date', () => {
-      expect(result).toStrictEqual([
+      expect(result).toStrictEqual(E.right([
         expect.objectContaining({
           updated: latestDate,
         }),
-      ]);
+      ]));
     });
   });
 
@@ -106,18 +99,17 @@ describe('identify-all-possible-index-entries', () => {
       evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
     ];
 
-    let result: ReadonlyArray<DocmapIndexEntryModel>;
+    let result: E.Either<ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
-    beforeEach(async () => {
-      result = await pipe(
+    beforeEach(() => {
+      result = pipe(
         events,
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      );
     });
 
     it('excludes articles evaluated by the unsupported group', () => {
-      expect(result).toStrictEqual([]);
+      expect(result).toStrictEqual(E.right([]));
     });
   });
 
@@ -127,8 +119,8 @@ describe('identify-all-possible-index-entries', () => {
     ];
     let result: unknown;
 
-    beforeEach(async () => {
-      result = await pipe(
+    beforeEach(() => {
+      result = pipe(
         events,
         identifyAllPossibleIndexEntries(
           supportedGroupIds,
@@ -137,7 +129,7 @@ describe('identify-all-possible-index-entries', () => {
             getGroup: () => E.left(DE.notFound),
           },
         ),
-      )();
+      );
     });
 
     it('fails with an internal server error', () => {

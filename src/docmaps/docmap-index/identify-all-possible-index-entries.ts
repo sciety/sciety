@@ -3,8 +3,6 @@ import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
@@ -40,7 +38,7 @@ export type Ports = {
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
   adapters: Ports,
-) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
+) => (events: ReadonlyArray<DomainEvent>) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (
   supportedGroups,
@@ -67,5 +65,4 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
       RA.uniq(eqEntry),
     ),
   ),
-  T.of,
 );

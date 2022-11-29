@@ -28,7 +28,7 @@ type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Ta
 export const docmapIndex: DocmapIndex = (adapters) => (query) => pipe(
   adapters.getAllEvents,
   TE.rightTask,
-  TE.chain(identifyAllPossibleIndexEntries(supportedGroups, adapters)),
+  TE.chainEitherK(identifyAllPossibleIndexEntries(supportedGroups, adapters)),
   TE.chainEitherK(filterByParams(query)),
   TE.chainW(flow(
     TE.traverseArray(generateDocmapViewModel(adapters)),
