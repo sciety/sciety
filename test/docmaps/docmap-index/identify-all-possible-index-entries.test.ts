@@ -11,6 +11,7 @@ import {
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
+import * as DE from '../../../src/types/data-error';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -26,6 +27,10 @@ describe('identify-all-possible-index-entries', () => {
       RA.map(groupJoined),
       T.of,
     ),
+    getGroup: (groupId) => E.right({
+      ...arbitraryGroup(),
+      id: groupId,
+    }),
   };
 
   describe('when there are evaluated events by a supported group', () => {
@@ -40,9 +45,13 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
+      const ports = {
+        ...defaultPorts,
+        getGroup: () => E.right(supportedGroups[0]),
+      };
       result = await pipe(
         events,
-        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        identifyAllPossibleIndexEntries(supportedGroupIds, ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -100,11 +109,7 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when there are evaluated events by both supported and unsupported groups', () => {
-    const articleId1 = arbitraryArticleId();
-    const articleId2 = arbitraryArticleId();
     const events = [
-      evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId()),
-      evaluationRecorded(supportedGroupIds[1], articleId2, arbitraryReviewId()),
       evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
     ];
 
@@ -119,19 +124,7 @@ describe('identify-all-possible-index-entries', () => {
     });
 
     it('excludes articles evaluated by the unsupported group', () => {
-      expect(result).toHaveLength(2);
-      expect(result).toStrictEqual(expect.arrayContaining([
-        expect.objectContaining({
-          groupId: supportedGroupIds[0],
-          articleId: articleId1,
-          publisherAccountId: publisherAccountId(supportedGroups[0]),
-        }),
-        expect.objectContaining({
-          groupId: supportedGroupIds[1],
-          articleId: articleId2,
-          publisherAccountId: publisherAccountId(supportedGroups[1]),
-        }),
-      ]));
+      expect(result).toStrictEqual([]);
     });
   });
 
@@ -149,6 +142,7 @@ describe('identify-all-possible-index-entries', () => {
           {
             ...defaultPorts,
             getAllEvents: T.of([]),
+            getGroup: () => E.left(DE.notFound),
           },
         ),
       )();

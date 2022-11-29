@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/groups';
+import { GetGroup } from '../../shared-ports';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
@@ -34,6 +34,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroup: GetGroup,
 };
 
 type IdentifyAllPossibleIndexEntries = (
@@ -56,8 +57,8 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     updated: date,
   })),
   TE.traverseArray((incompleteEntry) => pipe(
-    adapters.getAllEvents,
-    T.map(getGroup(incompleteEntry.groupId)),
+    adapters.getGroup(incompleteEntry.groupId),
+    T.of,
     TE.map((group) => ({
       ...incompleteEntry,
       publisherAccountId: publisherAccountId(group),
