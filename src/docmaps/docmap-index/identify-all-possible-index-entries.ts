@@ -1,4 +1,5 @@
 import * as D from 'fp-ts/Date';
+import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -56,19 +57,19 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     groupId,
     updated: date,
   })),
-  TE.traverseArray((incompleteEntry) => pipe(
+  E.traverseArray((incompleteEntry) => pipe(
     adapters.getGroup(incompleteEntry.groupId),
-    T.of,
-    TE.map((group) => ({
+    E.map((group) => ({
       ...incompleteEntry,
       publisherAccountId: publisherAccountId(group),
     })),
   )),
-  TE.bimap(
+  E.bimap(
     () => ER.internalServerError,
     flow(
       RA.sort(byDate),
       RA.uniq(eqEntry),
     ),
   ),
+  T.of,
 );
