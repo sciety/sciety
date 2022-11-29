@@ -104,7 +104,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.listId).toBe(listId);
     });
 
-    it.failing('returns the updated name of the list', () => {
+    it('returns the updated name of the list', () => {
       expect(result.name).toStrictEqual(listName);
     });
 
@@ -112,7 +112,7 @@ describe('select-all-lists-owned-by', () => {
       expect(result.description).toStrictEqual(listDescription);
     });
 
-    it.failing('returns the last updated date', () => {
+    it('returns the last updated date', () => {
       expect(result.lastUpdated).toStrictEqual(dateOfLastEvent);
     });
   });
