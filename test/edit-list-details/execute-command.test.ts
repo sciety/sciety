@@ -34,17 +34,18 @@ describe('execute-command', () => {
   describe('when the new name is the same as the current name', () => {
     it('raises no events', () => {
       const listName = arbitraryString();
+      const listId = arbitraryListId();
       const command = {
-        listId: arbitraryListId(),
         name: listName,
-      };
-      const listAggregate = {
-        articleIds: [],
-        name: listName,
+        listId,
       };
       const eventsToBeRaised = pipe(
-        listAggregate,
-        executeCommand(command),
+        [
+          listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+        ],
+        replayListAggregate(listId),
+        E.map(executeCommand(command)),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       expect(eventsToBeRaised).toStrictEqual([]);
