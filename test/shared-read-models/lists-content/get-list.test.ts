@@ -24,9 +24,9 @@ describe('get-list', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('returns the articleIds, sorted by date added, descending', () => {
+      it('returns the articleIds, sorted by date added, descending', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
-          articleIds: [articleId2, articleId1],
+          articleIds: [articleId2.value, articleId1.value],
         })));
       });
     });
