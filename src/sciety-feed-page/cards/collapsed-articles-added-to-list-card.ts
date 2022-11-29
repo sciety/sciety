@@ -2,14 +2,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { GetAllEvents } from '../../shared-ports';
-import { getList } from '../../shared-read-models/lists';
+import { GetList } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from '../feed-item';
 
 export type Ports = {
-  getAllEvents: GetAllEvents,
+  getList: GetList,
 } & AddListOwnershipInformationPorts;
 
 type CollapsedArticlesAddedToListCard = (
@@ -17,9 +16,9 @@ type CollapsedArticlesAddedToListCard = (
 ) => (event: CollapsedArticlesAddedToList) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (collapsedEvents) => pipe(
-  ports.getAllEvents,
-  TE.rightTask,
-  TE.chain(getList(collapsedEvents.listId)),
+  collapsedEvents.listId,
+  ports.getList,
+  TE.fromOption(() => DE.notFound),
   TE.chain(addListOwnershipInformation(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,

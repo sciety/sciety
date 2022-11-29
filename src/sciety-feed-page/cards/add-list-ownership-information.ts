@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
 import { GetUserDetails } from '../../shared-ports/get-user-details';
-import { List } from '../../shared-read-models/lists';
+import { List } from '../../shared-ports/select-all-lists-owned-by';
 import * as DE from '../../types/data-error';
 
 export type Ports = {
@@ -35,7 +35,7 @@ export const addListOwnershipInformation = (
           ...list,
           ownerName: group.name,
           ownerAvatarUrl: group.avatarPath,
-          linkUrl: `/lists/${list.id}`,
+          linkUrl: `/lists/${list.listId}`,
         })),
       );
     case 'user-id':
@@ -48,7 +48,7 @@ export const addListOwnershipInformation = (
               ...list,
               ownerName: 'A user',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-              linkUrl: renderListPageLinkHref(list.id),
+              linkUrl: renderListPageLinkHref(list.listId),
             }
           ),
           (userDetails) => (
@@ -56,7 +56,7 @@ export const addListOwnershipInformation = (
               ...list,
               ownerName: userDetails.handle,
               ownerAvatarUrl: userDetails.avatarUrl,
-              linkUrl: renderListPageLinkHref(list.id),
+              linkUrl: renderListPageLinkHref(list.listId),
 
             }
           ),

@@ -3,13 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { ArticleAddedToListEvent } from '../../domain-events';
-import { GetAllEvents } from '../../shared-ports';
-import { getList } from '../../shared-read-models/lists';
+import { GetList } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 export type Ports = {
-  getAllEvents: GetAllEvents,
+  getList: GetList,
 } & AddListOwnershipInformationPorts;
 
 type ArticleAddedToListCard = (
@@ -17,9 +16,9 @@ type ArticleAddedToListCard = (
 ) => (event: ArticleAddedToListEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event) => pipe(
-  ports.getAllEvents,
-  TE.rightTask,
-  TE.chain(getList(event.listId)),
+  event.listId,
+  ports.getList,
+  TE.fromOption(() => DE.notFound),
   TE.chain(addListOwnershipInformation(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,

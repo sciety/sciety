@@ -18,6 +18,7 @@ import {
 import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
 import * as LOID from '../../src/types/list-owner-id';
 import {
+  arbitraryDate,
   arbitraryHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -29,6 +30,15 @@ import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
+
+const arbitraryList = (name?: string) => ({
+  listId: arbitraryListId(),
+  name: name ?? arbitraryString(),
+  description: arbitraryString(),
+  articleIds: [],
+  lastUpdated: arbitraryDate(),
+  ownerId: arbitraryListOwnerId(),
+});
 
 describe('sciety-feed-page', () => {
   const getUserDetails = () => TE.right({
@@ -48,6 +58,7 @@ describe('sciety-feed-page', () => {
       authors: O.none,
     }),
     getGroup: () => E.right(arbitraryGroup()),
+    getList: () => O.some(arbitraryList()),
   };
 
   it('renders a single article added to a list as a card', async () => {

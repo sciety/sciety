@@ -1,18 +1,18 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../../src/domain-events';
-import { listCreated } from '../../../src/domain-events/list-created-event';
 import { articleAddedToListCard } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('article-added-to-list-card', () => {
@@ -21,24 +21,26 @@ describe('article-added-to-list-card', () => {
   });
 
   describe('when a user owns the list', () => {
-    const userId = arbitraryUserId();
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
-    const getAllEvents = T.of([
-      listCreated(
-        listId,
-        arbitraryString(),
-        arbitraryString(),
-        LOID.fromUserId(userId),
-      ),
-    ]);
+    const getAllEvents = T.of([]);
+    const arbitraryList = (name?: string) => ({
+      listId,
+      name: name ?? arbitraryString(),
+      description: arbitraryString(),
+      articleIds: [],
+      lastUpdated: arbitraryDate(),
+      ownerId: arbitraryListOwnerId(),
+    });
+    const getList = () => O.some(arbitraryList());
 
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();
       const handle = 'handle';
       const ports = {
         getAllEvents,
+        getList,
         getUserDetails: () => TE.right({
           handle,
           avatarUrl,
@@ -79,6 +81,7 @@ describe('article-added-to-list-card', () => {
       const failingGetUserDetails = () => TE.left(DE.unavailable);
       const ports = {
         getAllEvents,
+        getList,
         getUserDetails: failingGetUserDetails,
         getGroup: () => E.right(arbitraryGroup()),
       };
