@@ -4,10 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { checkIfArticleInList, Ports as ConstructUserListUrlPorts } from './check-if-article-in-list';
 import { feedSummary } from './feed-summary';
-import { FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
+import {
+  FindVersionsForArticleDoi,
+  getArticleFeedEventsByDateDescending,
+  Ports as GetArticleFeedEventsPorts,
+} from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { DomainEvent } from '../../domain-events';
-import { GetGroup } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -29,12 +32,13 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = ConstructUserListUrlPorts & {
+export type Ports = ConstructUserListUrlPorts
+& GetArticleFeedEventsPorts
+& {
   fetchArticle: GetArticleDetails,
   fetchReview: FetchReview,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getGroup: GetGroup,
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;

@@ -24,7 +24,7 @@ export type FindVersionsForArticleDoi = (
   version: number,
 }>>;
 
-type Ports = GetFeedEventsContentPorts & {
+export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
