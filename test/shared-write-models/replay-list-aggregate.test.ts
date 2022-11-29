@@ -80,7 +80,7 @@ describe('replay-aggregate', () => {
         replayListAggregate(listId),
       );
 
-      it.failing('the list name is in the aggregate', () => {
+      it('the list name is in the aggregate', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
     });

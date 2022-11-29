@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ListAggregate } from './list-aggregate';
 import {
   ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent, isArticleAddedToListEvent,
-  isArticleRemovedFromListEvent, isListCreatedEvent,
+  isArticleRemovedFromListEvent, isListCreatedEvent, isListNameEditedEvent, ListNameEditedEvent,
 } from '../domain-events';
 import { ListCreatedEvent } from '../domain-events/list-created-event';
 import { eqDoi } from '../types/doi';
@@ -15,12 +15,13 @@ type ReplayListAggregate = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, ListAggregate>;
 
-type RelevantEvent = ListCreatedEvent | ArticleAddedToListEvent | ArticleRemovedFromListEvent;
+type RelevantEvent = ListCreatedEvent | ArticleAddedToListEvent | ArticleRemovedFromListEvent | ListNameEditedEvent;
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
   isListCreatedEvent(event)
   || isArticleAddedToListEvent(event)
   || isArticleRemovedFromListEvent(event)
+  || isListNameEditedEvent(event)
 );
 
 const isAnEventOfThisAggregate = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
@@ -46,6 +47,11 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
             (ids) => ({ articleIds: ids, name }),
           )),
+        );
+      case 'ListNameEdited':
+        return pipe(
+          aggregate,
+          E.map(({ articleIds }) => ({ articleIds, name: event.name })),
         );
     }
   }),
