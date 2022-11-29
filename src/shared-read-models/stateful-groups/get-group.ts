@@ -1,10 +1,13 @@
 import * as E from 'fp-ts/Either';
-import { DomainEvent } from '../../domain-events';
+import { pipe } from 'fp-ts/function';
+import { ReadModel } from './handle-event';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
-type GetGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => E.Either<DE.DataError, Group>;
+type GetGroup = (readModel: ReadModel) => (groupId: GroupId) => E.Either<DE.DataError, Group>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getGroup: GetGroup = (groupId: GroupId) => () => E.left(DE.notFound);
+export const getGroup: GetGroup = (readModel) => (groupId) => pipe(
+  readModel[groupId],
+  E.fromNullable(DE.notFound),
+);

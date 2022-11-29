@@ -1,11 +1,25 @@
-import { DomainEvent } from '../../domain-events';
+/* eslint-disable no-param-reassign */
+import { DomainEvent, GroupJoinedEvent, isGroupJoinedEvent } from '../../domain-events';
+import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type GroupState = {};
-type ReadModel = Record<GroupId, GroupState>;
+export type ReadModel = Record<GroupId, Group>;
 
 export const initialState = (): ReadModel => ({});
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;
+const toGroup = (event: GroupJoinedEvent) => ({
+  id: event.groupId,
+  name: event.name,
+  avatarPath: event.avatarPath,
+  descriptionPath: event.descriptionPath,
+  shortDescription: event.shortDescription,
+  homepage: event.homepage,
+  slug: event.slug,
+});
+
+export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+  if (isGroupJoinedEvent(event)) {
+    readmodel[event.groupId] = toGroup(event);
+  }
+  return readmodel;
+};
