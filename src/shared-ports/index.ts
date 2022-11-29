@@ -5,6 +5,7 @@ import { FetchArticle } from './fetch-article';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
+import { GetGroup } from './get-group';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
@@ -20,6 +21,7 @@ export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
+export { GetGroup } from './get-group';
 export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
@@ -31,19 +33,20 @@ export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 
 export type SharedPorts = {
-  selectArticlesBelongingToList: SelectArticlesBelongingToList,
-  getArticleIdsByState: GetArticleIdsByState,
-  getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
-  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,
   fetchArticle: FetchArticle,
   getAllEvents: GetAllEvents,
+  getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
-  recordSubjectArea: RecordSubjectArea,
+  getGroup: GetGroup,
+  getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
+  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
+  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
   logger: Logger,
+  recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  selectArticlesBelongingToList: SelectArticlesBelongingToList,
 };

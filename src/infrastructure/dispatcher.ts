@@ -7,7 +7,9 @@ import * as groups from '../shared-read-models/stateful-groups';
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
-  queries: addArticleToElifeSubjectAreaList.Queries & listsContent.Queries,
+  queries: addArticleToElifeSubjectAreaList.Queries
+  & listsContent.Queries
+  & groups.Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
@@ -34,6 +36,7 @@ export const dispatcher = (): Dispatcher => {
   const queries = {
     ...listsContent.queries(listsContentReadModel),
     ...addArticleToElifeSubjectAreaList.queries(addArticleToElifeSubjectAreaListReadModel),
+    ...groups.queries(groupsReadModel),
   };
 
   return {

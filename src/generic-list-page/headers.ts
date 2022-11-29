@@ -4,22 +4,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './header/render-component';
-import { DomainEvent } from '../domain-events';
-import { GetAllEvents, SelectArticlesBelongingToList } from '../shared-ports';
-import { getGroup } from '../shared-read-models/groups';
+import { GetAllEvents, GetGroup, SelectArticlesBelongingToList } from '../shared-ports';
 import { List } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 
-type Ports = GetUserOwnerInformationPorts
+export type Ports = GetUserOwnerInformationPorts
 & {
   getAllEvents: GetAllEvents,
+  getGroup: GetGroup,
   selectArticlesBelongingToList: SelectArticlesBelongingToList,
 };
 
-const getGroupOwnerInformation = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => pipe(
-  events,
-  getGroup(groupId),
+const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
+  ports.getGroup(groupId),
   E.map((group) => ({
     ownerName: group.name,
     ownerHref: `/groups/${group.slug}`,
@@ -44,10 +42,7 @@ export const headers: Headers = (ports) => (list) => pipe(
     (ownerId) => {
       switch (ownerId.tag) {
         case 'group-id':
-          return pipe(
-            ports.getAllEvents,
-            T.chain((events) => getGroupOwnerInformation(events)(ownerId.value)),
-          );
+          return getGroupOwnerInformation(ports)(ownerId.value);
         case 'user-id':
           return getUserOwnerInformation(ports)(ownerId.value);
       }
