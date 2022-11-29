@@ -52,15 +52,12 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
-  RA.map(({ articleId, groupId, date }) => ({
-    articleId,
-    groupId,
-    updated: date,
-  })),
-  E.traverseArray((incompleteEntry) => pipe(
-    adapters.getGroup(incompleteEntry.groupId),
+  E.traverseArray(({ articleId, groupId, date }) => pipe(
+    adapters.getGroup(groupId),
     E.map((group) => ({
-      ...incompleteEntry,
+      articleId,
+      groupId,
+      updated: date,
       publisherAccountId: publisherAccountId(group),
     })),
   )),
