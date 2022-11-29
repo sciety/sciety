@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { articleAddedToList, listCreated, listNameEdited } from '../../../src/domain-events';
 import { getList, handleEvent, initialState } from '../../../src/shared-read-models/lists-content';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -42,6 +42,30 @@ describe('get-list', () => {
       it('returns articleIds as empty', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           articleIds: [],
+        })));
+      });
+    });
+
+    describe('and has had its name edited', () => {
+      const name = arbitraryString();
+      const dateOfLatestEvent = new Date();
+      const readModel = pipe(
+        [
+          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+          listNameEdited(listId, name, dateOfLatestEvent),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+
+      it('returns the latest name', () => {
+        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+          name,
+        })));
+      });
+
+      it('returns the date of the latest event as the lastUpdated', () => {
+        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+          lastUpdated: dateOfLatestEvent,
         })));
       });
     });
