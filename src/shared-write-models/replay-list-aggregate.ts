@@ -41,10 +41,10 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
       case 'ArticleRemovedFromList':
         return pipe(
           aggregate,
-          E.map(({ articleIds }) => pipe(
+          E.map(({ articleIds, name }) => pipe(
             articleIds,
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
-            (ids) => ({ articleIds: ids, name: '' }),
+            (ids) => ({ articleIds: ids, name }),
           )),
         );
     }
