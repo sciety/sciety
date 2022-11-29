@@ -4,13 +4,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
+import { GetGroup } from '../../shared-ports';
 import { GetUserDetails } from '../../shared-ports/get-user-details';
-import { getGroup } from '../../shared-read-models/groups';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroup: GetGroup,
   getUserDetails: GetUserDetails,
 };
 
@@ -21,8 +22,8 @@ type UserFollowedAGroupCard = (
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {
     group: pipe(
-      ports.getAllEvents,
-      T.map(getGroup(event.editorialCommunityId)),
+      ports.getGroup(event.editorialCommunityId),
+      T.of,
     ),
     userDetails: pipe(
       event.userId,
