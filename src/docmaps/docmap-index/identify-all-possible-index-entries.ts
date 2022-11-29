@@ -34,7 +34,6 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 });
 
 export type Ports = {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,
 };
 
