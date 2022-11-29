@@ -1,6 +1,10 @@
-import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { GetList } from '../../shared-ports';
+import { ListId } from '../../types/list-id';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getList = (readModel: ReadModel): GetList => () => O.none;
+export const getList = (readModel: ReadModel): GetList => (listId: ListId) => pipe(
+  readModel,
+  R.lookup(listId),
+);

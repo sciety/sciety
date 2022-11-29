@@ -39,7 +39,7 @@ describe('get-list', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('returns articleIds as empty', () => {
+      it('returns articleIds as empty', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           articleIds: [],
         })));
