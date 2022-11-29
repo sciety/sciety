@@ -32,7 +32,7 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
   RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (aggregate, event) => {
     switch (event.type) {
       case 'ListCreated':
-        return E.right({ articleIds: [], name: '' });
+        return E.right({ articleIds: [], name: event.name });
       case 'ArticleAddedToList':
         return pipe(
           aggregate,

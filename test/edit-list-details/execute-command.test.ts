@@ -32,7 +32,7 @@ describe('execute-command', () => {
   });
 
   describe('when the new name is the same as the current name', () => {
-    it.failing('raises no events', () => {
+    it('raises no events', () => {
       const listName = arbitraryString();
       const listId = arbitraryListId();
       const command = {
