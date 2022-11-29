@@ -47,6 +47,7 @@ describe('sciety-feed-page', () => {
       title: arbitraryHtmlFragment(),
       authors: O.none,
     }),
+    getGroup: () => E.right(arbitraryGroup()),
   };
 
   it('renders a single article added to a list as a card', async () => {

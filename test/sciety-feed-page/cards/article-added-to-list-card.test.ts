@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -10,6 +11,7 @@ import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -43,6 +45,7 @@ describe('article-added-to-list-card', () => {
           userId: arbitraryUserId(),
           displayName: arbitraryString(),
         }),
+        getGroup: () => E.right(arbitraryGroup()),
       };
 
       let viewModel: ScietyFeedCard;
@@ -77,6 +80,7 @@ describe('article-added-to-list-card', () => {
       const ports = {
         getAllEvents,
         getUserDetails: failingGetUserDetails,
+        getGroup: () => E.right(arbitraryGroup()),
       };
 
       let viewModel: ScietyFeedCard;

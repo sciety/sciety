@@ -1,15 +1,16 @@
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
-import { GetAllEvents } from '../../shared-ports';
+import { GetAllEvents, GetGroup } from '../../shared-ports';
 import { GetUserDetails } from '../../shared-ports/get-user-details';
-import { getGroup } from '../../shared-read-models/groups';
 import { List } from '../../shared-read-models/lists';
 import * as DE from '../../types/data-error';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
+  getGroup: GetGroup,
 };
 
 type ListWithAddedOwnershipInformation = {
@@ -28,9 +29,8 @@ export const addListOwnershipInformation = (
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
-        ports.getAllEvents,
-        TE.rightTask,
-        TE.chainEitherK(getGroup(list.ownerId.value)),
+        ports.getGroup(list.ownerId.value),
+        T.of,
         TE.map((group) => ({
           ...list,
           ownerName: group.name,
