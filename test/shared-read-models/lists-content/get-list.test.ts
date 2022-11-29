@@ -32,9 +32,10 @@ describe('get-list', () => {
     });
 
     describe('and is empty', () => {
+      const name = arbitraryString();
       const readModel = pipe(
         [
-          listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+          listCreated(listId, name, arbitraryString(), arbitraryListOwnerId()),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -42,6 +43,12 @@ describe('get-list', () => {
       it('returns articleIds as empty', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           articleIds: [],
+        })));
+      });
+
+      it('returns the lists name', () => {
+        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+          name,
         })));
       });
     });
