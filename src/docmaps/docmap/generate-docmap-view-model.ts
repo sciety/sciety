@@ -10,8 +10,8 @@ import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import { DomainEvent } from '../../domain-events';
+import { GetGroup } from '../../shared-ports';
 import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
-import { getGroup } from '../../shared-read-models/groups';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -47,6 +47,7 @@ type ReviewForArticle = {
 export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroup: GetGroup,
 };
 
 const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(
@@ -84,8 +85,8 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({
     ),
     inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(adapters, articleId),
     group: pipe(
-      adapters.getAllEvents,
-      T.map(getGroup(groupId)),
+      adapters.getGroup(groupId),
+      T.of,
     ),
   },
   sequenceS(TE.ApplyPar),

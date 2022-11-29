@@ -106,10 +106,7 @@ describe('docmap-index', () => {
         findReviewsForArticleDoi: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.left(DE.unavailable),
-        getGroup: () => E.right({
-          ...arbitraryGroup(),
-          id: ncrcGroupId,
-        }),
+        getGroup: () => E.left(DE.notFound),
       };
       response = await docmapIndex(ports)({})();
     });

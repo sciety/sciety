@@ -35,6 +35,7 @@ const defaultPorts: Ports = {
   ]),
   getAllEvents: T.of([]),
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
+  getGroup: () => E.right(arbitraryGroup()),
 };
 
 describe('generate-docmap-view-model', () => {
@@ -64,6 +65,7 @@ describe('generate-docmap-view-model', () => {
         groupJoined({ ...group }),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
+      getGroup: () => E.right(group),
     };
     const result = await pipe(
       { articleId, groupId: group.id },

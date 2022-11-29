@@ -43,6 +43,7 @@ describe('generate-docmaps', () => {
     ]),
     fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
     getAllEvents: T.of([]),
+    getGroup: () => E.right(arbitraryGroup()),
   };
 
   const generateDocmapsTestHelper = async (overridePorts: Record<string, unknown>) => pipe(
