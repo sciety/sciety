@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,7 +8,7 @@ import { pipe } from 'fp-ts/function';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { DomainEvent } from '../../domain-events';
-import { getGroup } from '../../shared-read-models/groups';
+import { GetGroup } from '../../shared-ports';
 import { ArticleServer } from '../../types/article-server';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -48,6 +49,7 @@ const articleVersionToFeedItem = (
 export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroup: GetGroup,
 };
 
 const reviewToFeedItem = (
@@ -57,9 +59,8 @@ const reviewToFeedItem = (
 ) => pipe(
   {
     groupDetails: pipe(
-      adapters.getAllEvents,
-      T.map(getGroup(feedEvent.groupId)),
-      TE.match(
+      adapters.getGroup(feedEvent.groupId),
+      E.match(
         () => ({
           groupName: 'A group',
           groupHref: `/groups/${feedEvent.groupId}`,
@@ -71,6 +72,7 @@ const reviewToFeedItem = (
           groupAvatar: group.avatarPath,
         }),
       ),
+      T.of,
     ),
     review: pipe(
       feedEvent.reviewId,
