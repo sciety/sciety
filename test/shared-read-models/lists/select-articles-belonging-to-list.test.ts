@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, articleRemovedFromList, listCreated } from '../../../src/domain-events';
-import { handleEvent, initialState, selectArticlesBelongingToList } from '../../../src/shared-read-models/lists-content';
+import { handleEvent, initialState, selectArticlesBelongingToList } from '../../../src/shared-read-models/lists';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';

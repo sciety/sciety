@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, listCreated, listNameEdited } from '../../../src/domain-events';
-import { getList, handleEvent, initialState } from '../../../src/shared-read-models/lists-content';
+import { getList, handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';

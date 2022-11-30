@@ -1,21 +1,21 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
-import * as listsContent from '../shared-read-models/lists-content';
+import * as lists from '../shared-read-models/lists';
 import * as groups from '../shared-read-models/stateful-groups';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
-  & listsContent.Queries
+  & lists.Queries
   & groups.Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
 export const dispatcher = (): Dispatcher => {
   let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
-  let listsContentReadModel = listsContent.initialState();
+  let listsReadModel = lists.initialState();
   let groupsReadModel = groups.initialState();
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
@@ -23,9 +23,9 @@ export const dispatcher = (): Dispatcher => {
       addArticleToElifeSubjectAreaListReadModel,
       addArticleToElifeSubjectAreaList.handleEvent,
     )(events);
-    listsContentReadModel = RA.reduce(
-      listsContentReadModel,
-      listsContent.handleEvent,
+    listsReadModel = RA.reduce(
+      listsReadModel,
+      lists.handleEvent,
     )(events);
     groupsReadModel = RA.reduce(
       groupsReadModel,
@@ -34,7 +34,7 @@ export const dispatcher = (): Dispatcher => {
   };
 
   const queries = {
-    ...listsContent.queries(listsContentReadModel),
+    ...lists.queries(listsReadModel),
     ...addArticleToElifeSubjectAreaList.queries(addArticleToElifeSubjectAreaListReadModel),
     ...groups.queries(groupsReadModel),
   };
