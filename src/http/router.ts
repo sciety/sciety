@@ -73,6 +73,7 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { CommandHandler, GenericCommand } from '../types/command-handler';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -84,6 +85,16 @@ const toNotFound = () => ({
   type: DE.notFound,
   message: toHtmlFragment('Page not found'),
 });
+
+const createApiRouteForCommand = <C extends GenericCommand>(
+  adapters: CollectedPorts,
+  codec: t.Decoder<unknown, C>,
+  commandHandler: CommandHandler<C>,
+) => handleScietyApiCommand(adapters, flow(
+    validateInputShape(codec),
+    TE.fromEither,
+    TE.chain(commandHandler),
+  ));
 
 type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
 
@@ -453,23 +464,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
 
-  router.post('/api/add-article-to-list', handleScietyApiCommand(adapters, flow(
-    validateInputShape(addArticleToListCommandCodec),
-    TE.fromEither,
-    TE.chain(addArticleToListCommandHandler(adapters)),
-  )));
+  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
 
-  router.post('/api/remove-article-from-list', handleScietyApiCommand(adapters, flow(
-    validateInputShape(removeArticleFromListCommandCodec),
-    TE.fromEither,
-    TE.chain(removeArticleFromListCommandHandler(adapters)),
-  )));
+  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
 
-  router.post('/api/edit-list-details', handleScietyApiCommand(adapters, flow(
-    validateInputShape(editListDetailsCommandCodec),
-    TE.fromEither,
-    TE.chain(editListDetailsCommandHandler(adapters)),
-  )));
+  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, editListDetailsCommandHandler(adapters)));
 
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
 
