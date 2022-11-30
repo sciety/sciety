@@ -1,19 +1,19 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { removeArticleFromListCommandCodec } from '../../commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../remove-article-from-list';
-import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
-import { getList } from '../../shared-read-models/lists';
+import {
+  CommitEvents, GetAllEvents, GetList, Logger,
+} from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as LOID from '../../types/list-owner-id';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 
-type Ports = { logger: Logger, getAllEvents: GetAllEvents, commitEvents: CommitEvents };
+type Ports = { logger: Logger, getAllEvents: GetAllEvents, commitEvents: CommitEvents, getList: GetList };
 
 type FormBody = {
   articleid: unknown,
@@ -39,8 +39,9 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
   ),
   TE.fromEither,
   TE.chainW((command) => pipe(
-    adapters.getAllEvents,
-    T.chain(getList(command.listId)),
+    command.listId,
+    adapters.getList,
+    TE.fromOption(() => DE.notFound),
     TE.chainEitherK((list) => {
       if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
         adapters.logger('error', 'List owner id does not match user id', { list, userId });

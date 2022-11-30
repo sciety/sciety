@@ -10,6 +10,7 @@ import { ListId } from '../../types/list-id';
 
 type GetList = (listId: ListId) => (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<DE.DataError, List>;
 
+// ts-unused-exports:disable-next-line
 export const getList: GetList = (listId) => (events) => pipe(
   events,
   constructReadModel,
