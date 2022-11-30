@@ -24,6 +24,7 @@ export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { GetGroup } from './get-group';
 export { GetList } from './get-list';
+// ts-unused-exports:disable-next-line
 export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
