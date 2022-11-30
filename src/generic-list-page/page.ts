@@ -1,7 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -11,7 +10,7 @@ import { shouldHaveArticleControls } from './articles-list/should-have-article-c
 import { renderComponent } from './header/render-component';
 import { headers, Ports as HeadersPorts } from './headers';
 import { ContentViewModel, renderErrorPage, renderPage } from './render-page';
-import { GetList, SelectArticlesBelongingToList } from '../shared-ports';
+import { GetList } from '../shared-ports';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
@@ -31,7 +30,6 @@ export const paramsCodec = t.type({
 type Ports = ArticlesListPorts
 & HeadersPorts
 & {
-  selectArticlesBelongingToList: SelectArticlesBelongingToList,
   getList: GetList,
 };
 
@@ -49,14 +47,19 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   TE.chain((list) => pipe(
     list,
     headers(ports),
-    TE.map((headerViewModel) => ({ headerViewModel, listOwnerId: list.ownerId, listId: list.listId })),
+    TE.map((headerViewModel) => ({
+      headerViewModel, listOwnerId: list.ownerId, listId: list.listId, list,
+    })),
   )),
-  TE.chain(({ headerViewModel, listOwnerId, listId }) => pipe(
+  TE.chain(({
+    headerViewModel, listOwnerId, listId, list,
+  }) => pipe(
     ({
       header: TE.right(renderComponent(headerViewModel)),
       contentViewModel: pipe(
-        ports.selectArticlesBelongingToList(listId),
-        T.of,
+        list.articleIds,
+        RA.map((articleId) => new Doi(articleId)),
+        TE.right,
         TE.chainW(RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
           () => TE.right('no-articles' as const),
           articlesList(
