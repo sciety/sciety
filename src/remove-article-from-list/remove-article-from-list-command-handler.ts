@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { RemoveArticleFromListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
-import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
+import { replayListResource } from '../shared-write-models/replay-list-resource';
 import { CommandHandler } from '../types/command-handler';
 
 type Ports = {
@@ -25,7 +25,7 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
   TE.chainW((command) => pipe(
     ports.getAllEvents,
     TE.rightTask,
-    TE.chainEitherK(replayListAggregate(command.listId)),
+    TE.chainEitherK(replayListResource(command.listId)),
     TE.map(executeCommand(command)),
   )),
   TE.chainTaskK(ports.commitEvents),

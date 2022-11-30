@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { EditListDetailsCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../shared-ports';
-import { replayListAggregate } from '../shared-write-models/replay-list-aggregate';
+import { replayListResource } from '../shared-write-models/replay-list-resource';
 import { CommandHandler } from '../types/command-handler';
 
 type Ports = {
@@ -22,7 +22,7 @@ export const editListDetailsCommandHandler: EditListDetailsCommandHandler = (
   command,
 ) => pipe(
   adapters.getAllEvents,
-  T.map(replayListAggregate(command.listId)),
+  T.map(replayListResource(command.listId)),
   TE.map(executeCommand(command)),
   TE.chainTaskK(adapters.commitEvents),
 );

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, DomainEvent,
 } from '../domain-events';
-import { ListAggregate } from '../shared-write-models/list-aggregate';
+import { ListResource } from '../shared-write-models/list-resource';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
@@ -13,7 +13,7 @@ type Command = {
   listId: ListId,
 };
 
-const createAppropriateEvents = (command: Command) => (listAggregate: ListAggregate) => pipe(
+const createAppropriateEvents = (command: Command) => (listAggregate: ListResource) => pipe(
   listAggregate.articleIds,
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
@@ -23,7 +23,7 @@ const createAppropriateEvents = (command: Command) => (listAggregate: ListAggreg
 );
 
 type ExecuteCommand = (command: Command)
-=> (listAggregate: ListAggregate)
+=> (listAggregate: ListResource)
 => ReadonlyArray<DomainEvent>;
 
 export const executeCommand: ExecuteCommand = (command) => (listAggregate) => pipe(

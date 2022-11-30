@@ -1,6 +1,6 @@
 import { Doi } from '../types/doi';
 
-export type ListAggregate = {
+export type ListResource = {
   articleIds: ReadonlyArray<Doi>,
   name: string,
 };

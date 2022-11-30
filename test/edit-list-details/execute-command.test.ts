@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { listCreated } from '../../src/domain-events/list-created-event';
 import { executeCommand } from '../../src/edit-list-details/execute-command';
-import { replayListAggregate } from '../../src/shared-write-models/replay-list-aggregate';
+import { replayListResource } from '../../src/shared-write-models/replay-list-resource';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -21,7 +21,7 @@ describe('execute-command', () => {
       [
         listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
       ],
-      replayListAggregate(listId),
+      replayListResource(listId),
       E.map(executeCommand(command)),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -43,7 +43,7 @@ describe('execute-command', () => {
         [
           listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
         ],
-        replayListAggregate(listId),
+        replayListResource(listId),
         E.map(executeCommand(command)),
         E.getOrElseW(shouldNotBeCalled),
       );

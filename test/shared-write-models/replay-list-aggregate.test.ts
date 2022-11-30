@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList, articleRemovedFromList, listCreated } from '../../src/domain-events';
 import { listNameEdited } from '../../src/domain-events/list-name-edited-event';
-import { replayListAggregate } from '../../src/shared-write-models/replay-list-aggregate';
+import { replayListResource } from '../../src/shared-write-models/replay-list-resource';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -20,7 +20,7 @@ describe('replay-aggregate', () => {
           listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
           articleAddedToList(articleId, listId),
         ],
-        replayListAggregate(listId),
+        replayListResource(listId),
       );
 
       it('the article id is in the aggregate', () => {
@@ -38,7 +38,7 @@ describe('replay-aggregate', () => {
         [
           listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
         ],
-        replayListAggregate(listId),
+        replayListResource(listId),
       );
 
       it('the article id is not in the aggregate', () => {
@@ -58,7 +58,7 @@ describe('replay-aggregate', () => {
           articleAddedToList(articleId, listId),
           articleRemovedFromList(articleId, listId),
         ],
-        replayListAggregate(listId),
+        replayListResource(listId),
       );
 
       it('the article id is not in the aggregate', () => {
@@ -77,7 +77,7 @@ describe('replay-aggregate', () => {
           listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
           listNameEdited(listId, listName),
         ],
-        replayListAggregate(listId),
+        replayListResource(listId),
       );
 
       it('the list name is in the aggregate', () => {
@@ -90,7 +90,7 @@ describe('replay-aggregate', () => {
     const result = pipe(
       [
       ],
-      replayListAggregate(listId),
+      replayListResource(listId),
     );
 
     it('fails', () => {

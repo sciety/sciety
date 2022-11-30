@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { articleRemovedFromList, DomainEvent } from '../domain-events';
-import { ListAggregate } from '../shared-write-models/list-aggregate';
+import { ListResource } from '../shared-write-models/list-resource';
 import { Doi } from '../types/doi';
 import { ListId } from '../types/list-id';
 
@@ -14,10 +14,10 @@ type Command = {
 type ExecuteCommand = (
   command: { listId: ListId, articleId: Doi },
 ) => (
-  aggregate: ListAggregate,
+  aggregate: ListResource,
 ) => ReadonlyArray<DomainEvent>;
 
-const createAppropriateEvents = (command: Command) => (listAggregate: ListAggregate) => pipe(
+const createAppropriateEvents = (command: Command) => (listAggregate: ListResource) => pipe(
   listAggregate.articleIds,
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ListAggregate } from './list-aggregate';
+import { ListResource } from './list-resource';
 import {
   ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent, isArticleAddedToListEvent,
   isArticleRemovedFromListEvent, isListCreatedEvent, isListNameEditedEvent, ListNameEditedEvent,
@@ -11,9 +11,9 @@ import { eqDoi } from '../types/doi';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
 import { ListId } from '../types/list-id';
 
-type ReplayListAggregate = (listId: ListId)
+type ReplayListResource = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ListAggregate>;
+=> E.Either<ErrorMessage, ListResource>;
 
 type RelevantEvent = ListCreatedEvent | ArticleAddedToListEvent | ArticleRemovedFromListEvent | ListNameEditedEvent;
 
@@ -24,24 +24,24 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
   || isListNameEditedEvent(event)
 );
 
-const isAnEventOfThisAggregate = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
+const isAnEventOfThisResource = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-export const replayListAggregate: ReplayListAggregate = (listId) => (events) => pipe(
+export const replayListResource: ReplayListResource = (listId) => (events) => pipe(
   events,
   RA.filter(isARelevantEventForTheWriteModel),
-  RA.filter(isAnEventOfThisAggregate(listId)),
-  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (aggregate, event) => {
+  RA.filter(isAnEventOfThisResource(listId)),
+  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (resource, event) => {
     switch (event.type) {
       case 'ListCreated':
         return E.right({ articleIds: [], name: event.name });
       case 'ArticleAddedToList':
         return pipe(
-          aggregate,
+          resource,
           E.map(({ articleIds, name }) => ({ articleIds: [...articleIds, event.articleId], name })),
         );
       case 'ArticleRemovedFromList':
         return pipe(
-          aggregate,
+          resource,
           E.map(({ articleIds, name }) => pipe(
             articleIds,
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
@@ -50,7 +50,7 @@ export const replayListAggregate: ReplayListAggregate = (listId) => (events) => 
         );
       case 'ListNameEdited':
         return pipe(
-          aggregate,
+          resource,
           E.map(({ articleIds }) => ({ articleIds, name: event.name })),
         );
     }
