@@ -5,9 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './header/render-component';
 import { GetAllEvents, GetGroup, SelectArticlesBelongingToList } from '../shared-ports';
-import { List } from '../shared-ports/select-all-lists-owned-by';
 import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
+import { List } from '../types/list';
 
 export type Ports = GetUserOwnerInformationPorts
 & {

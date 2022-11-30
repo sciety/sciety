@@ -1,13 +1,4 @@
-import { ListId } from '../types/list-id';
+import { List } from '../types/list';
 import { ListOwnerId } from '../types/list-owner-id';
-
-export type List = {
-  listId: ListId,
-  ownerId: ListOwnerId,
-  articleIds: Array<string>,
-  lastUpdated: Date,
-  name: string,
-  description: string,
-};
 
 export type SelectAllListsOwnedBy = (listOwnerId: ListOwnerId) => ReadonlyArray<List>;

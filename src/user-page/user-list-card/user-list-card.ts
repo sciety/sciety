@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListCard } from '../../shared-components/list-card/render-list-card';
-import { List } from '../../shared-ports/select-all-lists-owned-by';
 import { HtmlFragment } from '../../types/html-fragment';
+import { List } from '../../types/list';
 
 export const userListCard = (list: List): HtmlFragment => pipe(
   {

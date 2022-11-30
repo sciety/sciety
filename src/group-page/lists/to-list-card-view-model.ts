@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
-import { List } from '../../shared-ports/select-all-lists-owned-by';
+import { List } from '../../types/list';
 
 type ToListCardViewModel = (list: List) => ListCardViewModel;
 
