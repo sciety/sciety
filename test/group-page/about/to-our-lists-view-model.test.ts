@@ -1,19 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../src/group-page/about/to-our-lists-view-model';
-import { arbitraryDate, arbitraryString } from '../../helpers';
+import { arbitraryString } from '../../helpers';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-
-const arbitraryList = (name?: string) => ({
-  listId: arbitraryListId(),
-  name: name ?? arbitraryString(),
-  description: arbitraryString(),
-  articleIds: [],
-  lastUpdated: arbitraryDate(),
-  ownerId: arbitraryListOwnerId(),
-});
+import { arbitraryList } from '../../types/list-helper';
 
 describe('to-our-lists-view-model', () => {
   const groupSlug = arbitraryGroup().slug;
