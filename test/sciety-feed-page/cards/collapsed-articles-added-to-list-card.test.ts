@@ -6,13 +6,11 @@ import { pipe } from 'fp-ts/function';
 import { collapsedArticlesAddedToListCard } from '../../../src/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
-import {
-  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryUri,
-} from '../../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryList } from '../../types/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('collapsed-articles-added-to-list-card', () => {
@@ -32,15 +30,10 @@ describe('collapsed-articles-added-to-list-card', () => {
     };
 
     const getAllEvents = T.of([]);
-    const arbitraryList = (name?: string) => ({
+    const getList = () => O.some({
+      ...arbitraryList(),
       listId,
-      name: name ?? arbitraryString(),
-      description: arbitraryString(),
-      articleIds: [],
-      lastUpdated: arbitraryDate(),
-      ownerId: arbitraryListOwnerId(),
     });
-    const getList = () => O.some(arbitraryList());
 
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();

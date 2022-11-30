@@ -7,12 +7,12 @@ import { articleAddedToList } from '../../../src/domain-events';
 import { articleAddedToListCard } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import * as DE from '../../../src/types/data-error';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryList } from '../../types/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('article-added-to-list-card', () => {
@@ -25,15 +25,10 @@ describe('article-added-to-list-card', () => {
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const getAllEvents = T.of([]);
-    const arbitraryList = (name?: string) => ({
+    const getList = () => O.some({
+      ...arbitraryList(),
       listId,
-      name: name ?? arbitraryString(),
-      description: arbitraryString(),
-      articleIds: [],
-      lastUpdated: arbitraryDate(),
-      ownerId: arbitraryListOwnerId(),
     });
-    const getList = () => O.some(arbitraryList());
 
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();

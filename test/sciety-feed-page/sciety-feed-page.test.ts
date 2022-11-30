@@ -18,7 +18,6 @@ import {
 import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
 import * as LOID from '../../src/types/list-owner-id';
 import {
-  arbitraryDate,
   arbitraryHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -26,19 +25,11 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
+import { arbitraryList } from '../types/list-helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
-
-const arbitraryList = (name?: string) => ({
-  listId: arbitraryListId(),
-  name: name ?? arbitraryString(),
-  description: arbitraryString(),
-  articleIds: [],
-  lastUpdated: arbitraryDate(),
-  ownerId: arbitraryListOwnerId(),
-});
 
 describe('sciety-feed-page', () => {
   const getUserDetails = () => TE.right({
