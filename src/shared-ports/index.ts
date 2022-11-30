@@ -14,7 +14,6 @@ import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
-import { SelectArticlesBelongingToList } from './select-articles-belonging-to-list';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -29,7 +28,6 @@ export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { GetArticleIdsByState, ArticleIdsByState } from './get-article-ids-by-state';
-export { SelectArticlesBelongingToList } from './select-articles-belonging-to-list';
 export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
@@ -52,5 +50,4 @@ export type SharedPorts = {
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
-  selectArticlesBelongingToList: SelectArticlesBelongingToList,
 };
