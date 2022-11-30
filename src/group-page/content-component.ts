@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
@@ -7,7 +8,6 @@ import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { Tab, tabs } from '../shared-components/tabs';
-import { selectAllListsOwnedBy } from '../shared-read-models/lists';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -59,9 +59,11 @@ export const contentComponent: ContentComponent = (
   {
     content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
     listCount: pipe(
-      ports.getAllEvents,
+      group.id,
+      LOID.fromGroupId,
+      ports.selectAllListsOwnedBy,
+      T.of,
       TE.rightTask,
-      TE.chain(selectAllListsOwnedBy(LOID.fromGroupId(group.id))),
       TE.map(RA.size),
     ),
     followerCount: pipe(

@@ -21,6 +21,7 @@ const orderByLastUpdatedDescending: Ord.Ord<List> = pipe(
   Ord.contramap((list) => list.lastUpdated),
 );
 
+// ts-unused-exports:disable-next-line
 export const selectAllListsOwnedBy: SelectAllListsOwnedBy = (ownerId) => (events) => pipe(
   events,
   constructReadModel,
