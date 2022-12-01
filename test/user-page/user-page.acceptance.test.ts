@@ -14,6 +14,7 @@ import {
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -38,6 +39,7 @@ const listId = arbitraryListId();
 
 const defaultPorts = {
   getUserDetails: () => TE.right(arbitraryUserDetails),
+  getGroup: () => E.right(arbitraryGroup()),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
   getListsOwnedBy: () => TE.right([]),
@@ -227,6 +229,7 @@ describe('user-page', () => {
           const userId = arbitraryUserId();
           const ports = {
             ...defaultPorts,
+            getGroup: () => E.left(arbitraryDataError()),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),

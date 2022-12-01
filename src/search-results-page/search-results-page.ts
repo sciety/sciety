@@ -12,6 +12,7 @@ import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../share
 type Ports = PerformAllSearchesPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: FetchExtraDetailsPorts['getAllEvents'],
+  getGroup: FetchExtraDetailsPorts['getGroup'],
   selectAllListsOwnedBy: FetchExtraDetailsPorts['selectAllListsOwnedBy'],
 };
 

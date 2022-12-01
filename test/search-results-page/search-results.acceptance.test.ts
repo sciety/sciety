@@ -19,6 +19,7 @@ const pageSize = arbitraryNumber(5, 10);
 
 const dummyAdapters = {
   fetchStaticFile: () => TE.right(''),
+  getGroup: () => E.right(arbitraryGroup()),
   searchEuropePmc: () => () => TE.right({
     items: [],
     total: 0,
