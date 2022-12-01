@@ -3,6 +3,7 @@ import { ListIdFromString } from '../types/codecs/ListIdFromString';
 
 export const editListDetailsCommandCodec = t.type({
   name: t.string,
+  description: t.string,
   listId: ListIdFromString,
 });
 

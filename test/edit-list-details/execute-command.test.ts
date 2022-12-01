@@ -14,6 +14,7 @@ describe('execute-command', () => {
     const listId = arbitraryListId();
     const command = {
       name: newName,
+      description: arbitraryString(),
       listId,
     };
 
@@ -37,6 +38,7 @@ describe('execute-command', () => {
       const listId = arbitraryListId();
       const command = {
         name: listName,
+        description: arbitraryString(),
         listId,
       };
       const eventsToBeRaised = pipe(
