@@ -11,7 +11,7 @@ describe('execute-command', () => {
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
       const result = pipe(
-        { articleIds: [articleId], name: arbitraryString() },
+        { articleIds: [articleId], name: arbitraryString(), description: arbitraryString() },
         executeCommand({
           listId,
           articleId,
@@ -25,7 +25,7 @@ describe('execute-command', () => {
 
     describe('and the article is not in the list', () => {
       const result = pipe(
-        { articleIds: [], name: arbitraryString() },
+        { articleIds: [], name: arbitraryString(), description: arbitraryString() },
         executeCommand({
           listId,
           articleId,

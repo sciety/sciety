@@ -33,25 +33,29 @@ export const replayListResource: ReplayListResource = (listId) => (events) => pi
   RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (resource, event) => {
     switch (event.type) {
       case 'ListCreated':
-        return E.right({ articleIds: [], name: event.name });
+        return E.right({ articleIds: [], name: event.name, description: event.description });
       case 'ArticleAddedToList':
         return pipe(
           resource,
-          E.map(({ articleIds, name }) => ({ articleIds: [...articleIds, event.articleId], name })),
+          E.map(({ articleIds, name, description }) => ({
+            articleIds: [...articleIds, event.articleId],
+            name,
+            description,
+          })),
         );
       case 'ArticleRemovedFromList':
         return pipe(
           resource,
-          E.map(({ articleIds, name }) => pipe(
+          E.map(({ articleIds, name, description }) => pipe(
             articleIds,
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
-            (ids) => ({ articleIds: ids, name }),
+            (ids) => ({ articleIds: ids, name, description }),
           )),
         );
       case 'ListNameEdited':
         return pipe(
           resource,
-          E.map(({ articleIds }) => ({ articleIds, name: event.name })),
+          E.map(({ articleIds, description }) => ({ articleIds, name: event.name, description })),
         );
     }
   }),

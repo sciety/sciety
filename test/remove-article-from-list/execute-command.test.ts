@@ -10,7 +10,7 @@ describe('execute-command', () => {
 
   describe('the article is in the list', () => {
     const result = pipe(
-      { articleIds: [articleId], name: arbitraryString() },
+      { articleIds: [articleId], name: arbitraryString(), description: arbitraryString() },
       executeCommand({
         listId,
         articleId,
@@ -28,7 +28,7 @@ describe('execute-command', () => {
 
   describe('the article is not in the list', () => {
     const result = pipe(
-      { articleIds: [], name: arbitraryString() },
+      { articleIds: [], name: arbitraryString(), description: arbitraryString() },
       executeCommand({
         listId,
         articleId,
