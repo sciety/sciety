@@ -1,24 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { RecordEvaluationCommand } from '../commands';
 import {
   DomainEvent, evaluationRecorded, isEvaluationRecordedEvent,
 } from '../domain-events';
-import { Doi } from '../types/doi';
-import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
-
-export type Command = {
-  groupId: GroupId,
-  evaluationLocator: ReviewId,
-  articleId: Doi,
-  authors: ReadonlyArray<string>,
-  publishedAt: Date,
-};
-
-type CreateAppropriateEvents = (command: Command)
-=> (events: ReadonlyArray<DomainEvent>)
-=> ReadonlyArray<DomainEvent>;
 
 const hasEvaluationAlreadyBeenRecorded = (evaluationLocator: ReviewId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -26,7 +13,7 @@ const hasEvaluationAlreadyBeenRecorded = (evaluationLocator: ReviewId) => (event
   RA.some((event) => event.evaluationLocator === evaluationLocator),
 );
 
-const createEvaluationRecordedEvent = (command: Command) => evaluationRecorded(
+const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => evaluationRecorded(
   command.groupId,
   command.articleId,
   command.evaluationLocator,
@@ -35,7 +22,11 @@ const createEvaluationRecordedEvent = (command: Command) => evaluationRecorded(
   new Date(),
 );
 
-export const executeCommand: CreateAppropriateEvents = (command) => (events) => pipe(
+type ExecuteCommand = (command: RecordEvaluationCommand)
+=> (events: ReadonlyArray<DomainEvent>)
+=> ReadonlyArray<DomainEvent>;
+
+export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
   hasEvaluationAlreadyBeenRecorded(command.evaluationLocator),
   B.fold(

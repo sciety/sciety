@@ -11,3 +11,5 @@ export const recordEvaluationCommandCodec = t.type({
   articleId: DoiFromString,
   authors: t.readonlyArray(t.string),
 });
+
+export type RecordEvaluationCommand = t.TypeOf<typeof recordEvaluationCommandCodec>;

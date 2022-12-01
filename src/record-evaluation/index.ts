@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Command, executeCommand } from './execute-command';
-import { recordEvaluationCommandCodec } from '../commands';
+import { executeCommand } from './execute-command';
+import { RecordEvaluationCommand, recordEvaluationCommandCodec } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { DomainEvent } from '../domain-events';
 import { CommitEvents, GetGroup } from '../shared-ports';
@@ -15,7 +15,7 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-const confirmGroupExists = (ports: Ports) => (command: Command) => pipe(
+const confirmGroupExists = (ports: Ports) => (command: RecordEvaluationCommand) => pipe(
   command.groupId,
   ports.getGroup,
   E.mapLeft(() => `Group "${command.groupId}" not found`),
