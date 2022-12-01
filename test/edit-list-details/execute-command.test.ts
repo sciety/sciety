@@ -52,7 +52,7 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('raises an event with the new description', () => {
+    it('raises an event with the new description', () => {
       expect(raisedEvents).toStrictEqual([expect.objectContaining({ description: newDescription })]);
     });
   });

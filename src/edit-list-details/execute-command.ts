@@ -1,7 +1,7 @@
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { EditListDetailsCommand } from '../commands';
-import { DomainEvent } from '../domain-events';
+import { DomainEvent, listDescriptionEdited } from '../domain-events';
 import { listNameEdited } from '../domain-events/list-name-edited-event';
 import { ListResource } from '../shared-write-models/list-resource';
 
@@ -10,10 +10,13 @@ type ExecuteCommand = (command: EditListDetailsCommand)
 => ReadonlyArray<DomainEvent>;
 
 export const executeCommand: ExecuteCommand = (command) => (listAggregate) => pipe(
-  listAggregate.name,
-  (listName) => listName === command.name,
+  listAggregate,
+  ({ name }) => name === command.name,
   B.fold(
     () => [listNameEdited(command.listId, command.name)],
     () => [],
   ),
+  (eventsRaisedSoFar) => ((listAggregate.description === command.description)
+    ? eventsRaisedSoFar
+    : [...eventsRaisedSoFar, listDescriptionEdited(command.listId, command.description)]),
 );
