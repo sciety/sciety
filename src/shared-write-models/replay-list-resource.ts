@@ -43,30 +43,29 @@ export const replayListResource: ReplayListResource = (listId) => (events) => pi
       case 'ArticleAddedToList':
         return pipe(
           resource,
-          E.map(({ articleIds, name, description }) => ({
-            articleIds: [...articleIds, event.articleId],
-            name,
-            description,
+          E.map((listResource) => ({
+            ...listResource,
+            articleIds: [...listResource.articleIds, event.articleId],
           })),
         );
       case 'ArticleRemovedFromList':
         return pipe(
           resource,
-          E.map(({ articleIds, name, description }) => pipe(
-            articleIds,
+          E.map((listResource) => pipe(
+            listResource.articleIds,
             RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
-            (ids) => ({ articleIds: ids, name, description }),
+            (ids) => ({ ...listResource, articleIds: ids }),
           )),
         );
       case 'ListNameEdited':
         return pipe(
           resource,
-          E.map(({ articleIds, description }) => ({ articleIds, name: event.name, description })),
+          E.map((listResource) => ({ ...listResource, name: event.name })),
         );
       case 'ListDescriptionEdited':
         return pipe(
           resource,
-          E.map(({ articleIds, name }) => ({ articleIds, name, description: event.description })),
+          E.map((listResource) => ({ ...listResource, description: event.description })),
         );
     }
   }),
