@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Command, createAppropriateEvents } from './create-appropriate-events';
+import { Command, executeCommand } from './execute-command';
 import { recordEvaluationCommandCodec } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
 import { DomainEvent } from '../domain-events';
@@ -30,7 +30,7 @@ export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (p
   TE.fromEither,
   TE.chainTaskK((command) => pipe(
     ports.getAllEvents,
-    T.map(createAppropriateEvents(command)),
+    T.map(executeCommand(command)),
   )),
   TE.chainTaskK(ports.commitEvents),
 );

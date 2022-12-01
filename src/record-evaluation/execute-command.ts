@@ -35,7 +35,7 @@ const createEvaluationRecordedEvent = (command: Command) => evaluationRecorded(
   new Date(),
 );
 
-export const createAppropriateEvents: CreateAppropriateEvents = (command) => (events) => pipe(
+export const executeCommand: CreateAppropriateEvents = (command) => (events) => pipe(
   events,
   hasEvaluationAlreadyBeenRecorded(command.evaluationLocator),
   B.fold(
