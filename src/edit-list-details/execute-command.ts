@@ -6,17 +6,17 @@ import { listNameEdited } from '../domain-events/list-name-edited-event';
 import { ListResource } from '../shared-write-models/list-resource';
 
 type ExecuteCommand = (command: EditListDetailsCommand)
-=> (listAggregate: ListResource)
+=> (listResource: ListResource)
 => ReadonlyArray<DomainEvent>;
 
-export const executeCommand: ExecuteCommand = (command) => (listAggregate) => pipe(
-  listAggregate,
+export const executeCommand: ExecuteCommand = (command) => (listResource) => pipe(
+  listResource,
   ({ name }) => name === command.name,
   B.fold(
     () => [listNameEdited(command.listId, command.name)],
     () => [],
   ),
-  (eventsRaisedSoFar) => ((listAggregate.description === command.description)
+  (eventsRaisedSoFar) => ((listResource.description === command.description)
     ? eventsRaisedSoFar
     : [...eventsRaisedSoFar, listDescriptionEdited(command.listId, command.description)]),
 );

@@ -9,7 +9,7 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
-describe('replay-aggregate', () => {
+describe('replay-list-resource', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
 
@@ -25,15 +25,15 @@ describe('replay-aggregate', () => {
         replayListResource(listId),
       );
 
-      it('the article id is in the aggregate', () => {
+      it('the article id is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [articleId] })));
       });
 
-      it('the list name is in the aggregate', () => {
+      it('the list name is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
-      it('the list description is in the aggregate', () => {
+      it('the list description is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
@@ -48,15 +48,15 @@ describe('replay-aggregate', () => {
         replayListResource(listId),
       );
 
-      it('the article id is not in the aggregate', () => {
+      it('the article id is not in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
       });
 
-      it('the list name is in the aggregate', () => {
+      it('the list name is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
-      it('the list description is in the aggregate', () => {
+      it('the list description is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
@@ -73,15 +73,15 @@ describe('replay-aggregate', () => {
         replayListResource(listId),
       );
 
-      it('the article id is not in the aggregate', () => {
+      it('the article id is not in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
       });
 
-      it('the list name is in the aggregate', () => {
+      it('the list name is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
-      it('the list description is in the aggregate', () => {
+      it('the list description is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
@@ -97,7 +97,7 @@ describe('replay-aggregate', () => {
         replayListResource(listId),
       );
 
-      it('the list name is in the aggregate', () => {
+      it('the list name is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
@@ -121,7 +121,7 @@ describe('replay-aggregate', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
-      it('the list description is in the aggregate', () => {
+      it('the list description is in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
