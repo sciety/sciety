@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,25 +8,22 @@ import { Middleware } from 'koa';
 import { sessionGroupProperty } from './finish-follow-command';
 import { followCommand, Ports as FollowCommandPorts } from './follow-command';
 import { groupProperty } from './follow-handler';
-import { DomainEvent } from '../domain-events';
 import { renderErrorPage } from '../http/render-error-page';
 import { constructRedirectUrl } from '../http/require-authentication';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
-import { Logger } from '../shared-ports';
-import { getGroup } from '../shared-read-models/groups';
+import { GetGroup, Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Ports = FollowCommandPorts & {
   logger: Logger,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getGroup: GetGroup,
 };
 
 const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
-  ports.getAllEvents,
-  T.map(getGroup(groupId)),
-  TE.map((group) => ({
+  ports.getGroup(groupId),
+  E.map((group) => ({
     groupId: group.id,
   })),
 );
@@ -35,7 +33,7 @@ export const executeIfAuthenticated = (ports: Ports): Middleware => async (conte
     context.request.body[groupProperty],
     GroupId.fromNullable,
     TE.fromOption(() => DE.notFound),
-    TE.chain(validate(ports)),
+    TE.chainEitherK(validate(ports)),
     TE.fold(
       () => {
         ports.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
