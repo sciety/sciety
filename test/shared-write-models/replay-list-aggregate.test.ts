@@ -121,7 +121,7 @@ describe('replay-aggregate', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
       });
 
-      it.failing('the list description is in the aggregate', () => {
+      it('the list description is in the aggregate', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
