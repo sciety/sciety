@@ -126,13 +126,13 @@ describe('get-list', () => {
         })));
       });
 
-      it.failing('returns the latest description', () => {
+      it('returns the latest description', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           description,
         })));
       });
 
-      it.failing('returns the date of the latest event as the lastUpdated', () => {
+      it('returns the date of the latest event as the lastUpdated', () => {
         expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           lastUpdated: dateOfLatestEvent,
         })));
