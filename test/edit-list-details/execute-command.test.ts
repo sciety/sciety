@@ -12,15 +12,16 @@ describe('execute-command', () => {
   describe('when the new name is different from the current name', () => {
     const newName = arbitraryString();
     const listId = arbitraryListId();
+    const listDescription = arbitraryString();
     const command = {
       name: newName,
-      description: arbitraryString(),
+      description: listDescription,
       listId,
     };
 
     const raisedEvents = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+        listCreated(listId, arbitraryString(), listDescription, arbitraryListOwnerId()),
       ],
       replayListResource(listId),
       E.map(executeCommand(command)),
@@ -32,18 +33,43 @@ describe('execute-command', () => {
     });
   });
 
-  describe('when the new name is the same as the current name', () => {
+  describe('when the new description is different from the current description', () => {
+    const listName = arbitraryString();
+    const listId = arbitraryListId();
+    const newDescription = arbitraryString();
+    const command = {
+      name: listName,
+      description: newDescription,
+      listId,
+    };
+
+    const raisedEvents = pipe(
+      [
+        listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+      ],
+      replayListResource(listId),
+      E.map(executeCommand(command)),
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it.failing('raises an event with the new description', () => {
+      expect(raisedEvents).toStrictEqual([expect.objectContaining({ description: newDescription })]);
+    });
+  });
+
+  describe('when the new name and description are the same as the current details', () => {
     it('raises no events', () => {
       const listName = arbitraryString();
       const listId = arbitraryListId();
+      const listDescription = arbitraryString();
       const command = {
         name: listName,
-        description: arbitraryString(),
+        description: listDescription,
         listId,
       };
       const eventsToBeRaised = pipe(
         [
-          listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+          listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
         ],
         replayListResource(listId),
         E.map(executeCommand(command)),
