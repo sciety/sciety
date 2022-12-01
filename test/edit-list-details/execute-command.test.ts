@@ -29,7 +29,7 @@ describe('execute-command', () => {
     );
 
     it('raises an event with the new name', () => {
-      expect(raisedEvents).toStrictEqual([expect.objectContaining({ name: newName })]);
+      expect(raisedEvents).toStrictEqual([expect.objectContaining({ name: newName, type: 'ListNameEdited' })]);
     });
   });
 
@@ -53,7 +53,7 @@ describe('execute-command', () => {
     );
 
     it('raises an event with the new description', () => {
-      expect(raisedEvents).toStrictEqual([expect.objectContaining({ description: newDescription })]);
+      expect(raisedEvents).toStrictEqual([expect.objectContaining({ description: newDescription, type: 'ListDescriptionEdited' })]);
     });
   });
 
@@ -77,6 +77,33 @@ describe('execute-command', () => {
       );
 
       expect(eventsToBeRaised).toStrictEqual([]);
+    });
+  });
+
+  describe('when both name and description are different from the current details', () => {
+    const newName = arbitraryString();
+    const listId = arbitraryListId();
+    const newDescription = arbitraryString();
+    const command = {
+      name: newName,
+      description: newDescription,
+      listId,
+    };
+
+    const raisedEvents = pipe(
+      [
+        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+      ],
+      replayListResource(listId),
+      E.map(executeCommand(command)),
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it('raises two events with the new details', () => {
+      expect(raisedEvents).toStrictEqual([
+        expect.objectContaining({ name: newName, type: 'ListNameEdited' }),
+        expect.objectContaining({ description: newDescription, type: 'ListDescriptionEdited' }),
+      ]);
     });
   });
 });
