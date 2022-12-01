@@ -9,10 +9,12 @@ import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
 describe('execute-command', () => {
+  const listId = arbitraryListId();
+  const listName = arbitraryString();
+  const listDescription = arbitraryString();
+
   describe('when the new name is different from the current name', () => {
     const newName = arbitraryString();
-    const listId = arbitraryListId();
-    const listDescription = arbitraryString();
     const command = {
       name: newName,
       description: listDescription,
@@ -34,8 +36,6 @@ describe('execute-command', () => {
   });
 
   describe('when the new description is different from the current description', () => {
-    const listName = arbitraryString();
-    const listId = arbitraryListId();
     const newDescription = arbitraryString();
     const command = {
       name: listName,
@@ -59,9 +59,6 @@ describe('execute-command', () => {
 
   describe('when the new name and description are the same as the current details', () => {
     it('raises no events', () => {
-      const listName = arbitraryString();
-      const listId = arbitraryListId();
-      const listDescription = arbitraryString();
       const command = {
         name: listName,
         description: listDescription,
@@ -82,7 +79,6 @@ describe('execute-command', () => {
 
   describe('when both name and description are different from the current details', () => {
     const newName = arbitraryString();
-    const listId = arbitraryListId();
     const newDescription = arbitraryString();
     const command = {
       name: newName,

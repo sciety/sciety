@@ -14,9 +14,10 @@ describe('replay-list-resource', () => {
   const articleId = arbitraryArticleId();
 
   describe('when the list exists', () => {
+    const listName = arbitraryString();
+    const listDescription = arbitraryString();
+
     describe('and an article has been added to the list', () => {
-      const listName = arbitraryString();
-      const listDescription = arbitraryString();
       const result = pipe(
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
@@ -39,8 +40,6 @@ describe('replay-list-resource', () => {
     });
 
     describe('and no article has ever been added to the list', () => {
-      const listName = arbitraryString();
-      const listDescription = arbitraryString();
       const result = pipe(
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
@@ -62,8 +61,6 @@ describe('replay-list-resource', () => {
     });
 
     describe('and an article used to be on the list and has been removed', () => {
-      const listName = arbitraryString();
-      const listDescription = arbitraryString();
       const result = pipe(
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
@@ -87,8 +84,6 @@ describe('replay-list-resource', () => {
     });
 
     describe('and the list has been renamed', () => {
-      const listName = arbitraryString();
-      const listDescription = arbitraryString();
       const result = pipe(
         [
           listCreated(listId, arbitraryString(), listDescription, arbitraryListOwnerId()),
@@ -107,8 +102,6 @@ describe('replay-list-resource', () => {
     });
 
     describe('and the list description has been changed', () => {
-      const listName = arbitraryString();
-      const listDescription = arbitraryString();
       const result = pipe(
         [
           listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
