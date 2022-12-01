@@ -4,8 +4,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/state
 import { ReadModel } from '../../../src/shared-read-models/stateful-groups/handle-event';
 import { arbitraryGroup } from '../../types/group.helper';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getAllGroups = (readmodel: ReadModel) => [];
+const getAllGroups = (readmodel: ReadModel) => Object.values(readmodel);
 
 describe('get-all-groups', () => {
   const group1 = arbitraryGroup();
@@ -21,9 +20,13 @@ describe('get-all-groups', () => {
 
   const allGroups = getAllGroups(groupsReadModelInstance);
 
-  it.failing('returns all groups in arbitrary order', () => {
-    expect(allGroups).toContain(group1.name);
-    expect(allGroups).toContain(group2.name);
-    expect(allGroups).toContain(group3.name);
+  it('returns all groups in arbitrary order', () => {
+    expect(allGroups).toStrictEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: group1.name }),
+        expect.objectContaining({ name: group2.name }),
+        expect.objectContaining({ name: group3.name }),
+      ]),
+    );
   });
 });
