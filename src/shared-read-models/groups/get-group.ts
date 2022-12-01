@@ -10,6 +10,7 @@ import { GroupId } from '../../types/group-id';
 
 type GetGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => E.Either<DE.DataError, Group>;
 
+// ts-unused-exports:disable-next-line
 export const getGroup: GetGroup = (groupId: GroupId) => flow(
   constructReadModel,
   RM.lookup(S.Eq)(groupId),
