@@ -10,14 +10,15 @@ describe('get-all-groups', () => {
   const events = [
     groupJoined(group2),
     groupJoined(group3),
-    groupJoined(group1),
   ];
 
-  const groupsReadModelInstance = RA.reduce(initialState(), handleEvent)(events);
+  it.failing('returns all groups in arbitrary order', () => {
+    let groupsReadModelInstance = RA.reduce(initialState(), handleEvent)(events);
+    const query = getAllGroups(groupsReadModelInstance);
+    groupsReadModelInstance = RA.reduce(groupsReadModelInstance, handleEvent)([groupJoined(group1)]);
 
-  const allGroups = getAllGroups(groupsReadModelInstance);
+    const allGroups = query;
 
-  it('returns all groups in arbitrary order', () => {
     expect(allGroups).toStrictEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: group1.name }),
