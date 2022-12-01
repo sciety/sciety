@@ -233,7 +233,7 @@ TS_SOURCES := $(shell find src test feature-test -name '*.ts')
 SASS_SOURCES := $(shell find src test feature-test -name '*.scss')
 LINT_CACHE := .eslint-cache
 
-check: $(MK_LINTED_TS) $(MK_LINTED_SASS) $(MK_TESTED_TS)
+check: $(MK_TESTED_TS) $(MK_LINTED_TS) $(MK_LINTED_SASS)
 
 $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx eslint src test feature-test \
