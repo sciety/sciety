@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList, articleRemovedFromList, listCreated } from '../../src/domain-events';
-import { listNameEdited } from '../../src/domain-events/list-name-edited-event';
+import {
+  articleAddedToList, articleRemovedFromList, listCreated, listDescriptionEdited, listNameEdited,
+} from '../../src/domain-events';
 import { replayListResource } from '../../src/shared-write-models/replay-list-resource';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -106,9 +107,23 @@ describe('replay-aggregate', () => {
     });
 
     describe('and the list description has been changed', () => {
-      it.todo('the list name remains the same');
+      const listName = arbitraryString();
+      const listDescription = arbitraryString();
+      const result = pipe(
+        [
+          listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+          listDescriptionEdited(listId, listDescription),
+        ],
+        replayListResource(listId),
+      );
 
-      it.todo('the list description is in the aggregate');
+      it('the list name remains the same', () => {
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
+      });
+
+      it.failing('the list description is in the aggregate', () => {
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
+      });
     });
   });
 

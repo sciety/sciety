@@ -9,6 +9,7 @@ import { ArticleRemovedFromListEvent } from './article-removed-from-list-event';
 import { EvaluationRecordedEvent } from './evaluation-recorded-event';
 import { GroupJoinedEvent } from './group-joined-event';
 import { ListCreatedEvent } from './list-created-event';
+import { ListDescriptionEditedEvent } from './list-description-edited-event';
 import { ListNameEditedEvent } from './list-name-edited-event';
 import { SubjectAreaRecordedEvent } from './subject-area-recorded-event';
 import { UserCreatedAccountEvent } from './user-created-account-event';
@@ -29,6 +30,7 @@ export type DomainEvent =
   GroupJoinedEvent |
   EvaluationRecordedEvent |
   ListCreatedEvent |
+  ListDescriptionEditedEvent |
   ListNameEditedEvent |
   UserSavedArticleEvent |
   UserUnsavedArticleEvent |

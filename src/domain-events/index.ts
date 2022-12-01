@@ -116,4 +116,11 @@ export {
   listNameEditedEventCodec,
 } from './list-name-edited-event';
 
+export {
+  isListDescriptionEditedEvent,
+  listDescriptionEdited,
+  ListDescriptionEditedEvent,
+  listDescriptionEditedEventCodec,
+} from './list-description-edited-event';
+
 export { sort } from './domain-event';
