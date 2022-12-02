@@ -1,5 +1,8 @@
-import { closeBrowser, goto, openBrowser } from 'taiko';
+import {
+  closeBrowser, goto, into, openBrowser, textBox, write,
+} from 'taiko';
 import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
+import { arbitraryWord } from '../test/helpers';
 
 describe('edit-list-details', () => {
   beforeAll(async () => {
@@ -16,6 +19,9 @@ describe('edit-list-details', () => {
   });
 
   describe('providing a new value into the name field and clicking save', () => {
-    it.todo('the list is renamed with the new value');
+    // eslint-disable-next-line jest/expect-expect
+    it.failing('the list is renamed with the new value', async () => {
+      await write(arbitraryWord(), into(textBox('List name')));
+    });
   });
 });
