@@ -5,11 +5,13 @@ import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
 import { arbitraryWord } from '../test/helpers';
 
 describe('edit-list-details', () => {
+  let listId: string;
+
   beforeAll(async () => {
     const testUserId = '153571843';
     await openBrowser();
     await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
-    const listId = await getFirstListOwnedBy(testUserId);
+    listId = await getFirstListOwnedBy(testUserId);
     const editListDetailsPage = `localhost:8080/lists/${listId}/edit-details`;
     await goto(editListDetailsPage);
   });
@@ -19,12 +21,19 @@ describe('edit-list-details', () => {
   });
 
   describe('providing a new value into the name field and clicking save', () => {
-    // eslint-disable-next-line jest/expect-expect
-    it('the list is renamed with the new value', async () => {
-      await write(arbitraryWord(), into(textBox('List name')));
+    it.failing('the list is renamed with the new value', async () => {
+      const listName = arbitraryWord();
+      await write(listName, into(textBox('List name')));
       const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
       const saveButton = $(editListDetailsButtonSelector);
       await click(saveButton);
+
+      const listPage = `localhost:8080/lists/${listId}`;
+      await goto(listPage);
+
+      const pageTitle = await $('h1').text();
+
+      expect(pageTitle).toContain(listName);
     });
   });
 });
