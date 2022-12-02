@@ -1,5 +1,5 @@
 import {
-  closeBrowser, goto, into, openBrowser, textBox, write,
+  $, click, closeBrowser, goto, into, openBrowser, textBox, write,
 } from 'taiko';
 import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
 import { arbitraryWord } from '../test/helpers';
@@ -22,6 +22,9 @@ describe('edit-list-details', () => {
     // eslint-disable-next-line jest/expect-expect
     it('the list is renamed with the new value', async () => {
       await write(arbitraryWord(), into(textBox('List name')));
+      const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
+      const saveButton = $(editListDetailsButtonSelector);
+      await click(saveButton);
     });
   });
 });
