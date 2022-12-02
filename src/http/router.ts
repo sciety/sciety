@@ -388,6 +388,17 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     )),
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const editListDetailsFormPage = (params: unknown): TE.TaskEither<RenderPageError, Page> => TE.right({ title: 'Edit details form', content: toHtmlFragment('<h1>My form</h1>') });
+
+  router.get(
+    '/lists/:id/edit-details',
+    pageHandler(createPageFromParams(
+      genericListPageParams,
+      editListDetailsFormPage,
+    )),
+  );
+
   router.get(
     '/annotations/create-annotation-form-avasthi-reading',
     pageHandler(createPageFromParams(
