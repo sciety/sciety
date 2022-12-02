@@ -20,7 +20,7 @@ describe('edit-list-details', () => {
 
   describe('providing a new value into the name field and clicking save', () => {
     // eslint-disable-next-line jest/expect-expect
-    it.failing('the list is renamed with the new value', async () => {
+    it('the list is renamed with the new value', async () => {
       await write(arbitraryWord(), into(textBox('List name')));
     });
   });

@@ -11,8 +11,8 @@ export const editListDetailsFormPage = (
   content: toHtmlFragment(`
 <h1>My form</h1>
 <form action="/forms/edit-list-details" method="post">
-  <label for="">List name</label>
-  <input type="text">
+  <label for="listName">List name</label>
+  <input type="text" id="listName">
   <label for="">Description</label>
   <textarea name="" id="" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
   <p>Max 250 characters.</p>
