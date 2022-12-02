@@ -45,6 +45,7 @@ import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
 import { editListDetailsCommandHandler } from '../edit-list-details';
+import { editListDetailsFormPage } from '../edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
@@ -387,9 +388,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       genericListPage(adapters),
     )),
   );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const editListDetailsFormPage = (params: unknown): TE.TaskEither<RenderPageError, Page> => TE.right({ title: 'Edit details form', content: toHtmlFragment('<h1>My form</h1>') });
 
   router.get(
     '/lists/:id/edit-details',

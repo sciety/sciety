@@ -1,0 +1,1 @@
+export { editListDetailsFormPage } from './page';
