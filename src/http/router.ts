@@ -469,13 +469,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     redirectBack,
   );
 
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    router.post(
-      '/forms/edit-list-details',
-      bodyParser({ enableTypes: ['form'] }),
-      editListDetails(adapters),
-    );
-  }
+  router.post(
+    '/forms/edit-list-details',
+    bodyParser({ enableTypes: ['form'] }),
+    editListDetails(adapters),
+  );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
