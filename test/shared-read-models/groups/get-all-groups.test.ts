@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { groupJoined } from '../../../src/domain-events';
-import { getAllGroups, handleEvent, initialState } from '../../../src/shared-read-models/stateful-groups';
+import { getAllGroups, handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import { arbitraryGroup } from '../../types/group.helper';
 
 describe('get-all-groups', () => {

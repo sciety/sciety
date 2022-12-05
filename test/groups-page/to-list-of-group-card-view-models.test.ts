@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupJoined } from '../../src/domain-events';
 import { Ports, toListOfGroupCardViewModels } from '../../src/groups-page/to-list-of-group-card-view-models';
-import { getGroup, handleEvent, initialState } from '../../src/shared-read-models/stateful-groups';
+import { getGroup, handleEvent, initialState } from '../../src/shared-read-models/groups';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';

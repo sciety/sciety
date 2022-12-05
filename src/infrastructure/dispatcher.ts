@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
+import * as groups from '../shared-read-models/groups';
 import * as lists from '../shared-read-models/lists';
-import * as groups from '../shared-read-models/stateful-groups';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 

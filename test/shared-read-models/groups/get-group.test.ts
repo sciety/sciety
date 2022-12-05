@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
 import { groupJoined } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/stateful-groups';
-import { getGroupBySlug } from '../../../src/shared-read-models/stateful-groups/get-group-by-slug';
+import { getGroup, handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import * as DE from '../../../src/types/data-error';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 
 const group = arbitraryGroup();
 
-describe('getGroupBySlug', () => {
+describe('getGroup', () => {
   describe('when the group exists', () => {
-    const readmodel = pipe(
+    const readModel = pipe(
       [
         ...arbitraryUninterestingEvents,
         groupJoined(group),
@@ -22,12 +22,12 @@ describe('getGroupBySlug', () => {
     );
 
     it('returns the group', () => {
-      expect(getGroupBySlug(readmodel)(group.slug)).toStrictEqual(E.right(group));
+      expect(getGroup(readModel)(group.id)).toStrictEqual(E.right(group));
     });
   });
 
   describe('when the group does not exist', () => {
-    const readmodel = pipe(
+    const readModel = pipe(
       [
         ...arbitraryUninterestingEvents,
       ],
@@ -35,7 +35,7 @@ describe('getGroupBySlug', () => {
     );
 
     it('returns not-found', () => {
-      expect(getGroupBySlug(readmodel)(group.id)).toStrictEqual(E.left(DE.notFound));
+      expect(getGroup(readModel)(arbitraryGroupId())).toStrictEqual(E.left(DE.notFound));
     });
   });
 });
