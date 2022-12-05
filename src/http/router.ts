@@ -16,6 +16,7 @@ import { handleScietyApiCommand } from './api/handle-sciety-api-command';
 import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
+import { editListDetails } from './forms/edit-list-details';
 import { removeArticleFromList } from './forms/remove-article-from-list';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
@@ -467,6 +468,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     requireAuthentication,
     removeArticleFromList(adapters),
     redirectBack,
+  );
+
+  router.post(
+    '/forms/edit-list-details',
+    editListDetails,
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
