@@ -12,12 +12,16 @@ export type Ports = {
 export const checkIfArticleInList = (ports: Ports) => (
   doi: Doi,
   user: O.Option<User>,
-) => (): O.Option<ListId> => pipe(
+): (() => O.Option<ListId>
+  ) => pipe(
   user,
-  O.chain((u) => pipe(
-    doi,
-    ports.isArticleOnTheListOwnedBy(u.id),
-    (foo) => foo,
-    (lazyFunction) => lazyFunction(),
-  )),
+  O.fold(
+    () => () => O.none,
+    (u) => pipe(
+      doi,
+      ports.isArticleOnTheListOwnedBy(u.id),
+      (foo) => foo,
+      (lazyFunction) => lazyFunction,
+    ),
+  ),
 );
