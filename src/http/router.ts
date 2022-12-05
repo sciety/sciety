@@ -29,7 +29,6 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
-import { aboutPage } from '../about-page';
 import { actionFailedPage } from '../action-failed';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
@@ -37,7 +36,6 @@ import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
-import { articlePage } from '../article-page';
 import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../commands';
@@ -50,12 +48,14 @@ import { evaluationContent, paramsCodec as evaluationContentParams } from '../ev
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
-import { page as genericListPage, paramsCodec as genericListPageParams } from '../generic-list-page/page';
+import { aboutPage } from '../html-pages/about-page';
+import { articlePage } from '../html-pages/article-page';
+import { page as genericListPage, paramsCodec as genericListPageParams } from '../html-pages/generic-list-page/page';
 import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
-} from '../group-page/group-page';
-import { groupsPage } from '../groups-page';
-import { homePage, homePageLayout, homePageParams } from '../home-page';
+} from '../html-pages/group-page/group-page';
+import { groupsPage } from '../html-pages/groups-page';
+import { homePage, homePageLayout, homePageParams } from '../html-pages/home-page';
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../learn-about-page';
 import { legalPage } from '../legal-page';

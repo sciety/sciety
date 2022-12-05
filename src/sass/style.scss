@@ -4,19 +4,19 @@
 @use 'normalise';
 @use 'layout';
 
-@use '../about-page';
+@use '../html-pages/about-page';
 @use '../legal-page';
 @use '../sign-up-page';
-@use '../groups-page';
-@use '../group-page';
-@use '../generic-list-page';
+@use '../html-pages/groups-page';
+@use '../html-pages/group-page';
+@use '../html-pages/generic-list-page';
 @use 'page-header';
 @use '../sciety-feed-page';
 @use '../user-page';
 @use '../my-feed-page';
 @use 'button';
-@use '../article-page/render-as-html';
-@use '../home-page';
+@use '../html-pages/article-page/render-as-html';
+@use '../html-pages/home-page';
 @use '../follow/follow-toggle';
 @use '../http/error-page';
 @use '../menu-page';

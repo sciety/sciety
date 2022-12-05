@@ -1,0 +1,8 @@
+@use '../../../sass/baseline';
+@use '../../../sass/card';
+
+.article-abstract {
+  @include card.basics();
+
+  margin-bottom: baseline.increments(6);
+}
