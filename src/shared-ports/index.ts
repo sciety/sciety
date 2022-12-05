@@ -26,6 +26,7 @@ export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { GetGroup } from './get-group';
+export { GetAllGroups } from './get-all-groups';
 export { GetList } from './get-list';
 // ts-unused-exports:disable-next-line
 export { RemoveArticleFromList } from './remove-article-from-list';
