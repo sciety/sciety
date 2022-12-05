@@ -8,6 +8,7 @@ import { GetAllGroups } from './get-all-groups';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetGroup } from './get-group';
+import { GetGroupBySlug } from './get-group-by-slug';
 import { GetList } from './get-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
@@ -25,6 +26,7 @@ export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { GetGroup } from './get-group';
+export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
 export { GetList } from './get-list';
 // ts-unused-exports:disable-next-line
@@ -48,6 +50,7 @@ export type SharedPorts = {
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
   getGroup: GetGroup,
+  getGroupBySlug: GetGroupBySlug,
   getList: GetList,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
