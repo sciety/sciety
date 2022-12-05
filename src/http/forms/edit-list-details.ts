@@ -46,6 +46,10 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
     command.listId,
     adapters.getList,
     TE.fromOption(() => DE.notFound),
+    TE.mapLeft((error) => {
+      adapters.logger('error', 'List id not found', { listId: command.listId, userId });
+      return error;
+    }),
     TE.chainEitherK((list) => {
       if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
         adapters.logger('error', 'List owner id does not match user id', { list, userId });
