@@ -1,3 +1,4 @@
+import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -48,13 +49,12 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   TE.chainW((articleDetails) => pipe(
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
-    TE.map((feedItemsByDateDescending) => pipe(
+    TE.chainIOK((feedItemsByDateDescending) => pipe(
       checkIfArticleInList(ports)(params.doi, params.user),
-      (lazyFunction) => lazyFunction(),
-      (isArticleInList) => ({
+      IO.map((isArticleInList) => ({
         feedItemsByDateDescending,
         isArticleInList,
-      }),
+      })),
     )),
     TE.map(({ feedItemsByDateDescending, isArticleInList }) => ({
       ...articleDetails,
