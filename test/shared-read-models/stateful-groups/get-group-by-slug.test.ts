@@ -4,15 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
 import { groupJoined } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/stateful-groups';
-import { ReadModel } from '../../../src/shared-read-models/stateful-groups/handle-event';
+import { getGroupBySlug } from '../../../src/shared-read-models/stateful-groups/get-group-by-slug';
 import * as DE from '../../../src/types/data-error';
-import { Group } from '../../../src/types/group';
 import { arbitraryGroup } from '../../types/group.helper';
-
-type GetGroupBySlug = (slug: string) => E.Either<DE.DataError, Group>;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getGroupBySlug = (r: ReadModel): GetGroupBySlug => () => E.left(DE.notFound);
 
 const group = arbitraryGroup();
 
@@ -27,7 +21,7 @@ describe('getGroupBySlug', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the group', () => {
+    it('returns the group', () => {
       expect(getGroupBySlug(readmodel)(group.slug)).toStrictEqual(E.right(group));
     });
   });
