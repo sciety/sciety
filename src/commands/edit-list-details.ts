@@ -4,7 +4,7 @@ import { stringFromRegexCodec } from '../types/codecs/string-from-regex-codec';
 
 export const editListDetailsCommandCodec = t.type({
   name: stringFromRegexCodec,
-  description: t.string,
+  description: stringFromRegexCodec,
   listId: ListIdFromString,
 });
 
