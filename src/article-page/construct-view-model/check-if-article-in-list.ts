@@ -9,19 +9,18 @@ export type Ports = {
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
 };
 
+type CheckIfArticleInList = () => O.Option<ListId>;
+
 export const checkIfArticleInList = (ports: Ports) => (
   doi: Doi,
   user: O.Option<User>,
-): (() => O.Option<ListId>
-  ) => pipe(
+): CheckIfArticleInList => pipe(
   user,
   O.fold(
     () => () => O.none,
     (u) => pipe(
       doi,
       ports.isArticleOnTheListOwnedBy(u.id),
-      (foo) => foo,
-      (lazyFunction) => lazyFunction,
     ),
   ),
 );
