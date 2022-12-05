@@ -1,6 +1,7 @@
 import { AddArticleToList } from './add-article-to-list';
 import { CommitEvents } from './commit-events';
 import { CreateList } from './create-list';
+import { EditListDetails } from './edit-list-details';
 import { FetchArticle } from './fetch-article';
 import { GetAllEvents } from './get-all-events';
 import { GetAllGroups } from './get-all-groups';
@@ -18,6 +19,8 @@ import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
+// ts-unused-exports:disable-next-line
+export { EditListDetails } from './edit-list-details';
 export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
@@ -38,6 +41,7 @@ export type SharedPorts = {
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
   createList: CreateList,
+  editListDetails: EditListDetails,
   fetchArticle: FetchArticle,
   getAllEvents: GetAllEvents,
   getAllGroups: GetAllGroups,

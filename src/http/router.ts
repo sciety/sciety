@@ -45,7 +45,6 @@ import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
-import { editListDetailsCommandHandler } from '../edit-list-details';
 import { editListDetailsFormPage } from '../edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
@@ -483,7 +482,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
 
-  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, editListDetailsCommandHandler(adapters)));
+  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
 
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
 

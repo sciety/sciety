@@ -30,6 +30,7 @@ import {
   DomainEvent,
   isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
+import { editListDetailsCommandHandler } from '../edit-list-details';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
@@ -194,6 +195,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
+        editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
         addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
         removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),
