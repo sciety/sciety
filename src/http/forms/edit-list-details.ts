@@ -52,11 +52,19 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
     }),
     TE.chainEitherK((list) => {
       if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
-        adapters.logger('error', 'List owner id does not match user id', { list, userId });
+        adapters.logger('error', 'List owner id does not match user id', {
+          listId: list.listId,
+          listOwnerId: list.ownerId,
+          userId,
+        });
 
         return E.left(DE.unavailable);
       }
-      adapters.logger('info', 'List owner id matches user id', { list, userId });
+      adapters.logger('info', 'List owner id matches user id', {
+        listId: list.listId,
+        listOwnerId: list.ownerId,
+        userId,
+      });
 
       return E.right(command);
     }),
