@@ -9,7 +9,6 @@ import * as tt from 'io-ts-types';
 import { ArticleResults } from './data-types';
 import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
-import { DomainEvent } from '../domain-events';
 import * as DE from '../types/data-error';
 
 type FindArticles = (
@@ -17,7 +16,6 @@ type FindArticles = (
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, ArticleResults>;
 
 export type Ports = FindGroupsPorts & {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   searchEuropePmc: FindArticles,
 };
 
@@ -64,8 +62,7 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
       tupled(ports.searchEuropePmc(pageSize)),
     ),
     groups: pipe(
-      ports.getAllEvents,
-      T.chain(findGroups(ports, params.query)),
+      findGroups(ports, params.query),
       T.map(RA.map((groupId) => ({ id: groupId }))),
       TE.rightTask,
     ),

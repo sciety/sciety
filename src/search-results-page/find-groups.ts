@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { DomainEvent } from '../domain-events';
 import { GetAllGroups } from '../shared-ports';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -38,11 +37,9 @@ export type Ports = {
 
 // ts-unused-exports:disable-next-line
 export type FindGroups = (ports: Ports, query: string)
-=> (events: ReadonlyArray<DomainEvent>)
 => T.Task<ReadonlyArray<GroupId>>;
 
-// ts-unused-exports:disable-next-line
-export const findGroups: FindGroups = (ports, query) => () => pipe(
+export const findGroups: FindGroups = (ports, query) => pipe(
   ports.getAllGroups(),
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,

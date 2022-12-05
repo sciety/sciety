@@ -1,6 +1,4 @@
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
-import { groupJoined } from '../../src/domain-events';
 import { findGroups } from '../../src/search-results-page/find-groups';
 import { GroupId } from '../../src/types/group-id';
 import { arbitraryString } from '../helpers';
@@ -18,13 +16,7 @@ describe('find-groups', () => {
     let result: ReadonlyArray<GroupId>;
 
     beforeEach(async () => {
-      result = await pipe(
-        [
-          groupJoined(group1),
-          groupJoined(group2),
-        ],
-        findGroups(ports, group1.name),
-      )();
+      result = await findGroups(ports, group1.name)();
     });
 
     it('returns an array containing the groupId', async () => {
@@ -36,10 +28,7 @@ describe('find-groups', () => {
     let result: ReadonlyArray<GroupId>;
 
     beforeEach(async () => {
-      result = await pipe(
-        [groupJoined(group1)],
-        findGroups(ports, arbitraryString()),
-      )();
+      result = await findGroups(ports, arbitraryString())();
     });
 
     it('returns an empty array', async () => {
