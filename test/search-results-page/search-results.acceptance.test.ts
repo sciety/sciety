@@ -19,6 +19,7 @@ const pageSize = arbitraryNumber(5, 10);
 
 const dummyAdapters = {
   fetchStaticFile: () => TE.right(''),
+  getAllGroups: () => [],
   getGroup: () => E.right(arbitraryGroup()),
   searchEuropePmc: () => () => TE.right({
     items: [],
@@ -437,6 +438,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
+              getAllGroups: () => [group1, group2, group3],
               getAllEvents: T.of([
                 groupJoined(group1),
                 groupJoined(group2),

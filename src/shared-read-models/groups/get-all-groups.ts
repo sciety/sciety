@@ -3,6 +3,7 @@ import { constructReadModel } from './construct-read-model';
 import { DomainEvent } from '../../domain-events';
 import { Group } from '../../types/group';
 
+// ts-unused-exports:disable-next-line
 export const getAllGroups = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<Group> => pipe(
   events,
   constructReadModel,

@@ -11,6 +11,7 @@ describe('find-groups', () => {
   const group2 = arbitraryGroup();
   const ports = {
     fetchStaticFile: () => TE.right(''),
+    getAllGroups: () => [group1, group2],
   };
 
   describe('when there are matching groups', () => {

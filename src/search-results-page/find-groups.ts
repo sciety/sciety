@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
-import { getAllGroups } from '../shared-read-models/groups';
+import { GetAllGroups } from '../shared-ports';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -33,6 +33,7 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
+  getAllGroups: GetAllGroups,
 };
 
 // ts-unused-exports:disable-next-line
@@ -41,9 +42,8 @@ export type FindGroups = (ports: Ports, query: string)
 => T.Task<ReadonlyArray<GroupId>>;
 
 // ts-unused-exports:disable-next-line
-export const findGroups: FindGroups = (ports, query) => (events) => pipe(
-  events,
-  getAllGroups,
+export const findGroups: FindGroups = (ports, query) => () => pipe(
+  ports.getAllGroups(),
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,
     ports.fetchStaticFile,
