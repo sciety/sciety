@@ -48,10 +48,13 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   TE.chainW((articleDetails) => pipe(
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
-    TE.map((feedItemsByDateDescending) => ({
-      feedItemsByDateDescending,
-      isArticleInList: checkIfArticleInList(ports)(params.doi, params.user)(),
-    })),
+    TE.map((feedItemsByDateDescending) => pipe(
+      checkIfArticleInList(ports)(params.doi, params.user)(),
+      (isArticleInList) => ({
+        feedItemsByDateDescending,
+        isArticleInList,
+      }),
+    )),
     TE.map(({ feedItemsByDateDescending, isArticleInList }) => ({
       ...articleDetails,
       isArticleInList,
