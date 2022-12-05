@@ -19,7 +19,6 @@ import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
-// ts-unused-exports:disable-next-line
 export { EditListDetails } from './edit-list-details';
 export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';

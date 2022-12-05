@@ -471,7 +471,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.post(
     '/forms/edit-list-details',
-    editListDetails,
+    editListDetails(adapters),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
