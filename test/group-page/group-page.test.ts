@@ -21,6 +21,7 @@ describe('group page', () => {
           getAllEvents: T.of([]),
           selectAllListsOwnedBy: shouldNotBeCalled,
           getUserDetailsBatch: shouldNotBeCalled,
+          getGroupBySlug: () => E.left(DE.notFound),
         })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(

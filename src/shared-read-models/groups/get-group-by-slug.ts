@@ -16,6 +16,7 @@ const byName: Ord.Ord<Group> = pipe(
 
 type GetGroupBySlug = (slug: string) => (events: ReadonlyArray<DomainEvent>) => E.Either<DE.DataError, Group>;
 
+// ts-unused-exports:disable-next-line
 export const getGroupBySlug: GetGroupBySlug = (slug: string) => flow(
   constructReadModel,
   RM.values(byName),
