@@ -49,7 +49,8 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => pipe(
-      checkIfArticleInList(ports)(params.doi, params.user)(),
+      checkIfArticleInList(ports)(params.doi, params.user),
+      (lazyFunction) => lazyFunction(),
       (isArticleInList) => ({
         feedItemsByDateDescending,
         isArticleInList,
