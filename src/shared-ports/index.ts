@@ -3,6 +3,7 @@ import { CommitEvents } from './commit-events';
 import { CreateList } from './create-list';
 import { FetchArticle } from './fetch-article';
 import { GetAllEvents } from './get-all-events';
+import { GetAllGroups } from './get-all-groups';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetGroup } from './get-group';
@@ -39,6 +40,7 @@ export type SharedPorts = {
   createList: CreateList,
   fetchArticle: FetchArticle,
   getAllEvents: GetAllEvents,
+  getAllGroups: GetAllGroups,
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
   getGroup: GetGroup,
