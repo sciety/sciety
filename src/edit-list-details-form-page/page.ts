@@ -12,9 +12,10 @@ export const editListDetailsFormPage = (
 <h1>My form</h1>
 <form action="/forms/edit-list-details" method="post">
   <label for="listName">List name</label>
-  <input type="text" id="listName">
+  <input type="text" id="listName" name="name">
+  <input type="text" name="listid">
   <label for="">Description</label>
-  <textarea name="" id="" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
+  <textarea id="" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
   <p>Max 250 characters.</p>
   <button>Save</button>
 </form>
