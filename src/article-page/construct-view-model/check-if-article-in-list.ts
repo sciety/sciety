@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import { Lazy, pipe } from 'fp-ts/function';
 import { IsArticleOnTheListOwnedBy } from '../../shared-ports';
 import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
@@ -9,7 +9,7 @@ export type Ports = {
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
 };
 
-type CheckIfArticleInList = () => O.Option<ListId>;
+type CheckIfArticleInList = Lazy<O.Option<ListId>>;
 
 export const checkIfArticleInList = (ports: Ports) => (
   doi: Doi,
