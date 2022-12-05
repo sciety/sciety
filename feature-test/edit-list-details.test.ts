@@ -28,9 +28,6 @@ describe('edit-list-details', () => {
       const saveButton = $(editListDetailsButtonSelector);
       await click(saveButton);
 
-      const listPage = `localhost:8080/lists/${listId}`;
-      await goto(listPage);
-
       const pageTitle = await $('h1').text();
 
       expect(pageTitle).toContain(listName);
