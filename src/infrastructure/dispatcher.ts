@@ -44,6 +44,7 @@ export const dispatcher = (): Dispatcher => {
   const queries = {
     isArticleOnTheListOwnedBy: (userId: UserId) => (articleId: Doi) => pipe(
       latestListsReadModel,
+      // query is always passed the latest read model, so it cannot (accidentally) cache it
       IO.map(isArticleOnTheListOwnedBy),
       IO.map((original) => original(userId)(articleId)),
       (foo) => foo,

@@ -50,6 +50,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
     TE.rightTask,
     TE.chainIOK((feedItemsByDateDescending) => pipe(
+      // not possible to extract a variable here: only an IO containing that variable
       checkIfArticleInList(ports)(params.doi, params.user),
       IO.map((isArticleInList) => ({
         feedItemsByDateDescending,
