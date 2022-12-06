@@ -16,19 +16,8 @@ type Ports = {
   getList: GetList,
 };
 
-type FormBody = {
-  name: unknown,
-  description: unknown,
-  listid: unknown,
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: FormBody) => pipe(
-  {
-    name: formBody.name,
-    description: formBody.description,
-    listId: formBody.listid,
-  },
+const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: unknown) => pipe(
+  formBody,
   editListDetailsCommandCodec.decode,
   E.bimap(
     (errors) => pipe(
