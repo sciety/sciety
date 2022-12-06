@@ -40,7 +40,8 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
 };
 
-const constructCommand = (ports: Ports) => (event: EvaluationRecordedEvent) => {
+// ts-unused-exports:disable-next-line
+export const constructCommand = (ports: Ports) => (event: EvaluationRecordedEvent) => {
   const listId = evaluatedArticlesListIdsByGroupId[event.groupId];
   if (!listId) {
     ports.logger('error', 'Unknown group id supplied to policy', { event });
