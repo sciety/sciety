@@ -5,7 +5,6 @@ import { constructCommand } from '../../src/policies/add-article-to-evaluated-ar
 import * as Gid from '../../src/types/group-id';
 import * as Lid from '../../src/types/list-id';
 import { dummyLogger } from '../dummy-logger';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
@@ -17,8 +16,6 @@ describe('add-article-to-evaluated-articles-list', () => {
 
     const ports = {
       logger: dummyLogger,
-      commitEvents: shouldNotBeCalled,
-      getAllEvents: shouldNotBeCalled,
     };
 
     const command = pipe(

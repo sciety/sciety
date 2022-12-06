@@ -41,7 +41,7 @@ const evaluatedArticlesListIdsByGroupId = {
 };
 
 // ts-unused-exports:disable-next-line
-export const constructCommand = (ports: Ports) => (event: EvaluationRecordedEvent) => {
+export const constructCommand = (ports: { logger: Logger }) => (event: EvaluationRecordedEvent) => {
   const listId = evaluatedArticlesListIdsByGroupId[event.groupId];
   if (!listId) {
     ports.logger('error', 'Unknown group id supplied to policy', { event });
