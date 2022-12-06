@@ -348,107 +348,20 @@ module.exports = {
     },
     reporterOptions: {
       dot: {
-        /* pattern of modules that can be consolidated in the detailed
-           graphical dependency graph. The default pattern in this configuration
-           collapses everything in node_modules to one folder deep so you see
-           the external modules, but not the innards your app depends upon.
-         */
         collapsePattern: 'node_modules/[^/]+',
-
-        /* Options to tweak the appearance of your graph.See
-           https://github.com/sverweij/dependency-cruiser/blob/master/doc/options-reference.md#reporteroptions
-           for details and some examples. If you don't specify a theme
-           don't worry - dependency-cruiser will fall back to the default one.
-        */
-        // theme: {
-        //   graph: {
-        //     /* use splines: "ortho" for straight lines. Be aware though
-        //       graphviz might take a long time calculating ortho(gonal)
-        //       routings.
-        //    */
-        //     splines: "true"
-        //   },
-        //   modules: [
-        //     {
-        //       criteria: { matchesFocus: true },
-        //       attributes: {
-        //         fillcolor: "lime",
-        //         penwidth: 2,
-        //       },
-        //     },
-        //     {
-        //       criteria: { matchesFocus: false },
-        //       attributes: {
-        //         fillcolor: "lightgrey",
-        //       },
-        //     },
-        //     {
-        //       criteria: { matchesReaches: true },
-        //       attributes: {
-        //         fillcolor: "lime",
-        //         penwidth: 2,
-        //       },
-        //     },
-        //     {
-        //       criteria: { matchesReaches: false },
-        //       attributes: {
-        //         fillcolor: "lightgrey",
-        //       },
-        //     },
-        //     {
-        //       criteria: { source: "^src/model" },
-        //       attributes: { fillcolor: "#ccccff" }
-        //     },
-        //     {
-        //       criteria: { source: "^src/view" },
-        //       attributes: { fillcolor: "#ccffcc" }
-        //     },
-        //   ],
-        //   dependencies: [
-        //     {
-        //       criteria: { "rules[0].severity": "error" },
-        //       attributes: { fontcolor: "red", color: "red" }
-        //     },
-        //     {
-        //       criteria: { "rules[0].severity": "warn" },
-        //       attributes: { fontcolor: "orange", color: "orange" }
-        //     },
-        //     {
-        //       criteria: { "rules[0].severity": "info" },
-        //       attributes: { fontcolor: "blue", color: "blue" }
-        //     },
-        //     {
-        //       criteria: { resolved: "^src/model" },
-        //       attributes: { color: "#0000ff77" }
-        //     },
-        //     {
-        //       criteria: { resolved: "^src/view" },
-        //       attributes: { color: "#00770077" }
-        //     }
-        //   ]
-        // }
+        theme: {
+          graph: { rankdir: "TD" },
+        },
       },
       archi: {
-        /* pattern of modules that can be consolidated in the high level
-          graphical dependency graph. If you use the high level graphical
-          dependency graph reporter (`archi`) you probably want to tweak
-          this collapsePattern to your situation.
-        */
         collapsePattern: '^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/[^/]+',
-
-        /* Options to tweak the appearance of your graph.See
-           https://github.com/sverweij/dependency-cruiser/blob/master/doc/options-reference.md#reporteroptions
-           for details and some examples. If you don't specify a theme
-           for 'archi' dependency-cruiser will use the one specified in the
-           dot section (see above), if any, and otherwise use the default one.
-         */
-        // theme: {
-        // },
+        theme: {
+          graph: { rankdir: "TD" },
+        },
       },
       "text": {
-        "highlightFocused": true
+        "highlightFocused": true,
       },
     }
   }
 };
-// generated: dependency-cruiser@12.1.0 on 2022-12-06T08:24:30.591Z
