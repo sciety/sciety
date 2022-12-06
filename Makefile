@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
+.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -257,24 +257,13 @@ $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	rm -f .purgecss/{full,purged}.css
 	@touch $@
 
-graphs: $(GRAPH_DIR)/folders.svg $(GRAPH_DIR)/modules.svg
-
-$(GRAPH_DIR)/folders.svg: $(TS_SOURCES)
-	mkdir -p $(GRAPH_DIR)
-	npx depcruise --include-only '^src' --validate -T archi src \
-	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-	> $(GRAPH_DIR)/folders.svg
-
-$(GRAPH_DIR)/modules.svg: $(TS_SOURCES)
-	mkdir -p $(GRAPH_DIR)
-	npx depcruise --include-only '^src' --collapse 3 --validate -T dot src \
-	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-	> $(GRAPH_DIR)/modules.svg
+graphs:
+	$(MAKE) -C $(GRAPH_DIR)
 
 clean:
 	rm -rf $(MK_LINTED_SASS) $(MK_LINTED_TS)
 	rm -rf $(LINT_CACHE)
-	rm -rf $(GRAPH_DIR)
+	$(MAKE) -C $(GRAPH_DIR) clean
 
 clobber: clean
 	rm -rf build node_modules
