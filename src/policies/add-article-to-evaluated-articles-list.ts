@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { AddArticleToListCommand } from '../commands';
-import { DomainEvent, isEvaluationRecordedEvent } from '../domain-events';
+import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 import * as Gid from '../types/group-id';
 import * as Lid from '../types/list-id';
@@ -40,10 +40,7 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
 };
 
-const constructCommand = (ports: Ports) => (event: DomainEvent) => {
-  if (!isEvaluationRecordedEvent(event)) {
-    return E.left(undefined);
-  }
+const constructCommand = (ports: Ports) => (event: EvaluationRecordedEvent) => {
   const listId = evaluatedArticlesListIdsByGroupId[event.groupId];
   if (!listId) {
     ports.logger('error', 'Unknown group id supplied to policy', { event });
@@ -59,7 +56,8 @@ const constructCommand = (ports: Ports) => (event: DomainEvent) => {
 
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
   event,
-  constructCommand(ports),
+  E.fromPredicate(isEvaluationRecordedEvent, () => undefined),
+  E.chain(constructCommand(ports)),
   TE.fromEither,
   TE.chainW(addArticleToListCommandHandler(ports)),
   TE.match(
