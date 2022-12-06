@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { editListDetailsCommandCodec } from '../../commands/edit-list-details';
+import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
 import { EditListDetails, GetList, Logger } from '../../shared-ports';
 import * as LOID from '../../types/list-owner-id';
 import { User } from '../../types/user';
@@ -15,39 +15,24 @@ type Ports = {
   getList: GetList,
 };
 
-const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: unknown) => pipe(
-  formBody,
-  editListDetailsCommandCodec.decode,
-  E.mapLeft(
-    (errors) => pipe(
-      errors,
-      PR.failure,
-      (fails) => ({
-        message: 'invalid edit list details form command',
-        payload: { fails },
-      }),
-    ),
+const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command: EditListDetailsCommand) => pipe(
+  command.listId,
+  adapters.getList,
+  TE.fromOption(() => ({
+    message: 'List id not found',
+    payload: { listId: command.listId, userId },
+  })),
+  TE.filterOrElseW(
+    (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
+    (list) => ({
+      message: 'List owner id does not match user id',
+      payload: {
+        listId: list.listId,
+        listOwnerId: list.ownerId,
+        userId,
+      },
+    }),
   ),
-  TE.fromEither,
-  TE.chainW((command) => pipe(
-    command.listId,
-    adapters.getList,
-    TE.fromOption(() => ({
-      message: 'List id not found',
-      payload: { listId: command.listId, userId },
-    })),
-    TE.filterOrElseW(
-      (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
-      (list) => ({
-        message: 'List owner id does not match user id',
-        payload: {
-          listId: list.listId,
-          listOwnerId: list.ownerId,
-          userId,
-        },
-      }),
-    ),
-  )),
   TE.chainW(flow(
     adapters.editListDetails,
     TE.mapLeft((errorMessage) => ({
@@ -63,7 +48,19 @@ export const editListDetails = (adapters: Ports): Middleware => async (context, 
   const user = context.state.user as User;
   await pipe(
     context.request.body,
-    handleFormSubmission(adapters, user.id),
+    editListDetailsCommandCodec.decode,
+    E.mapLeft(
+      (errors) => pipe(
+        errors,
+        PR.failure,
+        (fails) => ({
+          message: 'Submitted form can not be decoded into a command',
+          payload: { fails },
+        }),
+      ),
+    ),
+    TE.fromEither,
+    TE.chainW(authorizeAndHandleCommand(adapters, user.id)),
     TE.mapLeft((error) => {
       adapters.logger('error', error.message, error.payload);
       context.redirect('/action-failed');
