@@ -226,6 +226,7 @@ crossref-response:
 
 #------------------------------------------------------------------------------
 
+GRAPH_DIR := ./graphs
 MK_LINTED_TS := .mk-linted-ts
 MK_TESTED_TS := .mk-tested-ts
 MK_LINTED_SASS := .mk-linted-sass
@@ -256,9 +257,24 @@ $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	rm -f .purgecss/{full,purged}.css
 	@touch $@
 
+graphs: $(GRAPH_DIR)/folders.svg $(GRAPH_DIR)/modules.svg
+
+$(GRAPH_DIR)/folders.svg: $(TS_SOURCES)
+	mkdir -p $(GRAPH_DIR)
+	npx depcruise --include-only '^src' --validate -T archi src \
+	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+	> $(GRAPH_DIR)/folders.svg
+
+$(GRAPH_DIR)/modules.svg: $(TS_SOURCES)
+	mkdir -p $(GRAPH_DIR)
+	npx depcruise --include-only '^src' --collapse 3 --validate -T dot src \
+	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+	> $(GRAPH_DIR)/modules.svg
+
 clean:
 	rm -rf $(MK_LINTED_SASS) $(MK_LINTED_TS)
 	rm -rf $(LINT_CACHE)
+	rm -rf $(GRAPH_DIR)
 
 clobber: clean
 	rm -rf build node_modules
