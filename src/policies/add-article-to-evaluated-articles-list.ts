@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -39,28 +40,32 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
 };
 
-export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => {
+const constructCommand = (ports: Ports) => (event: DomainEvent) => {
   if (!isEvaluationRecordedEvent(event)) {
-    return T.of(undefined);
+    return E.left(undefined);
   }
   const listId = evaluatedArticlesListIdsByGroupId[event.groupId];
   if (!listId) {
     ports.logger('error', 'Unknown group id supplied to policy', { event });
-    return T.of(undefined);
+    return E.left(undefined);
   }
   const command: AddArticleToListCommand = {
     articleId: event.articleId,
     listId,
   };
   ports.logger('debug', 'Policy attempting to add article to list', { command });
-  return pipe(
-    command,
-    addArticleToListCommandHandler(ports),
-    TE.match(
-      (errorMessage) => {
-        ports.logger('error', 'Failed to add article to list', { errorMessage, command });
-      },
-      () => { },
-    ),
-  );
+  return E.right(command);
 };
+
+export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
+  event,
+  constructCommand(ports),
+  TE.fromEither,
+  TE.chainW(addArticleToListCommandHandler(ports)),
+  TE.match(
+    (errorMessage) => {
+      ports.logger('error', 'Failed to add article to list', { errorMessage, event });
+    },
+    () => { },
+  ),
+);
