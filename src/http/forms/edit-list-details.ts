@@ -1,11 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { editListDetailsCommandCodec } from '../../commands/edit-list-details';
 import { EditListDetails, GetList, Logger } from '../../shared-ports';
-import * as DE from '../../types/data-error';
 import * as LOID from '../../types/list-owner-id';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
@@ -19,46 +18,45 @@ type Ports = {
 const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: unknown) => pipe(
   formBody,
   editListDetailsCommandCodec.decode,
-  E.bimap(
+  E.mapLeft(
     (errors) => pipe(
       errors,
       PR.failure,
-      (fails) => adapters.logger('error', 'invalid edit list details form command', { fails }),
+      (fails) => ({
+        message: 'invalid edit list details form command',
+        payload: { fails },
+      }),
     ),
-    (command) => {
-      adapters.logger('info', 'received edit list details form command', { command });
-      return command;
-    },
   ),
   TE.fromEither,
   TE.chainW((command) => pipe(
     command.listId,
     adapters.getList,
-    TE.fromOption(() => DE.notFound),
-    TE.mapLeft((error) => {
-      adapters.logger('error', 'List id not found', { listId: command.listId, userId });
-      return error;
-    }),
-    TE.chainEitherK((list) => {
-      if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
-        adapters.logger('error', 'List owner id does not match user id', {
+    TE.fromOption(() => ({
+      message: 'List id not found',
+      payload: { listId: command.listId, userId },
+    })),
+    TE.filterOrElseW(
+      (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
+      (list) => ({
+        message: 'List owner id does not match user id',
+        payload: {
           listId: list.listId,
           listOwnerId: list.ownerId,
           userId,
-        });
-
-        return E.left(DE.unavailable);
-      }
-      adapters.logger('info', 'List owner id matches user id', {
-        listId: list.listId,
-        listOwnerId: list.ownerId,
-        userId,
-      });
-
-      return E.right(command);
-    }),
+        },
+      }),
+    ),
   )),
-  TE.chainW(adapters.editListDetails),
+  TE.chainW(flow(
+    adapters.editListDetails,
+    TE.mapLeft((errorMessage) => ({
+      message: 'Command handler failed',
+      payload: {
+        errorMessage,
+      },
+    })),
+  )),
 );
 
 export const editListDetails = (adapters: Ports): Middleware => async (context, next) => {
@@ -66,7 +64,8 @@ export const editListDetails = (adapters: Ports): Middleware => async (context, 
   await pipe(
     context.request.body,
     handleFormSubmission(adapters, user.id),
-    TE.mapLeft(() => {
+    TE.mapLeft((error) => {
+      adapters.logger('error', error.message, error.payload);
       context.redirect('/action-failed');
     }),
     TE.chainTaskK(() => async () => {
