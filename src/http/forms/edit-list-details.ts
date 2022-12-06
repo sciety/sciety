@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
@@ -44,21 +45,27 @@ const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command:
   )),
 );
 
+type CommandCodec<C> = t.Decoder<unknown, C>;
+
+const validateCommandShape = <C>(codec: CommandCodec<C>) => flow(
+  codec.decode,
+  E.mapLeft(
+    (errors) => pipe(
+      errors,
+      PR.failure,
+      (fails) => ({
+        message: 'Submitted form can not be decoded into a command',
+        payload: { fails },
+      }),
+    ),
+  ),
+);
+
 export const editListDetails = (adapters: Ports): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
     context.request.body,
-    editListDetailsCommandCodec.decode,
-    E.mapLeft(
-      (errors) => pipe(
-        errors,
-        PR.failure,
-        (fails) => ({
-          message: 'Submitted form can not be decoded into a command',
-          payload: { fails },
-        }),
-      ),
-    ),
+    validateCommandShape(editListDetailsCommandCodec),
     TE.fromEither,
     TE.chainW(authorizeAndHandleCommand(adapters, user.id)),
     TE.mapLeft((error) => {
