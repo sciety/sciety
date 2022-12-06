@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../add-article-to-list';
-import { AddArticleToListCommand } from '../commands';
 import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 import * as Gid from '../types/group-id';
@@ -41,19 +41,21 @@ const evaluatedArticlesListIdsByGroupId = {
 };
 
 // ts-unused-exports:disable-next-line
-export const constructCommand = (ports: { logger: Logger }) => (event: EvaluationRecordedEvent) => {
-  const listId = evaluatedArticlesListIdsByGroupId[event.groupId];
-  if (!listId) {
-    ports.logger('error', 'Unknown group id supplied to policy', { event });
-    return E.left(undefined);
-  }
-  const command: AddArticleToListCommand = {
-    articleId: event.articleId,
-    listId,
-  };
-  ports.logger('debug', 'Policy attempting to add article to list', { command });
-  return E.right(command);
-};
+export const constructCommand = (ports: { logger: Logger }) => (event: EvaluationRecordedEvent) => pipe(
+  evaluatedArticlesListIdsByGroupId,
+  R.lookup(event.groupId),
+  E.fromOption(() => undefined),
+  E.bimap(
+    () => {
+      ports.logger('error', 'Unknown group id supplied to policy', { event });
+      return undefined;
+    },
+    (listId) => ({
+      articleId: event.articleId,
+      listId,
+    }),
+  ),
+);
 
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
   event,
