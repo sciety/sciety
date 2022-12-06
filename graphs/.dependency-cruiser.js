@@ -182,7 +182,7 @@ module.exports = {
     },
     tsPreCompilationDeps: true,
     tsConfig: {
-      fileName: './tsconfig.json',
+      fileName: '../tsconfig.json',
     },
     reporterOptions: {
       dot: {

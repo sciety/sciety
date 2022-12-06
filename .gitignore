@@ -13,8 +13,6 @@ coverage/
 /node_modules/
 /.env
 /.gcp-ncrc-key.json
-graphs/
-/helm/*/charts/
 *.log
 .mk-*
 /static/*.css
