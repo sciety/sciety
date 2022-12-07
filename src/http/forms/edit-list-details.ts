@@ -16,7 +16,7 @@ type Ports = {
   getList: GetList,
 };
 
-const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command: EditListDetailsCommand) => pipe(
+const checkUserOwnsList = (adapters: Ports, command: EditListDetailsCommand, userId: UserId) => pipe(
   command.listId,
   adapters.getList,
   TE.fromOption(() => ({
@@ -34,6 +34,10 @@ const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command:
       },
     }),
   ),
+);
+
+const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command: EditListDetailsCommand) => pipe(
+  checkUserOwnsList(adapters, command, userId),
   TE.chainW(() => pipe(
     command,
     adapters.editListDetails,
