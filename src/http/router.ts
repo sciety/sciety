@@ -43,7 +43,7 @@ import { validateInputShape } from '../commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
-import { editListDetailsFormPage } from '../edit-list-details-form-page';
+import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
@@ -392,7 +392,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/lists/:id/edit-details',
     pageHandler(createPageFromParams(
-      genericListPageParams,
+      editListDetailsFormPageParamsCodec,
       editListDetailsFormPage,
     )),
   );

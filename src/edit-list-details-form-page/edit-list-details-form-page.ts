@@ -1,8 +1,14 @@
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
+import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+
+export const editListDetailsFormPageParamsCodec = t.type({
+  id: ListIdFromString,
+});
 
 export const editListDetailsFormPage = (
   params: { id: ListId },
