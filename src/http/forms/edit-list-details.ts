@@ -4,41 +4,15 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
+import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
-import { EditListDetails, GetList, Logger } from '../../shared-ports';
-import { ListId } from '../../types/list-id';
-import * as LOID from '../../types/list-owner-id';
+import { EditListDetails, Logger } from '../../shared-ports';
 import { User } from '../../types/user';
-import { UserId } from '../../types/user-id';
-
-type CheckUserOwnsListPorts = {
-  getList: GetList,
-};
 
 type Ports = CheckUserOwnsListPorts & {
   editListDetails: EditListDetails,
   logger: Logger,
 };
-
-const checkUserOwnsList = (adapters: CheckUserOwnsListPorts, listId: ListId, userId: UserId) => pipe(
-  listId,
-  adapters.getList,
-  TE.fromOption(() => ({
-    message: 'List id not found',
-    payload: { listId, userId },
-  })),
-  TE.filterOrElseW(
-    (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
-    (list) => ({
-      message: 'List owner id does not match user id',
-      payload: {
-        listId: list.listId,
-        listOwnerId: list.ownerId,
-        userId,
-      },
-    }),
-  ),
-);
 
 const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => pipe(
   command,
