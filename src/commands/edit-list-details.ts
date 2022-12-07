@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
-import { stringFromRegexCodec } from '../types/codecs/string-from-regex-codec';
+import { userGeneratedInputCodec } from '../types/codecs/user-generated-input-codec';
 
 export const editListDetailsCommandCodec = t.type({
-  name: stringFromRegexCodec,
-  description: stringFromRegexCodec,
+  name: userGeneratedInputCodec,
+  description: userGeneratedInputCodec,
   listId: ListIdFromString,
 });
 
