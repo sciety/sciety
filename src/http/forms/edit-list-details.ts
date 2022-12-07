@@ -6,22 +6,26 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
 import { EditListDetails, GetList, Logger } from '../../shared-ports';
+import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 
-type Ports = {
-  editListDetails: EditListDetails,
-  logger: Logger,
+type CheckUserOwnsListPorts = {
   getList: GetList,
 };
 
-const checkUserOwnsList = (adapters: Ports, command: EditListDetailsCommand, userId: UserId) => pipe(
-  command.listId,
+type Ports = CheckUserOwnsListPorts & {
+  editListDetails: EditListDetails,
+  logger: Logger,
+};
+
+const checkUserOwnsList = (adapters: CheckUserOwnsListPorts, listId: ListId, userId: UserId) => pipe(
+  listId,
   adapters.getList,
   TE.fromOption(() => ({
     message: 'List id not found',
-    payload: { listId: command.listId, userId },
+    payload: { listId, userId },
   })),
   TE.filterOrElseW(
     (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
@@ -37,7 +41,7 @@ const checkUserOwnsList = (adapters: Ports, command: EditListDetailsCommand, use
 );
 
 const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command: EditListDetailsCommand) => pipe(
-  checkUserOwnsList(adapters, command, userId),
+  checkUserOwnsList(adapters, command.listId, userId),
   TE.chainW(() => pipe(
     command,
     adapters.editListDetails,
