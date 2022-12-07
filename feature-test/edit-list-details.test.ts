@@ -21,12 +21,13 @@ describe('edit-list-details', () => {
   });
 
   describe('providing a new value into the name field and clicking save', () => {
-    it.failing('the list is renamed with the new value', async () => {
+    it('the list is renamed with the new value', async () => {
       const listName = arbitraryWord();
       await write(listName, into(textBox('List name')));
       const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
       const saveButton = $(editListDetailsButtonSelector);
       await click(saveButton);
+      await goto(`localhost:8080/lists/${listId}`);
 
       const pageTitle = await $('h1').text();
 
