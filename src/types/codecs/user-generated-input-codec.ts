@@ -3,7 +3,7 @@ import * as B from 'fp-ts/boolean';
 import { identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 
-const regex = /^[A-Za-z0-9 ,!:]+$/;
+const regex = /^[A-Za-z0-9 ,!:.'"&#%@£$()?;*~-]+$/;
 
 export const userGeneratedInputCodec = new t.Type(
   'userGeneratedInputCodec',
