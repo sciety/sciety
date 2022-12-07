@@ -1,15 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
+import { checkUserOwnsList } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../remove-article-from-list';
 import {
   CommitEvents, GetAllEvents, GetList, Logger,
 } from '../../shared-ports';
-import * as DE from '../../types/data-error';
-import * as LOID from '../../types/list-owner-id';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 
@@ -38,29 +37,15 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
     },
   ),
   TE.fromEither,
-  TE.chainFirstW((command) => pipe(
-    command.listId,
-    adapters.getList,
-    TE.fromOption(() => DE.notFound),
-    TE.chainEitherK((list) => {
-      if (!LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId))) {
-        adapters.logger('error', 'List owner id does not match user id', {
-          listId: list.listId,
-          listOwnerId: list.ownerId,
-          userId,
-        });
-
-        return E.left(DE.unavailable);
-      }
-      adapters.logger('info', 'List owner id matches user id', {
-        listId: list.listId,
-        listOwnerId: list.ownerId,
-        userId,
-      });
-      return E.right('foo');
+  TE.chainFirstW(flow(
+    (command) => checkUserOwnsList(adapters, command.listId, userId),
+    TE.mapLeft((logEntry) => {
+      adapters.logger('error', logEntry.message, logEntry.payload);
+      return logEntry;
     }),
   )),
   TE.chainW(removeArticleFromListCommandHandler(adapters)),
+
 );
 
 export const removeArticleFromList = (adapters: Ports): Middleware => async (context, next) => {
