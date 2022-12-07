@@ -14,8 +14,8 @@ export const editListDetailsFormPage = (
   <label for="listName">List name</label>
   <input type="text" id="listName" name="name">
   <input type="text" name="listId">
-  <label for="">Description</label>
-  <textarea id="" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
+  <label for="listDescription">Description</label>
+  <textarea id="listDescription" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
   <p>Max 250 characters.</p>
   <button>Save</button>
 </form>
