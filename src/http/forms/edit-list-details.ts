@@ -40,18 +40,15 @@ const checkUserOwnsList = (adapters: CheckUserOwnsListPorts, listId: ListId, use
   ),
 );
 
-const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command: EditListDetailsCommand) => pipe(
-  checkUserOwnsList(adapters, command.listId, userId),
-  TE.chainW(() => pipe(
-    command,
-    adapters.editListDetails,
-    TE.mapLeft((errorMessage) => ({
-      message: 'Command handler failed',
-      payload: {
-        errorMessage,
-      },
-    })),
-  )),
+const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => pipe(
+  command,
+  adapters.editListDetails,
+  TE.mapLeft((errorMessage) => ({
+    message: 'Command handler failed',
+    payload: {
+      errorMessage,
+    },
+  })),
 );
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
@@ -76,7 +73,8 @@ export const editListDetails = (adapters: Ports): Middleware => async (context, 
     context.request.body,
     validateCommandShape(editListDetailsCommandCodec),
     TE.fromEither,
-    TE.chainW(authorizeAndHandleCommand(adapters, user.id)),
+    TE.chainFirstW((command) => checkUserOwnsList(adapters, command.listId, user.id)),
+    TE.chainW(handleCommand(adapters)),
     TE.mapLeft((error) => {
       adapters.logger('error', error.message, error.payload);
       context.redirect('/action-failed');
