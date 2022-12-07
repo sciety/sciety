@@ -2,7 +2,7 @@ import {
   $, click, closeBrowser, goto, into, openBrowser, textBox, write,
 } from 'taiko';
 import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
-import { arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 
 describe('edit-list-details', () => {
   let listId: string;
@@ -20,18 +20,30 @@ describe('edit-list-details', () => {
     await closeBrowser();
   });
 
-  describe('providing a new value into the name field and clicking save', () => {
-    it('the list is renamed with the new value', async () => {
-      const listName = arbitraryWord();
+  describe('providing new values into the name and description fields and clicking save', () => {
+    const listName = arbitraryWord();
+    const listDescription = arbitraryString();
+
+    beforeAll(async () => {
       await write(listName, into(textBox('List name')));
+      await write(listDescription, into(textBox('Description')));
+
       const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
       const saveButton = $(editListDetailsButtonSelector);
       await click(saveButton);
       await goto(`localhost:8080/lists/${listId}`);
+    });
 
+    it('the list name is renamed with the new value', async () => {
       const pageTitle = await $('h1').text();
 
       expect(pageTitle).toContain(listName);
+    });
+
+    it('the list description is updated with the new value', async () => {
+      const listDescriptionFromPage = await $('.page-header__description').text();
+
+      expect(listDescriptionFromPage).toContain(listDescription);
     });
   });
 });
