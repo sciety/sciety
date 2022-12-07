@@ -34,7 +34,8 @@ const authorizeAndHandleCommand = (adapters: Ports, userId: UserId) => (command:
       },
     }),
   ),
-  TE.chainW(flow(
+  TE.chainW(() => pipe(
+    command,
     adapters.editListDetails,
     TE.mapLeft((errorMessage) => ({
       message: 'Command handler failed',
