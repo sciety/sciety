@@ -38,7 +38,7 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
     },
   ),
   TE.fromEither,
-  TE.chainW((command) => pipe(
+  TE.chainFirstW((command) => pipe(
     command.listId,
     adapters.getList,
     TE.fromOption(() => DE.notFound),
@@ -57,8 +57,7 @@ const handleFormSubmission = (adapters: Ports, userId: UserId) => (formBody: For
         listOwnerId: list.ownerId,
         userId,
       });
-
-      return E.right(command);
+      return E.right('foo');
     }),
   )),
   TE.chainW(removeArticleFromListCommandHandler(adapters)),
