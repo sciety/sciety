@@ -48,17 +48,15 @@ export const editListDetails = (adapters: Ports): Middleware => async (context) 
     validateCommandShape(editListDetailsCommandCodec),
     TE.fromEither,
     TE.chainFirstW((command) => checkUserOwnsList(adapters, command.listId, user.id)),
-    TE.chainW((command) => pipe(
-      command,
-      handleCommand(adapters),
-      TE.map(() => command.listId),
-    )),
-    TE.mapLeft((error) => {
-      adapters.logger('error', error.message, error.payload);
-      context.redirect('/action-failed');
-    }),
-    TE.chainTaskK((listId) => async () => {
-      context.redirect(`/lists/${listId}`);
-    }),
+    TE.chainFirstW(handleCommand(adapters)),
+    TE.match(
+      (error) => {
+        adapters.logger('error', error.message, error.payload);
+        context.redirect('/action-failed');
+      },
+      ({ listId }) => {
+        context.redirect(`/lists/${listId}`);
+      },
+    ),
   )();
 };
