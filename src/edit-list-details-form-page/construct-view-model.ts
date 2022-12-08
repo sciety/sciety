@@ -8,10 +8,10 @@ export type Ports = {
   getList: GetList,
 };
 
-export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<unknown, ViewModel> => pipe(
+export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<'no-such-list', ViewModel> => pipe(
   id,
   adapters.getList,
-  E.fromOption(() => ''),
+  E.fromOption(() => 'no-such-list' as const),
   E.map((list) => ({
     listName: list.name,
     listId: id,

@@ -39,7 +39,7 @@ describe('construct-view-model', () => {
     const result = constructViewModel(adapters)(listId);
 
     it('returns on left', () => {
-      expect(E.isLeft(result)).toBe(true);
+      expect(result).toStrictEqual(E.left('no-such-list'));
     });
   });
 });
