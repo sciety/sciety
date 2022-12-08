@@ -393,7 +393,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/lists/:id/edit-details',
     pageHandler(createPageFromParams(
       editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage,
+      editListDetailsFormPage(adapters),
     )),
   );
 
