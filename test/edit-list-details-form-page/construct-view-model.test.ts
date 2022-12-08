@@ -32,6 +32,14 @@ describe('construct-view-model', () => {
   });
 
   describe('when the list does not exist', () => {
-    it.todo('returns on left');
+    const listId = arbitraryListId();
+    const adapters = {
+      getList: () => O.none,
+    };
+    const result = constructViewModel(adapters)(listId);
+
+    it('returns on left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
