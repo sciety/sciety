@@ -1,5 +1,8 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../src/edit-list-details-form-page/construct-view-model';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryList } from '../types/list-helper';
 import { arbitraryListId } from '../types/list-id.helper';
 
@@ -10,7 +13,10 @@ describe('construct-view-model', () => {
     const adapters = {
       getList: () => O.some(list),
     };
-    const viewModel = constructViewModel(adapters)(listId);
+    const viewModel = pipe(
+      constructViewModel(adapters)(listId),
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
     it('includes the list id', () => {
       expect(viewModel.id).toStrictEqual(listId);
