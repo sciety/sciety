@@ -15,16 +15,20 @@ export const editListDetailsFormPageParamsCodec = t.type({
   id: ListIdFromString,
 });
 
+const renderNoSuchListError = (): RenderPageError => (
+  {
+    type: DE.notFound,
+    message: toHtmlFragment('The list that you are trying to edit does not exist.'),
+  }
+);
+
 export const editListDetailsFormPage = (adapters: Ports) => (
   params: { id: ListId },
 ): TE.TaskEither<RenderPageError, Page> => pipe(
   params.id,
   constructViewModel(adapters),
   E.bimap(
-    () => ({
-      type: DE.notFound,
-      message: toHtmlFragment('Can not find this list.'),
-    }),
+    renderNoSuchListError,
     renderEditListDetailsFormPage,
   ),
   TE.fromEither,
