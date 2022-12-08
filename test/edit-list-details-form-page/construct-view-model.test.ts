@@ -26,7 +26,9 @@ describe('construct-view-model', () => {
       expect(viewModel.name).toStrictEqual(list.name);
     });
 
-    it.todo('includes the current list description');
+    it('includes the current list description', () => {
+      expect(viewModel.description).toStrictEqual(list.description);
+    });
   });
 
   describe('when the list does not exist', () => {

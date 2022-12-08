@@ -4,6 +4,7 @@ import { Page } from '../types/page';
 
 export type ViewModel = {
   name: string,
+  description: string,
   id: ListId,
 };
 

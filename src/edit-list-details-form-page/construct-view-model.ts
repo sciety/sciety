@@ -15,5 +15,6 @@ export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<un
   E.map((list) => ({
     name: list.name,
     id,
+    description: list.description,
   })),
 );
