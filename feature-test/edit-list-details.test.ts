@@ -33,7 +33,7 @@ describe('edit-list-details', () => {
       await click(saveButton);
     });
 
-    it.failing('the user is redirected to the list page', async () => {
+    it('the user is redirected to the list page', async () => {
       const currentPage = await currentURL();
 
       expect(currentPage).toBe(`http://localhost:8080/lists/${listId}`);

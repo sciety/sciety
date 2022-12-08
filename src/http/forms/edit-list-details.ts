@@ -41,20 +41,24 @@ const validateCommandShape = <C>(codec: CommandCodec<C>) => flow(
   ),
 );
 
-export const editListDetails = (adapters: Ports): Middleware => async (context, next) => {
+export const editListDetails = (adapters: Ports): Middleware => async (context) => {
   const user = context.state.user as User;
   await pipe(
     context.request.body,
     validateCommandShape(editListDetailsCommandCodec),
     TE.fromEither,
     TE.chainFirstW((command) => checkUserOwnsList(adapters, command.listId, user.id)),
-    TE.chainW(handleCommand(adapters)),
+    TE.chainW((command) => pipe(
+      command,
+      handleCommand(adapters),
+      TE.map(() => command.listId),
+    )),
     TE.mapLeft((error) => {
       adapters.logger('error', error.message, error.payload);
       context.redirect('/action-failed');
     }),
-    TE.chainTaskK(() => async () => {
-      await next();
+    TE.chainTaskK((listId) => async () => {
+      context.redirect(`/lists/${listId}`);
     }),
   )();
 };
