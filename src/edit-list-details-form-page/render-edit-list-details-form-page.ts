@@ -3,9 +3,9 @@ import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
 
 export type ViewModel = {
-  name: string,
-  description: string,
-  id: ListId,
+  listName: string,
+  listDescription: string,
+  listId: ListId,
 };
 
 export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
@@ -14,11 +14,11 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
     content: toHtmlFragment(`
 <h1>My form</h1>
 <form action="/forms/edit-list-details" method="post">
-  <input type="hidden" value="${viewModel.id}" name="listId">
+  <input type="hidden" value="${viewModel.listId}" name="listId">
   <label for="listName">List name</label>
-  <input type="text" id="listName" name="name" value="${viewModel.name}">
+  <input type="text" id="listName" name="name" value="${viewModel.listName}">
   <label for="listDescription">Description</label>
-  <textarea id="listDescription" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made.">${viewModel.description}</textarea>
+  <textarea id="listDescription" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made.">${viewModel.listDescription}</textarea>
   <p>Max 250 characters.</p>
   <button>Save</button>
 </form>

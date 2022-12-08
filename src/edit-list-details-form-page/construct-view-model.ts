@@ -13,8 +13,8 @@ export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<un
   adapters.getList,
   E.fromOption(() => ''),
   E.map((list) => ({
-    name: list.name,
-    id,
-    description: list.description,
+    listName: list.name,
+    listId: id,
+    listDescription: list.description,
   })),
 );

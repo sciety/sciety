@@ -19,15 +19,15 @@ describe('construct-view-model', () => {
     );
 
     it('includes the list id', () => {
-      expect(viewModel.id).toStrictEqual(listId);
+      expect(viewModel.listId).toStrictEqual(listId);
     });
 
     it('includes the current list name', () => {
-      expect(viewModel.name).toStrictEqual(list.name);
+      expect(viewModel.listName).toStrictEqual(list.name);
     });
 
     it('includes the current list description', () => {
-      expect(viewModel.description).toStrictEqual(list.description);
+      expect(viewModel.listDescription).toStrictEqual(list.description);
     });
   });
 
