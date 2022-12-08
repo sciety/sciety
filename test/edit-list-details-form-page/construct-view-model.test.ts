@@ -1,6 +1,14 @@
+import { constructViewModel } from '../../src/edit-list-details-form-page/construct-view-model';
+import { arbitraryListId } from '../types/list-id.helper';
+
 describe('construct-view-model', () => {
   describe('when the list exists', () => {
-    it.todo('includes the list id');
+    const listId = arbitraryListId();
+    const viewModel = constructViewModel(listId);
+
+    it('includes the list id', () => {
+      expect(viewModel.id).toStrictEqual(listId);
+    });
 
     it.todo('includes the current list name');
 
