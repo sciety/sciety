@@ -66,6 +66,7 @@ Members of the Biophysics Colab community include:
 - Marcel P Goldschen-Ohm
 - Sharona E Gordon
 - Alexander S Hauser
+- León D Islas
 - Yun Lyna Luo
 - Merritt Maduke
 - Medha M Pathak
