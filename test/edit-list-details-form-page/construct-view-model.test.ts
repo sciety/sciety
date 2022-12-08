@@ -14,7 +14,8 @@ describe('construct-view-model', () => {
       getList: () => O.some(list),
     };
     const viewModel = pipe(
-      constructViewModel(adapters)(listId),
+      listId,
+      constructViewModel(adapters),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -36,7 +37,10 @@ describe('construct-view-model', () => {
     const adapters = {
       getList: () => O.none,
     };
-    const result = constructViewModel(adapters)(listId);
+    const result = pipe(
+      listId,
+      constructViewModel(adapters),
+    );
 
     it('returns on left', () => {
       expect(result).toStrictEqual(E.left('no-such-list'));
