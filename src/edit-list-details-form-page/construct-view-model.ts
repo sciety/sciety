@@ -8,11 +8,12 @@ export type Ports = {
   getList: GetList,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<unknown, ViewModel> => pipe(
-  {
-    name: '',
+  id,
+  adapters.getList,
+  E.fromOption(() => ''),
+  E.map((list) => ({
+    name: list.name,
     id,
-  },
-  E.right,
+  })),
 );

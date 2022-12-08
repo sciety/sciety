@@ -22,7 +22,7 @@ describe('construct-view-model', () => {
       expect(viewModel.id).toStrictEqual(listId);
     });
 
-    it.failing('includes the current list name', () => {
+    it('includes the current list name', () => {
       expect(viewModel.name).toStrictEqual(list.name);
     });
 
