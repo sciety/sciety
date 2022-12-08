@@ -11,27 +11,38 @@ export const editListDetailsFormPageParamsCodec = t.type({
   id: ListIdFromString,
 });
 
-const viewModel = {
-  name: '',
+type ViewModel = {
+  name: string,
+  id: ListId,
 };
 
-export const editListDetailsFormPage = (
-  params: { id: ListId },
-): TE.TaskEither<RenderPageError, Page> => pipe(
-  viewModel,
-  ({ name }) => TE.right({
+const renderEditListDetailsFormPage = (viewModel: ViewModel) => (
+  {
     title: 'Edit details form',
     content: toHtmlFragment(`
 <h1>My form</h1>
 <form action="/forms/edit-list-details" method="post">
-  <input type="hidden" value="${params.id}" name="listId">
+  <input type="hidden" value="${viewModel.id}" name="listId">
   <label for="listName">List name</label>
-  <input type="text" id="listName" name="name" value="${name}">
+  <input type="text" id="listName" name="name" value="${viewModel.name}">
   <label for="listDescription">Description</label>
   <textarea id="listDescription" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made."></textarea>
   <p>Max 250 characters.</p>
   <button>Save</button>
 </form>
 `),
-  }),
+  });
+
+const constructViewModel = (id: ListId) => ({
+  name: '',
+  id,
+});
+
+export const editListDetailsFormPage = (
+  params: { id: ListId },
+): TE.TaskEither<RenderPageError, Page> => pipe(
+  params.id,
+  constructViewModel,
+  renderEditListDetailsFormPage,
+  TE.right,
 );
