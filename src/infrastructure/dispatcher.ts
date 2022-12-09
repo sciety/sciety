@@ -13,6 +13,13 @@ type Dispatcher = {
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
+type QueryBuilder<A, B> = (readModel: A) => B;
+
+const wireUpQueries = <A, B>(
+  queryBuilder: QueryBuilder<A, B>,
+  readModelInstance: A,
+): B => queryBuilder(readModelInstance);
+
 export const dispatcher = (): Dispatcher => {
   let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
   let listsReadModel = lists.initialState();
@@ -34,9 +41,9 @@ export const dispatcher = (): Dispatcher => {
   };
 
   const queries = {
-    ...lists.queries(listsReadModel),
-    ...addArticleToElifeSubjectAreaList.queries(addArticleToElifeSubjectAreaListReadModel),
-    ...groups.queries(groupsReadModel),
+    ...wireUpQueries(lists.queries, listsReadModel),
+    ...wireUpQueries(addArticleToElifeSubjectAreaList.queries, addArticleToElifeSubjectAreaListReadModel),
+    ...wireUpQueries(groups.queries, groupsReadModel),
   };
 
   return {
