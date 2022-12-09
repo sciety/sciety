@@ -1,4 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as elife from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
@@ -46,11 +47,10 @@ export const dispatcher = (): Dispatcher => {
     groups: new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
   };
 
-  const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    all.elife.dispatch(events);
-    all.lists.dispatch(events);
-    all.groups.dispatch(events);
-  };
+  const dispatchToAllReadModels: DispatchToAllReadModels = (events) => pipe(
+    all,
+    R.map((irm) => irm.dispatch(events)),
+  );
 
   const queries = {
     ...all.elife.queries,
