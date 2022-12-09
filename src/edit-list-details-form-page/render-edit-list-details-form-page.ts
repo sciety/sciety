@@ -20,6 +20,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   <label for="listDescription">Description</label>
   <textarea id="listDescription" name="description" cols="30" rows="10" placeholder="This is a description of my list. It tells you about the lists I have made." required>${viewModel.listDescription}</textarea>
   <p>Max 250 characters.</p>
+  <a href="/lists/${viewModel.listId}">Cancel</a>
   <button>Save</button>
 </form>
 `),
