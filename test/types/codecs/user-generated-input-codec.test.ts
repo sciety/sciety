@@ -8,7 +8,7 @@ describe('user-generated-input-codec', () => {
     expect(E.isLeft(result)).toBe(true);
   });
 
-  it.failing('passes when supplied with a non blacklisted character é', () => {
+  it('passes when supplied with a non blacklisted character é', () => {
     const result = userGeneratedInputCodec.decode('é');
 
     expect(E.isRight(result)).toBe(true);
