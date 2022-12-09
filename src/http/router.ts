@@ -191,9 +191,18 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     pageHandler(() => aboutPage(adapters.fetchStaticFile)),
   );
 
+  const actionFailedPageParamsCodec = t.type({
+    errorType: tt.optionFromNullable(t.string),
+  });
+
   router.get(
     '/action-failed',
-    pageHandler(() => actionFailedPage),
+    pageHandler(
+      createPageFromParams(
+        actionFailedPageParamsCodec,
+        () => actionFailedPage,
+      ),
+    ),
   );
 
   router.get(
