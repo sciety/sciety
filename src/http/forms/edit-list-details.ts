@@ -6,6 +6,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
+import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { User } from '../../types/user';
 
@@ -34,6 +35,7 @@ const validateCommandShape = <C>(codec: CommandCodec<C>) => flow(
       errors,
       PR.failure,
       (fails) => ({
+        errorType: 'codec-failed',
         message: 'Submitted form can not be decoded into a command',
         payload: { fails },
       }),
@@ -50,9 +52,9 @@ export const editListDetails = (adapters: Ports): Middleware => async (context) 
     TE.chainFirstW((command) => checkUserOwnsList(adapters, command.listId, user.id)),
     TE.chainFirstW(handleCommand(adapters)),
     TE.match(
-      (error) => {
+      (error: { errorType?: string, message: string, payload: Payload }) => {
         adapters.logger('error', error.message, error.payload);
-        context.redirect('/action-failed');
+        context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },
       ({ listId }) => {
         context.redirect(`/lists/${listId}`);
