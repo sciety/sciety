@@ -1,5 +1,13 @@
 @use '../sass/settings';
 
 .edit-list-details-form {
-    background-color: settings.$colour-white;
+  background-color: settings.$colour-white;
+}
+
+.edit-list-details-form__label {
+  display: block;
+}
+
+.edit-list-details-form__field {
+  display: block;
 }
