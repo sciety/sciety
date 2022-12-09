@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as elife from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
@@ -40,23 +39,29 @@ class InitialisedReadModel<I, Q> {
   }
 }
 
+// taken from https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
+
 export const dispatcher = (): Dispatcher => {
-  const all = {
-    elife: new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries),
-    lists: new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries),
-    groups: new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
-  };
+  const allInitialisedReadModels = [
+    new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries),
+    new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries),
+    new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
+  ];
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => pipe(
-    all,
-    R.map((irm) => irm.dispatch(events)),
+    allInitialisedReadModels,
+    RA.map((elem) => elem.dispatch(events)),
   );
 
-  const queries = {
-    ...all.elife.queries,
-    ...all.lists.queries,
-    ...all.groups.queries,
-  };
+  const queries = pipe(
+    allInitialisedReadModels,
+    RA.map((elem) => elem.queries),
+    (arrayOfQueries) => arrayOfQueries.reduce(
+      (acc, elem) => ({ ...acc, ...elem }),
+    ) as UnionToIntersection<typeof arrayOfQueries[number]>,
+  );
 
   return {
     queries,
