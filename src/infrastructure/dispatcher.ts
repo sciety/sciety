@@ -14,22 +14,20 @@ type Dispatcher = {
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
-type QueryBuilder<A, B> = (readModel: A) => B;
+const wireUpQueries = <I, Q>(
+  readModelWithInstance: ReadModelWithInstance<I, Q>,
+): Q => readModelWithInstance.queryBuilder(readModelWithInstance.instance);
 
-const wireUpQueries = <A, B>(
-  queryBuilder: QueryBuilder<A, B>,
-  readModelInstance: A,
-): B => queryBuilder(readModelInstance);
-
-type ReadModelWithInstance<I> = {
+type ReadModelWithInstance<I, Q> = {
   instance: I,
   handleEvent: (state: I, event: DomainEvent) => I,
+  queryBuilder: (instance: I) => Q,
 };
 
 const updateInstance = (
   events: ReadonlyArray<DomainEvent>,
-) => <I>(
-  readModelWithInstance: ReadModelWithInstance<I>,
+) => <I, Q>(
+  readModelWithInstance: ReadModelWithInstance<I, Q>,
 ): I => pipe(
     events,
     RA.reduce(readModelWithInstance.instance, readModelWithInstance.handleEvent),
@@ -44,21 +42,22 @@ export const dispatcher = (): Dispatcher => {
     elife: {
       instance: addArticleToElifeSubjectAreaListReadModel,
       handleEvent: addArticleToElifeSubjectAreaList.handleEvent,
+      queryBuilder: addArticleToElifeSubjectAreaList.queries,
     },
-    lists: { instance: listsReadModel, handleEvent: lists.handleEvent },
-    groups: { instance: groupsReadModel, handleEvent: groups.handleEvent },
+    lists: { instance: listsReadModel, handleEvent: lists.handleEvent, queryBuilder: lists.queries },
+    groups: { instance: groupsReadModel, handleEvent: groups.handleEvent, queryBuilder: groups.queries },
   };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
+    readModelsWithInstances.elife.instance = updateInstance(events)(readModelsWithInstances.elife);
     readModelsWithInstances.lists.instance = updateInstance(events)(readModelsWithInstances.lists);
     readModelsWithInstances.groups.instance = updateInstance(events)(readModelsWithInstances.groups);
-    readModelsWithInstances.elife.instance = updateInstance(events)(readModelsWithInstances.elife);
   };
 
   const queries = {
-    ...wireUpQueries(lists.queries, listsReadModel),
-    ...wireUpQueries(addArticleToElifeSubjectAreaList.queries, addArticleToElifeSubjectAreaListReadModel),
-    ...wireUpQueries(groups.queries, groupsReadModel),
+    ...wireUpQueries(readModelsWithInstances.elife),
+    ...wireUpQueries(readModelsWithInstances.lists),
+    ...wireUpQueries(readModelsWithInstances.groups),
   };
 
   return {
