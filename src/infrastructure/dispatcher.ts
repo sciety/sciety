@@ -5,28 +5,6 @@ import { DomainEvent } from '../domain-events';
 import * as groups from '../shared-read-models/groups';
 import * as lists from '../shared-read-models/lists';
 
-type ReadModelWithInstance<I, Q> = {
-  instance: I,
-  handleEvent: (state: I, event: DomainEvent) => I,
-  queryBuilder: (instance: I) => Q,
-};
-
-const wireUpQueries = <I, Q>(
-  readModelWithInstance: ReadModelWithInstance<I, Q>,
-): Q => readModelWithInstance.queryBuilder(readModelWithInstance.instance);
-
-const updateInstance = (
-  events: ReadonlyArray<DomainEvent>,
-) => <I, Q>(
-  readModelWithInstance: ReadModelWithInstance<I, Q>,
-) => {
-  // eslint-disable-next-line no-param-reassign
-  readModelWithInstance.instance = pipe(
-    events,
-    RA.reduce(readModelWithInstance.instance, readModelWithInstance.handleEvent),
-  );
-};
-
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
@@ -36,23 +14,48 @@ type Dispatcher = {
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
+class InitialisedReadModel<I, Q> {
+  private instance: I;
+
+  private handleEvent: (state: I, e: DomainEvent) => I;
+
+  dispatch(events: ReadonlyArray<DomainEvent>) {
+    this.instance = pipe(
+      events,
+      RA.reduce(this.instance, this.handleEvent),
+    );
+  }
+
+  queries: Q;
+
+  constructor(
+    initialState: () => I,
+    handleEvent: (s: I, e: DomainEvent) => I,
+    buildQueries: (instance: I) => Q,
+  ) {
+    this.instance = initialState();
+    this.handleEvent = handleEvent;
+    this.queries = buildQueries(this.instance);
+  }
+}
+
 export const dispatcher = (): Dispatcher => {
-  const readModelsWithInstances = {
-    elife: { instance: elife.initialState(), handleEvent: elife.handleEvent, queryBuilder: elife.queries },
-    lists: { instance: lists.initialState(), handleEvent: lists.handleEvent, queryBuilder: lists.queries },
-    groups: { instance: groups.initialState(), handleEvent: groups.handleEvent, queryBuilder: groups.queries },
+  const all = {
+    elife: new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries),
+    lists: new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries),
+    groups: new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
   };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    updateInstance(events)(readModelsWithInstances.elife);
-    updateInstance(events)(readModelsWithInstances.lists);
-    updateInstance(events)(readModelsWithInstances.groups);
+    all.elife.dispatch(events);
+    all.lists.dispatch(events);
+    all.groups.dispatch(events);
   };
 
   const queries = {
-    ...wireUpQueries(readModelsWithInstances.elife),
-    ...wireUpQueries(readModelsWithInstances.lists),
-    ...wireUpQueries(readModelsWithInstances.groups),
+    ...all.elife.queries,
+    ...all.lists.queries,
+    ...all.groups.queries,
   };
 
   return {
