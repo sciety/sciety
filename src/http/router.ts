@@ -30,6 +30,7 @@ import { redirectUserListPageToGenericListPage } from './redirects/redirect-user
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { actionFailedPage } from '../action-failed';
+import { actionFailedPageParamsCodec } from '../action-failed/action-failed-page';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -191,16 +192,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     pageHandler(() => aboutPage(adapters.fetchStaticFile)),
   );
 
-  const actionFailedPageParamsCodec = t.type({
-    errorType: tt.optionFromNullable(t.string),
-  });
-
   router.get(
     '/action-failed',
     pageHandler(
       createPageFromParams(
         actionFailedPageParamsCodec,
-        () => actionFailedPage,
+        actionFailedPage,
       ),
     ),
   );

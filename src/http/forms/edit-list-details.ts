@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as PR from 'io-ts/PathReporter';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
@@ -33,7 +33,7 @@ const validateCommandShape = <C>(codec: CommandCodec<C>) => flow(
   E.mapLeft(
     (errors) => pipe(
       errors,
-      PR.failure,
+      formatValidationErrors,
       (fails) => ({
         errorType: 'codec-failed',
         message: 'Submitted form can not be decoded into a command',
