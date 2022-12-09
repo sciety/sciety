@@ -1,4 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import * as groups from '../shared-read-models/groups';
@@ -20,24 +21,38 @@ const wireUpQueries = <A, B>(
   readModelInstance: A,
 ): B => queryBuilder(readModelInstance);
 
+type ReadModelWithInstance<I> = {
+  instance: I,
+  handleEvent: (state: I, event: DomainEvent) => I,
+};
+
+const updateInstance = (
+  events: ReadonlyArray<DomainEvent>,
+) => <I>(
+  readModelWithInstance: ReadModelWithInstance<I>,
+): I => pipe(
+    events,
+    RA.reduce(readModelWithInstance.instance, readModelWithInstance.handleEvent),
+  );
+
 export const dispatcher = (): Dispatcher => {
-  let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
-  let listsReadModel = lists.initialState();
-  let groupsReadModel = groups.initialState();
+  const addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
+  const listsReadModel = lists.initialState();
+  const groupsReadModel = groups.initialState();
+
+  const readModelsWithInstances = {
+    elife: {
+      instance: addArticleToElifeSubjectAreaListReadModel,
+      handleEvent: addArticleToElifeSubjectAreaList.handleEvent,
+    },
+    lists: { instance: listsReadModel, handleEvent: lists.handleEvent },
+    groups: { instance: groupsReadModel, handleEvent: groups.handleEvent },
+  };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    addArticleToElifeSubjectAreaListReadModel = RA.reduce(
-      addArticleToElifeSubjectAreaListReadModel,
-      addArticleToElifeSubjectAreaList.handleEvent,
-    )(events);
-    listsReadModel = RA.reduce(
-      listsReadModel,
-      lists.handleEvent,
-    )(events);
-    groupsReadModel = RA.reduce(
-      groupsReadModel,
-      groups.handleEvent,
-    )(events);
+    readModelsWithInstances.lists.instance = updateInstance(events)(readModelsWithInstances.lists);
+    readModelsWithInstances.groups.instance = updateInstance(events)(readModelsWithInstances.groups);
+    readModelsWithInstances.elife.instance = updateInstance(events)(readModelsWithInstances.elife);
   };
 
   const queries = {
