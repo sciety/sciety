@@ -8,6 +8,12 @@ describe('user-generated-input-codec', () => {
     expect(E.isLeft(result)).toBe(true);
   });
 
+  it('fails when supplied with an empty string', () => {
+    const result = userGeneratedInputCodec.decode('');
+
+    expect(E.isLeft(result)).toBe(true);
+  });
+
   it('passes when supplied with a non blacklisted character é', () => {
     const result = userGeneratedInputCodec.decode('é');
 
