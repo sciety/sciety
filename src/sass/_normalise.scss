@@ -103,7 +103,8 @@ a:visited {
 
 a[href],
 button,
-input {
+input,
+textarea {
   @include states.focus();
 }
 
