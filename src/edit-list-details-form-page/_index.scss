@@ -3,6 +3,7 @@
 @use '../sass/typography';
 @use '../sass/baseline';
 @use '../sass/button';
+@use '../sass/card';
 @use '../sass/breakpoints';
 
 $_form-guttering: 8px;
@@ -19,10 +20,7 @@ $_form-guttering: 8px;
 }
 
 .edit-list-details-form {
-  background-color: settings.$colour-white;
-  padding: functions.px-to-rem(settings.$sciety-default-gutter);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
+  @include card.basics();
 }
 
 .edit-list-details-form__label {
