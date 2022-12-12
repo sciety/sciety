@@ -44,6 +44,7 @@ $_form-guttering: 8px;
 .edit-list-details-form__cancel {
   @include button.button-link-secondary();
   display: inline-block;
+  margin-right: functions.px-to-rem(16px);
 }
 
 .edit-list-details-form__save {
