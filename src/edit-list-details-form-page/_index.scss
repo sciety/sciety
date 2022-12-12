@@ -22,6 +22,7 @@ $_form-guttering: 8px;
 
 .edit-list-details-form__field {
   display: block;
+  width: 100%;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-gutter);
 }
 
