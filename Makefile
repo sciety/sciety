@@ -233,6 +233,7 @@ MK_LINTED_SASS := .mk-linted-sass
 TS_SOURCES := $(shell find src test feature-test -name '*.ts')
 SASS_SOURCES := $(shell find src test feature-test -name '*.scss')
 LINT_CACHE := .eslint-cache
+STYLELINT_CACHE := .stylelint/
 
 check: $(MK_TESTED_TS) $(MK_LINTED_TS) $(MK_LINTED_SASS)
 
@@ -249,6 +250,7 @@ $(MK_TESTED_TS): node_modules $(TS_SOURCES)
 	@touch $@
 
 $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
+	npx stylelint 'src/**/*.scss' --cache --cache-location $(STYLELINT_CACHE)
 	npx sass-unused 'src/**/*.scss'
 	rm -f .purgecss/{full,purged}.css
 	npx sass --no-source-map src/sass/style.scss:.purgecss/full.css
@@ -263,6 +265,7 @@ graphs:
 clean:
 	rm -rf $(MK_LINTED_SASS) $(MK_LINTED_TS)
 	rm -rf $(LINT_CACHE)
+	rm -rf $(STYLELINT_CACHE)
 	$(MAKE) -C $(GRAPH_DIR) clean
 
 clobber: clean
