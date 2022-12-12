@@ -3,11 +3,19 @@
 @use '../sass/typography';
 @use '../sass/baseline';
 @use '../sass/button';
+@use '../sass/breakpoints';
 
 $_form-guttering: 8px;
 
 .page-header.page-header--edit-list-details-form-page {
-  margin-bottom: baseline.increments(3);
+  margin-bottom: baseline.increments(2);
+  @include breakpoints.not-narrow {
+    margin-bottom: baseline.increments(3);
+  }
+  
+  h1 {
+    margin-bottom: 0;
+  }
 }
 
 .edit-list-details-form {
