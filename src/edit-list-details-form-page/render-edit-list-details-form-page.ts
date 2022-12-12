@@ -12,7 +12,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   {
     title: 'Edit list details',
     content: toHtmlFragment(`
-<header class="page-header">
+<header class="page-header page-header--edit-list-details-form-page">
   <h1>Edit list details</h1>
 </header>
 <form action="/forms/edit-list-details" method="post" class="edit-list-details-form">

@@ -1,8 +1,13 @@
 @use '../sass/functions';
 @use '../sass/settings';
 @use '../sass/typography';
+@use '../sass/baseline';
 
 $_form-guttering: 8px;
+
+.page-header.page-header--edit-list-details-form-page {
+  margin-bottom: baseline.increments(3);
+}
 
 .edit-list-details-form {
   background-color: settings.$colour-white;
