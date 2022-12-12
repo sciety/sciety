@@ -12,7 +12,9 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   {
     title: 'Edit list details',
     content: toHtmlFragment(`
-<h1>Edit list details</h1>
+<header class="page-header">
+  <h1>Edit list details</h1>
+</header>
 <form action="/forms/edit-list-details" method="post" class="edit-list-details-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
   <label for="listName" class="edit-list-details-form__label">List name</label>
