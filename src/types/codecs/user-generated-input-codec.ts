@@ -5,13 +5,13 @@ import * as t from 'io-ts';
 
 const regex = /^[^<>]+$/;
 
-export const userGeneratedInputCodec = new t.Type(
+export const userGeneratedInputCodec = (maxLength: number) => new t.Type(
   'userGeneratedInputCodec',
   (u): u is string => typeof u === 'string',
   (u, c) => pipe(
     t.string.validate(u, c),
     E.chain((inputString) => pipe(
-      !!regex.exec(inputString),
+      !!regex.exec(inputString) && inputString.length <= maxLength,
       B.fold(
         () => t.failure(u, c),
         () => t.success(inputString),

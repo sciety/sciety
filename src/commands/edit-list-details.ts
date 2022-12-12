@@ -3,8 +3,8 @@ import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { userGeneratedInputCodec } from '../types/codecs/user-generated-input-codec';
 
 export const editListDetailsCommandCodec = t.type({
-  name: userGeneratedInputCodec,
-  description: userGeneratedInputCodec,
+  name: userGeneratedInputCodec(100),
+  description: userGeneratedInputCodec(250),
   listId: ListIdFromString,
 });
 
