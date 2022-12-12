@@ -1,6 +1,8 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
 
 const renderArticleCount = (articleCount: number) => pipe(
   articleCount === 1,
@@ -17,6 +19,7 @@ export type ViewModel = {
   ownerAvatarPath: string,
   articleCount: number,
   lastUpdated: Date,
+  editCapability: O.Option<ListId>,
 };
 
 export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
@@ -28,6 +31,13 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
     </p>
     <p class="page-header__description">${viewModel.description}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
+    ${pipe(
+    viewModel.editCapability,
+    O.fold(
+      () => '',
+      (listId) => `<a href="/lists/${listId}/edit-details">Edit list details</a>`,
+    ),
+  )}
   </header>`,
   toHtmlFragment,
 );

@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
@@ -46,6 +47,7 @@ export const headers: Headers = (ports) => (list) => pipe(
     TE.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
+      editCapability: O.none,
     })),
   )),
 );
