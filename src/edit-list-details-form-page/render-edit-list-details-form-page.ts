@@ -18,8 +18,8 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   <label for="listName" class="edit-list-details-form__label">List name</label>
   <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${viewModel.listName}" pattern="[^<>]+" required>
   <label for="listDescription" class="edit-list-details-form__label">Description</label>
-  <textarea id="listDescription" name="description" cols="30" rows="10" class="edit-list-details-form__field" placeholder="This is a description of my list. It tells you about the lists I have made." required>${viewModel.listDescription}</textarea>
-  <p>Max 250 characters.</p>
+  <textarea id="listDescription" name="description" cols="30" rows="10" class="edit-list-details-form__field edit-list-details-form__field--description" placeholder="This is a description of my list. It tells you about the lists I have made." required>${viewModel.listDescription}</textarea>
+  <p class="edit-list-details-form__description_constraints">Max 250 characters.</p>
   <a href="/lists/${viewModel.listId}">Cancel</a>
   <button>Save</button>
 </form>
