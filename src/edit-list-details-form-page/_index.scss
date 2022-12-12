@@ -1,6 +1,8 @@
 @use '../sass/functions';
 @use '../sass/settings';
 
+$_form-guttering: 8px;
+
 .edit-list-details-form {
   background-color: settings.$colour-white;
   padding: functions.px-to-rem(settings.$sciety-default-gutter);
@@ -9,8 +11,10 @@
 .edit-list-details-form__label {
   display: block;
   font-weight: bold;
+  margin-bottom: functions.px-to-rem($_form-guttering);
 }
 
 .edit-list-details-form__field {
   display: block;
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-gutter);
 }
