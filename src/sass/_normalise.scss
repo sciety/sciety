@@ -107,6 +107,12 @@ input {
   @include states.focus();
 }
 
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
 button {
   @include typography.button();
 }
