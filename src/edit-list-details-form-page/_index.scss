@@ -12,6 +12,8 @@ $_form-guttering: 8px;
 .edit-list-details-form {
   background-color: settings.$colour-white;
   padding: functions.px-to-rem(settings.$sciety-default-gutter);
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
 }
 
 .edit-list-details-form__label {
