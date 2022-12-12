@@ -1,7 +1,9 @@
+@use '../sass/functions';
 @use '../sass/settings';
 
 .edit-list-details-form {
   background-color: settings.$colour-white;
+  padding: functions.px-to-rem(settings.$sciety-default-gutter);
 }
 
 .edit-list-details-form__label {
