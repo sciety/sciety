@@ -2,6 +2,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 @use '../sass/baseline';
+@use '../sass/button';
 
 $_form-guttering: 8px;
 
@@ -38,4 +39,13 @@ $_form-guttering: 8px;
 
 .edit-list-details-form__description_constraints {
   @include typography.details();
+}
+
+.edit-list-details-form__cancel {
+  @include button.button-link-secondary();
+  display: inline-block;
+}
+
+.edit-list-details-form__save {
+  @include button.button();
 }
