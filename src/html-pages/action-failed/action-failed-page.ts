@@ -3,10 +3,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
 
 type ActionFailedPage = TE.TaskEither<RenderPageError, Page>;
 

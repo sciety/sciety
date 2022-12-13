@@ -29,7 +29,6 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
-import { actionFailedPage, actionFailedPageParamsCodec } from '../action-failed';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -49,6 +48,7 @@ import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../follow';
 import { aboutPage } from '../html-pages/about-page';
+import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
 import { page as genericListPage, paramsCodec as genericListPageParams } from '../html-pages/generic-list-page/page';
 import {
