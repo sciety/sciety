@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
@@ -27,7 +27,7 @@ export const constructCommand = (
   E.bimap(
     () => {
       ports.logger('error', 'Unknown group id supplied to policy', { event });
-      return undefined;
+      return 'unknown-group-id' as const;
     },
     (listId) => ({
       articleId: event.articleId,
@@ -38,13 +38,19 @@ export const constructCommand = (
 
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
   event,
-  E.fromPredicate(isEvaluationRecordedEvent, () => undefined),
-  E.chain(constructCommand(ports)),
+  E.fromPredicate(isEvaluationRecordedEvent, () => 'not-interesting-event' as const),
+  E.chainW(constructCommand(ports)),
   TE.fromEither,
-  TE.chainW(addArticleToListCommandHandler(ports)),
+  TE.chainW(flow(
+    addArticleToListCommandHandler(ports),
+    TE.mapLeft(() => 'command-execution-failed' as const),
+  )),
   TE.match(
     (errorMessage) => {
-      ports.logger('error', 'Failed to add article to list', { errorMessage, event });
+      if (errorMessage === 'not-interesting-event') {
+        return;
+      }
+      ports.logger('error', 'addArticleToEvaluatedArticlesList failed', { errorMessage, event });
     },
     () => { },
   ),
