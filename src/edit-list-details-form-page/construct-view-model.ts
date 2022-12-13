@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './render-edit-list-details-form-page';
+import { listDescriptionMaxLength, listNameMaxLength } from '../commands/edit-list-details';
 import { GetList } from '../shared-ports';
 import { ListId } from '../types/list-id';
 
@@ -16,5 +17,7 @@ export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<'n
     listName: list.name,
     listId: id,
     listDescription: list.description,
+    listNameMaxLength,
+    listDescriptionMaxLength,
   })),
 );
