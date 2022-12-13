@@ -30,7 +30,7 @@ $_input-width-on-wide-screens: 360px;
   
   @include breakpoints.not-narrow() {
     width: functions.px-to-rem($_input-width-on-wide-screens);
-    margin-right: functions.px-to-rem(16px);
+    margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
     margin-bottom: 0;
   }
 }

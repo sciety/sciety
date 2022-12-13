@@ -42,7 +42,7 @@
 
 .edit-list-details-form__cancel {
   @include button.button-link-secondary();
-  margin-right: functions.px-to-rem(16px);
+  margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
 .edit-list-details-form__save {
