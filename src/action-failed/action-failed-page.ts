@@ -10,8 +10,12 @@ import { RenderPageError } from '../types/render-page-error';
 
 type ActionFailedPage = TE.TaskEither<RenderPageError, Page>;
 
+const actionFailedErrorTypeCodec = t.literal('codec-failed');
+
+export type ActionFailedErrorType = t.TypeOf<typeof actionFailedErrorTypeCodec>;
+
 export const actionFailedPageParamsCodec = t.type({
-  errorType: tt.optionFromNullable(t.string),
+  errorType: tt.optionFromNullable(actionFailedErrorTypeCodec),
 });
 
 type Params = t.TypeOf<typeof actionFailedPageParamsCodec>;

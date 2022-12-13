@@ -1,10 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
+import { ActionFailedErrorType } from '../../action-failed/action-failed-page';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
@@ -28,14 +29,23 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
 
-const validateCommandShape = <C>(codec: CommandCodec<C>) => flow(
+type CommandValidationFailure = {
+  errorType: ActionFailedErrorType,
+  message: string,
+  payload: Payload,
+};
+
+type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<CommandValidationFailure, C>;
+
+const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
+  input,
   codec.decode,
   E.mapLeft(
     (errors) => pipe(
       errors,
       formatValidationErrors,
       (fails) => ({
-        errorType: 'codec-failed',
+        errorType: 'codec-failed' as const,
         message: 'Submitted form can not be decoded into a command',
         payload: { fails },
       }),
