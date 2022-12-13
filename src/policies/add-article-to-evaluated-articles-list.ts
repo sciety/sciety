@@ -1,15 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../add-article-to-list';
 import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
-import {
-  evaluatedArticlesListIdsByGroupId,
-} from '../shared-read-models/get-evaluated-articles-list-id-for-group-from-hardcoded-data';
+
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 
@@ -24,8 +21,8 @@ export type Ports = AddArticleToListPorts & {
 export const constructCommand = (
   ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
 ) => (event: EvaluationRecordedEvent) => pipe(
-  evaluatedArticlesListIdsByGroupId,
-  R.lookup(event.groupId),
+  event.groupId,
+  ports.getEvaluatedArticlesListIdForGroup,
   E.fromOption(() => undefined),
   E.bimap(
     () => {

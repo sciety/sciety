@@ -27,7 +27,7 @@ describe('add-article-to-evaluated-articles-list', () => {
       }),
     );
 
-    it.failing('returns a command', () => {
+    it('returns a command', () => {
       expect(command).toStrictEqual(E.right({
         articleId,
         listId,
@@ -44,7 +44,7 @@ describe('add-article-to-evaluated-articles-list', () => {
       }),
     );
 
-    it.skip('returns nothing to do', () => {
+    it('returns nothing to do', () => {
       expect(E.isLeft(command)).toBe(true);
     });
   });
