@@ -12,7 +12,7 @@
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
 
-@mixin secondary-button-link() {
+@mixin site-header-secondary-button-link() {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
@@ -114,7 +114,7 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header__search_link {
-  @include secondary-button-link();
+  @include site-header-secondary-button-link();
 
   display: flex;
   align-items: center;

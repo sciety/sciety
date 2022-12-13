@@ -78,7 +78,7 @@ $_avatar-right-margin: 6px;
 }
 
 .utility-bar__list_link_sign_up_button {
-  @include site-header.secondary-button-link();
+  @include site-header.site-header-secondary-button-link();
 }
 
 .utility-bar-user-avatar {
