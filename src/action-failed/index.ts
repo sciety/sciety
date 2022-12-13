@@ -1,1 +1,1 @@
-export { actionFailedPage } from './action-failed-page';
+export { actionFailedPage, actionFailedPageParamsCodec } from './action-failed-page';
