@@ -169,6 +169,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const collectedAdapters = {
         ...queries,
+        getEvaluatedArticlesListIdForGroup: () => O.none,
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
@@ -204,6 +205,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const policiesAdapters = {
         ...queries,
+        getEvaluatedArticlesListIdForGroup: () => O.none,
         commitEvents: commitEventsWithoutListeners,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,

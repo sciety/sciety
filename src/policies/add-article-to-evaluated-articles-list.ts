@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,10 +8,15 @@ import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '
 import { DomainEvent, EvaluationRecordedEvent, isEvaluationRecordedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 import * as Gid from '../types/group-id';
+import { GroupId } from '../types/group-id';
 import * as Lid from '../types/list-id';
+import { ListId } from '../types/list-id';
+
+type GetEvaluatedArticlesListIdForGroup = (groupId: GroupId) => O.Option<ListId>;
 
 export type Ports = AddArticleToListPorts & {
   logger: Logger,
+  getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
 };
 
 const evaluatedArticlesListIdsByGroupId = {
@@ -41,7 +47,9 @@ const evaluatedArticlesListIdsByGroupId = {
 };
 
 // ts-unused-exports:disable-next-line
-export const constructCommand = (ports: { logger: Logger }) => (event: EvaluationRecordedEvent) => pipe(
+export const constructCommand = (
+  ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
+) => (event: EvaluationRecordedEvent) => pipe(
   evaluatedArticlesListIdsByGroupId,
   R.lookup(event.groupId),
   E.fromOption(() => undefined),

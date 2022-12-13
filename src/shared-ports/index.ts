@@ -7,6 +7,7 @@ import { GetAllEvents } from './get-all-events';
 import { GetAllGroups } from './get-all-groups';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
+import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
 import { GetList } from './get-list';
@@ -38,6 +39,8 @@ export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
+// ts-unused-exports:disable-next-line
+export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -59,4 +62,5 @@ export type SharedPorts = {
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
 };
