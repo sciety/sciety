@@ -23,7 +23,6 @@
 
 .full-article-button {
   @include button.button-link();
-  display: inline-block;
   margin-bottom: baseline.increments(2);
 }
 

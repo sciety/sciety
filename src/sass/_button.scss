@@ -15,6 +15,7 @@
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+  display: inline-block;
 
   &:link,
   &:visited {
