@@ -1,3 +1,4 @@
+import { listDescriptionMaxLength, listNameMaxLength } from '../commands/edit-list-details';
 import { toHtmlFragment } from '../types/html-fragment';
 import { ListId } from '../types/list-id';
 import { Page } from '../types/page';
@@ -7,9 +8,6 @@ export type ViewModel = {
   listDescription: string,
   listId: ListId,
 };
-
-const listNameMaxLength = 100;
-const listDescriptionMaxLength = 250;
 
 export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   {

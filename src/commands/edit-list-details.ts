@@ -2,9 +2,12 @@ import * as t from 'io-ts';
 import { ListIdFromString } from '../types/codecs/ListIdFromString';
 import { userGeneratedInputCodec } from '../types/codecs/user-generated-input-codec';
 
+export const listNameMaxLength = 100;
+export const listDescriptionMaxLength = 250;
+
 export const editListDetailsCommandCodec = t.type({
-  name: userGeneratedInputCodec(100),
-  description: userGeneratedInputCodec(250),
+  name: userGeneratedInputCodec(listNameMaxLength),
+  description: userGeneratedInputCodec(listDescriptionMaxLength),
   listId: ListIdFromString,
 });
 
