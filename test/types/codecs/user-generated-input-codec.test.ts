@@ -15,13 +15,13 @@ describe('user-generated-input-codec', () => {
     expect(E.isLeft(result)).toBe(true);
   });
 
-  it('passes when supplied with a non blacklisted character é', () => {
+  it('passes when supplied with a permitted character é', () => {
     const result = userGeneratedInputCodec(100).decode('é');
 
     expect(E.isRight(result)).toBe(true);
   });
 
-  it('passes when supplied with a non blacklisted special character', () => {
+  it('passes when supplied with a permitted special character', () => {
     const result = userGeneratedInputCodec(100).decode('Some articles?');
 
     expect(E.isRight(result)).toBe(true);
