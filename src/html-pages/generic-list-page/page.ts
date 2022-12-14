@@ -45,8 +45,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   ports.getList,
   TE.fromOption(() => DE.notFound),
   TE.chain((list) => pipe(
-    list,
-    headers(ports),
+    headers(ports)(list, getLoggedInUserIdFromParam(params.user)),
     TE.map((headerViewModel) => ({
       headerViewModel, listOwnerId: list.ownerId, listId: list.listId, list,
     })),

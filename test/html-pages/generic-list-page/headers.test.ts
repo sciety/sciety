@@ -5,14 +5,17 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { headers } from '../../../src/html-pages/generic-list-page/headers';
 import * as DE from '../../../src/types/data-error';
+import * as LOID from '../../../src/types/list-owner-id';
 import { UserId } from '../../../src/types/user-id';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryList } from '../../types/list-helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('headers', () => {
   describe('when the logged in user owns the list', () => {
     it.skip('includes editing capability', async () => {
+      const loggedInUserId = arbitraryUserId();
       const ports = {
         getAllEvents: T.of([]),
         getGroup: () => E.left(DE.notFound),
@@ -23,10 +26,12 @@ describe('headers', () => {
           userId,
         }),
       };
-      const list = arbitraryList();
+      const list = {
+        ...arbitraryList(),
+        ownerId: LOID.fromUserId(loggedInUserId),
+      };
       const viewModel = await pipe(
-        list,
-        headers(ports),
+        headers(ports)(list, O.some(loggedInUserId)),
         TE.getOrElse(shouldNotBeCalled),
       )();
 

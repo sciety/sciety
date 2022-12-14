@@ -8,6 +8,7 @@ import { GetAllEvents, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { List } from '../../types/list';
+import { UserId } from '../../types/user-id';
 
 export type Ports = GetUserOwnerInformationPorts
 & {
@@ -25,7 +26,7 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
   TE.fromEither,
 );
 
-type Headers = (ports: Ports) => (list: List)
+type Headers = (ports: Ports) => (list: List, loggedInUserId: O.Option<UserId>)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const headers: Headers = (ports) => (list) => pipe(
