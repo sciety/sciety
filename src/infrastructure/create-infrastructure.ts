@@ -35,7 +35,7 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { getEvaluatedArticlesListIdForGroupFromHardcodedData } from '../shared-read-models/get-evaluated-articles-list-id-for-group-from-hardcoded-data';
+import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../shared-read-models/get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';
@@ -170,7 +170,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const collectedAdapters = {
         ...queries,
-        getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedData,
+        getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents,
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
@@ -206,7 +206,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const policiesAdapters = {
         ...queries,
-        getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedData,
+        getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents,
         commitEvents: commitEventsWithoutListeners,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
