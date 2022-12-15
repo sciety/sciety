@@ -47,6 +47,11 @@ $_icon-inline-offset: 6px;
 
 .page-header__edit_details_link {
   @include button.button-link();
+  background-image: url('/static/images/edit-note-icon.svg');
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 0.5rem 0.25rem;
+  padding-left: calc(24px + 0.5rem);
 }
 
 .articles-page-count {
