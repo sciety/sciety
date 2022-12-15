@@ -8,6 +8,7 @@ import { AnnotationCreatedEvent, annotationCreatedEventCodec } from './annotatio
 import { ArticleAddedToListEvent, articleAddedToListEventCodec } from './article-added-to-list-event';
 import { ArticleRemovedFromListEvent, articleRemovedFromListEventCodec } from './article-removed-from-list-event';
 import { EvaluationRecordedEvent, evaluationRecordedEventCodec } from './evaluation-recorded-event';
+import { GroupIngestionListIdentifiedEvent, groupIngestionListIdentifiedEventCodec } from './group-ingestion-list-identified';
 import { GroupJoinedEvent, groupJoinedEventCodec } from './group-joined-event';
 import { ListCreatedEvent, listCreatedEventCodec } from './list-created-event';
 import { ListDescriptionEditedEvent, listDescriptionEditedEventCodec } from './list-description-edited-event';
@@ -29,6 +30,7 @@ export type DomainEvent =
   ArticleRemovedFromListEvent |
   SubjectAreaRecordedEvent |
   GroupJoinedEvent |
+  GroupIngestionListIdentifiedEvent |
   EvaluationRecordedEvent |
   ListCreatedEvent |
   ListDescriptionEditedEvent |
@@ -62,6 +64,7 @@ export const domainEventCodec = t.union([
   subjectAreaRecordedEventCodec,
   evaluationRecordedEventCodec,
   groupJoinedEventCodec,
+  groupIngestionListIdentifiedEventCodec,
   listCreatedEventCodec,
   listNameEditedEventCodec,
   listDescriptionEditedEventCodec,
