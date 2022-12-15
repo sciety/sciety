@@ -40,19 +40,21 @@ class InitialisedReadModel<I, Q> {
 }
 
 export const dispatcher = (): Dispatcher => {
-  const a = new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries);
-  const b = new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries);
-  const c = new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries);
+  const allReadModels = {
+    a: new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries),
+    b: new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries),
+    c: new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
+  };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => pipe(
-    [a, b, c],
+    Object.values(allReadModels),
     RA.map((elem) => elem.dispatch(events)),
   );
 
   const queries = {
-    ...a.queries,
-    ...b.queries,
-    ...c.queries,
+    ...allReadModels.a.queries,
+    ...allReadModels.b.queries,
+    ...allReadModels.c.queries,
   };
 
   return {
