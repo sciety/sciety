@@ -1,4 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as elife from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
@@ -44,19 +45,17 @@ class InitialisedReadModel<I, Q> {
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
 
 export const dispatcher = (): Dispatcher => {
-  const allInitialisedReadModels = [
-    new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries),
-    new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries),
-    new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries),
-  ];
+  const a = new InitialisedReadModel(elife.initialState, elife.handleEvent, elife.queries);
+  const b = new InitialisedReadModel(lists.initialState, lists.handleEvent, lists.queries);
+  const c = new InitialisedReadModel(groups.initialState, groups.handleEvent, groups.queries);
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => pipe(
-    allInitialisedReadModels,
+    [a, b, c],
     RA.map((elem) => elem.dispatch(events)),
   );
 
   const queries = pipe(
-    allInitialisedReadModels,
+    [a, b, c],
     RA.map((elem) => elem.queries),
     (arrayOfQueries) => arrayOfQueries.reduce(
       (acc, elem) => ({ ...acc, ...elem }),
