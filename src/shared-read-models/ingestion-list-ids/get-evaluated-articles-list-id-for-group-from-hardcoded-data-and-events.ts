@@ -1,8 +1,8 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { GetEvaluatedArticlesListIdForGroup } from '../shared-ports';
-import * as Gid from '../types/group-id';
-import * as Lid from '../types/list-id';
+import { GetEvaluatedArticlesListIdForGroup } from '../../shared-ports';
+import * as Gid from '../../types/group-id';
+import * as Lid from '../../types/list-id';
 
 const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2')]: Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
