@@ -64,6 +64,27 @@ describe('headers', () => {
   });
 
   describe('when there is no logged in user', () => {
-    it.todo('does not include editing capability');
+    it('does not include editing capability', async () => {
+      const ports = {
+        getAllEvents: T.of([]),
+        getGroup: shouldNotBeCalled,
+        getUserDetails: (userId: UserId) => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+          userId,
+        }),
+      };
+      const list = {
+        ...arbitraryList(),
+        ownerId: LOID.fromUserId(arbitraryUserId()),
+      };
+      const viewModel = await pipe(
+        headers(ports)(list, O.none),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(viewModel.editCapability).toStrictEqual(O.none);
+    });
   });
 });
