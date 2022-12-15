@@ -1,16 +1,15 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, groupIngestionListIdentified } from '../../../src/domain-events';
-import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../../../src/shared-read-models/ingestion-list-ids';
+import { groupIngestionListIdentified } from '../../../src/domain-events';
+import {
+  getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents, handleEvent,
+  initialState,
+} from '../../../src/shared-read-models/ingestion-list-ids';
 import * as Gid from '../../../src/types/group-id';
 import * as Lid from '../../../src/types/list-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-
-const initialState = () => ({});
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const handleEvent = (state: unknown, event: DomainEvent) => state;
 
 describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events', () => {
   describe('given a group Id for which the information is hard coded', () => {
