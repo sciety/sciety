@@ -31,7 +31,10 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
 };
 
-export const getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents: GetEvaluatedArticlesListIdForGroup = (
+export const getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  readModel: unknown,
+): GetEvaluatedArticlesListIdForGroup => (
   groupId,
 ) => pipe(
   evaluatedArticlesListIdsByGroupId,
