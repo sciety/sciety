@@ -1,10 +1,8 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { headers } from '../../../src/html-pages/generic-list-page/headers';
-import * as DE from '../../../src/types/data-error';
 import * as LOID from '../../../src/types/list-owner-id';
 import { UserId } from '../../../src/types/user-id';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
@@ -14,11 +12,11 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('headers', () => {
   describe('when the logged in user owns the list', () => {
-    it.skip('includes editing capability', async () => {
+    it.failing('includes editing capability', async () => {
       const loggedInUserId = arbitraryUserId();
       const ports = {
         getAllEvents: T.of([]),
-        getGroup: () => E.left(DE.notFound),
+        getGroup: shouldNotBeCalled,
         getUserDetails: (userId: UserId) => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
