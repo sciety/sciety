@@ -19,7 +19,7 @@ $_icon-inline-offset: 6px;
 }
 
 .page-header.page-header--list {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .page-header--list .page-header__subheading {
@@ -43,6 +43,7 @@ $_icon-inline-offset: 6px;
 .page-header--list .page-header__meta {
   @include typography.details();
   @include typography.list-separator();
+  margin-bottom: 1rem;
 }
 
 .page-header__edit_details_link {
