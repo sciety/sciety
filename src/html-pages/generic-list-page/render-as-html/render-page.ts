@@ -16,7 +16,6 @@ type ViewModel = {
   header: HeaderViewModel,
   basePath: string,
   contentViewModel: ContentViewModel,
-  supplementary?: HtmlFragment,
 };
 
 type Render = (viewModel: ViewModel) => HtmlFragment;
@@ -31,13 +30,12 @@ const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: strin
 };
 
 const render: Render = ({
-  header, contentViewModel, basePath, supplementary = toHtmlFragment(''),
+  header, contentViewModel, basePath,
 }) => toHtmlFragment(`
   ${renderHeader(header)}
   <section>
     ${renderListOrMessage(contentViewModel, basePath)}
   </section>
-  ${supplementary}
 `);
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
