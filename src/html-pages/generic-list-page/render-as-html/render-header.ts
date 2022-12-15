@@ -30,7 +30,7 @@ const renderEditDetailsLink = (editCapability: O.Option<ListId>) => pipe(
   ),
 );
 
-export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
+export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
     <h1>${viewModel.name}</h1>
     <p class="page-header__subheading">
