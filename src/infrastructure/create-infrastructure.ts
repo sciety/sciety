@@ -35,7 +35,7 @@ import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../record-subject-area';
 import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../shared-read-models/ingestion-list-ids';
+import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../shared-read-models/ingestion-list-ids/get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';

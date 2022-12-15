@@ -3,9 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { groupIngestionListIdentified } from '../../../src/domain-events';
 import {
-  getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents, handleEvent,
+  handleEvent,
   initialState,
 } from '../../../src/shared-read-models/ingestion-list-ids';
+import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../../../src/shared-read-models/ingestion-list-ids/get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events';
 import * as Gid from '../../../src/types/group-id';
 import * as Lid from '../../../src/types/list-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
