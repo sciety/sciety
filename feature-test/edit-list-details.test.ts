@@ -12,19 +12,22 @@ describe('edit-list-details', () => {
     await openBrowser();
     await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
     listId = await getFirstListOwnedBy(testUserId);
-    const editListDetailsPage = `localhost:8080/lists/${listId}/edit-details`;
-    await goto(editListDetailsPage);
   });
 
   afterAll(async () => {
     await closeBrowser();
   });
 
-  describe('providing new values into the name and description fields and clicking save', () => {
+  describe('editing details through the form page and clicking save', () => {
     const listName = arbitraryWord();
     const listDescription = arbitraryString();
 
     beforeAll(async () => {
+      const listPage = `localhost:8080/lists/${listId}`;
+      await goto(listPage);
+      const editDetailsLinkSelector = '.page-header__edit_details_link';
+      const editDetailsLink = $(editDetailsLinkSelector);
+      await click(editDetailsLink);
       await write(listName, into(textBox('List name')));
       await write(listDescription, into(textBox('Description')));
 
