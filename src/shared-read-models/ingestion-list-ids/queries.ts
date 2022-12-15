@@ -6,10 +6,10 @@ import {
 
 // ts-unused-exports:disable-next-line
 export type Queries = {
-  getEvaluatedArticlesListIdByGroup: GetEvaluatedArticlesListIdForGroup,
+  getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
 };
 
 // ts-unused-exports:disable-next-line
 export const queries = (instance: ReadModel): Queries => ({
-  getEvaluatedArticlesListIdByGroup: getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(instance),
+  getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(instance),
 });
