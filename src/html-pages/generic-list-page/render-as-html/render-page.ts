@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
-import { ContentWithPaginationViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
-import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
-import { ViewModel as HeaderViewModel, renderComponent } from './header/render-component';
-import * as DE from '../../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
-import { RenderPageError } from '../../types/render-page-error';
+import * as DE from '../../../types/data-error';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { Page } from '../../../types/page';
+import { RenderPageError } from '../../../types/render-page-error';
+import { ContentWithPaginationViewModel, renderContentWithPagination } from '../articles-list/render-content-with-pagination';
+import { noArticlesCanBeFetchedMessage, noArticlesMessage } from '../articles-list/static-messages';
+import { ViewModel as HeaderViewModel, renderComponent } from '../header/render-component';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
