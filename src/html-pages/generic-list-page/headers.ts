@@ -8,6 +8,7 @@ import { GetAllEvents, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { List } from '../../types/list';
+import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = GetUserOwnerInformationPorts
@@ -29,7 +30,7 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
 type Headers = (ports: Ports) => (list: List, loggedInUserId: O.Option<UserId>)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const headers: Headers = (ports) => (list) => pipe(
+export const headers: Headers = (ports) => (list, loggedInUserId) => pipe(
   {
     ...list,
     articleCount: list.articleIds.length,
@@ -48,7 +49,11 @@ export const headers: Headers = (ports) => (list) => pipe(
     TE.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
-      editCapability: O.none,
+      editCapability: pipe(
+        loggedInUserId,
+        O.filter((userId) => LOID.eqListOwnerId.equals(LOID.fromUserId(userId), list.ownerId)),
+        O.map(() => list.listId),
+      ),
     })),
   )),
 );

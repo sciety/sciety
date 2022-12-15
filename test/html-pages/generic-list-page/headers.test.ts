@@ -12,7 +12,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('headers', () => {
   describe('when the logged in user owns the list', () => {
-    it.failing('includes editing capability', async () => {
+    it('includes editing capability', async () => {
       const loggedInUserId = arbitraryUserId();
       const ports = {
         getAllEvents: T.of([]),
