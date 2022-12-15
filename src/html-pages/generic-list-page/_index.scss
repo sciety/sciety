@@ -10,6 +10,7 @@
 
 $_remove-article-icon-size: 24px;
 $_edit-details-icon-size: 24px;
+$_edit-details-icon-offset: 8px;
 
 .articles-list {
   @include card.list();
@@ -52,8 +53,8 @@ $_edit-details-icon-size: 24px;
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
   background-size: functions.px-to-rem($_edit-details-icon-size);
-  background-position: 0.5rem 0.25rem;
-  padding-left: functions.px-to-rem($_edit-details-icon-size) + 0.5rem;
+  background-position: functions.px-to-rem($_edit-details-icon-offset) 0.25rem;
+  padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
 }
 
 .articles-page-count {
