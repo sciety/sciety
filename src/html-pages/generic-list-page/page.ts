@@ -7,7 +7,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
-import { renderComponent } from './header/render-component';
 import { headers, Ports as HeadersPorts } from './headers';
 import { ContentViewModel, renderErrorPage, renderPage } from './render-page';
 import { GetList } from '../../shared-ports';
@@ -54,7 +53,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
     headerViewModel, listOwnerId, listId, list,
   }) => pipe(
     ({
-      header: TE.right(renderComponent(headerViewModel)),
+      header: TE.right(headerViewModel),
       contentViewModel: pipe(
         list.articleIds,
         RA.map((articleId) => new Doi(articleId)),

@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { ContentWithPaginationViewModel, renderContentWithPagination } from './articles-list/render-content-with-pagination';
 import { noArticlesCanBeFetchedMessage, noArticlesMessage } from './articles-list/static-messages';
+import { ViewModel as HeaderViewModel, renderComponent } from './header/render-component';
 import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
@@ -12,7 +13,7 @@ export type ContentViewModel = Message | ContentWithPaginationViewModel;
 
 type ViewModel = {
   title: string,
-  header: HtmlFragment,
+  header: HeaderViewModel,
   basePath: string,
   contentViewModel: ContentViewModel,
   supplementary?: HtmlFragment,
@@ -32,7 +33,7 @@ const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: strin
 const render: Render = ({
   header, contentViewModel, basePath, supplementary = toHtmlFragment(''),
 }) => toHtmlFragment(`
-  ${header}
+  ${renderComponent(header)}
   <section>
     ${renderListOrMessage(contentViewModel, basePath)}
   </section>
