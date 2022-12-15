@@ -38,7 +38,29 @@ describe('headers', () => {
   });
 
   describe('when the logged in user does not own the list', () => {
-    it.todo('does not include editing capability');
+    it('does not include editing capability', async () => {
+      const loggedInUserId = arbitraryUserId();
+      const ports = {
+        getAllEvents: T.of([]),
+        getGroup: shouldNotBeCalled,
+        getUserDetails: (userId: UserId) => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+          userId,
+        }),
+      };
+      const list = {
+        ...arbitraryList(),
+        ownerId: LOID.fromUserId(arbitraryUserId()),
+      };
+      const viewModel = await pipe(
+        headers(ports)(list, O.some(loggedInUserId)),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(viewModel.editCapability).toStrictEqual(O.none);
+    });
   });
 
   describe('when there is no logged in user', () => {
