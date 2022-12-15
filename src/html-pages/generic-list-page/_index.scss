@@ -45,6 +45,10 @@ $_icon-inline-offset: 6px;
   @include typography.list-separator();
 }
 
+.page-header__edit_details_link {
+  @include button.button-link();
+}
+
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();

@@ -35,7 +35,7 @@ export const renderComponent = (viewModel: ViewModel): HtmlFragment => pipe(
     viewModel.editCapability,
     O.fold(
       () => '',
-      (listId) => `<a href="/lists/${listId}/edit-details">Edit list details</a>`,
+      (listId) => `<a href="/lists/${listId}/edit-details" class="page-header__edit_details_link">Edit list details</a>`,
     ),
   )}
   </header>`,
