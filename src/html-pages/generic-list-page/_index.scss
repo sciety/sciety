@@ -6,9 +6,10 @@
 @use '../../sass/page-header';
 @use '../../sass/avatar';
 @use '../../sass/button';
+@use '../../sass/functions';
 
-$_icon-size: 24px;
-$_icon-inline-offset: 6px;
+$_remove-article-icon-size: 24px;
+$_edit-details-icon-size: 24px;
 
 .articles-list {
   @include card.list();
@@ -50,9 +51,9 @@ $_icon-inline-offset: 6px;
   @include button.button-link();
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
-  background-size: 24px;
+  background-size: functions.px-to-rem($_edit-details-icon-size);
   background-position: 0.5rem 0.25rem;
-  padding-left: calc(24px + 0.5rem);
+  padding-left: functions.px-to-rem($_edit-details-icon-size) + 0.5rem;
 }
 
 .articles-page-count {
@@ -73,8 +74,8 @@ svg.saved-articles-control__icon {
   @include button.basics();
   padding: 0;
   display: block;
-  height: $_icon-size;
-  width: $_icon-size;
+  height: $_remove-article-icon-size;
+  width: $_remove-article-icon-size;
   background-color: transparent;
 
   &:hover svg.saved-articles-control__icon {
