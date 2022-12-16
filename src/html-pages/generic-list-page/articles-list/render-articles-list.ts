@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-article-error-card';
 import { ArticleViewModel, renderArticleCardWithControlsAndOptionalAnnotation } from '../../../shared-components/article-card';
@@ -10,7 +11,7 @@ import { ListId } from '../../../types/list-id';
 
 export type ArticleCardWithControlsViewModel = {
   articleViewModel: ArticleViewModel,
-  controls: O.Option<{ articleId: Doi, listId: ListId }>,
+  controls: boolean,
   annotationContent?: HtmlFragment,
 };
 
@@ -41,7 +42,10 @@ export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
       viewModel.articleViewModel,
       pipe(
         viewModel.controls,
-        O.map(() => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId)),
+        B.fold(
+          () => O.none,
+          () => O.some(renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId)),
+        ),
       ),
       viewModel.annotationContent,
     ),
