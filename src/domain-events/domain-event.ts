@@ -23,7 +23,7 @@ import { userRevokedFindingReviewNotHelpfulEventCodec } from './user-revoked-fin
 import { userSavedArticleEventCodec } from './user-saved-article-event';
 import { userUnfollowedEditorialCommunityEventCodec } from './user-unfollowed-editorial-community-event';
 import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
-import { generate } from '../types/event-id';
+import { EventId, generate } from '../types/event-id';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -67,6 +67,11 @@ export type EventByName<T extends EventName> = DomainEvent & { 'type': T };
 
 type EventSpecificFields<T extends EventName> = Omit<EventByName<T>, 'type' | 'id' | 'date'>;
 
+type EventBase = {
+  id: EventId,
+  date: Date,
+};
+
 export const isEventOfType = <T extends EventName>(name: T) => (
   event: DomainEvent,
 ): event is EventByName<T> => event.type === name;
@@ -75,7 +80,7 @@ export const isEventOfType = <T extends EventName>(name: T) => (
 export const constructEvent = <
 T extends EventName,
 A extends EventSpecificFields<T>,
->(type: T) => (args: A): A & Pick<DomainEvent, 'id' | 'date'> & { type: T } => ({
+>(type: T) => (args: A): A & EventBase & { type: T } => ({
     type,
     id: generate(),
     date: new Date(),
