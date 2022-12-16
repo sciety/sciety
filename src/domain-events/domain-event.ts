@@ -80,7 +80,7 @@ export const isEventOfType = <T extends EventName>(name: T) => (
 export const constructEvent = <
 T extends EventName,
 A extends EventSpecificFields<T>,
->(type: T) => (args: A): A & EventBase & { type: T } => ({
+>(type: T) => (args: A & Partial<{ date: Date }>): A & EventBase & { type: T } => ({
     type,
     id: generate(),
     date: new Date(),
