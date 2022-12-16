@@ -23,6 +23,7 @@ import { userRevokedFindingReviewNotHelpfulEventCodec } from './user-revoked-fin
 import { userSavedArticleEventCodec } from './user-saved-article-event';
 import { userUnfollowedEditorialCommunityEventCodec } from './user-unfollowed-editorial-community-event';
 import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
+import { generate } from '../types/event-id';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -63,3 +64,14 @@ export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
 export type EventByName<T extends DomainEvent['type']> = DomainEvent & { 'type': T };
 
 export const isEventOfType = <T extends DomainEvent['type']>(name: T) => (event: DomainEvent): event is EventByName<T> => event.type === name;
+
+// ts-unused-exports:disable-next-line
+export const constructEvent = <
+T extends DomainEvent['type'],
+A extends Omit<EventByName<T>, 'type' | 'id' | 'date'>,
+>(type: T) => (args: A): A & Pick<DomainEvent, 'id' | 'date'> & { type: T } => ({
+    type,
+    id: generate(),
+    date: new Date(),
+    ...args,
+  });
