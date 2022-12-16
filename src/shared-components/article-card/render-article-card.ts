@@ -56,14 +56,6 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderArticleCardControls = (controls: O.Option<HtmlFragment>) => pipe(
-  controls,
-  O.fold(
-    () => '',
-    (content) => `<div class="article-card__controls">${content}</div>`,
-  ),
-);
-
 const renderAnnotationContent = (content: undefined | HtmlFragment) => (
   content !== undefined
     ? `
@@ -90,11 +82,11 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: O.Option<HtmlFragment>, annotationContent?: HtmlFragment): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent?: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}
-      ${renderArticleCardControls(controls)}
+      ${controls}
     </section>
     ${renderAnnotationContent(annotationContent)}
   </article>
