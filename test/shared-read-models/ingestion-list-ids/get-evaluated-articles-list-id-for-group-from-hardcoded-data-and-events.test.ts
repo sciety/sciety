@@ -29,30 +29,30 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
   });
 
   describe('given a group Id for which the information is stored in an event', () => {
-    it('returns the list Id', () => {
-      const listId = arbitraryListId();
-      const groupId = arbitraryGroupId();
-      const readModel = pipe(
-        [
-          groupIngestionListIdentified(listId, groupId),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-      const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
+    const listId = arbitraryListId();
+    const groupId = arbitraryGroupId();
+    const readModel = pipe(
+      [
+        groupIngestionListIdentified(listId, groupId),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
 
+    it('returns the list Id', () => {
       expect(result).toStrictEqual(O.some(listId));
     });
   });
 
   describe('given a group Id for which no evaluated articles list is known', () => {
-    it('returns nothing', () => {
-      const groupId = arbitraryGroupId();
-      const readModel = pipe(
-        [],
-        RA.reduce(initialState(), handleEvent),
-      );
-      const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
+    const groupId = arbitraryGroupId();
+    const readModel = pipe(
+      [],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
 
+    it('returns nothing', () => {
       expect(result).toStrictEqual(O.none);
     });
   });
