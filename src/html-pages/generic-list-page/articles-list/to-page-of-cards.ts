@@ -1,10 +1,8 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ArticleCardWithControlsViewModel } from './render-articles-list';
@@ -34,10 +32,6 @@ const toArticleCardWithControlsViewModel = (
     ) : T.of(undefined),
     controls: pipe(
       hasArticleControls,
-      B.fold(
-        () => O.none,
-        () => O.some({ articleId: articleViewModel.articleId, listId }),
-      ),
       T.of,
     ),
   },
