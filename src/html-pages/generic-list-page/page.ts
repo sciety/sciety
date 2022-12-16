@@ -15,6 +15,7 @@ import { ListIdFromString } from '../../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
+import { ListOwnerId } from '../../types/list-owner-id';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
@@ -40,6 +41,37 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   O.map(({ id }) => id),
 );
 
+type ConstructContentViewModel = (
+  articleIds: ReadonlyArray<string>,
+  ports: Ports,
+  params: Params,
+  listOwnerId: ListOwnerId
+) => TE.TaskEither<DE.DataError, ContentViewModel>;
+const constructContentViewModel: ConstructContentViewModel = (articleIds, ports, params, listOwnerId) => pipe(
+  articleIds,
+  RA.map((articleId) => new Doi(articleId)),
+  TE.right,
+  TE.chainW(RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+    () => TE.right('no-articles' as const),
+    articlesList(
+      ports,
+      params.id,
+      params.page,
+      shouldHaveArticleControls(
+        listOwnerId,
+        getLoggedInUserIdFromParam(params.user),
+      ),
+      listOwnerId,
+    ),
+  )),
+  TE.orElse((left) => {
+    if (left === 'no-articles-can-be-fetched') {
+      return TE.right('no-articles-can-be-fetched' as const);
+    }
+    return TE.left(left);
+  }),
+);
+
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   params.id,
   ports.getList,
@@ -55,30 +87,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   }) => pipe(
     ({
       header: TE.right(headerViewModel),
-      contentViewModel: pipe(
-        list.articleIds,
-        RA.map((articleId) => new Doi(articleId)),
-        TE.right,
-        TE.chainW(RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
-          () => TE.right('no-articles' as const),
-          articlesList(
-            ports,
-            params.id,
-            params.page,
-            shouldHaveArticleControls(
-              listOwnerId,
-              getLoggedInUserIdFromParam(params.user),
-            ),
-            listOwnerId,
-          ),
-        )),
-        TE.orElse((left) => {
-          if (left === 'no-articles-can-be-fetched') {
-            return TE.right('no-articles-can-be-fetched' as const);
-          }
-          return TE.left(left);
-        }),
-      ),
+      contentViewModel: constructContentViewModel(list.articleIds, ports, params, listOwnerId),
       basePath: TE.right(`/lists/${listId}`),
       title: TE.right(headerViewModel.name),
     }),
