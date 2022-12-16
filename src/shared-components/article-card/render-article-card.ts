@@ -90,7 +90,7 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (controls: O.Option<HtmlFragment>, annotationContent?: HtmlFragment) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: O.Option<HtmlFragment>, annotationContent?: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}

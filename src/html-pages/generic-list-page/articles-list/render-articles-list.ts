@@ -38,12 +38,13 @@ export const renderArticlesList: RenderArticlesList = flow(
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
+      viewModel.articleViewModel,
       pipe(
         viewModel.controls,
         O.map(({ articleId, listId }) => renderRemoveArticleForm(articleId, listId)),
       ),
       viewModel.annotationContent,
-    )(viewModel.articleViewModel),
+    ),
   )),
   RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
   (renderedActivities) => `
