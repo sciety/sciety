@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { GetEvaluatedArticlesListIdForGroup } from '../../shared-ports';
 
-export const getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents = (
+export const getEvaluatedArticlesListIdForGroup = (
   readModel: ReadModel,
 ): GetEvaluatedArticlesListIdForGroup => (
   groupId,

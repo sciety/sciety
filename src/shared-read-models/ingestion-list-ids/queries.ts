@@ -1,4 +1,4 @@
-import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from './get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events';
+import { getEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { ReadModel } from './handle-event';
 import {
   GetEvaluatedArticlesListIdForGroup,
@@ -9,5 +9,5 @@ export type Queries = {
 };
 
 export const queries = (instance: ReadModel): Queries => ({
-  getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(instance),
+  getEvaluatedArticlesListIdForGroup: getEvaluatedArticlesListIdForGroup(instance),
 });

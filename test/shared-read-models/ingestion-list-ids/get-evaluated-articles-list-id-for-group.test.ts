@@ -6,13 +6,13 @@ import {
   handleEvent,
   initialState,
 } from '../../../src/shared-read-models/ingestion-list-ids';
-import { getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents } from '../../../src/shared-read-models/ingestion-list-ids/get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events';
+import { getEvaluatedArticlesListIdForGroup } from '../../../src/shared-read-models/ingestion-list-ids/get-evaluated-articles-list-id-for-group';
 import * as Gid from '../../../src/types/group-id';
 import * as Lid from '../../../src/types/list-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
-describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-events', () => {
+describe('get-evaluated-articles-list-id-for-group', () => {
   describe('given a group Id for which the information is hard coded', () => {
     const knownHardcodedListId = Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952');
     const knownHardcodedGroupId = Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2');
@@ -21,7 +21,7 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
       RA.reduce(initialState(), handleEvent),
     );
 
-    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(knownHardcodedGroupId);
+    const result = getEvaluatedArticlesListIdForGroup(readModel)(knownHardcodedGroupId);
 
     it('returns the list Id', () => {
       expect(result).toStrictEqual(O.some(knownHardcodedListId));
@@ -37,7 +37,7 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
+    const result = getEvaluatedArticlesListIdForGroup(readModel)(groupId);
 
     it('returns the list Id', () => {
       expect(result).toStrictEqual(O.some(listId));
@@ -50,7 +50,7 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
       [],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
+    const result = getEvaluatedArticlesListIdForGroup(readModel)(groupId);
 
     it('returns nothing', () => {
       expect(result).toStrictEqual(O.none);
