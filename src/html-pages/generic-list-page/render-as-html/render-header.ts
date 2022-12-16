@@ -20,13 +20,14 @@ export type ViewModel = {
   articleCount: number,
   lastUpdated: Date,
   editCapability: O.Option<ListId>,
+  listId: ListId,
 };
 
-const renderEditDetailsLink = (editCapability: O.Option<ListId>) => pipe(
+const renderEditDetailsLink = (editCapability: O.Option<ListId>, listId: ListId) => pipe(
   editCapability,
   O.fold(
     () => '',
-    (listId) => `<a href="/lists/${listId}/edit-details" class="page-header__edit_details_link">Edit list details</a>`,
+    () => `<a href="/lists/${listId}/edit-details" class="page-header__edit_details_link">Edit list details</a>`,
   ),
 );
 
@@ -39,7 +40,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     </p>
     <p class="page-header__description">${viewModel.description}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
-    ${renderEditDetailsLink(viewModel.editCapability)}
+    ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
   </header>`,
   toHtmlFragment,
 );
