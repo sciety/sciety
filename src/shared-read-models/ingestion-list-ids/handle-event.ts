@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent } from '../../domain-events';
 import { isGroupIngestionListIdentified } from '../../domain-events/group-ingestion-list-identified';
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Gid from '../../types/group-id';
 import * as Lid from '../../types/list-id';
 
@@ -34,10 +33,8 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
 };
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({ ...evaluatedArticlesListIdsByGroupId });
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (state: ReadModel, event: DomainEvent) => {
   if (isGroupIngestionListIdentified(event)) {
     state[event.groupId] = event.listId;
