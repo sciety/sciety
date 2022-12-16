@@ -52,7 +52,10 @@ export const headers: Headers = (ports) => (list, loggedInUserId) => pipe(
       editCapability: pipe(
         loggedInUserId,
         O.filter((userId) => LOID.eqListOwnerId.equals(LOID.fromUserId(userId), list.ownerId)),
-        O.map(() => list.listId),
+        O.fold(
+          () => false,
+          () => true,
+        ),
       ),
     })),
   )),

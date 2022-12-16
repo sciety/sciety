@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/Option';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -19,13 +19,13 @@ export type ViewModel = {
   ownerAvatarPath: string,
   articleCount: number,
   lastUpdated: Date,
-  editCapability: O.Option<ListId>,
+  editCapability: boolean,
   listId: ListId,
 };
 
-const renderEditDetailsLink = (editCapability: O.Option<ListId>, listId: ListId) => pipe(
+const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
   editCapability,
-  O.fold(
+  B.fold(
     () => '',
     () => `<a href="/lists/${listId}/edit-details" class="page-header__edit_details_link">Edit list details</a>`,
   ),

@@ -33,7 +33,7 @@ describe('headers', () => {
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(viewModel.editCapability).toStrictEqual(O.some(list.listId));
+      expect(viewModel.editCapability).toBe(true);
     });
   });
 
@@ -59,7 +59,7 @@ describe('headers', () => {
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(viewModel.editCapability).toStrictEqual(O.none);
+      expect(viewModel.editCapability).toBe(false);
     });
   });
 
@@ -84,7 +84,7 @@ describe('headers', () => {
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(viewModel.editCapability).toStrictEqual(O.none);
+      expect(viewModel.editCapability).toBe(false);
     });
   });
 });
