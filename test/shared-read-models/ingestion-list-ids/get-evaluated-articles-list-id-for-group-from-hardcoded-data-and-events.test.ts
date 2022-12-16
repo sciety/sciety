@@ -16,8 +16,12 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
   describe('given a group Id for which the information is hard coded', () => {
     const knownHardcodedListId = Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952');
     const knownHardcodedGroupId = Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2');
+    const readModel = pipe(
+      [],
+      RA.reduce(initialState(), handleEvent),
+    );
 
-    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents({})(knownHardcodedGroupId);
+    const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(knownHardcodedGroupId);
 
     it('returns the list Id', () => {
       expect(result).toStrictEqual(O.some(knownHardcodedListId));
