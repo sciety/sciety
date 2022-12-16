@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ListResource } from './list-resource';
 import {
-  ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent, isArticleAddedToListEvent,
+  ArticleRemovedFromListEvent, DomainEvent, EventByName, isArticleAddedToListEvent,
   isArticleRemovedFromListEvent, isListCreatedEvent, isListDescriptionEditedEvent, isListNameEditedEvent,
   ListCreatedEvent, ListDescriptionEditedEvent, ListNameEditedEvent,
 } from '../domain-events';
@@ -17,7 +17,7 @@ type ReplayListResource = (listId: ListId)
 
 type RelevantEvent =
 | ListCreatedEvent
-| ArticleAddedToListEvent
+| EventByName<'ArticleAddedToList'>
 | ArticleRemovedFromListEvent
 | ListNameEditedEvent
 | ListDescriptionEditedEvent;

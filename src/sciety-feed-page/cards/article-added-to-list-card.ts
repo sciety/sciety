@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { ArticleAddedToListEvent } from '../../domain-events';
+import { EventByName } from '../../domain-events/domain-event';
 import { GetList } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -13,7 +13,7 @@ export type Ports = {
 
 type ArticleAddedToListCard = (
   ports: Ports,
-) => (event: ArticleAddedToListEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
+) => (event: EventByName<'ArticleAddedToList'>) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
 
 export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event) => pipe(
   event.listId,

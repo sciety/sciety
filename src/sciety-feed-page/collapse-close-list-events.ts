@@ -1,11 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import { FeedItem, isCollapsedArticlesAddedToList } from './feed-item';
-import {
-  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
-} from '../domain-events';
+import { DomainEvent, EventByName, isArticleAddedToListEvent } from '../domain-events';
 
 const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<FeedItem>, event: ArticleAddedToListEvent,
+  state: ReadonlyArray<FeedItem>, event: EventByName<'ArticleAddedToList'>,
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
@@ -21,7 +19,7 @@ const collapsesIntoPreviousEvent = (
 
 const replaceWithCollapseEvent = (
   entriesSoFar: Array<FeedItem>,
-  event: ArticleAddedToListEvent,
+  event: EventByName<'ArticleAddedToList'>,
 ) => {
   const mostRecentEntry = entriesSoFar.pop();
   if (!mostRecentEntry) { return; }
