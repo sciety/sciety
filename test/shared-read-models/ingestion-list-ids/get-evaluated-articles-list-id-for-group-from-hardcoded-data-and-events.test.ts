@@ -29,7 +29,7 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
   });
 
   describe('given a group Id for which the information is stored in an event', () => {
-    it.failing('returns the list Id', () => {
+    it('returns the list Id', () => {
       const listId = arbitraryListId();
       const groupId = arbitraryGroupId();
       const readModel = pipe(

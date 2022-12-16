@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-param-reassign */
 import { DomainEvent } from '../../domain-events';
+import { isGroupIngestionListIdentified } from '../../domain-events/group-ingestion-list-identified';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Gid from '../../types/group-id';
 import * as Lid from '../../types/list-id';
 
@@ -33,7 +35,12 @@ const evaluatedArticlesListIdsByGroupId = {
 };
 
 // ts-unused-exports:disable-next-line
-export const initialState = (): ReadModel => (evaluatedArticlesListIdsByGroupId);
+export const initialState = (): ReadModel => ({ ...evaluatedArticlesListIdsByGroupId });
 
 // ts-unused-exports:disable-next-line
-export const handleEvent = (state: ReadModel, event: DomainEvent) => state;
+export const handleEvent = (state: ReadModel, event: DomainEvent) => {
+  if (isGroupIngestionListIdentified(event)) {
+    state[event.groupId] = event.listId;
+  }
+  return state;
+};
