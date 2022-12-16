@@ -15,7 +15,7 @@ export type Ports = ToPageOfCardsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-export const articlesList = (
+export const constructContentWithPaginationViewModel = (
   ports: Ports,
   listId: ListId,
   pageNumber: number,

@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articlesList, Ports as ArticlesListPorts } from './articles-list/articles-list';
+import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './articles-list/construct-content-with-pagination-view-model';
 import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { headers, Ports as HeadersPorts } from './headers';
 import { renderPage } from './render-as-html';
@@ -47,23 +47,26 @@ type ConstructContentViewModel = (
   params: Params,
   listOwnerId: ListOwnerId
 ) => TE.TaskEither<DE.DataError, ContentViewModel>;
+
 const constructContentViewModel: ConstructContentViewModel = (articleIds, ports, params, listOwnerId) => pipe(
   articleIds,
   RA.map((articleId) => new Doi(articleId)),
   TE.right,
-  TE.chainW(RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
-    () => TE.right('no-articles' as const),
-    articlesList(
-      ports,
-      params.id,
-      params.page,
-      shouldHaveArticleControls(
+  TE.chainW(
+    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+      () => TE.right('no-articles' as const),
+      constructContentWithPaginationViewModel(
+        ports,
+        params.id,
+        params.page,
+        shouldHaveArticleControls(
+          listOwnerId,
+          getLoggedInUserIdFromParam(params.user),
+        ),
         listOwnerId,
-        getLoggedInUserIdFromParam(params.user),
       ),
-      listOwnerId,
     ),
-  )),
+  ),
   TE.orElse((left) => {
     if (left === 'no-articles-can-be-fetched') {
       return TE.right('no-articles-can-be-fetched' as const);
