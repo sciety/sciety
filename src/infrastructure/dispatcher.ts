@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import * as groups from '../shared-read-models/groups';
-import * as ingestionListIds from '../shared-read-models/ingestion-list-ids';
+import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
 import * as lists from '../shared-read-models/lists';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
@@ -11,7 +11,7 @@ type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
   & lists.Queries
   & groups.Queries
-  & ingestionListIds.Queries,
+  & idsOfEvaluatedArticlesLists.Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
@@ -19,7 +19,7 @@ export const dispatcher = (): Dispatcher => {
   let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
   let listsReadModel = lists.initialState();
   let groupsReadModel = groups.initialState();
-  let ingestionListIdsReadModel = ingestionListIds.initialState();
+  let idsOfEvaluatedArticlesListsReadModel = idsOfEvaluatedArticlesLists.initialState();
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
     addArticleToElifeSubjectAreaListReadModel = RA.reduce(
@@ -34,9 +34,9 @@ export const dispatcher = (): Dispatcher => {
       groupsReadModel,
       groups.handleEvent,
     )(events);
-    ingestionListIdsReadModel = RA.reduce(
-      ingestionListIdsReadModel,
-      ingestionListIds.handleEvent,
+    idsOfEvaluatedArticlesListsReadModel = RA.reduce(
+      idsOfEvaluatedArticlesListsReadModel,
+      idsOfEvaluatedArticlesLists.handleEvent,
     )(events);
   };
 
@@ -44,7 +44,7 @@ export const dispatcher = (): Dispatcher => {
     ...lists.queries(listsReadModel),
     ...addArticleToElifeSubjectAreaList.queries(addArticleToElifeSubjectAreaListReadModel),
     ...groups.queries(groupsReadModel),
-    ...ingestionListIds.queries(ingestionListIdsReadModel),
+    ...idsOfEvaluatedArticlesLists.queries(idsOfEvaluatedArticlesListsReadModel),
   };
 
   return {

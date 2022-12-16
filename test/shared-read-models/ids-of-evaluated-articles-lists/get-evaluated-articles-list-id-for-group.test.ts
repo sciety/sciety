@@ -5,8 +5,8 @@ import { evaluatedArticlesListSpecified } from '../../../src/domain-events';
 import {
   handleEvent,
   initialState,
-} from '../../../src/shared-read-models/ingestion-list-ids';
-import { getEvaluatedArticlesListIdForGroup } from '../../../src/shared-read-models/ingestion-list-ids/get-evaluated-articles-list-id-for-group';
+} from '../../../src/shared-read-models/ids-of-evaluated-articles-lists';
+import { getEvaluatedArticlesListIdForGroup } from '../../../src/shared-read-models/ids-of-evaluated-articles-lists/get-evaluated-articles-list-id-for-group';
 import * as Gid from '../../../src/types/group-id';
 import * as Lid from '../../../src/types/list-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
