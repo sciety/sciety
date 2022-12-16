@@ -11,7 +11,6 @@ export {
 
 export {
   articleAddedToList,
-  articleAddedToListEventCodec,
 } from './article-added-to-list-event';
 
 export {
