@@ -4,9 +4,7 @@ import {
   elifeGroupId, getArticleIdsByState, handleEvent, initialState,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeSubjectAreaLists } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
-import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
-import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
-import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
+import { articleAddedToList, evaluationRecorded, subjectAreaRecorded } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';

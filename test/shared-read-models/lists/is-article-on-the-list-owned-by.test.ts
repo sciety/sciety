@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleRemovedFromList } from '../../../src/domain-events';
-import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
+import { articleAddedToList, articleRemovedFromList } from '../../../src/domain-events';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { isArticleOnTheListOwnedBy } from '../../../src/shared-read-models/lists/is-article-on-the-list-owned-by';

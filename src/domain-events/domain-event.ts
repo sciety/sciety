@@ -76,7 +76,6 @@ export const isEventOfType = <T extends EventName>(name: T) => (
   event: DomainEvent,
 ): event is EventByName<T> => event.type === name;
 
-// ts-unused-exports:disable-next-line
 export const constructEvent = <
 T extends EventName,
 A extends EventSpecificFields<T>,

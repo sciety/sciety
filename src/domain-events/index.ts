@@ -1,3 +1,7 @@
+import { constructEvent } from './domain-event';
+import { Doi } from '../types/doi';
+import { ListId } from '../types/list-id';
+
 export {
   isEventOfType, EventByName, DomainEvent, domainEventCodec,
 } from './domain-event';
@@ -9,9 +13,11 @@ export {
   annotationCreatedEventCodec,
 } from './annotation-created-event';
 
-export {
-  articleAddedToList,
-} from './article-added-to-list-event';
+export const articleAddedToList = (
+  articleId: Doi,
+  listId: ListId,
+  date = new Date(),
+) => constructEvent('ArticleAddedToList')({ articleId, listId, date });
 
 export {
   isArticleRemovedFromListEvent,
