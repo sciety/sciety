@@ -61,14 +61,20 @@ export const domainEventCodec = t.union([
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
 
-export type EventByName<T extends DomainEvent['type']> = DomainEvent & { 'type': T };
+type EventName = DomainEvent['type'];
 
-export const isEventOfType = <T extends DomainEvent['type']>(name: T) => (event: DomainEvent): event is EventByName<T> => event.type === name;
+export type EventByName<T extends EventName> = DomainEvent & { 'type': T };
+
+type EventSpecificFields<T extends EventName> = Omit<EventByName<T>, 'type' | 'id' | 'date'>;
+
+export const isEventOfType = <T extends EventName>(name: T) => (
+  event: DomainEvent,
+): event is EventByName<T> => event.type === name;
 
 // ts-unused-exports:disable-next-line
 export const constructEvent = <
-T extends DomainEvent['type'],
-A extends Omit<EventByName<T>, 'type' | 'id' | 'date'>,
+T extends EventName,
+A extends EventSpecificFields<T>,
 >(type: T) => (args: A): A & Pick<DomainEvent, 'id' | 'date'> & { type: T } => ({
     type,
     id: generate(),
