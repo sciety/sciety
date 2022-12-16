@@ -7,25 +7,25 @@ import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 
-export const groupIngestionListIdentifiedEventCodec = t.type({
+export const evaluatedArticlesListSpecifiedEventCodec = t.type({
   id: EventIdFromString,
-  type: t.literal('GroupIngestionListIdentified'),
+  type: t.literal('EvaluatedArticlesListSpecified'),
   date: tt.DateFromISOString,
   listId: ListIdFromString,
   groupId: GroupIdFromString,
 });
 
-export type GroupIngestionListIdentifiedEvent = t.TypeOf<typeof groupIngestionListIdentifiedEventCodec>;
+export type EvaluatedArticlesListSpecifiedEvent = t.TypeOf<typeof evaluatedArticlesListSpecifiedEventCodec>;
 
-export const isGroupIngestionListIdentified = (event: { type: string }):
-  event is GroupIngestionListIdentifiedEvent => event.type === 'GroupIngestionListIdentified';
+export const isEvaluatedArticlesListSpecified = (event: { type: string }):
+  event is EvaluatedArticlesListSpecifiedEvent => event.type === 'EvaluatedArticlesListSpecified';
 
-export const groupIngestionListIdentified = (
+export const evaluatedArticlesListSpecified = (
   listId: ListId,
   groupId: GroupId,
-): GroupIngestionListIdentifiedEvent => ({
+): EvaluatedArticlesListSpecifiedEvent => ({
   id: generate(),
-  type: 'GroupIngestionListIdentified',
+  type: 'EvaluatedArticlesListSpecified',
   date: new Date(),
   listId,
   groupId,

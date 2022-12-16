@@ -124,10 +124,10 @@ export {
 } from './list-description-edited-event';
 
 export {
-  isGroupIngestionListIdentified,
-  groupIngestionListIdentified,
-  GroupIngestionListIdentifiedEvent,
-  groupIngestionListIdentifiedEventCodec,
-} from './group-ingestion-list-identified';
+  isEvaluatedArticlesListSpecified,
+  evaluatedArticlesListSpecified,
+  EvaluatedArticlesListSpecifiedEvent,
+  evaluatedArticlesListSpecifiedEventCodec,
+} from './evaluated-articles-list-specified-event';
 
 export { sort } from './domain-event';

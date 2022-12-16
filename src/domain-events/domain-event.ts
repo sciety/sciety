@@ -7,8 +7,8 @@ import * as t from 'io-ts';
 import { AnnotationCreatedEvent, annotationCreatedEventCodec } from './annotation-created-event';
 import { ArticleAddedToListEvent, articleAddedToListEventCodec } from './article-added-to-list-event';
 import { ArticleRemovedFromListEvent, articleRemovedFromListEventCodec } from './article-removed-from-list-event';
+import { EvaluatedArticlesListSpecifiedEvent, evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
 import { EvaluationRecordedEvent, evaluationRecordedEventCodec } from './evaluation-recorded-event';
-import { GroupIngestionListIdentifiedEvent, groupIngestionListIdentifiedEventCodec } from './group-ingestion-list-identified';
 import { GroupJoinedEvent, groupJoinedEventCodec } from './group-joined-event';
 import { ListCreatedEvent, listCreatedEventCodec } from './list-created-event';
 import { ListDescriptionEditedEvent, listDescriptionEditedEventCodec } from './list-description-edited-event';
@@ -30,7 +30,7 @@ export type DomainEvent =
   ArticleRemovedFromListEvent |
   SubjectAreaRecordedEvent |
   GroupJoinedEvent |
-  GroupIngestionListIdentifiedEvent |
+  EvaluatedArticlesListSpecifiedEvent |
   EvaluationRecordedEvent |
   ListCreatedEvent |
   ListDescriptionEditedEvent |
@@ -64,7 +64,7 @@ export const domainEventCodec = t.union([
   subjectAreaRecordedEventCodec,
   evaluationRecordedEventCodec,
   groupJoinedEventCodec,
-  groupIngestionListIdentifiedEventCodec,
+  evaluatedArticlesListSpecifiedEventCodec,
   listCreatedEventCodec,
   listNameEditedEventCodec,
   listDescriptionEditedEventCodec,
