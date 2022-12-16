@@ -6,6 +6,7 @@ import { ArticleCardWithControlsViewModel, renderArticlesList } from './render-a
 import { PageOfItems } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
 
 const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
   (pageOfContent: HtmlFragment) => `
@@ -36,9 +37,10 @@ export const renderContentWithPagination = (
   basePath: string,
 ) => (
   viewModel: ContentWithPaginationViewModel,
+  listId: ListId,
 ): HtmlFragment => pipe(
   viewModel.articles,
-  renderArticlesList,
+  renderArticlesList(listId),
   addPaginationControls(viewModel.pagination.nextPage, basePath),
   (content) => `
       ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}

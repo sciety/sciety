@@ -34,14 +34,14 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-export const renderArticlesList: RenderArticlesList = flow(
+export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
       viewModel.articleViewModel,
       pipe(
         viewModel.controls,
-        O.map(({ articleId, listId }) => renderRemoveArticleForm(articleId, listId)),
+        O.map(() => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId)),
       ),
       viewModel.annotationContent,
     ),
