@@ -41,6 +41,15 @@ describe('get-evaluated-articles-list-id-for-group-from-hardcoded-data-and-event
   });
 
   describe('given a group Id for which no evaluated articles list is known', () => {
-    it.todo('returns nothing');
+    it('returns nothing', () => {
+      const groupId = arbitraryGroupId();
+      const readModel = pipe(
+        [],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getEvaluatedArticlesListIdForGroupFromHardcodedDataAndEvents(readModel)(groupId);
+
+      expect(result).toStrictEqual(O.none);
+    });
   });
 });
