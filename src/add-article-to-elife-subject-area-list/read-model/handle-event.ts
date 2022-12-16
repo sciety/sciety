@@ -3,8 +3,8 @@
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
 import {
   DomainEvent,
-  isArticleAddedToListEvent,
   isEvaluationRecordedEvent,
+  isEventOfType,
   isSubjectAreaRecordedEvent,
 } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
@@ -49,7 +49,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
       }
     }
-  } else if (isArticleAddedToListEvent(event)) {
+  } else if (isEventOfType('ArticleAddedToList')(event)) {
     if (elifeSubjectAreaLists.includes(event.listId)) {
       readmodel[event.articleId.value] = { name: 'listed' as const };
     }

@@ -12,8 +12,7 @@ import {
   isCollapsedArticlesAddedToList,
 } from './feed-item';
 import {
-  DomainEvent,
-  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
+  DomainEvent, isEventOfType, isUserFollowedEditorialCommunityEvent,
 } from '../domain-events';
 import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
@@ -36,18 +35,18 @@ export const eventCard = (
     );
   }
 
-  if (isArticleAddedToListEvent(event)) {
-    return pipe(
-      event,
-      articleAddedToListCard(ports),
-      TE.map(scietyFeedCard),
-    );
-  }
-
   if (isCollapsedArticlesAddedToList(event)) {
     return pipe(
       event,
       collapsedArticlesAddedToListCard(ports),
+      TE.map(scietyFeedCard),
+    );
+  }
+
+  if (isEventOfType('ArticleAddedToList')(event)) {
+    return pipe(
+      event,
+      articleAddedToListCard(ports),
       TE.map(scietyFeedCard),
     );
   }

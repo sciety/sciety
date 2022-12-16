@@ -1,4 +1,6 @@
-export { EventByName, DomainEvent, domainEventCodec } from './domain-event';
+export {
+  isEventOfType, EventByName, DomainEvent, domainEventCodec,
+} from './domain-event';
 
 export {
   isAnnotationCreatedEvent,
@@ -8,7 +10,6 @@ export {
 } from './annotation-created-event';
 
 export {
-  isArticleAddedToListEvent,
   articleAddedToList,
   articleAddedToListEventCodec,
 } from './article-added-to-list-event';

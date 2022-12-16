@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ListResource } from './list-resource';
 import {
-  ArticleRemovedFromListEvent, DomainEvent, EventByName, isArticleAddedToListEvent,
-  isArticleRemovedFromListEvent, isListCreatedEvent, isListDescriptionEditedEvent, isListNameEditedEvent,
+  ArticleRemovedFromListEvent, DomainEvent, EventByName,
+  isArticleRemovedFromListEvent, isEventOfType, isListCreatedEvent, isListDescriptionEditedEvent, isListNameEditedEvent,
   ListCreatedEvent, ListDescriptionEditedEvent, ListNameEditedEvent,
 } from '../domain-events';
 import { eqDoi } from '../types/doi';
@@ -24,7 +24,7 @@ type RelevantEvent =
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
   isListCreatedEvent(event)
-  || isArticleAddedToListEvent(event)
+  || isEventOfType('ArticleAddedToList')(event)
   || isArticleRemovedFromListEvent(event)
   || isListNameEditedEvent(event)
   || isListDescriptionEditedEvent(event)

@@ -1,12 +1,8 @@
 /* eslint-disable no-param-reassign */
 import {
   DomainEvent,
-  isArticleAddedToListEvent,
-  isArticleRemovedFromListEvent,
-  isListDescriptionEditedEvent,
-  isListNameEditedEvent,
+  isEventOfType,
 } from '../../domain-events';
-import { isListCreatedEvent } from '../../domain-events/list-created-event';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
@@ -23,7 +19,7 @@ export type ReadModel = Record<ListId, ListState>;
 export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isListCreatedEvent(event)) {
+  if (isEventOfType('ListCreated')(event)) {
     readmodel[event.listId] = {
       listId: event.listId,
       ownerId: event.ownerId,
@@ -32,18 +28,18 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       name: event.name,
       description: event.description,
     };
-  } else if (isArticleAddedToListEvent(event)) {
+  } else if (isEventOfType('ArticleAddedToList')(event)) {
     readmodel[event.listId].articleIds.push(event.articleId.value);
     readmodel[event.listId].lastUpdated = event.date;
-  } else if (isArticleRemovedFromListEvent(event)) {
+  } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
       (id) => id !== event.articleId.value,
     );
     readmodel[event.listId].lastUpdated = event.date;
-  } else if (isListNameEditedEvent(event)) {
+  } else if (isEventOfType('ListNameEdited')(event)) {
     readmodel[event.listId].name = event.name;
     readmodel[event.listId].lastUpdated = event.date;
-  } else if (isListDescriptionEditedEvent(event)) {
+  } else if (isEventOfType('ListDescriptionEdited')(event)) {
     readmodel[event.listId].description = event.description;
     readmodel[event.listId].lastUpdated = event.date;
   }
