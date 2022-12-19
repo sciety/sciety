@@ -87,7 +87,6 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       title: list.name,
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
-      listId: list.listId,
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     })),
   )),
