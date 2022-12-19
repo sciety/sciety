@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -81,23 +80,25 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   TE.chain((list) => pipe(
     headers(ports)(list, getLoggedInUserIdFromParam(params.user)),
     TE.map((headerViewModel) => ({
-      headerViewModel, listOwnerId: list.ownerId, listId: list.listId, list,
+      ...headerViewModel,
+      basePath: `/lists/${list.listId}`,
+      title: headerViewModel.name,
+      listOwnerId: list.ownerId,
+      listId: list.listId,
+      list,
     })),
   )),
-  TE.chain(({
-    headerViewModel, listOwnerId, listId, list,
-  }) => pipe(
-    ({
-      contentViewModel: constructContentViewModel(
-        list.articleIds, ports, params, listOwnerId, headerViewModel.editCapability,
-      ),
-      basePath: TE.right(`/lists/${listId}`),
-      title: TE.right(headerViewModel.name),
-    }),
-    sequenceS(TE.ApplyPar),
-    TE.map((partial) => ({
-      ...partial,
-      ...headerViewModel,
+  TE.chain((partialPageViewModel) => pipe(
+    constructContentViewModel(
+      partialPageViewModel.list.articleIds,
+      ports,
+      params,
+      partialPageViewModel.listOwnerId,
+      partialPageViewModel.editCapability,
+    ),
+    TE.map((contentViewModel) => ({
+      contentViewModel,
+      ...partialPageViewModel,
     })),
   )),
   TE.bimap(renderErrorPage, renderPage),
