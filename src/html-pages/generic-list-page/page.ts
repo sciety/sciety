@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './articles-list/construct-content-with-pagination-view-model';
-import { shouldHaveArticleControls } from './articles-list/should-have-article-controls';
 import { headers, Ports as HeadersPorts } from './headers';
 import { renderPage } from './render-as-html';
 import { ContentViewModel, renderErrorPage } from './render-as-html/render-page';
@@ -45,10 +44,13 @@ type ConstructContentViewModel = (
   articleIds: ReadonlyArray<string>,
   ports: Ports,
   params: Params,
-  listOwnerId: ListOwnerId
+  listOwnerId: ListOwnerId,
+  editCapability: boolean,
 ) => TE.TaskEither<DE.DataError, ContentViewModel>;
 
-const constructContentViewModel: ConstructContentViewModel = (articleIds, ports, params, listOwnerId) => pipe(
+const constructContentViewModel: ConstructContentViewModel = (
+  articleIds, ports, params, listOwnerId, editCapability,
+) => pipe(
   articleIds,
   RA.map((articleId) => new Doi(articleId)),
   TE.right,
@@ -59,10 +61,7 @@ const constructContentViewModel: ConstructContentViewModel = (articleIds, ports,
         ports,
         params.id,
         params.page,
-        shouldHaveArticleControls(
-          listOwnerId,
-          getLoggedInUserIdFromParam(params.user),
-        ),
+        editCapability,
         listOwnerId,
       ),
     ),
@@ -90,7 +89,9 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   }) => pipe(
     ({
       header: TE.right(headerViewModel),
-      contentViewModel: constructContentViewModel(list.articleIds, ports, params, listOwnerId),
+      contentViewModel: constructContentViewModel(
+        list.articleIds, ports, params, listOwnerId, headerViewModel.editCapability,
+      ),
       basePath: TE.right(`/lists/${listId}`),
       title: TE.right(headerViewModel.name),
     }),
