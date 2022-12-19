@@ -50,12 +50,12 @@ import {
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
-import { page as genericListPage, paramsCodec as genericListPageParams } from '../html-pages/generic-list-page/page';
 import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../html-pages/group-page/group-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout, homePageParams } from '../html-pages/home-page';
+import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../learn-about-page';
 import { legalPage } from '../legal-page';
@@ -389,8 +389,8 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/lists/:id',
     pageHandler(createPageFromParams(
-      genericListPageParams,
-      genericListPage(adapters),
+      listPageParams,
+      listPage(adapters),
     )),
   );
 

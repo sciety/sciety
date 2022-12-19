@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from '../../../src/html-pages/generic-list-page/get-user-owner-information';
+import { getUserOwnerInformation } from '../../../src/html-pages/list-page/get-user-owner-information';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';

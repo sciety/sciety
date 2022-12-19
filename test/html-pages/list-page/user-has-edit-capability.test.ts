@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { userHasEditCapability } from '../../../src/html-pages/generic-list-page/user-has-edit-capability';
+import { userHasEditCapability } from '../../../src/html-pages/list-page/user-has-edit-capability';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
