@@ -14,10 +14,9 @@ export type ContentViewModel = Message | ContentWithPaginationViewModel;
 
 type ViewModel = {
   title: string,
-  header: HeaderViewModel,
   basePath: string,
   contentViewModel: ContentViewModel,
-};
+} & HeaderViewModel;
 
 const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: string, listId: ListId) => {
   if (contentViewModel === 'no-articles') {
@@ -29,9 +28,9 @@ const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: strin
 };
 
 const render = (viewModel: ViewModel) => toHtmlFragment(`
-  ${renderHeader(viewModel.header)}
+  ${renderHeader(viewModel)}
   <section>
-    ${renderListOrMessage(viewModel.contentViewModel, viewModel.basePath, viewModel.header.listId)}
+    ${renderListOrMessage(viewModel.contentViewModel, viewModel.basePath, viewModel.listId)}
   </section>
 `);
 

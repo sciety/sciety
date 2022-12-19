@@ -88,7 +88,6 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
     headerViewModel, listOwnerId, listId, list,
   }) => pipe(
     ({
-      header: TE.right(headerViewModel),
       contentViewModel: constructContentViewModel(
         list.articleIds, ports, params, listOwnerId, headerViewModel.editCapability,
       ),
@@ -96,6 +95,10 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       title: TE.right(headerViewModel.name),
     }),
     sequenceS(TE.ApplyPar),
+    TE.map((partial) => ({
+      ...partial,
+      ...headerViewModel,
+    })),
   )),
   TE.bimap(renderErrorPage, renderPage),
 );
