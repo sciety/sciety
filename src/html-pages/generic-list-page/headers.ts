@@ -27,6 +27,15 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
   TE.fromEither,
 );
 
+const userHasEditCapability = (loggedInUserId: O.Option<UserId>, listOwnerId: LOID.ListOwnerId) => pipe(
+  loggedInUserId,
+  O.filter((userId) => LOID.eqListOwnerId.equals(LOID.fromUserId(userId), listOwnerId)),
+  O.fold(
+    () => false,
+    () => true,
+  ),
+);
+
 type Headers = (ports: Ports) => (list: List, loggedInUserId: O.Option<UserId>)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -49,14 +58,7 @@ export const headers: Headers = (ports) => (list, loggedInUserId) => pipe(
     TE.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
-      editCapability: pipe(
-        loggedInUserId,
-        O.filter((userId) => LOID.eqListOwnerId.equals(LOID.fromUserId(userId), list.ownerId)),
-        O.fold(
-          () => false,
-          () => true,
-        ),
-      ),
+      editCapability: userHasEditCapability(loggedInUserId, list.ownerId),
     })),
   )),
 );
