@@ -8,6 +8,7 @@ import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } f
 import { headers, Ports as HeadersPorts } from './headers';
 import { renderPage } from './render-as-html';
 import { ContentViewModel, renderErrorPage } from './render-as-html/render-page';
+import { userHasEditCapability } from './user-has-edit-capability';
 import { GetList } from '../../shared-ports';
 import { ListIdFromString } from '../../types/codecs/ListIdFromString';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
@@ -78,7 +79,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   ports.getList,
   TE.fromOption(() => DE.notFound),
   TE.chain((list) => pipe(
-    headers(ports)(list, getLoggedInUserIdFromParam(params.user)),
+    headers(ports)(list),
     TE.map((headerViewModel) => ({
       ...headerViewModel,
       basePath: `/lists/${list.listId}`,
@@ -86,6 +87,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       listOwnerId: list.ownerId,
       listId: list.listId,
       list,
+      editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     })),
   )),
   TE.chain((partialPageViewModel) => pipe(

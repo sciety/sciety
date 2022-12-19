@@ -1,15 +1,12 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './render-as-html/render-header';
-import { userHasEditCapability } from './user-has-edit-capability';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { List } from '../../types/list';
-import { UserId } from '../../types/user-id';
 
 export type Ports = GetUserOwnerInformationPorts
 & {
@@ -27,10 +24,10 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
   TE.fromEither,
 );
 
-type Headers = (ports: Ports) => (list: List, loggedInUserId: O.Option<UserId>)
-=> TE.TaskEither<DE.DataError, ViewModel>;
+type Headers = (ports: Ports) => (list: List)
+=> TE.TaskEither<DE.DataError, Omit<ViewModel, 'editCapability'>>;
 
-export const headers: Headers = (ports) => (list, loggedInUserId) => pipe(
+export const headers: Headers = (ports) => (list) => pipe(
   {
     ...list,
     articleCount: list.articleIds.length,
@@ -49,7 +46,6 @@ export const headers: Headers = (ports) => (list, loggedInUserId) => pipe(
     TE.map((ownerInformation) => ({
       ...partial,
       ...ownerInformation,
-      editCapability: userHasEditCapability(loggedInUserId, list.ownerId),
     })),
   )),
 );
