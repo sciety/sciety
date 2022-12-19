@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './articles-list/construct-content-with-pagination-view-model';
-import { headers, Ports as HeadersPorts } from './headers';
+import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
 import { renderPage } from './render-as-html';
 import { ContentViewModel, renderErrorPage } from './render-as-html/render-page';
 import { userHasEditCapability } from './user-has-edit-capability';
@@ -79,21 +79,21 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   ports.getList,
   TE.fromOption(() => DE.notFound),
   TE.chain((list) => pipe(
-    headers(ports)(list),
-    TE.map((headerViewModel) => ({
-      ...headerViewModel,
+    getOwnerInformation(ports)(list.ownerId),
+    TE.map((ownerInformation) => ({
+      ...ownerInformation,
+      ...list,
       basePath: `/lists/${list.listId}`,
-      title: headerViewModel.name,
+      title: list.name,
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
       listId: list.listId,
-      list,
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     })),
   )),
   TE.chain((partialPageViewModel) => pipe(
     constructContentViewModel(
-      partialPageViewModel.list.articleIds,
+      partialPageViewModel.articleIds,
       ports,
       params,
       partialPageViewModel.listOwnerId,

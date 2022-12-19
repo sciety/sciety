@@ -2,11 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
-import { ViewModel } from './render-as-html/render-header';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
-import { List } from '../../types/list';
+import { ListOwnerId } from '../../types/list-owner-id';
 
 export type Ports = GetUserOwnerInformationPorts
 & {
@@ -24,27 +23,26 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
   TE.fromEither,
 );
 
-type Headers = (ports: Ports) => (list: List)
-=> TE.TaskEither<DE.DataError, Omit<ViewModel, 'editCapability' | 'articleCount'>>;
+type OwnerInformation = {
+  ownerName: string,
+  ownerHref: string,
+  ownerAvatarPath: string,
+};
 
-export const headers: Headers = (ports) => (list) => pipe(
-  {
-    ...list,
+type GetOwnerInformation = (ports: Ports) => (ownerId: ListOwnerId)
+=> TE.TaskEither<DE.DataError, OwnerInformation>;
+
+export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => pipe(
+  ownerId,
+  (oId) => {
+    switch (oId.tag) {
+      case 'group-id':
+        return getGroupOwnerInformation(ports)(oId.value);
+      case 'user-id':
+        return getUserOwnerInformation(ports)(oId.value);
+    }
   },
-  TE.right,
-  TE.chain((partial) => pipe(
-    partial.ownerId,
-    (ownerId) => {
-      switch (ownerId.tag) {
-        case 'group-id':
-          return getGroupOwnerInformation(ports)(ownerId.value);
-        case 'user-id':
-          return getUserOwnerInformation(ports)(ownerId.value);
-      }
-    },
-    TE.map((ownerInformation) => ({
-      ...partial,
-      ...ownerInformation,
-    })),
-  )),
+  TE.map((ownerInformation) => ({
+    ...ownerInformation,
+  })),
 );
