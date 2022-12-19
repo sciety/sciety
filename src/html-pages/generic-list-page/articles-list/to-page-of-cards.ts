@@ -20,7 +20,7 @@ export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 
 const toArticleCardWithControlsViewModel = (
   ports: Ports,
-  hasArticleControls: boolean,
+  editCapability: boolean,
   listId: ListId,
   listOwnerId: ListOwnerId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
@@ -31,7 +31,7 @@ const toArticleCardWithControlsViewModel = (
       T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId.value)),
     ) : T.of(undefined),
     controls: pipe(
-      hasArticleControls,
+      editCapability,
       T.of,
     ),
   },
@@ -40,7 +40,7 @@ const toArticleCardWithControlsViewModel = (
 
 export const toPageOfCards = (
   ports: Ports,
-  hasArticleControls: boolean,
+  editCapability: boolean,
   listId: ListId,
   listOwnerId: ListOwnerId,
 ) => (
@@ -53,7 +53,7 @@ export const toPageOfCards = (
     E.foldW(
       TE.left,
       flow(
-        toArticleCardWithControlsViewModel(ports, hasArticleControls, listId, listOwnerId),
+        toArticleCardWithControlsViewModel(ports, editCapability, listId, listOwnerId),
         T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),

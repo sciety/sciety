@@ -19,7 +19,7 @@ export const constructContentWithPaginationViewModel = (
   ports: Ports,
   listId: ListId,
   pageNumber: number,
-  hasArticleControls: boolean,
+  editCapability: boolean,
   listOwnerId: ListOwnerId,
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
@@ -28,7 +28,7 @@ export const constructContentWithPaginationViewModel = (
   TE.chainTaskK(populateArticleActivities(ports)),
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
-    toPageOfCards(ports, hasArticleControls, listId, listOwnerId),
+    toPageOfCards(ports, editCapability, listId, listOwnerId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),
 );
