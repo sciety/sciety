@@ -25,12 +25,11 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
 );
 
 type Headers = (ports: Ports) => (list: List)
-=> TE.TaskEither<DE.DataError, Omit<ViewModel, 'editCapability'>>;
+=> TE.TaskEither<DE.DataError, Omit<ViewModel, 'editCapability' | 'articleCount'>>;
 
 export const headers: Headers = (ports) => (list) => pipe(
   {
     ...list,
-    articleCount: list.articleIds.length,
   },
   TE.right,
   TE.chain((partial) => pipe(

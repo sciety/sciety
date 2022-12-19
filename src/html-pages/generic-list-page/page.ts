@@ -84,6 +84,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       ...headerViewModel,
       basePath: `/lists/${list.listId}`,
       title: headerViewModel.name,
+      articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
       listId: list.listId,
       list,
