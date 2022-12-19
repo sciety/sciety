@@ -72,7 +72,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the generic list page', async () => {
+      it('includes the link to the list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
 
@@ -112,7 +112,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the generic list page', async () => {
+      it('includes the link to the list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
 

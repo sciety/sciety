@@ -16,7 +16,7 @@ describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
 
   describe('when an article has no evaluations and is in no list', () => {
-    describe('because it has never been added to a generic list', () => {
+    describe('because it has never been added to a list', () => {
       const articleActivity = pipe(
         [],
         getActivityForDoi(articleId),
@@ -32,7 +32,7 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('because it has been added and removed from a generic list', () => {
+    describe('because it has been added and removed from a list', () => {
       const listId = arbitraryListId();
       const articleActivity = pipe(
         [
@@ -115,8 +115,8 @@ describe('get-activity-for-doi', () => {
     });
   });
 
-  describe('when an article appears in one generic list', () => {
-    describe('and the article has been added to a single generic list and not removed', () => {
+  describe('when an article appears in one list', () => {
+    describe('and the article has been added to a single list and not removed', () => {
       const articleActivity = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
@@ -129,7 +129,7 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('and the article was added and removed from a different generic list', () => {
+    describe('and the article was added and removed from a different list', () => {
       const listAId = arbitraryListId();
       const listBId = arbitraryListId();
       const articleActivity = pipe(
@@ -160,7 +160,7 @@ describe('get-activity-for-doi', () => {
       });
     });
 
-    describe('added to a generic list, after being evaluated', () => {
+    describe('added to a list, after being evaluated', () => {
       const articleActivity = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
@@ -180,7 +180,7 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article appears in multiple lists', () => {
-    describe('in two different generic lists', () => {
+    describe('in two different lists', () => {
       const articleActivity = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),

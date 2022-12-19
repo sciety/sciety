@@ -31,18 +31,18 @@ describe('save-article-to-list', () => {
       await closeBrowser();
     });
 
-    it('the article appears in the generic list page', async () => {
+    it('the article appears in the list page', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userGenericListPageUrl);
+      const userListPageUrl = `localhost:8080/lists/${listId}`;
+      await goto(userListPageUrl);
       const articleIsDisplayed = await $(articleCardSelector).exists();
       expect(articleIsDisplayed).toBe(true);
     });
 
     it('the article card on the list page offers a delete button', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userGenericListPageUrl);
+      const userListPageUrl = `localhost:8080/lists/${listId}`;
+      await goto(userListPageUrl);
       const deleteButton = $(articleCardDeleteButtonSelector);
       expect(await deleteButton.exists()).toBe(true);
     });
@@ -74,18 +74,18 @@ describe('save-article-to-list', () => {
 
     it('the list count of the article card on the list page it is in increases by one', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userGenericListPageUrl);
+      const userListPageUrl = `localhost:8080/lists/${listId}`;
+      await goto(userListPageUrl);
       const cardText = await $('.article-card').text();
       expect(cardText).toContain('Appears in 1 list');
     });
 
     it('the save article button on the article page is replaced with a link to the list', async () => {
       const listId = await getFirstListOwnedBy(testUserId);
-      const userGenericListPageUrl = `http://localhost:8080/lists/${listId}`;
+      const userListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
       await click('Saved to my list');
-      expect(await currentURL()).toBe(userGenericListPageUrl);
+      expect(await currentURL()).toBe(userListPageUrl);
     });
   });
 });

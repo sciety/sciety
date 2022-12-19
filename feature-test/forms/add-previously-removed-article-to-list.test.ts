@@ -23,10 +23,10 @@ describe('add-previously-removed-article-to-list', () => {
 
     expect(content).toContain('Saved to my list');
 
-    // go to generic list page
+    // go to list page
     const listId = await getFirstListOwnedBy(testUserId);
-    const userGenericListPageUrl = `localhost:8080/lists/${listId}`;
-    await goto(userGenericListPageUrl);
+    const userListPageUrl = `localhost:8080/lists/${listId}`;
+    await goto(userListPageUrl);
 
     // delete previously saved article from list
     const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';

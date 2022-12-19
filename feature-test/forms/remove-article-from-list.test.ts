@@ -35,24 +35,24 @@ describe('remove-article-from-list', () => {
 
       describe('and they click the trash can', () => {
         const contentSelector = 'main';
-        let genericListPage: string;
+        let listPage: string;
         let content: string;
 
         beforeAll(async () => {
           const listId = await getFirstListOwnedBy(testUserId);
-          genericListPage = `localhost:8080/lists/${listId}`;
-          await goto(genericListPage);
+          listPage = `localhost:8080/lists/${listId}`;
+          await goto(listPage);
           const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
           const deleteButton = $(articleCardDeleteButtonSelector);
           await click(deleteButton);
         });
 
-        it('they should be redirected to the generic list page', async () => {
-          expect(await currentURL()).toContain(genericListPage);
+        it('they should be redirected to the list page', async () => {
+          expect(await currentURL()).toContain(listPage);
         });
 
         it('the article should no longer be in the list', async () => {
-          await goto(genericListPage);
+          await goto(listPage);
           content = await $(contentSelector).text();
 
           expect(content).toContain('This list is currently empty. Try coming back later!');
