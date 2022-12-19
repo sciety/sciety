@@ -49,5 +49,10 @@ export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
 
 export const renderPage = (viewModel: ViewModel): Page => ({
   title: viewModel.title,
+  openGraph: {
+    title: viewModel.title,
+    description: viewModel.description,
+  },
+  description: viewModel.description,
   content: pipe(viewModel, render, toHtmlFragment),
 });
