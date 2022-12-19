@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { ViewModel as HeaderViewModel, renderHeader } from './render-header';
 import * as DE from '../../../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
@@ -19,8 +19,6 @@ type ViewModel = {
   contentViewModel: ContentViewModel,
 };
 
-type Render = (viewModel: ViewModel) => HtmlFragment;
-
 const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: string, listId: ListId) => {
   if (contentViewModel === 'no-articles') {
     return noArticlesMessage;
@@ -30,12 +28,10 @@ const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: strin
   return renderContentWithPagination(basePath)(contentViewModel, listId);
 };
 
-const render: Render = ({
-  header, contentViewModel, basePath,
-}) => toHtmlFragment(`
-  ${renderHeader(header)}
+const render = (viewModel: ViewModel) => toHtmlFragment(`
+  ${renderHeader(viewModel.header)}
   <section>
-    ${renderListOrMessage(contentViewModel, basePath, header.listId)}
+    ${renderListOrMessage(viewModel.contentViewModel, viewModel.basePath, viewModel.header.listId)}
   </section>
 `);
 
