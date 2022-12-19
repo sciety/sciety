@@ -4,11 +4,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { ViewModel } from './render-as-html/render-header';
+import { userHasEditCapability } from './user-has-edit-capability';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { List } from '../../types/list';
-import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = GetUserOwnerInformationPorts
@@ -25,15 +25,6 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
     ownerAvatarPath: group.avatarPath,
   })),
   TE.fromEither,
-);
-
-const userHasEditCapability = (loggedInUserId: O.Option<UserId>, listOwnerId: LOID.ListOwnerId) => pipe(
-  loggedInUserId,
-  O.filter((userId) => LOID.eqListOwnerId.equals(LOID.fromUserId(userId), listOwnerId)),
-  O.fold(
-    () => false,
-    () => true,
-  ),
 );
 
 type Headers = (ports: Ports) => (list: List, loggedInUserId: O.Option<UserId>)
