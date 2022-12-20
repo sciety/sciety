@@ -29,6 +29,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
+import { shouldNotBeCalled } from '../../test/should-not-be-called';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
 import { addGroupCommandHandler } from '../add-group';
@@ -499,6 +500,14 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   // AUTHENTICATION
 
+  const authenticationStrategyCodec = t.union([t.literal('local'), t.literal('twitter')]);
+
+  const authenticationStrategy = pipe(
+    process.env.AUTHENTICATION_STRATEGY,
+    authenticationStrategyCodec.decode,
+    E.getOrElseW(shouldNotBeCalled),
+  );
+
   router.get(
     '/log-in',
     async (context: ParameterizedContext, next) => {
@@ -507,10 +516,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       }
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    logIn(authenticationStrategy),
   );
 
-  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+  if (authenticationStrategy === 'local') {
     router.get('/log-in-as', logInAsSpecificUser);
   }
 
@@ -520,7 +529,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.session.successRedirect = '/';
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    logIn(authenticationStrategy),
   );
 
   router.get('/log-out', logOut);
@@ -533,7 +542,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
+    onlyIfNotAuthenticated(logInCallback(authenticationStrategy)),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
