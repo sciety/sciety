@@ -105,7 +105,21 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
       ((accessToken, refreshToken, extraParams, profile, done) => {
         console.log('>>>>>> extra', extraParams);
         console.log('>>>>>> profile', profile);
-        void done(null, profile);
+        const userAccount = {
+          id: toUserId(profile.id.substring(profile.id.indexOf('|'))),
+          handle: profile.displayName,
+          avatarUrl: profile.picture,
+          displayName: profile.nickname,
+        };
+        void createAccountIfNecessary(ports)(userAccount)()
+          .then(() => done(
+            undefined,
+            {
+              id: userAccount.id,
+              handle: userAccount.handle,
+              avatarUrl: userAccount.avatarUrl,
+            },
+          ));
       }
       ),
     ));
