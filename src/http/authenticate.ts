@@ -7,6 +7,7 @@ const authenticate = (strategy: Strategy): Middleware => koaPassport.authenticat
   strategy,
   {
     failureRedirect: '/',
+    scope: 'openid email profile',
   },
 );
 

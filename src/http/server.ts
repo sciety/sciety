@@ -102,16 +102,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
         callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
       },
-      ((accessToken, refreshToken, extraParams, profile, done) =>
-      /**
-     * Access tokens are used to authorize users to an API
-     * (resource server)
-     * accessToken is the token to call the Auth0 API
-     * or a secured third-party API
-     * extraParams.id_token has the JSON Web Token
-     * profile has all the information from the user
-     */
-        done(null, profile)
+      ((accessToken, refreshToken, extraParams, profile, done) => {
+        console.log('>>>>>> extra', extraParams);
+        console.log('>>>>>> profile', profile);
+        void done(null, profile);
+      }
       ),
     ));
   } else {
