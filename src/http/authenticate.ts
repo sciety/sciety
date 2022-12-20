@@ -1,14 +1,16 @@
 import { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 
-const authenticate = (strategy: 'twitter' | 'local'): Middleware => koaPassport.authenticate(
+type Strategy = 'twitter' | 'local';
+
+const authenticate = (strategy: Strategy): Middleware => koaPassport.authenticate(
   strategy,
   {
     failureRedirect: '/',
   },
 );
 
-export const logIn = (strategy: 'twitter' | 'local'): Middleware => {
+export const logIn = (strategy: Strategy): Middleware => {
   switch (strategy) {
     case 'local':
       return async (context, next) => {
@@ -23,7 +25,7 @@ export const logIn = (strategy: 'twitter' | 'local'): Middleware => {
   }
 };
 
-export const logInCallback = (strategy: 'twitter' | 'local'): Middleware => authenticate(strategy);
+export const logInCallback = (strategy: Strategy): Middleware => authenticate(strategy);
 
 export const logInAsSpecificUser: Middleware = async (context, next) => {
   const { userId } = context.query;
