@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either';
 import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
+import Auth0Strategy from 'passport-auth0';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
@@ -92,6 +93,26 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         void createAccountIfNecessary(ports)(user)()
           .then(() => cb(null, user));
       },
+    ));
+  } else if (process.env.AUTHENTICATION_STRATEGY === 'auth0') {
+    koaPassport.use(new Auth0Strategy(
+      {
+        domain: process.env.AUTH0_DOMAIN ?? '',
+        clientID: process.env.AUTH0_CLIENT_ID ?? '',
+        clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
+        callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
+      },
+      ((accessToken, refreshToken, extraParams, profile, done) =>
+      /**
+     * Access tokens are used to authorize users to an API
+     * (resource server)
+     * accessToken is the token to call the Auth0 API
+     * or a secured third-party API
+     * extraParams.id_token has the JSON Web Token
+     * profile has all the information from the user
+     */
+        done(null, profile)
+      ),
     ));
   } else {
     koaPassport.use(
