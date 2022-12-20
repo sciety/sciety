@@ -6,6 +6,7 @@ import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { OpenIDConnectStrategy } from 'passport-openidconnect';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
@@ -93,7 +94,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
           .then(() => cb(null, user));
       },
     ));
-  } else {
+  } else if (process.env.AUTHENTICATION_STRATEGY === 'twitter') {
     koaPassport.use(
       new TwitterStrategy(
         {
@@ -123,6 +124,17 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         },
       ),
     );
+  } else {
+    koaPassport.use(new OpenIDConnectStrategy({
+      issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+      authorizationURL: `https://${process.env.AUTH0_DOMAIN}/authorize`,
+      tokenURL: `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
+      userInfoURL: `https://${process.env.AUTH0_DOMAIN}/userinfo`,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      callbackURL: '/oauth2/redirect',
+      scope: ['profile'],
+    }, ((issuer, profile, cb) => cb(null, profile))));
   }
 
   app.use(koaPassport.initialize());
