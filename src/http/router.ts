@@ -500,7 +500,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   // AUTHENTICATION
 
-  const authenticationStrategyCodec = t.union([t.literal('local'), t.literal('twitter')]);
+  const authenticationStrategyCodec = t.union([t.literal('local'), t.literal('twitter'), t.literal('auth0')]);
 
   const authenticationStrategy = pipe(
     process.env.AUTHENTICATION_STRATEGY,

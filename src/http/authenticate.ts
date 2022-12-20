@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 
-type Strategy = 'twitter' | 'local';
+type Strategy = 'twitter' | 'local' | 'auth0';
 
 const authenticate = (strategy: Strategy): Middleware => koaPassport.authenticate(
   strategy,
@@ -21,6 +21,10 @@ export const logIn = (strategy: Strategy): Middleware => {
     case 'twitter':
       return async (context, next) => {
         await authenticate('twitter')(context, next);
+      };
+    case 'auth0':
+      return async (context, next) => {
+        await authenticate('auth0')(context, next);
       };
   }
 };
