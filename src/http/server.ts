@@ -106,7 +106,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         console.log('>>>>>> extra', extraParams);
         console.log('>>>>>> profile', profile);
         const userAccount = {
-          id: toUserId(profile.id.substring(profile.id.indexOf('|'))),
+          id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
           handle: profile.displayName,
           avatarUrl: profile.picture,
           displayName: profile.nickname,
