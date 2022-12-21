@@ -83,10 +83,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   ));
 
   const callAuth0ManagementApi = async (id) => {
+    const token = process.env.AUTH0_MANAGEMENT_API_SECRET;
     const response = await fetchData(ports.logger)(
       `https://dev-sqa2k3wwnhpxk36d.eu.auth0.com/api/v2/users/${id}`,
       {
-        Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_SECRET ?? ''}`,
+        Authorization: `Bearer ${token ?? ''}`,
       },
     );
 
