@@ -82,9 +82,9 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     app,
   ));
 
-  const callAuth0ManagementApi = async (id) => {
+  const callAuth0ManagementApi = async (id: string) => {
     const token = process.env.AUTH0_MANAGEMENT_API_SECRET;
-    const response = await fetchData(ports.logger)(
+    const response: { data: { screen_name: string } } = await fetchData(ports.logger)(
       `https://dev-sqa2k3wwnhpxk36d.eu.auth0.com/api/v2/users/${id}`,
       {
         Authorization: `Bearer ${token ?? ''}`,
@@ -124,6 +124,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
           displayName: profile.nickname,
         };
         void createAccountIfNecessary(ports)(userAccount)()
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           .then(() => done(
             undefined,
             {
