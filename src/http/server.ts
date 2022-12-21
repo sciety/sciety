@@ -10,6 +10,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
+import { fetchData } from '../infrastructure/fetchers';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
@@ -81,6 +82,17 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     app,
   ));
 
+  const callAuth0ManagementApi = async (id) => {
+    const response = await fetchData(ports.logger)(
+      `https://dev-sqa2k3wwnhpxk36d.eu.auth0.com/api/v2/users/${id}`,
+      {
+        Authorization: `Bearer ${process.env.AUTH0_MANAGEMENT_API_SECRET ?? ''}`,
+      },
+    );
+
+    return response.data.screen_name;
+  };
+
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
     koaPassport.use(new LocalStrategy(
       (username, _password, cb) => {
@@ -102,12 +114,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
         callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
       },
-      ((accessToken, refreshToken, extraParams, profile, done) => {
-        console.log('>>>>>> extra', extraParams);
-        console.log('>>>>>> profile', profile);
+      (async (accessToken, refreshToken, extraParams, profile, done) => {
+        const screenName = await callAuth0ManagementApi(profile.id);
         const userAccount = {
           id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
-          handle: profile.displayName,
+          handle: screenName,
           avatarUrl: profile.picture,
           displayName: profile.nickname,
         };
