@@ -116,12 +116,13 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
         callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
       },
       (async (accessToken, refreshToken, extraParams, profile, done) => {
+        const isAuthdViaTwitter = (id: string) => id.includes('twitter');
         const screenName = await callAuth0ManagementApi(profile.id);
         const userAccount = {
           id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
-          handle: screenName,
+          handle: isAuthdViaTwitter(profile.id) ? screenName : profile.nickname,
           avatarUrl: profile.picture,
-          displayName: profile.nickname,
+          displayName: profile.displayName,
         };
         void createAccountIfNecessary(ports)(userAccount)()
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
