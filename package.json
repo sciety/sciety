@@ -51,6 +51,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.3.24",
     "@types/clownface": "^1.5.1",
     "@types/jest": "^29.2.4",
     "@types/jsdom": "^20.0.1",
@@ -105,7 +107,7 @@
   "scripts": {
     "build": "run-p --aggregate-output --continue-on-error --print-label --silent build:**",
     "build:css": "sass --no-source-map src/sass/style.scss:static/style.css",
-    "build:js": "tsc",
+    "build:js": "swc src -d build",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0",
     "lint:stylelint": "stylelint ${STYLELINT:-} \"src/**/*.scss\" --cache --cache-location .stylelint/",

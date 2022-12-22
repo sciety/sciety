@@ -8,16 +8,21 @@ COPY .npmrc \
   ./
 
 
+FROM jarredsumner/bun:edge as bun
+WORKDIR /app
+COPY package.json \
+  bun.lockb \
+  ./
 
 #
 # Stage: Development NPM install
 #
-FROM node AS npm-dev
+FROM bun AS npm-dev
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 
-RUN npm ci
+RUN bun install
 
 
 
@@ -59,9 +64,9 @@ RUN npm run build
 #
 # Stage: Production NPM install
 #
-FROM node AS npm-prod
+FROM bun AS npm-prod
 
-RUN npm ci --production
+RUN bun install --production
 
 
 
@@ -72,7 +77,7 @@ FROM node AS prod
 ENV NODE_ENV=production
 
 COPY --from=npm-prod /app/ .
-COPY --from=build-prod /app/build/src/ build/
+COPY --from=build-prod /app/build/ build/
 COPY --from=build-prod /app/static/ static/
 COPY data/ data/
 
