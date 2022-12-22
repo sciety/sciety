@@ -9,6 +9,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
+import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
@@ -133,7 +134,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   });
 
   koaPassport.deserializeUser((user, done) => {
-    done(null, user);
+    done(null, user as User);
   });
 
   const checkUserDetails: Middleware = async (context, next) => {
