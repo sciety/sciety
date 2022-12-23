@@ -29,17 +29,21 @@ const auth0Config = {
   callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
 };
 
+const createUserAccountData = async (profile: Auth0Strategy.Profile, logger: Logger) => {
+  const isAuthdViaTwitter = (id: string) => id.includes('twitter');
+  const screenName = await callAuth0ManagementApi(logger)(profile.id);
+  return {
+    id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
+    handle: isAuthdViaTwitter(profile.id) ? screenName : profile.nickname,
+    avatarUrl: profile.picture,
+    displayName: profile.displayName,
+  };
+};
+
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
   (async (accessToken, refreshToken, extraParams, profile, done) => {
-    const isAuthdViaTwitter = (id: string) => id.includes('twitter');
-    const screenName = await callAuth0ManagementApi(ports.logger)(profile.id);
-    const userAccount = {
-      id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
-      handle: isAuthdViaTwitter(profile.id) ? screenName : profile.nickname,
-      avatarUrl: profile.picture,
-      displayName: profile.displayName,
-    };
+    const userAccount = await createUserAccountData(profile, ports.logger);
     void createAccountIfNecessary(ports)(userAccount)()
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       .then(() => done(
