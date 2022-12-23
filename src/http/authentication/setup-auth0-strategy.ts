@@ -22,13 +22,15 @@ type Ports = {
   logger: Logger,
 };
 
+const auth0Config = {
+  domain: process.env.AUTH0_DOMAIN ?? '',
+  clientID: process.env.AUTH0_CLIENT_ID ?? '',
+  clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
+  callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
+};
+
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
-  {
-    domain: process.env.AUTH0_DOMAIN ?? '',
-    clientID: process.env.AUTH0_CLIENT_ID ?? '',
-    clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
-    callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
-  },
+  auth0Config,
   (async (accessToken, refreshToken, extraParams, profile, done) => {
     const isAuthdViaTwitter = (id: string) => id.includes('twitter');
     const screenName = await callAuth0ManagementApi(ports.logger)(profile.id);
