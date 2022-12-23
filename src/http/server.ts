@@ -5,8 +5,8 @@ import * as E from 'fp-ts/Either';
 import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { setupLocalStrategy } from './authentication/setup-local-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 import { toUserId } from '../types/user-id';
@@ -81,18 +81,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   ));
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-    koaPassport.use(new LocalStrategy(
-      (username, _password, cb) => {
-        const user = {
-          id: toUserId(username),
-          handle: 'account27775998',
-          avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
-          displayName: '',
-        };
-        void createAccountIfNecessary(ports)(user)()
-          .then(() => cb(null, user));
-      },
-    ));
+    koaPassport.use(setupLocalStrategy(ports));
   } else {
     koaPassport.use(
       new TwitterStrategy(

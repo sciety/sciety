@@ -7,7 +7,7 @@ import { CommandResult } from '../types/command-result';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = {
+export type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
