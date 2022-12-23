@@ -5,12 +5,10 @@ import * as E from 'fp-ts/Either';
 import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { setupLocalStrategy } from './authentication/setup-local-strategy';
+import { setupTwitterStrategy } from './authentication/setup-twitter-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
-import { toUserId } from '../types/user-id';
-import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
 export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
   const app = new Koa();
@@ -83,35 +81,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
     koaPassport.use(setupLocalStrategy(ports));
   } else {
-    koaPassport.use(
-      new TwitterStrategy(
-        {
-          consumerKey: process.env.TWITTER_API_KEY ?? '',
-          consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
-          callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
-        },
-        (_token, _tokenSecret, profile, cb) => {
-          // photos can never be undefined:
-          // https://github.com/jaredhanson/passport-twitter/blob/cfe7807b0e89e9ff130592c28622e134749e757b/lib/profile.js#L21
-          const photos = profile.photos ?? [{ value: '' }];
-          const userAccount = {
-            id: toUserId(profile.id),
-            handle: profile.username,
-            avatarUrl: photos[0].value,
-            displayName: profile.displayName,
-          };
-          void createAccountIfNecessary(ports)(userAccount)()
-            .then(() => cb(
-              undefined,
-              {
-                id: userAccount.id,
-                handle: userAccount.handle,
-                avatarUrl: userAccount.avatarUrl,
-              },
-            ));
-        },
-      ),
-    );
+    koaPassport.use(setupTwitterStrategy(ports));
   }
 
   app.use(koaPassport.initialize());
