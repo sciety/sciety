@@ -1,4 +1,4 @@
-import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -8,6 +8,7 @@ import { fetchData } from '../../infrastructure/fetchers';
 import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
+import { UserAccount } from '../../user-account/set-up-user-if-necessary';
 
 const getTwitterScreenNameViaAuth0 = (logger: Logger) => (id: string) => async () => {
   const token = process.env.AUTH0_MANAGEMENT_API_SECRET;
@@ -43,30 +44,38 @@ const profileCodec = t.type({
 
 type Profile = t.TypeOf<typeof profileCodec>;
 
-const deriveHandle = (profile: Profile, logger: Logger): T.Task<string> => {
-  const isAuthdViaTwitter = (id: string) => id.includes('twitter');
-  const screenName = getTwitterScreenNameViaAuth0(logger)(profile.id);
-  const handle = isAuthdViaTwitter(profile.id) ? screenName : T.of(profile.nickname);
-  return handle;
-};
+const toUserAccount = (profile: Profile) => ({
+  id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
+  handle: profile.nickname,
+  avatarUrl: profile.picture,
+  displayName: profile.displayName,
+});
 
-const createUserAccountData = (profile: Profile, logger: Logger) => pipe(
-  {
-    id: T.of(toUserId(profile.id.substring(profile.id.indexOf('|') + 1))),
-    handle: deriveHandle(profile, logger),
-    avatarUrl: T.of(profile.picture),
-    displayName: T.of(profile.displayName),
-  },
-  sequenceS(T.ApplicativePar),
-);
+const useScreenNameInsteadOfNicknameIfLoggedInViaTwitter = (id: string, logger: Logger) => (
+  userAccount: UserAccount,
+): T.Task<UserAccount> => {
+  const isAuthdViaTwitter = id.includes('twitter');
+  if (!isAuthdViaTwitter) {
+    return T.of(userAccount);
+  }
+  return pipe(
+    id,
+    getTwitterScreenNameViaAuth0(logger),
+    T.map((screenName) => ({
+      ...userAccount,
+      handle: screenName,
+    })),
+  );
+};
 
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
   (async (accessToken, refreshToken, extraParams, profile, done) => pipe(
     profile,
     profileCodec.decode,
+    E.map(toUserAccount),
     TE.fromEither,
-    TE.chainTaskK((validatedProfile) => createUserAccountData(validatedProfile, ports.logger)),
+    TE.chainTaskK(useScreenNameInsteadOfNicknameIfLoggedInViaTwitter(profile.id, ports.logger)),
     TE.chainFirstTaskK(createAccountIfNecessary(ports)),
     TE.match(
       () => done('could-not-derive-user-account-from-profile'),
