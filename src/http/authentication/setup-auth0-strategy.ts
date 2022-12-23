@@ -1,10 +1,9 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import Auth0Strategy from 'passport-auth0';
-import { shouldNotBeCalled } from '../../../test/should-not-be-called';
 import { fetchData } from '../../infrastructure/fetchers';
 import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
 import { toUserId } from '../../types/user-id';
@@ -63,23 +62,23 @@ const createUserAccountData = (profile: Profile, logger: Logger) => pipe(
 
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
-  (async (accessToken, refreshToken, extraParams, profile, done) => {
-    const validatedProfile = pipe(
-      profile,
-      profileCodec.decode,
-      E.getOrElseW(shouldNotBeCalled),
-    );
-    const userAccount = await createUserAccountData(validatedProfile, ports.logger)();
-    void createAccountIfNecessary(ports)(userAccount)()
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      .then(() => done(
+  (async (accessToken, refreshToken, extraParams, profile, done) => pipe(
+    profile,
+    profileCodec.decode,
+    TE.fromEither,
+    TE.chainTaskK((validatedProfile) => createUserAccountData(validatedProfile, ports.logger)),
+    TE.chainFirstTaskK(createAccountIfNecessary(ports)),
+    TE.match(
+      () => done('could-not-derive-user-account-from-profile'),
+      (userAccount) => done(
         undefined,
         {
           id: userAccount.id,
           handle: userAccount.handle,
           avatarUrl: userAccount.avatarUrl,
         },
-      ));
-  }
+      ),
+    ),
+  )
   ),
 );
