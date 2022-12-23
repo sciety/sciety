@@ -54,6 +54,7 @@ const toUserAccount = (profile: Profile) => ({
 const useScreenNameInsteadOfNicknameIfLoggedInViaTwitter = (id: string, logger: Logger) => (
   userAccount: UserAccount,
 ): T.Task<UserAccount> => {
+  console.log('>>>>> start useScreenNameInsteadOfNicknameIfLoggedInViaTwitter ');
   const isAuthdViaTwitter = id.includes('twitter');
   if (!isAuthdViaTwitter) {
     return T.of(userAccount);
@@ -88,6 +89,6 @@ export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
         },
       ),
     ),
-  )
+  )()
   ),
 );
