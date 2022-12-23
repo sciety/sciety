@@ -18,8 +18,10 @@ spec:
           - path: /
             pathType: Prefix
             backend:
-              serviceName: {{ .Release.Name }}--frontend
-              servicePort: http
+              service:
+                name: {{ .Release.Name }}--frontend
+                port:
+                  name: http
   tls:
     - hosts:
         - {{ .Values.hostname }}
