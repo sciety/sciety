@@ -54,7 +54,6 @@ const toUserAccount = (profile: Profile) => ({
 const useScreenNameInsteadOfNicknameIfLoggedInViaTwitter = (id: string, logger: Logger) => (
   userAccount: UserAccount,
 ): T.Task<UserAccount> => {
-  console.log('>>>>> start useScreenNameInsteadOfNicknameIfLoggedInViaTwitter ');
   const isAuthdViaTwitter = id.includes('twitter');
   if (!isAuthdViaTwitter) {
     return T.of(userAccount);
@@ -69,6 +68,17 @@ const useScreenNameInsteadOfNicknameIfLoggedInViaTwitter = (id: string, logger: 
   );
 };
 
+const writeUserToState = (
+  done: (error: unknown, user?: unknown, info?: unknown) => void,
+) => (userAccount: UserAccount) => done(
+  undefined,
+  {
+    id: userAccount.id,
+    handle: userAccount.handle,
+    avatarUrl: userAccount.avatarUrl,
+  },
+);
+
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
   (async (accessToken, refreshToken, extraParams, profile, done) => pipe(
@@ -80,14 +90,7 @@ export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
     TE.chainFirstTaskK(createAccountIfNecessary(ports)),
     TE.match(
       () => done('could-not-derive-user-account-from-profile'),
-      (userAccount) => done(
-        undefined,
-        {
-          id: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
-        },
-      ),
+      writeUserToState(done),
     ),
   )()
   ),
