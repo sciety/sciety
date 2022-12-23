@@ -29,16 +29,19 @@ const auth0Config = {
   callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
 };
 
-const createUserAccountData = async (profile: Auth0Strategy.Profile, logger: Logger) => {
+const deriveHandle = async (profile: Auth0Strategy.Profile, logger: Logger): Promise<string> => {
   const isAuthdViaTwitter = (id: string) => id.includes('twitter');
   const screenName = await callAuth0ManagementApi(logger)(profile.id);
-  return {
-    id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
-    handle: isAuthdViaTwitter(profile.id) ? screenName : profile.nickname,
-    avatarUrl: profile.picture,
-    displayName: profile.displayName,
-  };
+  const handle = isAuthdViaTwitter(profile.id) ? screenName : profile.nickname;
+  return handle as string;
 };
+
+const createUserAccountData = async (profile: Auth0Strategy.Profile, logger: Logger) => ({
+  id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
+  handle: await deriveHandle(profile, logger),
+  avatarUrl: profile.picture,
+  displayName: profile.displayName,
+});
 
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
