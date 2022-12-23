@@ -13,7 +13,7 @@ import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
-import { logIn, logInAsSpecificUser, logInCallback } from './authenticate';
+import { logIn, logInAsSpecificUser, logInCallback } from './authentication/login-middlewares';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
 import { editListDetails } from './forms/edit-list-details';
