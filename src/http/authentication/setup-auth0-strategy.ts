@@ -1,7 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
-import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import Auth0Strategy from 'passport-auth0';
+import { shouldNotBeCalled } from '../../../test/should-not-be-called';
 import { fetchData } from '../../infrastructure/fetchers';
 import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
 import { toUserId } from '../../types/user-id';
@@ -32,18 +35,27 @@ const auth0Config = {
   callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
 };
 
-const deriveHandle = (profile: Auth0Strategy.Profile, logger: Logger): T.Task<string> => {
+const profileCodec = t.type({
+  id: t.string,
+  displayName: t.string,
+  nickname: t.string,
+  picture: t.string,
+});
+
+type Profile = t.TypeOf<typeof profileCodec>;
+
+const deriveHandle = (profile: Profile, logger: Logger): T.Task<string> => {
   const isAuthdViaTwitter = (id: string) => id.includes('twitter');
   const screenName = getTwitterScreenNameViaAuth0(logger)(profile.id);
-  const handle = isAuthdViaTwitter(profile.id) ? screenName : T.of(profile.nickname as string);
+  const handle = isAuthdViaTwitter(profile.id) ? screenName : T.of(profile.nickname);
   return handle;
 };
 
-const createUserAccountData = (profile: Auth0Strategy.Profile, logger: Logger) => pipe(
+const createUserAccountData = (profile: Profile, logger: Logger) => pipe(
   {
     id: T.of(toUserId(profile.id.substring(profile.id.indexOf('|') + 1))),
     handle: deriveHandle(profile, logger),
-    avatarUrl: T.of(profile.picture as string),
+    avatarUrl: T.of(profile.picture),
     displayName: T.of(profile.displayName),
   },
   sequenceS(T.ApplicativePar),
@@ -52,7 +64,12 @@ const createUserAccountData = (profile: Auth0Strategy.Profile, logger: Logger) =
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
   (async (accessToken, refreshToken, extraParams, profile, done) => {
-    const userAccount = await createUserAccountData(profile, ports.logger)();
+    const validatedProfile = pipe(
+      profile,
+      profileCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+    const userAccount = await createUserAccountData(validatedProfile, ports.logger)();
     void createAccountIfNecessary(ports)(userAccount)()
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       .then(() => done(
