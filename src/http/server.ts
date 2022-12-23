@@ -5,12 +5,11 @@ import * as E from 'fp-ts/Either';
 import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import Auth0Strategy from 'passport-auth0';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { setupAuth0Strategy } from './authentication/setup-auth0-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
-import { fetchData } from '../infrastructure/fetchers';
 import { toUserId } from '../types/user-id';
 import { createAccountIfNecessary } from '../user-account/create-account-if-necessary';
 
@@ -82,18 +81,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     app,
   ));
 
-  const callAuth0ManagementApi = async (id: string) => {
-    const token = process.env.AUTH0_MANAGEMENT_API_SECRET;
-    const response: { data: { screen_name: string } } = await fetchData(ports.logger)(
-      `https://dev-sqa2k3wwnhpxk36d.eu.auth0.com/api/v2/users/${id}`,
-      {
-        Authorization: `Bearer ${token ?? ''}`,
-      },
-    );
-
-    return response.data.screen_name;
-  };
-
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
     koaPassport.use(new LocalStrategy(
       (username, _password, cb) => {
@@ -108,35 +95,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
       },
     ));
   } else if (process.env.AUTHENTICATION_STRATEGY === 'auth0') {
-    koaPassport.use(new Auth0Strategy(
-      {
-        domain: process.env.AUTH0_DOMAIN ?? '',
-        clientID: process.env.AUTH0_CLIENT_ID ?? '',
-        clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
-        callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
-      },
-      (async (accessToken, refreshToken, extraParams, profile, done) => {
-        const isAuthdViaTwitter = (id: string) => id.includes('twitter');
-        const screenName = await callAuth0ManagementApi(profile.id);
-        const userAccount = {
-          id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
-          handle: isAuthdViaTwitter(profile.id) ? screenName : profile.nickname,
-          avatarUrl: profile.picture,
-          displayName: profile.displayName,
-        };
-        void createAccountIfNecessary(ports)(userAccount)()
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          .then(() => done(
-            undefined,
-            {
-              id: userAccount.id,
-              handle: userAccount.handle,
-              avatarUrl: userAccount.avatarUrl,
-            },
-          ));
-      }
-      ),
-    ));
+    koaPassport.use(setupAuth0Strategy(ports));
   } else {
     koaPassport.use(
       new TwitterStrategy(
