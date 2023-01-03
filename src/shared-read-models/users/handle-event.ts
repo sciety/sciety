@@ -11,10 +11,8 @@ type UserDetails = {
 
 export type ReadModel = Record<UserId, UserDetails>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel => {
   if (isUserCreatedAccountEvent(event)) {
     readModel[event.userId] = {
