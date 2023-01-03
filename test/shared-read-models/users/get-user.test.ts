@@ -1,41 +1,11 @@
-/* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../src/domain-events/domain-event';
-import { isUserCreatedAccountEvent, userCreatedAccount } from '../../../src/domain-events/user-created-account-event';
-import { UserId } from '../../../src/types/user-id';
+import { userCreatedAccount } from '../../../src/domain-events/user-created-account-event';
+import { handleEvent, initialState } from '../../../src/shared-read-models/users';
+import { getUser } from '../../../src/shared-read-models/users/get-user';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
-
-type UserDetails = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
-  userId: UserId,
-};
-
-type ReadModel = Record<UserId, UserDetails>;
-
-const initialState = (): ReadModel => ({});
-
-const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isUserCreatedAccountEvent(event)) {
-    readModel[event.userId] = {
-      avatarUrl: event.avatarUrl,
-      displayName: event.displayName,
-      handle: event.handle,
-      userId: event.userId,
-    };
-  }
-  return readModel;
-};
-
-const getUser = (readModel: ReadModel) => (userId: UserId) => pipe(
-  readModel,
-  R.lookup(userId),
-);
 
 describe('get-user', () => {
   const userId = arbitraryUserId();
