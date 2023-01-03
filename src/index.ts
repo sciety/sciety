@@ -5,6 +5,8 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
@@ -54,13 +56,20 @@ const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Sagas started');
 };
 
+const appConfigCodec = t.type({
+  PRETTY_LOG: tt.withFallback(tt.BooleanFromString, false),
+});
+
 void pipe(
-  createInfrastructure({
+  process.env,
+  appConfigCodec.decode,
+  TE.fromEither,
+  TE.chain((config) => createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     logLevel: process.env.LOG_LEVEL ?? 'debug',
-    prettyLog: !!process.env.PRETTY_LOG,
+    prettyLog: config.PRETTY_LOG,
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
-  }),
+  })),
   TE.map((adapters) => pipe(
     adapters,
     createRouter,
