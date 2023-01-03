@@ -16,11 +16,12 @@ const handleEvent = (state: ReadModel, event: DomainEvent) => state;
 const getUser = (readModel: ReadModel) => (userId: UserId) => O.none;
 
 describe('get-user', () => {
+  const userId = arbitraryUserId();
+
   describe('when user exists', () => {
     const avatarUrl = arbitraryUri();
     const displayName = arbitraryString();
     const handle = arbitraryWord();
-    const userId = arbitraryUserId();
     const readModel = pipe(
       [
         userCreatedAccount(userId, handle, avatarUrl, displayName),
@@ -39,6 +40,13 @@ describe('get-user', () => {
   });
 
   describe('when user does not exist', () => {
-    it.todo('returns None');
+    const readModel = pipe(
+      [],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('returns None', () => {
+      expect(getUser(readModel)(userId)).toStrictEqual(O.none);
+    });
   });
 });
