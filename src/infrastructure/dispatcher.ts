@@ -18,41 +18,43 @@ type Dispatcher = {
 };
 
 export const dispatcher = (): Dispatcher => {
-  let addArticleToElifeSubjectAreaListReadModel = addArticleToElifeSubjectAreaList.initialState();
-  let listsReadModel = lists.initialState();
-  let groupsReadModel = groups.initialState();
-  let idsOfEvaluatedArticlesListsReadModel = idsOfEvaluatedArticlesLists.initialState();
-  let usersReadModel = users.initialState();
+  const readModels = {
+    addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
+    listsReadModel: lists.initialState(),
+    groupsReadModel: groups.initialState(),
+    idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
+    usersReadModel: users.initialState(),
+  };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    addArticleToElifeSubjectAreaListReadModel = RA.reduce(
-      addArticleToElifeSubjectAreaListReadModel,
+    readModels.addArticleToElifeSubjectAreaListReadModel = RA.reduce(
+      readModels.addArticleToElifeSubjectAreaListReadModel,
       addArticleToElifeSubjectAreaList.handleEvent,
     )(events);
-    listsReadModel = RA.reduce(
-      listsReadModel,
+    readModels.listsReadModel = RA.reduce(
+      readModels.listsReadModel,
       lists.handleEvent,
     )(events);
-    groupsReadModel = RA.reduce(
-      groupsReadModel,
+    readModels.groupsReadModel = RA.reduce(
+      readModels.groupsReadModel,
       groups.handleEvent,
     )(events);
-    idsOfEvaluatedArticlesListsReadModel = RA.reduce(
-      idsOfEvaluatedArticlesListsReadModel,
+    readModels.idsOfEvaluatedArticlesListsReadModel = RA.reduce(
+      readModels.idsOfEvaluatedArticlesListsReadModel,
       idsOfEvaluatedArticlesLists.handleEvent,
     )(events);
-    usersReadModel = RA.reduce(
-      usersReadModel,
+    readModels.usersReadModel = RA.reduce(
+      readModels.usersReadModel,
       users.handleEvent,
     )(events);
   };
 
   const queries = {
-    ...lists.queries(listsReadModel),
-    ...addArticleToElifeSubjectAreaList.queries(addArticleToElifeSubjectAreaListReadModel),
-    ...groups.queries(groupsReadModel),
-    ...idsOfEvaluatedArticlesLists.queries(idsOfEvaluatedArticlesListsReadModel),
-    ...users.queries(usersReadModel),
+    ...lists.queries(readModels.listsReadModel),
+    ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
+    ...groups.queries(readModels.groupsReadModel),
+    ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
+    ...users.queries(readModels.usersReadModel),
   };
 
   return {
