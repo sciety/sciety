@@ -1,13 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
+import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
-
-type UserDetails = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
-  userId: UserId,
-};
 
 export type ReadModel = Record<UserId, UserDetails>;
 
