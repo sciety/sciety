@@ -5,6 +5,7 @@ import * as D from 'fp-ts/Date';
 import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { serializeError } from 'serialize-error';
 
 enum Level {
@@ -13,7 +14,16 @@ enum Level {
   info,
   debug,
 }
-type LevelName = keyof typeof Level;
+
+export type LevelName = keyof typeof Level;
+
+export const levelNameCodec = t.keyof({
+  error: null,
+  warn: null,
+  info: null,
+  debug: null,
+});
+
 export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;

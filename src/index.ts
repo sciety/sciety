@@ -14,6 +14,7 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
+import { levelNameCodec } from './infrastructure/logger';
 import { ensureAllUsersHaveCreatedAccountEvents } from './policies/ensure-all-users-have-accounts';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
@@ -58,6 +59,7 @@ const startSagas = (ports: CollectedPorts) => async () => {
 
 const appConfigCodec = t.type({
   PRETTY_LOG: tt.withFallback(tt.BooleanFromString, false),
+  LOG_LEVEL: tt.withFallback(levelNameCodec, 'debug'),
 });
 
 void pipe(
@@ -66,7 +68,7 @@ void pipe(
   TE.fromEither,
   TE.chain((config) => createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
-    logLevel: process.env.LOG_LEVEL ?? 'debug',
+    logLevel: config.LOG_LEVEL,
     prettyLog: config.PRETTY_LOG,
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   })),

@@ -19,7 +19,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, LevelName, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
@@ -46,7 +46,7 @@ import {
 
 type Dependencies = {
   prettyLog: boolean,
-  logLevel: string, // TODO: Make this a level name
+  logLevel: LevelName,
   crossrefApiBearerToken: O.Option<string>,
   twitterApiBearerToken: string,
 };
