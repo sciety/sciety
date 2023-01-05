@@ -29,6 +29,10 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 
 type ExecuteBackgroundPolicies = (ports: CollectedPorts) => T.Task<void>;
 
+type EnsureAllUsersHaveCreatedAccountEvents = (events: ReadonlyArray<DomainEvent>) => T.Task<void>;
+
+const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAccountEvents = () => T.of(undefined);
+
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async () => {
   const events = await ports.getAllEvents();
   // const amountOfEventsToProcess = events.length;
@@ -41,6 +45,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
       setTimeout(resolve, 0);
     });
   }
+  await ensureAllUsersHaveCreatedAccountEvents(events)();
   const stop = performance.now();
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
