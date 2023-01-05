@@ -3,7 +3,7 @@ import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
 import { appConfigCodec } from './app-config';
 import { DomainEvent } from './domain-events';
@@ -58,31 +58,24 @@ void pipe(
   process.env,
   appConfigCodec.decode,
   TE.fromEither,
-  TE.chain(createInfrastructure),
-  TE.map((adapters) => pipe(
-    adapters,
-    createRouter,
-    (router) => ({ router, adapters }),
-  )),
-  TE.chainEitherKW(({ adapters, router }) => pipe(
+  TE.bindTo('config'),
+  TE.bind('adapters', ({ config }) => createInfrastructure(config)),
+  TE.bind('router', ({ adapters }) => TE.right(createRouter(adapters))),
+  TE.bindW('server', ({ router, adapters }) => pipe(
     createApplicationServer(router, adapters),
-    E.map(flow(
-      (server) => createTerminus(server, terminusOptions(adapters.logger)),
-      (server) => server.on('listening', () => adapters.logger('info', 'Server running')),
-    )),
-    E.map((server) => ({
-      server,
-      adapters,
-    })),
+    E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
+    E.map((server) => server.on('listening', () => adapters.logger('info', 'Server running'))),
+    TE.fromEither,
   )),
-  TE.match(
+  TE.getOrElse(
     (error) => {
       process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
       process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
       return process.exit(1);
     },
-    ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
+  T.chainFirst(({ server }) => { server.listen(80); return T.of(undefined); }),
+  T.map(({ adapters }) => adapters),
   T.chainFirst(executeBackgroundPolicies),
   T.chain(startSagas),
 )();
