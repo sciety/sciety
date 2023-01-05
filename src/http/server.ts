@@ -46,10 +46,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   const requiredEnvironmentVariables = [
     'APP_ORIGIN',
     'APP_SECRET',
-    'PGUSER',
-    'PGHOST',
-    'PGPASSWORD',
-    'PGDATABASE',
     'TWITTER_API_KEY',
     'TWITTER_API_SECRET_KEY',
     'TWITTER_API_BEARER_TOKEN',

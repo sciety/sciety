@@ -94,7 +94,12 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 
 export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
-    pool: new Pool(),
+    pool: new Pool({
+      user: config.PGUSER,
+      host: config.PGHOST,
+      password: config.PGPASSWORD,
+      database: config.PGDATABASE,
+    }),
     logger: createLogger(config),
   },
   TE.right,

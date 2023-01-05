@@ -7,6 +7,10 @@ export const appConfigCodec = t.type({
   LOG_LEVEL: tt.withFallback(levelNameCodec, 'debug'),
   CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
   TWITTER_API_BEARER_TOKEN: tt.withFallback(t.string, ''),
+  PGUSER: t.string,
+  PGHOST: t.string,
+  PGPASSWORD: t.string,
+  PGDATABASE: t.string,
 });
 
 export type AppConfig = t.TypeOf<typeof appConfigCodec>;
