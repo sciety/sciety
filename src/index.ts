@@ -4,16 +4,14 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
+import { appConfigCodec } from './app-config';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
-import { levelNameCodec } from './infrastructure/logger';
 import { ensureAllUsersHaveCreatedAccountEvents } from './policies/ensure-all-users-have-accounts';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
@@ -56,23 +54,11 @@ const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Sagas started');
 };
 
-const appConfigCodec = t.type({
-  PRETTY_LOG: tt.withFallback(tt.BooleanFromString, false),
-  LOG_LEVEL: tt.withFallback(levelNameCodec, 'debug'),
-  CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
-  TWITTER_API_BEARER_TOKEN: tt.withFallback(t.string, ''),
-});
-
 void pipe(
   process.env,
   appConfigCodec.decode,
   TE.fromEither,
-  TE.chain((config) => createInfrastructure({
-    logLevel: config.LOG_LEVEL,
-    prettyLog: config.PRETTY_LOG,
-    crossrefApiBearerToken: config.CROSSREF_API_BEARER_TOKEN,
-    twitterApiBearerToken: config.TWITTER_API_BEARER_TOKEN,
-  })),
+  TE.chain(createInfrastructure),
   TE.map((adapters) => pipe(
     adapters,
     createRouter,

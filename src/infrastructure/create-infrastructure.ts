@@ -1,5 +1,4 @@
 import { Json } from 'fp-ts/Json';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -19,11 +18,12 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, LevelName, Logger, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../add-article-to-list';
+import { AppConfig } from '../app-config';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
@@ -44,17 +44,10 @@ import {
   getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
 } from '../third-parties/twitter';
 
-type Dependencies = {
-  prettyLog: boolean,
-  logLevel: LevelName,
-  crossrefApiBearerToken: O.Option<string>,
-  twitterApiBearerToken: string,
-};
-
-const createLogger = (dependencies: Dependencies) => pipe(
-  dependencies.prettyLog,
+const createLogger = (config: AppConfig) => pipe(
+  config.PRETTY_LOG,
   jsonSerializer,
-  (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
+  (serializer) => streamLogger(process.stdout, serializer, config.LOG_LEVEL),
   rTracerLogger,
 );
 
@@ -99,10 +92,10 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
   ]),
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
+export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
-    logger: createLogger(dependencies),
+    logger: createLogger(config),
   },
   TE.right,
   TE.chainFirst(createEventsTable),
@@ -172,22 +165,22 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
-          dependencies.crossrefApiBearerToken,
+          config.CROSSREF_API_BEARER_TOKEN,
         ),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchStaticFile(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         getUserDetails: getTwitterUserDetails(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+          getTwitterResponse(config.TWITTER_API_BEARER_TOKEN, logger),
           logger,
         ),
         getUserDetailsBatch: getTwitterUserDetailsBatch(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+          getTwitterResponse(config.TWITTER_API_BEARER_TOKEN, logger),
           logger,
         ),
         getUserId: getTwitterUserId(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+          getTwitterResponse(config.TWITTER_API_BEARER_TOKEN, logger),
           logger,
         ),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
