@@ -1,7 +1,6 @@
 import { performance } from 'perf_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -60,6 +59,8 @@ const startSagas = (ports: CollectedPorts) => async () => {
 const appConfigCodec = t.type({
   PRETTY_LOG: tt.withFallback(tt.BooleanFromString, false),
   LOG_LEVEL: tt.withFallback(levelNameCodec, 'debug'),
+  CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
+  TWITTER_API_BEARER_TOKEN: tt.withFallback(t.string, ''),
 });
 
 void pipe(
@@ -67,10 +68,10 @@ void pipe(
   appConfigCodec.decode,
   TE.fromEither,
   TE.chain((config) => createInfrastructure({
-    crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     logLevel: config.LOG_LEVEL,
     prettyLog: config.PRETTY_LOG,
-    twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
+    crossrefApiBearerToken: config.CROSSREF_API_BEARER_TOKEN,
+    twitterApiBearerToken: config.TWITTER_API_BEARER_TOKEN,
   })),
   TE.map((adapters) => pipe(
     adapters,
