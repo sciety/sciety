@@ -2,6 +2,7 @@ import { performance } from 'perf_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -12,6 +13,9 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
+import { GetUserDetailsBatch } from './third-parties/twitter';
+import { UserId } from './types/user-id';
+import { createAccountIfNecessary, Ports as CreateAccountIfNecessaryPorts } from './user-account/create-account-if-necessary';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -29,9 +33,30 @@ const noopPolicy: NoopPolicy = () => T.of(undefined);
 
 type ExecuteBackgroundPolicies = (ports: CollectedPorts) => T.Task<void>;
 
-type EnsureAllUsersHaveCreatedAccountEvents = (events: ReadonlyArray<DomainEvent>) => T.Task<void>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadonlyArray<UserId>, event: DomainEvent) => state;
 
-const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAccountEvents = () => T.of(undefined);
+type EnsureAllUsersHaveCreatedAccountEvents = (
+  events: ReadonlyArray<DomainEvent>,
+  ports: {
+    getUserDetailsBatch: GetUserDetailsBatch,
+    logger: Logger,
+  } & CreateAccountIfNecessaryPorts
+) => T.Task<void>;
+
+const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAccountEvents = (events, ports) => pipe(
+  events,
+  RA.reduce([], updateSetOfUsersWithoutCreatedAccountEvents),
+  (userIds) => {
+    ports.logger('debug', 'ensureAllUsersHaveCreatedAccountEvents', { countOfUserIds: userIds.length });
+    return userIds;
+  },
+  ports.getUserDetailsBatch,
+  TE.map(RA.map((userDetails) => ({ ...userDetails, id: userDetails.userId }))),
+  TE.chainTaskK(T.traverseArray(createAccountIfNecessary(ports))),
+  TE.getOrElseW((dataError) => T.of(ports.logger('debug', 'ensureAllUserHaveCreatedAccountEvents', { dataError }))),
+  () => T.of(undefined),
+);
 
 const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async () => {
   const events = await ports.getAllEvents();
@@ -45,7 +70,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
       setTimeout(resolve, 0);
     });
   }
-  await ensureAllUsersHaveCreatedAccountEvents(events)();
+  await ensureAllUsersHaveCreatedAccountEvents(events, ports)();
   const stop = performance.now();
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
