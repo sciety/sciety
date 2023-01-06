@@ -10,8 +10,13 @@ import { GetUserDetailsBatch } from '../third-parties/twitter';
 import { UserId } from '../types/user-id';
 import { createAccountIfNecessary, Ports as CreateAccountIfNecessaryPorts } from '../user-account/create-account-if-necessary';
 
+type ReadModel = Record<UserId, boolean>;
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadonlyArray<UserId>, event: DomainEvent) => state;
+const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, event: DomainEvent) => state;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => [];
 
 type EnsureAllUsersHaveCreatedAccountEvents = (
   events: ReadonlyArray<DomainEvent>,
@@ -23,7 +28,8 @@ type EnsureAllUsersHaveCreatedAccountEvents = (
 
 export const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAccountEvents = (events, ports) => pipe(
   events,
-  RA.reduce([], updateSetOfUsersWithoutCreatedAccountEvents),
+  RA.reduce({}, updateSetOfUsersWithoutCreatedAccountEvents),
+  selectUserIdsWithoutAccount,
   (userIds) => {
     ports.logger('debug', 'ensureAllUsersHaveCreatedAccountEvents', { countOfUserIds: userIds.length });
     return userIds;
