@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isUserCreatedAccountEvent } from '../domain-events';
+import { DomainEvent, isUserCreatedAccountEvent, isUserFollowedEditorialCommunityEvent } from '../domain-events';
 import {
   Logger,
 } from '../infrastructure';
@@ -17,6 +17,9 @@ type ReadModel = Record<UserId, boolean>;
 export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, event: DomainEvent) => {
   if (isUserCreatedAccountEvent(event)) {
     state[event.userId] = true;
+  }
+  if (isUserFollowedEditorialCommunityEvent(event)) {
+    state[event.userId] = false;
   }
   return state;
 };

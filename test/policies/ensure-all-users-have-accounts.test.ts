@@ -25,7 +25,7 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
         userFollowedEditorialCommunity(userId, arbitraryGroupId()),
       );
 
-      it.failing('the userId is marked as not having an account', () => {
+      it('the userId is marked as not having an account', () => {
         expect(readmodel[userId]).toBe(false);
       });
     });
