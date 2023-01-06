@@ -35,6 +35,7 @@ import { addGroupCommandHandler } from '../add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
+import { AppConfig } from '../app-config';
 import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../commands';
@@ -118,7 +119,7 @@ const userPageParams = t.type({
   })),
 });
 
-export const createRouter = (adapters: CollectedPorts): Router => {
+export const createRouter = (config: AppConfig, adapters: CollectedPorts): Router => {
   const router = new Router();
 
   const toSuccessResponse = (body: string) => ({
@@ -507,10 +508,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       }
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    logIn(config.AUTHENTICATION_STRATEGY),
   );
 
-  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+  if (config.AUTHENTICATION_STRATEGY === 'local') {
     router.get('/log-in-as', logInAsSpecificUser);
   }
 
@@ -520,7 +521,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.session.successRedirect = '/';
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    logIn(config.AUTHENTICATION_STRATEGY),
   );
 
   router.get('/log-out', logOut);
@@ -533,7 +534,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
+    onlyIfNotAuthenticated(logInCallback(config.AUTHENTICATION_STRATEGY)),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),

@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 
-const strategyCodec = t.union([
+export const strategyCodec = t.union([
   t.literal('twitter'),
   t.literal('local'),
 ]);

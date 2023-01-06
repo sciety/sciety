@@ -74,7 +74,7 @@ void pipe(
   TE.Do,
   TE.bind('config', () => pipe(process.env, appConfigCodec.decode, TE.fromEither)),
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
-  TE.bind('router', ({ adapters }) => TE.right(createRouter(adapters))),
+  TE.bind('router', ({ config, adapters }) => TE.right(createRouter(config, adapters))),
   TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
   TE.getOrElse(logAndExit),
   T.chainFirst(({ server }) => startServer(server)),

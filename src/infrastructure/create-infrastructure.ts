@@ -225,7 +225,7 @@ export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, 
         ),
       };
 
-      if (process.env.USE_STUB_ADAPTERS === 'true') {
+      if (config.USE_STUB_ADAPTERS) {
         return {
           ...allAdapters,
           ...stubAdapters,
