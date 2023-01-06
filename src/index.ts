@@ -71,10 +71,8 @@ const logAndExit = (error: unknown) => {
 const startServer = (server: Server) => { server.listen(80); return T.of(undefined); };
 
 void pipe(
-  process.env,
-  appConfigCodec.decode,
-  TE.fromEither,
-  TE.bindTo('config'),
+  TE.Do,
+  TE.bind('config', () => pipe(process.env, appConfigCodec.decode, TE.fromEither)),
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
   TE.bind('router', ({ adapters }) => TE.right(createRouter(adapters))),
   TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
