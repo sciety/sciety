@@ -51,7 +51,14 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
 
   describe('when the userId has been seen before', () => {
     describe('when the next event is UserCreatedAccount', () => {
-      it.todo('the userId is marked as having an account');
+      const readmodel = updateSetOfUsersWithoutCreatedAccountEvents(
+        { [userId]: false },
+        userCreatedAccount(userId, arbitraryWord(), arbitraryUri(), arbitraryString()),
+      );
+
+      it('the userId is marked as having an account', () => {
+        expect(readmodel[userId]).toBe(true);
+      });
     });
 
     describe('when the next event is not UserCreatedAccount', () => {
