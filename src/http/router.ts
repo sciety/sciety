@@ -612,7 +612,7 @@ export const createRouter = (config: AppConfig, adapters: CollectedPorts): Route
 
   router.get('/ping', ping());
 
-  router.get('/robots.txt', robots());
+  router.get('/robots.txt', robots(config.ALLOW_SITE_CRAWLERS));
 
   router.get(
     '/static/:file(.+)',
