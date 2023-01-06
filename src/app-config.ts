@@ -10,6 +10,7 @@ export const appConfigCodec = t.type({
   APP_ORIGIN: t.string,
   APP_SECRET: tt.withFallback(t.string, 'this-is-not-secret'),
   ALLOW_SITE_CRAWLERS: tt.withFallback(tt.BooleanFromString, false),
+  SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
 
   CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
   TWITTER_API_BEARER_TOKEN: tt.withFallback(t.string, ''),

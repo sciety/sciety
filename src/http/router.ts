@@ -92,11 +92,12 @@ const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
   codec: t.Decoder<unknown, C>,
   commandHandler: CommandHandler<C>,
+  scietyApiToken: tt.NonEmptyString,
 ) => handleScietyApiCommand(adapters, flow(
     validateInputShape(codec),
     TE.fromEither,
     TE.chain(commandHandler),
-  ));
+  ), scietyApiToken);
 
 type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
 
@@ -483,15 +484,15 @@ export const createRouter = (config: AppConfig, adapters: CollectedPorts): Route
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
+  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters), config.SCIETY_TEAM_API_BEARER_TOKEN));
 
-  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
+  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters), config.SCIETY_TEAM_API_BEARER_TOKEN));
 
-  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
+  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters), config.SCIETY_TEAM_API_BEARER_TOKEN));
 
-  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
+  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails, config.SCIETY_TEAM_API_BEARER_TOKEN));
 
-  router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
+  router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters), config.SCIETY_TEAM_API_BEARER_TOKEN));
 
   router.post(
     '/annotations/create-annotation',

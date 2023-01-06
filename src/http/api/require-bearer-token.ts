@@ -1,9 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
-import { getSecretSafely } from './get-secret-safely';
 
-export const requireBearerToken: Middleware = async (context, next) => {
-  const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
+export const requireBearerToken = (expectedToken: tt.NonEmptyString): Middleware => async (context, next) => {
   if (context.request.headers.authorization === `Bearer ${expectedToken}`) {
     await next();
   } else {

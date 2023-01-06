@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
@@ -14,10 +15,11 @@ type ScietyApiCommandHandler = (input: unknown) => TE.TaskEither<string, Command
 export const handleScietyApiCommand = (
   ports: CollectedPorts,
   handler: ScietyApiCommandHandler,
+  scietyApiToken: tt.NonEmptyString,
 ): Middleware => compose([
   bodyParser({ enableTypes: ['json'] }),
   logRequestBody(ports.logger),
-  requireBearerToken,
+  requireBearerToken(scietyApiToken),
   async (context) => {
     await pipe(
       context.request.body,
