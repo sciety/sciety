@@ -77,7 +77,7 @@ type EnsureAllUsersHaveCreatedAccountEvents = (
     getUserDetailsBatch: GetUserDetailsBatch,
     logger: Logger,
   } & CreateAccountIfNecessaryPorts
-) => T.Task<void>;
+) => T.Task<unknown>;
 
 export const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAccountEvents = (events, ports) => pipe(
   events,
@@ -87,10 +87,8 @@ export const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAc
     ports.logger('debug', 'ensureAllUsersHaveCreatedAccountEvents', { countOfUserIds: userIds.length });
     return userIds;
   },
-  () => [],
   ports.getUserDetailsBatch,
   TE.map(RA.map((userDetails) => ({ ...userDetails, id: userDetails.userId }))),
   TE.chainTaskK(T.traverseArray(createAccountIfNecessary(ports))),
   TE.getOrElseW((dataError) => T.of(ports.logger('debug', 'ensureAllUserHaveCreatedAccountEvents', { dataError }))),
-  () => T.of(undefined),
 );

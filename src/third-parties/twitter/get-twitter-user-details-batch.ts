@@ -81,6 +81,7 @@ export const getTwitterUserDetailsBatch = (
   constant(TE.right([])),
   (userIds) => pipe(
     userIds,
+    RA.takeLeft(99),
     generateUrl,
     getTwitterResponse,
     handleResponseErrors(logger),
