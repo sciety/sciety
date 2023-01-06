@@ -72,7 +72,7 @@ const startServer = (server: Server) => { server.listen(80); return T.of(undefin
 
 void pipe(
   TE.Do,
-  TE.bind('config', () => pipe(process.env, appConfigCodec.decode, TE.fromEither)),
+  TE.bind('config', () => TE.fromEither(appConfigCodec.decode(process.env))),
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
   TE.bind('router', ({ config, adapters }) => TE.right(createRouter(config, adapters))),
   TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
