@@ -80,7 +80,6 @@ void pipe(
   TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
   TE.getOrElse(logAndExit),
   T.chainFirst(({ server }) => startServer(server)),
-  T.map(({ adapters }) => adapters),
-  T.chainFirst(executeBackgroundPolicies),
-  T.chain(startSagas),
+  T.chainFirst(({ adapters }) => executeBackgroundPolicies(adapters)),
+  T.chain(({ adapters }) => startSagas(adapters)),
 )();
