@@ -8,9 +8,14 @@ import koaSession from 'koa-session';
 import { setupLocalStrategy } from './authentication/setup-local-strategy';
 import { setupTwitterStrategy } from './authentication/setup-twitter-strategy';
 import { routeNotFound } from './route-not-found';
+import { AppConfig } from '../app-config';
 import { CollectedPorts } from '../infrastructure';
 
-export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
+export const createApplicationServer = (
+  config: AppConfig,
+  ports: CollectedPorts,
+  router: Router,
+): E.Either<string, Server> => {
   const app = new Koa();
   const { logger } = ports;
 
@@ -44,7 +49,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   });
 
   const requiredEnvironmentVariables = [
-    'APP_ORIGIN',
     'APP_SECRET',
     'TWITTER_API_KEY',
     'TWITTER_API_SECRET_KEY',
@@ -57,7 +61,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
-  const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
+  const isSecure = config.APP_ORIGIN.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {
       ctx.cookies.secure = true;
