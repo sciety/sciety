@@ -49,7 +49,6 @@ export const createApplicationServer = (
   });
 
   const requiredEnvironmentVariables = [
-    'APP_SECRET',
     'TWITTER_API_KEY',
     'TWITTER_API_SECRET_KEY',
     'TWITTER_API_BEARER_TOKEN',
@@ -69,7 +68,7 @@ export const createApplicationServer = (
     });
   }
 
-  app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
+  app.keys = [config.APP_SECRET];
   app.use(koaSession(
     {
       maxAge: 365 * 24 * 60 * 60 * 1000,
