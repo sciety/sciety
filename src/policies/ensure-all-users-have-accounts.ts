@@ -29,10 +29,10 @@ import {
   Logger,
 } from '../infrastructure';
 import { GetUserDetailsBatch } from '../third-parties/twitter';
-import { UserId } from '../types/user-id';
+import * as UID from '../types/user-id';
 import { createAccountIfNecessary, Ports as CreateAccountIfNecessaryPorts } from '../user-account/create-account-if-necessary';
 
-type ReadModel = Record<UserId, boolean>;
+type ReadModel = Record<UID.UserId, boolean>;
 
 type UserAction = UserFollowedEditorialCommunityEvent
 | UserUnfollowedEditorialCommunityEvent
@@ -64,10 +64,11 @@ export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, ev
 };
 
 // ts-unused-exports:disable-next-line
-export const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => pipe(
+export const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UID.UserId> => pipe(
   readModel,
   R.filter((hasAccount) => hasAccount === false),
   Object.keys,
+  RA.map(UID.fromValidatedString),
 );
 
 type EnsureAllUsersHaveCreatedAccountEvents = (
