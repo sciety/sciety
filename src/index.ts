@@ -1,5 +1,7 @@
+import { Server } from 'http';
 import { performance } from 'perf_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
+import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -54,6 +56,12 @@ const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Sagas started');
 };
 
+const createServer = (router: Router, adapters: CollectedPorts): E.Either<string, Server> => pipe(
+  createApplicationServer(router, adapters),
+  E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
+  E.map((server) => server.on('listening', () => adapters.logger('info', 'Server running'))),
+);
+
 void pipe(
   process.env,
   appConfigCodec.decode,
@@ -61,12 +69,7 @@ void pipe(
   TE.bindTo('config'),
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
   TE.bind('router', ({ adapters }) => TE.right(createRouter(adapters))),
-  TE.bindW('server', ({ router, adapters }) => pipe(
-    createApplicationServer(router, adapters),
-    E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
-    E.map((server) => server.on('listening', () => adapters.logger('info', 'Server running'))),
-    TE.fromEither,
-  )),
+  TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
   TE.getOrElse(
     (error) => {
       process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
