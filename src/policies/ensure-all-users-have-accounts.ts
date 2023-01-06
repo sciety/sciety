@@ -56,7 +56,7 @@ export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, ev
     state[event.userId] = true;
   }
   if (isUserAction(event)) {
-    state[event.userId] = false;
+    state[event.userId] = state[event.userId] || false;
   }
   return state;
 };

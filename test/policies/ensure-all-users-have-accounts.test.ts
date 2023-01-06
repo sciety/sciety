@@ -77,7 +77,7 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
           event,
         );
 
-        it.failing('the userId is still marked as having an account', () => {
+        it('the userId is still marked as having an account', () => {
           expect(readmodel[userId]).toBe(true);
         });
       });
