@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -12,8 +13,8 @@ import { createAccountIfNecessary, Ports as CreateAccountIfNecessaryPorts } from
 
 type ReadModel = Record<UserId, boolean>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, event: DomainEvent) => state;
+// ts-unused-exports:disable-next-line
+export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, event: DomainEvent) => state;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => [];
