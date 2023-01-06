@@ -61,13 +61,36 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
       });
     });
 
-    describe('when the next event is not UserCreatedAccount', () => {
+    describe.each([
+      [userFollowedEditorialCommunity(userId, arbitraryGroupId())],
+      [userUnfollowedEditorialCommunity(userId, arbitraryGroupId())],
+      [userSavedArticle(userId, arbitraryArticleId())],
+      [userUnsavedArticle(userId, arbitraryArticleId())],
+      [userFoundReviewHelpful(userId, arbitraryReviewId())],
+      [userFoundReviewNotHelpful(userId, arbitraryReviewId())],
+      [userRevokedFindingReviewHelpful(userId, arbitraryReviewId())],
+      [userRevokedFindingReviewNotHelpful(userId, arbitraryReviewId())],
+    ])('when the next event is not UserCreatedAccount', (event) => {
       describe('and the user is already marked as having an account', () => {
-        it.todo('the userId is still marked as having an account');
+        const readmodel = updateSetOfUsersWithoutCreatedAccountEvents(
+          { [userId]: true },
+          event,
+        );
+
+        it.failing('the userId is still marked as having an account', () => {
+          expect(readmodel[userId]).toBe(true);
+        });
       });
 
       describe('and the user is already marked as not having an account', () => {
-        it.todo('the userId is still marked as not having an account');
+        const readmodel = updateSetOfUsersWithoutCreatedAccountEvents(
+          { [userId]: false },
+          event,
+        );
+
+        it('the userId is still marked as not having an account', () => {
+          expect(readmodel[userId]).toBe(false);
+        });
       });
     });
   });
