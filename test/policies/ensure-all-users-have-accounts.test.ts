@@ -15,7 +15,7 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
         userCreatedAccount(userId, arbitraryWord(), arbitraryUri(), arbitraryString()),
       );
 
-      it.failing('the userId is marked as having an account', () => {
+      it('the userId is marked as having an account', () => {
         expect(readmodel[userId]).toBe(true);
       });
     });
