@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -63,7 +64,11 @@ export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, ev
 };
 
 // ts-unused-exports:disable-next-line
-export const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => [];
+export const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => pipe(
+  readModel,
+  R.filter((hasAccount) => hasAccount === false),
+  Object.keys,
+);
 
 type EnsureAllUsersHaveCreatedAccountEvents = (
   events: ReadonlyArray<DomainEvent>,

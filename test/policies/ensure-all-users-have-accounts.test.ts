@@ -108,7 +108,7 @@ describe('selectUserIdsWithoutAccount', () => {
     [userId4]: false,
   });
 
-  it.failing('ignores userIds that are set to true', () => {
+  it('ignores userIds that are set to true', () => {
     expect(result).toStrictEqual([
       userId3,
       userId4,
