@@ -3,7 +3,26 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isUserCreatedAccountEvent, isUserFollowedEditorialCommunityEvent } from '../domain-events';
+import {
+  DomainEvent,
+  isUserCreatedAccountEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserFoundReviewHelpfulEvent,
+  isUserFoundReviewNotHelpfulEvent,
+  isUserRevokedFindingReviewHelpfulEvent,
+  isUserRevokedFindingReviewNotHelpfulEvent,
+  isUserSavedArticleEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+  isUserUnsavedArticleEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewNotHelpfulEvent,
+  UserSavedArticleEvent,
+  UserUnfollowedEditorialCommunityEvent,
+  UserUnsavedArticleEvent,
+} from '../domain-events';
 import {
   Logger,
 } from '../infrastructure';
@@ -13,12 +32,30 @@ import { createAccountIfNecessary, Ports as CreateAccountIfNecessaryPorts } from
 
 type ReadModel = Record<UserId, boolean>;
 
+type UserAction = UserFollowedEditorialCommunityEvent
+| UserUnfollowedEditorialCommunityEvent
+| UserSavedArticleEvent
+| UserUnsavedArticleEvent
+| UserFoundReviewHelpfulEvent
+| UserFoundReviewNotHelpfulEvent
+| UserRevokedFindingReviewHelpfulEvent
+| UserRevokedFindingReviewNotHelpfulEvent;
+
+const isUserAction = (event: DomainEvent): event is UserAction => isUserFollowedEditorialCommunityEvent(event)
+|| isUserUnfollowedEditorialCommunityEvent(event)
+|| isUserSavedArticleEvent(event)
+|| isUserUnsavedArticleEvent(event)
+|| isUserFoundReviewHelpfulEvent(event)
+|| isUserFoundReviewNotHelpfulEvent(event)
+|| isUserRevokedFindingReviewHelpfulEvent(event)
+|| isUserRevokedFindingReviewNotHelpfulEvent(event);
+
 // ts-unused-exports:disable-next-line
 export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, event: DomainEvent) => {
   if (isUserCreatedAccountEvent(event)) {
     state[event.userId] = true;
   }
-  if (isUserFollowedEditorialCommunityEvent(event)) {
+  if (isUserAction(event)) {
     state[event.userId] = false;
   }
   return state;

@@ -16,7 +16,7 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-describe.skip('updateSetOfUsersWithoutCreatedAccountEvents', () => {
+describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
   const userId = arbitraryUserId();
 
   describe('when the userId has not been seen before', () => {
