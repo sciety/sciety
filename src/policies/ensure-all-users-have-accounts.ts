@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -61,8 +62,8 @@ export const updateSetOfUsersWithoutCreatedAccountEvents = (state: ReadModel, ev
   return state;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => [];
+// ts-unused-exports:disable-next-line
+export const selectUserIdsWithoutAccount = (readModel: ReadModel): ReadonlyArray<UserId> => [];
 
 type EnsureAllUsersHaveCreatedAccountEvents = (
   events: ReadonlyArray<DomainEvent>,
@@ -80,6 +81,7 @@ export const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAc
     ports.logger('debug', 'ensureAllUsersHaveCreatedAccountEvents', { countOfUserIds: userIds.length });
     return userIds;
   },
+  () => [],
   ports.getUserDetailsBatch,
   TE.map(RA.map((userDetails) => ({ ...userDetails, id: userDetails.userId }))),
   TE.chainTaskK(T.traverseArray(createAccountIfNecessary(ports))),

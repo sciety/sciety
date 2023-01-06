@@ -9,7 +9,7 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
-import { updateSetOfUsersWithoutCreatedAccountEvents } from '../../src/policies/ensure-all-users-have-accounts';
+import { selectUserIdsWithoutAccount, updateSetOfUsersWithoutCreatedAccountEvents } from '../../src/policies/ensure-all-users-have-accounts';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -93,5 +93,25 @@ describe('updateSetOfUsersWithoutCreatedAccountEvents', () => {
         });
       });
     });
+  });
+});
+
+describe('selectUserIdsWithoutAccount', () => {
+  const userId1 = arbitraryUserId();
+  const userId2 = arbitraryUserId();
+  const userId3 = arbitraryUserId();
+  const userId4 = arbitraryUserId();
+  const result = selectUserIdsWithoutAccount({
+    [userId1]: true,
+    [userId2]: true,
+    [userId3]: false,
+    [userId4]: false,
+  });
+
+  it.failing('ignores userIds that are set to true', () => {
+    expect(result).toStrictEqual([
+      userId3,
+      userId4,
+    ]);
   });
 });
