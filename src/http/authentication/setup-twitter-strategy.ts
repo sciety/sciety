@@ -1,12 +1,13 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { AppConfig } from '../../app-config';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
 
-export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
+export const setupTwitterStrategy = (config: AppConfig, ports: Ports) => new TwitterStrategy(
   {
-    consumerKey: process.env.TWITTER_API_KEY ?? '',
-    consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
-    callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
+    consumerKey: config.TWITTER_API_KEY,
+    consumerSecret: config.TWITTER_API_SECRET_KEY,
+    callbackURL: `${config.APP_ORIGIN ?? ''}/twitter/callback`,
   },
   (_token, _tokenSecret, profile, cb) => {
     // photos can never be undefined:

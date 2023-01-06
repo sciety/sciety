@@ -14,6 +14,8 @@ export const appConfigCodec = t.type({
 
   CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
   TWITTER_API_BEARER_TOKEN: tt.withFallback(t.string, ''),
+  TWITTER_API_KEY: tt.withFallback(t.string, ''),
+  TWITTER_API_SECRET_KEY: tt.withFallback(t.string, ''),
 
   PGUSER: t.string,
   PGHOST: t.string,
