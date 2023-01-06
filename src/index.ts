@@ -62,6 +62,14 @@ const createServer = (router: Router, adapters: CollectedPorts): E.Either<string
   E.map((server) => server.on('listening', () => adapters.logger('info', 'Server running'))),
 );
 
+const logAndExit = (error: unknown) => {
+  process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
+  process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
+  return process.exit(1);
+};
+
+const startServer = (server: Server) => { server.listen(80); return T.of(undefined); };
+
 void pipe(
   process.env,
   appConfigCodec.decode,
@@ -70,14 +78,8 @@ void pipe(
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
   TE.bind('router', ({ adapters }) => TE.right(createRouter(adapters))),
   TE.bindW('server', ({ router, adapters }) => TE.fromEither(createServer(router, adapters))),
-  TE.getOrElse(
-    (error) => {
-      process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
-      process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
-      return process.exit(1);
-    },
-  ),
-  T.chainFirst(({ server }) => { server.listen(80); return T.of(undefined); }),
+  TE.getOrElse(logAndExit),
+  T.chainFirst(({ server }) => startServer(server)),
   T.map(({ adapters }) => adapters),
   T.chainFirst(executeBackgroundPolicies),
   T.chain(startSagas),
