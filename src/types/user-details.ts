@@ -4,5 +4,5 @@ export type UserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string,
-  userId: UserId,
+  id: UserId,
 };

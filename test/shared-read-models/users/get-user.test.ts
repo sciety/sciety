@@ -26,7 +26,7 @@ describe('get-user', () => {
         avatarUrl,
         displayName,
         handle,
-        userId,
+        id: userId,
       }));
     });
   });

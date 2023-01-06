@@ -13,7 +13,7 @@ export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel
       avatarUrl: event.avatarUrl,
       displayName: event.displayName,
       handle: event.handle,
-      userId: event.userId,
+      id: event.userId,
     };
   }
   return readModel;
