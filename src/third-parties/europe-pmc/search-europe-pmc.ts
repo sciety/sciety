@@ -137,7 +137,7 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
   TE.mapLeft(
     (error) => {
       // TODO recognise not-found somehow
-      logger('error', 'Could not fetch', { error, url });
+      logger('error', 'Could not get JSON from Europe PMC', { error, url });
       return DE.unavailable;
     },
   ),
