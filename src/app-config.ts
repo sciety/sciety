@@ -13,23 +13,23 @@ const withDefaultIfEmpty = <C extends t.Any>(
     codec,
     (input, context) => pipe(
       tt.NonEmptyString.validate(input, context),
-      E.orElse(() => t.success(ifEmpty)),
+      E.orElse(() => t.success(String(ifEmpty))),
       E.chain((nonEmptyString) => codec.validate(nonEmptyString, context)),
     ),
   );
 
 export const appConfigCodec = t.strict({
   // Logging
-  PRETTY_LOG: tt.withFallback(tt.BooleanFromString, false),
+  PRETTY_LOG: withDefaultIfEmpty(tt.BooleanFromString, false),
   LOG_LEVEL: withDefaultIfEmpty(levelNameCodec, 'debug'),
 
   // Sciety Application
   APP_ORIGIN: tt.NonEmptyString,
   APP_SECRET: tt.NonEmptyString,
   APP_CACHE: withDefaultIfEmpty(CacheStrategyCodec, 'memory'),
-  ALLOW_SITE_CRAWLERS: tt.withFallback(tt.BooleanFromString, false),
+  ALLOW_SITE_CRAWLERS: withDefaultIfEmpty(tt.BooleanFromString, false),
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
-  USE_STUB_ADAPTERS: tt.withFallback(tt.BooleanFromString, false),
+  USE_STUB_ADAPTERS: withDefaultIfEmpty(tt.BooleanFromString, false),
 
   // Access to third parties
   CROSSREF_API_BEARER_TOKEN: tt.optionFromNullable(t.string),
