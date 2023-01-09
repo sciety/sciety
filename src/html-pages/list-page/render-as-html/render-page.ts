@@ -18,15 +18,14 @@ type ViewModel = {
 } & HeaderViewModel;
 
 const renderListOrMessage = (viewModel: ViewModel) => {
-  if (viewModel.contentViewModel === 'no-articles') {
-    if (viewModel.editCapability) {
-      return noArticlesMessageForOwner;
-    }
-    return noArticlesMessageForReader;
-  } if (viewModel.contentViewModel === 'no-articles-can-be-fetched') {
-    return noArticlesCanBeFetchedMessage;
+  switch (viewModel.contentViewModel) {
+    case 'no-articles':
+      return viewModel.editCapability ? noArticlesMessageForOwner : noArticlesMessageForReader;
+    case 'no-articles-can-be-fetched':
+      return noArticlesCanBeFetchedMessage;
+    default:
+      return renderContentWithPagination(viewModel.basePath)(viewModel.contentViewModel, viewModel.listId);
   }
-  return renderContentWithPagination(viewModel.basePath)(viewModel.contentViewModel, viewModel.listId);
 };
 
 const render = (viewModel: ViewModel) => toHtmlFragment(`
