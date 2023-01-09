@@ -32,7 +32,7 @@ $_link-min-height: baseline.increments(5);
   background-size: functions.px-to-rem($_icon-size);
   background-repeat: no-repeat;
   background-position: functions.px-to-rem($_icon-inline-offset) center;
-  padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
+  padding-left: functions.px-to-rem(10px);
   border-radius: settings.$border-radius;
   font-weight: bold;
 
@@ -54,24 +54,4 @@ $_link-min-height: baseline.increments(5);
   @supports (display: flex) {
     padding-top: 0;
   }
-}
-
-.site-menu__link--home {
-  background-image: url('/static/images/home.svg');
-}
-
-.site-menu__link--sciety-feed {
-  background-image: url('/static/images/sciety-icon.svg');
-}
-
-.site-menu__link--groups {
-  background-image: url('/static/images/groups.svg');
-}
-
-.site-menu__link--profile {
-  background-image: url('/static/images/profile.svg');
-}
-
-.site-menu__link--feed {
-  background-image: url('/static/images/feed.svg');
 }
