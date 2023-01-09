@@ -4,7 +4,7 @@ import { DomainEvent } from '../domain-events';
 import * as groups from '../shared-read-models/groups';
 import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
 import * as lists from '../shared-read-models/lists';
-import * as users from '../shared-read-models/users';
+import { readmodel as users } from '../shared-read-models/users';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
@@ -13,7 +13,7 @@ type Dispatcher = {
   & lists.Queries
   & groups.Queries
   & idsOfEvaluatedArticlesLists.Queries
-  & users.Queries,
+  & ReturnType<typeof users.queries>,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
