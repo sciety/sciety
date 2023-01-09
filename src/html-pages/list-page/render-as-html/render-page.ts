@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 import { ViewModel as HeaderViewModel, renderHeader } from './render-header';
 import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { ListId } from '../../../types/list-id';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
 import { ContentWithPaginationViewModel, renderContentWithPagination } from '../articles-list/render-content-with-pagination';
@@ -18,32 +17,22 @@ type ViewModel = {
   contentViewModel: ContentViewModel,
 } & HeaderViewModel;
 
-const renderListOrMessage = (
-  contentViewModel: ContentViewModel,
-  basePath: string,
-  listId: ListId,
-  editCapability: boolean,
-) => {
-  if (contentViewModel === 'no-articles') {
-    if (editCapability) {
+const renderListOrMessage = (viewModel: ViewModel) => {
+  if (viewModel.contentViewModel === 'no-articles') {
+    if (viewModel.editCapability) {
       return noArticlesMessageForOwner;
     }
     return noArticlesMessageForReader;
-  } if (contentViewModel === 'no-articles-can-be-fetched') {
+  } if (viewModel.contentViewModel === 'no-articles-can-be-fetched') {
     return noArticlesCanBeFetchedMessage;
   }
-  return renderContentWithPagination(basePath)(contentViewModel, listId);
+  return renderContentWithPagination(viewModel.basePath)(viewModel.contentViewModel, viewModel.listId);
 };
 
 const render = (viewModel: ViewModel) => toHtmlFragment(`
   ${renderHeader(viewModel)}
   <section>
-    ${renderListOrMessage(
-    viewModel.contentViewModel,
-    viewModel.basePath,
-    viewModel.listId,
-    viewModel.editCapability,
-  )}
+    ${renderListOrMessage(viewModel)}
   </section>
 `);
 
