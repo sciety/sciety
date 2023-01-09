@@ -40,7 +40,7 @@ const myFeedMenuItem = () => `
 
 const myProfileMenuItem = (user: User) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${user.handle}" class="utility-bar__list_nav_link">My Profile</a>
+    <a href="/users/${user.handle}" class="utility-bar__list_nav_link">My Lists</a>
   </li>
 `;
 

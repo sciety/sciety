@@ -17,11 +17,11 @@ describe('unfollow a group', () => {
     });
 
     describe('from the ScreenIT group page', () => {
-      it('removes the group from my profile page', async () => {
+      it('removes the group from user page', async () => {
         await goto('localhost:8080/groups/screenit');
         await click('Follow');
         await click('Unfollow');
-        await click('My profile');
+        await click('My lists');
         const groupExists = await text('ScreenIT', within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);

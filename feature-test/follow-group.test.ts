@@ -16,12 +16,12 @@ describe('follow a group', () => {
       await click('Log in');
     });
 
-    it('adds the group to my profile page', async () => {
+    it('adds the group to the user page', async () => {
       const groupToBeFollowed = 'Biophysics Colab';
       await goto('localhost:8080/groups');
       await click(groupToBeFollowed);
       await click('Follow');
-      await click('My profile');
+      await click('My lists');
       await click('Following');
       const groupExists = await text(groupToBeFollowed, within($('.followed-groups-list'))).exists();
 
