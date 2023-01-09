@@ -55,7 +55,7 @@ describe('remove-article-from-list', () => {
           await goto(listPage);
           content = await $(contentSelector).text();
 
-          expect(content).toContain('This list is currently empty. Try coming back later!');
+          expect(content).toContain('This list is currently empty.');
         });
       });
     });

@@ -6,7 +6,7 @@ import { ListId } from '../../../types/list-id';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
 import { ContentWithPaginationViewModel, renderContentWithPagination } from '../articles-list/render-content-with-pagination';
-import { noArticlesCanBeFetchedMessage, noArticlesMessage } from '../articles-list/static-messages';
+import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from '../articles-list/static-messages';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
@@ -18,9 +18,17 @@ type ViewModel = {
   contentViewModel: ContentViewModel,
 } & HeaderViewModel;
 
-const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: string, listId: ListId) => {
+const renderListOrMessage = (
+  contentViewModel: ContentViewModel,
+  basePath: string,
+  listId: ListId,
+  editCapability: boolean,
+) => {
   if (contentViewModel === 'no-articles') {
-    return noArticlesMessage;
+    if (editCapability) {
+      return noArticlesMessageForOwner;
+    }
+    return noArticlesMessageForReader;
   } if (contentViewModel === 'no-articles-can-be-fetched') {
     return noArticlesCanBeFetchedMessage;
   }
@@ -30,7 +38,12 @@ const renderListOrMessage = (contentViewModel: ContentViewModel, basePath: strin
 const render = (viewModel: ViewModel) => toHtmlFragment(`
   ${renderHeader(viewModel)}
   <section>
-    ${renderListOrMessage(viewModel.contentViewModel, viewModel.basePath, viewModel.listId)}
+    ${renderListOrMessage(
+    viewModel.contentViewModel,
+    viewModel.basePath,
+    viewModel.listId,
+    viewModel.editCapability,
+  )}
   </section>
 `);
 
