@@ -1,10 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { UserCardViewModel } from './render-followers';
 import { GetUser } from '../../../shared-ports';
-import * as DE from '../../../types/data-error';
 import { UserId } from '../../../types/user-id';
 
 export type Ports = {
@@ -21,7 +19,7 @@ export const augmentWithUserDetails = (
   ports: Ports,
 ) => (
   followers: ReadonlyArray<Follower>,
-): TE.TaskEither<DE.DataError, ReadonlyArray<UserCardViewModel>> => pipe(
+): ReadonlyArray<UserCardViewModel> => pipe(
   followers,
   RA.map((follower) => follower.userId),
   RA.map(ports.getUser),
@@ -40,5 +38,4 @@ export const augmentWithUserDetails = (
     )),
     RA.compact,
   ),
-  TE.right,
 );

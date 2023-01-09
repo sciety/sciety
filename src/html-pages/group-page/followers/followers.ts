@@ -26,6 +26,7 @@ const augmentFollowersWithUserDetails = (
     followers: pipe(
       pageOfFollowers.items,
       augmentWithUserDetails(ports),
+      TE.right,
     ),
   },
   sequenceS(TE.ApplyPar),
@@ -42,7 +43,7 @@ export const followers = (
   ports.getAllEvents,
   T.map(findFollowers(group.id)),
   T.map(paginate(pageNumber, pageSize)),
-  TE.chain(augmentFollowersWithUserDetails(ports)),
+  TE.chainW(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,
     nextLink: paginationControls(`/groups/${group.slug}/followers?`, partial.nextPage),
