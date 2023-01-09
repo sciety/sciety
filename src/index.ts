@@ -6,6 +6,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
 import { AppConfig, appConfigCodec } from './app-config';
 import { DomainEvent } from './domain-events';
@@ -56,6 +57,13 @@ const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Sagas started');
 };
 
+const loadConfig = (): E.Either<string, AppConfig> => pipe(
+  process.env,
+  appConfigCodec.decode,
+  E.mapLeft(formatValidationErrors),
+  E.mapLeft((errors) => errors.join('\n')),
+);
+
 const createServer = (config: AppConfig, adapters: CollectedPorts, router: Router): E.Either<string, Server> => pipe(
   createApplicationServer(config, adapters, router),
   E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
@@ -72,7 +80,7 @@ const startServer = (server: Server) => { server.listen(80); return T.of(undefin
 
 void pipe(
   TE.Do,
-  TE.bind('config', () => TE.fromEither(appConfigCodec.decode(process.env))),
+  TE.bind('config', () => TE.fromEither(loadConfig())),
   TE.bind('adapters', ({ config }) => createInfrastructure(config)),
   TE.bind('router', ({ config, adapters }) => TE.right(createRouter(config, adapters))),
   TE.bindW('server', ({ config, adapters, router }) => TE.fromEither(createServer(config, adapters, router))),
