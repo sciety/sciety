@@ -3,7 +3,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
@@ -87,8 +86,11 @@ export const ensureAllUsersHaveCreatedAccountEvents: EnsureAllUsersHaveCreatedAc
     ports.logger('debug', 'ensureAllUsersHaveCreatedAccountEvents', { countOfUserIds: userIds.length });
     return userIds;
   },
-  ports.getUserDetailsBatch,
-  TE.map(RA.map((userDetails) => ({ ...userDetails, id: userDetails.userId }))),
-  TE.chainTaskK(T.traverseArray(createAccountIfNecessary(ports))),
-  TE.getOrElseW((dataError) => T.of(ports.logger('debug', 'ensureAllUserHaveCreatedAccountEvents', { dataError }))),
+  RA.mapWithIndex((index, userId) => ({
+    id: userId,
+    displayName: `Unknown user ${index + 1}`,
+    handle: `unknown_user_${index + 1}`,
+    avatarUrl: '/static/images/profile-dark.svg',
+  })),
+  T.traverseArray(createAccountIfNecessary(ports)),
 );
