@@ -6,7 +6,7 @@ import {
   GetList, IsArticleOnTheListOwnedBy, SelectAllListsOwnedBy,
 } from '../../shared-ports';
 
-export type Queries = {
+type Queries = {
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   getList: GetList,

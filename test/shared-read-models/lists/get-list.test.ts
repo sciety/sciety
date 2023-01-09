@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, listCreated, listDescriptionEdited, listNameEdited,
 } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { getList } from '../../../src/shared-read-models/lists/get-list';
+import { handleEvent, initialState } from '../../../src/shared-read-models/lists/handle-event';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';

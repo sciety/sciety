@@ -3,16 +3,16 @@ import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subje
 import { DomainEvent } from '../domain-events';
 import * as groups from '../shared-read-models/groups';
 import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
-import * as lists from '../shared-read-models/lists';
+import { readmodel as lists } from '../shared-read-models/lists';
 import { readmodel as users } from '../shared-read-models/users';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
-  & lists.Queries
   & groups.Queries
   & idsOfEvaluatedArticlesLists.Queries
+  & ReturnType<typeof lists.queries>
   & ReturnType<typeof users.queries>,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };

@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, listCreated, listNameEdited,
 } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
+import { handleEvent, initialState } from '../../../src/shared-read-models/lists/handle-event';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/select-all-lists-owned-by';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
