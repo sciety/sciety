@@ -71,6 +71,10 @@ const createServer = (config: AppConfig, adapters: CollectedPorts, router: Route
 );
 
 const logAndExit = (error: unknown) => {
+  if (typeof (error) === 'string') {
+    process.stderr.write(`Unable to start:\n${error}\n`);
+    return process.exit(1);
+  }
   process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
   process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
   return process.exit(1);
