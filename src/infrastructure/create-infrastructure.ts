@@ -41,7 +41,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
-  getTwitterResponse, getTwitterUserDetails, getTwitterUserDetailsBatch, getTwitterUserId,
+  getTwitterResponse, getTwitterUserDetails, getTwitterUserId,
 } from '../third-parties/twitter';
 
 type Dependencies = {
@@ -179,10 +179,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         getUserDetails: getTwitterUserDetails(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
-          logger,
-        ),
-        getUserDetailsBatch: getTwitterUserDetailsBatch(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),

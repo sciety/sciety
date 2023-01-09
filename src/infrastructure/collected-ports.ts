@@ -5,7 +5,7 @@ import { FetchStaticFile } from './fetch-static-file';
 import { SharedPorts } from '../shared-ports';
 import { GetArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { SearchResults } from '../third-parties/europe-pmc';
-import { GetTwitterUserDetails, GetTwitterUserId, GetUserDetailsBatch } from '../third-parties/twitter';
+import { GetTwitterUserDetails, GetTwitterUserId } from '../third-parties/twitter';
 import * as DE from '../types/data-error';
 
 export type CollectedPorts = SharedPorts & {
@@ -13,7 +13,6 @@ export type CollectedPorts = SharedPorts & {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getUserDetails: GetTwitterUserDetails,
-  getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
   searchEuropePmc: (
     pageSize: number,
