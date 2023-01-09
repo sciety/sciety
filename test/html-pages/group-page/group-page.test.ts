@@ -20,7 +20,7 @@ describe('group page', () => {
           fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
           selectAllListsOwnedBy: shouldNotBeCalled,
-          getUserDetailsBatch: shouldNotBeCalled,
+          getUser: shouldNotBeCalled,
           getGroupBySlug: () => E.left(DE.notFound),
         })(groupPageTabs.lists),
         T.map(flow(
