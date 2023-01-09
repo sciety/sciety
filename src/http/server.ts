@@ -48,18 +48,6 @@ export const createApplicationServer = (
     await next();
   });
 
-  const requiredEnvironmentVariables = [
-    'TWITTER_API_KEY',
-    'TWITTER_API_SECRET_KEY',
-    'TWITTER_API_BEARER_TOKEN',
-  ];
-
-  const missingVariables = requiredEnvironmentVariables.filter((variableName) => !process.env[variableName]);
-  if (missingVariables.length) {
-    logger('error', 'Missing environment variables', { missingVariables });
-    return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
-  }
-
   const isSecure = config.APP_ORIGIN.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {

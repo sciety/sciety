@@ -9,9 +9,9 @@ services:
       ALLOW_SITE_CRAWLERS: "true"
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
-      APP_CACHE: '${APP_CACHE:-in-memory}'
-      AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY:-twitter}'
-      USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
+      APP_CACHE: '${APP_CACHE}'
+      AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY}'
+      USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
       EXPERIMENT_ENABLED: "true"
@@ -28,9 +28,9 @@ services:
       PGPASSWORD: secret
       PGDATABASE: sciety
       PRELIGHTS_FEED_KEY:
-      TWITTER_API_KEY: '${TWITTER_API_KEY:-twitter-api-key}'
-      TWITTER_API_SECRET_KEY: '${TWITTER_API_SECRET_KEY:-twitter-api-secret-key}'
-      TWITTER_API_BEARER_TOKEN: '${TWITTER_API_BEARER_TOKEN:-twitter-api-bearer-token}'
+      TWITTER_API_KEY: '${TWITTER_API_KEY}'
+      TWITTER_API_SECRET_KEY: '${TWITTER_API_SECRET_KEY}'
+      TWITTER_API_BEARER_TOKEN: '${TWITTER_API_BEARER_TOKEN}'
     ports:
       - '8080:80'
     restart: unless-stopped
