@@ -1,18 +1,18 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
-import { GetGroup } from '../../shared-ports';
-import { GetUserDetails } from '../../shared-ports/get-user-details';
+import { GetGroup, GetUser } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,
-  getUserDetails: GetUserDetails,
+  getUser: GetUser,
 };
 
 type UserFollowedAGroupCard = (
@@ -27,11 +27,14 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event)
     ),
     userDetails: pipe(
       event.userId,
-      ports.getUserDetails,
-      TE.orElse(() => TE.right({
-        handle: 'A user',
-        avatarUrl: '/static/images/sciety-logo.jpg',
-      })),
+      ports.getUser,
+      O.fold(
+        () => TE.right({
+          handle: 'A user',
+          avatarUrl: '/static/images/sciety-logo.jpg',
+        }),
+        TE.right,
+      ),
     ),
   },
   sequenceS(TE.ApplyPar),

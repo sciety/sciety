@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -25,10 +26,10 @@ describe('user-followed-a-group-card', () => {
     const ports = {
       getAllEvents: T.of([groupJoined(group)]),
       getGroup: () => E.right(group),
-      getUserDetails: () => TE.right({
+      getUser: () => O.some({
         handle,
         avatarUrl,
-        userId: arbitraryUserId(),
+        id: arbitraryUserId(),
         displayName: arbitraryString(),
       }),
     };
@@ -68,11 +69,11 @@ describe('user-followed-a-group-card', () => {
     });
   });
 
-  describe('when the user details cannot be obtained', () => {
+  describe('when the user details cannot be found', () => {
     const ports = {
       getAllEvents: T.of([groupJoined(group)]),
       getGroup: () => E.right(group),
-      getUserDetails: () => TE.left(DE.unavailable),
+      getUser: () => O.none,
     };
 
     let viewModel: ScietyFeedCard;
@@ -110,10 +111,10 @@ describe('user-followed-a-group-card', () => {
     const ports = {
       getAllEvents: T.of([]),
       getGroup: () => E.left(DE.notFound),
-      getUserDetails: () => TE.right({
+      getUser: () => O.some({
         handle: arbitraryWord(),
         avatarUrl: arbitraryUri(),
-        userId: arbitraryUserId(),
+        id: arbitraryUserId(),
         displayName: arbitraryString(),
       }),
     };
