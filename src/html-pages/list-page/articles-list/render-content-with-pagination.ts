@@ -35,7 +35,6 @@ export type ContentWithPaginationViewModel = {
 
 export const renderContentWithPagination = (
   basePath: string,
-) => (
   viewModel: ContentWithPaginationViewModel,
   listId: ListId,
 ): HtmlFragment => pipe(

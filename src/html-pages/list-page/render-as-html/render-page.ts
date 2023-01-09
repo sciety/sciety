@@ -24,7 +24,7 @@ const renderListOrMessage = (viewModel: ViewModel) => {
     case 'no-articles-can-be-fetched':
       return noArticlesCanBeFetchedMessage;
     default:
-      return renderContentWithPagination(viewModel.basePath)(viewModel.contentViewModel, viewModel.listId);
+      return renderContentWithPagination(viewModel.basePath, viewModel.contentViewModel, viewModel.listId);
   }
 };
 
