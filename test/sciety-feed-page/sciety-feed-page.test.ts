@@ -39,10 +39,18 @@ describe('sciety-feed-page', () => {
     displayName: arbitraryString(),
   });
 
+  const getUser = () => O.some({
+    handle: arbitraryWord(),
+    avatarUrl: arbitraryUri(),
+    id: arbitraryUserId(),
+    displayName: arbitraryString(),
+  });
+
   const group = arbitraryGroup();
 
   const defaultPorts = {
     getUserDetails,
+    getUser,
     fetchArticle: () => TE.right({
       doi: arbitraryDoi(),
       title: arbitraryHtmlFragment(),

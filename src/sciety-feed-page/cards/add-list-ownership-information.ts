@@ -1,15 +1,15 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
-import { GetAllEvents, GetGroup } from '../../shared-ports';
-import { GetUserDetails } from '../../shared-ports/get-user-details';
+import { GetAllEvents, GetGroup, GetUser } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { List } from '../../types/list';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
-  getUserDetails: GetUserDetails,
+  getUser: GetUser,
   getGroup: GetGroup,
 };
 
@@ -41,8 +41,8 @@ export const addListOwnershipInformation = (
     case 'user-id':
       return pipe(
         list.ownerId.value,
-        ports.getUserDetails,
-        TE.match(
+        ports.getUser,
+        O.match(
           () => (
             {
               ...list,
@@ -61,7 +61,7 @@ export const addListOwnershipInformation = (
             }
           ),
         ),
-        TE.rightTask,
+        TE.right,
       );
   }
 };

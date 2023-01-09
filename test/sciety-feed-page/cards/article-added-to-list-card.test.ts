@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../../src/domain-events';
 import { articleAddedToListCard } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
-import * as DE from '../../../src/types/data-error';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -36,10 +35,10 @@ describe('article-added-to-list-card', () => {
       const ports = {
         getAllEvents,
         getList,
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           handle,
           avatarUrl,
-          userId: arbitraryUserId(),
+          id: arbitraryUserId(),
           displayName: arbitraryString(),
         }),
         getGroup: () => E.right(arbitraryGroup()),
@@ -72,12 +71,11 @@ describe('article-added-to-list-card', () => {
       });
     });
 
-    describe('when user details are unavailable', () => {
-      const failingGetUserDetails = () => TE.left(DE.unavailable);
+    describe('when user details are not found', () => {
       const ports = {
         getAllEvents,
         getList,
-        getUserDetails: failingGetUserDetails,
+        getUser: () => O.none,
         getGroup: () => E.right(arbitraryGroup()),
       };
 
