@@ -12,7 +12,6 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
-import { ensureAllUsersHaveCreatedAccountEvents } from './policies/ensure-all-users-have-accounts';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -42,7 +41,6 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
       setTimeout(resolve, 0);
     });
   }
-  await ensureAllUsersHaveCreatedAccountEvents(events, ports)();
   const stop = performance.now();
   ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
 };
