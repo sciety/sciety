@@ -11,7 +11,7 @@
     "@rdfjs/fetch-lite": "^2.1.2",
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
-    "@types/passport-local": "^1.0.34",
+    "@types/passport-local": "^1.0.35",
     "@xmldom/xmldom": "^0.8.6",
     "axios": "^0.21.4",
     "axios-cache-adapter": "^2.7.3",
