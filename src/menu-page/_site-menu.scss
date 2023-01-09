@@ -7,8 +7,6 @@
 @use '../sass/typography';
 @use '../sass/list';
 
-$_icon-size: 24px;
-$_icon-inline-offset: 12px;
 $_inline-spacing: 16px;
 $_link-max-width: 300px;
 $_link-text-font-size: 14px;
@@ -30,9 +28,6 @@ $_link-inline-offset-to-align-with-header: 10px;
   align-items: center;
   min-height: $_link-min-height;
   max-width: functions.px-to-rem($_link-max-width);
-  background-size: functions.px-to-rem($_icon-size);
-  background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_icon-inline-offset) center;
   padding-left: functions.px-to-rem($_link-inline-offset-to-align-with-header);
   border-radius: settings.$border-radius;
   font-weight: bold;
