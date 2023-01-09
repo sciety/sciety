@@ -8,6 +8,6 @@ export const searchPage: Page = {
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
-    ${renderSearchForm('', false)}
+    ${renderSearchForm('', true)}
   `),
 };
