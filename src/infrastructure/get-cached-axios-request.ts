@@ -1,11 +1,19 @@
 import axios, { AxiosInstance } from 'axios';
 import { RedisStore, setupCache } from 'axios-cache-adapter';
+import * as t from 'io-ts';
 import redis from 'redis';
 import { Logger } from './logger';
 
-const createCacheAdapter = (maxAge: number) => {
+export const CacheStrategyCodec = t.keyof({
+  redis: null,
+  memory: null,
+});
+
+type CacheStrategy = t.TypeOf<typeof CacheStrategyCodec>;
+
+const createCacheAdapter = (cacheStrategy: CacheStrategy, maxAge: number) => {
   let store;
-  if (process.env.APP_CACHE === 'redis') {
+  if (cacheStrategy === 'redis') {
     const client = redis.createClient({
       host: 'sciety_cache',
     });
@@ -38,16 +46,17 @@ const createGetData = (
   return response.data;
 };
 
-type GetCachedAxiosRequest = (logger: Logger, maxAge?: number)
+type GetCachedAxiosRequest = (logger: Logger, cacheStrategy: CacheStrategy, maxAge?: number)
 => <U>(url: string, headers?: Record<string, string>)
 => Promise<U>;
 
 export const getCachedAxiosRequest: GetCachedAxiosRequest = (
-  logger: Logger,
+  logger,
+  cacheStrategy,
   maxAge = 24 * 60 * 60 * 1000,
 ) => {
   const cachedAxios = axios.create({
-    adapter: createCacheAdapter(maxAge),
+    adapter: createCacheAdapter(cacheStrategy, maxAge),
   });
   return createGetData(cachedAxios, logger);
 };

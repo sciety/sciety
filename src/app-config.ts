@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { strategyCodec } from './http/authentication/login-middlewares';
+import { CacheStrategyCodec } from './infrastructure/get-cached-axios-request';
 import { levelNameCodec } from './infrastructure/logger';
 
 export const appConfigCodec = t.type({
@@ -11,6 +12,7 @@ export const appConfigCodec = t.type({
   // Sciety Application
   APP_ORIGIN: t.string,
   APP_SECRET: tt.withFallback(t.string, 'this-is-not-secret'),
+  APP_CACHE: tt.withFallback(CacheStrategyCodec, 'memory'),
   ALLOW_SITE_CRAWLERS: tt.withFallback(tt.BooleanFromString, false),
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
   USE_STUB_ADAPTERS: tt.withFallback(tt.BooleanFromString, false),

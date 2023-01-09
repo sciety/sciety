@@ -140,7 +140,10 @@ export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, 
       const getAllEvents = T.of(events);
       const fetchers = {
         doi: fetchZenodoRecord(getJson, logger),
-        hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(logger, 5 * 60 * 1000), logger),
+        hypothesis: fetchHypothesisAnnotation(
+          getCachedAxiosRequest(logger, config.APP_CACHE, 5 * 60 * 1000),
+          logger,
+        ),
         ncrc: fetchNcrcReview(logger),
         prelights: fetchPrelightsHighlight(getHtml(logger)),
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
@@ -168,7 +171,7 @@ export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, 
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
-          getCachedAxiosRequest(logger),
+          getCachedAxiosRequest(logger, config.APP_CACHE),
           logger,
           config.CROSSREF_API_BEARER_TOKEN,
         ),
@@ -189,7 +192,7 @@ export const createInfrastructure = (config: AppConfig): TE.TaskEither<unknown, 
           logger,
         ),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedAxiosRequest(logger),
+          getJson: getCachedAxiosRequest(logger, config.APP_CACHE),
           logger,
         }),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
