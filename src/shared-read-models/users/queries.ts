@@ -2,7 +2,7 @@ import { getUser } from './get-user';
 import { ReadModel } from './handle-event';
 import { GetUser } from '../../shared-ports';
 
-export type Queries = {
+type Queries = {
   getUser: GetUser,
 };
 
