@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -78,10 +77,9 @@ const constructContentViewModel: ConstructContentViewModel = (
 export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   params.id,
   ports.getList,
-  TE.fromOption(() => DE.notFound),
-  TE.chainEitherK((list) => pipe(
+  O.chain((list) => pipe(
     getOwnerInformation(ports)(list.ownerId),
-    E.map((ownerInformation) => ({
+    O.map((ownerInformation) => ({
       ...ownerInformation,
       ...list,
       basePath: `/lists/${list.listId}`,
@@ -91,6 +89,7 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     })),
   )),
+  TE.fromOption(() => DE.notFound),
   TE.chain((partialPageViewModel) => pipe(
     constructContentViewModel(
       partialPageViewModel.articleIds,
