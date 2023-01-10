@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -9,16 +10,16 @@ import { HtmlFragment } from '../../../types/html-fragment';
 
 export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
   {
-    first: userListCard({ ...ports, getUserDetails: () => TE.right(card1) })(
-      card1.userId,
+    first: userListCard({ ...ports, getUser: () => O.some(card1) })(
+      card1.id,
       card1.description,
     ),
-    second: userListCard({ ...ports, getUserDetails: () => TE.right(card2) })(
-      card2.userId,
+    second: userListCard({ ...ports, getUser: () => O.some(card2) })(
+      card2.id,
       card2.description,
     ),
-    third: userListCard({ ...ports, getUserDetails: () => TE.right(card3) })(
-      card3.userId,
+    third: userListCard({ ...ports, getUser: () => O.some(card3) })(
+      card3.id,
       card3.description,
     ),
   },
