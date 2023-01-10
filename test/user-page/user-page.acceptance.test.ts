@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -8,12 +9,11 @@ import { ListOwnerId } from '../../src/types/list-owner-id';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
-import { userPage } from '../../src/user-page/user-page';
+import { Ports, userPage } from '../../src/user-page/user-page';
 import {
   arbitraryDate,
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
@@ -32,17 +32,16 @@ const arbitraryUserDetails = {
   avatarUrl: arbitraryUri(),
   displayName: arbitraryString(),
   handle: arbitraryWord(),
-  userId: arbitraryUserId(),
+  id: arbitraryUserId(),
 };
 
 const listId = arbitraryListId();
 
-const defaultPorts = {
-  getUserDetails: () => TE.right(arbitraryUserDetails),
+const defaultPorts: Ports = {
+  getUser: () => O.some(arbitraryUserDetails),
   getGroup: () => E.right(arbitraryGroup()),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),
-  getListsOwnedBy: () => TE.right([]),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
     listId,
     ownerId,
@@ -60,13 +59,13 @@ describe('user-page', () => {
   ])('page tab: %s', (tabName: string) => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
-          userId: arbitraryUserId(),
+          id: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -90,13 +89,13 @@ describe('user-page', () => {
 
     it('uses the user displayname as the opengraph title', async () => {
       const userDisplayName = arbitraryString();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
-          userId: arbitraryUserId(),
+          id: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -114,7 +113,7 @@ describe('user-page', () => {
 
     it('includes the count of lists and followed groups in the opengraph description', async () => {
       const userId = arbitraryUserId();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         getUserId: () => TE.right(userId),
         getAllEvents: T.of([
@@ -139,13 +138,13 @@ describe('user-page', () => {
       const avatarUrl = arbitraryUri();
       const displayName = arbitraryString();
       const handle = arbitraryWord();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           avatarUrl,
           displayName,
           handle,
-          userId: arbitraryUserId(),
+          id: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -159,7 +158,7 @@ describe('user-page', () => {
 
     it('always shows the counts in the tab titles', async () => {
       const userId = arbitraryUserId();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         getUserId: () => TE.right(userId),
         getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
@@ -181,7 +180,7 @@ describe('user-page', () => {
 
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         getUserId: () => TE.right(arbitraryUserId()),
       };
@@ -202,7 +201,7 @@ describe('user-page', () => {
         const group1 = arbitraryGroup();
         const group2 = arbitraryGroup();
         const userId = arbitraryUserId();
-        const ports = {
+        const ports: Ports = {
           ...defaultPorts,
           getAllEvents: T.of([
             groupJoined(group1),
@@ -227,7 +226,7 @@ describe('user-page', () => {
       describe('any of the group card generations fail', () => {
         it('displays a single error message as the tab panel content', async () => {
           const userId = arbitraryUserId();
-          const ports = {
+          const ports: Ports = {
             ...defaultPorts,
             getGroup: () => E.left(arbitraryDataError()),
             getAllEvents: T.of([
@@ -256,11 +255,9 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const ports = {
+        const ports: Ports = {
           ...defaultPorts,
-          getUserDetails: () => TE.right(arbitraryUserDetails),
           getUserId: () => TE.right(arbitraryUserId()),
-          getListsOwnedBy: shouldNotBeCalled,
         };
         const params = { handle: arbitraryWord() };
         page = await pipe(
@@ -287,11 +284,9 @@ describe('user-page', () => {
 
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        getUserDetails: () => TE.right(arbitraryUserDetails),
         getUserId: () => TE.right(arbitraryUserId()),
-        getListsOwnedBy: shouldNotBeCalled,
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
@@ -307,16 +302,15 @@ describe('user-page', () => {
 
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
           handle: arbitraryWord(),
-          userId: arbitraryUserId(),
+          id: arbitraryUserId(),
         }),
         getUserId: () => TE.right(arbitraryUserId()),
-        getListsOwnedBy: shouldNotBeCalled,
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
@@ -334,11 +328,11 @@ describe('user-page', () => {
         params,
         userPage({
           ...defaultPorts,
-          getUserDetails: () => TE.right({
+          getUser: () => O.some({
             avatarUrl: arbitraryUri(),
             displayName: arbitraryWord(),
             handle: params.handle,
-            userId: arbitraryUserId(),
+            id: arbitraryUserId(),
           }),
         })('lists'),
         contentOf,

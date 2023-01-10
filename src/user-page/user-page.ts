@@ -12,8 +12,7 @@ import { renderPage } from './render-page';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
 import { tabs } from '../shared-components/tabs';
-import { SelectAllListsOwnedBy } from '../shared-ports';
-import { GetUserDetails } from '../shared-ports/get-user-details';
+import { GetUser, SelectAllListsOwnedBy } from '../shared-ports';
 import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -24,8 +23,9 @@ import { UserId } from '../types/user-id';
 
 type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 
-type Ports = FollowListPorts & {
-  getUserDetails: GetUserDetails,
+// ts-unused-exports:disable-next-line
+export type Ports = FollowListPorts & {
+  getUser: GetUser,
   getUserId: GetUserId,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
@@ -39,14 +39,18 @@ type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageErr
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   params.handle,
   ports.getUserId,
-  TE.chain((userId) => pipe(
+  TE.chainW((userId) => pipe(
     {
       groupIds: pipe(
         ports.getAllEvents,
         T.map(getGroupIdsFollowedBy(userId)),
         TE.rightTask,
       ),
-      userDetails: ports.getUserDetails(userId),
+      userDetails: pipe(
+        userId,
+        ports.getUser,
+        TE.fromOption(() => DE.notFound),
+      ),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       userId: TE.right(userId),
       list: pipe(
