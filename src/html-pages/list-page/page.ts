@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -78,9 +79,9 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
   params.id,
   ports.getList,
   TE.fromOption(() => DE.notFound),
-  TE.chain((list) => pipe(
+  TE.chainEitherK((list) => pipe(
     getOwnerInformation(ports)(list.ownerId),
-    TE.map((ownerInformation) => ({
+    E.map((ownerInformation) => ({
       ...ownerInformation,
       ...list,
       basePath: `/lists/${list.listId}`,

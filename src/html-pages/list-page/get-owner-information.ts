@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
@@ -20,7 +19,6 @@ const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
     ownerHref: `/groups/${group.slug}`,
     ownerAvatarPath: group.avatarPath,
   })),
-  TE.fromEither,
 );
 
 type OwnerInformation = {
@@ -30,7 +28,7 @@ type OwnerInformation = {
 };
 
 type GetOwnerInformation = (ports: Ports) => (ownerId: ListOwnerId)
-=> TE.TaskEither<DE.DataError, OwnerInformation>;
+=> E.Either<DE.DataError, OwnerInformation>;
 
 export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => pipe(
   ownerId,
@@ -42,11 +40,11 @@ export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => 
         return pipe(
           oId.value,
           getUserOwnerInformation(ports),
-          TE.fromOption(() => DE.notFound),
+          E.fromOption(() => DE.notFound),
         );
     }
   },
-  TE.map((ownerInformation) => ({
+  E.map((ownerInformation) => ({
     ...ownerInformation,
   })),
 );
