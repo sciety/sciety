@@ -9,4 +9,5 @@ type UserDetails = {
   userId: UserId,
 };
 
+// ts-unused-exports:disable-next-line
 export type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
