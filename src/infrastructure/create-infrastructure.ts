@@ -41,7 +41,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import {
-  getTwitterResponse, getTwitterUserDetails, getTwitterUserId,
+  getTwitterResponse, getTwitterUserId,
 } from '../third-parties/twitter';
 
 type Dependencies = {
@@ -178,10 +178,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        getUserDetails: getTwitterUserDetails(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
-          logger,
-        ),
         getUserId: getTwitterUserId(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
@@ -204,7 +200,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
         getArticleSubjectArea: collectedAdapters.getArticleSubjectArea,
-        getUserDetails: collectedAdapters.getUserDetails,
         addArticleToList: collectedAdapters.addArticleToList,
         removeArticleFromList: collectedAdapters.removeArticleFromList,
         createList: collectedAdapters.createList,
