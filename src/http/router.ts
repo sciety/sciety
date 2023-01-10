@@ -131,22 +131,23 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/',
     async (context, next) => {
-      const response = await pipe(
+      const response = pipe(
         context.state,
         homePageParams.decode,
-        E.mapLeft(toNotFound),
-        TE.fromEither,
-        TE.map((params) => params.user),
-        TE.chainTaskK((user) => pipe(
-          adapters,
-          homePage,
-          T.map(homePageLayout(user)),
-        )),
-        TE.match(
-          toErrorResponse(O.fromNullable(context.state.user)),
-          toSuccessResponse,
+        E.match(
+          (err) => pipe(
+            err,
+            toNotFound,
+            toErrorResponse(O.fromNullable(context.state.user)),
+          ),
+          (params) => pipe(
+            adapters,
+            homePage,
+            homePageLayout(params.user),
+            toSuccessResponse,
+          ),
         ),
-      )();
+      );
 
       context.response.status = response.status;
       context.response.type = 'html';

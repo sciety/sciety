@@ -1,4 +1,3 @@
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -26,7 +25,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
   </div>
 `);
 
-export const homePage = (ports: Ports): T.Task<Page> => pipe(
+export const homePage = (ports: Ports): Page => pipe(
   {
     hero,
     cards: cards(ports),
@@ -36,5 +35,4 @@ export const homePage = (ports: Ports): T.Task<Page> => pipe(
     title: 'Sciety: the home of public preprint evaluation',
     content,
   }),
-  T.of,
 );
