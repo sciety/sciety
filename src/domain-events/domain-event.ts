@@ -1,6 +1,7 @@
 import * as A from 'fp-ts/Array';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
@@ -85,3 +86,15 @@ A extends EventSpecificFields<T>,
     date: new Date(),
     ...args,
   });
+
+// ts-unused-exports:disable-next-line
+export type SubsetOfDomainEvent<Names extends Array<EventName>> = Extract<DomainEvent, { type: Names[number] }>;
+
+// ts-unused-exports:disable-next-line
+export const filterByName = <T extends Array<EventName>>(names: T) => (
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<SubsetOfDomainEvent<T>> => pipe(
+  events,
+  RA.filter(({ type }) => names.includes(type)),
+  RA.map((filtered) => filtered as SubsetOfDomainEvent<T>),
+);

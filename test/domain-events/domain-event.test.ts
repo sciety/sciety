@@ -1,7 +1,10 @@
 /* eslint-disable jest/expect-expect */
 import { expectTypeOf } from 'expect-type';
+import { pipe } from 'fp-ts/function';
 import { EventByName } from '../../src/domain-events';
-import { constructEvent } from '../../src/domain-events/domain-event';
+import {
+  constructEvent, DomainEvent, filterByName, SubsetOfDomainEvent,
+} from '../../src/domain-events/domain-event';
 import { arbitraryDate } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -25,6 +28,32 @@ describe('domain-event', () => {
       expectTypeOf(event).toMatchTypeOf<EventByName<'ArticleAddedToList'>>();
 
       expect(event.date).toStrictEqual(date);
+    });
+  });
+
+  describe('subsetOfDomainEvent', () => {
+    it('can narrow DomainEvent to a single type of event', () => {
+      type Result = SubsetOfDomainEvent<['UserFollowedEditorialCommunity']>;
+
+      expectTypeOf<Result>().toMatchTypeOf<EventByName<'UserFollowedEditorialCommunity'>>();
+    });
+
+    it('can narrow DomainEvent to a smaller union of event types', () => {
+      type Result = SubsetOfDomainEvent<['ListCreated', 'ArticleAddedToList']>;
+
+      expectTypeOf<Result>().toMatchTypeOf<EventByName<'ListCreated'> | EventByName<'ArticleAddedToList'>>();
+    });
+  });
+
+  describe('filterByName', () => {
+    it('provides acccess to intersection of event fields in resulting subset of events', () => {
+      const filteredEvents = pipe(
+        [] as ReadonlyArray<DomainEvent>,
+        filterByName(['ArticleAddedToList', 'ListCreated']),
+      );
+
+      expectTypeOf(filteredEvents).items.toHaveProperty('listId');
+      expectTypeOf(filteredEvents).items.not.toHaveProperty('articleId');
     });
   });
 });
