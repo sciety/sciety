@@ -7,6 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { groupJoined } from '../../src/domain-events';
 import { searchResultsPage } from '../../src/search-results-page';
+import { Ports } from '../../src/search-results-page/search-results-page';
 import * as DE from '../../src/types/data-error';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
@@ -17,10 +18,10 @@ import { arbitraryGroup } from '../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
 
-const dummyAdapters = {
+const dummyAdapters: Ports = {
   fetchStaticFile: () => TE.right(''),
   getAllGroups: () => [],
-  getGroup: () => E.right(arbitraryGroup()),
+  getGroup: () => O.some(arbitraryGroup()),
   searchEuropePmc: () => () => TE.right({
     items: [],
     total: 0,

@@ -14,6 +14,7 @@ export type Ports = GetUserOwnerInformationPorts
 
 const getGroupOwnerInformation = (ports: Ports) => (groupId: GroupId) => pipe(
   ports.getGroup(groupId),
+  E.fromOption(() => DE.notFound),
   E.map((group) => ({
     ownerName: group.name,
     ownerHref: `/groups/${group.slug}`,

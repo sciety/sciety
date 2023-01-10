@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -60,7 +59,7 @@ const reviewToFeedItem = (
   {
     groupDetails: pipe(
       adapters.getGroup(feedEvent.groupId),
-      E.match(
+      O.match(
         () => ({
           groupName: 'A group',
           groupHref: `/groups/${feedEvent.groupId}`,

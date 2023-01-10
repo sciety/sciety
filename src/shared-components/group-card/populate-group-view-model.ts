@@ -24,7 +24,7 @@ export const populateGroupViewModel = (
   groupId: GroupId,
 ): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
   ports.getGroup(groupId),
-  TE.fromEither,
+  TE.fromOption(() => DE.notFound),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
     T.map(RA.reduce({ evaluationCount: 0, followerCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),

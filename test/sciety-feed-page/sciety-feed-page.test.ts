@@ -56,7 +56,7 @@ describe('sciety-feed-page', () => {
       title: arbitraryHtmlFragment(),
       authors: O.none,
     }),
-    getGroup: () => E.right(arbitraryGroup()),
+    getGroup: () => O.some(arbitraryGroup()),
     getList: () => O.some(arbitraryList()),
   };
 

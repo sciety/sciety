@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -43,7 +44,7 @@ describe('generate-docmaps', () => {
     ]),
     fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
     getAllEvents: T.of([]),
-    getGroup: () => E.right(arbitraryGroup()),
+    getGroup: () => O.some(arbitraryGroup()),
   };
 
   const generateDocmapsTestHelper = async (overridePorts: Record<string, unknown>) => pipe(

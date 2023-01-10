@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -34,7 +33,7 @@ describe('get-feed-events-content', () => {
           fullText: pipe('some text', toHtmlFragment),
           url: new URL('http://example.com'),
         }),
-        getGroup: () => E.right(arbitraryGroup()),
+        getGroup: () => O.some(arbitraryGroup()),
       };
       const viewModel = await getFeedEventsContent(ports, 'biorxiv', O.none)(feedEvents)();
 

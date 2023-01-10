@@ -18,7 +18,7 @@ type Ports = {
 const confirmGroupExists = (ports: Ports) => (command: RecordEvaluationCommand) => pipe(
   command.groupId,
   ports.getGroup,
-  E.mapLeft(() => `Group "${command.groupId}" not found`),
+  E.fromOption(() => `Group "${command.groupId}" not found`),
 );
 
 type RecordEvaluationCommandHandler = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;

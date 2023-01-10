@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -46,7 +45,7 @@ describe('collapsed-articles-added-to-list-card', () => {
           id: arbitraryUserId(),
           displayName: arbitraryString(),
         }),
-        getGroup: () => E.right(arbitraryGroup()),
+        getGroup: () => O.some(arbitraryGroup()),
       };
 
       let viewModel: ScietyFeedCard;
@@ -85,7 +84,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         getAllEvents,
         getList,
         getUser: () => O.none,
-        getGroup: () => E.right(arbitraryGroup()),
+        getGroup: () => O.some(arbitraryGroup()),
       };
 
       let viewModel: ScietyFeedCard;

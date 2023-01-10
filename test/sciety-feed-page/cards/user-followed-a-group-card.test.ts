@@ -25,7 +25,7 @@ describe('user-followed-a-group-card', () => {
     const handle = arbitraryWord();
     const ports = {
       getAllEvents: T.of([groupJoined(group)]),
-      getGroup: () => E.right(group),
+      getGroup: () => O.some(group),
       getUser: () => O.some({
         handle,
         avatarUrl,
@@ -72,7 +72,7 @@ describe('user-followed-a-group-card', () => {
   describe('when the user details cannot be found', () => {
     const ports = {
       getAllEvents: T.of([groupJoined(group)]),
-      getGroup: () => E.right(group),
+      getGroup: () => O.some(group),
       getUser: () => O.none,
     };
 
@@ -110,7 +110,7 @@ describe('user-followed-a-group-card', () => {
   describe('when the group cannot be found', () => {
     const ports = {
       getAllEvents: T.of([]),
-      getGroup: () => E.left(DE.notFound),
+      getGroup: () => O.none,
       getUser: () => O.some({
         handle: arbitraryWord(),
         avatarUrl: arbitraryUri(),

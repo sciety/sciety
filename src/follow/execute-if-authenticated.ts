@@ -23,6 +23,7 @@ type Ports = FollowCommandPorts & {
 
 const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
   ports.getGroup(groupId),
+  E.fromOption(() => DE.notFound),
   E.map((group) => ({
     groupId: group.id,
   })),

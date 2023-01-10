@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { articlePage } from '../../../../src/html-pages/article-page';
-import * as DE from '../../../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
@@ -16,7 +15,7 @@ describe('correct-language-semantics', () => {
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),
       isArticleOnTheListOwnedBy: () => () => O.none,
-      getGroup: () => E.left(DE.notFound),
+      getGroup: () => O.none,
     };
 
     describe('the article title', () => {

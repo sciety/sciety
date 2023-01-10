@@ -23,7 +23,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event)
   {
     group: pipe(
       ports.getGroup(event.editorialCommunityId),
-      T.of,
+      TE.fromOption(() => DE.notFound),
     ),
     userDetails: pipe(
       event.userId,

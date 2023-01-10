@@ -8,6 +8,7 @@ import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { GetGroup } from '../../shared-ports';
+import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
@@ -51,6 +52,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
   E.traverseArray(({ articleId, groupId, date }) => pipe(
     adapters.getGroup(groupId),
+    E.fromOption(() => DE.notFound),
     E.map((group) => ({
       articleId,
       groupId,

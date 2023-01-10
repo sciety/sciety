@@ -86,7 +86,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({
     inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(adapters, articleId),
     group: pipe(
       adapters.getGroup(groupId),
-      T.of,
+      TE.fromOption(() => DE.notFound),
     ),
   },
   sequenceS(TE.ApplyPar),

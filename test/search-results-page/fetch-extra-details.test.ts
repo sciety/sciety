@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -9,7 +8,6 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryDate, arbitraryNumber } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -31,7 +29,7 @@ describe('fetch-extra-details', () => {
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
         ]),
-        getGroup: () => E.right(arbitraryGroup()),
+        getGroup: () => O.some(arbitraryGroup()),
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
         selectAllListsOwnedBy: shouldNotBeCalled,
       };
@@ -85,7 +83,7 @@ describe('fetch-extra-details', () => {
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([groupJoined(group)]),
-          getGroup: () => E.right(group),
+          getGroup: () => O.some(group),
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: () => [],
         };
@@ -132,7 +130,7 @@ describe('fetch-extra-details', () => {
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
-          getGroup: () => E.left(arbitraryDataError()),
+          getGroup: () => O.none,
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: shouldNotBeCalled,
         };

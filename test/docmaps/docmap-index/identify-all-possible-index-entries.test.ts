@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -7,7 +8,6 @@ import {
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded } from '../../../src/domain-events';
-import * as DE from '../../../src/types/data-error';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -17,7 +17,7 @@ describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
   const defaultPorts: Ports = {
-    getGroup: (groupId) => E.right({
+    getGroup: (groupId) => O.some({
       ...arbitraryGroup(),
       id: groupId,
     }),
@@ -33,7 +33,7 @@ describe('identify-all-possible-index-entries', () => {
       evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
     ];
     const ports = {
-      getGroup: () => E.right(supportedGroups[0]),
+      getGroup: () => O.some(supportedGroups[0]),
     };
     const result = pipe(
       events,
@@ -101,7 +101,7 @@ describe('identify-all-possible-index-entries', () => {
       evaluationRecorded(supportedGroupIds[0], arbitraryArticleId(), arbitraryReviewId()),
     ];
     const ports = {
-      getGroup: () => E.left(DE.notFound),
+      getGroup: () => O.none,
     };
     const result = pipe(
       events,

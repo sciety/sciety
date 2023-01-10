@@ -15,7 +15,6 @@ import {
   arbitraryDate,
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
-import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryListId } from '../types/list-id.helper';
@@ -39,7 +38,7 @@ const arbitraryUserDetails = (): UserDetails => ({
 const listId = arbitraryListId();
 
 const defaultPorts: Ports = {
-  getGroup: () => E.right(arbitraryGroup()),
+  getGroup: () => O.some(arbitraryGroup()),
   getAllEvents: T.of([]),
   getUserViaHandle: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
@@ -220,7 +219,7 @@ describe('user-page', () => {
           const user = arbitraryUserDetails();
           const ports: Ports = {
             ...defaultPorts,
-            getGroup: () => E.left(arbitraryDataError()),
+            getGroup: () => O.none,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
               userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
