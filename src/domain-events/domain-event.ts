@@ -90,7 +90,6 @@ A extends EventSpecificFields<T>,
 // ts-unused-exports:disable-next-line
 export type SubsetOfDomainEvent<Names extends Array<EventName>> = Extract<DomainEvent, { type: Names[number] }>;
 
-// ts-unused-exports:disable-next-line
 export const filterByName = <T extends Array<EventName>>(names: T) => (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<SubsetOfDomainEvent<T>> => pipe(
