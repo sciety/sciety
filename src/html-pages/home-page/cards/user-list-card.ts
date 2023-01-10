@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -25,22 +24,16 @@ export const userListCard = (
   ports: Ports,
 ) => (userId: UserId, description: string): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
-    userDetails: pipe(
-      userId,
-      ports.getUser,
-      TE.fromOption(() => DE.notFound),
-    ),
+    userDetails: ports.getUser(userId),
     list: pipe(
       userId,
       LOID.fromUserId,
       ports.selectAllListsOwnedBy,
       RA.head,
-      E.fromOption(() => DE.notFound),
-      T.of,
     ),
   },
-  sequenceS(TE.ApplyPar),
-  TE.map((details) => ({
+  sequenceS(O.Apply),
+  O.map((details) => ({
     listId: details.list.listId,
     articleCount: details.list.articleIds.length,
     lastUpdated: O.some(details.list.lastUpdated),
@@ -48,5 +41,6 @@ export const userListCard = (
     avatarUrl: details.userDetails.avatarUrl,
     description,
   })),
-  TE.map(renderUserListCard),
+  O.map(renderUserListCard),
+  TE.fromOption(() => DE.notFound),
 );
