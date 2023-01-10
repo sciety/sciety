@@ -55,7 +55,7 @@ type GroupPage = (
 
 export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user, page: pageNumber }) => pipe(
   ports.getGroupBySlug(slug),
-  E.mapLeft(notFoundResponse),
+  E.fromOption(notFoundResponse),
   TE.fromEither,
   TE.chain((group) => pipe(
     {

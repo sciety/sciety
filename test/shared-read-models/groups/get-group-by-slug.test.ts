@@ -1,11 +1,10 @@
-import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
 import { groupJoined } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import { getGroupBySlug } from '../../../src/shared-read-models/groups/get-group-by-slug';
-import * as DE from '../../../src/types/data-error';
 import { arbitraryGroup } from '../../types/group.helper';
 
 const group = arbitraryGroup();
@@ -22,7 +21,7 @@ describe('getGroupBySlug', () => {
     );
 
     it('returns the group', () => {
-      expect(getGroupBySlug(readmodel)(group.slug)).toStrictEqual(E.right(group));
+      expect(getGroupBySlug(readmodel)(group.slug)).toStrictEqual(O.some(group));
     });
   });
 
@@ -35,7 +34,7 @@ describe('getGroupBySlug', () => {
     );
 
     it('returns not-found', () => {
-      expect(getGroupBySlug(readmodel)(group.id)).toStrictEqual(E.left(DE.notFound));
+      expect(getGroupBySlug(readmodel)(group.id)).toStrictEqual(O.none);
     });
   });
 });

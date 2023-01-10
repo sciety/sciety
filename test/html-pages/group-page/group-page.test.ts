@@ -21,7 +21,7 @@ describe('group page', () => {
           getAllEvents: T.of([]),
           selectAllListsOwnedBy: shouldNotBeCalled,
           getUser: shouldNotBeCalled,
-          getGroupBySlug: () => E.left(DE.notFound),
+          getGroupBySlug: () => O.none,
         })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(
