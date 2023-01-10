@@ -1,8 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetUser } from '../../shared-ports/get-user';
-import * as DE from '../../types/data-error';
 import { UserId } from '../../types/user-id';
 
 type OwnerInfo = {
@@ -15,7 +13,7 @@ export type Ports = {
   getUser: GetUser,
 };
 
-type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => TE.TaskEither<DE.DataError, OwnerInfo>;
+type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => O.Option<OwnerInfo>;
 
 export const getUserOwnerInformation: GetUserOwnerInformation = (ports) => (userId) => pipe(
   userId,
@@ -25,5 +23,4 @@ export const getUserOwnerInformation: GetUserOwnerInformation = (ports) => (user
     ownerHref: `/users/${userDetails.handle}`,
     ownerAvatarPath: userDetails.avatarUrl,
   })),
-  TE.fromOption(() => DE.notFound),
 );

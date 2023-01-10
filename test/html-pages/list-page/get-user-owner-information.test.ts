@@ -1,21 +1,18 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from '../../../src/html-pages/list-page/get-user-owner-information';
-import * as DE from '../../../src/types/data-error';
+import { getUserOwnerInformation, Ports } from '../../../src/html-pages/list-page/get-user-owner-information';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-user-owner-information', () => {
   const userId = arbitraryUserId();
 
   describe('when Twitter finds the given user', () => {
-    it('returns the corresponding owner info', async () => {
+    it('returns the corresponding owner info', () => {
       const userDisplayName = arbitraryString();
       const userAvatarUrl = arbitraryUri().toString();
       const userHandle = arbitraryWord();
-      const ports = {
+      const ports: Ports = {
         getUser: () => O.some({
           displayName: userDisplayName,
           handle: userHandle,
@@ -24,34 +21,31 @@ describe('get-user-owner-information', () => {
         }),
       };
 
-      const ownerInfo = await pipe(
+      const ownerInfo = pipe(
         userId,
         getUserOwnerInformation(ports),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      );
 
-      expect(ownerInfo).toStrictEqual({
+      expect(ownerInfo).toStrictEqual(O.some({
         ownerName: userDisplayName,
         ownerAvatarPath: userAvatarUrl,
         ownerHref: `/users/${userHandle}`,
-      });
+      }));
     });
   });
 
   describe('when Twitter does not find the given user', () => {
-    it('returns a not-found error', async () => {
+    it('returns a not-found error', () => {
       const ports = {
         getUser: () => O.none,
       };
 
-      const ownerInfo = await pipe(
+      const ownerInfo = pipe(
         userId,
         getUserOwnerInformation(ports),
-        TE.swap,
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      );
 
-      expect(ownerInfo).toStrictEqual(DE.notFound);
+      expect(ownerInfo).toStrictEqual(O.none);
     });
   });
 });

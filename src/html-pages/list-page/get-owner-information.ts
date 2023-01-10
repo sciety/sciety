@@ -39,7 +39,11 @@ export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => 
       case 'group-id':
         return getGroupOwnerInformation(ports)(oId.value);
       case 'user-id':
-        return getUserOwnerInformation(ports)(oId.value);
+        return pipe(
+          oId.value,
+          getUserOwnerInformation(ports),
+          TE.fromOption(() => DE.notFound),
+        );
     }
   },
   TE.map((ownerInformation) => ({
