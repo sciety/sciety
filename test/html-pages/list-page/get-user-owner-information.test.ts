@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from '../../../src/html-pages/list-page/get-user-owner-information';
@@ -15,11 +16,11 @@ describe('get-user-owner-information', () => {
       const userAvatarUrl = arbitraryUri().toString();
       const userHandle = arbitraryWord();
       const ports = {
-        getUserDetails: () => TE.right({
+        getUser: () => O.some({
           displayName: userDisplayName,
           handle: userHandle,
           avatarUrl: userAvatarUrl,
-          userId,
+          id: userId,
         }),
       };
 
@@ -40,7 +41,7 @@ describe('get-user-owner-information', () => {
   describe('when Twitter does not find the given user', () => {
     it('returns a not-found error', async () => {
       const ports = {
-        getUserDetails: () => TE.left(DE.notFound),
+        getUser: () => O.none,
       };
 
       const ownerInfo = await pipe(
