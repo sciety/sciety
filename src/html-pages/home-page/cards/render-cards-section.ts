@@ -1,8 +1,7 @@
-import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { card1, card2, card3 } from './hardcoded-evaluation-cards';
 import { templateDate } from '../../../shared-components/date';
-import * as DE from '../../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 type Card = {
@@ -29,9 +28,9 @@ const renderEvaluationCard = (card: Card) => `
   </article>
 `;
 
-const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => pipe(
+const userListCards = (userLists: O.Option<Record<string, HtmlFragment>>): HtmlFragment => pipe(
   userLists,
-  E.fold(
+  O.fold(
     () => '',
     (cards) => `
         <h2 class="home-page-cards__title">Most active lists</h2>
@@ -66,7 +65,7 @@ const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
   </ul>
 `);
 
-export const renderCardsSection = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
+export const renderCardsSection = (userLists: O.Option<Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
   <section class="home-page-cards">
     ${userListCards(userLists)}
     ${evaluationCards(card1, card2, card3)}

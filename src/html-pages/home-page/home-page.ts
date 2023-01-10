@@ -30,7 +30,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
 export const homePage = (ports: Ports): T.Task<Page> => pipe(
   {
     hero: T.of(hero),
-    cards: cards(ports),
+    cards: T.of(cards(ports)),
   },
   sequenceS(T.ApplyPar),
   T.map(renderContent),
