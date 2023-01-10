@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  elifeGroupId, getCorrespondingListId, handleEvent, initialState,
-} from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { getCorrespondingListId } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-corresponding-list-id';
 import { getOneArticleReadyToBeListed } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-one-article-ready-to-be-listed';
+import { handleEvent, initialState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
 import { shouldNotBeCalled } from '../../should-not-be-called';

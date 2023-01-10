@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  elifeGroupId, getArticleIdsByState, handleEvent, initialState,
-} from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeSubjectAreaLists } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
+import { getArticleIdsByState } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-article-ids-by-state';
+import { handleEvent, initialState } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';

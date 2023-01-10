@@ -4,7 +4,7 @@ import { getOneArticleReadyToBeListed } from './get-one-article-ready-to-be-list
 import { ReadModel } from './handle-event';
 import { GetArticleIdsByState, GetOneArticleIdInEvaluatedState, GetOneArticleReadyToBeListed } from '../../shared-ports';
 
-export type Queries = {
+type Queries = {
   getArticleIdsByState: GetArticleIdsByState,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,

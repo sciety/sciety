@@ -4,7 +4,7 @@ import { getGroupBySlug } from './get-group-by-slug';
 import { ReadModel } from './handle-event';
 import { GetAllGroups, GetGroup, GetGroupBySlug } from '../../shared-ports';
 
-export type Queries = {
+type Queries = {
   getAllGroups: GetAllGroups,
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
