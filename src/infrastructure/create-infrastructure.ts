@@ -40,9 +40,6 @@ import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxi
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
-import {
-  getTwitterResponse, getTwitterUserId,
-} from '../third-parties/twitter';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -178,10 +175,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        getUserId: getTwitterUserId(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
-          logger,
-        ),
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
           getJson: getCachedAxiosRequest(logger),
           logger,
