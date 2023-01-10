@@ -8,6 +8,7 @@ import { groupJoined, userFollowedEditorialCommunity } from '../../src/domain-ev
 import { ListOwnerId } from '../../src/types/list-owner-id';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
+import { UserDetails } from '../../src/types/user-details';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
 import { Ports, userPage } from '../../src/user-page/user-page';
 import {
@@ -28,20 +29,19 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   ),
 );
 
-const arbitraryUserDetails = {
+const arbitraryUserDetails = (): UserDetails => ({
+  id: arbitraryUserId(),
   avatarUrl: arbitraryUri(),
   displayName: arbitraryString(),
   handle: arbitraryWord(),
-  id: arbitraryUserId(),
-};
+});
 
 const listId = arbitraryListId();
 
 const defaultPorts: Ports = {
-  getUser: () => O.some(arbitraryUserDetails),
   getGroup: () => E.right(arbitraryGroup()),
   getAllEvents: T.of([]),
-  getUserId: () => TE.right(arbitraryUserId()),
+  getUserViaHandle: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
     listId,
     ownerId,
@@ -61,11 +61,9 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUser: () => O.some({
-          avatarUrl: arbitraryUri(),
+        getUserViaHandle: () => O.some({
+          ...arbitraryUserDetails(),
           displayName: userDisplayName,
-          handle: arbitraryWord(),
-          id: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -91,11 +89,9 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUser: () => O.some({
-          avatarUrl: arbitraryUri(),
+        getUserViaHandle: () => O.some({
+          ...arbitraryUserDetails(),
           displayName: userDisplayName,
-          handle: arbitraryWord(),
-          id: arbitraryUserId(),
         }),
       };
       const params = { handle: arbitraryWord() };
@@ -112,13 +108,13 @@ describe('user-page', () => {
     });
 
     it('includes the count of lists and followed groups in the opengraph description', async () => {
-      const userId = arbitraryUserId();
+      const user = arbitraryUserDetails();
       const ports: Ports = {
         ...defaultPorts,
-        getUserId: () => TE.right(userId),
+        getUserViaHandle: () => O.some(user),
         getAllEvents: T.of([
-          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
-          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+          userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
+          userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
         ]),
       };
       const params = { handle: arbitraryWord() };
@@ -140,7 +136,7 @@ describe('user-page', () => {
       const handle = arbitraryWord();
       const ports: Ports = {
         ...defaultPorts,
-        getUser: () => O.some({
+        getUserViaHandle: () => O.some({
           avatarUrl,
           displayName,
           handle,
@@ -157,11 +153,11 @@ describe('user-page', () => {
     });
 
     it('always shows the counts in the tab titles', async () => {
-      const userId = arbitraryUserId();
+      const user = arbitraryUserDetails();
       const ports: Ports = {
         ...defaultPorts,
-        getUserId: () => TE.right(userId),
-        getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
+        getUserViaHandle: () => O.some(user),
+        getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
@@ -180,14 +176,10 @@ describe('user-page', () => {
 
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
-      const ports: Ports = {
-        ...defaultPorts,
-        getUserId: () => TE.right(arbitraryUserId()),
-      };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
-        userPage(ports)('followed-groups'),
+        userPage(defaultPorts)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -200,16 +192,16 @@ describe('user-page', () => {
       it('displays followed groups as group cards', async () => {
         const group1 = arbitraryGroup();
         const group2 = arbitraryGroup();
-        const userId = arbitraryUserId();
+        const user = arbitraryUserDetails();
         const ports: Ports = {
           ...defaultPorts,
           getAllEvents: T.of([
             groupJoined(group1),
             groupJoined(group2),
-            userFollowedEditorialCommunity(userId, group1.id),
-            userFollowedEditorialCommunity(userId, group2.id),
+            userFollowedEditorialCommunity(user.id, group1.id),
+            userFollowedEditorialCommunity(user.id, group2.id),
           ]),
-          getUserId: () => TE.right(userId),
+          getUserViaHandle: () => O.some(user),
         };
         const params = { handle: arbitraryWord() };
         const page = await pipe(
@@ -225,15 +217,15 @@ describe('user-page', () => {
 
       describe('any of the group card generations fail', () => {
         it('displays a single error message as the tab panel content', async () => {
-          const userId = arbitraryUserId();
+          const user = arbitraryUserDetails();
           const ports: Ports = {
             ...defaultPorts,
             getGroup: () => E.left(arbitraryDataError()),
             getAllEvents: T.of([
-              userFollowedEditorialCommunity(userId, arbitraryGroupId()),
-              userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+              userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
+              userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
             ]),
-            getUserId: () => TE.right(userId),
+            getUserViaHandle: () => O.some(user),
           };
           const params = { handle: arbitraryWord() };
 
@@ -255,14 +247,10 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const ports: Ports = {
-          ...defaultPorts,
-          getUserId: () => TE.right(arbitraryUserId()),
-        };
         const params = { handle: arbitraryWord() };
         page = await pipe(
           params,
-          userPage(ports)('followed-groups'),
+          userPage(defaultPorts)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
         )();
@@ -284,14 +272,10 @@ describe('user-page', () => {
 
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
-      const ports: Ports = {
-        ...defaultPorts,
-        getUserId: () => TE.right(arbitraryUserId()),
-      };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
-        userPage(ports)('lists'),
+        userPage(defaultPorts)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -304,13 +288,10 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUser: () => O.some({
-          avatarUrl: arbitraryUri(),
+        getUserViaHandle: () => O.some({
+          ...arbitraryUserDetails(),
           displayName: userDisplayName,
-          handle: arbitraryWord(),
-          id: arbitraryUserId(),
         }),
-        getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { handle: arbitraryWord() };
       const page = await pipe(
@@ -328,11 +309,9 @@ describe('user-page', () => {
         params,
         userPage({
           ...defaultPorts,
-          getUser: () => O.some({
-            avatarUrl: arbitraryUri(),
-            displayName: arbitraryWord(),
+          getUserViaHandle: () => O.some({
+            ...arbitraryUserDetails(),
             handle: params.handle,
-            id: arbitraryUserId(),
           }),
         })('lists'),
         contentOf,

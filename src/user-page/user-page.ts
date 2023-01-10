@@ -12,21 +12,17 @@ import { renderPage } from './render-page';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
 import { tabs } from '../shared-components/tabs';
-import { GetUser, SelectAllListsOwnedBy } from '../shared-ports';
+import { GetUserViaHandle, SelectAllListsOwnedBy } from '../shared-ports';
 import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import * as LOID from '../types/list-owner-id';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { UserId } from '../types/user-id';
-
-type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 
 // ts-unused-exports:disable-next-line
 export type Ports = FollowListPorts & {
-  getUser: GetUser,
-  getUserId: GetUserId,
+  getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
@@ -38,23 +34,20 @@ type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageErr
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   params.handle,
-  ports.getUserId,
-  TE.chainW((userId) => pipe(
+  ports.getUserViaHandle,
+  TE.fromOption(() => DE.notFound),
+  TE.chainW((user) => pipe(
     {
       groupIds: pipe(
         ports.getAllEvents,
-        T.map(getGroupIdsFollowedBy(userId)),
+        T.map(getGroupIdsFollowedBy(user.id)),
         TE.rightTask,
       ),
-      userDetails: pipe(
-        userId,
-        ports.getUser,
-        TE.fromOption(() => DE.notFound),
-      ),
+      userDetails: TE.right(user),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
-      userId: TE.right(userId),
+      userId: TE.right(user.id),
       list: pipe(
-        userId,
+        user.id,
         LOID.fromUserId,
         ports.selectAllListsOwnedBy,
         RA.head,
