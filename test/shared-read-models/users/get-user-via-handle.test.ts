@@ -21,12 +21,12 @@ describe('getUserViaHandle', () => {
   describe('when the user exists', () => {
     const readmodel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.displayName, user.avatarUrl),
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the user', () => {
+    it('returns the user', () => {
       expect(getUserViaHandle(readmodel)(user.handle)).toStrictEqual(O.some(user));
     });
   });
