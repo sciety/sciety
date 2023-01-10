@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -29,13 +28,13 @@ const renderContent = (components: Components) => toHtmlFragment(`
 
 export const homePage = (ports: Ports): T.Task<Page> => pipe(
   {
-    hero: T.of(hero),
-    cards: T.of(cards(ports)),
+    hero,
+    cards: cards(ports),
   },
-  sequenceS(T.ApplyPar),
-  T.map(renderContent),
-  T.map((content) => ({
+  renderContent,
+  (content) => ({
     title: 'Sciety: the home of public preprint evaluation',
     content,
-  })),
+  }),
+  T.of,
 );
