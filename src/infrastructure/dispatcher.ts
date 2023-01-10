@@ -1,4 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { readmodel as addArticleToElifeSubjectAreaList } from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import { readmodel as groups } from '../shared-read-models/groups';
@@ -18,6 +20,18 @@ type Dispatcher = {
 };
 
 export const dispatcher = (): Dispatcher => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const all = pipe(
+    {
+      addArticleToElifeSubjectAreaList,
+      groups,
+      idsOfEvaluatedArticlesLists,
+      lists,
+      users,
+    },
+    R.map((r) => ({ ...r, state: r.initialState() })),
+  );
+
   const readModels = {
     addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
     listsReadModel: lists.initialState(),
