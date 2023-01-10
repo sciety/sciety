@@ -8,7 +8,6 @@ import { groupJoined, userFollowedEditorialCommunity } from '../../src/domain-ev
 import { ListOwnerId } from '../../src/types/list-owner-id';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
-import { UserDetails } from '../../src/types/user-details';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
 import { Ports, userPage } from '../../src/user-page/user-page';
 import {
@@ -18,6 +17,7 @@ import {
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { arbitraryUserDetails } from '../types/user-details.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -27,13 +27,6 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
     (p) => p.content,
   ),
 );
-
-const arbitraryUserDetails = (): UserDetails => ({
-  id: arbitraryUserId(),
-  avatarUrl: arbitraryUri(),
-  displayName: arbitraryString(),
-  handle: arbitraryWord(),
-});
 
 const listId = arbitraryListId();
 

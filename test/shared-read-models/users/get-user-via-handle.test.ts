@@ -4,19 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { getUserViaHandle } from '../../../src/shared-read-models/users/get-user-via-handle';
-import { UserDetails } from '../../../src/types/user-details';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryUserId } from '../../types/user-id.helper';
-
-const arbitraryUser = (): UserDetails => ({
-  id: arbitraryUserId(),
-  handle: arbitraryWord(),
-  displayName: arbitraryString(),
-  avatarUrl: arbitraryUri(),
-});
+import { arbitraryUserDetails } from '../../types/user-details.helper';
 
 describe('getUserViaHandle', () => {
-  const user = arbitraryUser();
+  const user = arbitraryUserDetails();
 
   describe('when the user exists', () => {
     const readmodel = pipe(
