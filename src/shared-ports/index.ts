@@ -14,6 +14,7 @@ import { GetList } from './get-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { GetUser } from './get-user';
+import { GetUserViaHandle } from './get-user-via-handle';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
@@ -32,6 +33,7 @@ export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
 export { GetList } from './get-list';
 export { GetUser } from './get-user';
+export { GetUserViaHandle } from './get-user-via-handle';
 // ts-unused-exports:disable-next-line
 export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
@@ -58,6 +60,7 @@ export type SharedPorts = {
   getGroupBySlug: GetGroupBySlug,
   getList: GetList,
   getUser: GetUser,
+  getUserViaHandle: GetUserViaHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
