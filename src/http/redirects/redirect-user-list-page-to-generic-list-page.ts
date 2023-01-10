@@ -1,33 +1,28 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { SelectAllListsOwnedBy } from '../../shared-ports';
-import { GetTwitterUserId } from '../../third-parties/twitter';
+import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { toErrorResponse } from '../page-handler';
 
 type Ports = {
-  getUserId: GetTwitterUserId,
+  getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 export const redirectUserListPageToGenericListPage = (adapters: Ports): Middleware => async (context) => {
-  await pipe(
+  pipe(
     context.params.handle as string,
-    adapters.getUserId,
-    TE.map(LOID.fromUserId),
-    TE.map(adapters.selectAllListsOwnedBy),
-    TE.chainEitherK(flow(
-      RA.head,
-      E.fromOption(() => 'User has no list'),
-    )),
-    TE.match(
+    adapters.getUserViaHandle,
+    O.map((user) => user.id),
+    O.map(LOID.fromUserId),
+    O.map(adapters.selectAllListsOwnedBy),
+    O.chain(RA.head),
+    O.match(
       () => {
         const response = toErrorResponse(O.fromNullable(context.state.user))({
           type: DE.notFound,
@@ -43,5 +38,5 @@ export const redirectUserListPageToGenericListPage = (adapters: Ports): Middlewa
         return undefined;
       },
     ),
-  )();
+  );
 };
