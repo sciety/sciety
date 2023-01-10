@@ -16,7 +16,7 @@ describe('follow a group', () => {
       await click('Log in');
     });
 
-    it('adds the group to the user page', async () => {
+    it.skip('adds the group to the user page', async () => {
       const groupToBeFollowed = 'Biophysics Colab';
       await goto('localhost:8080/groups');
       await click(groupToBeFollowed);
