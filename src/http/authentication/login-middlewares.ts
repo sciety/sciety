@@ -10,12 +10,23 @@ const strategyCodec = t.union([
 
 type Strategy = t.TypeOf<typeof strategyCodec>;
 
-const authenticate = (strategy: Strategy): Middleware => koaPassport.authenticate(
-  strategy,
-  {
-    failureRedirect: '/',
-  },
-);
+const authenticate = (strategy: Strategy): Middleware => {
+  if (strategy === 'auth0') {
+    return koaPassport.authenticate(
+      strategy,
+      {
+        failureRedirect: '/',
+        scope: 'openid email profile',
+      },
+    );
+  }
+  return koaPassport.authenticate(
+    strategy,
+    {
+      failureRedirect: '/',
+    },
+  );
+};
 
 export const logIn = (strategy: Strategy): Middleware => {
   switch (strategy) {

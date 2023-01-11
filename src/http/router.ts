@@ -555,6 +555,17 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     redirectAfterAuthenticating(),
   );
 
+  router.get(
+    '/auth0/callback',
+    catchErrors(
+      adapters.logger,
+      'Detected Auth0 callback error',
+      'Something went wrong, please try again.',
+    ),
+    onlyIfNotAuthenticated(logInCallback('auth0')),
+    redirectAfterAuthenticating(),
+  );
+
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
     const response = await docmapIndex(adapters)(context.query)();

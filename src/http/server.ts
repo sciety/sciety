@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either';
 import Koa, { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
+import { setupAuth0Strategy } from './authentication/setup-auth0-strategy';
 import { setupLocalStrategy } from './authentication/setup-local-strategy';
 import { setupTwitterStrategy } from './authentication/setup-twitter-strategy';
 import { routeNotFound } from './route-not-found';
@@ -82,6 +83,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     koaPassport.use(setupLocalStrategy(ports));
   } else {
     koaPassport.use(setupTwitterStrategy(ports));
+    koaPassport.use(setupAuth0Strategy(ports));
   }
 
   app.use(koaPassport.initialize());
