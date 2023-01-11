@@ -5,6 +5,7 @@ import koaPassport from 'koa-passport';
 const strategyCodec = t.union([
   t.literal('twitter'),
   t.literal('local'),
+  t.literal('auth0'),
 ]);
 
 type Strategy = t.TypeOf<typeof strategyCodec>;
@@ -28,6 +29,10 @@ export const logIn = (strategy: Strategy): Middleware => {
       return async (context, next) => {
         await authenticate('twitter')(context, next);
       };
+    case 'auth0':
+      return async (context, next) => {
+        await authenticate('auth0')(context, next);
+      };
   }
 };
 
@@ -41,5 +46,5 @@ export const logInAsSpecificUser: Middleware = async (context, next) => {
 };
 
 export const signUpAuth0: Middleware = async (context, next) => {
-  await authenticate('twitter')(context, next);
+  await authenticate('auth0')(context, next);
 };
