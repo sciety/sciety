@@ -61,7 +61,6 @@ Members of the Biophysics Colab community include:
 - Baron Chanda
 - Alexander T Chesler
 - Lucie Delemotte
-- José Faraldo-Gómez
 - Rachelle Gaudet
 - Marcel P Goldschen-Ohm
 - Sharona E Gordon
