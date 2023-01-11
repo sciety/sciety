@@ -99,6 +99,10 @@ jobs:
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
+            --set auth0ClientId=${AUTH0_CLIENT_ID} \
+            --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
+            --set auth0Domain='dev-sqa2k3wwnhpxk36d.eu.auth0.com' \
+            --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
             --set postgresqlSecretName=hive-staging-rds-postgres \
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
@@ -116,6 +120,8 @@ jobs:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
 
       - name: Deploy to prod
@@ -135,6 +141,10 @@ jobs:
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
+            --set auth0ClientId=${AUTH0_CLIENT_ID} \
+            --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
+            --set auth0Domain='dev-sqa2k3wwnhpxk36d.eu.auth0.com' \
+            --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
             --set postgresqlSecretName=hive-prod-rds-postgres \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
@@ -151,6 +161,8 @@ jobs:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
 
       - name: Notify Slack

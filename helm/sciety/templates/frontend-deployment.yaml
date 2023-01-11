@@ -72,6 +72,14 @@ spec:
               value: {{ .Values.twitterApiSecretKey }}
             - name: TWITTER_API_BEARER_TOKEN
               value: {{ .Values.twitterApiBearerToken }}
+            - name: AUTH0_CLIENT_ID
+              value: {{ .Values.auth0ClientId }}
+            - name: AUTH0_CLIENT_SECRET
+              value: {{ .Values.auth0ClientSecret }}
+            - name: AUTH0_DOMAIN
+              value: {{ .Values.auth0Domain }}
+            - name: AUTH0_CALLBACK_URL
+              value: {{ .Values.auth0CallbackUrl }}
           volumeMounts:
             - name: gcp-ncrc-key
               mountPath: "/var/run/secrets/app"
