@@ -31,7 +31,7 @@ const profileCodec = t.type({
 type Profile = t.TypeOf<typeof profileCodec>;
 
 const toUserAccount = (profile: Profile) => ({
-  id: toUserId(profile.id.substring(profile.id.indexOf('|') + 1)),
+  id: toUserId(profile.id),
   handle: profile.nickname,
   avatarUrl: profile.picture,
   displayName: profile.displayName,
