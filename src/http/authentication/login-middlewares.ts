@@ -39,3 +39,7 @@ export const logInAsSpecificUser: Middleware = async (context, next) => {
   context.redirect(`/twitter/callback?username=${userId}&password=anypassword`);
   await next();
 };
+
+export const signUpAuth0: Middleware = async (context, next) => {
+  await authenticate('twitter')(context, next);
+};
