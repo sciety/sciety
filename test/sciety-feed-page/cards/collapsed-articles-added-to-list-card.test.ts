@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { collapsedArticlesAddedToListCard, Ports } from '../../../src/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
@@ -50,15 +49,11 @@ describe('collapsed-articles-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      let viewModel: ScietyFeedCard;
-
-      beforeEach(async () => {
-        viewModel = await pipe(
-          event,
-          collapsedArticlesAddedToListCard(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
+      const viewModel: ScietyFeedCard = pipe(
+        event,
+        collapsedArticlesAddedToListCard(ports),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('includes the user\'s handle in the title text', async () => {
         expect(viewModel.titleText).toContain(handle);
@@ -90,15 +85,11 @@ describe('collapsed-articles-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      let viewModel: ScietyFeedCard;
-
-      beforeEach(async () => {
-        viewModel = await pipe(
-          event,
-          collapsedArticlesAddedToListCard(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
+      const viewModel: ScietyFeedCard = pipe(
+        event,
+        collapsedArticlesAddedToListCard(ports),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('replaces handle with "a user"', async () => {
         expect(viewModel.titleText).toMatch(/^A user/);

@@ -1,9 +1,8 @@
-import * as TE from 'fp-ts/TaskEither';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { GetList } from '../../shared-ports';
-import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from '../feed-item';
 
@@ -13,21 +12,20 @@ export type Ports = {
 
 type CollapsedArticlesAddedToListCard = (
   ports: Ports,
-) => (event: CollapsedArticlesAddedToList) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
+) => (event: CollapsedArticlesAddedToList) => O.Option<ScietyFeedCard>;
 
 export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (collapsedEvents) => pipe(
   collapsedEvents.listId,
   ports.getList,
-  TE.fromOption(() => DE.notFound),
-  TE.map(addListOwnershipInformation(ports)),
-  TE.map((extendedListMetadata) => ({
+  O.map(addListOwnershipInformation(ports)),
+  O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
     listName: extendedListMetadata.name,
     listDescription: extendedListMetadata.description,
     linkUrl: extendedListMetadata.linkUrl,
   })),
-  TE.map(
+  O.map(
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added ${collapsedEvents.articleCount} articles to a list`,
       linkUrl: viewModel.linkUrl,
