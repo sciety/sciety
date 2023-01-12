@@ -32,6 +32,7 @@ export const eventCard = (
     return pipe(
       event,
       userFollowedAGroupCard(ports),
+      TE.fromOption(() => DE.notFound),
       TE.map(scietyFeedCard),
     );
   }

@@ -1,12 +1,8 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
-import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
-import * as DE from '../../../src/types/data-error';
 import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../../helpers';
@@ -34,15 +30,11 @@ describe('user-followed-a-group-card', () => {
       }),
     };
 
-    let viewModel: ScietyFeedCard;
-
-    beforeEach(async () => {
-      viewModel = await pipe(
-        event,
-        userFollowedAGroupCard(ports),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
+    const viewModel = pipe(
+      event,
+      userFollowedAGroupCard(ports),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
     it('displays the user\'s avatar', async () => {
       expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
@@ -76,15 +68,11 @@ describe('user-followed-a-group-card', () => {
       getUser: () => O.none,
     };
 
-    let viewModel: ScietyFeedCard;
-
-    beforeEach(async () => {
-      viewModel = await pipe(
-        event,
-        userFollowedAGroupCard(ports),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
+    const viewModel = pipe(
+      event,
+      userFollowedAGroupCard(ports),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
     it('replaces handle with "a user"', async () => {
       expect(viewModel.titleText).toMatch(/^A user/);
@@ -119,17 +107,13 @@ describe('user-followed-a-group-card', () => {
       }),
     };
 
-    let viewModel: E.Either<DE.DataError, ScietyFeedCard>;
-
-    beforeEach(async () => {
-      viewModel = await pipe(
-        event,
-        userFollowedAGroupCard(ports),
-      )();
-    });
+    const viewModel = pipe(
+      event,
+      userFollowedAGroupCard(ports),
+    );
 
     it('fails the card', async () => {
-      expect(E.isLeft(viewModel)).toBe(true);
+      expect(viewModel).toStrictEqual(O.none);
     });
   });
 });

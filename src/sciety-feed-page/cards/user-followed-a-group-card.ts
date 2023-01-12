@@ -1,12 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
 import { GetGroup, GetUser } from '../../shared-ports';
-import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 export type Ports = {
@@ -17,28 +15,27 @@ export type Ports = {
 
 type UserFollowedAGroupCard = (
   ports: Ports
-) => (event: UserFollowedEditorialCommunityEvent) => TE.TaskEither<DE.DataError, ScietyFeedCard>;
+) => (event: UserFollowedEditorialCommunityEvent) => O.Option<ScietyFeedCard>;
 
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {
     group: pipe(
       ports.getGroup(event.editorialCommunityId),
-      TE.fromOption(() => DE.notFound),
     ),
     userDetails: pipe(
       event.userId,
       ports.getUser,
-      O.fold(
-        () => TE.right({
+      O.getOrElseW(
+        () => ({
           handle: 'A user',
           avatarUrl: '/static/images/sciety-logo.jpg',
         }),
-        TE.right,
       ),
+      O.some,
     ),
   },
-  sequenceS(TE.ApplyPar),
-  TE.map(({ group, userDetails }) => ({
+  sequenceS(O.Apply),
+  O.map(({ group, userDetails }) => ({
     linkUrl: `/groups/${group.slug}/about`,
     avatarUrl: userDetails.avatarUrl,
     titleText: `${userDetails.handle} followed a group`,
