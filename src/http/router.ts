@@ -18,6 +18,7 @@ import {
 } from './authentication/login-middlewares';
 import { catchErrors } from './catch-errors';
 import { finishCommand } from './finish-command';
+import { createUserAccount } from './forms/create-user-account';
 import { editListDetails } from './forms/edit-list-details';
 import { removeArticleFromList } from './forms/remove-article-from-list';
 import { loadStaticFile } from './load-static-file';
@@ -487,6 +488,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/forms/edit-list-details',
     bodyParser({ enableTypes: ['form'] }),
     editListDetails(adapters),
+  );
+
+  router.post(
+    '/forms/create-user-account',
+    bodyParser({ enableTypes: ['form'] }),
+    createUserAccount(adapters),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
