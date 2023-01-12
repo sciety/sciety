@@ -100,8 +100,10 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   const checkUserDetails: Middleware = async (context, next) => {
     if (context.state.user) {
       if (!context.state.user.handle || !context.state.user.avatarUrl) {
-        logger('info', 'Logging out user', { user: context.state.user });
-        context.logout();
+        if (!context.state.user.signUpAttempt) {
+          logger('info', 'Logging out user', { user: context.state.user });
+          context.logout();
+        }
       }
     }
 
