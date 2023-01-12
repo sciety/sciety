@@ -4,8 +4,7 @@ import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
-import { Logger } from '../../infrastructure';
-import { FetchArticle } from '../../shared-ports';
+import { FetchArticle, Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';

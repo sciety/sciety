@@ -7,6 +7,7 @@ module.exports = {
     'airbnb-base',
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:fp-ts/all',
   ],
@@ -53,22 +54,6 @@ module.exports = {
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
     'function-paren-newline': ['error', 'consistent'],
-    'import/no-useless-path-segments': ['error', {
-      noUselessIndex: true,
-    }],
-    'import/order': ['error', {
-      alphabetize: {
-        order: 'asc',
-      },
-      groups: [
-        'builtin',
-        'external',
-        'internal',
-        'index',
-        'sibling',
-        'parent',
-      ],
-    }],
     'import/prefer-default-export': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
@@ -94,10 +79,6 @@ module.exports = {
     'node/prefer-global/text-encoder': ['error', 'never'],
     'node/prefer-global/url': ['error', 'never'],
     'node/prefer-global/url-search-params': ['error', 'never'],
-    'sort-imports': ['error', {
-      ignoreCase: true,
-      ignoreDeclarationSort: true,
-    }],
     'unused-imports/no-unused-imports-ts': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['feature-test/**/*.ts', 'test/**/*.ts'] }],
   },
