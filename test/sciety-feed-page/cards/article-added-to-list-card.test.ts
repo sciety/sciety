@@ -3,8 +3,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../../src/domain-events';
-import { articleAddedToListCard } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
+import { articleAddedToListCard, Ports } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
+import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -31,7 +32,7 @@ describe('article-added-to-list-card', () => {
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();
       const handle = 'handle';
-      const ports = {
+      const ports: Ports = {
         getAllEvents,
         getList,
         getUser: () => O.some({
@@ -41,6 +42,7 @@ describe('article-added-to-list-card', () => {
           displayName: arbitraryString(),
         }),
         getGroup: () => O.some(arbitraryGroup()),
+        logger: dummyLogger,
       };
 
       let viewModel: ScietyFeedCard;
@@ -71,11 +73,12 @@ describe('article-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
-      const ports = {
+      const ports: Ports = {
         getAllEvents,
         getList,
         getUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),
+        logger: dummyLogger,
       };
 
       let viewModel: ScietyFeedCard;

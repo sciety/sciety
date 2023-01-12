@@ -2,8 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { collapsedArticlesAddedToListCard } from '../../../src/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
+import { collapsedArticlesAddedToListCard, Ports } from '../../../src/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
 import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
+import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -36,7 +37,7 @@ describe('collapsed-articles-added-to-list-card', () => {
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();
       const handle = 'handle';
-      const ports = {
+      const ports: Ports = {
         getAllEvents,
         getList,
         getUser: () => O.some({
@@ -46,6 +47,7 @@ describe('collapsed-articles-added-to-list-card', () => {
           displayName: arbitraryString(),
         }),
         getGroup: () => O.some(arbitraryGroup()),
+        logger: dummyLogger,
       };
 
       let viewModel: ScietyFeedCard;
@@ -80,11 +82,12 @@ describe('collapsed-articles-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
-      const ports = {
+      const ports: Ports = {
         getAllEvents,
         getList,
         getUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),
+        logger: dummyLogger,
       };
 
       let viewModel: ScietyFeedCard;

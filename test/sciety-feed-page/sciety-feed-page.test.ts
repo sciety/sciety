@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
@@ -15,14 +14,12 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../src/domain-events';
-import { scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
+import { Ports, scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
 import * as LOID from '../../src/types/list-owner-id';
-import {
-  arbitraryHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
-} from '../helpers';
+import { dummyLogger } from '../dummy-logger';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryList } from '../types/list-helper';
@@ -32,13 +29,6 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('sciety-feed-page', () => {
-  const getUserDetails = () => TE.right({
-    handle: arbitraryWord(),
-    avatarUrl: arbitraryUri(),
-    userId: arbitraryUserId(),
-    displayName: arbitraryString(),
-  });
-
   const getUser = () => O.some({
     handle: arbitraryWord(),
     avatarUrl: arbitraryUri(),
@@ -48,16 +38,12 @@ describe('sciety-feed-page', () => {
 
   const group = arbitraryGroup();
 
-  const defaultPorts = {
-    getUserDetails,
+  const defaultPorts: Ports = {
     getUser,
-    fetchArticle: () => TE.right({
-      doi: arbitraryDoi(),
-      title: arbitraryHtmlFragment(),
-      authors: O.none,
-    }),
     getGroup: () => O.some(arbitraryGroup()),
     getList: () => O.some(arbitraryList()),
+    logger: dummyLogger,
+    getAllEvents: T.of([]),
   };
 
   it('renders a single article added to a list as a card', async () => {

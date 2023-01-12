@@ -2,7 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
-import { GetAllEvents, GetGroup, GetUser } from '../../shared-ports';
+import {
+  GetAllEvents, GetGroup, GetUser, Logger,
+} from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { List } from '../../types/list';
 
@@ -10,6 +12,7 @@ export type Ports = {
   getAllEvents: GetAllEvents,
   getUser: GetUser,
   getGroup: GetGroup,
+  logger: Logger,
 };
 
 type ListWithAddedOwnershipInformation = {
@@ -30,12 +33,21 @@ export const addListOwnershipInformation = (
       return pipe(
         ports.getGroup(list.ownerId.value),
         TE.fromOption(() => DE.notFound),
-        TE.map((group) => ({
-          ...list,
-          ownerName: group.name,
-          ownerAvatarUrl: group.avatarPath,
-          linkUrl: `/lists/${list.listId}`,
-        })),
+        TE.bimap(
+          (left) => {
+            ports.logger('error', 'Could not find list owning group', {
+              listId: list.listId,
+              ownerId: list.ownerId,
+            });
+            return left;
+          },
+          (group) => ({
+            ...list,
+            ownerName: group.name,
+            ownerAvatarUrl: group.avatarPath,
+            linkUrl: `/lists/${list.listId}`,
+          }),
+        ),
       );
     case 'user-id':
       return pipe(
