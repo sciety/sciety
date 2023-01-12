@@ -35,7 +35,7 @@ export const addListOwnershipInformation = (
         TE.fromOption(() => DE.notFound),
         TE.bimap(
           (left) => {
-            ports.logger('error', 'Could not find list owning group', {
+            ports.logger('error', 'Could not find group that owns list', {
               listId: list.listId,
               ownerId: list.ownerId,
             });
@@ -54,14 +54,18 @@ export const addListOwnershipInformation = (
         list.ownerId.value,
         ports.getUser,
         O.match(
-          () => (
-            {
+          () => {
+            ports.logger('error', 'Could not find user who owns list', {
+              listId: list.listId,
+              ownerId: list.ownerId,
+            });
+            return {
               ...list,
               ownerName: 'A user',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
               linkUrl: renderListPageLinkHref(list.listId),
-            }
-          ),
+            };
+          },
           (userDetails) => (
             {
               ...list,
