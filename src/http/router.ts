@@ -41,6 +41,7 @@ import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../commands';
 import { validateInputShape } from '../commands/validate-input-shape';
+import { createUserAccountFormPage } from '../create-user-account-form-page/create-user-account-form-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
@@ -403,6 +404,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       editListDetailsFormPageParamsCodec,
       editListDetailsFormPage(adapters),
     )),
+  );
+
+  router.get(
+    '/create-account-form',
+    pageHandler(() => pipe(createUserAccountFormPage, TE.right)),
   );
 
   router.get(
