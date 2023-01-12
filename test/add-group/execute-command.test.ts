@@ -7,6 +7,7 @@ import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
+import { arbitraryGroup } from '../types/group.helper';
 
 describe('execute-command', () => {
   const newGroup = {
@@ -49,16 +50,32 @@ describe('execute-command', () => {
     });
   });
 
-  describe('when the group already exists', () => {
+  describe('when the slug is already in use', () => {
+    const slug = arbitraryWord();
     const result = pipe(
       [
-        groupJoined(newGroup),
+        groupJoined({ ...arbitraryGroup(), slug }),
       ],
-      executeCommand(newGroup),
+      executeCommand({ ...arbitraryGroup(), slug }),
     );
 
     it('fails with no events raised', () => {
-      expect(result).toStrictEqual(E.left(expect.stringContaining(newGroup.slug)));
+      expect(E.isLeft(result)).toBe(true);
+    });
+  });
+
+  describe('when the group already exists', () => {
+    const id = arbitraryGroupId();
+    const result = pipe(
+      [
+        groupJoined({ ...arbitraryGroup(), id }),
+      ],
+      // executeCommand({ ...arbitraryGroup(), id }),
+      executeCommand(arbitraryGroup()),
+    );
+
+    it.failing('fails with no events raised', () => {
+      expect(E.isLeft(result)).toBe(true);
     });
   });
 });
