@@ -3,14 +3,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import Auth0Strategy from 'passport-auth0';
-import { CommitEvents, GetAllEvents, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { toUserId } from '../../types/user-id';
-import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
 import { UserAccount } from '../../user-account/set-up-user-if-necessary';
 
 type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
   logger: Logger,
 };
 
@@ -38,16 +35,21 @@ const toUserAccount = (profile: Profile) => ({
 });
 
 const writeUserToState = (
+  logger: Logger,
   done: (error: unknown, user?: unknown, info?: unknown) => void,
-) => (userAccount: UserAccount) => done(
-  undefined,
-  {
+) => (userAccount: UserAccount) => {
+  const passportUserState = {
     signUpAttempt: {
       id: userAccount.id,
       avatarUrl: userAccount.avatarUrl,
     },
-  },
-);
+  };
+  logger('debug', 'User details added to the Passport user state', passportUserState);
+  done(
+    undefined,
+    passportUserState,
+  );
+};
 
 export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
   auth0Config,
@@ -56,10 +58,9 @@ export const setupAuth0Strategy = (ports: Ports) => new Auth0Strategy(
     profileCodec.decode,
     E.map(toUserAccount),
     TE.fromEither,
-    TE.chainFirstTaskK(createAccountIfNecessary(ports)),
     TE.match(
       () => done('could-not-derive-user-account-from-profile'),
-      writeUserToState(done),
+      writeUserToState(ports.logger, done),
     ),
   )()
   ),

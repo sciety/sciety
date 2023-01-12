@@ -14,5 +14,6 @@ const createUserAccountFormCodec = t.type({
 export const createUserAccount = (adapters: Ports): Middleware => async (context) => pipe(
   context.request.body,
   createUserAccountFormCodec.decode,
+  (foo) => foo,
 
 );
