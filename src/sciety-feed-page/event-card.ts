@@ -40,6 +40,7 @@ export const eventCard = (
     return pipe(
       event,
       articleAddedToListCard(ports),
+      TE.fromOption(() => DE.notFound),
       TE.map(scietyFeedCard),
     );
   }

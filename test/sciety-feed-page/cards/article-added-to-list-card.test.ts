@@ -1,10 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../../src/domain-events';
 import { articleAddedToListCard, Ports } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
-import { ScietyFeedCard } from '../../../src/sciety-feed-page/cards/sciety-feed-card';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -45,15 +43,11 @@ describe('article-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      let viewModel: ScietyFeedCard;
-
-      beforeEach(async () => {
-        viewModel = await pipe(
-          event,
-          articleAddedToListCard(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
+      const viewModel = pipe(
+        event,
+        articleAddedToListCard(ports),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('includes the user\'s handle in the title text', async () => {
         expect(viewModel.titleText).toContain(handle);
@@ -81,15 +75,11 @@ describe('article-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      let viewModel: ScietyFeedCard;
-
-      beforeEach(async () => {
-        viewModel = await pipe(
-          event,
-          articleAddedToListCard(ports),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
+      const viewModel = pipe(
+        event,
+        articleAddedToListCard(ports),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('replaces handle with "a user"', async () => {
         expect(viewModel.titleText).toMatch(/^A user/);
