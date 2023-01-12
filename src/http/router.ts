@@ -563,7 +563,9 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Something went wrong, please try again.',
     ),
     onlyIfNotAuthenticated(logInCallback('auth0')),
-    redirectAfterAuthenticating(),
+    async (context) => {
+      context.redirect('/create-account-form');
+    },
   );
 
   // DOCMAPS
