@@ -6,7 +6,6 @@ import { AddGroupCommand } from '../commands';
 import {
   DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent,
 } from '../domain-events';
-import * as GID from '../types/group-id';
 
 const isSlugEqualIn = (
   command: AddGroupCommand,
@@ -24,10 +23,7 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   RA.filter(isSlugEqualIn(command)),
   RA.match(
     () => E.right([
-      groupJoined({
-        id: GID.generate(),
-        ...command,
-      }),
+      groupJoined(command),
     ]),
     () => E.left(`Group with slug ${command.slug} already exists`),
   ),

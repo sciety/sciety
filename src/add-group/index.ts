@@ -7,6 +7,7 @@ import { validateInputShape } from '../commands/validate-input-shape';
 import { DomainEvent } from '../domain-events';
 import { CommitEvents } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
+import * as GID from '../types/group-id';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -24,7 +25,10 @@ export const addGroupCommandHandler: AddGroupCommandHandler = (
 ) => (
   input,
 ) => pipe(
-  input,
+  {
+    ...input as object,
+    id: GID.generate(),
+  },
   validateInputShape(addGroupCommandCodec),
   TE.fromEither,
   TE.chainW((command) => pipe(

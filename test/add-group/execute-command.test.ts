@@ -70,8 +70,7 @@ describe('execute-command', () => {
       [
         groupJoined({ ...arbitraryGroup(), id }),
       ],
-      // executeCommand({ ...arbitraryGroup(), id }),
-      executeCommand(arbitraryGroup()),
+      executeCommand({ ...arbitraryGroup(), id }),
     );
 
     it.failing('fails with no events raised', () => {
