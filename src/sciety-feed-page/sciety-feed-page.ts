@@ -13,6 +13,7 @@ import { templateListItems } from '../shared-components/list-items';
 import { paginationControls } from '../shared-components/pagination-controls';
 import { supplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../shared-components/supplementary-info';
+import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -67,10 +68,11 @@ export const scietyFeedPage = (
 ) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(identifyFeedItems(pageSize, params.page)),
-  TE.chain(({ items, ...rest }) => pipe(
+  TE.chainW(({ items, ...rest }) => pipe(
     items,
-    TE.traverseArray(eventCard(ports)),
-    TE.map((cards) => ({ cards, ...rest })),
+    O.traverseArray(eventCard(ports)),
+    O.map((cards) => ({ cards, ...rest })),
+    TE.fromOption(() => DE.notFound),
   )),
   TE.bimap(
     (e) => ({ type: e, message: toHtmlFragment('We couldn\'t find that information.') }),

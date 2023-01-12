@@ -1,4 +1,4 @@
-import * as TE from 'fp-ts/TaskEither';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
   articleAddedToListCard, ArticleAddedToListCardPorts,
@@ -15,7 +15,6 @@ import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
 } from '../domain-events';
-import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
 
 export type Ports =
@@ -27,13 +26,12 @@ export const eventCard = (
   ports: Ports,
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
-): TE.TaskEither<DE.DataError, HtmlFragment> => {
+): O.Option<HtmlFragment> => {
   if (isUserFollowedEditorialCommunityEvent(event)) {
     return pipe(
       event,
       userFollowedAGroupCard(ports),
-      TE.fromOption(() => DE.notFound),
-      TE.map(scietyFeedCard),
+      O.map(scietyFeedCard),
     );
   }
 
@@ -41,8 +39,7 @@ export const eventCard = (
     return pipe(
       event,
       articleAddedToListCard(ports),
-      TE.fromOption(() => DE.notFound),
-      TE.map(scietyFeedCard),
+      O.map(scietyFeedCard),
     );
   }
 
@@ -50,10 +47,9 @@ export const eventCard = (
     return pipe(
       event,
       collapsedArticlesAddedToListCard(ports),
-      TE.fromOption(() => DE.notFound),
-      TE.map(scietyFeedCard),
+      O.map(scietyFeedCard),
     );
   }
 
-  return TE.left(DE.unavailable);
+  return O.none;
 };
