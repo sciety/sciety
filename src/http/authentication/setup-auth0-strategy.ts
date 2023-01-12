@@ -42,9 +42,10 @@ const writeUserToState = (
 ) => (userAccount: UserAccount) => done(
   undefined,
   {
-    id: userAccount.id,
-    handle: userAccount.handle,
-    avatarUrl: userAccount.avatarUrl,
+    signUpAttempt: {
+      id: userAccount.id,
+      avatarUrl: userAccount.avatarUrl,
+    },
   },
 );
 
