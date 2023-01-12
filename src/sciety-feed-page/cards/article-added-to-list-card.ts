@@ -19,7 +19,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event)
   event.listId,
   ports.getList,
   TE.fromOption(() => DE.notFound),
-  TE.chain(addListOwnershipInformation(ports)),
+  TE.map(addListOwnershipInformation(ports)),
   TE.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,

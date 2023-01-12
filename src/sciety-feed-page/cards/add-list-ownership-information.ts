@@ -1,11 +1,9 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
 import {
   GetAllEvents, GetGroup, GetUser, Logger,
 } from '../../shared-ports';
-import * as DE from '../../types/data-error';
 import { List } from '../../types/list';
 
 export type Ports = {
@@ -27,13 +25,12 @@ export const addListOwnershipInformation = (
   ports: Ports,
 ) => (
   list: List,
-): TE.TaskEither<DE.DataError, ListWithAddedOwnershipInformation> => {
+): ListWithAddedOwnershipInformation => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
         ports.getGroup(list.ownerId.value),
-        TE.fromOption(() => DE.notFound),
-        TE.match(
+        O.match(
           () => {
             ports.logger('error', 'Could not find group that owns list', {
               listId: list.listId,
@@ -53,7 +50,6 @@ export const addListOwnershipInformation = (
             linkUrl: renderListPageLinkHref(list.listId),
           }),
         ),
-        TE.rightTask,
       );
     case 'user-id':
       return pipe(
@@ -82,7 +78,6 @@ export const addListOwnershipInformation = (
             }
           ),
         ),
-        TE.right,
       );
   }
 };
