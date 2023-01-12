@@ -33,21 +33,27 @@ export const addListOwnershipInformation = (
       return pipe(
         ports.getGroup(list.ownerId.value),
         TE.fromOption(() => DE.notFound),
-        TE.bimap(
-          (left) => {
+        TE.match(
+          () => {
             ports.logger('error', 'Could not find group that owns list', {
               listId: list.listId,
               ownerId: list.ownerId,
             });
-            return left;
+            return {
+              ...list,
+              ownerName: 'A group',
+              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+              linkUrl: renderListPageLinkHref(list.listId),
+            };
           },
           (group) => ({
             ...list,
             ownerName: group.name,
             ownerAvatarUrl: group.avatarPath,
-            linkUrl: `/lists/${list.listId}`,
+            linkUrl: renderListPageLinkHref(list.listId),
           }),
         ),
+        TE.rightTask,
       );
     case 'user-id':
       return pipe(
