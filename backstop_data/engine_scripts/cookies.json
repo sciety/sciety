@@ -1,0 +1,20 @@
+[
+    {
+      "name": "koa.sess",
+      "value": "eyJwYXNzcG9ydCI6eyJ1c2VyIjp7ImlkIjoiMTI5NTMwNzEzNjQxNTczNTgwOCIsImhhbmRsZSI6InNjaWV0eUhRIiwiYXZhdGFyVXJsIjoiaHR0cHM6Ly9wYnMudHdpbWcuY29tL3Byb2ZpbGVfaW1hZ2VzLzE1NDQzMjk5MTc2NDI1NTUzOTIvQl9uV0hkTG5fbm9ybWFsLnBuZyJ9fSwiX2V4cGlyZSI6MTcwNDczMDAwMTQxOCwiX21heEFnZSI6MzE1MzYwMDAwMDB9",
+      "domain": "sciety_app",
+      "path": "/",
+      "expires": 1704730001.4203,
+      "httpOnly": true,
+      "secure": false
+    },
+    {
+      "name": "koa.sess.sig",
+      "value": "7KsM_iBJWxD6Gc5JqRYVgdqydzU",
+      "domain": "sciety_app",
+      "path": "/",
+      "expires": 1704730001.420356,
+      "httpOnly": true,
+      "secure": false
+    }
+  ]

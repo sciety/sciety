@@ -18,6 +18,7 @@
     }
   ],
   "misMatchThreshold": 0,
+  "onBeforeScript": "puppet/onBefore.js",
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
@@ -196,6 +197,19 @@
     {
       "label": "Standard page layout, groups page",
       "url": "http://sciety_app/groups"
+    },
+    {
+      "label": "Logged in header",
+      "url": "http://sciety_app/lists/bcff0509-ad66-4868-a512-d762dd28f885/edit-details",
+      "cookiePath": "backstop_data/engine_scripts/cookies.json",
+      "selectors": [
+        ".site-header"
+      ]
+    },
+    {
+      "label": "User page",
+      "url": "http://sciety_app/users/scietyHQ/lists",
+      "cookiePath": "backstop_data/engine_scripts/cookies.json"
     }
   ],
   "paths": {
