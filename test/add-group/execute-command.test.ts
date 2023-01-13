@@ -9,8 +9,16 @@ import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryGroup } from '../types/group.helper';
 
 describe('execute-command', () => {
-  const addGroupCommand = arbitraryGroup();
-  const newGroup = addGroupCommand;
+  const newGroup = arbitraryGroup();
+  const addGroupCommand = {
+    groupId: newGroup.id,
+    name: newGroup.name,
+    shortDescription: newGroup.shortDescription,
+    homepage: newGroup.homepage,
+    avatarPath: newGroup.avatarPath,
+    descriptionPath: newGroup.descriptionPath,
+    slug: newGroup.slug,
+  };
 
   describe('when the group does not exist', () => {
     const result = pipe(
@@ -64,12 +72,12 @@ describe('execute-command', () => {
   });
 
   describe('when the group already exists', () => {
-    const id = arbitraryGroupId();
+    const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        groupJoined({ ...arbitraryGroup(), id }),
+        groupJoined({ ...arbitraryGroup(), id: groupId }),
       ],
-      executeCommand({ ...arbitraryGroup(), id }),
+      executeCommand({ ...arbitraryGroup(), groupId }),
     );
 
     it('fails with no events raised', () => {

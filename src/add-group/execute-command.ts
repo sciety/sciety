@@ -23,8 +23,8 @@ const check = (command: AddGroupCommand) => (resource: AllGroupsResource): E.Eit
     () => `Group with slug ${command.slug} already exists`,
   ),
   E.filterOrElse(
-    RA.every((event) => event.groupId !== command.id),
-    () => `Group with id ${command.id} already exists`,
+    RA.every((event) => event.groupId !== command.groupId),
+    () => `Group with id ${command.groupId} already exists`,
   ),
   E.map(() => undefined),
 );
@@ -38,13 +38,21 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   check(command),
   E.map(LID.generate),
   E.map((listId) => [
-    groupJoined(command),
+    groupJoined({
+      id: command.groupId,
+      name: command.name,
+      avatarPath: command.avatarPath,
+      descriptionPath: command.descriptionPath,
+      shortDescription: command.shortDescription,
+      homepage: command.homepage,
+      slug: command.slug,
+    }),
     listCreated(
       listId,
       'Evaluated articles',
       `Articles that have been evaluated by ${command.name}`,
-      LOID.fromGroupId(command.id),
+      LOID.fromGroupId(command.groupId),
     ),
-    evaluatedArticlesListSpecified(listId, command.id),
+    evaluatedArticlesListSpecified(listId, command.groupId),
   ]),
 );
