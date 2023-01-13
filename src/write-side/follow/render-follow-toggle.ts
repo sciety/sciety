@@ -5,7 +5,7 @@ import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
-  <form method="post" action="/write-side/follow">
+  <form method="post" action="/follow">
     <input type="hidden" name="${groupProperty}" value="${groupId}" />
     <button type="submit" class="follow-button" aria-label="Follow ${groupName}">
       Follow
