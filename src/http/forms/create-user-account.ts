@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -10,7 +11,7 @@ import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import { GetAllEvents } from '../../shared-ports';
 import { UserId } from '../../types/user-id';
-import { DomainEvent } from '../../domain-events';
+import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -34,7 +35,16 @@ type CreateUserAccountCommand = {
 };
 
 // ts-unused-exports:disable-next-line
-export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => E.left('');
+export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter(isUserCreatedAccountEvent),
+  RA.map((event) => event.handle),
+  RA.filter((handle) => handle === command.handle),
+  RA.match(
+    () => E.right(command),
+    () => E.left(''),
+  ),
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context) => {

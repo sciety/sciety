@@ -17,7 +17,7 @@ describe('check-command', () => {
     const events = [] as ReadonlyArray<DomainEvent>;
     const result = checkCommand(command)(events);
 
-    it.failing('returns the command', () => {
+    it('returns the command', () => {
       expect(result).toStrictEqual(E.right(command));
     });
   });
