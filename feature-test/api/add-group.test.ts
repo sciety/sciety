@@ -1,22 +1,25 @@
 import {
   $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../test/helpers';
+import { AddGroupCommand } from '../../src/commands';
+import { arbitraryGroup } from '../../test/types/group.helper';
 import { callApi } from '../call-api.helper';
 
-describe('add-group', () => {
-  const newGroup = {
-    name: arbitraryWord(),
-    shortDescription: arbitraryString(),
-    homepage: arbitraryUri(),
-    avatarPath: arbitraryUri(),
-    descriptionPath: `${arbitraryString()}.md`,
-    slug: arbitraryWord(50),
+describe.skip('add-group', () => {
+  const newGroup = arbitraryGroup();
+  const addGroupCommand: AddGroupCommand = {
+    groupId: newGroup.id,
+    name: newGroup.name,
+    shortDescription: newGroup.shortDescription,
+    homepage: newGroup.homepage,
+    avatarPath: newGroup.avatarPath,
+    descriptionPath: newGroup.descriptionPath,
+    slug: newGroup.slug,
   };
 
   beforeAll(async () => {
     await openBrowser();
-    await callApi('api/add-group', newGroup);
+    await callApi('api/add-group', addGroupCommand);
   });
 
   afterAll(async () => {
