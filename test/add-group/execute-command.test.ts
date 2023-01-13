@@ -31,10 +31,11 @@ describe('execute-command', () => {
       }));
     });
 
-    it.failing('creates a list owned by the group', () => {
+    it('creates a list owned by the group', () => {
       expect(result[1]).toStrictEqual(expect.objectContaining({
         type: 'ListCreated',
         ownerId: LOID.fromGroupId(newGroup.id),
+        description: expect.stringContaining(newGroup.name),
       }));
     });
 
