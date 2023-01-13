@@ -25,7 +25,7 @@ import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { ownedBy } from './owned-by-api';
-import { pageHandler, toErrorResponse } from './page-handler';
+import { getLoggedInScietyUser, pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
@@ -58,7 +58,7 @@ import {
   groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
 } from '../html-pages/group-page/group-page';
 import { groupsPage } from '../html-pages/groups-page';
-import { homePage, homePageLayout, homePageParams } from '../html-pages/home-page';
+import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../learn-about-page';
@@ -136,21 +136,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/',
     async (context, next) => {
       const response = pipe(
-        context.state,
-        homePageParams.decode,
-        E.match(
-          (err) => pipe(
-            err,
-            toNotFound,
-            toErrorResponse(O.fromNullable(context.state.user)),
-          ),
-          (params) => pipe(
-            adapters,
-            homePage,
-            homePageLayout(params.user),
-            toSuccessResponse,
-          ),
-        ),
+        adapters,
+        homePage,
+        homePageLayout(getLoggedInScietyUser(context.state.user)),
+        toSuccessResponse,
       );
 
       context.response.status = response.status;

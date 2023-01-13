@@ -60,7 +60,7 @@ const passportUserCodec = t.type({
   avatarUrl: t.string,
 });
 
-const getLoggedInScietyUser = (input: unknown) => pipe(
+export const getLoggedInScietyUser = (input: unknown) => pipe(
   input,
   passportUserCodec.decode,
   O.fromEither,
