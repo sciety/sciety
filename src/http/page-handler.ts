@@ -56,7 +56,6 @@ const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.
 const passportUserCodec = t.type({
   id: UserIdFromString,
   handle: userHandleCodec,
-  displayName: t.string,
   avatarUrl: t.string,
 });
 
