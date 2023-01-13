@@ -13,4 +13,20 @@ describe('user-handle', () => {
       expect(E.isRight(result)).toBe(true);
     });
   });
+
+  describe.skip('forbidden handles', () => {
+    it.each([
+      [undefined, 'empty value'],
+      ['', 'too short'],
+      ['/', 'illegal character'],
+      ['abc', 'too short'],
+      ['a b c', 'spaces not allowed'],
+      ['abcdeabcdeabcdex', 'too long'],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ])('%s fails [%s]', (input, _) => {
+      const result = userHandleCodec.decode(input);
+
+      expect(E.isLeft(result)).toBe(true);
+    });
+  });
 });
