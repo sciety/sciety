@@ -9,12 +9,13 @@ import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryGroup } from '../types/group.helper';
 
 describe('execute-command', () => {
-  const newGroup = arbitraryGroup();
+  const addGroupCommand = arbitraryGroup();
+  const newGroup = addGroupCommand;
 
   describe('when the group does not exist', () => {
     const result = pipe(
       [],
-      executeCommand(newGroup),
+      executeCommand(addGroupCommand),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -39,7 +40,7 @@ describe('execute-command', () => {
       }));
     });
 
-    it('identifes the list as the target for ingestion', () => {
+    it('identifies the list as the target for ingestion', () => {
       expect(result[2]).toStrictEqual(expect.objectContaining({
         type: 'EvaluatedArticlesListSpecified',
         groupId: newGroup.id,
@@ -54,7 +55,7 @@ describe('execute-command', () => {
       [
         groupJoined({ ...arbitraryGroup(), slug }),
       ],
-      executeCommand({ ...arbitraryGroup(), slug }),
+      executeCommand({ ...addGroupCommand, slug }),
     );
 
     it('fails with no events raised', () => {
