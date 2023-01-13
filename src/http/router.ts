@@ -171,7 +171,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.status = StatusCodes.OK;
       context.response.type = 'html';
       context.response.body = menuPageLayout(
-        O.fromNullable(context.state.user),
+        getLoggedInScietyUser(context.state.user),
         O.fromNullable(context.request.header.referer),
       );
       context.set('Vary', 'Referer');
