@@ -6,15 +6,17 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
+import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
 import { UserHandle, userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
-import { GetAllEvents } from '../../shared-ports';
+import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { UserId } from '../../types/user-id';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 
 type Ports = {
   getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
 };
 
 const createUserAccountFormCodec = t.type({
@@ -61,5 +63,6 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       adapters.getAllEvents,
       T.map(checkCommand(command)),
     )),
+    TE.chainTaskK(createAccountIfNecessary(adapters)),
   )();
 };
