@@ -196,7 +196,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         addArticleToList: collectedAdapters.addArticleToList,
         removeArticleFromList: collectedAdapters.removeArticleFromList,
         createList: collectedAdapters.createList,
-        getEvaluatedArticlesListIdForGroup: collectedAdapters.getEvaluatedArticlesListIdForGroup,
       };
 
       const allAdapters = {
