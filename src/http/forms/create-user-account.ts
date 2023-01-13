@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
@@ -29,8 +30,8 @@ type CreateUserAccountCommand = {
   displayName: string,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkCommand = (adapters: Ports) => (command: CreateUserAccountCommand) => E.left('');
+// ts-unused-exports:disable-next-line
+export const checkCommand = (adapters: Ports) => (command: CreateUserAccountCommand) => E.left('');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context) => pipe(
