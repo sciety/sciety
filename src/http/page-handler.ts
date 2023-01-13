@@ -3,8 +3,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { userHandleCodec } from '../types/user-handle';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
@@ -50,6 +53,19 @@ const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.
   pageToSuccessResponse(user, applyStandardPageLayout),
 );
 
+const passportUserCodec = t.type({
+  id: UserIdFromString,
+  handle: userHandleCodec,
+  displayName: t.string,
+  avatarUrl: t.string,
+});
+
+const getLoggedInScietyUser = (input: unknown) => pipe(
+  input,
+  passportUserCodec.decode,
+  O.fromEither,
+);
+
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
@@ -64,7 +80,7 @@ export const pageHandler = (
         ...context.state,
       },
       handler,
-      T.map(toWebPage(O.fromNullable(context.state.user), applyStandardPageLayout)),
+      T.map(toWebPage(getLoggedInScietyUser(context.state.user), applyStandardPageLayout)),
     )();
 
     context.response.status = response.status;
