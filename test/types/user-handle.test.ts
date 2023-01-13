@@ -1,7 +1,5 @@
 import * as E from 'fp-ts/Either';
-import * as t from 'io-ts';
-
-const userHandleCodec = t.string;
+import { userHandleCodec } from '../../src/types/user-handle';
 
 describe('user-handle', () => {
   describe('permitted handles', () => {
@@ -16,7 +14,7 @@ describe('user-handle', () => {
     });
   });
 
-  describe.skip('forbidden handles', () => {
+  describe('forbidden handles', () => {
     it.each([
       [undefined, 'empty value'],
       ['', 'too short'],
