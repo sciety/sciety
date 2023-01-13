@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
-import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../commands/edit-list-details';
+import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';

@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { CreateListCommand } from '../commands';
+import { CreateListCommand } from '../write-side/commands';
 import { listCreated, ListCreatedEvent } from '../domain-events';
 import * as LID from '../types/list-id';
 

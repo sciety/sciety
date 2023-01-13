@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { CreateListCommand } from '../commands';
+import { CreateListCommand } from '../write-side/commands';
 import {
   DomainEvent,
   isUserCreatedAccountEvent,

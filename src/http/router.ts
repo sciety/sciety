@@ -33,15 +33,15 @@ import { redirectUserListPageToGenericListPage } from './redirects/redirect-user
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
-import { addArticleToListCommandHandler } from '../add-article-to-list';
-import { addGroupCommandHandler } from '../add-group';
+import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
+import { addGroupCommandHandler } from '../write-side/add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
-} from '../commands';
-import { validateInputShape } from '../commands/validate-input-shape';
+} from '../write-side/commands';
+import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { createUserAccountFormPage } from '../create-user-account-form-page/create-user-account-form-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -50,7 +50,7 @@ import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
   executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
-} from '../follow';
+} from '../write-side/follow';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
@@ -65,13 +65,13 @@ import { learnAboutPage } from '../learn-about-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
-import { recordEvaluationCommandHandler } from '../record-evaluation';
-import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
-import { respondHandler } from '../respond';
-import { finishRespondCommand } from '../respond/finish-respond-command';
-import { saveRespondCommand } from '../respond/save-respond-command';
-import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
-import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
+import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
+import { respondHandler } from '../write-side/respond';
+import { finishRespondCommand } from '../write-side/respond/finish-respond-command';
+import { saveRespondCommand } from '../write-side/respond/save-respond-command';
+import { finishSaveArticleCommand } from '../write-side/save-article/finish-save-article-command';
+import { saveSaveArticleCommand } from '../write-side/save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';

@@ -1,7 +1,7 @@
 import {
   $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
-import { AddGroupCommand } from '../../src/commands';
+import { AddGroupCommand } from '../../src/write-side/commands';
 import { arbitraryGroup } from '../../test/types/group.helper';
 import { callApi } from '../call-api.helper';
 

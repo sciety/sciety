@@ -10,7 +10,7 @@ import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './co
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../../domain-events';
-import { renderFollowToggle } from '../../follow/render-follow-toggle';
+import { renderFollowToggle } from '../../write-side/follow/render-follow-toggle';
 import { GetGroupBySlug } from '../../shared-ports';
 import { isFollowing } from '../../shared-read-models/followings';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';

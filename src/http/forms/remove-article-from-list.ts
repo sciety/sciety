@@ -4,8 +4,8 @@ import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList } from './check-user-owns-list';
-import { removeArticleFromListCommandCodec } from '../../commands/remove-article-from-list';
-import { removeArticleFromListCommandHandler } from '../../remove-article-from-list';
+import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
+import { removeArticleFromListCommandHandler } from '../../write-side/remove-article-from-list';
 import {
   CommitEvents, GetAllEvents, GetList, Logger,
 } from '../../shared-ports';

@@ -23,18 +23,18 @@ import {
 } from './logger';
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
-import { addArticleToListCommandHandler } from '../add-article-to-list';
+import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
 import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
   DomainEvent,
   isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
-import { editListDetailsCommandHandler } from '../edit-list-details';
+import { editListDetailsCommandHandler } from '../write-side/edit-list-details';
 import { createListCommandHandler } from '../lists';
 import { executePolicies } from '../policies/execute-policies';
-import { recordSubjectAreaCommandHandler } from '../record-subject-area';
-import { removeArticleFromListCommandHandler } from '../remove-article-from-list';
+import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
+import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';

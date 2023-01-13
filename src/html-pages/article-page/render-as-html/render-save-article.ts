@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderSaveForm } from '../../../save-article/render-save-form';
+import { renderSaveForm } from '../../../write-side/save-article/render-save-form';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
