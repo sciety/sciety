@@ -5,7 +5,7 @@ import * as LID from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 import { AddGroupCommand } from '../commands';
 import {
-  DomainEvent, groupJoined, GroupJoinedEvent, isGroupJoinedEvent, listCreated,
+  DomainEvent, evaluatedArticlesListSpecified, groupJoined, GroupJoinedEvent, isGroupJoinedEvent, listCreated,
 } from '../domain-events';
 
 type AllGroupsResource = ReadonlyArray<GroupJoinedEvent>;
@@ -36,13 +36,15 @@ type ExecuteCommand = (command: AddGroupCommand)
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   replayAllGroupsResource(events),
   check(command),
-  E.map(() => [
+  E.map(LID.generate),
+  E.map((listId) => [
     groupJoined(command),
     listCreated(
-      LID.generate(),
+      listId,
       'Evaluated articles',
       `Articles that have been evaluated by ${command.name}`,
       LOID.fromGroupId(command.id),
     ),
+    evaluatedArticlesListSpecified(listId, command.id),
   ]),
 );

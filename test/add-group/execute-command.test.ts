@@ -39,7 +39,7 @@ describe('execute-command', () => {
       }));
     });
 
-    it.failing('identifes the list as the target for ingestion', () => {
+    it('identifes the list as the target for ingestion', () => {
       expect(result[2]).toStrictEqual(expect.objectContaining({
         type: 'EvaluatedArticlesListSpecified',
         groupId: newGroup.id,
