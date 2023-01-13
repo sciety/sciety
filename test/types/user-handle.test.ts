@@ -7,6 +7,8 @@ describe('user-handle', () => {
   describe('permitted handles', () => {
     it.each([
       ['scietyHQ'],
+      ['12345'],
+      ['sciety_HQ'],
     ])('%s succeeds', (input) => {
       const result = userHandleCodec.decode(input);
 
