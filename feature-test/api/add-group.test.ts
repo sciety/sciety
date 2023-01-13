@@ -5,7 +5,7 @@ import { AddGroupCommand } from '../../src/commands';
 import { arbitraryGroup } from '../../test/types/group.helper';
 import { callApi } from '../call-api.helper';
 
-describe.skip('add-group', () => {
+describe('add-group', () => {
   const newGroup = arbitraryGroup();
   const addGroupCommand: AddGroupCommand = {
     groupId: newGroup.id,
