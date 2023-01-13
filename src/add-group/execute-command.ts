@@ -15,11 +15,16 @@ const replayAllGroupsResource = (events: ReadonlyArray<DomainEvent>): AllGroupsR
 
 const check = (command: AddGroupCommand) => (resource: AllGroupsResource): E.Either<string, unknown> => pipe(
   resource,
-  RA.filter((event) => command.slug === event.slug),
-  RA.match(
-    () => E.right(undefined),
-    () => E.left(`Group with slug ${command.slug} already exists`),
+  E.right,
+  E.filterOrElse(
+    RA.every((event) => event.slug !== command.slug),
+    () => `Group with slug ${command.slug} already exists`,
   ),
+  E.filterOrElse(
+    RA.every((event) => event.groupId !== command.id),
+    () => `Group with id ${command.id} already exists`,
+  ),
+  E.map(() => undefined),
 );
 
 type ExecuteCommand = (command: AddGroupCommand)

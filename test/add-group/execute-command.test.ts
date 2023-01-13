@@ -73,7 +73,7 @@ describe('execute-command', () => {
       executeCommand({ ...arbitraryGroup(), id }),
     );
 
-    it.failing('fails with no events raised', () => {
+    it('fails with no events raised', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
