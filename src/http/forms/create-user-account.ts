@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
+import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 
@@ -10,7 +11,7 @@ type Ports = {};
 
 const createUserAccountFormCodec = t.type({
   displayName: userGeneratedInputCodec(30),
-  handle: userGeneratedInputCodec(30),
+  handle: userHandleCodec,
 });
 
 const signUpAttemptCodec = t.type({
