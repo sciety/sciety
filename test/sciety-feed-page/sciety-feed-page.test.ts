@@ -68,7 +68,15 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupJoined(group),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       ]),
     };
@@ -83,7 +91,15 @@ describe('sciety-feed-page', () => {
 
   it('renders at most a page of cards at a time', async () => {
     const events = [
-      groupJoined(group),
+      groupJoined(
+        group.id,
+        group.name,
+        group.avatarPath,
+        group.descriptionPath,
+        group.shortDescription,
+        group.homepage,
+        group.slug,
+      ),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
       userFollowedEditorialCommunity(arbitraryUserId(), group.id),
@@ -109,7 +125,15 @@ describe('sciety-feed-page', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupJoined(group),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromGroupId(group.id)),
         articleAddedToList(arbitraryArticleId(), listId),
         userUnsavedArticle(arbitraryUserId(), arbitraryArticleId()),

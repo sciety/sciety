@@ -14,13 +14,16 @@ import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
-import { arbitraryDate, arbitraryUri } from '../../helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
+} from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryDescriptionPath } from '../../types/description-path.helper';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -86,8 +89,24 @@ describe('generate-docmaps', () => {
         generateDocmaps({
           ...defaultPorts,
           getAllEvents: T.of([
-            groupJoined(group1),
-            groupJoined(group2),
+            groupJoined(
+              group1.id,
+              group1.name,
+              group1.avatarPath,
+              group1.descriptionPath,
+              group1.shortDescription,
+              group1.homepage,
+              group1.slug,
+            ),
+            groupJoined(
+              group2.id,
+              group2.name,
+              group2.avatarPath,
+              group2.descriptionPath,
+              group2.shortDescription,
+              group2.homepage,
+              group2.slug,
+            ),
             evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
             evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
           ]),
@@ -108,12 +127,18 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
-          groupJoined({
-            ...arbitraryGroup(),
-            id: ncrcGroupId,
-          }),
+          groupJoined(
+            ncrcGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
       });
@@ -128,12 +153,18 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       docmaps = await generateDocmapsTestHelper({
         getAllEvents: T.of([
-          groupJoined({
-            ...arbitraryGroup(),
-            id: ncrcGroupId,
-          }),
+          groupJoined(
+            ncrcGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
         ]),
@@ -155,14 +186,24 @@ describe('generate-docmaps', () => {
           review(rapidReviewsGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
-          groupJoined({
-            ...arbitraryGroup(),
-            id: ncrcGroupId,
-          }),
-          groupJoined({
-            ...arbitraryGroup(),
-            id: rapidReviewsGroupId,
-          }),
+          groupJoined(
+            ncrcGroupId,
+            arbitraryString(),
+            arbitraryWord(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryUri(),
+            arbitraryWord(),
+          ),
+          groupJoined(
+            rapidReviewsGroupId,
+            arbitraryString(),
+            arbitraryWord(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryUri(),
+            arbitraryWord(),
+          ),
           evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(rapidReviewsGroupId, articleId, arbitraryReviewId()),
         ]),
@@ -181,16 +222,22 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       docmaps = await generateDocmapsTestHelper({
         findReviewsForArticleDoi: () => TE.right([
           review(ncrcGroupId, arbitraryDate()),
           review(ncrcGroupId, arbitraryDate()),
         ]),
         getAllEvents: T.of([
-          groupJoined({
-            ...arbitraryGroup(),
-            id: ncrcGroupId,
-          }),
+          groupJoined(
+            ncrcGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
           evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
         ]),
@@ -206,6 +253,7 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       const failingReviewId = arbitraryNcrcId();
       response = await pipe(
         generateDocmaps({
@@ -216,10 +264,15 @@ describe('generate-docmaps', () => {
               : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
           ),
           getAllEvents: T.of([
-            groupJoined({
-              ...arbitraryGroup(),
-              id: ncrcGroupId,
-            }),
+            groupJoined(
+              ncrcGroupId,
+              group.name,
+              group.avatarPath,
+              group.descriptionPath,
+              group.shortDescription,
+              group.homepage,
+              group.slug,
+            ),
             evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
             evaluationRecorded(ncrcGroupId, articleId, failingReviewId),
           ]),

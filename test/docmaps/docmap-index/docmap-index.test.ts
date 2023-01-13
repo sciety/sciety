@@ -9,12 +9,15 @@ import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docma
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
-import { arbitraryDate, arbitraryUri } from '../../helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
+} from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryDescriptionPath } from '../../types/description-path.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -58,10 +61,15 @@ describe('docmap-index', () => {
             id: ncrcGroupId,
           }),
           getAllEvents: T.of([
-            groupJoined({
-              ...arbitraryGroup(),
-              id: ncrcGroupId,
-            }),
+            groupJoined(
+              ncrcGroupId,
+              arbitraryString(),
+              arbitraryWord(),
+              arbitraryDescriptionPath(),
+              arbitraryString(),
+              arbitraryUri(),
+              arbitraryWord(),
+            ),
             evaluationRecorded(ncrcGroupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
           fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),

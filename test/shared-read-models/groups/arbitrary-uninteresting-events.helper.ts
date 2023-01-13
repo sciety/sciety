@@ -10,7 +10,15 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 const group = arbitraryGroup();
 
 export const arbitraryUninterestingEvents = [
-  groupJoined(arbitraryGroup()),
+  groupJoined(
+    group.id,
+    group.name,
+    group.avatarPath,
+    group.descriptionPath,
+    group.shortDescription,
+    group.homepage,
+    group.slug,
+  ),
   userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
   evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
   userSavedArticle(arbitraryUserId(), arbitraryArticleId()),

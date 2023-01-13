@@ -188,8 +188,24 @@ describe('user-page', () => {
         const ports: Ports = {
           ...defaultPorts,
           getAllEvents: T.of([
-            groupJoined(group1),
-            groupJoined(group2),
+            groupJoined(
+              group1.id,
+              group1.name,
+              group1.avatarPath,
+              group1.descriptionPath,
+              group1.shortDescription,
+              group1.homepage,
+              group1.slug,
+            ),
+            groupJoined(
+              group2.id,
+              group2.name,
+              group2.avatarPath,
+              group2.descriptionPath,
+              group2.shortDescription,
+              group2.homepage,
+              group2.slug,
+            ),
             userFollowedEditorialCommunity(user.id, group1.id),
             userFollowedEditorialCommunity(user.id, group2.id),
           ]),

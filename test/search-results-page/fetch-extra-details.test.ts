@@ -25,7 +25,15 @@ describe('fetch-extra-details', () => {
       const laterPublicationDate = new Date('2020');
       const ports = {
         getAllEvents: T.of([
-          groupJoined(group),
+          groupJoined(
+            group.id,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
         ]),
@@ -82,7 +90,15 @@ describe('fetch-extra-details', () => {
         const group = arbitraryGroup();
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
-          getAllEvents: T.of([groupJoined(group)]),
+          getAllEvents: T.of([groupJoined(
+            group.id,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          )]),
           getGroup: () => O.some(group),
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: () => [],

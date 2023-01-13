@@ -61,7 +61,15 @@ describe('execute-command', () => {
     const slug = arbitraryWord();
     const result = pipe(
       [
-        groupJoined({ ...arbitraryGroup(), slug }),
+        groupJoined(
+          newGroup.id,
+          newGroup.name,
+          newGroup.avatarPath,
+          newGroup.descriptionPath,
+          newGroup.shortDescription,
+          newGroup.homepage,
+          slug,
+        ),
       ],
       executeCommand({ ...addGroupCommand, slug }),
     );
@@ -75,7 +83,15 @@ describe('execute-command', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        groupJoined({ ...arbitraryGroup(), id: groupId }),
+        groupJoined(
+          groupId,
+          newGroup.name,
+          newGroup.avatarPath,
+          newGroup.descriptionPath,
+          newGroup.shortDescription,
+          newGroup.homepage,
+          newGroup.slug,
+        ),
       ],
       executeCommand({ ...arbitraryGroup(), groupId }),
     );

@@ -16,9 +16,33 @@ describe('to-list-of-group-card-view-models', () => {
   const leastActiveGroup = arbitraryGroup();
   const inactiveGroup = arbitraryGroup();
   const events = [
-    groupJoined(inactiveGroup),
-    groupJoined(leastActiveGroup),
-    groupJoined(mostActiveGroup),
+    groupJoined(
+      inactiveGroup.id,
+      inactiveGroup.name,
+      inactiveGroup.avatarPath,
+      inactiveGroup.descriptionPath,
+      inactiveGroup.shortDescription,
+      inactiveGroup.homepage,
+      inactiveGroup.slug,
+    ),
+    groupJoined(
+      leastActiveGroup.id,
+      leastActiveGroup.name,
+      leastActiveGroup.avatarPath,
+      leastActiveGroup.descriptionPath,
+      leastActiveGroup.shortDescription,
+      leastActiveGroup.homepage,
+      leastActiveGroup.slug,
+    ),
+    groupJoined(
+      mostActiveGroup.id,
+      mostActiveGroup.name,
+      mostActiveGroup.avatarPath,
+      mostActiveGroup.descriptionPath,
+      mostActiveGroup.shortDescription,
+      mostActiveGroup.homepage,
+      mostActiveGroup.slug,
+    ),
     evaluationRecorded(leastActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2019'), arbitraryDate()),
     evaluationRecorded(mostActiveGroup.id, arbitraryArticleId(), arbitraryReviewId(), [], new Date('2021'), arbitraryDate()),
   ];

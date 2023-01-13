@@ -22,7 +22,15 @@ describe('populate-article-view-model', () => {
     const laterPublicationDate = new Date('2020');
     const ports = {
       getAllEvents: T.of([
-        groupJoined(group),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
         evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
       ]),

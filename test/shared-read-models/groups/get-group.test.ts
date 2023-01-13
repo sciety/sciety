@@ -14,7 +14,15 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         ...arbitraryUninterestingEvents,
-        groupJoined(group),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         ...arbitraryUninterestingEvents,
       ],
       RA.reduce(initialState(), handleEvent),

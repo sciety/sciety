@@ -44,7 +44,15 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupJoined({ ...group }),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
     };
@@ -62,7 +70,15 @@ describe('generate-docmap-view-model', () => {
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupJoined({ ...group }),
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         evaluationRecorded(group.id, articleId, arbitraryReviewId()),
       ]),
       getGroup: () => O.some(group),
@@ -77,6 +93,7 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
+    const group = arbitraryGroup();
     const earlierDate = new Date('1900');
     const earlierReviewId = arbitraryReviewId();
     const laterDate = new Date('2000');
@@ -87,7 +104,15 @@ describe('generate-docmap-view-model', () => {
       const ports = {
         ...defaultPorts,
         getAllEvents: T.of([
-          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined(
+            indexedGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(indexedGroupId, articleId, earlierReviewId, [], new Date(), earlierDate),
           evaluationRecorded(indexedGroupId, articleId, laterReviewId, [], new Date(), laterDate),
         ]),
@@ -121,11 +146,20 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       const ports = {
         ...defaultPorts,
         fetchReview: shouldNotBeCalled,
         getAllEvents: T.of([
-          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined(
+            indexedGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(indexedGroupId, articleId, reviewIdWithInferrableSourceUrl),
         ]),
       };
@@ -150,11 +184,20 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
+      const group = arbitraryGroup();
       const ports = {
         ...defaultPorts,
         fetchReview: () => TE.right({ url: sourceUrl }),
         getAllEvents: T.of([
-          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined(
+            indexedGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(indexedGroupId, articleId, reviewIdWithUninferrableSourceUrl),
         ]),
       };
@@ -187,11 +230,20 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are evaluations by other groups', () => {
     it('only uses the evaluation by the selected group', async () => {
+      const group = arbitraryGroup();
       const idOfEvaluationByThisGroup = arbitraryReviewId();
       const ports = {
         ...defaultPorts,
         getAllEvents: T.of([
-          groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
+          groupJoined(
+            indexedGroupId,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
           evaluationRecorded(indexedGroupId, articleId, idOfEvaluationByThisGroup),
         ]),
@@ -212,10 +264,19 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there is a single evaluation by the selected group', () => {
     let result: DocmapModel;
+    const group = arbitraryGroup();
     const ports = {
       ...defaultPorts,
       getAllEvents: T.of([
-        groupJoined({ ...arbitraryGroup(), id: indexedGroupId }),
+        groupJoined(
+          indexedGroupId,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
         evaluationRecorded(indexedGroupId, articleId, arbitraryReviewId()),
       ]),
     };

@@ -17,15 +17,15 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   AG.check(command),
   E.map(LID.generate),
   E.map((listId) => [
-    groupJoined({
-      id: command.groupId,
-      name: command.name,
-      avatarPath: command.avatarPath,
-      descriptionPath: command.descriptionPath,
-      shortDescription: command.shortDescription,
-      homepage: command.homepage,
-      slug: command.slug,
-    }),
+    groupJoined(
+      command.groupId,
+      command.name,
+      command.avatarPath,
+      command.descriptionPath,
+      command.shortDescription,
+      command.homepage,
+      command.slug,
+    ),
     listCreated(
       listId,
       'Evaluated articles',

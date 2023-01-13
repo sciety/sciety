@@ -8,14 +8,38 @@ describe('get-all-groups', () => {
   const group2 = arbitraryGroup();
   const group3 = arbitraryGroup();
   const events = [
-    groupJoined(group2),
-    groupJoined(group3),
+    groupJoined(
+      group2.id,
+      group2.name,
+      group2.avatarPath,
+      group2.descriptionPath,
+      group2.shortDescription,
+      group2.homepage,
+      group2.slug,
+    ),
+    groupJoined(
+      group3.id,
+      group3.name,
+      group3.avatarPath,
+      group3.descriptionPath,
+      group3.shortDescription,
+      group3.homepage,
+      group3.slug,
+    ),
   ];
 
   it('returns all groups in arbitrary order', () => {
     let groupsReadModelInstance = RA.reduce(initialState(), handleEvent)(events);
     const query = getAllGroups(groupsReadModelInstance);
-    groupsReadModelInstance = RA.reduce(groupsReadModelInstance, handleEvent)([groupJoined(group1)]);
+    groupsReadModelInstance = RA.reduce(groupsReadModelInstance, handleEvent)([groupJoined(
+      group1.id,
+      group1.name,
+      group1.avatarPath,
+      group1.descriptionPath,
+      group1.shortDescription,
+      group1.homepage,
+      group1.slug,
+    )]);
 
     const allGroups = query();
 
