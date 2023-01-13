@@ -2,12 +2,15 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import { userHandleCodec } from '../../types/user-handle';
+import { UserHandle, userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
+import { GetAllEvents } from '../../shared-ports';
+import { UserId } from '../../types/user-id';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Ports = {};
+type Ports = {
+  getAllEvents: GetAllEvents,
+};
 
 const createUserAccountFormCodec = t.type({
   displayName: userGeneratedInputCodec(30),
@@ -19,6 +22,16 @@ const signUpAttemptCodec = t.type({
   avatarUrl: t.string,
 });
 
+type CreateUserAccountCommand = {
+  id: UserId,
+  handle: UserHandle,
+  avatarUrl: string,
+  displayName: string,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const checkCommand = (adapters: Ports) => (command: CreateUserAccountCommand) => E.left('');
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context) => pipe(
   context.request.body,
@@ -28,4 +41,5 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     signUpAttemptCodec.decode,
     E.map((signUpAttempt) => ({ ...formUserDetails, ...signUpAttempt })),
   )),
+  E.chainW(checkCommand(adapters)),
 );
