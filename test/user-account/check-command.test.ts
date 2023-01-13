@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
+import { DomainEvent } from '../../src/domain-events/domain-event';
 import { userCreatedAccount } from '../../src/domain-events/user-created-account-event';
 import { checkCommand } from '../../src/http/forms/create-user-account';
 import { UserHandle } from '../../src/types/user-handle';
@@ -14,10 +14,8 @@ describe('check-command', () => {
       displayName: arbitraryString(),
       avatarUrl: arbitraryUri(),
     };
-    const adapters = {
-      getAllEvents: T.of([]),
-    };
-    const result = checkCommand(adapters)(command);
+    const events = [] as ReadonlyArray<DomainEvent>;
+    const result = checkCommand(command)(events);
 
     it.failing('returns the command', () => {
       expect(result).toStrictEqual(E.right(command));
@@ -32,12 +30,10 @@ describe('check-command', () => {
       displayName: arbitraryString(),
       avatarUrl: arbitraryUri(),
     };
-    const adapters = {
-      getAllEvents: T.of([
-        userCreatedAccount(arbitraryUserId(), userHandle, arbitraryUri(), arbitraryString()),
-      ]),
-    };
-    const result = checkCommand(adapters)(command);
+    const events = [
+      userCreatedAccount(arbitraryUserId(), userHandle, arbitraryUri(), arbitraryString()),
+    ];
+    const result = checkCommand(command)(events);
 
     it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
