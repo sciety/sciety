@@ -2,23 +2,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from '../../src/add-group/execute-command';
 import { groupJoined, ListCreatedEvent } from '../../src/domain-events';
-import { DescriptionPath } from '../../src/types/description-path';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
+import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryGroup } from '../types/group.helper';
 
 describe('execute-command', () => {
-  const newGroup = {
-    id: arbitraryGroupId(),
-    name: arbitraryWord(),
-    shortDescription: arbitraryString(),
-    homepage: arbitraryUri(),
-    avatarPath: arbitraryUri(),
-    descriptionPath: arbitraryString() as DescriptionPath,
-    slug: arbitraryWord(),
-  };
+  const newGroup = arbitraryGroup();
 
   describe('when the group does not exist', () => {
     const result = pipe(
@@ -27,10 +18,16 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('creates the group', () => {
+    it('creates the group', () => {
       expect(result[0]).toStrictEqual(expect.objectContaining({
         type: 'GroupJoined',
-        ...newGroup,
+        groupId: newGroup.id,
+        name: newGroup.name,
+        shortDescription: newGroup.shortDescription,
+        homepage: newGroup.homepage,
+        avatarPath: newGroup.avatarPath,
+        descriptionPath: newGroup.descriptionPath,
+        slug: newGroup.slug,
       }));
     });
 
