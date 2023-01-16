@@ -7,7 +7,6 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
-import { userHandleCodec } from '../types/user-handle';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
@@ -57,8 +56,6 @@ const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.
 
 const passportUserCodec = t.type({
   id: UserIdFromString,
-  handle: userHandleCodec,
-  avatarUrl: t.string,
 });
 
 type Ports = {
