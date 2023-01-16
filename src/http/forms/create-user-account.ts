@@ -65,5 +65,13 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     )),
     TE.chainTaskK(createAccountIfNecessary(adapters)),
     TE.map(() => context.redirect('/')),
+    TE.map(() => {
+      context.session.passport.user = {
+        id: context.state.user.signUpAttempt.id,
+        handle: 'somehandle',
+        avatarUrl: context.state.user.signUpAttempt.avatarUrl,
+      };
+      return undefined;
+    }),
   )();
 };
