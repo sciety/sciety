@@ -2,7 +2,7 @@ import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
-import Koa, { Middleware } from 'koa';
+import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { setupAuth0Strategy } from './authentication/setup-auth0-strategy';
@@ -97,20 +97,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     done(null, user);
   });
 
-  const checkUserDetails: Middleware = async (context, next) => {
-    if (context.state.user) {
-      if (!context.state.user.handle || !context.state.user.avatarUrl) {
-        if (!context.state.user.signUpAttempt) {
-          logger('info', 'Logging out user', { user: context.state.user });
-          context.logout();
-        }
-      }
-    }
-
-    await next();
-  };
-
-  app.use(checkUserDetails);
   app.use(router.middleware());
   app.use(routeNotFound);
 
