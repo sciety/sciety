@@ -2,13 +2,17 @@ import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { renderErrorPage } from './render-error-page';
-import { finishFollowCommand } from '../write-side/follow';
+import { finishFollowCommand, Ports as FinishFollowCommandPorts } from '../write-side/follow';
 import { sessionGroupProperty } from '../write-side/follow/finish-follow-command';
-import { CollectedPorts } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
+import { Logger } from '../shared-ports';
 
-export const finishCommand = (ports: CollectedPorts): Middleware => async (context, next) => {
+type Ports = FinishFollowCommandPorts & {
+  logger: Logger,
+};
+
+export const finishCommand = (ports: Ports): Middleware => async (context, next) => {
   if (context.session.command === 'follow') {
     const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], context.state.user)();
     delete context.session.command;

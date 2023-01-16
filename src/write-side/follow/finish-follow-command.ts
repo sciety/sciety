@@ -5,6 +5,8 @@ import { CommandResult } from '../../types/command-result';
 import * as GroupId from '../../types/group-id';
 import { User } from '../../types/user';
 
+export { Ports } from './follow-command';
+
 export const sessionGroupProperty = 'groupId';
 
 export const finishFollowCommand = (ports: Ports) => (g: string, user: User): TO.TaskOption<CommandResult> => pipe(
