@@ -55,7 +55,11 @@ const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.
 );
 
 const passportUserCodec = t.type({
-  id: UserIdFromString,
+  state: t.type({
+    user: t.type({
+      id: UserIdFromString,
+    }),
+  }),
 });
 
 type Ports = {
@@ -66,7 +70,8 @@ export const getLoggedInScietyUser = (adapters: Ports, input: unknown): O.Option
   input,
   passportUserCodec.decode,
   O.fromEither,
-  O.chain(({ id }) => adapters.getUser(id)),
+  O.map((context) => context.state.user.id),
+  O.chain((id) => adapters.getUser(id)),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
@@ -84,7 +89,7 @@ export const pageHandler = (
         ...context.state,
       },
       handler,
-      T.map(toWebPage(getLoggedInScietyUser(adapters, context.state.user), applyStandardPageLayout)),
+      T.map(toWebPage(getLoggedInScietyUser(adapters, context), applyStandardPageLayout)),
     )();
 
     context.response.status = response.status;

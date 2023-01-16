@@ -138,7 +138,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       const response = pipe(
         adapters,
         homePage,
-        homePageLayout(getLoggedInScietyUser(adapters, context.state.user)),
+        homePageLayout(getLoggedInScietyUser(adapters, context)),
         toSuccessResponse,
       );
 
@@ -171,7 +171,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.status = StatusCodes.OK;
       context.response.type = 'html';
       context.response.body = menuPageLayout(
-        getLoggedInScietyUser(adapters, context.state.user),
+        getLoggedInScietyUser(adapters, context),
         O.fromNullable(context.request.header.referer),
       );
       context.set('Vary', 'Referer');
