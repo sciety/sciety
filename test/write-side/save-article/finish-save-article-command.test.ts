@@ -1,4 +1,5 @@
 import { RouterContext } from '@koa/router';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../../src/write-side/save-article/finish-save-article-command';
@@ -11,7 +12,7 @@ import { arbitraryCommandResult } from '../../types/command-result.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryUserDetails } from '../../types/user-details.helper';
 
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
@@ -26,7 +27,8 @@ describe('finish-save-article-command', () => {
 
   describe('when the user tried to save an article and the command handler fails', () => {
     const addArticleToList = () => TE.left(arbitraryErrorMessage());
-    const userId = arbitraryUserId();
+    const user = arbitraryUserDetails();
+    const userId = user.id;
     const articleId = arbitraryArticleId();
     const context = ({
       session: {
@@ -44,6 +46,7 @@ describe('finish-save-article-command', () => {
 
     it('logs an error', async () => {
       await finishSaveArticleCommand({
+        getUser: () => O.some(user),
         selectAllListsOwnedBy,
         addArticleToList,
         logger,
@@ -55,7 +58,8 @@ describe('finish-save-article-command', () => {
 
   describe('when the user tries to save an article', () => {
     const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
-    const userId = arbitraryUserId();
+    const user = arbitraryUserDetails();
+    const userId = user.id;
     const articleId = arbitraryArticleId();
     const context = ({
       session: {
@@ -72,6 +76,7 @@ describe('finish-save-article-command', () => {
     it('calls the add article to list command with the list id owned by the user', async () => {
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
+        getUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
       })(context, jest.fn());
@@ -84,7 +89,8 @@ describe('finish-save-article-command', () => {
     const addArticleToList = () => TE.right(arbitraryCommandResult());
 
     it('deletes session parameters', async () => {
-      const userId = arbitraryUserId();
+      const user = arbitraryUserDetails();
+      const userId = user.id;
       const articleId = arbitraryArticleId();
       const context = ({
         session: {
@@ -100,6 +106,7 @@ describe('finish-save-article-command', () => {
 
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
+        getUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
       })(context, jest.fn());

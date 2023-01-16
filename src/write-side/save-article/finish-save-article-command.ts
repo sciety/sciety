@@ -1,10 +1,12 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
+import { sequenceS } from 'fp-ts/Apply';
 import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
   AddArticleToList, Logger, SelectAllListsOwnedBy,
@@ -13,10 +15,10 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as Doi from '../../types/doi';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import * as LOID from '../../types/list-owner-id';
-import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
 
-type Ports = {
+type Ports = GetLoggedInScietyUserPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
   logger: Logger,
@@ -49,15 +51,24 @@ const contextCodec = t.type({
 });
 
 export const finishSaveArticleCommand = (ports: Ports): Middleware => async (context, next) => {
-  const user = context.state.user as User;
   await pipe(
-    context,
-    contextCodec.decode,
-    E.map((ctx) => ctx.session),
-    E.fold(
+    {
+      articleId: pipe(
+        context,
+        contextCodec.decode,
+        E.map((ctx) => ctx.session.articleId),
+        O.fromEither,
+      ),
+      userId: pipe(
+        getLoggedInScietyUser(ports, context),
+        O.map((userDetails) => userDetails.id),
+      ),
+    },
+    sequenceS(O.Apply),
+    O.fold(
       () => T.of(undefined),
-      ({ articleId }) => pipe(
-        constructCommand(ports, user.id, articleId),
+      ({ articleId, userId }) => pipe(
+        constructCommand(ports, userId, articleId),
         TE.chain(ports.addArticleToList),
         TE.getOrElseW((error) => {
           ports.logger('error', 'finishSaveArticleCommand failed', { error });
