@@ -138,7 +138,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       const response = pipe(
         adapters,
         homePage,
-        homePageLayout(getLoggedInScietyUser(context.state.user)),
+        homePageLayout(getLoggedInScietyUser(adapters, context.state.user)),
         toSuccessResponse,
       );
 
@@ -151,7 +151,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/my-feed',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       myFeedParams,
       myFeedPage(adapters),
     )),
@@ -159,7 +159,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/sciety-feed',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       scietyFeedCodec,
       scietyFeedPage(adapters)(20),
     )),
@@ -171,7 +171,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.status = StatusCodes.OK;
       context.response.type = 'html';
       context.response.body = menuPageLayout(
-        getLoggedInScietyUser(context.state.user),
+        getLoggedInScietyUser(adapters, context.state.user),
         O.fromNullable(context.request.header.referer),
       );
       context.set('Vary', 'Referer');
@@ -182,22 +182,21 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/about',
-    pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+    pageHandler(adapters, () => aboutPage(adapters.fetchStaticFile)),
   );
 
   router.get(
     '/action-failed',
-    pageHandler(
+    pageHandler(adapters,
       createPageFromParams(
         actionFailedPageParamsCodec,
         actionFailedPage,
-      ),
-    ),
+      )),
   );
 
   router.get(
     '/learn-about',
-    pageHandler(() => pipe(learnAboutPage, TE.right)),
+    pageHandler(adapters, () => pipe(learnAboutPage, TE.right)),
   );
 
   router.get(
@@ -234,7 +233,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/lists`,
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       userPageParams,
       userPage(adapters)('lists'),
     )),
@@ -247,7 +246,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     `/users/:handle(${matchHandle})/following`,
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       userPageParams,
       userPage(adapters)('followed-groups'),
     )),
@@ -284,7 +283,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(flow(
+    pageHandler(adapters, flow(
       searchResultsPageParams.decode,
       E.fold(
         () => TE.right(searchPage),
@@ -315,7 +314,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/evaluations/:reviewid/content',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       evaluationContentParams,
       evaluationContent(adapters),
     ), false),
@@ -323,7 +322,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/articles/activity/:doi(.+)',
-    pageHandler(flow(
+    pageHandler(adapters, flow(
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
@@ -333,7 +332,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/groups',
-    pageHandler(() => groupsPage(adapters)),
+    pageHandler(adapters, () => groupsPage(adapters)),
   );
 
   router.get(
@@ -348,7 +347,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/groups/:slug/lists',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
       groupPage(adapters)(groupPageTabs.lists),
     )),
@@ -356,7 +355,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/groups/:slug/about',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
       groupPage(adapters)(groupPageTabs.about),
     )),
@@ -364,7 +363,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/groups/:slug/followers',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
       groupPage(adapters)(groupPageTabs.followers),
     )),
@@ -382,7 +381,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/lists/:id',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       listPageParams,
       listPage(adapters),
     )),
@@ -390,7 +389,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/lists/:id/edit-details',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       editListDetailsFormPageParamsCodec,
       editListDetailsFormPage(adapters),
     )),
@@ -398,12 +397,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/create-account-form',
-    pageHandler(() => pipe(createUserAccountFormPage, TE.right)),
+    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
   );
 
   router.get(
     '/annotations/create-annotation-form-avasthi-reading',
-    pageHandler(createPageFromParams(
+    pageHandler(adapters, createPageFromParams(
       createAnnotationFormPageParamsCodec,
       createAnnotationFormPage,
     )),
@@ -424,12 +423,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/legal',
-    pageHandler(() => pipe(legalPage, TE.right)),
+    pageHandler(adapters, () => pipe(legalPage, TE.right)),
   );
 
   router.get(
     '/sign-up',
-    pageHandler(() => pipe(signUpPage, TE.right)),
+    pageHandler(adapters, () => pipe(signUpPage, TE.right)),
   );
 
   // COMMANDS

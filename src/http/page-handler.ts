@@ -14,6 +14,8 @@ import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
+import { GetUser } from '../shared-ports';
+import { UserDetails } from '../types/user-details';
 
 type ErrorToWebPage = (
   user: O.Option<User>
@@ -59,15 +61,21 @@ const passportUserCodec = t.type({
   avatarUrl: t.string,
 });
 
-export const getLoggedInScietyUser = (input: unknown) => pipe(
+type Ports = {
+  getUser: GetUser,
+};
+
+export const getLoggedInScietyUser = (adapters: Ports, input: unknown): O.Option<UserDetails> => pipe(
   input,
   passportUserCodec.decode,
   O.fromEither,
+  O.chain(({ id }) => adapters.getUser(id)),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
+  adapters: Ports,
   handler: HandlePage,
   applyStandardPageLayout = true,
 ): Middleware => (
@@ -79,7 +87,7 @@ export const pageHandler = (
         ...context.state,
       },
       handler,
-      T.map(toWebPage(getLoggedInScietyUser(context.state.user), applyStandardPageLayout)),
+      T.map(toWebPage(getLoggedInScietyUser(adapters, context.state.user), applyStandardPageLayout)),
     )();
 
     context.response.status = response.status;
