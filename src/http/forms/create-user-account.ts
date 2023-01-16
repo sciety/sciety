@@ -64,5 +64,6 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       T.map(checkCommand(command)),
     )),
     TE.chainTaskK(createAccountIfNecessary(adapters)),
+    TE.map(() => context.redirect('/')),
   )();
 };
