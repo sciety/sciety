@@ -25,7 +25,7 @@ import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { ownedBy } from './owned-by-api';
-import { getLoggedInScietyUser, pageHandler } from './page-handler';
+import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
@@ -85,6 +85,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userCodec } from '../types/user';
 import { userPage } from '../user-page/user-page';
+import { getLoggedInScietyUser } from './get-logged-in-sciety-user';
 
 const toNotFound = () => ({
   type: DE.notFound,

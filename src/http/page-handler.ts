@@ -3,18 +3,15 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
-import { GetUser } from '../shared-ports';
-import { UserDetails } from '../types/user-details';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
 
 type ErrorToWebPage = (
   user: O.Option<User>
@@ -54,30 +51,10 @@ const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.
   pageToSuccessResponse(user, applyStandardPageLayout),
 );
 
-const passportUserCodec = t.type({
-  state: t.type({
-    user: t.type({
-      id: UserIdFromString,
-    }),
-  }),
-});
-
-type Ports = {
-  getUser: GetUser,
-};
-
-export const getLoggedInScietyUser = (adapters: Ports, input: unknown): O.Option<UserDetails> => pipe(
-  input,
-  passportUserCodec.decode,
-  O.fromEither,
-  O.map((context) => context.state.user.id),
-  O.chain((id) => adapters.getUser(id)),
-);
-
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
-  adapters: Ports,
+  adapters: GetLoggedInScietyUserPorts,
   handler: HandlePage,
   applyStandardPageLayout = true,
 ): Middleware => (
