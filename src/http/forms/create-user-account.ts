@@ -26,7 +26,6 @@ const createUserAccountFormCodec = t.type({
 
 const signUpAttemptCodec = t.type({
   id: UserIdFromString,
-  avatarUrl: t.string,
 });
 
 type CreateUserAccountCommand = {
@@ -56,7 +55,11 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     E.chain((formUserDetails) => pipe(
       context.state.user.signUpAttempt,
       signUpAttemptCodec.decode,
-      E.map((signUpAttempt) => ({ ...formUserDetails, ...signUpAttempt })),
+      E.map((signUpAttempt) => ({
+        ...formUserDetails,
+        ...signUpAttempt,
+        avatarUrl: '/static/images/profile-dark.svg',
+      })),
     )),
     T.of,
     TE.chainW((command) => pipe(
