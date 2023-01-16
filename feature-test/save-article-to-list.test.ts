@@ -1,6 +1,6 @@
 /* eslint-disable jest-formatting/padding-around-all */
 import {
-  $, click, closeBrowser, currentURL, goto, listItem, openBrowser,
+  $, click, closeBrowser, currentURL, goto, openBrowser,
 } from 'taiko';
 import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
 
@@ -62,8 +62,8 @@ describe('save-article-to-list', () => {
 
     it('the user\'s action appears in the Sciety feed', async () => {
       await goto(scietyFeedPage);
-      const cardText = await listItem(userHandle).text();
-      expect(cardText).toContain(`${userHandle} added an article`);
+      const mainText = await $('main').text();
+      expect(mainText).toContain(`${userHandle} added an article`);
     });
 
     it('the list count of the article card on the search page increases by one', async () => {
