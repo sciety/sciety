@@ -7,14 +7,20 @@ import { sessionGroupProperty } from '../write-side/follow/finish-follow-command
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Logger } from '../shared-ports';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
 
-type Ports = FinishFollowCommandPorts & {
+type Ports = FinishFollowCommandPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
 export const finishCommand = (ports: Ports): Middleware => async (context, next) => {
   if (context.session.command === 'follow') {
-    const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], context.state.user)();
+    const user = getLoggedInScietyUser(ports, context);
+    if (O.isNone(user)) {
+      await next();
+      return;
+    }
+    const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], user.value)();
     delete context.session.command;
     delete context.session[sessionGroupProperty];
     if (O.isNone(result)) {
