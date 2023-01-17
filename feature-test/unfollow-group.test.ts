@@ -3,7 +3,7 @@ import {
 } from 'taiko';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
-import { arbitraryString, arbitraryWord, arbitraryUri } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
@@ -20,7 +20,7 @@ describe('unfollow a group', () => {
       await click('Log in');
     });
 
-    describe('from the ScreenIT group page', () => {
+    describe('from a group page', () => {
       it('removes the group from user page', async () => {
         const groupSlug = arbitraryWord();
         const groupName = arbitraryString();
@@ -29,7 +29,7 @@ describe('unfollow a group', () => {
           name: groupName,
           shortDescription: arbitraryString(),
           homepage: arbitraryString(),
-          avatarPath: arbitraryUri(),
+          avatarPath: 'http://somethingthatreturns404',
           descriptionPath: arbitraryDescriptionPath(),
           slug: groupSlug,
         });
