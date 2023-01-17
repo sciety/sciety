@@ -50,6 +50,31 @@ describe('backfill-group-joined-events', () => {
   });
 
   describe('when there is a pre-existing groupJoined event for the supplied group', () => {
-    it.todo('does not raise a groupJoined event for the supplied group');
+    const groupToBeAdded = {
+      groupId: arbitraryGroupId(),
+      name: arbitraryString(),
+      avatarPath: arbitraryString(),
+      descriptionPath: arbitraryDescriptionPath(),
+      shortDescription: arbitraryString(),
+      homepage: arbitraryString(),
+      slug: arbitraryString(),
+      date: arbitraryDate(),
+    };
+    const events: ReadonlyArray<DomainEvent> = [
+      groupJoined(
+        groupToBeAdded.groupId,
+        arbitraryString(),
+        arbitraryString(),
+        arbitraryDescriptionPath(),
+        arbitraryString(),
+        arbitraryString(),
+        arbitraryString(),
+      ),
+    ];
+    const eventsToCommit = backfillGroupJoinedEvents(events)([groupToBeAdded]);
+
+    it('does not raise a groupJoined event for the supplied group', () => {
+      expect(eventsToCommit).toStrictEqual([]);
+    });
   });
 });
