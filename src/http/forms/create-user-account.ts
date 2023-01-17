@@ -53,7 +53,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     context.request.body,
     createUserAccountFormCodec.decode,
     E.chain((formUserDetails) => pipe(
-      context.state.user.signUpAttempt,
+      context.state.user,
       signUpAttemptCodec.decode,
       E.map((signUpAttempt) => ({
         ...formUserDetails,

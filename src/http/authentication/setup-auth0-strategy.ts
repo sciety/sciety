@@ -39,10 +39,7 @@ const writeUserToState = (
   done: (error: unknown, user?: unknown, info?: unknown) => void,
 ) => (userAccount: UserAccount) => {
   const passportUserState = {
-    signUpAttempt: {
-      id: userAccount.id,
-      avatarUrl: userAccount.avatarUrl,
-    },
+    id: userAccount.id,
   };
   logger('debug', 'User details added to the Passport user state', passportUserState);
   done(
