@@ -5,7 +5,7 @@ import { DomainEvent } from '../domain-events';
 import { GroupId } from '../types/group-id';
 import { DescriptionPath } from '../types/description-path';
 
-type GroupDataToAdd = {
+export type GroupDataToAdd = {
   groupId: GroupId,
   name: string,
   avatarPath: string,

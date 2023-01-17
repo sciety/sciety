@@ -1,4 +1,6 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import { pipe } from 'fp-ts/function';
+import { GroupDataToAdd } from '../policies/backfill-group-joined-events';
 import * as DomainEvent from '../domain-events';
 import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import * as Gid from '../types/group-id';
@@ -225,3 +227,11 @@ export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoined
     new Date('2022-09-29T10:23:14Z'),
   ),
 ];
+
+// ts-unused-exports:disable-next-line
+export const groupsToJoin: RNEA.ReadonlyNonEmptyArray<GroupDataToAdd> = pipe(
+  bootstrapGroups,
+  RNEA.map((event) => ({
+    ...event,
+  })),
+);
