@@ -549,7 +549,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
+    onlyIfNotAuthenticated(adapters, logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),

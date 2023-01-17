@@ -1,9 +1,17 @@
 import { Middleware } from 'koa';
+import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
 
-export const onlyIfNotAuthenticated = (original: Middleware): Middleware => async (context, next) => {
-  if (!(context.state.user)) {
-    await original(context, next);
-  } else {
-    await next();
-  }
+export const onlyIfNotAuthenticated = (
+  adapters: GetLoggedInScietyUserPorts,
+  original: Middleware,
+): Middleware => async (context, next) => {
+  await pipe(
+    getLoggedInScietyUser(adapters, context),
+    O.match(
+      async () => { await original(context, next); },
+      async () => { await next(); },
+    ),
+  );
 };
