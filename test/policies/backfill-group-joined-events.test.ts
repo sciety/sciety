@@ -7,7 +7,7 @@ import { DomainEvent, groupJoined } from '../../src/domain-events';
 
 describe('backfill-group-joined-events', () => {
   describe('when there is no pre-existing groupJoined event for the supplied group', () => {
-    it.failing('raises a groupJoined event for the supplied group', () => {
+    it('raises a groupJoined event for the supplied group', () => {
       const groupToBeAdded = {
         groupId: arbitraryGroupId(),
         name: arbitraryString(),
@@ -44,7 +44,7 @@ describe('backfill-group-joined-events', () => {
 
       expect(eventsToCommit).toStrictEqual([expect.objectContaining({
         type: 'GroupJoined',
-        groupId: GID.fromString(groupToBeAdded.groupId),
+        groupId: GID.fromValidatedString(groupToBeAdded.groupId),
       })]);
     });
   });
