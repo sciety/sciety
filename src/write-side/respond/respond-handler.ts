@@ -6,25 +6,31 @@ import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import * as RI from '../../types/review-id';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
 
-type Ports = {
+type Ports = GetLoggedInScietyUserPorts & {
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
 };
 
 export const respondHandler = (ports: Ports): Middleware => async (context, next) => {
-  const { user } = context.state;
-
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
     {
       reviewId: pipe(context.request.body.reviewid, RI.deserialize),
       command: pipe(context.request.body.command, toCommand),
+      userId: pipe(
+        getLoggedInScietyUser(ports, context),
+        O.map((userDetails) => userDetails.id),
+      ),
     },
     sequenceS(O.Apply),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
-      commandHandler(ports.commitEvents, ports.getAllEvents, user.id),
+      ({ reviewId, command, userId }) => pipe(
+        { reviewId, command },
+        commandHandler(ports.commitEvents, ports.getAllEvents, userId),
+      ),
     ),
   )();
 
