@@ -564,7 +564,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Detected Auth0 callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(logInCallback('auth0')),
+    logInCallback('auth0'),
     async (context) => {
       context.redirect('/create-account-form');
     },
