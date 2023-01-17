@@ -444,7 +444,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/unfollow',
     bodyParser({ enableTypes: ['form'] }),
     saveUnfollowCommand(),
-    requireAuthentication,
+    requireAuthentication(adapters),
     unfollowHandler(adapters),
   );
 
@@ -452,7 +452,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/respond',
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
-    requireAuthentication,
+    requireAuthentication(adapters),
     respondHandler(adapters),
   );
 
@@ -460,7 +460,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/save-article',
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
-    requireAuthentication,
+    requireAuthentication(adapters),
     finishSaveArticleCommand(adapters),
     redirectBack,
   );
@@ -468,7 +468,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/forms/remove-article-from-list',
     bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication,
+    requireAuthentication(adapters),
     removeArticleFromList(adapters),
     redirectBack,
   );
