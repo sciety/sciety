@@ -3,22 +3,37 @@ import {
 } from 'taiko';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
-import * as GID from '../src/types/group-id';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
+import { arbitraryGroupId } from '../test/types/group-id.helper';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
+import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 
 describe('respond', () => {
   const articleId = arbitraryArticleId();
 
-  beforeEach(async () => {
-    await openBrowser();
+  beforeAll(async () => {
+    const groupId = arbitraryGroupId();
+    await callApi('api/add-group', {
+      groupId,
+      name: arbitraryString(),
+      shortDescription: arbitraryString(),
+      homepage: arbitraryString(),
+      avatarPath: 'http://somethingthatproducesa404',
+      descriptionPath: arbitraryDescriptionPath(),
+      slug: arbitraryWord(),
+    });
     await callApi('api/record-evaluation', {
-      groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+      groupId,
       publishedAt: new Date(),
       evaluationLocator: arbitraryReviewId(),
       articleId: articleId.toString(),
       authors: [],
     });
+  });
+
+  beforeEach(async () => {
+    await openBrowser();
   });
 
   afterEach(screenshotTeardown);
