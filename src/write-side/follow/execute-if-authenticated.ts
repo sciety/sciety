@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
 import { sessionGroupProperty } from './finish-follow-command';
 import { followCommand, Ports as FollowCommandPorts } from './follow-command';
 import { groupProperty } from './follow-handler';
@@ -16,7 +17,7 @@ import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 
-type Ports = FollowCommandPorts & {
+type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
   logger: Logger,
   getGroup: GetGroup,
 };
@@ -46,21 +47,25 @@ export const executeIfAuthenticated = (ports: Ports): Middleware => async (conte
         });
         return T.of(undefined);
       },
-      (params) => {
-        if (!(context.state.user)) {
-          context.session.command = 'follow';
-          context.session[sessionGroupProperty] = params.groupId.toString();
-          context.session.successRedirect = constructRedirectUrl(context);
-          context.redirect('/log-in');
-          return T.of(undefined);
-        }
-        const { user } = context.state;
-        context.redirect('back');
-        return pipe(
-          followCommand(ports)(user, params.groupId),
-          T.chain(() => next),
-        );
-      },
+      (params) => pipe(
+        getLoggedInScietyUser(ports, context),
+        O.match(
+          () => {
+            context.session.command = 'follow';
+            context.session[sessionGroupProperty] = params.groupId.toString();
+            context.session.successRedirect = constructRedirectUrl(context);
+            context.redirect('/log-in');
+            return T.of(undefined);
+          },
+          (userDetails) => {
+            context.redirect('back');
+            return pipe(
+              followCommand(ports)(userDetails, params.groupId),
+              T.chain(() => next),
+            );
+          },
+        ),
+      ),
     ),
   )();
 };
