@@ -8,8 +8,9 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { toErrorResponse } from '../page-handler';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../get-logged-in-sciety-user';
 
-type Ports = {
+type Ports = GetLoggedInScietyUserPorts & {
   getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
@@ -24,7 +25,8 @@ export const redirectUserListPageToGenericListPage = (adapters: Ports): Middlewa
     O.chain(RA.head),
     O.match(
       () => {
-        const response = toErrorResponse(O.fromNullable(context.state.user))({
+        const loggedInUser = getLoggedInScietyUser(adapters, context);
+        const response = toErrorResponse(loggedInUser)({
           type: DE.notFound,
           message: toHtmlFragment('Sorry, we can\'t find this user or their list.'),
         });
