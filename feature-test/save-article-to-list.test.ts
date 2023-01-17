@@ -2,7 +2,7 @@
 import {
   $, click, closeBrowser, currentURL, goto, openBrowser,
 } from 'taiko';
-import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
+import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
 
 describe('save-article-to-list', () => {
   describe('when a new user logs in and saves an article that isn\'t in any list', () => {
@@ -32,7 +32,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the article appears in the list page', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
+      const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `localhost:8080/lists/${listId}`;
       await goto(userListPageUrl);
       const articleIsDisplayed = await $(articleCardSelector).exists();
@@ -40,7 +40,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the article card on the list page offers a delete button', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
+      const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `localhost:8080/lists/${listId}`;
       await goto(userListPageUrl);
       const deleteButton = $(articleCardDeleteButtonSelector);
@@ -73,7 +73,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the list count of the article card on the list page it is in increases by one', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
+      const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `localhost:8080/lists/${listId}`;
       await goto(userListPageUrl);
       const cardText = await $('.article-card').text();
@@ -81,7 +81,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the save article button on the article page is replaced with a link to the list', async () => {
-      const listId = await getFirstListOwnedBy(testUserId);
+      const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
       await click('Saved to my list');

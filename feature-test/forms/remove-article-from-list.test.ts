@@ -6,7 +6,7 @@ import {
   openBrowser,
 } from 'taiko';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
-import { getFirstListOwnedBy } from '../get-first-list-owned-by.helper';
+import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
 describe('remove-article-from-list', () => {
   beforeAll(async () => {
@@ -39,7 +39,7 @@ describe('remove-article-from-list', () => {
         let content: string;
 
         beforeAll(async () => {
-          const listId = await getFirstListOwnedBy(testUserId);
+          const listId = await getFirstListOwnedByUser(testUserId);
           listPage = `localhost:8080/lists/${listId}`;
           await goto(listPage);
           const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';

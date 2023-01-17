@@ -1,7 +1,7 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
-import { getFirstListOwnedBy } from './get-first-list-owned-by.helper';
+import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 
 describe('edit-list-details', () => {
@@ -11,7 +11,7 @@ describe('edit-list-details', () => {
     const testUserId = '153571843';
     await openBrowser();
     await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
-    listId = await getFirstListOwnedBy(testUserId);
+    listId = await getFirstListOwnedByUser(testUserId);
   });
 
   afterAll(async () => {

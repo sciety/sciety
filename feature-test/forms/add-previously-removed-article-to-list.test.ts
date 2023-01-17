@@ -5,7 +5,7 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
-import { getFirstListOwnedBy } from '../get-first-list-owned-by.helper';
+import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
 describe('add-previously-removed-article-to-list', () => {
   const testUserId = '1384541806231175172';
@@ -24,7 +24,7 @@ describe('add-previously-removed-article-to-list', () => {
     expect(content).toContain('Saved to my list');
 
     // go to list page
-    const listId = await getFirstListOwnedBy(testUserId);
+    const listId = await getFirstListOwnedByUser(testUserId);
     const userListPageUrl = `localhost:8080/lists/${listId}`;
     await goto(userListPageUrl);
 
