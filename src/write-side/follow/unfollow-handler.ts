@@ -2,8 +2,14 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Ports, unfollowCommand } from './unfollow-command';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
+import { Ports as UnfollowCommandPorts, unfollowCommand } from './unfollow-command';
 import * as GroupId from '../../types/group-id';
+import { Logger } from '../../shared-ports';
+
+type Ports = GetLoggedInScietyUserPorts & UnfollowCommandPorts & {
+  logger: Logger,
+};
 
 export const unfollowHandler = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
@@ -11,11 +17,19 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
     GroupId.fromNullable,
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
-      async (groupId) => {
-        const { user } = context.state;
-        context.redirect('back');
-        return unfollowCommand(ports)(user, groupId)();
-      },
+      async (groupId) => pipe(
+        getLoggedInScietyUser(ports, context),
+        O.match(
+          () => {
+            ports.logger('error', 'Logged in user not found', { context });
+            context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+          },
+          async (userDetails) => {
+            context.redirect('back');
+            await unfollowCommand(ports)(userDetails, groupId)();
+          },
+        ),
+      ),
     ),
   );
 
