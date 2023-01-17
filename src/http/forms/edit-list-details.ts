@@ -1,17 +1,19 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
+import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
-import { User } from '../../types/user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../get-logged-in-sciety-user';
 
-type Ports = CheckUserOwnsListPorts & {
+type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   editListDetails: EditListDetails,
   logger: Logger,
 };
@@ -54,12 +56,26 @@ const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
 );
 
 export const editListDetails = (adapters: Ports): Middleware => async (context) => {
-  const user = context.state.user as User;
   await pipe(
-    context.request.body,
-    validateCommandShape(editListDetailsCommandCodec),
+    {
+      userId: pipe(
+        getLoggedInScietyUser(adapters, context),
+        O.map((userDetails) => userDetails.id),
+        E.fromOption(() => ({
+          message: 'Logged in user not found',
+          payload: { context },
+          errorType: 'codec-failed' as const,
+        })),
+      ),
+      command: pipe(
+        context.request.body,
+        validateCommandShape(editListDetailsCommandCodec),
+      ),
+    },
+    sequenceS(E.Apply),
     TE.fromEither,
-    TE.chainFirstW((command) => checkUserOwnsList(adapters, command.listId, user.id)),
+    TE.chainFirstW(({ command, userId }) => checkUserOwnsList(adapters, command.listId, userId)),
+    TE.map(({ command }) => command),
     TE.chainFirstW(handleCommand(adapters)),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
