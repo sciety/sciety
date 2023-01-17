@@ -499,7 +499,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.post(
     '/annotations/create-annotation',
-    supplyFormSubmissionTo(handleCreateAnnotationCommand(adapters)),
+    supplyFormSubmissionTo(adapters, handleCreateAnnotationCommand(adapters)),
   );
 
   // AUTHENTICATION
