@@ -1,30 +1,38 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
 import {
   commandHandler, CommitEvents, GetAllEvents, toCommand,
 } from './command-handler';
 import { reviewIdCodec } from '../../types/review-id';
 
-type Ports = {
+type Ports = GetLoggedInScietyUserPorts & {
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
-  const userId = context.state.user.id;
   await pipe(
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
     {
       reviewId: pipe(context.session.reviewId, reviewIdCodec.decode, O.fromEither),
       command: pipe(context.session.command, toCommand),
+      userId: pipe(
+        getLoggedInScietyUser(ports, context),
+        O.map((user) => user.id),
+      ),
     },
     sequenceS(O.Apply),
     O.fold(
       () => T.of(undefined),
-      flow(
+      ({ reviewId, command, userId }) => pipe(
+        {
+          reviewId,
+          command,
+        },
         commandHandler(
           ports.commitEvents,
           ports.getAllEvents,
