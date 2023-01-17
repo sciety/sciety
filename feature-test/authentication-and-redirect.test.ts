@@ -1,21 +1,57 @@
 import {
   $, click, currentURL, goBack, goto, link, openBrowser, text,
 } from 'taiko';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
+import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
+import { arbitraryGroupId } from '../test/types/group-id.helper';
+import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
-import * as GID from '../src/types/group-id';
-import { arbitraryReviewId } from '../test/types/review-id.helper';
 
 describe('authentication-and-redirect', () => {
-  beforeEach(async () => {
-    await openBrowser();
+  const groupASlug = arbitraryWord();
+  const groupBSlug = arbitraryWord();
+
+  beforeAll(async () => {
+    const groupId = arbitraryGroupId();
+    await callApi('api/add-group', {
+      groupId,
+      name: arbitraryString(),
+      shortDescription: arbitraryString(),
+      homepage: arbitraryString(),
+      avatarPath: 'http://somethingthatproducesa404',
+      descriptionPath: arbitraryDescriptionPath(),
+      slug: arbitraryWord(),
+    });
     await callApi('api/record-evaluation', {
-      groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+      groupId,
       publishedAt: new Date(),
       evaluationLocator: arbitraryReviewId(),
       articleId: 'doi:10.1101/2020.07.13.199174',
       authors: [],
     });
+    await callApi('api/add-group', {
+      groupId: arbitraryGroupId(),
+      name: arbitraryString(),
+      shortDescription: arbitraryString(),
+      homepage: arbitraryString(),
+      avatarPath: 'http://somethingthatproducesa404',
+      descriptionPath: arbitraryDescriptionPath(),
+      slug: groupASlug,
+    });
+    await callApi('api/add-group', {
+      groupId: arbitraryGroupId(),
+      name: arbitraryString(),
+      shortDescription: arbitraryString(),
+      homepage: arbitraryString(),
+      avatarPath: 'http://somethingthatproducesa404',
+      descriptionPath: arbitraryDescriptionPath(),
+      slug: groupBSlug,
+    });
+  });
+
+  beforeEach(async () => {
+    await openBrowser();
   });
 
   afterEach(screenshotTeardown);
@@ -57,12 +93,12 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the group page returns to the group page', async () => {
-      await goto('localhost:8080/groups/pci-animal-science');
+      await goto(`localhost:8080/groups/${groupASlug}`);
       await click('Follow');
 
       const result = await currentURL();
 
-      expect(result).toContain('/groups/pci-animal-science');
+      expect(result).toContain(`/groups/${groupASlug}`);
     });
 
     it('completing the sign up journey returns to the home page', async () => {
@@ -102,12 +138,12 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the group page returns to the group page', async () => {
-      await goto('localhost:8080/groups/prereview');
+      await goto(`localhost:8080/groups/${groupBSlug}`);
       await click('Follow');
 
       const result = await currentURL();
 
-      expect(result).toContain('/groups/prereview');
+      expect(result).toContain(`/groups/${groupBSlug}`);
     });
 
     it('back button doesn\'t break authentication', async () => {
