@@ -98,7 +98,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   });
 
   app.use(router.middleware());
-  app.use(routeNotFound);
+  app.use(routeNotFound(ports));
 
   app.on('error', (error) => {
     const payload = { error };
