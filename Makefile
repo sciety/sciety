@@ -85,6 +85,7 @@ backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
+	npx ts-node backstop_data/construct-backstop-state-via-api
 	${DOCKER_COMPOSE} restart app
 	scripts/wait-for-healthy.sh
 	npx backstop --docker --filter="${SCENARIO}" test
