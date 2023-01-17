@@ -1,6 +1,10 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
+import { arbitraryGroupId } from '../test/types/group-id.helper';
+import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
+import { arbitraryString, arbitraryWord, arbitraryUri } from '../test/helpers';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('unfollow a group', () => {
@@ -18,11 +22,22 @@ describe('unfollow a group', () => {
 
     describe('from the ScreenIT group page', () => {
       it('removes the group from user page', async () => {
-        await goto('localhost:8080/groups/screenit');
+        const groupSlug = arbitraryWord();
+        const groupName = arbitraryString();
+        await callApi('api/add-group', {
+          groupId: arbitraryGroupId(),
+          name: groupName,
+          shortDescription: arbitraryString(),
+          homepage: arbitraryString(),
+          avatarPath: arbitraryUri(),
+          descriptionPath: arbitraryDescriptionPath(),
+          slug: groupSlug,
+        });
+        await goto(`localhost:8080/groups/${groupSlug}`);
         await click('Follow');
         await click('Unfollow');
         await click('My lists');
-        const groupExists = await text('ScreenIT', within($('.followed-groups'))).exists();
+        const groupExists = await text(groupName, within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);
       });
