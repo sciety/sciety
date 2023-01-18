@@ -31,7 +31,7 @@ export const requireLoggedInUser = (
   );
 };
 
-export const redirectAfterAuthenticating = (): Middleware => (
+export const redirectAfterSuccess = (): Middleware => (
   async (context, next) => {
     const successRedirect = context.session.successRedirect || '/';
     context.redirect(annotateWithTwitterSuccess(successRedirect));

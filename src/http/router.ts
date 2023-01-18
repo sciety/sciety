@@ -30,7 +30,7 @@ import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
-import { redirectAfterAuthenticating, requireLoggedInUser } from './require-logged-in-user';
+import { redirectAfterSuccess, requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -553,7 +553,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
     finishSaveArticleCommand(adapters),
-    redirectAfterAuthenticating(),
+    redirectAfterSuccess(),
   );
 
   router.get(
