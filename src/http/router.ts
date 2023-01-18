@@ -49,7 +49,7 @@ import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
-  executeIfAuthenticated, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
+  executeFollowCommandIfUserLoggedIn, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
 } from '../write-side/follow';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
@@ -436,7 +436,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/follow',
     bodyParser({ enableTypes: ['form'] }),
-    executeIfAuthenticated(adapters),
+    executeFollowCommandIfUserLoggedIn(adapters),
   );
 
   router.post(

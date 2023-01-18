@@ -30,7 +30,7 @@ const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
   })),
 );
 
-export const executeIfAuthenticated = (ports: Ports): Middleware => async (context, next) => {
+export const executeFollowCommandIfUserLoggedIn = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
