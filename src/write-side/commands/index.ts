@@ -5,3 +5,4 @@ export { addGroupCommandCodec, AddGroupCommand } from './add-group';
 export { RecordEvaluationCommand, recordEvaluationCommandCodec } from './record-evaluation';
 export { RecordSubjectAreaCommand } from './record-subject-area';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
+export { CreateUserAccountCommand } from './create-user-account';

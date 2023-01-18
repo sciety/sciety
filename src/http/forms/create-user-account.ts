@@ -7,13 +7,13 @@ import * as T from 'fp-ts/Task';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
 import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
-import { UserHandle, userHandleCodec } from '../../types/user-handle';
+import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { UserId } from '../../types/user-id';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { CreateUserAccountCommand } from '../../write-side/commands';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -28,13 +28,6 @@ const createUserAccountFormCodec = t.type({
 const signUpAttemptCodec = t.type({
   id: UserIdFromString,
 });
-
-type CreateUserAccountCommand = {
-  id: UserId,
-  handle: UserHandle,
-  avatarUrl: string,
-  displayName: string,
-};
 
 // ts-unused-exports:disable-next-line
 export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => pipe(
