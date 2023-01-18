@@ -18,7 +18,7 @@ export type Ports = {
   getUser: GetUser,
 };
 
-const getAuthenticatedUserId = (input: unknown): O.Option<UserId> => pipe(
+export const getAuthenticatedUserId = (input: unknown): O.Option<UserId> => pipe(
   input,
   passportUserCodec.decode,
   O.fromEither,
