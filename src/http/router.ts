@@ -42,7 +42,7 @@ import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
-import { createUserAccountFormPage } from '../create-user-account-form-page/create-user-account-form-page';
+import { createUserAccountFormPage } from '../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
