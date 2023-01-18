@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import Auth0Strategy from 'passport-auth0';
 import { toUserId } from '../../types/user-id';
-import { UserAccount } from '../../user-account/set-up-user-if-necessary';
+import { writeUserToState } from '../get-logged-in-sciety-user';
 
 const auth0Config = {
   domain: process.env.AUTH0_DOMAIN ?? '',
@@ -28,18 +28,6 @@ const toUserAccount = (profile: Profile) => ({
   avatarUrl: profile.picture,
   displayName: profile.displayName,
 });
-
-export const writeUserToState = (
-  done: (error: unknown, user?: Record<string, unknown>) => void,
-) => (userAccount: UserAccount) => {
-  const passportUserState = {
-    id: userAccount.id,
-  };
-  done(
-    undefined,
-    passportUserState,
-  );
-};
 
 export const setupAuth0Strategy = () => new Auth0Strategy(
   auth0Config,

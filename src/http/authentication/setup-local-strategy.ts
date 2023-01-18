@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
-import { writeUserToState } from './setup-auth0-strategy';
+import { writeUserToState } from '../get-logged-in-sciety-user';
 
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
