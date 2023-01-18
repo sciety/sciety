@@ -1,6 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
+import { writeUserToState } from './setup-auth0-strategy';
 
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
@@ -11,6 +12,6 @@ export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
       displayName: '',
     };
     void createAccountIfNecessary(ports)(user)()
-      .then(() => cb(null, { id: user.id }));
+      .then(() => writeUserToState(cb)(user));
   },
 );

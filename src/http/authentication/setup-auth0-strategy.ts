@@ -30,7 +30,7 @@ const toUserAccount = (profile: Profile) => ({
 });
 
 export const writeUserToState = (
-  done: (error: unknown, user?: unknown, info?: unknown) => void,
+  done: (error: unknown, user?: Record<string, unknown>) => void,
 ) => (userAccount: UserAccount) => {
   const passportUserState = {
     id: userAccount.id,
