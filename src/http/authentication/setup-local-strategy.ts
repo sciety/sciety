@@ -11,6 +11,6 @@ export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
       displayName: '',
     };
     void createAccountIfNecessary(ports)(user)()
-      .then(() => cb(null, user));
+      .then(() => cb(null, { id: user.id }));
   },
 );
