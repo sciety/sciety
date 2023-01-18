@@ -1,8 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { sequenceS } from 'fp-ts/Apply';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as S from 'fp-ts/Semigroup';
 import * as string from 'fp-ts/string';
+import { ReadonlyArrayType } from 'io-ts';
 
 describe('either-sequence', () => {
   describe('sequencing two rights', () => {
@@ -68,14 +70,14 @@ describe('either-sequence', () => {
   describe('sequencing two lefts of but seeing all errors', () => {
     const result = pipe(
       {
-        a: E.left('a-encountered-an-error'),
-        b: E.left('b-encountered-an-error'),
+        a: E.left(['a-encountered-an-error']),
+        b: E.left(['b-encountered-an-error']),
       },
-      sequenceS(E.getApplicativeValidation(pipe(string.Semigroup, S.intercalate(' ')))),
+      sequenceS(E.getApplicativeValidation(RA.getSemigroup<string>())),
     );
 
     it('produces a left containing one of the two left values', () => {
-      expect(result).toStrictEqual(E.left('a-encountered-an-error b-encountered-an-error' as const));
+      expect(result).toStrictEqual(E.left(['a-encountered-an-error', 'b-encountered-an-error'] as const));
     });
   });
 });
