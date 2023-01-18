@@ -16,7 +16,7 @@ export const constructRedirectUrl = (context: ParameterizedContext<State>): stri
   return result;
 };
 
-export const requireAuthentication = (
+export const requireLoggedInUser = (
   adapters: GetLoggedInScietyUserPorts,
 ): Middleware<State> => async (context, next) => {
   await pipe(

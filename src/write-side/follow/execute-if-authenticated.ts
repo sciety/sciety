@@ -10,7 +10,7 @@ import { sessionGroupProperty } from './finish-follow-command';
 import { followCommand, Ports as FollowCommandPorts } from './follow-command';
 import { groupProperty } from './follow-handler';
 import { renderErrorPage } from '../../http/render-error-page';
-import { constructRedirectUrl } from '../../http/require-authentication';
+import { constructRedirectUrl } from '../../http/require-logged-in-user';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';

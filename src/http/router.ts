@@ -30,7 +30,7 @@ import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
-import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
+import { redirectAfterAuthenticating, requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -443,7 +443,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/unfollow',
     bodyParser({ enableTypes: ['form'] }),
     saveUnfollowCommand(),
-    requireAuthentication(adapters),
+    requireLoggedInUser(adapters),
     unfollowHandler(adapters),
   );
 
@@ -451,7 +451,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/respond',
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
-    requireAuthentication(adapters),
+    requireLoggedInUser(adapters),
     respondHandler(adapters),
   );
 
@@ -459,7 +459,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/save-article',
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
-    requireAuthentication(adapters),
+    requireLoggedInUser(adapters),
     finishSaveArticleCommand(adapters),
     redirectBack,
   );
@@ -467,7 +467,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/forms/remove-article-from-list',
     bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication(adapters),
+    requireLoggedInUser(adapters),
     removeArticleFromList(adapters),
     redirectBack,
   );
