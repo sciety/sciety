@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { CreateUserAccountCommand } from '../write-side/commands/create-user-account';
 import { CreateListCommand } from '../write-side/commands';
 import {
   DomainEvent,
@@ -11,13 +12,6 @@ import { isListCreatedEvent } from '../domain-events/list-created-event';
 import { executeCreateListCommand } from '../lists/execute-create-list-command';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
-
-type UserAccount = {
-  id: UserId,
-  handle: string,
-  avatarUrl: string,
-  displayName: string,
-};
 
 const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
   isUserCreatedAccountEvent(event)
@@ -44,26 +38,28 @@ const constructCommand = (userDetails: { userId: UserId, handle: string }): Crea
   name: `@${userDetails.handle}'s saved articles`,
   description: `Articles that have been saved by @${userDetails.handle}`,
 });
-type SetUpUserIfNecessary = (user: UserAccount) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<DomainEvent>;
+type SetUpUserIfNecessary = (command: CreateUserAccountCommand)
+=> (events: ReadonlyArray<DomainEvent>)
+=> ReadonlyArray<DomainEvent>;
 
-export const setUpUserIfNecessary: SetUpUserIfNecessary = (user) => (events) => [
+export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) => [
   ...pipe(
     events,
-    shouldCreateAccount(user.id),
+    shouldCreateAccount(command.id),
     B.fold(
       () => [],
       () => [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        userCreatedAccount(command.id, command.handle, command.avatarUrl, command.displayName),
       ],
     ),
   ),
   ...pipe(
     events,
-    shouldCreateList(user.id),
+    shouldCreateList(command.id),
     B.fold(
       () => [],
       () => pipe(
-        constructCommand({ userId: user.id, handle: user.handle }),
+        constructCommand({ userId: command.id, handle: command.handle }),
         executeCreateListCommand,
       ),
     ),
