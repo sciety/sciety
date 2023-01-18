@@ -47,4 +47,20 @@ describe('either-sequence', () => {
       expect(result).toStrictEqual(E.left('a-encountered-an-error' as const));
     });
   });
+
+  describe('sequencing two lefts of different type', () => {
+    // does not compile: Type '{ readonly message: "a-encountered-an-error"; readonly payload: 41; }' is not assignable to type '"b-encountered-an-error"'.
+    // try E.apW instead?
+    //const result = pipe(
+    //  {
+    //    a: E.left({ message: 'a-encountered-an-error', payload: 41 } as const),
+    //    b: E.left('b-encountered-an-error' as const),
+    //  },
+    //  sequenceS(E.Apply),
+    //);
+
+    it('produces a left containing one of the two left values', () => {
+      expect(result).toStrictEqual(E.left('a-encountered-an-error' as const));
+    });
+  });
 });
