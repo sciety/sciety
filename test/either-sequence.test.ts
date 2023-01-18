@@ -33,4 +33,18 @@ describe('either-sequence', () => {
       expect(result).toStrictEqual(E.left('b-encountered-an-error' as const));
     });
   });
+
+  describe('sequencing two lefts', () => {
+    const result = pipe(
+      {
+        a: E.left('a-encountered-an-error' as const),
+        b: E.left('b-encountered-an-error' as const),
+      },
+      sequenceS(E.Apply),
+    );
+
+    it('produces a left containing one of the two left values', () => {
+      expect(result).toStrictEqual(E.left('a-encountered-an-error' as const));
+    });
+  });
 });
