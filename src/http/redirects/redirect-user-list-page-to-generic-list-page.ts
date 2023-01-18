@@ -8,7 +8,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { toErrorResponse } from '../page-handler';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 
 type Ports = GetLoggedInScietyUserPorts & {
   getUserViaHandle: GetUserViaHandle,

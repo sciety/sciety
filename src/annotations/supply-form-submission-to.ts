@@ -8,7 +8,7 @@ import compose from 'koa-compose';
 import { redirectBack } from '../http/redirect-back';
 import { CommandResult } from '../types/command-result';
 import { toUserId } from '../types/user-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
 
 type CommandHandler = (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 

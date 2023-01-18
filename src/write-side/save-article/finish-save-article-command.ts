@@ -16,7 +16,7 @@ import * as Doi from '../../types/doi';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 
 type Ports = GetLoggedInScietyUserPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,

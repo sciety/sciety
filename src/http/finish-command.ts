@@ -7,7 +7,7 @@ import { sessionGroupProperty } from '../write-side/follow/finish-follow-command
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Logger } from '../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 
 type Ports = FinishFollowCommandPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,

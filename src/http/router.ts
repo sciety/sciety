@@ -84,7 +84,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userPage } from '../user-page/user-page';
-import { getLoggedInScietyUser } from './get-logged-in-sciety-user';
+import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 
 const toNotFound = () => ({
   type: DE.notFound,

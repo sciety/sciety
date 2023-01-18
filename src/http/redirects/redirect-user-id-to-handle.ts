@@ -7,7 +7,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 import { toErrorResponse } from '../page-handler';
-import { getLoggedInScietyUser } from '../get-logged-in-sciety-user';
+import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 
 type Ports = {
   getUser: GetUser,

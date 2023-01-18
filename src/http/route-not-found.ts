@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 
 export const routeNotFound = (adapters: GetLoggedInScietyUserPorts): Middleware => async (context, next) => {
   if (context._matchedRoute === undefined) {

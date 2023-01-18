@@ -10,7 +10,7 @@ import { removeArticleFromListCommandHandler } from '../../write-side/remove-art
 import {
   CommitEvents, GetAllEvents, GetList, Logger,
 } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../../types/user-details';
 
 type Ports = GetLoggedInScietyUserPorts & {

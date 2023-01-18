@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { ParameterizedContext } from 'koa';
 import { requireAuthentication } from '../../src/http/require-authentication';
 import { arbitraryUserDetails } from '../types/user-details.helper';
-import { Ports as GetLoggedInScietyUserPorts } from '../../src/http/get-logged-in-sciety-user';
+import { Ports as GetLoggedInScietyUserPorts } from '../../src/http/authentication-and-logging-in-of-sciety-users';
 
 describe('require-authentication', () => {
   it('adds targetFragmentId to the successRedirect', async () => {

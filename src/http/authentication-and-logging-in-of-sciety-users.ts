@@ -26,9 +26,6 @@ export const writeUserIdToState = (
     passportUserState,
   );
 };
-export type Ports = {
-  getUser: GetUser,
-};
 
 export const getAuthenticatedUserIdFromContext = (context: ParameterizedContext): O.Option<UserId> => pipe(
   context,
@@ -36,6 +33,10 @@ export const getAuthenticatedUserIdFromContext = (context: ParameterizedContext)
   O.fromEither,
   O.map((contextWithPassportUser) => contextWithPassportUser.state.user.id),
 );
+
+export type Ports = {
+  getUser: GetUser,
+};
 
 export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedContext): O.Option<UserDetails> => pipe(
   context,

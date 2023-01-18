@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 
 export const onlyIfNotAuthenticated = (
   adapters: GetLoggedInScietyUserPorts,

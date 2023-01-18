@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import * as RI from '../../types/review-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/get-logged-in-sciety-user';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 
 type Ports = GetLoggedInScietyUserPorts & {
   commitEvents: CommitEvents,

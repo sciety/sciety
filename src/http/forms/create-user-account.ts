@@ -13,7 +13,7 @@ import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { UserId } from '../../types/user-id';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
-import { getAuthenticatedUserIdFromContext } from '../get-logged-in-sciety-user';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 type Ports = {
   getAllEvents: GetAllEvents,

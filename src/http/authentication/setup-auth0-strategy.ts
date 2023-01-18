@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import Auth0Strategy from 'passport-auth0';
 import { toUserId } from '../../types/user-id';
-import { writeUserIdToState } from '../get-logged-in-sciety-user';
+import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
 const auth0Config = {
   domain: process.env.AUTH0_DOMAIN ?? '',

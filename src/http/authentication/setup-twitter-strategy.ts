@@ -1,7 +1,7 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
-import { writeUserIdToState } from '../get-logged-in-sciety-user';
+import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
 export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
   {
