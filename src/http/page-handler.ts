@@ -65,6 +65,19 @@ export const pageHandler = (
         ...context.query,
         ...context.state,
       },
+      (partialParams) => pipe(
+        getLoggedInScietyUser(adapters, context),
+        O.foldW(
+          () => ({
+            ...partialParams,
+            user: undefined,
+          }),
+          (user) => ({
+            ...partialParams,
+            user,
+          }),
+        ),
+      ),
       handler,
       T.map(toWebPage(getLoggedInScietyUser(adapters, context), applyStandardPageLayout)),
     )();
