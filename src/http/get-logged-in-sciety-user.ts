@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { ParameterizedContext } from 'koa';
 import { GetUser } from '../shared-ports';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { UserDetails } from '../types/user-details';
@@ -18,15 +19,15 @@ export type Ports = {
   getUser: GetUser,
 };
 
-export const getAuthenticatedUserId = (input: unknown): O.Option<UserId> => pipe(
-  input,
+export const getAuthenticatedUserIdFromContext = (context: ParameterizedContext): O.Option<UserId> => pipe(
+  context,
   passportUserCodec.decode,
   O.fromEither,
-  O.map((context) => context.state.user.id),
+  O.map((contextWithPassportUser) => contextWithPassportUser.state.user.id),
 );
 
-export const getLoggedInScietyUser = (adapters: Ports, input: unknown): O.Option<UserDetails> => pipe(
-  input,
-  getAuthenticatedUserId,
+export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedContext): O.Option<UserDetails> => pipe(
+  context,
+  getAuthenticatedUserIdFromContext,
   O.chain((id) => adapters.getUser(id)),
 );

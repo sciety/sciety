@@ -13,7 +13,7 @@ import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { UserId } from '../../types/user-id';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
-import { getAuthenticatedUserId } from '../get-logged-in-sciety-user';
+import { getAuthenticatedUserIdFromContext } from '../get-logged-in-sciety-user';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -55,7 +55,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     createUserAccountFormCodec.decode,
     E.chainW((formUserDetails) => pipe(
       context,
-      getAuthenticatedUserId,
+      getAuthenticatedUserIdFromContext,
       E.fromOption(() => 'no-authenticated-user-id'),
       E.map((userId) => ({
         ...formUserDetails,
