@@ -23,7 +23,7 @@ import { editListDetails } from './forms/edit-list-details';
 import { removeArticleFromList } from './forms/remove-article-from-list';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
-import { onlyIfNotAuthenticated } from './only-if-authenticated';
+import { onlyIfNotLoggedIn } from './only-if-not-logged-in';
 import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
@@ -548,7 +548,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(adapters, logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
+    onlyIfNotLoggedIn(adapters, logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
