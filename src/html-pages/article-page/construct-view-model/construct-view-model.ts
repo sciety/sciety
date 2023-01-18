@@ -16,12 +16,12 @@ import { ArticleServer } from '../../../types/article-server';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
-import { User } from '../../../types/user';
 import { ViewModel } from '../view-model';
+import { UserId } from '../../../types/user-id';
 
 export type Params = {
   doi: Doi,
-  user: O.Option<User>,
+  user: O.Option<{ id: UserId }>,
 };
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
@@ -46,11 +46,13 @@ type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.fetchArticle(params.doi),
   TE.chainW((articleDetails) => pipe(
-    getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server, params.user),
+    getArticleFeedEventsByDateDescending(ports)(
+      params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
+    ),
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
-      isArticleInList: checkIfArticleInList(ports)(params.doi, params.user),
+      isArticleInList: checkIfArticleInList(ports)(params.doi, pipe(params.user, O.map(({ id }) => id))),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),

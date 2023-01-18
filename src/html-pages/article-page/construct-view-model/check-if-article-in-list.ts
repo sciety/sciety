@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { IsArticleOnTheListOwnedBy } from '../../../shared-ports';
 import { Doi } from '../../../types/doi';
 import { ListId } from '../../../types/list-id';
-import { User } from '../../../types/user';
+import { UserId } from '../../../types/user-id';
 
 export type Ports = {
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
@@ -11,11 +11,11 @@ export type Ports = {
 
 export const checkIfArticleInList = (ports: Ports) => (
   doi: Doi,
-  user: O.Option<User>,
+  userId: O.Option<UserId>,
 ): O.Option<ListId> => pipe(
-  user,
+  userId,
   O.chain((u) => pipe(
     doi,
-    ports.isArticleOnTheListOwnedBy(u.id),
+    ports.isArticleOnTheListOwnedBy(u),
   )),
 );

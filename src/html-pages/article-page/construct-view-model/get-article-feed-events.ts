@@ -12,8 +12,8 @@ import { DomainEvent } from '../../../domain-events';
 import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
-import { User } from '../../../types/user';
 import { FeedItem } from '../view-model';
+import { UserId } from '../../../types/user-id';
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,
@@ -34,13 +34,13 @@ type GetArticleFeedEventsByDateDescending = (
 ) => (
   doi: Doi,
   server: ArticleServer,
-  userId: O.Option<User>,
+  userId: O.Option<UserId>,
 ) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   adapters,
 ) => (
-  doi, server, user,
+  doi, server, userId,
 ) => pipe(
   [
     pipe(
@@ -57,6 +57,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     ),
   ] as const,
   mergeFeeds,
-  T.chain(getFeedEventsContent(adapters, server, user)),
+  T.chain(getFeedEventsContent(adapters, server, userId)),
   T.map(handleArticleVersionErrors(server)),
 );

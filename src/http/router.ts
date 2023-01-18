@@ -83,7 +83,6 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { userCodec } from '../types/user';
 import { userPage } from '../user-page/user-page';
 import { getLoggedInScietyUser } from './get-logged-in-sciety-user';
 
@@ -113,7 +112,7 @@ const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: Gen
 
 const articlePageParams = t.type({
   doi: DoiFromString,
-  user: tt.optionFromNullable(userCodec),
+  user: tt.optionFromNullable(t.type({ id: UserIdFromString })),
 });
 
 const userPageParams = t.type({

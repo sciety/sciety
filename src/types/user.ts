@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import { UserIdFromString } from './codecs/UserIdFromString';
 
-export const userCodec = t.type({
+const userCodec = t.type({
   id: UserIdFromString,
   handle: t.string,
   avatarUrl: t.string,
