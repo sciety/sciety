@@ -19,4 +19,18 @@ describe('either-sequence', () => {
       }));
     });
   });
+
+  describe('sequencing a right and a left', () => {
+    const result = pipe(
+      {
+        a: E.right(41),
+        b: E.left('b-encountered-an-error' as const),
+      },
+      sequenceS(E.Apply),
+    );
+
+    it('produces a left', () => {
+      expect(result).toStrictEqual(E.left('b-encountered-an-error' as const));
+    });
+  });
 });
