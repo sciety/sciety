@@ -23,8 +23,6 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
         undefined,
         {
           id: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
         },
       ));
   },
