@@ -50,13 +50,12 @@ describe('either-sequence', () => {
 
   describe('sequencing two lefts of different type', () => {
     // does not compile: Type '{ readonly message: "a-encountered-an-error"; readonly payload: 41; }' is not assignable to type '"b-encountered-an-error"'.
-    // try E.apW instead?
     //const result = pipe(
     //  {
     //    a: E.left({ message: 'a-encountered-an-error', payload: 41 } as const),
     //    b: E.left('b-encountered-an-error' as const),
     //  },
-    //  sequenceS(E.Apply),
+    //  sequenceS(E.Applicative),
     //);
 
     it('produces a left containing one of the two left values', () => {
