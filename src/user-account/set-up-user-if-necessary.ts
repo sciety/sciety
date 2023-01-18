@@ -12,7 +12,7 @@ import { executeCreateListCommand } from '../lists/execute-create-list-command';
 import * as LOID from '../types/list-owner-id';
 import { UserId } from '../types/user-id';
 
-export type UserAccount = {
+type UserAccount = {
   id: UserId,
   handle: string,
   avatarUrl: string,

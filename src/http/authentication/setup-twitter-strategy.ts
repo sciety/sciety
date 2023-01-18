@@ -1,4 +1,5 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
@@ -15,7 +16,7 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
     const photos = profile.photos ?? [{ value: '' }];
     const userAccount = {
       id: toUserId(profile.id),
-      handle: profile.username,
+      handle: profile.username as UserHandle,
       avatarUrl: photos[0].value,
       displayName: profile.displayName,
     };
