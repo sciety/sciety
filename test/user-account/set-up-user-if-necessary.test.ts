@@ -3,12 +3,12 @@ import {
 } from '../../src/domain-events';
 import { listCreated } from '../../src/domain-events/list-created-event';
 import * as LOID from '../../src/types/list-owner-id';
-import { setUpUserIfNecessary, UserAccount } from '../../src/user-account/set-up-user-if-necessary';
+import { setUpUserIfNecessary } from '../../src/user-account/set-up-user-if-necessary';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-const arbitraryUserAccount = (): UserAccount => ({
+const arbitraryUserAccount = () => ({
   id: arbitraryUserId(),
   handle: arbitraryWord(),
   avatarUrl: arbitraryUri(),
