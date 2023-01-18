@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import Auth0Strategy from 'passport-auth0';
 import { toUserId } from '../../types/user-id';
-import { writeUserToState } from '../get-logged-in-sciety-user';
+import { writeUserIdToState } from '../get-logged-in-sciety-user';
 
 const auth0Config = {
   domain: process.env.AUTH0_DOMAIN ?? '',
@@ -38,7 +38,7 @@ export const setupAuth0Strategy = () => new Auth0Strategy(
     TE.fromEither,
     TE.match(
       () => done('could-not-derive-user-account-from-profile'),
-      writeUserToState(done),
+      (userAccount) => writeUserIdToState(done)(userAccount.id),
     ),
   )()
   ),

@@ -6,7 +6,6 @@ import { GetUser } from '../shared-ports';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { UserDetails } from '../types/user-details';
 import { UserId } from '../types/user-id';
-import { UserAccount } from '../user-account/set-up-user-if-necessary';
 
 const passportUserCodec = t.type({
   state: t.type({
@@ -16,11 +15,11 @@ const passportUserCodec = t.type({
   }),
 });
 
-export const writeUserToState = (
+export const writeUserIdToState = (
   done: (error: unknown, user?: Record<string, unknown>) => void,
-) => (userAccount: UserAccount) => {
+) => (userId: UserId) => {
   const passportUserState = {
-    id: userAccount.id,
+    id: userId,
   };
   done(
     undefined,

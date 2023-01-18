@@ -1,7 +1,7 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
-import { writeUserToState } from '../get-logged-in-sciety-user';
+import { writeUserIdToState } from '../get-logged-in-sciety-user';
 
 export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
   {
@@ -20,6 +20,6 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
       displayName: profile.displayName,
     };
     void createAccountIfNecessary(ports)(userAccount)()
-      .then(() => writeUserToState(cb)(userAccount));
+      .then(() => writeUserIdToState(cb)(userAccount.id));
   },
 );
