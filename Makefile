@@ -163,7 +163,6 @@ prod-sql:
 taiko: export TARGET = prod
 taiko: export AUTHENTICATION_STRATEGY = local
 taiko: export USE_STUB_ADAPTERS = true
-taiko: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
