@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import Auth0Strategy from 'passport-auth0';
+import * as E from 'fp-ts/Either';
 import { toUserId } from '../../types/user-id';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
@@ -15,6 +16,7 @@ export const setupAuth0Strategy = () => new Auth0Strategy(
   async (accessToken, refreshToken, extraParams, profile, done) => pipe(
     profile.id,
     toUserId,
+    E.right,
     writeUserIdToState(done),
   ),
 );
