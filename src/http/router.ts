@@ -576,7 +576,14 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     ),
     logInCallback('auth0'),
     async (context) => {
-      context.redirect('/create-account-form');
+      const redirectTo: string = pipe(
+        getLoggedInScietyUser(adapters, context),
+        O.match(
+          () => '/create-account-form',
+          () => '/',
+        ),
+      );
+      context.redirect(redirectTo);
     },
   );
 
