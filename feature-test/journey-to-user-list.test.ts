@@ -1,6 +1,7 @@
 import {
   $, click, goto, openBrowser,
 } from 'taiko';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('journey-to-user-list', () => {
@@ -12,8 +13,7 @@ describe('journey-to-user-list', () => {
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      await goto('localhost:8080/');
-      await click('Log in');
+      await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
     });
 
     it('navigates to user list page via user page', async () => {

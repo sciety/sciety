@@ -1,6 +1,7 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('follow a group', () => {
@@ -12,8 +13,7 @@ describe('follow a group', () => {
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      await goto('localhost:8080/');
-      await click('Log in');
+      await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
     });
 
     it.skip('adds the group to the user page', async () => {

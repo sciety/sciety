@@ -32,7 +32,7 @@ export const logIn = (strategy: Strategy): Middleware => {
   switch (strategy) {
     case 'local':
       return async (context, next) => {
-        const twitterTestingAccountId = '1338873008283377664';
+        const twitterTestingAccountId = Math.floor(Math.random() * 1000000 + 1);
         context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
         await next();
       };

@@ -6,6 +6,7 @@ import { arbitraryDescriptionPath } from '../test/types/description-path.helper'
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('unfollow a group', () => {
   beforeEach(async () => {
@@ -16,8 +17,7 @@ describe('unfollow a group', () => {
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      await goto('localhost:8080/');
-      await click('Log in');
+      await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
     });
 
     describe('from a group page', () => {
