@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
-import { DomainEvent } from '../../src/domain-events/domain-event';
-import { userCreatedAccount } from '../../src/domain-events/user-created-account-event';
-import { UserHandle } from '../../src/types/user-handle';
-import { checkCommand } from '../../src/user-account/create-account-if-necessary';
-import { CreateUserAccountCommand } from '../../src/write-side/commands';
-import { arbitraryWord, arbitraryString, arbitraryUri } from '../helpers';
-import { arbitraryUserId } from '../types/user-id.helper';
+import { DomainEvent } from '../../../src/domain-events/domain-event';
+import { userCreatedAccount } from '../../../src/domain-events/user-created-account-event';
+import { UserHandle } from '../../../src/types/user-handle';
+import { checkCommand } from '../../../src/write-side/create-user-account/check-command';
+import { CreateUserAccountCommand } from '../../../src/write-side/commands';
+import { arbitraryWord, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('check-command', () => {
   describe('when the handle in the command is unique', () => {

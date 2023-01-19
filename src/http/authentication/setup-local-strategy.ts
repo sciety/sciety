@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
-import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
+import { createUserAccountCommandHandler, Ports } from '../../write-side/create-user-account';
 import { CreateUserAccountCommand } from '../../write-side/commands';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
@@ -15,7 +15,7 @@ export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
       avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
       displayName: '',
     };
-    void createAccountIfNecessary(ports)(command)()
+    void createUserAccountCommandHandler(ports)(command)()
       .then((commandResult) => pipe(
         commandResult,
         E.map(() => command.userId),

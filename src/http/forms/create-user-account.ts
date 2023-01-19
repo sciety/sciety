@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
-import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
+import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
@@ -37,7 +37,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       })),
     )),
     T.of,
-    TE.chainW(createAccountIfNecessary(adapters)),
+    TE.chainW(createUserAccountCommandHandler(adapters)),
     TE.map(() => context.redirect('/')),
   )();
 };
