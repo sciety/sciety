@@ -25,10 +25,6 @@ const createUserAccountFormCodec = t.type({
   handle: userHandleCodec,
 });
 
-const signUpAttemptCodec = t.type({
-  id: UserIdFromString,
-});
-
 // ts-unused-exports:disable-next-line
 export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
