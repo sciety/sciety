@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CreateUserAccountCommand } from '../commands/create-user-account';
-import { setUpUserIfNecessary } from '../../user-account/set-up-user-if-necessary';
+import { setUpUserIfNecessary } from './set-up-user-if-necessary';
 import { DomainEvent } from '../../domain-events';
 import { CommitEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';

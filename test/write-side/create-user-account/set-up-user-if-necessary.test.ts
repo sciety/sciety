@@ -1,14 +1,14 @@
 import {
   userCreatedAccount,
-} from '../../src/domain-events';
-import { listCreated } from '../../src/domain-events/list-created-event';
-import * as LOID from '../../src/types/list-owner-id';
-import { UserHandle } from '../../src/types/user-handle';
-import { setUpUserIfNecessary } from '../../src/user-account/set-up-user-if-necessary';
-import { CreateUserAccountCommand } from '../../src/write-side/commands';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
-import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+} from '../../../src/domain-events';
+import { listCreated } from '../../../src/domain-events/list-created-event';
+import * as LOID from '../../../src/types/list-owner-id';
+import { UserHandle } from '../../../src/types/user-handle';
+import { setUpUserIfNecessary } from '../../../src/write-side/create-user-account/set-up-user-if-necessary';
+import { CreateUserAccountCommand } from '../../../src/write-side/commands';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('set-up-user-if-necessary', () => {
   const command: CreateUserAccountCommand = {

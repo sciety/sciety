@@ -1,17 +1,17 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { CreateUserAccountCommand } from '../write-side/commands/create-user-account';
-import { CreateListCommand } from '../write-side/commands';
+import { CreateUserAccountCommand } from '../commands/create-user-account';
+import { CreateListCommand } from '../commands';
 import {
   DomainEvent,
   isUserCreatedAccountEvent,
   userCreatedAccount,
-} from '../domain-events';
-import { isListCreatedEvent } from '../domain-events/list-created-event';
-import { executeCreateListCommand } from '../lists/execute-create-list-command';
-import * as LOID from '../types/list-owner-id';
-import { UserId } from '../types/user-id';
+} from '../../domain-events';
+import { isListCreatedEvent } from '../../domain-events/list-created-event';
+import { executeCreateListCommand } from '../../lists/execute-create-list-command';
+import * as LOID from '../../types/list-owner-id';
+import { UserId } from '../../types/user-id';
 
 const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
   isUserCreatedAccountEvent(event)
