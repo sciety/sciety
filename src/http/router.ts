@@ -537,7 +537,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       }
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'auth0'),
   );
 
   router.get(
