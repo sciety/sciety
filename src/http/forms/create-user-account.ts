@@ -9,7 +9,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { createAccountIfNecessary } from '../../user-account/create-account-if-necessary';
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
-import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
