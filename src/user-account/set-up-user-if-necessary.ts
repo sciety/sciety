@@ -45,21 +45,21 @@ type SetUpUserIfNecessary = (command: CreateUserAccountCommand)
 export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) => [
   ...pipe(
     events,
-    shouldCreateAccount(command.id),
+    shouldCreateAccount(command.userId),
     B.fold(
       () => [],
       () => [
-        userCreatedAccount(command.id, command.handle, command.avatarUrl, command.displayName),
+        userCreatedAccount(command.userId, command.handle, command.avatarUrl, command.displayName),
       ],
     ),
   ),
   ...pipe(
     events,
-    shouldCreateList(command.id),
+    shouldCreateList(command.userId),
     B.fold(
       () => [],
       () => pipe(
-        constructCommand({ userId: command.id, handle: command.handle }),
+        constructCommand({ userId: command.userId, handle: command.handle }),
         executeCreateListCommand,
       ),
     ),

@@ -47,7 +47,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       E.fromOption(() => 'no-authenticated-user-id'),
       E.map((userId) => ({
         ...formUserDetails,
-        id: userId,
+        userId,
         avatarUrl: '/static/images/profile-dark.svg',
       })),
     )),

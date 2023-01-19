@@ -5,32 +5,31 @@ import { listCreated } from '../../src/domain-events/list-created-event';
 import * as LOID from '../../src/types/list-owner-id';
 import { UserHandle } from '../../src/types/user-handle';
 import { setUpUserIfNecessary } from '../../src/user-account/set-up-user-if-necessary';
+import { CreateUserAccountCommand } from '../../src/write-side/commands';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-const arbitraryUserAccount = () => ({
-  id: arbitraryUserId(),
-  handle: arbitraryWord() as UserHandle,
-  avatarUrl: arbitraryUri(),
-  displayName: arbitraryString(),
-});
-
 describe('set-up-user-if-necessary', () => {
-  const userAccount = arbitraryUserAccount();
+  const command: CreateUserAccountCommand = {
+    userId: arbitraryUserId(),
+    handle: arbitraryWord() as UserHandle,
+    avatarUrl: arbitraryUri(),
+    displayName: arbitraryString(),
+  };
 
   describe('when the user already exists', () => {
     const events = [
       userCreatedAccount(
-        userAccount.id,
-        userAccount.handle,
-        userAccount.avatarUrl,
-        userAccount.displayName,
+        command.userId,
+        command.handle,
+        command.avatarUrl,
+        command.displayName,
       ),
-      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(userAccount.id)),
+      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(command.userId)),
     ];
 
-    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
+    const eventsToCommit = setUpUserIfNecessary(command)(events);
 
     it('raises no events', () => {
       expect(eventsToCommit).toStrictEqual([]);
@@ -38,19 +37,19 @@ describe('set-up-user-if-necessary', () => {
   });
 
   describe('when the user does not already exist', () => {
-    const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
+    const eventsToCommit = setUpUserIfNecessary(command)([]);
 
     it('raises a UserCreatedAccount event and a ListCreated event', () => {
       expect(eventsToCommit).toStrictEqual([
         expect.objectContaining({
-          userId: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
-          displayName: userAccount.displayName,
+          userId: command.userId,
+          handle: command.handle,
+          avatarUrl: command.avatarUrl,
+          displayName: command.displayName,
         }),
         expect.objectContaining({
           type: 'ListCreated',
-          ownerId: LOID.fromUserId(userAccount.id),
+          ownerId: LOID.fromUserId(command.userId),
         }),
       ]);
     });

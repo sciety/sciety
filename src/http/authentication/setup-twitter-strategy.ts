@@ -2,6 +2,7 @@ import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
+import { CreateUserAccountCommand } from '../../write-side/commands';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
 export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
@@ -14,13 +15,13 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
     // photos can never be undefined:
     // https://github.com/jaredhanson/passport-twitter/blob/cfe7807b0e89e9ff130592c28622e134749e757b/lib/profile.js#L21
     const photos = profile.photos ?? [{ value: '' }];
-    const userAccount = {
-      id: toUserId(profile.id),
+    const command: CreateUserAccountCommand = {
+      userId: toUserId(profile.id),
       handle: profile.username as UserHandle,
       avatarUrl: photos[0].value,
       displayName: profile.displayName,
     };
-    void createAccountIfNecessary(ports)(userAccount)()
-      .then(() => writeUserIdToState(cb)(userAccount.id));
+    void createAccountIfNecessary(ports)(command)()
+      .then(() => writeUserIdToState(cb)(command.userId));
   },
 );
