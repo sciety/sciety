@@ -530,6 +530,17 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
+    '/log-in-auth0',
+    async (context: ParameterizedContext, next) => {
+      if (!context.session.successRedirect) {
+        context.session.successRedirect = context.request.headers.referer ?? '/';
+      }
+      await next();
+    },
+    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+  );
+
+  router.get(
     '/sign-up-call-to-action',
     async (context: ParameterizedContext, next) => {
       context.session.successRedirect = '/';
