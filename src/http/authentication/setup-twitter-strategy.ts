@@ -1,5 +1,6 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
 import { createAccountIfNecessary, Ports } from '../../user-account/create-account-if-necessary';
@@ -23,6 +24,10 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
       displayName: profile.displayName,
     };
     void createAccountIfNecessary(ports)(command)()
-      .then(() => writeUserIdToState(cb)(E.right(command.userId)));
+      .then((commandResult) => pipe(
+        commandResult,
+        E.map(() => command.userId),
+        writeUserIdToState(cb),
+      ));
   },
 );
