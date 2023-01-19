@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { DomainEvent } from '../../src/domain-events/domain-event';
 import { userCreatedAccount } from '../../src/domain-events/user-created-account-event';
-import { checkCommand } from '../../src/http/forms/create-user-account';
 import { UserHandle } from '../../src/types/user-handle';
+import { checkCommand } from '../../src/user-account/create-account-if-necessary';
 import { CreateUserAccountCommand } from '../../src/write-side/commands';
 import { arbitraryWord, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryUserId } from '../types/user-id.helper';

@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -10,9 +9,7 @@ import { createAccountIfNecessary } from '../../user-account/create-account-if-n
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
-import { CreateUserAccountCommand } from '../../write-side/commands';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -23,18 +20,6 @@ const createUserAccountFormCodec = t.type({
   displayName: userGeneratedInputCodec(30),
   handle: userHandleCodec,
 });
-
-// ts-unused-exports:disable-next-line
-export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => pipe(
-  events,
-  RA.filter(isUserCreatedAccountEvent),
-  RA.map((event) => event.handle),
-  RA.filter((handle) => handle === command.handle),
-  RA.match(
-    () => E.right(command),
-    () => E.left(''),
-  ),
-);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context) => {
@@ -52,11 +37,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       })),
     )),
     T.of,
-    TE.chainW((command) => pipe(
-      adapters.getAllEvents,
-      T.map(checkCommand(command)),
-    )),
-    TE.chainFirstW(createAccountIfNecessary(adapters)),
+    TE.chainW(createAccountIfNecessary(adapters)),
     TE.map(() => context.redirect('/')),
   )();
 };
