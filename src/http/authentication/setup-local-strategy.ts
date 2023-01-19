@@ -11,7 +11,7 @@ export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
     const command: CreateUserAccountCommand = {
       userId: toUserId(username),
-      handle: 'account27775998' as UserHandle,
+      handle: `H${username}` as UserHandle,
       avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
       displayName: '',
     };
