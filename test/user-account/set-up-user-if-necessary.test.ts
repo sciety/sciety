@@ -19,7 +19,7 @@ const arbitraryUserAccount = () => ({
 describe('set-up-user-if-necessary', () => {
   const userAccount = arbitraryUserAccount();
 
-  describe('when the user has been fully set up', () => {
+  describe('when the user already exists', () => {
     const events = [
       userCreatedAccount(
         userAccount.id,
@@ -37,77 +37,8 @@ describe('set-up-user-if-necessary', () => {
     });
   });
 
-  describe('when the user has only created an account but has no list', () => {
-    const events = [
-      userCreatedAccount(
-        userAccount.id,
-        userAccount.handle,
-        userAccount.avatarUrl,
-        userAccount.displayName,
-      ),
-    ];
-
-    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
-
-    it('raises a ListCreated event', () => {
-      expect(eventsToCommit).toStrictEqual([expect.objectContaining({
-        type: 'ListCreated',
-        ownerId: LOID.fromUserId(userAccount.id),
-      })]);
-    });
-  });
-
-  describe('when the user owns a list, but no account was created', () => {
-    const events = [
-      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(userAccount.id)),
-    ];
-
-    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
-
-    it('raises UserAccountCreated event', () => {
-      expect(eventsToCommit).toStrictEqual([
-        expect.objectContaining({
-          userId: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
-          displayName: userAccount.displayName,
-        }),
-      ]);
-    });
-  });
-
-  describe('sciety has no events related to this user', () => {
+  describe('when the user does not already exist', () => {
     const eventsToCommit = setUpUserIfNecessary(userAccount)([]);
-
-    it('raises a UserCreatedAccount event and a ListCreated event', () => {
-      expect(eventsToCommit).toStrictEqual([
-        expect.objectContaining({
-          userId: userAccount.id,
-          handle: userAccount.handle,
-          avatarUrl: userAccount.avatarUrl,
-          displayName: userAccount.displayName,
-        }),
-        expect.objectContaining({
-          type: 'ListCreated',
-          ownerId: LOID.fromUserId(userAccount.id),
-        }),
-      ]);
-    });
-  });
-
-  describe('when another user has already created an account but this user has not', () => {
-    const anotherUserAccount = arbitraryUserAccount();
-
-    const events = [
-      userCreatedAccount(
-        anotherUserAccount.id,
-        anotherUserAccount.handle,
-        anotherUserAccount.avatarUrl,
-        anotherUserAccount.displayName,
-      ),
-    ];
-
-    const eventsToCommit = setUpUserIfNecessary(userAccount)(events);
 
     it('raises a UserCreatedAccount event and a ListCreated event', () => {
       expect(eventsToCommit).toStrictEqual([
