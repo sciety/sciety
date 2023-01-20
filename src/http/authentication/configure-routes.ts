@@ -120,14 +120,14 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     ),
     logInAuth0,
     async (context) => {
-      const redirectTo: string = pipe(
+      pipe(
         getLoggedInScietyUser(adapters, context),
         O.match(
           () => '/create-account-form',
           () => '/',
         ),
+        (page) => context.redirect(page),
       );
-      context.redirect(redirectTo);
     },
   );
 };
