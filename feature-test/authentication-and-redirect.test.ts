@@ -5,7 +5,6 @@ import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
@@ -58,7 +57,7 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   it('log in works', async () => {
-    await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
+    await goto('localhost:8080/log-in');
     const result = await link('Log out').exists();
 
     expect(result).toBe(true);
