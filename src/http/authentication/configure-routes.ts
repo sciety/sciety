@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
-  logInAsSpecificUser, logInAuth0, logInCallback, logInLocal, logInTwitter, signUpAuth0,
+  logInAsSpecificUser, logInAuth0, logInLocal, logInTwitter, signUpAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -91,7 +91,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotLoggedIn(adapters, logInCallback(shouldStubAuthentication ? 'local' : 'twitter')),
+    onlyIfNotLoggedIn(adapters, shouldStubAuthentication ? logInLocal : logInTwitter),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
@@ -106,7 +106,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Detected Auth0 callback error',
       'Something went wrong, please try again.',
     ),
-    logInCallback('auth0'),
+    logInAuth0,
     async (context) => {
       const redirectTo: string = pipe(
         getLoggedInScietyUser(adapters, context),
