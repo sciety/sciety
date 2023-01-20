@@ -20,7 +20,7 @@ export type Ports = {
 
 export const userListCard = (
   ports: Ports,
-) => (userId: UserId, description: string): O.Option<HtmlFragment> => pipe(
+) => (userId: UserId): O.Option<HtmlFragment> => pipe(
   {
     userDetails: ports.getUser(userId),
     list: pipe(
@@ -37,7 +37,7 @@ export const userListCard = (
     lastUpdated: O.some(details.list.lastUpdated),
     handle: details.userDetails.handle,
     avatarUrl: details.userDetails.avatarUrl,
-    description,
+    description: details.list.description,
   })),
   O.map(renderUserListCard),
 );

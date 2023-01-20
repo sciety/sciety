@@ -8,18 +8,9 @@ import { HtmlFragment } from '../../../types/html-fragment';
 
 export const cards = (ports: Ports): HtmlFragment => pipe(
   {
-    first: userListCard(ports)(
-      card1.userId,
-      card1.description,
-    ),
-    second: userListCard(ports)(
-      card2.userId,
-      card2.description,
-    ),
-    third: userListCard(ports)(
-      card3.userId,
-      card3.description,
-    ),
+    first: userListCard(ports)(card1.userId),
+    second: userListCard(ports)(card2.userId),
+    third: userListCard(ports)(card3.userId),
   },
   sequenceS(O.Apply),
   renderCardsSection,
