@@ -2,7 +2,7 @@ import Router from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ParameterizedContext } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
   logIn, logInAsSpecificUser, logInCallback, signUpAuth0,
@@ -24,6 +24,13 @@ import { finishSaveArticleCommand } from '../../write-side/save-article/finish-s
 import { signUpPage } from '../../sign-up-page';
 import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 
+const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
+  if (!context.session.successRedirect) {
+    context.session.successRedirect = context.request.headers.referer ?? '/';
+  }
+  await next();
+};
+
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   router.get(
     '/create-account-form',
@@ -43,12 +50,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
 
   router.get(
     '/log-in',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
+    saveReferrerToSession,
     logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
   );
 
@@ -58,23 +60,13 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
 
   router.get(
     '/sign-up-auth0',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
+    saveReferrerToSession,
     signUpAuth0,
   );
 
   router.get(
     '/log-in-auth0',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
+    saveReferrerToSession,
     logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'auth0'),
   );
 
