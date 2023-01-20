@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
-  logInAsSpecificUser, logInAuth0, logInLocal, logInLocalCallback, logInTwitter, signUpAuth0,
+  logInAsSpecificUser, logInAuth0, stubLogInTwitter, logInLocalCallback, logInTwitter, signUpAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -53,7 +53,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in',
     saveReferrerToSession,
-    shouldStubAuthentication ? logInLocal : logInTwitter,
+    shouldStubAuthentication ? stubLogInTwitter : logInTwitter,
   );
 
   if (shouldStubAuthentication) {
@@ -69,7 +69,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in-auth0',
     saveReferrerToSession,
-    shouldStubAuthentication ? logInLocal : logInAuth0,
+    logInAuth0,
   );
 
   router.get(
@@ -78,7 +78,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       context.session.successRedirect = '/';
       await next();
     },
-    shouldStubAuthentication ? logInLocal : logInTwitter,
+    shouldStubAuthentication ? stubLogInTwitter : logInTwitter,
   );
 
   router.get('/log-out', logOut);
