@@ -28,23 +28,18 @@ const authenticate = (strategy: Strategy): Middleware => {
   );
 };
 
-export const logIn = (strategy: Strategy): Middleware => {
-  switch (strategy) {
-    case 'local':
-      return async (context, next) => {
-        const twitterTestingAccountId = Math.floor(Math.random() * 1000000 + 1);
-        context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
-        await next();
-      };
-    case 'twitter':
-      return async (context, next) => {
-        await authenticate('twitter')(context, next);
-      };
-    case 'auth0':
-      return async (context, next) => {
-        await authenticate('auth0')(context, next);
-      };
-  }
+export const logInAuth0: Middleware = async (context, next) => {
+  await authenticate('auth0')(context, next);
+};
+
+export const logInTwitter: Middleware = async (context, next) => {
+  await authenticate('twitter')(context, next);
+};
+
+export const logInLocal: Middleware = async (context, next) => {
+  const twitterTestingAccountId = Math.floor(Math.random() * 1000000 + 1);
+  context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
+  await next();
 };
 
 export const logInCallback = (strategy: Strategy): Middleware => authenticate(strategy);

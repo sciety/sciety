@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
-  logIn, logInAsSpecificUser, logInCallback, signUpAuth0,
+  logInAsSpecificUser, logInAuth0, logInCallback, logInLocal, logInTwitter, signUpAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -51,7 +51,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in',
     saveReferrerToSession,
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInTwitter,
   );
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
@@ -67,7 +67,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in-auth0',
     saveReferrerToSession,
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'auth0'),
+    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInAuth0,
   );
 
   router.get(
@@ -76,7 +76,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       context.session.successRedirect = '/';
       await next();
     },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
+    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInTwitter,
   );
 
   router.get('/log-out', logOut);
