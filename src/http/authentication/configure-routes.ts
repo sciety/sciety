@@ -1,3 +1,4 @@
+/* eslint-disable padded-blocks */
 import Router from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
@@ -40,20 +41,12 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
 const shouldStubAuthentication = process.env.AUTHENTICATION_STRATEGY === 'local';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
-  router.get(
-    '/create-account-form',
-    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
-  );
+
+  // twitter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   router.get(
     '/sign-up',
     pageHandler(adapters, () => pipe(signUpPage, TE.right)),
-  );
-
-  router.post(
-    '/forms/create-user-account',
-    bodyParser({ enableTypes: ['form'] }),
-    createUserAccount(adapters),
   );
 
   router.get(
@@ -65,18 +58,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   if (shouldStubAuthentication) {
     router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
   }
-
-  router.get(
-    '/sign-up-auth0',
-    saveReferrerToSession,
-    shouldStubAuthentication ? stubSignUpAuth0 : signUpAuth0,
-  );
-
-  router.get(
-    '/log-in-auth0',
-    saveReferrerToSession,
-    logInAuth0,
-  );
 
   router.get(
     '/sign-up-call-to-action',
@@ -103,6 +84,31 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     finishRespondCommand(adapters),
     finishSaveArticleCommand(adapters),
     redirectAfterSuccess(),
+  );
+
+  // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  router.get(
+    '/create-account-form',
+    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
+  );
+
+  router.post(
+    '/forms/create-user-account',
+    bodyParser({ enableTypes: ['form'] }),
+    createUserAccount(adapters),
+  );
+
+  router.get(
+    '/sign-up-auth0',
+    saveReferrerToSession,
+    shouldStubAuthentication ? stubSignUpAuth0 : signUpAuth0,
+  );
+
+  router.get(
+    '/log-in-auth0',
+    saveReferrerToSession,
+    logInAuth0,
   );
 
   router.get(

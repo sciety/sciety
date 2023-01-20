@@ -1,10 +1,7 @@
 import { Middleware } from 'koa';
 import koaPassport from 'koa-passport';
 
-export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
-  failureRedirect: '/',
-  scope: 'openid email profile',
-});
+// twitter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const logInTwitter: Middleware = koaPassport.authenticate('twitter', {
   failureRedirect: '/',
@@ -23,6 +20,12 @@ export const stubLogInTwitterAsSpecificUser: Middleware = async (context, next) 
   await next();
 };
 
+export const stubTwitterCallback = koaPassport.authenticate('local', {
+  failureRedirect: '/',
+});
+
+// auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
@@ -33,6 +36,7 @@ export const stubSignUpAuth0: Middleware = async (context, next) => {
   await next();
 };
 
-export const stubTwitterCallback = koaPassport.authenticate('local', {
+export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
+  scope: 'openid email profile',
 });
