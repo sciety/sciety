@@ -16,7 +16,7 @@ export const stubLogInTwitter: Middleware = async (context, next) => {
   await next();
 };
 
-export const logInAsSpecificUser: Middleware = async (context, next) => {
+export const stubLogInTwitterAsSpecificUser: Middleware = async (context, next) => {
   const { userId } = context.query;
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   context.redirect(`/twitter/callback?username=${userId}&password=anypassword`);
@@ -28,6 +28,6 @@ export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   scope: 'openid email profile',
 });
 
-export const logInLocalCallback = koaPassport.authenticate('local', {
+export const stubTwitterCallback = koaPassport.authenticate('local', {
   failureRedirect: '/',
 });
