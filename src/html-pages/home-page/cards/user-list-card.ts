@@ -22,22 +22,22 @@ export const userListCard = (
   ports: Ports,
 ) => (userId: UserId): O.Option<HtmlFragment> => pipe(
   {
-    userDetails: ports.getUser(userId),
     list: pipe(
       userId,
       LOID.fromUserId,
       ports.selectAllListsOwnedBy,
       RA.head,
     ),
+    listOwner: ports.getUser(userId),
   },
   sequenceS(O.Apply),
-  O.map((details) => ({
-    listId: details.list.listId,
-    articleCount: details.list.articleIds.length,
-    lastUpdated: O.some(details.list.lastUpdated),
-    handle: details.userDetails.handle,
-    avatarUrl: details.userDetails.avatarUrl,
-    description: details.list.description,
+  O.map(({ list, listOwner }) => ({
+    listId: list.listId,
+    articleCount: list.articleIds.length,
+    lastUpdated: O.some(list.lastUpdated),
+    description: list.description,
+    handle: listOwner.handle,
+    avatarUrl: listOwner.avatarUrl,
   })),
   O.map(renderUserListCard),
 );
