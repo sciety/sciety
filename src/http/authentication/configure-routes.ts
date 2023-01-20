@@ -5,7 +5,13 @@ import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
-  logInAuth0, stubLogInTwitter, stubTwitterCallback, logInTwitter, signUpAuth0, stubLogInTwitterAsSpecificUser,
+  logInAuth0,
+  stubLogInTwitter,
+  stubTwitterCallback,
+  logInTwitter,
+  signUpAuth0,
+  stubLogInTwitterAsSpecificUser,
+  stubSignUpAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -63,7 +69,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/sign-up-auth0',
     saveReferrerToSession,
-    signUpAuth0,
+    shouldStubAuthentication ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(

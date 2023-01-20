@@ -28,6 +28,11 @@ export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   scope: 'openid email profile',
 });
 
+export const stubSignUpAuth0: Middleware = async (context, next) => {
+  context.redirect('/auth0/callback');
+  await next();
+};
+
 export const stubTwitterCallback = koaPassport.authenticate('local', {
   failureRedirect: '/',
 });
