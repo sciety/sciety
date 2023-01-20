@@ -8,15 +8,15 @@ import { HtmlFragment } from '../../../types/html-fragment';
 
 export const cards = (ports: Ports): HtmlFragment => pipe(
   {
-    first: userListCard({ ...ports, getUser: () => O.some(card1) })(
+    first: userListCard(ports)(
       card1.id,
       card1.description,
     ),
-    second: userListCard({ ...ports, getUser: () => O.some(card2) })(
+    second: userListCard(ports)(
       card2.id,
       card2.description,
     ),
-    third: userListCard({ ...ports, getUser: () => O.some(card3) })(
+    third: userListCard(ports)(
       card3.id,
       card3.description,
     ),
