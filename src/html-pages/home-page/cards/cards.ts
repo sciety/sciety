@@ -9,15 +9,15 @@ import { HtmlFragment } from '../../../types/html-fragment';
 export const cards = (ports: Ports): HtmlFragment => pipe(
   {
     first: userListCard(ports)(
-      card1.id,
+      card1.userId,
       card1.description,
     ),
     second: userListCard(ports)(
-      card2.id,
+      card2.userId,
       card2.description,
     ),
     third: userListCard(ports)(
-      card3.id,
+      card3.userId,
       card3.description,
     ),
   },
