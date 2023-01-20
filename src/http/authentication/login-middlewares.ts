@@ -27,3 +27,7 @@ export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
 });
+
+export const logInLocalCallback = koaPassport.authenticate('local', {
+  failureRedirect: '/',
+});
