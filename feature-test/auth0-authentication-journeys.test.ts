@@ -1,8 +1,29 @@
+import {
+  $, click, closeBrowser, goto, into, openBrowser, textBox, write,
+} from 'taiko';
+
 describe('auth0 authentication journeys', () => {
   describe('sign up', () => {
     describe('after successfully completing the sign up journey', () => {
-      describe('i am logged in', () => {
-        it.todo('the login button says "Log out"');
+      describe.skip('i am logged in', () => {
+        beforeAll(async () => {
+          await openBrowser();
+          await goto('localhost:8080/sign-up-auth0');
+          await write('Full Name', into(textBox('Display name')));
+          await write('username', into(textBox('Handle')));
+          const createAccountButton = $('#createAccountButton');
+          await click(createAccountButton);
+        });
+
+        afterAll(async () => {
+          await closeBrowser();
+        });
+
+        it('the login button says "Log out"', async () => {
+          const buttonText = await $('.utility-bar__list_link_button').text();
+
+          expect(buttonText).toBe('Log out');
+        });
 
         it.todo('i can navigate to my lists from the nav bar');
 
