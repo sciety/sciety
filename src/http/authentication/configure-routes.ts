@@ -31,6 +31,8 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
   await next();
 };
 
+const shouldStubAuthentication = process.env.AUTHENTICATION_STRATEGY === 'local';
+
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   router.get(
     '/create-account-form',
@@ -51,10 +53,10 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in',
     saveReferrerToSession,
-    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInTwitter,
+    shouldStubAuthentication ? logInLocal : logInTwitter,
   );
 
-  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+  if (shouldStubAuthentication) {
     router.get('/log-in-as', logInAsSpecificUser);
   }
 
@@ -67,7 +69,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     '/log-in-auth0',
     saveReferrerToSession,
-    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInAuth0,
+    shouldStubAuthentication ? logInLocal : logInAuth0,
   );
 
   router.get(
@@ -76,7 +78,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       context.session.successRedirect = '/';
       await next();
     },
-    process.env.AUTHENTICATION_STRATEGY === 'local' ? logInLocal : logInTwitter,
+    shouldStubAuthentication ? logInLocal : logInTwitter,
   );
 
   router.get('/log-out', logOut);
@@ -89,7 +91,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotLoggedIn(adapters, logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
+    onlyIfNotLoggedIn(adapters, logInCallback(shouldStubAuthentication ? 'local' : 'twitter')),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
