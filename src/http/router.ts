@@ -9,28 +9,19 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
-import {
-  logIn, logInAsSpecificUser, logInCallback, signUpAuth0,
-} from './authentication/login-middlewares';
-import { catchErrors } from './catch-errors';
-import { finishCommand } from './finish-command';
-import { createUserAccount } from './forms/create-user-account';
 import { editListDetails } from './forms/edit-list-details';
 import { removeArticleFromList } from './forms/remove-article-from-list';
 import { loadStaticFile } from './load-static-file';
-import { logOut } from './log-out';
-import { onlyIfNotLoggedIn } from './only-if-not-logged-in';
 import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
-import { redirectAfterSuccess, requireLoggedInUser } from './require-logged-in-user';
+import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -42,14 +33,13 @@ import {
   addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
-import { createUserAccountFormPage } from '../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
-  executeFollowCommandIfUserLoggedIn, finishUnfollowCommand, saveUnfollowCommand, unfollowHandler,
+  executeFollowCommandIfUserLoggedIn, saveUnfollowCommand, unfollowHandler,
 } from '../write-side/follow';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
@@ -68,14 +58,12 @@ import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { respondHandler } from '../write-side/respond';
-import { finishRespondCommand } from '../write-side/respond/finish-respond-command';
 import { saveRespondCommand } from '../write-side/respond/save-respond-command';
 import { finishSaveArticleCommand } from '../write-side/save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../write-side/save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
-import { signUpPage } from '../sign-up-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { CommandHandler, GenericCommand } from '../types/command-handler';
@@ -85,6 +73,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { userPage } from '../user-page/user-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
+import * as authentication from './authentication';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -396,11 +385,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/create-account-form',
-    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
-  );
-
-  router.get(
     '/annotations/create-annotation-form-avasthi-reading',
     pageHandler(adapters, createPageFromParams(
       createAnnotationFormPageParamsCodec,
@@ -424,11 +408,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/legal',
     pageHandler(adapters, () => pipe(legalPage, TE.right)),
-  );
-
-  router.get(
-    '/sign-up',
-    pageHandler(adapters, () => pipe(signUpPage, TE.right)),
   );
 
   // COMMANDS
@@ -478,12 +457,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     editListDetails(adapters),
   );
 
-  router.post(
-    '/forms/create-user-account',
-    bodyParser({ enableTypes: ['form'] }),
-    createUserAccount(adapters),
-  );
-
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
   router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
@@ -503,89 +476,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   // AUTHENTICATION
 
-  router.get(
-    '/log-in',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
-  );
-
-  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-    router.get('/log-in-as', logInAsSpecificUser);
-  }
-
-  router.get(
-    '/sign-up-auth0',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
-    signUpAuth0,
-  );
-
-  router.get(
-    '/log-in-auth0',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'auth0'),
-  );
-
-  router.get(
-    '/sign-up-call-to-action',
-    async (context: ParameterizedContext, next) => {
-      context.session.successRedirect = '/';
-      await next();
-    },
-    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
-  );
-
-  router.get('/log-out', logOut);
-
-  // TODO set commands as an object on the session rather than individual properties
-  router.get(
-    '/twitter/callback',
-    catchErrors(
-      adapters.logger,
-      'Detected Twitter callback error',
-      'Something went wrong, please try again.',
-    ),
-    onlyIfNotLoggedIn(adapters, logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
-    finishCommand(adapters),
-    finishUnfollowCommand(adapters),
-    finishRespondCommand(adapters),
-    finishSaveArticleCommand(adapters),
-    redirectAfterSuccess(),
-  );
-
-  router.get(
-    '/auth0/callback',
-    catchErrors(
-      adapters.logger,
-      'Detected Auth0 callback error',
-      'Something went wrong, please try again.',
-    ),
-    logInCallback('auth0'),
-    async (context) => {
-      const redirectTo: string = pipe(
-        getLoggedInScietyUser(adapters, context),
-        O.match(
-          () => '/create-account-form',
-          () => '/',
-        ),
-      );
-      context.redirect(redirectTo);
-    },
-  );
+  authentication.configureRoutes(router, adapters);
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
