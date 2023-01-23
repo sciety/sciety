@@ -10,7 +10,7 @@ export const createUserAccountFormPage: Page = {
       <input type="text" id="displayName" name="displayName">
       <label for="handle">Handle</label>
       <input type="text" id="handle" name="handle">
-      <button>Create account</button>
+      <button id='createAccountButton'>Create account</button>
       <button type="reset">Clear form</button>
     </form>
   `),
