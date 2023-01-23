@@ -119,6 +119,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Something went wrong, please try again.',
     ),
     shouldStubAuthentication ? stubLogInAuth0Callback : logInAuth0,
-    completeAuthenticationJourney,
+    completeAuthenticationJourney(adapters),
   );
 };
