@@ -40,3 +40,8 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
 });
+
+export const stubLogInAuth0: Middleware = async (context, next) => {
+  context.redirect('/auth0/callback');
+  await next();
+};
