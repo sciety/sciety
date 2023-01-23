@@ -1,5 +1,8 @@
 import { Middleware } from 'koa';
+import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
+import { pipe } from 'fp-ts/function';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 
 // twitter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -43,5 +46,19 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
 
 export const stubLogInAuth0: Middleware = async (context, next) => {
   context.redirect('/auth0/callback');
+  await next();
+};
+
+export const completeAuthenticationJourney = (
+  adapters: GetLoggedInScietyUserPorts,
+): Middleware => async (context, next) => {
+  pipe(
+    getLoggedInScietyUser(adapters, context),
+    O.match(
+      () => '/create-account-form',
+      () => '/',
+    ),
+    (page) => context.redirect(page),
+  );
   await next();
 };

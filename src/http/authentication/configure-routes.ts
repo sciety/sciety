@@ -1,6 +1,5 @@
 /* eslint-disable padded-blocks */
 import Router from '@koa/router';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
@@ -14,6 +13,7 @@ import {
   stubLogInTwitterAsSpecificUser,
   stubSignUpAuth0,
   stubLogInAuth0,
+  completeAuthenticationJourney,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -30,7 +30,6 @@ import { CollectedPorts } from '../../infrastructure';
 import { finishRespondCommand } from '../../write-side/respond/finish-respond-command';
 import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
 import { signUpPage } from '../../sign-up-page';
-import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
   if (!context.session.successRedirect) {
@@ -120,15 +119,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Something went wrong, please try again.',
     ),
     logInAuth0,
-    async (context) => {
-      pipe(
-        getLoggedInScietyUser(adapters, context),
-        O.match(
-          () => '/create-account-form',
-          () => '/',
-        ),
-        (page) => context.redirect(page),
-      );
-    },
+    completeAuthenticationJourney,
   );
 };
