@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { List } from '../../../src/types/list';
 import { userListCard } from '../../../src/user-page/user-list-card';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -9,7 +10,7 @@ import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 describe('user-list-card', () => {
   const listName = arbitraryString();
   const listDescription = arbitraryString();
-  const list = {
+  const list: List = {
     listId: arbitraryListId(),
     ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],

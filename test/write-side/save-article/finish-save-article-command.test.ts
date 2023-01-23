@@ -13,10 +13,11 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
 
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
-  const selectAllListsOwnedBy = (listOwnerId: ListOwnerId) => [{
+  const selectAllListsOwnedBy: SelectAllListsOwnedBy = (listOwnerId: ListOwnerId) => [{
     listId,
     ownerId: listOwnerId,
     articleIds: [arbitraryDoi().value],
