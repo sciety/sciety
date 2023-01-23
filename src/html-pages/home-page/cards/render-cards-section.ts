@@ -9,8 +9,8 @@ type Card = {
   articleTitle: string,
   date: Date,
   groupSlug: string,
-  groupName: string,
-  avatarPath: string,
+  groupName: string, // TODO: derive from the groupSlug via the groups readmodel
+  avatarPath: string, // TODO: derive from the groupSlug via the groups readmodel
 };
 
 const renderEvaluationCard = (card: Card) => `
@@ -31,7 +31,7 @@ const renderEvaluationCard = (card: Card) => `
 const userListCards = (userLists: O.Option<Record<string, HtmlFragment>>): HtmlFragment => pipe(
   userLists,
   O.fold(
-    () => '',
+    () => '', // TODO: log an error in this case, due to bad data
     (cards) => `
         <h2 class="home-page-cards__title">Most active lists</h2>
         <ul class="home-page-cards__cards">

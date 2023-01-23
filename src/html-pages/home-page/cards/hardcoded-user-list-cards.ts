@@ -1,5 +1,6 @@
 import { toUserId, UserId } from '../../../types/user-id';
 
+// TODO: these should be ListIds
 type Card = {
   userId: UserId,
 };
