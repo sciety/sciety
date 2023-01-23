@@ -1,5 +1,6 @@
 import { ParameterizedContext } from 'koa';
 import * as O from 'fp-ts/Option';
+import { dummyLogger } from '../../dummy-logger';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { finishRespondCommand } from '../../../src/write-side/respond/finish-respond-command';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -28,6 +29,7 @@ describe('finish-respond-command', () => {
         commitEvents: shouldNotBeCalled,
         getAllEvents: shouldNotBeCalled,
         getUser: () => O.some(arbitraryUserDetails()),
+        logger: dummyLogger,
       })(context, jest.fn());
 
       expect(context.session).toStrictEqual(originalContext.session);

@@ -8,11 +8,13 @@ import { GetAllEvents } from './respond-helpful-command';
 import * as RI from '../../types/review-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 
-type Ports = GetLoggedInScietyUserPorts & {
+// ts-unused-exports:disable-next-line
+export type Ports = GetLoggedInScietyUserPorts & {
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
 };
 
+// ts-unused-exports:disable-next-line
 export const respondHandler = (ports: Ports): Middleware => async (context, next) => {
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(

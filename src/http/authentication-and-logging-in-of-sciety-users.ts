@@ -3,6 +3,8 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
+import * as PR from 'io-ts/PathReporter';
+import { Logger } from '../shared-ports/logger';
 import { ErrorMessage } from '../types/error-message';
 import { GetUser } from '../shared-ports';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -29,19 +31,31 @@ export const writeUserIdToState = (
   );
 };
 
-export const getAuthenticatedUserIdFromContext = (context: ParameterizedContext): O.Option<UserId> => pipe(
+export type Ports = GetAuthenticatedUserIdFromContextPorts & {
+  getUser: GetUser,
+};
+
+export type GetAuthenticatedUserIdFromContextPorts = {
+  logger: Logger,
+};
+
+export const getAuthenticatedUserIdFromContext = (
+  adapters: GetAuthenticatedUserIdFromContextPorts,
+) => (
+  context: ParameterizedContext,
+): O.Option<UserId> => pipe(
   context,
   passportUserCodec.decode,
+  E.mapLeft((errors) => {
+    adapters.logger('error', 'passport user not found on session state', { errors: PR.failure(errors).join('\n'), context });
+    return undefined;
+  }),
   O.fromEither,
   O.map((contextWithPassportUser) => contextWithPassportUser.state.user.id),
 );
 
-export type Ports = {
-  getUser: GetUser,
-};
-
 export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedContext): O.Option<UserDetails> => pipe(
   context,
-  getAuthenticatedUserIdFromContext,
+  getAuthenticatedUserIdFromContext(adapters),
   O.chain((id) => adapters.getUser(id)),
 );

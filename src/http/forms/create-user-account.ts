@@ -9,9 +9,9 @@ import { createUserAccountCommandHandler } from '../../write-side/create-user-ac
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, GetAuthenticatedUserIdFromContextPorts } from '../authentication-and-logging-in-of-sciety-users';
 
-type Ports = {
+type Ports = GetAuthenticatedUserIdFromContextPorts & {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
@@ -28,7 +28,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     createUserAccountFormCodec.decode,
     E.chainW((formUserDetails) => pipe(
       context,
-      getAuthenticatedUserIdFromContext,
+      getAuthenticatedUserIdFromContext(adapters),
       E.fromOption(() => 'no-authenticated-user-id'),
       E.map((userId) => ({
         ...formUserDetails,
