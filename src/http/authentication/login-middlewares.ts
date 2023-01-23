@@ -45,9 +45,14 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
 });
 
 export const stubLogInAuth0: Middleware = async (context, next) => {
-  context.redirect('/auth0/callback');
+  const testingAccountId = Math.floor(Math.random() * 1000000 + 1);
+  context.redirect(`/auth0/callback?username=${testingAccountId}&password=anypassword`);
   await next();
 };
+
+export const stubLogInAuth0Callback = koaPassport.authenticate('local', {
+  failureRedirect: '/',
+});
 
 export const completeAuthenticationJourney = (
   adapters: GetLoggedInScietyUserPorts,

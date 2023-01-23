@@ -13,7 +13,7 @@ import {
   stubLogInTwitterAsSpecificUser,
   stubSignUpAuth0,
   stubLogInAuth0,
-  completeAuthenticationJourney,
+  completeAuthenticationJourney, stubLogInAuth0Callback,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -118,7 +118,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       'Detected Auth0 callback error',
       'Something went wrong, please try again.',
     ),
-    logInAuth0,
+    shouldStubAuthentication ? stubLogInAuth0Callback : logInAuth0,
     completeAuthenticationJourney,
   );
 };
