@@ -14,7 +14,6 @@ type Ports = CreateUserAccountCommandHandlerPorts & {
 
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
-    ports.logger('debug', '>>>>>>> inside setupLocalStrategy', { username });
     const command: CreateUserAccountCommand = {
       userId: toUserId(username),
       handle: `H${username}` as UserHandle,
