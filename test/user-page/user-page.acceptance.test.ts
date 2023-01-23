@@ -35,7 +35,7 @@ const defaultPorts: Ports = {
   getAllEvents: T.of([]),
   getUserViaHandle: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
-    listId,
+    id: listId,
     ownerId,
     articleIds: [],
     lastUpdated: arbitraryDate(),

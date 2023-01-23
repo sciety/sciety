@@ -18,5 +18,5 @@ export const isArticleOnTheListOwnedBy = (
   R.filter((listState) => listState.articleIds.includes(articleId.value)),
   (result) => Object.values(result),
   RA.head,
-  O.map((list) => list.listId),
+  O.map((list) => list.id),
 );

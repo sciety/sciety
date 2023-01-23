@@ -18,7 +18,7 @@ import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
   const selectAllListsOwnedBy: SelectAllListsOwnedBy = (listOwnerId: ListOwnerId) => [{
-    listId,
+    id: listId,
     ownerId: listOwnerId,
     articleIds: [arbitraryDoi().value],
     lastUpdated: arbitraryDate(),

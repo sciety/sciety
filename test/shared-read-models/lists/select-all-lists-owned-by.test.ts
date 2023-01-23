@@ -39,7 +39,7 @@ describe('select-all-lists-owned-by', () => {
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.listId).toBe(listId);
+      expect(result.id).toBe(listId);
     });
 
     it('returns the name of the list', () => {
@@ -71,7 +71,7 @@ describe('select-all-lists-owned-by', () => {
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.listId).toBe(listId);
+      expect(result.id).toBe(listId);
     });
 
     it('returns the name of the list', () => {
@@ -102,7 +102,7 @@ describe('select-all-lists-owned-by', () => {
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.listId).toBe(listId);
+      expect(result.id).toBe(listId);
     });
 
     it('returns the updated name of the list', () => {
@@ -136,7 +136,7 @@ describe('select-all-lists-owned-by', () => {
     const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.listId).toBe(listId);
+      expect(result.id).toBe(listId);
     });
 
     it('returns the name of the list', () => {
@@ -184,10 +184,10 @@ describe('select-all-lists-owned-by', () => {
 
     it('returns the lists in ascending order by last updated', () => {
       expect(result[0].lastUpdated).toStrictEqual(new Date('2022-01-02'));
-      expect(result[0].listId).toStrictEqual(list2Id);
+      expect(result[0].id).toStrictEqual(list2Id);
 
       expect(result[1].lastUpdated).toStrictEqual(new Date('2022-01-03'));
-      expect(result[1].listId).toStrictEqual(list1Id);
+      expect(result[1].id).toStrictEqual(list1Id);
     });
   });
 });

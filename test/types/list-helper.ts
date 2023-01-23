@@ -4,7 +4,7 @@ import { List } from '../../src/types/list';
 import { arbitraryDate, arbitraryString } from '../helpers';
 
 export const arbitraryList = (name?: string): List => ({
-  listId: arbitraryListId(),
+  id: arbitraryListId(),
   name: name ?? arbitraryString(),
   description: arbitraryString(),
   articleIds: [],

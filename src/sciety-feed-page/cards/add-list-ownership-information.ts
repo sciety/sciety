@@ -33,21 +33,21 @@ export const addListOwnershipInformation = (
         O.match(
           () => {
             ports.logger('error', 'Could not find group that owns list', {
-              listId: list.listId,
+              listId: list.id,
               ownerId: list.ownerId,
             });
             return {
               ...list,
               ownerName: 'A group',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-              linkUrl: renderListPageLinkHref(list.listId),
+              linkUrl: renderListPageLinkHref(list.id),
             };
           },
           (group) => ({
             ...list,
             ownerName: group.name,
             ownerAvatarUrl: group.avatarPath,
-            linkUrl: renderListPageLinkHref(list.listId),
+            linkUrl: renderListPageLinkHref(list.id),
           }),
         ),
       );
@@ -58,14 +58,14 @@ export const addListOwnershipInformation = (
         O.match(
           () => {
             ports.logger('error', 'Could not find user who owns list', {
-              listId: list.listId,
+              listId: list.id,
               ownerId: list.ownerId,
             });
             return {
               ...list,
               ownerName: 'A user',
               ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-              linkUrl: renderListPageLinkHref(list.listId),
+              linkUrl: renderListPageLinkHref(list.id),
             };
           },
           (userDetails) => (
@@ -73,7 +73,7 @@ export const addListOwnershipInformation = (
               ...list,
               ownerName: userDetails.handle,
               ownerAvatarUrl: userDetails.avatarUrl,
-              linkUrl: renderListPageLinkHref(list.listId),
+              linkUrl: renderListPageLinkHref(list.id),
 
             }
           ),

@@ -5,7 +5,7 @@ import * as LOID from '../list-owner-id';
 
 export const OwnedByQuery = t.type({
   items: t.readonlyArray(t.type({
-    listId: ListIdFromString,
+    id: ListIdFromString,
     name: t.string,
     description: t.string,
     articleIds: t.array(t.string),

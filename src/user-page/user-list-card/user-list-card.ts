@@ -6,7 +6,7 @@ import { List } from '../../types/list';
 
 export const userListCard = (list: List): HtmlFragment => pipe(
   {
-    listId: list.listId,
+    listId: list.id,
     articleCount: list.articleIds.length,
     lastUpdated: O.some(list.lastUpdated),
     title: list.name,

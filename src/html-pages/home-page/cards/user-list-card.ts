@@ -32,7 +32,7 @@ export const userListCard = (
   },
   sequenceS(O.Apply),
   O.map(({ list, listOwner }) => ({
-    listId: list.listId,
+    listId: list.id,
     articleCount: list.articleIds.length,
     lastUpdated: O.some(list.lastUpdated),
     description: list.description,

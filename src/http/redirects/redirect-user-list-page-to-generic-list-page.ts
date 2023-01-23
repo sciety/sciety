@@ -36,7 +36,7 @@ export const redirectUserListPageToGenericListPage = (adapters: Ports): Middlewa
       },
       (list) => {
         context.status = StatusCodes.PERMANENT_REDIRECT;
-        context.redirect(`/lists/${list.listId}`);
+        context.redirect(`/lists/${list.id}`);
         return undefined;
       },
     ),

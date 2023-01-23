@@ -82,7 +82,8 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
     O.map((ownerInformation) => ({
       ...ownerInformation,
       ...list,
-      basePath: `/lists/${list.listId}`,
+      listId: list.id,
+      basePath: `/lists/${list.id}`,
       title: list.name,
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,

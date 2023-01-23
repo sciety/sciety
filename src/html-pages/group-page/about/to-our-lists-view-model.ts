@@ -19,7 +19,7 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
   lists,
   RA.map((list) => ({
     articleCount: list.articleIds.length,
-    href: `/lists/${list.listId}`,
+    href: `/lists/${list.id}`,
     title: list.name,
     lastUpdated: list.lastUpdated,
   })),

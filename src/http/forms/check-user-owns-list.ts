@@ -21,7 +21,7 @@ export const checkUserOwnsList = (adapters: CheckUserOwnsListPorts, listId: List
     (list) => ({
       message: 'List owner id does not match user id',
       payload: {
-        listId: list.listId,
+        listId: list.id,
         listOwnerId: list.ownerId,
         userId,
       },

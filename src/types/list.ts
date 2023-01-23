@@ -2,7 +2,7 @@ import { ListId } from './list-id';
 import { ListOwnerId } from './list-owner-id';
 
 export type List = {
-  listId: ListId,
+  id: ListId,
   ownerId: ListOwnerId,
   articleIds: Array<string>,
   lastUpdated: Date,

@@ -40,7 +40,7 @@ const constructCommand: ConstructCommand = (
   ports.selectAllListsOwnedBy,
   RA.head,
   TE.fromOption(() => toErrorMessage('finishSaveArticleCommand: Cannot find list for user')),
-  TE.map((list) => ({ articleId, listId: list.listId })),
+  TE.map((list) => ({ articleId, listId: list.id })),
 );
 
 const contextCodec = t.type({

@@ -6,6 +6,7 @@ type ToListCardViewModel = (list: List) => ListCardViewModel;
 
 export const toListCardViewModel: ToListCardViewModel = (list) => ({
   ...list,
+  listId: list.id,
   title: list.name,
   articleCount: list.articleIds.length,
   articleCountLabel: 'This list contains',

@@ -11,6 +11,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryList } from '../../types/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { GetList } from '../../../src/shared-ports';
 
 describe('article-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -22,9 +23,9 @@ describe('article-added-to-list-card', () => {
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const getAllEvents = T.of([]);
-    const getList = () => O.some({
+    const getList: GetList = () => O.some({
       ...arbitraryList(),
-      listId,
+      id: listId,
     });
 
     describe('when user details are available', () => {

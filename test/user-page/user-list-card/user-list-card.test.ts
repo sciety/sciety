@@ -11,7 +11,7 @@ describe('user-list-card', () => {
   const listName = arbitraryString();
   const listDescription = arbitraryString();
   const list: List = {
-    listId: arbitraryListId(),
+    id: arbitraryListId(),
     ownerId: arbitraryListOwnerId(),
     articleIds: [arbitraryArticleId().value, arbitraryArticleId().value],
     lastUpdated: new Date('2021-07-23'),
