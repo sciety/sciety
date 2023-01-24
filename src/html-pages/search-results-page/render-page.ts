@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { renderSearchResults, SearchResults } from './render-search-results';
-import { renderSearchForm } from '../shared-components/render-search-form';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
+import { renderSearchForm } from '../../shared-components/render-search-form';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
 
 export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, Page>;
 

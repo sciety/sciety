@@ -5,16 +5,16 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { groupJoined } from '../../src/domain-events';
-import { searchResultsPage } from '../../src/search-results-page';
-import { Ports } from '../../src/search-results-page/search-results-page';
-import * as DE from '../../src/types/data-error';
-import { Page } from '../../src/types/page';
-import { RenderPageError } from '../../src/types/render-page-error';
-import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryEuropePmcItem } from '../third-parties/europe-pmc/helpers';
-import { arbitraryGroup } from '../types/group.helper';
+import { groupJoined } from '../../../src/domain-events';
+import { searchResultsPage } from '../../../src/html-pages/search-results-page';
+import { Ports } from '../../../src/html-pages/search-results-page/search-results-page';
+import * as DE from '../../../src/types/data-error';
+import { Page } from '../../../src/types/page';
+import { RenderPageError } from '../../../src/types/render-page-error';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryEuropePmcItem } from '../../third-parties/europe-pmc/helpers';
+import { arbitraryGroup } from '../../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
 

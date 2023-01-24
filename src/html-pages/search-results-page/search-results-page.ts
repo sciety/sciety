@@ -7,7 +7,7 @@ import {
 import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './perform-all-searches';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { selectSubsetToDisplay } from './select-subset-to-display';
-import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../shared-components/article-card';
+import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card';
 
 // ts-unused-exports:disable-next-line
 export type Ports = PerformAllSearchesPorts

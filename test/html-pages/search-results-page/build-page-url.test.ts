@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { buildPageUrl } from '../../src/search-results-page/build-page-url';
-import { arbitraryBoolean, arbitraryString } from '../helpers';
+import { buildPageUrl } from '../../../src/html-pages/search-results-page/build-page-url';
+import { arbitraryBoolean, arbitraryString } from '../../helpers';
 
 const arbitraryCategory = (): 'articles' | 'groups' => (arbitraryBoolean() ? 'articles' : 'groups');
 

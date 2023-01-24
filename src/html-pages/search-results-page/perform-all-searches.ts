@@ -9,7 +9,7 @@ import * as tt from 'io-ts-types';
 import { ArticleResults } from './data-types';
 import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
-import * as DE from '../types/data-error';
+import * as DE from '../../types/data-error';
 
 type FindArticles = (
   pageSize: number,

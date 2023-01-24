@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
-import { findGroups } from '../../src/search-results-page/find-groups';
-import { GroupId } from '../../src/types/group-id';
-import { arbitraryString } from '../helpers';
-import { arbitraryGroup } from '../types/group.helper';
+import { findGroups } from '../../../src/html-pages/search-results-page/find-groups';
+import { GroupId } from '../../../src/types/group-id';
+import { arbitraryString } from '../../helpers';
+import { arbitraryGroup } from '../../types/group.helper';
 
 describe('find-groups', () => {
   const group1 = arbitraryGroup();

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { buildPageUrl } from './build-page-url';
-import { tabs } from '../shared-components/tabs';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { tabs } from '../../shared-components/tabs';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type PageTabsViewModel = {
   query: string,
