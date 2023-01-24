@@ -1,10 +1,10 @@
-@use '../sass/functions';
-@use '../sass/settings';
-@use '../sass/typography';
-@use '../sass/baseline';
-@use '../sass/button';
-@use '../sass/card';
-@use '../sass/breakpoints';
+@use '../../sass/functions';
+@use '../../sass/settings';
+@use '../../sass/typography';
+@use '../../sass/baseline';
+@use '../../sass/button';
+@use '../../sass/card';
+@use '../../sass/breakpoints';
 
 .page-header.page-header--edit-list-details-form-page {
   margin-bottom: baseline.increments(2);

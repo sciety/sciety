@@ -36,7 +36,7 @@ import { validateInputShape } from '../write-side/commands/validate-input-shape'
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
-import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../edit-list-details-form-page';
+import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
   executeFollowCommandIfUserLoggedIn, saveUnfollowCommand, unfollowHandler,

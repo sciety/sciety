@@ -1,6 +1,6 @@
-import { toHtmlFragment } from '../types/html-fragment';
-import { ListId } from '../types/list-id';
-import { Page } from '../types/page';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { ListId } from '../../types/list-id';
+import { Page } from '../../types/page';
 
 export type ViewModel = {
   listName: string,
