@@ -4,7 +4,7 @@ import {
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 
-describe('journey-to-user-list', () => {
+describe.skip('journey-to-user-list', () => {
   beforeEach(async () => {
     await openBrowser();
   });

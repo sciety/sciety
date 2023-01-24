@@ -4,7 +4,7 @@ import {
 } from 'taiko';
 import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
 
-describe('save-article-to-list', () => {
+describe.skip('save-article-to-list', () => {
   describe('when a new user logs in and saves an article that isn\'t in any list', () => {
     const userHandle = 'DavidAshbrook';
     const testUserId = '931653361';

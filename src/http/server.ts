@@ -80,7 +80,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   ));
 
   if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-    koaPassport.use(setupLocalStrategy(ports));
+    koaPassport.use(setupLocalStrategy);
   } else {
     koaPassport.use(setupTwitterStrategy(ports));
     koaPassport.use(setupAuth0Strategy());

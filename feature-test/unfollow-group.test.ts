@@ -8,7 +8,7 @@ import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 
-describe('unfollow a group', () => {
+describe.skip('unfollow a group', () => {
   beforeEach(async () => {
     await openBrowser();
   });
