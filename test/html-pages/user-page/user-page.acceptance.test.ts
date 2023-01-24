@@ -8,7 +8,7 @@ import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/static-messages';
+import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/render-as-html';
 import { Ports, userPage } from '../../../src/html-pages/user-page';
 import {
   arbitraryDate,

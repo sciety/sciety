@@ -8,7 +8,7 @@ import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '..
 import { renderGroupCard } from '../../../shared-components/group-card/render-group-card';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { followingNothing, informationUnavailable } from '../static-messages';
+import { followingNothing, informationUnavailable } from '../render-as-html/static-messages';
 
 export type Ports = PopulateGroupViewModelPorts;
 
