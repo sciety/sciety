@@ -16,9 +16,7 @@ const groupsMenuItem = () => `
 
 const logInMenuItem = () => `
   <li class="utility-bar__list_item">
-    <a href="${
-  process.env.EXPERIMENT_ENABLED === 'true' ? '/log-in-auth0' : '/log-in'
-}" class="utility-bar__list_link_button">Log In</a>
+    <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
   </li>
 `;
 
@@ -30,9 +28,7 @@ const logOutMenuItem = () => `
 
 const signUpMenuItem = () => `
   <li class="utility-bar__list_item">
-    <a href="${
-  process.env.EXPERIMENT_ENABLED === 'true' ? '/sign-up-auth0' : '/sign-up'
-}" class="utility-bar__list_link_sign_up_button">Sign Up</a>
+    <a href="/sign-up" class="utility-bar__list_link_sign_up_button">Sign Up</a>
   </li>
 `;
 

@@ -79,11 +79,20 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     app,
   ));
 
-  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-    koaPassport.use(setupLocalStrategy(ports));
-  } else {
-    koaPassport.use(setupTwitterStrategy(ports));
-    koaPassport.use(setupAuth0Strategy());
+  type AuthStrategy = 'local' | 'twitter' | 'auth0';
+
+  const authStrategy = process.env.AUTHENTICATION_STRATEGY ?? 'twitter';
+
+  switch (authStrategy as AuthStrategy) {
+    case 'local':
+      koaPassport.use(setupLocalStrategy(ports));
+      break;
+    case 'twitter':
+      koaPassport.use(setupTwitterStrategy(ports));
+      break;
+    case 'auth0':
+      koaPassport.use(setupAuth0Strategy());
+      break;
   }
 
   app.use(koaPassport.initialize());
