@@ -1,8 +1,8 @@
-import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
-import { ViewModel } from './view-model';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { Page } from '../../../types/page';
+import { ViewModel } from '../view-model';
 
-export const renderPage = (viewmodel: ViewModel): Page => ({
+export const renderAsHtml = (viewmodel: ViewModel): Page => ({
   title: viewmodel.userDisplayName,
   openGraph: {
     title: viewmodel.userDisplayName,
