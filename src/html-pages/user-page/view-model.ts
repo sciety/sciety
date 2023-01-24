@@ -5,6 +5,5 @@ export type ViewModel = {
   displayName: string,
   handle: string,
   mainContent: HtmlFragment,
-  userDisplayName: string,
   description: string,
 };

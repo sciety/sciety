@@ -13,7 +13,6 @@ import { tabs } from '../../shared-components/tabs';
 import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../shared-ports';
 import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
 import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -66,7 +65,6 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
     })),
     T.map((mainContent) => ({
       ...inputs.userDetails,
-      userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
       description: renderDescription(inputs.groupIds.length),
       mainContent,
     })),
