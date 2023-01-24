@@ -62,6 +62,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
       ...inputs.userDetails,
       groupIds: inputs.groupIds,
       mainContent,
+      activeTab: (tab === 'lists' ? { selector: 'lists' } : { selector: 'followed-groups' }),
     })),
   )),
 );
