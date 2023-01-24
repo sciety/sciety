@@ -1,5 +1,5 @@
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
 
 const renderNoJsFallbackVideo = () => `
   <noscript>

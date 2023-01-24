@@ -51,7 +51,7 @@ import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
 import { CollectedPorts } from '../infrastructure';
-import { learnAboutPage } from '../learn-about-page';
+import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
