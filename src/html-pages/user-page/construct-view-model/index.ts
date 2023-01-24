@@ -1,1 +1,1 @@
-export { constructViewModel } from './construct-view-model';
+export { constructViewModel, Params, Ports } from './construct-view-model';

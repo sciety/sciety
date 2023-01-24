@@ -14,13 +14,12 @@ import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 
-// ts-unused-exports:disable-next-line
 export type Ports = FollowListPorts & {
   getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-type Params = {
+export type Params = {
   handle: string,
 };
 

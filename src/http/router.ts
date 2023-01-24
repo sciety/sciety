@@ -71,7 +71,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { userPage } from '../html-pages/user-page/user-page';
+import { userPage } from '../html-pages/user-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
