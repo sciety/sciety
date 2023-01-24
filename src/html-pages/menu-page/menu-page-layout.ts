@@ -2,10 +2,10 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
 import { siteMenuItems } from './site-menu';
-import { googleTagManagerNoScript } from '../shared-components/analytics';
-import { head } from '../shared-components/head';
-import { utilityBar } from '../shared-components/utility-bar';
-import { User } from '../types/user';
+import { googleTagManagerNoScript } from '../../shared-components/analytics';
+import { head } from '../../shared-components/head';
+import { utilityBar } from '../../shared-components/utility-bar';
+import { User } from '../../types/user';
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>

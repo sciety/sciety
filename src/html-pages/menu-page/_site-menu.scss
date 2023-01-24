@@ -1,11 +1,11 @@
 @use 'sass:math';
 
-@use '../sass/settings';
-@use '../sass/functions';
-@use '../sass/baseline';
-@use '../sass/button';
-@use '../sass/typography';
-@use '../sass/list';
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/baseline';
+@use '../../sass/button';
+@use '../../sass/typography';
+@use '../../sass/list';
 
 $_inline-spacing: 16px;
 $_link-max-width: 300px;

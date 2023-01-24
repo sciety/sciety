@@ -53,7 +53,7 @@ import { page as listPage, paramsCodec as listPageParams } from '../html-pages/l
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../html-pages/legal-page';
-import { menuPageLayout } from '../menu-page/menu-page-layout';
+import { menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';

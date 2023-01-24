@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-
-import { User } from '../types/user';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { User } from '../../types/user';
 
 const myProfileMenuItem = (user: User) => toHtmlFragment(`
   <li><a href="/users/${user.handle}" class="site-menu__link"><span class="site-menu__link_text">My Lists</span></a></li>
