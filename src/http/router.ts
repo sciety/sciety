@@ -74,6 +74,8 @@ import { RenderPageError } from '../types/render-page-error';
 import { userPage } from '../html-pages/user-page/user-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
+import { createUserAccountCommandHandler } from '../write-side/create-user-account';
+import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -468,6 +470,8 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
 
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
+
+  router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 
   router.post(
     '/annotations/create-annotation',
