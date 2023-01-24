@@ -1,11 +1,13 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter';
-import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as E from 'fp-ts/Either';
 import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
-import { createUserAccountCommandHandler, Ports } from '../../write-side/create-user-account';
+import { Ports } from '../../write-side/create-user-account';
 import { CreateUserAccountCommand } from '../../write-side/commands';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
+import { setUpUserIfNecessary } from '../../write-side/create-user-account/set-up-user-if-necessary';
 
 export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
   {
@@ -23,10 +25,14 @@ export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
       avatarUrl: photos[0].value,
       displayName: profile.displayName,
     };
-    void createUserAccountCommandHandler(ports)(command)()
-      .then((commandResult) => pipe(
-        commandResult,
-        E.map(() => command.userId),
+    void pipe(
+      ports.getAllEvents,
+      T.map(setUpUserIfNecessary(command)),
+      T.chain(ports.commitEvents),
+    )()
+      .then(() => pipe(
+        command.userId,
+        E.right,
         writeUserIdToState(cb),
       ));
   },
