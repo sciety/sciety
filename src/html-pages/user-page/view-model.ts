@@ -1,3 +1,4 @@
+import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
@@ -5,5 +6,5 @@ export type ViewModel = {
   displayName: string,
   handle: string,
   mainContent: HtmlFragment,
-  description: string,
+  groupIds: ReadonlyArray<GroupId>,
 };

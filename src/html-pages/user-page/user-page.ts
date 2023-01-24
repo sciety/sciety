@@ -5,7 +5,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list/follow-list';
-import { renderDescription } from './render-description';
 import { renderErrorPage } from './render-error-page';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
@@ -65,7 +64,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
     })),
     T.map((mainContent) => ({
       ...inputs.userDetails,
-      description: renderDescription(inputs.groupIds.length),
+      groupIds: inputs.groupIds,
       mainContent,
     })),
   )),
