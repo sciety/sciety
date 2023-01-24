@@ -1,23 +1,17 @@
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
+import { ViewModel } from './view-model';
 
-type Components = {
-  header: HtmlFragment,
-  mainContent: HtmlFragment,
-  userDisplayName: string,
-  description: string,
-};
-
-export const renderPage = (components: Components): Page => ({
-  title: components.userDisplayName,
+export const renderPage = (viewmodel: ViewModel): Page => ({
+  title: viewmodel.userDisplayName,
   openGraph: {
-    title: components.userDisplayName,
-    description: components.description,
+    title: viewmodel.userDisplayName,
+    description: viewmodel.description,
   },
   content: toHtmlFragment(`
-    ${components.header}
+    ${viewmodel.header}
     <div class="main-content main-content--user">
-      ${components.mainContent}
+      ${viewmodel.mainContent}
     </div>
   `),
 });
