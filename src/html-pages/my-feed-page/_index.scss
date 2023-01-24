@@ -1,9 +1,9 @@
-@use '../sass/settings';
-@use '../sass/baseline';
-@use '../sass/breakpoints';
-@use '../sass/card';
-@use '../sass/layout';
-@use '../sass/feed-page-numbers';
+@use '../../sass/settings';
+@use '../../sass/baseline';
+@use '../../sass/breakpoints';
+@use '../../sass/card';
+@use '../../sass/layout';
+@use '../../sass/feed-page-numbers';
 
 .my-feed-page-numbers {
   @include feed-page-numbers.feed-page-numbers();

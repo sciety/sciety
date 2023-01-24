@@ -54,7 +54,7 @@ import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../html-pages/legal-page';
 import { menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
-import { myFeedPage, myFeedParams } from '../my-feed-page';
+import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { respondHandler } from '../write-side/respond';

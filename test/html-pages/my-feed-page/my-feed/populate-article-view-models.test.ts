@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { populateArticleViewModelsSkippingFailures } from '../../../src/my-feed-page/my-feed/populate-article-view-models';
-import { ArticleActivity } from '../../../src/types/article-activity';
-import * as DE from '../../../src/types/data-error';
-import { Doi, eqDoi } from '../../../src/types/doi';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { populateArticleViewModelsSkippingFailures } from '../../../../src/html-pages/my-feed-page/my-feed/populate-article-view-models';
+import { ArticleActivity } from '../../../../src/types/article-activity';
+import * as DE from '../../../../src/types/data-error';
+import { Doi, eqDoi } from '../../../../src/types/doi';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
+import { sanitise } from '../../../../src/types/sanitised-html-fragment';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('populate-article-view-models', () => {
   describe('no failures', () => {

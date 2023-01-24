@@ -4,22 +4,22 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
-import { evaluationRecorded, userFollowedEditorialCommunity } from '../../../src/domain-events';
-import { myFeed } from '../../../src/my-feed-page/my-feed';
+import { evaluationRecorded, userFollowedEditorialCommunity } from '../../../../src/domain-events';
+import { myFeed } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
-} from '../../../src/my-feed-page/my-feed/static-content';
-import * as DE from '../../../src/types/data-error';
-import { Doi, eqDoi } from '../../../src/types/doi';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+} from '../../../../src/html-pages/my-feed-page/my-feed/static-content';
+import * as DE from '../../../../src/types/data-error';
+import { Doi, eqDoi } from '../../../../src/types/doi';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
+import { sanitise } from '../../../../src/types/sanitised-html-fragment';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('my-feed acceptance', () => {
   it('displays the feed title', async () => {

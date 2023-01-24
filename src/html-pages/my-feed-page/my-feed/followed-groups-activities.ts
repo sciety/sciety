@@ -7,10 +7,10 @@ import { flow, pipe } from 'fp-ts/function';
 import {
   DomainEvent, EvaluationRecordedEvent,
   isEvaluationRecordedEvent,
-} from '../../domain-events';
-import { ArticleActivity } from '../../types/article-activity';
-import { Doi } from '../../types/doi';
-import { GroupId } from '../../types/group-id';
+} from '../../../domain-events';
+import { ArticleActivity } from '../../../types/article-activity';
+import { Doi } from '../../../types/doi';
+import { GroupId } from '../../../types/group-id';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,

@@ -1,11 +1,11 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { evaluationRecorded } from '../../../src/domain-events';
-import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
-import { arbitraryDate } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { evaluationRecorded } from '../../../../src/domain-events';
+import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
+import { arbitraryDate } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
+import { arbitraryReviewId } from '../../../types/review-id.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {

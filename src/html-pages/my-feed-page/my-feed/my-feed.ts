@@ -11,19 +11,19 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
-import { DomainEvent } from '../../domain-events';
+import { DomainEvent } from '../../../domain-events';
 import {
   FindVersionsForArticleDoi,
   getLatestArticleVersionDate,
   renderArticleCard,
-} from '../../shared-components/article-card';
-import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
-import { PageOfItems, paginate } from '../../shared-components/paginate';
-import { paginationControls } from '../../shared-components/pagination-controls';
-import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
-import { GroupId } from '../../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserId } from '../../types/user-id';
+} from '../../../shared-components/article-card';
+import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
+import { PageOfItems, paginate } from '../../../shared-components/paginate';
+import { paginationControls } from '../../../shared-components/pagination-controls';
+import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
+import { GroupId } from '../../../types/group-id';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { UserId } from '../../../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
