@@ -1,5 +1,5 @@
-@use '../sass/button';
-@use '../sass/layout';
+@use '../../sass/button';
+@use '../../sass/layout';
 
 .sign-up-page-content {
   @include layout.page-content-horizontal-margins();

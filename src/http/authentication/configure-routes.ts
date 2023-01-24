@@ -29,7 +29,7 @@ import {
 import { CollectedPorts } from '../../infrastructure';
 import { finishRespondCommand } from '../../write-side/respond/finish-respond-command';
 import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
-import { signUpPage } from '../../sign-up-page';
+import { signUpPage } from '../../html-pages/sign-up-page';
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
   if (!context.session.successRedirect) {
