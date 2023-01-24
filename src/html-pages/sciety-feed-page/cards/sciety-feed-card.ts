@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../../../shared-components/date';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 type ScietyFeedCardDetails = {
   title: HtmlFragment,

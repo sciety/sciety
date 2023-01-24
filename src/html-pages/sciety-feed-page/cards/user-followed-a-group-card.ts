@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../domain-events';
-import { GetGroup, GetUser } from '../../shared-ports';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../../domain-events';
+import { GetGroup, GetUser } from '../../../shared-ports';
+import { toHtmlFragment } from '../../../types/html-fragment';
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

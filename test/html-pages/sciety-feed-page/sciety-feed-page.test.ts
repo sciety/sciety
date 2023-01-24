@@ -13,20 +13,20 @@ import {
   userSavedArticle,
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
-} from '../../src/domain-events';
-import { Ports, scietyFeedPage } from '../../src/sciety-feed-page/sciety-feed-page';
-import * as LOID from '../../src/types/list-owner-id';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryGroup } from '../types/group.helper';
-import { arbitraryList } from '../types/list-helper';
-import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+} from '../../../src/domain-events';
+import { Ports, scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
+import * as LOID from '../../../src/types/list-owner-id';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryList } from '../../types/list-helper';
+import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('sciety-feed-page', () => {
   const getUser = () => O.some({

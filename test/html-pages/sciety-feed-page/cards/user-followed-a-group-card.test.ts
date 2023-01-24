@@ -1,14 +1,14 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
-import { userFollowedAGroupCard } from '../../../src/sciety-feed-page/cards';
+import { groupJoined, userFollowedEditorialCommunity } from '../../../../src/domain-events';
+import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/cards';
 import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
-} from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+} from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('user-followed-a-group-card', () => {
   const userId = arbitraryUserId();

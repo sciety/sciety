@@ -14,8 +14,8 @@ import {
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
-} from '../domain-events';
-import { HtmlFragment } from '../types/html-fragment';
+} from '../../domain-events';
+import { HtmlFragment } from '../../types/html-fragment';
 
 export type Ports =
   UserFollowedAGroupCardPorts

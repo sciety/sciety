@@ -8,15 +8,15 @@ import { eventCard, Ports as EventCardPorts } from './event-card';
 import { identifyFeedItems } from './identify-feed-items';
 import {
   DomainEvent,
-} from '../domain-events';
-import { templateListItems } from '../shared-components/list-items';
-import { paginationControls } from '../shared-components/pagination-controls';
-import { supplementaryCard } from '../shared-components/supplementary-card';
-import { supplementaryInfo } from '../shared-components/supplementary-info';
-import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
+} from '../../domain-events';
+import { templateListItems } from '../../shared-components/list-items';
+import { paginationControls } from '../../shared-components/pagination-controls';
+import { supplementaryCard } from '../../shared-components/supplementary-card';
+import { supplementaryInfo } from '../../shared-components/supplementary-info';
+import * as DE from '../../types/data-error';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
 
 type ViewModel = {
   cards: ReadonlyArray<HtmlFragment>,

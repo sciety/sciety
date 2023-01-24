@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { ArticleAddedToListEvent } from '../../domain-events';
-import { GetList } from '../../shared-ports';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { ArticleAddedToListEvent } from '../../../domain-events';
+import { GetList } from '../../../shared-ports';
+import { toHtmlFragment } from '../../../types/html-fragment';
 
 export type Ports = {
   getList: GetList,

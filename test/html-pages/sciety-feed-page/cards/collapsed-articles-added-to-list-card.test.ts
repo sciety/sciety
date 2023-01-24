@@ -1,19 +1,18 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../../src/domain-events';
-import { articleAddedToListCard, Ports } from '../../../src/sciety-feed-page/cards/article-added-to-list-card';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryList } from '../../types/list-helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { GetList } from '../../../src/shared-ports';
+import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/cards/sciety-feed-card';
+import { dummyLogger } from '../../../dummy-logger';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryList } from '../../../types/list-helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { GetList } from '../../../../src/shared-ports';
 
-describe('article-added-to-list-card', () => {
+describe('collapsed-articles-added-to-list-card', () => {
   describe('when a group owns the list', () => {
     it.todo('write tests');
   });
@@ -21,7 +20,14 @@ describe('article-added-to-list-card', () => {
   describe('when a user owns the list', () => {
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
-    const event = articleAddedToList(arbitraryArticleId(), listId, date);
+    const articleCount = arbitraryNumber(2, 10);
+    const event = {
+      type: 'CollapsedArticlesAddedToList' as const,
+      listId,
+      date,
+      articleCount,
+    };
+
     const getAllEvents = T.of([]);
     const getList: GetList = () => O.some({
       ...arbitraryList(),
@@ -44,9 +50,9 @@ describe('article-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      const viewModel = pipe(
+      const viewModel: ScietyFeedCard = pipe(
         event,
-        articleAddedToListCard(ports),
+        collapsedArticlesAddedToListCard(ports),
         O.getOrElseW(shouldNotBeCalled),
       );
 
@@ -65,6 +71,10 @@ describe('article-added-to-list-card', () => {
       it('includes the link to the list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
+
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
+      });
     });
 
     describe('when user details are not found', () => {
@@ -76,9 +86,9 @@ describe('article-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      const viewModel = pipe(
+      const viewModel: ScietyFeedCard = pipe(
         event,
-        articleAddedToListCard(ports),
+        collapsedArticlesAddedToListCard(ports),
         O.getOrElseW(shouldNotBeCalled),
       );
 
@@ -94,8 +104,12 @@ describe('article-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the generic list page', async () => {
+      it('includes the link to the list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
+      });
+
+      it('includes the article count', async () => {
+        expect(viewModel.titleText).toContain(`${articleCount} articles`);
       });
     });
   });
