@@ -9,7 +9,7 @@ import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 
-describe.skip('respond', () => {
+describe('respond', () => {
   const articleId = arbitraryArticleId();
 
   beforeAll(async () => {

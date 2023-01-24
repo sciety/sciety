@@ -8,7 +8,7 @@ import {
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
-describe.skip('remove-article-from-list', () => {
+describe('remove-article-from-list', () => {
   beforeAll(async () => {
     await openBrowser();
   });

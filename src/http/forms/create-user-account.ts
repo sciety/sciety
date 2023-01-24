@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
-import { createUserAccountCommandHandler } from '../../write-side/create-user-account';
+import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';

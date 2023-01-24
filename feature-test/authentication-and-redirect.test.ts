@@ -8,7 +8,7 @@ import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
-describe.skip('authentication-and-redirect', () => {
+describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
   const groupBSlug = arbitraryWord();
 

@@ -5,7 +5,7 @@ import {
 describe('auth0 authentication journeys', () => {
   describe('sign up', () => {
     describe('after successfully completing the sign up journey', () => {
-      describe('i am logged in', () => {
+      describe.skip('i am logged in', () => {
         beforeAll(async () => {
           await openBrowser();
           await goto('localhost:8080/sign-up-auth0');

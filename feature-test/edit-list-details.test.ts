@@ -4,7 +4,7 @@ import {
 import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 
-describe.skip('edit-list-details', () => {
+describe('edit-list-details', () => {
   let listId: string;
 
   beforeAll(async () => {

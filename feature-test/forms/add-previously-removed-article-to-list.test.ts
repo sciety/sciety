@@ -7,7 +7,7 @@ import {
 } from 'taiko';
 import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
-describe.skip('add-previously-removed-article-to-list', () => {
+describe('add-previously-removed-article-to-list', () => {
   const testUserId = '1384541806231175172';
   const articleId = '10.1101/2021.07.28.454225';
 
