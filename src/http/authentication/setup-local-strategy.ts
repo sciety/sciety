@@ -7,23 +7,31 @@ import { createUserAccountCommandHandler, Ports as CreateUserAccountCommandHandl
 import { CreateUserAccountCommand } from '../../write-side/commands';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 import { Logger } from '../../shared-ports';
+import { CommandResult } from '../../types/command-result';
+import { ErrorMessage } from '../../types/error-message';
 
 type Ports = CreateUserAccountCommandHandlerPorts & {
   logger: Logger,
 };
 
+const createUserAccountForLocalStrategy = (
+  ports: Ports,
+) => async (username: string): Promise<E.Either<ErrorMessage, CommandResult>> => {
+  const command: CreateUserAccountCommand = {
+    userId: toUserId(username),
+    handle: `H${username}` as UserHandle,
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
+    displayName: '',
+  };
+  return createUserAccountCommandHandler(ports)(command)();
+};
+
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
-    const command: CreateUserAccountCommand = {
-      userId: toUserId(username),
-      handle: `H${username}` as UserHandle,
-      avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png',
-      displayName: '',
-    };
-    void createUserAccountCommandHandler(ports)(command)()
+    void createUserAccountForLocalStrategy(ports)(username)
       .then((commandResult) => pipe(
         commandResult,
-        E.map(() => command.userId),
+        E.map(() => toUserId(username)),
         writeUserIdToState(cb),
       ));
   },
