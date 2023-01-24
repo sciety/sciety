@@ -19,10 +19,10 @@ describe('auth0 authentication journeys', () => {
           await closeBrowser();
         });
 
-        it('the login button says "Log out"', async () => {
+        it('the login button says "Log Out"', async () => {
           const buttonText = await $('.utility-bar__list_link_button').text();
 
-          expect(buttonText).toBe('Log out');
+          expect(buttonText).toBe('Log Out');
         });
 
         it.todo('i can navigate to my lists from the nav bar');
