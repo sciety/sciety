@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -12,7 +13,22 @@ import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
-import { ViewModel } from '../view-model';
+import { FollowingTab, ListsTab, ViewModel } from '../view-model';
+import { List } from '../../../types/list';
+
+const constructListsTab = (list: List): ListsTab => ({
+  selector: 'lists',
+  listId: list.id,
+  articleCount: list.articleIds.length,
+  lastUpdated: O.some(list.lastUpdated),
+  title: list.name,
+  description: list.description,
+  articleCountLabel: 'This list contains',
+});
+
+const constructFollowingTab = (): FollowingTab => ({
+  selector: 'followed-groups',
+});
 
 export type Ports = FollowListPorts & {
   getUserViaHandle: GetUserViaHandle,
@@ -62,7 +78,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
       ...inputs.userDetails,
       groupIds: inputs.groupIds,
       mainContent,
-      activeTab: (tab === 'lists' ? { selector: 'lists' } : { selector: 'followed-groups' }),
+      activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
     })),
   )),
 );
