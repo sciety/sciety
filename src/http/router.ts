@@ -62,7 +62,7 @@ import { saveRespondCommand } from '../write-side/respond/save-respond-command';
 import { finishSaveArticleCommand } from '../write-side/save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../write-side/save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page/sciety-feed-page';
-import { searchPage } from '../search-page';
+import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
