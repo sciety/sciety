@@ -23,7 +23,7 @@ export const isGroupId = (listOwnerId: ListOwnerId): boolean => listOwnerId.tag 
 
 export const eqListOwnerId: Eq.Eq<ListOwnerId> = Eq.struct({ value: S.Eq, tag: S.Eq });
 
-const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
+export const toString = (listOwnerId: ListOwnerId): string => `${listOwnerId.tag}:${listOwnerId.value}`;
 
 const fromString = (input: unknown) => pipe(
   input,
