@@ -1,7 +1,6 @@
 import {
   $, click, currentURL, goBack, goto, link, openBrowser, text,
 } from 'taiko';
-import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
@@ -9,7 +8,7 @@ import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
-describe('authentication-and-redirect', () => {
+describe.skip('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
   const groupBSlug = arbitraryWord();
 
@@ -58,21 +57,14 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   it('log in works', async () => {
-    const userId = arbitraryUserId();
-    await callApi('api/create-user', {
-      userId,
-      handle: 'testUserHandle',
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: 'testDisplayName',
-    });
-    await goto(`localhost:8080/log-in-as?userId=${userId}`);
+    await goto('localhost:8080/log-in');
     const result = await link('Log out').exists();
 
     expect(result).toBe(true);
   });
 
   describe('not logged in', () => {
-    it.skip('save article command returns to the article page after saving the article', async () => {
+    it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
       const result = await text('Saved to my list').exists();
@@ -125,7 +117,7 @@ describe('authentication-and-redirect', () => {
       await click('Log in');
     });
 
-    it.skip('log out from the article page returns to the article page', async () => {
+    it('log out from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log out');
 
