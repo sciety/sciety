@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { List } from '../../../src/types/list';
-import { userListCard } from '../../../src/user-page/user-list-card';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { List } from '../../../../src/types/list';
+import { userListCard } from '../../../../src/html-pages/user-page/user-list-card';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
 describe('user-list-card', () => {
   const listName = arbitraryString();

@@ -1,5 +1,5 @@
-import { Tab } from '../shared-components/tabs';
-import { toHtmlFragment } from '../types/html-fragment';
+import { Tab } from '../../shared-components/tabs';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export const tabList = (userHandle: string, followingCount: number): [Tab, Tab] => [
   {

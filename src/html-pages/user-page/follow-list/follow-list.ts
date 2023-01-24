@@ -4,10 +4,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderFollowList } from './render-follow-list';
-import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../../shared-components/group-card/populate-group-view-model';
-import { renderGroupCard } from '../../shared-components/group-card/render-group-card';
-import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
+import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../../../shared-components/group-card/populate-group-view-model';
+import { renderGroupCard } from '../../../shared-components/group-card/render-group-card';
+import { GroupId } from '../../../types/group-id';
+import { HtmlFragment } from '../../../types/html-fragment';
 import { followingNothing, informationUnavailable } from '../static-messages';
 
 export type Ports = PopulateGroupViewModelPorts;

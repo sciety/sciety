@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 // TODO: should take a RNEA, but not possible due to traverse array in followList until fp-ts 2.11 / 3.0
 const templateListItems = (items: ReadonlyArray<HtmlFragment>, itemClass = 'item'): HtmlFragment => (

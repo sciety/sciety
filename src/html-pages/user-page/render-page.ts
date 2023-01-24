@@ -1,5 +1,5 @@
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
 
 type Components = {
   header: HtmlFragment,

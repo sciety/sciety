@@ -4,21 +4,21 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { groupJoined, userFollowedEditorialCommunity } from '../../src/domain-events';
-import { ListOwnerId } from '../../src/types/list-owner-id';
-import { Page } from '../../src/types/page';
-import { RenderPageError } from '../../src/types/render-page-error';
-import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
-import { Ports, userPage } from '../../src/user-page/user-page';
+import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { ListOwnerId } from '../../../src/types/list-owner-id';
+import { Page } from '../../../src/types/page';
+import { RenderPageError } from '../../../src/types/render-page-error';
+import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/static-messages';
+import { Ports, userPage } from '../../../src/html-pages/user-page/user-page';
 import {
   arbitraryDate,
   arbitraryString, arbitraryUri, arbitraryWord,
-} from '../helpers';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryGroup } from '../types/group.helper';
-import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryUserDetails } from '../types/user-details.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+} from '../../helpers';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,

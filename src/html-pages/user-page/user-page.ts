@@ -11,14 +11,14 @@ import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
-import { tabs } from '../shared-components/tabs';
-import { GetUserViaHandle, SelectAllListsOwnedBy } from '../shared-ports';
-import { getGroupIdsFollowedBy } from '../shared-read-models/followings';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
-import * as LOID from '../types/list-owner-id';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
+import { tabs } from '../../shared-components/tabs';
+import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../shared-ports';
+import { getGroupIdsFollowedBy } from '../../shared-read-models/followings';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
+import * as LOID from '../../types/list-owner-id';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
 
 // ts-unused-exports:disable-next-line
 export type Ports = FollowListPorts & {
