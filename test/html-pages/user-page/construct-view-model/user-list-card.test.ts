@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { List } from '../../../../src/types/list';
-import { userListCard } from '../../../../src/html-pages/user-page/user-list-card';
+import { userListCard } from '../../../../src/html-pages/user-page/construct-view-model/user-list-card';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
