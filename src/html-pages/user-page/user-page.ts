@@ -7,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list/follow-list';
 import { renderDescription } from './render-description';
 import { renderErrorPage } from './render-error-page';
-import { renderHeader } from './render-header';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
 import { tabs } from '../../shared-components/tabs';
@@ -66,7 +65,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
       activeTabIndex: inputs.activeTabIndex,
     })),
     T.map((mainContent) => ({
-      header: renderHeader(inputs.userDetails),
+      ...inputs.userDetails,
       userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
       description: renderDescription(inputs.groupIds.length),
       mainContent,
