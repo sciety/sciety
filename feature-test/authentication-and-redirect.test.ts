@@ -65,7 +65,7 @@ describe('authentication-and-redirect', () => {
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
     });
-    await goto('localhost:8080/log-in');
+    await goto(`localhost:8080/log-in-as?userid=${userId}`);
     const result = await link('Log out').exists();
 
     expect(result).toBe(true);
