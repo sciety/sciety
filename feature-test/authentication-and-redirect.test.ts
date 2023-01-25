@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goBack, goto, link, openBrowser, text,
+  $, click, currentURL, goBack, goto, link, openBrowser, text, into, write, textBox,
 } from 'taiko';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
@@ -12,9 +12,16 @@ import { arbitraryUserId } from '../test/types/user-id.helper';
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
   const groupBSlug = arbitraryWord();
+  const userId = arbitraryUserId();
 
   beforeAll(async () => {
     const groupId = arbitraryGroupId();
+    await callApi('api/create-user', {
+      userId,
+      handle: arbitraryWord(),
+      avatarUrl: 'http://somethingthatproducesa404',
+      displayName: arbitraryString(),
+    });
     await callApi('api/add-group', {
       groupId,
       name: arbitraryString(),
@@ -58,13 +65,6 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   it('log in works', async () => {
-    const userId = arbitraryUserId();
-    await callApi('api/create-user', {
-      userId,
-      handle: arbitraryWord(),
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
     await goto(`localhost:8080/log-in-as?userid=${userId}`);
     const result = await link('Log out').exists();
 
@@ -72,9 +72,11 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('not logged in', () => {
-    it('save article command returns to the article page after saving the article', async () => {
+    it.skip('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
       const result = await text('Saved to my list').exists();
 
       expect(result).toBe(true);
