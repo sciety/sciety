@@ -71,7 +71,7 @@ describe('authentication-and-redirect', () => {
     expect(result).toBe(true);
   });
 
-  describe.skip('not logged in', () => {
+  describe('not logged in', () => {
     it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
@@ -85,6 +85,8 @@ describe('authentication-and-redirect', () => {
     it('log in from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log in');
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
 
       const result = await currentURL();
 
@@ -94,6 +96,8 @@ describe('authentication-and-redirect', () => {
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
 
       const result = await currentURL();
 
@@ -104,6 +108,8 @@ describe('authentication-and-redirect', () => {
     it('follow command from the group page returns to the group page', async () => {
       await goto(`localhost:8080/groups/${groupASlug}`);
       await click('Follow');
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
 
       const result = await currentURL();
 
@@ -114,6 +120,8 @@ describe('authentication-and-redirect', () => {
       await goto('localhost:8080/groups');
       await click('Sign Up');
       await click('Sign up with your Twitter account');
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
 
       const result = await currentURL();
 
@@ -121,9 +129,11 @@ describe('authentication-and-redirect', () => {
     });
   });
 
-  describe.skip('logged in', () => {
+  describe('logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
+      await click('Log in');
+      await write(userId, into(textBox('User id')));
       await click('Log in');
     });
 
