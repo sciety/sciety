@@ -11,9 +11,7 @@ import {
   logInTwitter,
   signUpAuth0,
   stubLogInTwitterAsSpecificUser,
-  stubSignUpAuth0,
-  stubLogInAuth0,
-  completeAuthenticationJourney, stubLogInAuth0Callback,
+  completeAuthenticationJourney,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -38,8 +36,6 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
   await next();
 };
 
-const shouldStubAuthentication = process.env.AUTHENTICATION_STRATEGY === 'local';
-
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   type AuthStrategy = 'local' | 'twitter' | 'auth0';
 
@@ -58,9 +54,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         stubLogInTwitter,
       );
 
-      if (shouldStubAuthentication) {
-        router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
-      }
+      router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
 
       router.get(
         '/sign-up-call-to-action',
@@ -143,13 +137,13 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       router.get(
         '/sign-up-auth0',
         saveReferrerToSession,
-        shouldStubAuthentication ? stubSignUpAuth0 : signUpAuth0,
+        signUpAuth0,
       );
 
       router.get(
         '/log-in-auth0',
         saveReferrerToSession,
-        shouldStubAuthentication ? stubLogInAuth0 : logInAuth0,
+        logInAuth0,
       );
 
       router.get(
@@ -159,7 +153,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           'Detected Auth0 callback error',
           'Something went wrong, please try again.',
         ),
-        shouldStubAuthentication ? stubLogInAuth0Callback : logInAuth0,
+        logInAuth0,
         completeAuthenticationJourney(adapters),
       );
       break;

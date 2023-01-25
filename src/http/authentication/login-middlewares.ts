@@ -34,25 +34,9 @@ export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   scope: 'openid email profile',
 });
 
-export const stubSignUpAuth0: Middleware = async (context, next) => {
-  const testingAccountId = Math.floor(Math.random() * 1000000 + 1);
-  context.redirect(`/auth0/callback?username=${testingAccountId}&password=anypassword`);
-  await next();
-};
-
 export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
-});
-
-export const stubLogInAuth0: Middleware = async (context, next) => {
-  const testingAccountId = Math.floor(Math.random() * 1000000 + 1);
-  context.redirect(`/auth0/callback?username=${testingAccountId}&password=anypassword`);
-  await next();
-};
-
-export const stubLogInAuth0Callback: Middleware = koaPassport.authenticate('local', {
-  failureRedirect: '/',
 });
 
 export const completeAuthenticationJourney = (
