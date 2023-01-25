@@ -6,12 +6,12 @@ import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
   logInAuth0,
-  stubLogInTwitter,
   stubTwitterCallback,
   logInTwitter,
   signUpAuth0,
   stubLogInTwitterAsSpecificUser,
   completeAuthenticationJourney,
+  stubLogInTwitter,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -81,6 +81,28 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         finishRespondCommand(adapters),
         finishSaveArticleCommand(adapters),
         redirectAfterSuccess(),
+      );
+
+      router.get(
+        '/local/log-in-form',
+        async (context: ParameterizedContext) => {
+          context.body = `
+          <h1>Log in</h1>
+          <form action="/local/submit-user-id" method="post">
+            <label for="userId">User id</label>
+            <input type="text" id="userId" name="userId">
+            <button>Log in</button>
+          </form>
+        `;
+        },
+      );
+
+      router.post(
+        '/local/submit-user-id',
+        bodyParser({ enableTypes: ['form'] }),
+        async (context: ParameterizedContext) => {
+          context.redirect(`/twitter/callback?username=${context.query.userId as string}&password=anypassword`);
+        },
       );
       break;
     case 'twitter':

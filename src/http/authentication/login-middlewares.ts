@@ -24,7 +24,7 @@ export const stubLogInTwitterAsSpecificUser: Middleware = async (context, next) 
 };
 
 export const stubTwitterCallback = koaPassport.authenticate('local', {
-  failureRedirect: '/',
+  failureRedirect: '/local/log-in-form',
 });
 
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
