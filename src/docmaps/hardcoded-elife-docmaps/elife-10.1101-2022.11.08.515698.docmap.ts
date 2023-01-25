@@ -36,7 +36,7 @@ export const hardcodedElifeArticle: Docmap = {
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'reply',
               published: '2023-01-23T14:34:42.571Z',
               content: [
                 {
@@ -114,13 +114,25 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: { name: 'anonymous', type: 'person' },
-              role: 'peer-reviewer',
+              actor: {
+                name: 'Brice Bathellier',
+                type: 'person',
+                _relatesToOrganization: 'CNRS, France',
+              },
+              role: 'editor',
+            },
+            {
+              actor: {
+                name: 'Kate Wassum',
+                type: 'person',
+                _relatesToOrganization: 'University of California, Los Angeles, United States',
+              },
+              role: 'senior-editor',
             },
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2023-01-23T14:34:45.299Z',
               content: [
                 {
