@@ -98,12 +98,8 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       router.get(
         '/log-in',
         saveReferrerToSession,
-        shouldStubAuthentication ? stubLogInTwitter : logInTwitter,
+        logInTwitter,
       );
-
-      if (shouldStubAuthentication) {
-        router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
-      }
 
       router.get(
         '/sign-up-call-to-action',
@@ -111,7 +107,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           context.session.successRedirect = '/';
           await next();
         },
-        shouldStubAuthentication ? stubLogInTwitter : logInTwitter,
+        logInTwitter,
       );
 
       router.get('/log-out', logOut);
@@ -124,7 +120,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           'Detected Twitter callback error',
           'Something went wrong, please try again.',
         ),
-        onlyIfNotLoggedIn(adapters, shouldStubAuthentication ? stubTwitterCallback : logInTwitter),
+        onlyIfNotLoggedIn(adapters, logInTwitter),
         finishCommand(adapters),
         finishUnfollowCommand(adapters),
         finishRespondCommand(adapters),
