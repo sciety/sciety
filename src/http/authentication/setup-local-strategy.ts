@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Strategy as LocalStrategy } from 'passport-local';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { UserHandle } from '../../types/user-handle';
 import { toUserId } from '../../types/user-id';
@@ -26,9 +28,14 @@ const createUserAccountForLocalStrategy = (
   return createUserAccountCommandHandler(ports)(command)();
 };
 
+const noop = (
+  ports: Ports,
+) => async (username: string): Promise<E.Either<ErrorMessage, CommandResult>> => T.of(E.right('no-events-created' as CommandResult))();
+
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
     void createUserAccountForLocalStrategy(ports)(username)
+    // void noop(ports)(username)
       .then((commandResult) => pipe(
         commandResult,
         E.map(() => toUserId(username)),
