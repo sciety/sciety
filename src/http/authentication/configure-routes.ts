@@ -11,7 +11,6 @@ import {
   signUpAuth0,
   stubLogInTwitterAsSpecificUser,
   completeAuthenticationJourney,
-  stubLogInTwitter,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -51,7 +50,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       router.get(
         '/log-in',
         saveReferrerToSession,
-        stubLogInTwitter,
+        stubTwitterCallback,
       );
 
       router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
@@ -62,7 +61,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           context.session.successRedirect = '/';
           await next();
         },
-        stubLogInTwitter,
+        stubTwitterCallback,
       );
 
       router.get('/log-out', logOut);
@@ -87,7 +86,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         '/local/log-in-form',
         async (context: ParameterizedContext) => {
           context.body = `
-          <h1>Log in</h1>
+          <h1>Local auth</h1>
           <form action="/local/submit-user-id" method="post">
             <label for="userId">User id</label>
             <input type="text" id="userId" name="userId">

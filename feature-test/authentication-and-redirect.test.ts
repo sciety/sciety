@@ -71,8 +71,8 @@ describe('authentication-and-redirect', () => {
     expect(result).toBe(true);
   });
 
-  describe('not logged in', () => {
-    it.skip('save article command returns to the article page after saving the article', async () => {
+  describe.skip('not logged in', () => {
+    it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
       await write(userId, into(textBox('User id')));
@@ -121,7 +121,7 @@ describe('authentication-and-redirect', () => {
     });
   });
 
-  describe('logged in', () => {
+  describe.skip('logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');

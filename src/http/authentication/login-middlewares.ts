@@ -10,12 +10,6 @@ export const logInTwitter: Middleware = koaPassport.authenticate('twitter', {
   failureRedirect: '/',
 });
 
-export const stubLogInTwitter: Middleware = async (context, next) => {
-  const twitterTestingAccountId = Math.floor(Math.random() * 1000000 + 1);
-  context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
-  await next();
-};
-
 export const stubLogInTwitterAsSpecificUser: Middleware = async (context, next) => {
   const { userId } = context.query;
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
