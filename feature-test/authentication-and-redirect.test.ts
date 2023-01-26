@@ -8,6 +8,7 @@ import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -18,7 +19,7 @@ describe('authentication-and-redirect', () => {
     const groupId = arbitraryGroupId();
     await callApi('api/create-user', {
       userId,
-      handle: arbitraryWord(),
+      handle: arbitraryUserHandle(),
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
     });

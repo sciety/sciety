@@ -9,6 +9,7 @@ import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 
 describe('respond', () => {
   const articleId = arbitraryArticleId();
@@ -34,7 +35,7 @@ describe('respond', () => {
     });
     await callApi('api/create-user', {
       userId,
-      handle: arbitraryWord(),
+      handle: arbitraryUserHandle(),
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
     });
