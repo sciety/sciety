@@ -11,6 +11,7 @@ import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { GetList } from '../../../../src/shared-ports';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
 describe('collapsed-articles-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -36,7 +37,7 @@ describe('collapsed-articles-added-to-list-card', () => {
 
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();
-      const handle = 'handle';
+      const handle = arbitraryUserHandle();
       const ports: Ports = {
         getAllEvents,
         getList,

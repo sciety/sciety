@@ -19,6 +19,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -125,7 +126,7 @@ describe('user-page', () => {
     it('shows the user details', async () => {
       const avatarUrl = arbitraryUri();
       const displayName = arbitraryString();
-      const handle = arbitraryWord();
+      const handle = arbitraryUserHandle();
       const ports: Ports = {
         ...defaultPorts,
         getUserViaHandle: () => O.some({
@@ -301,7 +302,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)('lists'),
@@ -311,7 +312,7 @@ describe('user-page', () => {
     });
 
     it('shows a card linking to the saved-articles list page', async () => {
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
 
       const page = await pipe(
         params,

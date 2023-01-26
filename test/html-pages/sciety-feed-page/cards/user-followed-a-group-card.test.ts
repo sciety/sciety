@@ -2,13 +2,14 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { groupJoined, userFollowedEditorialCommunity } from '../../../../src/domain-events';
-import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/cards';
+import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from '../../../../src/html-pages/sciety-feed-page/cards/user-followed-a-group-card';
 import {
-  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
+  arbitraryDate, arbitraryString, arbitraryUri,
 } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
 describe('user-followed-a-group-card', () => {
   const userId = arbitraryUserId();
@@ -18,8 +19,8 @@ describe('user-followed-a-group-card', () => {
 
   describe('happy path', () => {
     const avatarUrl = arbitraryUri();
-    const handle = arbitraryWord();
-    const ports = {
+    const handle = arbitraryUserHandle();
+    const ports: UserFollowedAGroupCardPorts = {
       getAllEvents: T.of([groupJoined(
         group.id,
         group.name,
@@ -112,11 +113,11 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the group cannot be found', () => {
-    const ports = {
+    const ports: UserFollowedAGroupCardPorts = {
       getAllEvents: T.of([]),
       getGroup: () => O.none,
       getUser: () => O.some({
-        handle: arbitraryWord(),
+        handle: arbitraryUserHandle(),
         avatarUrl: arbitraryUri(),
         id: arbitraryUserId(),
         displayName: arbitraryString(),

@@ -1,8 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports } from '../../../src/html-pages/list-page/get-user-owner-information';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import { arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
 describe('get-user-owner-information', () => {
   const userId = arbitraryUserId();
@@ -11,7 +12,7 @@ describe('get-user-owner-information', () => {
     it('returns the corresponding owner info', () => {
       const userDisplayName = arbitraryString();
       const userAvatarUrl = arbitraryUri().toString();
-      const userHandle = arbitraryWord();
+      const userHandle = arbitraryUserHandle();
       const ports: Ports = {
         getUser: () => O.some({
           displayName: userDisplayName,
