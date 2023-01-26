@@ -1,22 +1,17 @@
 import { pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
+import { ViewModel } from './view-model';
 
-type Components = {
-  header: HtmlFragment,
-  followButton: HtmlFragment,
-  content: HtmlFragment,
-};
-
-const render = (components: Components) => `
-  ${components.header}
+const render = (viewmodel: ViewModel) => `
+  ${viewmodel.header}
   <div class="group-page-follow-toggle">
-    ${components.followButton}
+    ${viewmodel.followButton}
   </div>
-  ${components.content}
+  ${viewmodel.content}
 `;
 
 export const renderErrorPage = (): RenderPageError => ({
@@ -24,7 +19,7 @@ export const renderErrorPage = (): RenderPageError => ({
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
 
-export const renderPage = (group: Group) => (components: Components): Page => ({
+export const renderPage = (group: Group) => (viewmodel: ViewModel): Page => ({
   title: group.name,
-  content: pipe(components, render, toHtmlFragment),
+  content: pipe(viewmodel, render, toHtmlFragment),
 });
