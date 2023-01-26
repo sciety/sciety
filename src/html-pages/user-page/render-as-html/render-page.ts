@@ -1,13 +1,41 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
 import { htmlEscape } from 'escape-goat';
+import { flow, identity, pipe } from 'fp-ts/function';
+import { renderListCard } from '../../../shared-components/list-card/render-list-card';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { FollowingTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
+import { followingNothing, informationUnavailable } from './static-messages';
+import { renderGroupCard } from '../../../shared-components/group-card/render-group-card';
+import { renderFollowList } from '../construct-view-model/render-follow-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.groupIds.length),
   activeTabIndex: viewmodel.activeTabIndex,
 });
+
+const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
+  viewmodel.followedGroups,
+  O.map(RA.match(
+    () => followingNothing,
+    flow(
+      RA.map(renderGroupCard),
+      renderFollowList,
+    ),
+  )),
+  O.match(
+    () => informationUnavailable,
+    identity,
+  ),
+);
+
+const renderActiveTabContents = (viewmodel: ViewModel) => (
+  (viewmodel.activeTab.selector === 'lists')
+    ? renderListCard(viewmodel.activeTab)
+    : renderFollowedGroups(viewmodel.activeTab)
+);
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user page-header__identity">
@@ -20,6 +48,6 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     </h1>
   </header>
   <div class="main-content main-content--user">
-    ${renderTabs(tabProps(viewmodel))(viewmodel.renderedActiveTabContents)}
+    ${renderTabs(tabProps(viewmodel))(renderActiveTabContents(viewmodel))}
   </div>
 `);
