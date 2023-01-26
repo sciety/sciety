@@ -7,9 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
-import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
-import { renderTabs } from '../../../shared-components/tabs';
 import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
 import * as DE from '../../../types/data-error';
@@ -71,30 +69,18 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   )),
   TE.chainTaskK((model) => pipe(
     ({
-      model: T.of(model),
+      inputs: T.of(model),
       renderedActiveTabContents: (model.activeTabIndex === 0)
         ? T.of(userListCard(model.list))
         : followList(ports)(model.groupIds),
     }),
     sequenceS(T.ApplyPar),
   )),
-  TE.map((obj) => ({
-    ...obj.model,
-    renderedActiveTabContents: obj.renderedActiveTabContents,
+  TE.map(({ inputs, renderedActiveTabContents }) => ({
+    user: inputs.userDetails,
+    groupIds: inputs.groupIds,
+    activeTabIndex: inputs.activeTabIndex,
+    activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
+    renderedActiveTabContents,
   })),
-  TE.map((inputs) => pipe(
-    inputs.renderedActiveTabContents,
-    renderTabs({
-      tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
-      activeTabIndex: inputs.activeTabIndex,
-    }),
-    (mainContent) => ({
-      user: inputs.userDetails,
-      groupIds: inputs.groupIds,
-      activeTabIndex: inputs.activeTabIndex,
-      mainContent,
-      activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
-      renderedActiveTabContents: inputs.renderedActiveTabContents,
-    }),
-  )),
 );
