@@ -74,7 +74,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
       activeTabIndex: inputs.activeTabIndex,
     })),
     T.map((mainContent) => ({
-      ...inputs.userDetails,
+      user: inputs.userDetails,
       groupIds: inputs.groupIds,
       mainContent,
       activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),

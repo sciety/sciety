@@ -4,11 +4,11 @@ import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user page-header__identity">
-    <img src="${viewmodel.avatarUrl}" alt="" class="page-header__avatar">
+    <img src="${viewmodel.user.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
-      <span class="visually-hidden">Sciety user </span>${htmlEscape(viewmodel.displayName)}
+      <span class="visually-hidden">Sciety user </span>${htmlEscape(viewmodel.user.displayName)}
       <div class="page-header__handle">
-        <span class="visually-hidden">Twitter handle </span>@${viewmodel.handle}
+        <span class="visually-hidden">Twitter handle </span>@${viewmodel.user.handle}
       </div>
     </h1>
   </header>

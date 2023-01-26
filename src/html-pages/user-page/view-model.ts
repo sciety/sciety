@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import { UserDetails } from '../../types/user-details';
 
 export type ListsTab = {
   selector: 'lists',
@@ -18,9 +19,7 @@ export type FollowingTab = {
 };
 
 export type ViewModel = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
+  user: UserDetails,
   mainContent: HtmlFragment,
   groupIds: ReadonlyArray<GroupId>,
   activeTab: ListsTab | FollowingTab,
