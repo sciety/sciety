@@ -71,12 +71,11 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { userPage } from '../html-pages/user-page';
+import { userPage, userPageParams } from '../html-pages/user-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
-import { userHandleCodec } from '../types/user-handle';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -105,13 +104,6 @@ const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: Gen
 const articlePageParams = t.type({
   doi: DoiFromString,
   user: tt.optionFromNullable(t.type({ id: UserIdFromString })),
-});
-
-const userPageParams = t.type({
-  handle: userHandleCodec,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
 });
 
 export const createRouter = (adapters: CollectedPorts): Router => {

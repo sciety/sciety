@@ -1,4 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -15,7 +17,8 @@ import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { List } from '../../../types/list';
-import { UserHandle } from '../../../types/user-handle';
+import { UserHandle, userHandleCodec } from '../../../types/user-handle';
+import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
 
 const constructListsTab = (list: List): ListsTab => ({
   selector: 'lists',
@@ -35,6 +38,13 @@ export type Ports = FollowListPorts & {
   getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
+
+export const userPageParams = t.type({
+  handle: userHandleCodec,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+});
 
 export type Params = {
   handle: UserHandle,
