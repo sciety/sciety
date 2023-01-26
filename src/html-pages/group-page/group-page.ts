@@ -7,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
-import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../../domain-events';
 import { renderFollowToggle } from '../../write-side/follow/render-follow-toggle';
@@ -18,6 +17,8 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
+import { renderAsHtml } from './render-as-html/render-as-html';
+import { renderErrorPage } from './render-as-html/render-error-page';
 
 type Ports = ContentComponentPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -79,6 +80,6 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
       content: contentComponent(ports)(group, pageNumber, activeTabIndex),
     },
     sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderPage(group)),
+    TE.bimap(renderErrorPage, renderAsHtml(group)),
   )),
 );
