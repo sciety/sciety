@@ -76,6 +76,7 @@ import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
+import { userHandleCodec } from '../types/user-handle';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -107,7 +108,7 @@ const articlePageParams = t.type({
 });
 
 const userPageParams = t.type({
-  handle: t.string,
+  handle: userHandleCodec,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),

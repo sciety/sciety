@@ -15,6 +15,7 @@ import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { List } from '../../../types/list';
+import { UserHandle } from '../../../types/user-handle';
 
 const constructListsTab = (list: List): ListsTab => ({
   selector: 'lists',
@@ -36,7 +37,7 @@ export type Ports = FollowListPorts & {
 };
 
 export type Params = {
-  handle: string,
+  handle: UserHandle,
 };
 
 type ConstructViewModel = (tab: string, ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;

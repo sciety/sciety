@@ -10,10 +10,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/render-as-html';
 import { Ports, userPage } from '../../../src/html-pages/user-page';
-import {
-  arbitraryDate,
-  arbitraryString, arbitraryUri, arbitraryWord,
-} from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -59,7 +56,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -69,7 +66,7 @@ describe('user-page', () => {
     });
 
     it('accepts handle as a string', async () => {
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultPorts)(tabName),
@@ -87,7 +84,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -110,7 +107,7 @@ describe('user-page', () => {
           userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
         ]),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -136,7 +133,7 @@ describe('user-page', () => {
           id: arbitraryUserId(),
         }),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
 
       const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
 
@@ -152,7 +149,7 @@ describe('user-page', () => {
         getUserViaHandle: () => O.some(user),
         getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -169,7 +166,7 @@ describe('user-page', () => {
 
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultPorts)('followed-groups'),
@@ -212,7 +209,7 @@ describe('user-page', () => {
           ]),
           getUserViaHandle: () => O.some(user),
         };
-        const params = { handle: arbitraryWord() };
+        const params = { handle: arbitraryUserHandle() };
         const page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -236,7 +233,7 @@ describe('user-page', () => {
             ]),
             getUserViaHandle: () => O.some(user),
           };
-          const params = { handle: arbitraryWord() };
+          const params = { handle: arbitraryUserHandle() };
 
           const content = await pipe(
             params,
@@ -256,7 +253,7 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const params = { handle: arbitraryWord() };
+        const params = { handle: arbitraryUserHandle() };
         page = await pipe(
           params,
           userPage(defaultPorts)('followed-groups'),
@@ -281,7 +278,7 @@ describe('user-page', () => {
 
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultPorts)('lists'),
