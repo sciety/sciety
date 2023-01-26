@@ -60,6 +60,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
   TE.fromEither,
   TE.chain((group) => pipe(
     {
+      group: TE.right(group),
       header: pipe(
         group,
         renderPageHeader,
@@ -80,6 +81,6 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
       content: contentComponent(ports)(group, pageNumber, activeTabIndex),
     },
     sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderAsHtml(group)),
+    TE.bimap(renderErrorPage, renderAsHtml),
   )),
 );
