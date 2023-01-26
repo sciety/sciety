@@ -1,6 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -17,8 +16,7 @@ import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { List } from '../../../types/list';
-import { UserHandle, userHandleCodec } from '../../../types/user-handle';
-import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
+import { userHandleCodec } from '../../../types/user-handle';
 
 const constructListsTab = (list: List): ListsTab => ({
   selector: 'lists',
@@ -41,14 +39,9 @@ export type Ports = FollowListPorts & {
 
 export const userPageParams = t.type({
   handle: userHandleCodec,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
 });
 
-export type Params = {
-  handle: UserHandle,
-};
+export type Params = t.TypeOf<typeof userPageParams>;
 
 type ConstructViewModel = (tab: string, ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
