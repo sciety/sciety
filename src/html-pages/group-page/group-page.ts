@@ -7,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
-import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../../domain-events';
 import { renderFollowToggle } from '../../write-side/follow/render-follow-toggle';
 import { GetGroupBySlug } from '../../shared-ports';
@@ -61,11 +60,6 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
   TE.chain((group) => pipe(
     {
       group: TE.right(group),
-      header: pipe(
-        group,
-        renderPageHeader,
-        TE.right,
-      ),
       followButton: pipe(
         user,
         O.fold(
