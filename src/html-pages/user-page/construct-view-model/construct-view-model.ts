@@ -91,6 +91,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
     (mainContent) => ({
       user: inputs.userDetails,
       groupIds: inputs.groupIds,
+      activeTabIndex: inputs.activeTabIndex,
       mainContent,
       activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
       renderedActiveTabContents: inputs.renderedActiveTabContents,
