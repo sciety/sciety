@@ -3,6 +3,7 @@ import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { generate } from '../types/event-id';
+import { UserHandle, userHandleCodec } from '../types/user-handle';
 import { UserId } from '../types/user-id';
 
 export const userCreatedAccountEventCodec = t.type({
@@ -10,7 +11,7 @@ export const userCreatedAccountEventCodec = t.type({
   type: t.literal('UserCreatedAccount'),
   date: tt.DateFromISOString,
   userId: UserIdFromString,
-  handle: t.string,
+  handle: userHandleCodec,
   avatarUrl: t.string,
   displayName: t.string,
 });
@@ -22,7 +23,7 @@ export const isUserCreatedAccountEvent = (event: { type: string }):
 
 export const userCreatedAccount = (
   userId: UserId,
-  handle: string,
+  handle: UserHandle,
   avatarUrl: string,
   displayName: string,
   date: Date = new Date(),
