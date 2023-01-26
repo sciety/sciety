@@ -7,8 +7,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { followList, Ports as FollowListPorts } from './follow-list';
-import { userListCard } from './user-list-card';
 import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
 import * as DE from '../../../types/data-error';
@@ -16,7 +14,7 @@ import * as LOID from '../../../types/list-owner-id';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { List } from '../../../types/list';
 import { userHandleCodec } from '../../../types/user-handle';
-import { populateGroupViewModel } from '../../../shared-components/group-card/populate-group-view-model';
+import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../../../shared-components/group-card/populate-group-view-model';
 import { GroupId } from '../../../types/group-id';
 
 const constructListsTab = (list: List): ListsTab => ({
@@ -39,7 +37,7 @@ const constructFollowingTab = (ports: Ports, groupIds: ReadonlyArray<GroupId>): 
   })),
 );
 
-export type Ports = FollowListPorts & {
+export type Ports = PopulateGroupViewModelPorts & {
   getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
@@ -80,15 +78,11 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
     ({
       inputs: T.of(model),
       activeTab: (tab === 'lists' ? T.of(constructListsTab(model.list)) : constructFollowingTab(ports, model.groupIds)),
-      renderedActiveTabContents: (model.activeTabIndex === 0)
-        ? T.of(userListCard(model.list))
-        : followList(ports)(model.groupIds),
     }),
     sequenceS(T.ApplyPar),
   )),
-  TE.map(({ inputs, activeTab, renderedActiveTabContents }) => ({
+  TE.map(({ inputs, activeTab }) => ({
     ...inputs,
     activeTab,
-    renderedActiveTabContents,
   })),
 );

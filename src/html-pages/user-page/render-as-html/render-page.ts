@@ -9,7 +9,7 @@ import { FollowingTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { renderGroupCard } from '../../../shared-components/group-card/render-group-card';
-import { renderFollowList } from '../construct-view-model/render-follow-list';
+import { renderFollowList } from './render-follow-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.groupIds.length),

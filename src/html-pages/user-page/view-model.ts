@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { GroupViewModel } from '../../shared-components/group-card/render-group-card';
 import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { UserDetails } from '../../types/user-details';
 
@@ -25,5 +24,4 @@ export type ViewModel = {
   groupIds: ReadonlyArray<GroupId>,
   activeTabIndex: number,
   activeTab: ListsTab | FollowingTab,
-  renderedActiveTabContents: HtmlFragment,
 };
