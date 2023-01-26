@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderGroups } from './render-groups';
 import { toListOfGroupCardViewModels, Ports as ViewModelPorts } from './to-list-of-group-card-view-models';
-import { renderGroupCard } from '../../shared-components/group-card/render-group-card';
+import { renderGroupCard } from '../../shared-components/group-card';
 import { GetAllGroups } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';

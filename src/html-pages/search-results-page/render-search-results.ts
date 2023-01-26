@@ -4,7 +4,7 @@ import { pageTabs, PageTabsViewModel } from './page-tabs';
 import { pagination, PaginationViewModel } from './pagination';
 import { renderSearchResultsList } from './render-search-results-list';
 import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
-import { GroupViewModel, renderGroupCard } from '../../shared-components/group-card/render-group-card';
+import { GroupViewModel, renderGroupCard } from '../../shared-components/group-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;

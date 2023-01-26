@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FollowingTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
-import { renderGroupCard } from '../../../shared-components/group-card/render-group-card';
+import { renderGroupCard } from '../../../shared-components/group-card';
 import { renderFollowList } from './render-follow-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
