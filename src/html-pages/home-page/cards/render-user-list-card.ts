@@ -3,12 +3,13 @@ import { templateDate } from '../../../shared-components/date';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
+import { UserHandle } from '../../../types/user-handle';
 
 type UserListCardViewModel = {
   listId: ListId,
   articleCount: number,
   lastUpdated: O.Option<Date>,
-  handle: string,
+  handle: UserHandle,
   avatarUrl: string,
   description: string,
 };
