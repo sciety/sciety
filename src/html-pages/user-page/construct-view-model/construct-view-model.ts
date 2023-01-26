@@ -69,19 +69,31 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
     },
     sequenceS(TE.ApplyPar),
   )),
-  TE.chainTaskK((inputs) => pipe(
-    (inputs.activeTabIndex === 0)
-      ? T.of(userListCard(inputs.list))
-      : followList(ports)(inputs.groupIds),
-    T.map(renderTabs({
+  TE.chainTaskK((model) => pipe(
+    ({
+      model: T.of(model),
+      renderedActiveTabContents: (model.activeTabIndex === 0)
+        ? T.of(userListCard(model.list))
+        : followList(ports)(model.groupIds),
+    }),
+    sequenceS(T.ApplyPar),
+  )),
+  TE.map((obj) => ({
+    ...obj.model,
+    renderedActiveTabContents: obj.renderedActiveTabContents,
+  })),
+  TE.map((inputs) => pipe(
+    inputs.renderedActiveTabContents,
+    renderTabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
       activeTabIndex: inputs.activeTabIndex,
-    })),
-    T.map((mainContent) => ({
+    }),
+    (mainContent) => ({
       user: inputs.userDetails,
       groupIds: inputs.groupIds,
       mainContent,
       activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
-    })),
+      renderedActiveTabContents: inputs.renderedActiveTabContents,
+    }),
   )),
 );

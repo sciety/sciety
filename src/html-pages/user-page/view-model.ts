@@ -23,4 +23,5 @@ export type ViewModel = {
   mainContent: HtmlFragment,
   groupIds: ReadonlyArray<GroupId>,
   activeTab: ListsTab | FollowingTab,
+  renderedActiveTabContents: HtmlFragment,
 };
