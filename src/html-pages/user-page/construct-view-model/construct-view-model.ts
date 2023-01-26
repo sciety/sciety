@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as TO from 'fp-ts/TaskOption';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -15,6 +16,8 @@ import * as LOID from '../../../types/list-owner-id';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { List } from '../../../types/list';
 import { userHandleCodec } from '../../../types/user-handle';
+import { populateGroupViewModel } from '../../../shared-components/group-card/populate-group-view-model';
+import { GroupId } from '../../../types/group-id';
 
 const constructListsTab = (list: List): ListsTab => ({
   selector: 'lists',
@@ -26,9 +29,15 @@ const constructListsTab = (list: List): ListsTab => ({
   articleCountLabel: 'This list contains',
 });
 
-const constructFollowingTab = (): FollowingTab => ({
-  selector: 'followed-groups',
-});
+const constructFollowingTab = (ports: Ports, groupIds: ReadonlyArray<GroupId>): T.Task<FollowingTab> => pipe(
+  groupIds,
+  TE.traverseArray(populateGroupViewModel(ports)),
+  TO.fromTaskEither,
+  T.map((f) => ({
+    selector: 'followed-groups',
+    followedGroups: f,
+  })),
+);
 
 export type Ports = FollowListPorts & {
   getUserViaHandle: GetUserViaHandle,
@@ -70,17 +79,16 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   TE.chainTaskK((model) => pipe(
     ({
       inputs: T.of(model),
+      activeTab: (tab === 'lists' ? T.of(constructListsTab(model.list)) : constructFollowingTab(ports, model.groupIds)),
       renderedActiveTabContents: (model.activeTabIndex === 0)
         ? T.of(userListCard(model.list))
         : followList(ports)(model.groupIds),
     }),
     sequenceS(T.ApplyPar),
   )),
-  TE.map(({ inputs, renderedActiveTabContents }) => ({
-    user: inputs.userDetails,
-    groupIds: inputs.groupIds,
-    activeTabIndex: inputs.activeTabIndex,
-    activeTab: (tab === 'lists' ? constructListsTab(inputs.list) : constructFollowingTab()),
+  TE.map(({ inputs, activeTab, renderedActiveTabContents }) => ({
+    ...inputs,
+    activeTab,
     renderedActiveTabContents,
   })),
 );

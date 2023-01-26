@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { GroupViewModel } from '../../shared-components/group-card/render-group-card';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
@@ -16,10 +17,11 @@ export type ListsTab = {
 
 export type FollowingTab = {
   selector: 'followed-groups',
+  followedGroups: O.Option<ReadonlyArray<GroupViewModel>>,
 };
 
 export type ViewModel = {
-  user: UserDetails,
+  userDetails: UserDetails,
   groupIds: ReadonlyArray<GroupId>,
   activeTabIndex: number,
   activeTab: ListsTab | FollowingTab,

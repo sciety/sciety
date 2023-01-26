@@ -4,9 +4,9 @@ import { renderDescription } from './render-description';
 import { renderPage } from './render-page';
 
 export const renderAsHtml = (viewmodel: ViewModel): Page => ({
-  title: viewmodel.user.displayName,
+  title: viewmodel.userDetails.displayName,
   openGraph: {
-    title: viewmodel.user.displayName,
+    title: viewmodel.userDetails.displayName,
     description: renderDescription(viewmodel),
   },
   content: renderPage(viewmodel),

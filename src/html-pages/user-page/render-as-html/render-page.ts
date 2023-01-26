@@ -5,17 +5,17 @@ import { ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
-  tabList: tabList(viewmodel.user.handle, viewmodel.groupIds.length),
+  tabList: tabList(viewmodel.userDetails.handle, viewmodel.groupIds.length),
   activeTabIndex: viewmodel.activeTabIndex,
 });
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user page-header__identity">
-    <img src="${viewmodel.user.avatarUrl}" alt="" class="page-header__avatar">
+    <img src="${viewmodel.userDetails.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
-      <span class="visually-hidden">Sciety user </span>${htmlEscape(viewmodel.user.displayName)}
+      <span class="visually-hidden">Sciety user </span>${htmlEscape(viewmodel.userDetails.displayName)}
       <div class="page-header__handle">
-        <span class="visually-hidden">Twitter handle </span>@${viewmodel.user.handle}
+        <span class="visually-hidden">Twitter handle </span>@${viewmodel.userDetails.handle}
       </div>
     </h1>
   </header>
