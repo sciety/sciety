@@ -13,7 +13,7 @@ import { renderFollowList } from './render-follow-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.groupIds.length),
-  activeTabIndex: viewmodel.activeTabIndex,
+  activeTabIndex: viewmodel.activeTab.selector === 'lists' ? 0 : 1,
 });
 
 const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(

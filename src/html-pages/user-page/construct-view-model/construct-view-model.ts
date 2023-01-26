@@ -62,7 +62,6 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
         TE.rightTask,
       ),
       userDetails: TE.right(user),
-      activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       list: pipe(
         user.id,
         LOID.fromUserId,
