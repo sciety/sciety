@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { buildPageUrl } from './build-page-url';
-import { tabs } from '../../shared-components/tabs';
+import { renderTabs } from '../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type PageTabsViewModel = {
@@ -13,7 +13,7 @@ export type PageTabsViewModel = {
 
 type PageTabs = (pageTabsViewModel: PageTabsViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
-export const pageTabs: PageTabs = (pageTabsViewModel) => tabs({
+export const pageTabs: PageTabs = (pageTabsViewModel) => renderTabs({
   tabList: [
     {
       label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),

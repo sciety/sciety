@@ -9,7 +9,7 @@ import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
 import { tabList } from './tab-list';
 import { userListCard } from './user-list-card';
-import { tabs } from '../../../shared-components/tabs';
+import { renderTabs } from '../../../shared-components/tabs';
 import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
 import * as DE from '../../../types/data-error';
@@ -73,7 +73,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
     (inputs.activeTabIndex === 0)
       ? T.of(userListCard(inputs.list))
       : followList(ports)(inputs.groupIds),
-    T.map(tabs({
+    T.map(renderTabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
       activeTabIndex: inputs.activeTabIndex,
     })),

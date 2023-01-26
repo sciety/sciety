@@ -7,7 +7,7 @@ import { about, Ports as AboutPorts } from './about/about';
 import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
-import { Tab, tabs } from '../../shared-components/tabs';
+import { Tab, renderTabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -74,7 +74,7 @@ export const contentComponent: ContentComponent = (
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ content, listCount, followerCount }) => tabs({
+  TE.map(({ content, listCount, followerCount }) => renderTabs({
     tabList: tabList(group.slug, listCount, followerCount),
     activeTabIndex,
   })(content)),

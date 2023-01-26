@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom';
-import { Tab, tabs } from '../../src/shared-components/tabs';
+import { Tab, renderTabs } from '../../src/shared-components/tabs';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import {
   arbitraryHtmlFragment, arbitraryNumber, arbitraryUri,
@@ -25,7 +25,7 @@ const arbitraryTabList: [Tab, Tab, Tab] = [
 describe('tabs', () => {
   it.each(eachTabActiveOnce)('shows an active tab label: %s', ({ activeTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex,
       })(
@@ -39,7 +39,7 @@ describe('tabs', () => {
 
   it('active tab is not a link', () => {
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex: arbitraryNumber(0, 2),
       })(
@@ -53,7 +53,7 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows inactive tabs as links: %s', ({ activeTabIndex, inactiveTabsIndices }) => {
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex,
       })(
@@ -71,7 +71,7 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows the correct labels for inactive tabs: %s', ({ activeTabIndex, inactiveTabsIndices }) => {
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex,
       })(
@@ -86,7 +86,7 @@ describe('tabs', () => {
 
   it('orders tabs independently of active state', () => {
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex: arbitraryNumber(0, 2),
       })(
@@ -102,7 +102,7 @@ describe('tabs', () => {
   it('shows the content in the tab panel', () => {
     const content = arbitraryHtmlFragment();
     const rendered = JSDOM.fragment(
-      tabs({
+      renderTabs({
         tabList: arbitraryTabList,
         activeTabIndex: arbitraryNumber(0, 2),
       })(

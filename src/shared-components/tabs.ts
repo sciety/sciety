@@ -34,7 +34,7 @@ const renderTabList = ({ tabList, activeTabIndex }: TabProps) => pipe(
   toHtmlFragment,
 );
 
-export const tabs: Tabs = (tabProps) => (activeTabPanelContents) => toHtmlFragment(`
+export const renderTabs: Tabs = (tabProps) => (activeTabPanelContents) => toHtmlFragment(`
   ${renderTabList(tabProps)}
   <section class="tab-panel" role="tabpanel" aria-labelledby="active-tab">
     ${activeTabPanelContents}
