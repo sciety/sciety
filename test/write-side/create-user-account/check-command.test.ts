@@ -6,12 +6,13 @@ import { checkCommand } from '../../../src/write-side/create-user-account/check-
 import { CreateUserAccountCommand } from '../../../src/write-side/commands';
 import { arbitraryWord, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
 describe('check-command', () => {
   describe('when the handle in the command is unique', () => {
     const command: CreateUserAccountCommand = {
       userId: arbitraryUserId(),
-      handle: arbitraryWord() as UserHandle,
+      handle: arbitraryUserHandle(),
       displayName: arbitraryString(),
       avatarUrl: arbitraryUri(),
     };

@@ -6,16 +6,8 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../../../src/domain-events';
 import { projectUserReviewResponse } from '../../../../src/html-pages/article-page/construct-view-model/project-user-review-response';
-import { User } from '../../../../src/types/user';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { arbitraryReviewId } from '../../../types/review-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-
-const arbitraryUser = (): User => ({
-  id: arbitraryUserId(),
-  handle: arbitraryString(),
-  avatarUrl: arbitraryUri(),
-});
 
 describe('project-user-review-response', () => {
   describe('no response events', () => {
@@ -44,7 +36,7 @@ describe('project-user-review-response', () => {
     it('returns nothing', async () => {
       const reviewId = arbitraryReviewId();
       const events = async () => [
-        userFoundReviewHelpful(arbitraryUser().id, reviewId),
+        userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
       const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(arbitraryUserId()))();
 
@@ -68,7 +60,7 @@ describe('project-user-review-response', () => {
     it('return nothing', async () => {
       const reviewId = arbitraryReviewId();
       const events = async () => [
-        userFoundReviewHelpful(arbitraryUser().id, reviewId),
+        userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
       const userResponse = await projectUserReviewResponse(events)(reviewId, O.none)();
 
