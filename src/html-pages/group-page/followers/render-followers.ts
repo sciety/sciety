@@ -12,7 +12,7 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-type FollowerListViewModel = {
+export type FollowerListViewModel = {
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   nextLink: HtmlFragment,

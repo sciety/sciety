@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
 import { paginate } from './paginate';
-import { renderFollowers } from './render-followers';
+import { FollowerListViewModel, renderFollowers } from './render-followers';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as DE from '../../../types/data-error';
 import { HtmlFragment } from '../../../types/html-fragment';
@@ -13,11 +13,9 @@ export type Ports = AugmentWithUserDetailsPorts;
 
 const pageSize = 10;
 
-export const followers = (
+const constructFollowersTab = (
   ports: Ports,
-) => (
-  contentModel: ContentModel,
-): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, FollowerListViewModel> => pipe(
   contentModel.followers,
   paginate(contentModel.pageNumber, pageSize),
   E.map((pageOfFollowers) => ({
@@ -28,6 +26,13 @@ export const followers = (
     ),
     nextLink: paginationControls(`/groups/${contentModel.group.slug}/followers?`, pageOfFollowers.nextPage),
   })),
-  E.map(renderFollowers),
   TE.fromEither,
+);
+
+export const followers = (
+  ports: Ports,
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+  contentModel,
+  constructFollowersTab(ports),
+  TE.map(renderFollowers),
 );
