@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
-import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { Tab, renderTabs } from '../../shared-components/tabs';
@@ -53,12 +52,7 @@ export const contentComponent: ContentComponent = (ports) => (contentModel) => p
       TE.rightTask,
       TE.map(RA.size),
     ),
-    followerCount: pipe(
-      ports.getAllEvents,
-      TE.rightTask,
-      TE.map(findFollowers(contentModel.group.id)),
-      TE.map(RA.size),
-    ),
+    followerCount: TE.right(contentModel.followers.length),
   },
   sequenceS(TE.ApplyPar),
   TE.map(({ content, listCount, followerCount }) => renderTabs({

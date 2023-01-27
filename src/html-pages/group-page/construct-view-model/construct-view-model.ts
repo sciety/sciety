@@ -7,16 +7,16 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts } from '../content-component';
-import { DomainEvent } from '../../../domain-events';
-import { GetGroupBySlug } from '../../../shared-ports';
+import { GetAllEvents, GetGroupBySlug } from '../../../shared-ports';
 import { isFollowing } from '../../../shared-read-models/followings';
 import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { TabIndex } from '../content-model';
+import { findFollowers } from '../followers/find-followers';
 
 export type Ports = ContentComponentPorts & {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
 };
 
@@ -55,6 +55,10 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
             T.map(isFollowing(u.id, group.id)),
           ),
         ),
+      ),
+      followers: pipe(
+        ports.getAllEvents,
+        T.map(findFollowers(group.id)),
       ),
     },
     sequenceS(T.ApplyPar),
