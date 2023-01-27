@@ -43,23 +43,19 @@ const contentRenderers = (
   2: followers(ports)(group, pageNumber),
 });
 
-type ContentComponent = (
-  ports: Ports
-) => (
+type ContentModel = {
   group: Group,
   pageNumber: number,
-  activeTabIndex: TabIndex
-) => TE.TaskEither<DE.DataError, HtmlFragment>;
+  activeTabIndex: TabIndex,
+};
 
-export const contentComponent: ContentComponent = (
-  ports,
-) => (
-  group, pageNumber, activeTabIndex,
-) => pipe(
+type ContentComponent = (ports: Ports) => (contentModel: ContentModel) => TE.TaskEither<DE.DataError, HtmlFragment>;
+
+export const contentComponent: ContentComponent = (ports) => (contentModel) => pipe(
   {
-    content: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
+    content: contentRenderers(ports)(contentModel.group, contentModel.pageNumber)[contentModel.activeTabIndex],
     listCount: pipe(
-      group.id,
+      contentModel.group.id,
       LOID.fromGroupId,
       ports.selectAllListsOwnedBy,
       T.of,
@@ -69,13 +65,13 @@ export const contentComponent: ContentComponent = (
     followerCount: pipe(
       ports.getAllEvents,
       TE.rightTask,
-      TE.map(findFollowers(group.id)),
+      TE.map(findFollowers(contentModel.group.id)),
       TE.map(RA.size),
     ),
   },
   sequenceS(TE.ApplyPar),
   TE.map(({ content, listCount, followerCount }) => renderTabs({
-    tabList: tabList(group.slug, listCount, followerCount),
-    activeTabIndex,
+    tabList: tabList(contentModel.group.slug, listCount, followerCount),
+    activeTabIndex: contentModel.activeTabIndex,
   })(content)),
 );

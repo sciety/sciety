@@ -40,9 +40,11 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
   ports.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
   TE.fromEither,
-  TE.chain((group) => pipe(
+  TE.chainTaskK((group) => pipe(
     {
-      group: TE.right(group),
+      activeTabIndex: T.of(activeTabIndex),
+      pageNumber: T.of(params.page),
+      group: T.of(group),
       isFollowing: pipe(
         params.user,
         O.fold(
@@ -52,10 +54,16 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
             T.map(isFollowing(u.id, group.id)),
           ),
         ),
-        TE.rightTask,
       ),
-      content: contentComponent(ports)(group, params.page, activeTabIndex),
     },
-    sequenceS(TE.ApplyPar),
+    sequenceS(T.ApplyPar),
+  )),
+  TE.chain((partial) => pipe(
+    partial,
+    contentComponent(ports),
+    TE.map((content) => ({
+      ...partial,
+      content,
+    })),
   )),
 );
