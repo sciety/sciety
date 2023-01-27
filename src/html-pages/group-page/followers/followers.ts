@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/Task';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
@@ -19,9 +19,8 @@ export const followers = (
   contentModel: ContentModel,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   contentModel.followers,
-  T.of,
-  T.map(paginate(contentModel.pageNumber, pageSize)),
-  TE.map((pageOfFollowers) => ({
+  paginate(contentModel.pageNumber, pageSize),
+  E.map((pageOfFollowers) => ({
     followerCount: pageOfFollowers.numberOfOriginalItems,
     followers: pipe(
       pageOfFollowers.items,
@@ -29,5 +28,6 @@ export const followers = (
     ),
     nextLink: paginationControls(`/groups/${contentModel.group.slug}/followers?`, pageOfFollowers.nextPage),
   })),
-  TE.map(renderFollowers),
+  E.map(renderFollowers),
+  TE.fromEither,
 );
