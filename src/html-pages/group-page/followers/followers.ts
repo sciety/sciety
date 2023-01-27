@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -21,15 +20,13 @@ const augmentFollowersWithUserDetails = (
   ports: Ports,
 ) => (pageOfFollowers: PageOfItems<Follower>) => pipe(
   {
-    followerCount: TE.right(pageOfFollowers.numberOfOriginalItems),
-    nextPage: TE.right(pageOfFollowers.nextPage),
+    followerCount: pageOfFollowers.numberOfOriginalItems,
+    nextPage: pageOfFollowers.nextPage,
     followers: pipe(
       pageOfFollowers.items,
       augmentWithUserDetails(ports),
-      TE.right,
     ),
   },
-  sequenceS(TE.ApplyPar),
 );
 
 const pageSize = 10;
@@ -43,7 +40,7 @@ export const followers = (
   ports.getAllEvents,
   T.map(findFollowers(group.id)),
   T.map(paginate(pageNumber, pageSize)),
-  TE.chainW(augmentFollowersWithUserDetails(ports)),
+  TE.map(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,
     nextLink: paginationControls(`/groups/${group.slug}/followers?`, partial.nextPage),
