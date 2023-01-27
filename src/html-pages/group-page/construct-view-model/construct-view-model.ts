@@ -6,20 +6,69 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as LOID from '../../../types/list-owner-id';
 import { contentComponent, Ports as ContentComponentPorts } from '../content-component';
 import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { isFollowing } from '../../../shared-read-models/followings';
 import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
 import * as DE from '../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { TabIndex } from '../content-model';
+import { ActiveTab, ViewModel } from '../view-model';
+import { ContentModel, TabIndex } from '../content-model';
 import { findFollowers } from '../followers/find-followers';
+import { toListCardViewModel } from '../lists/to-list-card-view-model';
+import { toOurListsViewModel } from '../about/to-our-lists-view-model';
+import { paginate } from '../../../shared-components/paginate';
+import { augmentWithUserDetails } from '../followers/augment-with-user-details';
 
 export type Ports = ContentComponentPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+};
+
+const pageSize = 10;
+
+const constructActiveTabModel = (
+  ports: Ports,
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, ActiveTab> => {
+  switch (contentModel.activeTabIndex) {
+    case 0:
+      return TE.right({
+        selector: 'lists' as const,
+        lists: pipe(
+          contentModel.lists,
+          RA.reverse,
+          RA.map(toListCardViewModel),
+        ),
+      });
+    case 1:
+      return pipe(
+        `groups/${contentModel.group.descriptionPath}`,
+        ports.fetchStaticFile,
+        TE.map((markdown) => ({
+          selector: 'about' as const,
+          lists: toOurListsViewModel(contentModel.group.slug)(contentModel.lists),
+          markdown,
+        })),
+      );
+    default:
+      return pipe(
+        contentModel.followers,
+        paginate(contentModel.pageNumber, pageSize),
+        E.map((pageOfFollowers) => ({
+          selector: 'followers' as const,
+          followerCount: pageOfFollowers.numberOfOriginalItems,
+          followers: pipe(
+            pageOfFollowers.items,
+            augmentWithUserDetails(ports),
+          ),
+          nextLink: paginationControls(`/groups/${contentModel.group.slug}/followers?`, pageOfFollowers.nextPage),
+        })),
+        TE.fromEither,
+      );
+  }
 };
 
 export const paramsCodec = t.type({
@@ -77,6 +126,14 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
     TE.map((activeTabContent) => ({
       ...partial,
       activeTabContent,
+    })),
+  )),
+  TE.chain((partial) => pipe(
+    partial,
+    constructActiveTabModel(ports),
+    TE.map((activeTab) => ({
+      ...partial,
+      activeTab,
     })),
   )),
 );
