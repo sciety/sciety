@@ -1,18 +1,16 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
 import { followers, Ports as FollowersPorts } from './followers/followers';
-import { lists, Ports as ListsPorts } from './lists/lists';
+import { lists } from './lists/lists';
 import { Tab, renderTabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import * as LOID from '../../types/list-owner-id';
 import { ContentModel, TabIndex } from './content-model';
 
-export type Ports = AboutPorts & FollowersPorts & ListsPorts;
+export type Ports = AboutPorts & FollowersPorts;
 
 const tabList = (groupSlug: string, listCount: number, followerCount: number): [Tab, Tab, Tab] => [
   {
@@ -34,7 +32,7 @@ const contentRenderers = (
 ) => (
   contentModel: ContentModel,
 ): Record<TabIndex, TE.TaskEither<DE.DataError, HtmlFragment>> => ({
-  0: lists(ports)(contentModel),
+  0: lists(contentModel),
   1: about(ports)(contentModel),
   2: followers(ports)(contentModel),
 });
@@ -45,12 +43,9 @@ export const contentComponent: ContentComponent = (ports) => (contentModel) => p
   {
     content: contentRenderers(ports)(contentModel)[contentModel.activeTabIndex],
     listCount: pipe(
-      contentModel.group.id,
-      LOID.fromGroupId,
-      ports.selectAllListsOwnedBy,
-      T.of,
-      TE.rightTask,
-      TE.map(RA.size),
+      contentModel.lists,
+      RA.size,
+      TE.right,
     ),
     followerCount: TE.right(contentModel.followers.length),
   },

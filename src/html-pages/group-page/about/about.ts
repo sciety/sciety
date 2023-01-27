@@ -4,24 +4,20 @@ import { pipe } from 'fp-ts/function';
 import { renderDescription } from './render-description';
 import { renderOurLists } from './render-our-lists';
 import { toOurListsViewModel } from './to-our-lists-view-model';
-import { FetchStaticFile, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { FetchStaticFile } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { Group } from '../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as LOID from '../../../types/list-owner-id';
 import { ContentModel } from '../content-model';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-const getRenderedLists = (ports: Ports) => (group: Group) => pipe(
-  group.id,
-  LOID.fromGroupId,
-  ports.selectAllListsOwnedBy,
+const getRenderedLists = (contentModel: ContentModel) => pipe(
+  contentModel.lists,
   TE.right,
-  TE.map(toOurListsViewModel(group.slug)),
+  TE.map(toOurListsViewModel(contentModel.group.slug)),
   TE.map(renderOurLists),
 );
 
@@ -33,7 +29,7 @@ const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<D
 
 export const about = (ports: Ports) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
-    lists: getRenderedLists(ports)(contentModel.group),
+    lists: getRenderedLists(contentModel),
     description: getRenderedDescription(ports)(contentModel.group),
   },
   sequenceS(TE.ApplyPar),

@@ -6,8 +6,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import * as LOID from '../../../types/list-owner-id';
 import { contentComponent, Ports as ContentComponentPorts } from '../content-component';
-import { GetAllEvents, GetGroupBySlug } from '../../../shared-ports';
+import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { isFollowing } from '../../../shared-read-models/followings';
 import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
 import * as DE from '../../../types/data-error';
@@ -18,6 +19,7 @@ import { findFollowers } from '../followers/find-followers';
 export type Ports = ContentComponentPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 export const paramsCodec = t.type({
@@ -59,6 +61,12 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
       followers: pipe(
         ports.getAllEvents,
         T.map(findFollowers(group.id)),
+      ),
+      lists: pipe(
+        group.id,
+        LOID.fromGroupId,
+        ports.selectAllListsOwnedBy,
+        T.of,
       ),
     },
     sequenceS(T.ApplyPar),

@@ -1,4 +1,5 @@
 import { Group } from '../../types/group';
+import { List } from '../../types/list';
 import { Follower } from './followers/augment-with-user-details';
 
 export type TabIndex = 0 | 1 | 2;
@@ -8,4 +9,5 @@ export type ContentModel = {
   pageNumber: number,
   activeTabIndex: TabIndex,
   followers: ReadonlyArray<Follower>,
+  lists: ReadonlyArray<List>,
 };
