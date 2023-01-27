@@ -29,7 +29,7 @@ export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<nev
   TE.right,
 );
 
-const renderListsTab = (viewmodel: ListsTabViewModel): HtmlFragment => (
+export const renderListsTab = (viewmodel: ListsTabViewModel): HtmlFragment => (
   renderListOfListCardsWithFallback(viewmodel.lists)
 );
 

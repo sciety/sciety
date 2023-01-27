@@ -32,7 +32,7 @@ export const constructAboutTab = (
   sequenceS(TE.ApplyPar),
 );
 
-const renderAboutTab = (viewmodel: AboutTabViewModel) => toHtmlFragment(`
+export const renderAboutTab = (viewmodel: AboutTabViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-page-about">
     <section>
       ${renderOurLists(viewmodel.lists)}
