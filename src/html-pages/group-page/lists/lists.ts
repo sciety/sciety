@@ -17,11 +17,11 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   lastUpdated: O.some(list.lastUpdated),
 });
 
-type ListsTabViewModel = {
+export type ListsTabViewModel = {
   lists: ReadonlyArray<ListCardViewModel>,
 };
 
-const constructListsTab = (contentModel: ContentModel): TE.TaskEither<never, ListsTabViewModel> => pipe(
+export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<never, ListsTabViewModel> => pipe(
   contentModel.lists,
   RA.reverse,
   RA.map(toListCardViewModel),

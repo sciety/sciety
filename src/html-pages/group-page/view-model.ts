@@ -1,22 +1,19 @@
-import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
 import { HtmlFragment } from '../../types/html-fragment';
+import { AboutTabViewModel } from './about/about';
 import { ContentModel } from './content-model';
-import { UserCardViewModel } from './followers/render-followers';
+import { FollowerListViewModel } from './followers/render-followers';
+import { ListsTabViewModel } from './lists/lists';
 
-type ListsTab = {
+type ListsTab = ListsTabViewModel & {
   selector: 'lists',
-  lists: ReadonlyArray<ListCardViewModel>,
 };
 
-type AboutTab = {
+type AboutTab = AboutTabViewModel & {
   selector: 'about',
 };
 
-type FollowersTab = {
+type FollowersTab = FollowerListViewModel & {
   selector: 'followers',
-  followerCount: number,
-  followers: ReadonlyArray<UserCardViewModel>,
-  nextLink: HtmlFragment,
 };
 
 export type ActiveTab = ListsTab | AboutTab | FollowersTab;

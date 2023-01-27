@@ -13,7 +13,7 @@ export type Ports = AugmentWithUserDetailsPorts;
 
 const pageSize = 10;
 
-const constructFollowersTab = (
+export const constructFollowersTab = (
   ports: Ports,
 ) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, FollowerListViewModel> => pipe(
   contentModel.followers,

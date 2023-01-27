@@ -13,12 +13,14 @@ export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
-type AboutTabViewModel = {
+export type AboutTabViewModel = {
   lists: OurListsViewModel,
   markdown: string,
 };
 
-const constructAboutTab = (ports: Ports) => (contentModel: ContentModel) => pipe(
+export const constructAboutTab = (
+  ports: Ports,
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTabViewModel> => pipe(
   {
     lists: pipe(
       contentModel.lists,

@@ -6,8 +6,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as LOID from '../../../types/list-owner-id';
 import { contentComponent, Ports as ContentComponentPorts } from '../content-component';
 import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
@@ -17,10 +15,9 @@ import * as DE from '../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
 import { ContentModel, TabIndex } from '../content-model';
 import { findFollowers } from '../followers/find-followers';
-import { toListCardViewModel } from '../lists/to-list-card-view-model';
-import { toOurListsViewModel } from '../about/to-our-lists-view-model';
-import { paginate } from '../followers/paginate';
-import { augmentWithUserDetails } from '../followers/augment-with-user-details';
+import { constructListsTab } from '../lists/lists';
+import { constructAboutTab } from '../about/about';
+import { constructFollowersTab } from '../followers/followers';
 
 export type Ports = ContentComponentPorts & {
   getAllEvents: GetAllEvents,
@@ -28,45 +25,36 @@ export type Ports = ContentComponentPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-const pageSize = 10;
-
 const constructActiveTabModel = (
   ports: Ports,
 ) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, ActiveTab> => {
   switch (contentModel.activeTabIndex) {
     case 0:
-      return TE.right({
-        selector: 'lists' as const,
-        lists: pipe(
-          contentModel.lists,
-          RA.reverse,
-          RA.map(toListCardViewModel),
-        ),
-      });
+      return pipe(
+        contentModel,
+        constructListsTab,
+        TE.map((lists) => ({
+          selector: 'lists' as const,
+          ...lists,
+        })),
+      );
     case 1:
       return pipe(
-        `groups/${contentModel.group.descriptionPath}`,
-        ports.fetchStaticFile,
-        TE.map((markdown) => ({
+        contentModel,
+        constructAboutTab(ports),
+        TE.map((aboutTab) => ({
           selector: 'about' as const,
-          lists: toOurListsViewModel(contentModel.group.slug)(contentModel.lists),
-          markdown,
+          ...aboutTab,
         })),
       );
     default:
       return pipe(
-        contentModel.followers,
-        paginate(contentModel.pageNumber, pageSize),
-        E.map((pageOfFollowers) => ({
+        contentModel,
+        constructFollowersTab(ports),
+        TE.map((followersTab) => ({
           selector: 'followers' as const,
-          followerCount: pageOfFollowers.numberOfOriginalItems,
-          followers: pipe(
-            pageOfFollowers.items,
-            augmentWithUserDetails(ports),
-          ),
-          nextLink: paginationControls(`/groups/${contentModel.group.slug}/followers?`, pageOfFollowers.nextPage),
+          ...followersTab,
         })),
-        TE.fromEither,
       );
   }
 };
