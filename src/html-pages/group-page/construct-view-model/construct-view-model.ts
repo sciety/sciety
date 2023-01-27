@@ -19,7 +19,7 @@ import { ContentModel, TabIndex } from '../content-model';
 import { findFollowers } from '../followers/find-followers';
 import { toListCardViewModel } from '../lists/to-list-card-view-model';
 import { toOurListsViewModel } from '../about/to-our-lists-view-model';
-import { paginate } from '../../../shared-components/paginate';
+import { paginate } from '../followers/paginate';
 import { augmentWithUserDetails } from '../followers/augment-with-user-details';
 
 export type Ports = ContentComponentPorts & {
