@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { OurListsViewModel } from './render-our-lists';
 import { List } from '../../../types/list';
+import { OurListsViewModel } from '../render-as-html/render-our-lists';
 
 const maxLists = 3;
 

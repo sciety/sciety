@@ -1,7 +1,7 @@
 import { AboutTabViewModel } from './about/about';
 import { ContentModel } from './content-model';
-import { FollowerListViewModel } from './followers/render-followers';
 import { ListsTabViewModel } from './lists/lists';
+import { FollowerListViewModel } from './render-as-html/render-followers';
 
 type ListsTab = ListsTabViewModel & {
   selector: 'lists',

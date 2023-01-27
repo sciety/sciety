@@ -1,4 +1,4 @@
-import { renderDescription } from '../../../../src/html-pages/group-page/about/render-description';
+import { renderDescription } from '../../../../src/html-pages/group-page/render-as-html/render-description';
 
 describe('render-description', () => {
   it('renders the group description', async () => {

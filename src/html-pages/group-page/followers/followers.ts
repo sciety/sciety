@@ -3,10 +3,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
 import { paginate } from './paginate';
-import { FollowerListViewModel } from './render-followers';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as DE from '../../../types/data-error';
 import { ContentModel } from '../content-model';
+import { FollowerListViewModel } from '../render-as-html/render-followers';
 
 export type Ports = AugmentWithUserDetailsPorts;
 

@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { renderListOfListCardsWithFallback } from '../../../../src/html-pages/group-page/lists/render-list-of-list-cards-with-fallback';
+import { renderListOfListCardsWithFallback } from '../../../../src/html-pages/group-page/render-as-html/render-list-of-list-cards-with-fallback';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryListId } from '../../../types/list-id.helper';
 

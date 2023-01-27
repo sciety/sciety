@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { UserCardViewModel } from './render-followers';
 import { GetUser } from '../../../shared-ports';
 import { Follower } from '../content-model';
+import { UserCardViewModel } from '../render-as-html/render-followers';
 
 export type Ports = {
   getUser: GetUser,

@@ -2,8 +2,6 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
-import { HtmlFragment } from '../../../types/html-fragment';
 import { ContentModel } from '../content-model';
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
 import { List } from '../../../types/list';
@@ -27,8 +25,4 @@ export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<nev
   RA.map(toListCardViewModel),
   (lists) => ({ lists }),
   TE.right,
-);
-
-export const renderListsTab = (viewmodel: ListsTabViewModel): HtmlFragment => (
-  renderListOfListCardsWithFallback(viewmodel.lists)
 );
