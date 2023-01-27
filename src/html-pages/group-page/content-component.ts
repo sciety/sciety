@@ -1,5 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { about, Ports as AboutPorts } from './about/about';
@@ -12,18 +10,18 @@ import { ContentModel, TabIndex } from './content-model';
 
 export type Ports = AboutPorts & FollowersPorts;
 
-const tabList = (groupSlug: string, listCount: number, followerCount: number): [Tab, Tab, Tab] => [
+const tabList = (contentModel: ContentModel): [Tab, Tab, Tab] => [
   {
-    label: toHtmlFragment(`<span class="visually-hidden">This group has ${listCount} </span>Lists<span aria-hidden="true"> (${listCount})</span>`),
-    url: `/groups/${groupSlug}/lists`,
+    label: toHtmlFragment(`<span class="visually-hidden">This group has ${contentModel.lists.length} </span>Lists<span aria-hidden="true"> (${contentModel.lists.length})</span>`),
+    url: `/groups/${contentModel.group.slug}/lists`,
   },
   {
     label: toHtmlFragment('About'),
-    url: `/groups/${groupSlug}/about`,
+    url: `/groups/${contentModel.group.slug}/about`,
   },
   {
-    label: toHtmlFragment(`<span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>`),
-    url: `/groups/${groupSlug}/followers`,
+    label: toHtmlFragment(`<span class="visually-hidden">This group has ${contentModel.followers.length} </span>Followers<span aria-hidden="true"> (${contentModel.followers.length})</span>`),
+    url: `/groups/${contentModel.group.slug}/followers`,
   },
 ];
 
@@ -40,18 +38,9 @@ const contentRenderers = (
 type ContentComponent = (ports: Ports) => (contentModel: ContentModel) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 export const contentComponent: ContentComponent = (ports) => (contentModel) => pipe(
-  {
-    content: contentRenderers(ports)(contentModel)[contentModel.activeTabIndex],
-    listCount: pipe(
-      contentModel.lists,
-      RA.size,
-      TE.right,
-    ),
-    followerCount: TE.right(contentModel.followers.length),
-  },
-  sequenceS(TE.ApplyPar),
-  TE.map(({ content, listCount, followerCount }) => renderTabs({
-    tabList: tabList(contentModel.group.slug, listCount, followerCount),
+  contentRenderers(ports)(contentModel)[contentModel.activeTabIndex],
+  TE.map(renderTabs({
+    tabList: tabList(contentModel),
     activeTabIndex: contentModel.activeTabIndex,
-  })(content)),
+  })),
 );
