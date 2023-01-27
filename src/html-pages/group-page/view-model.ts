@@ -1,4 +1,3 @@
-import { HtmlFragment } from '../../types/html-fragment';
 import { AboutTabViewModel } from './about/about';
 import { ContentModel } from './content-model';
 import { FollowerListViewModel } from './followers/render-followers';
@@ -19,7 +18,6 @@ type FollowersTab = FollowerListViewModel & {
 export type ActiveTab = ListsTab | AboutTab | FollowersTab;
 
 export type ViewModel = ContentModel & {
-  activeTabContent: HtmlFragment,
   isFollowing: boolean,
   activeTab: ActiveTab,
 };

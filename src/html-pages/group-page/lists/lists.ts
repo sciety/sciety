@@ -32,9 +32,3 @@ export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<nev
 export const renderListsTab = (viewmodel: ListsTabViewModel): HtmlFragment => (
   renderListOfListCardsWithFallback(viewmodel.lists)
 );
-
-export const lists = (contentModel: ContentModel): TE.TaskEither<never, HtmlFragment> => pipe(
-  contentModel,
-  constructListsTab,
-  TE.map(renderListsTab),
-);

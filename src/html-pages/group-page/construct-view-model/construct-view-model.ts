@@ -7,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as LOID from '../../../types/list-owner-id';
-import { contentComponent, Ports as ContentComponentPorts } from '../content-component';
 import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { isFollowing } from '../../../shared-read-models/followings';
 import { UserIdFromString } from '../../../types/codecs/UserIdFromString';
@@ -16,10 +15,10 @@ import { ActiveTab, ViewModel } from '../view-model';
 import { ContentModel, TabIndex } from '../content-model';
 import { findFollowers } from '../followers/find-followers';
 import { constructListsTab } from '../lists/lists';
-import { constructAboutTab } from '../about/about';
-import { constructFollowersTab } from '../followers/followers';
+import { constructAboutTab, Ports as AboutPorts } from '../about/about';
+import { constructFollowersTab, Ports as FollowersPorts } from '../followers/followers';
 
-export type Ports = ContentComponentPorts & {
+export type Ports = AboutPorts & FollowersPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -107,14 +106,6 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
       ),
     },
     sequenceS(T.ApplyPar),
-  )),
-  TE.chain((partial) => pipe(
-    partial,
-    contentComponent(ports),
-    TE.map((activeTabContent) => ({
-      ...partial,
-      activeTabContent,
-    })),
   )),
   TE.chain((partial) => pipe(
     partial,

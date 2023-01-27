@@ -42,9 +42,3 @@ export const renderAboutTab = (viewmodel: AboutTabViewModel): HtmlFragment => to
     </section>
   </div>
 `);
-
-export const about = (ports: Ports) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
-  contentModel,
-  constructAboutTab(ports),
-  TE.map(renderAboutTab),
-);
