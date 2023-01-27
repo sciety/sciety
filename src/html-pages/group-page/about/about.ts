@@ -9,6 +9,7 @@ import * as DE from '../../../types/data-error';
 import { Group } from '../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as LOID from '../../../types/list-owner-id';
+import { ContentModel } from '../content-model';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
@@ -30,10 +31,10 @@ const getRenderedDescription = (ports: Ports) => (group: Group): TE.TaskEither<D
   TE.map(renderDescription),
 );
 
-export const about = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+export const about = (ports: Ports) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
-    lists: getRenderedLists(ports)(group),
-    description: getRenderedDescription(ports)(group),
+    lists: getRenderedLists(ports)(contentModel.group),
+    description: getRenderedDescription(ports)(contentModel.group),
   },
   sequenceS(TE.ApplyPar),
   TE.map(({ lists, description }) => `

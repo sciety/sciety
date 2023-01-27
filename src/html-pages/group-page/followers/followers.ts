@@ -7,9 +7,9 @@ import { paginate } from './paginate';
 import { renderFollowers } from './render-followers';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as DE from '../../../types/data-error';
-import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { GetAllEvents } from '../../../shared-ports';
+import { ContentModel } from '../content-model';
 
 export type Ports = AugmentWithUserDetailsPorts & {
   getAllEvents: GetAllEvents,
@@ -20,19 +20,18 @@ const pageSize = 10;
 export const followers = (
   ports: Ports,
 ) => (
-  group: { id: GroupId, slug: string },
-  pageNumber: number,
+  contentModel: ContentModel,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
-  T.map(findFollowers(group.id)),
-  T.map(paginate(pageNumber, pageSize)),
+  T.map(findFollowers(contentModel.group.id)),
+  T.map(paginate(contentModel.pageNumber, pageSize)),
   TE.map((pageOfFollowers) => ({
     followerCount: pageOfFollowers.numberOfOriginalItems,
     followers: pipe(
       pageOfFollowers.items,
       augmentWithUserDetails(ports),
     ),
-    nextLink: paginationControls(`/groups/${group.slug}/followers?`, pageOfFollowers.nextPage),
+    nextLink: paginationControls(`/groups/${contentModel.group.slug}/followers?`, pageOfFollowers.nextPage),
   })),
   TE.map(renderFollowers),
 );

@@ -9,13 +9,11 @@ import { followers, Ports as FollowersPorts } from './followers/followers';
 import { lists, Ports as ListsPorts } from './lists/lists';
 import { Tab, renderTabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
+import { ContentModel, TabIndex } from './content-model';
 
 export type Ports = AboutPorts & FollowersPorts & ListsPorts;
-
-export type TabIndex = 0 | 1 | 2;
 
 const tabList = (groupSlug: string, listCount: number, followerCount: number): [Tab, Tab, Tab] => [
   {
@@ -35,25 +33,18 @@ const tabList = (groupSlug: string, listCount: number, followerCount: number): [
 const contentRenderers = (
   ports: Ports,
 ) => (
-  group: Group,
-  pageNumber: number,
+  contentModel: ContentModel,
 ): Record<TabIndex, TE.TaskEither<DE.DataError, HtmlFragment>> => ({
-  0: lists(ports)(group),
-  1: about(ports)(group),
-  2: followers(ports)(group, pageNumber),
+  0: lists(ports)(contentModel),
+  1: about(ports)(contentModel),
+  2: followers(ports)(contentModel),
 });
-
-type ContentModel = {
-  group: Group,
-  pageNumber: number,
-  activeTabIndex: TabIndex,
-};
 
 type ContentComponent = (ports: Ports) => (contentModel: ContentModel) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 export const contentComponent: ContentComponent = (ports) => (contentModel) => pipe(
   {
-    content: contentRenderers(ports)(contentModel.group, contentModel.pageNumber)[contentModel.activeTabIndex],
+    content: contentRenderers(ports)(contentModel)[contentModel.activeTabIndex],
     listCount: pipe(
       contentModel.group.id,
       LOID.fromGroupId,
