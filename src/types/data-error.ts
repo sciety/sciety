@@ -9,6 +9,6 @@ export const isNotFound = (de: DataError): boolean => de === notFound;
 
 export const isUnavailable = (de: DataError): boolean => de === unavailable;
 
-export const fold = <B>(opts: Record<'notFound' | 'unavailable', Lazy<B>>) => (e: DataError): B => (
+export const match = <B>(opts: Record<'notFound' | 'unavailable', Lazy<B>>) => (e: DataError): B => (
   isNotFound(e) ? opts.notFound() : opts.unavailable()
 );

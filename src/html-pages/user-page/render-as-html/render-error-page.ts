@@ -5,7 +5,7 @@ import { RenderPageError } from '../../../types/render-page-error';
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,
-  DE.fold({
+  DE.match({
     notFound: () => 'User not found',
     unavailable: () => 'User information unavailable',
   }),

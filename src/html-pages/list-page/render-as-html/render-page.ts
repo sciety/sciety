@@ -37,7 +37,7 @@ const render = (viewModel: ViewModel) => toHtmlFragment(`
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,
-  DE.fold({
+  DE.match({
     notFound: () => 'We couldn\'t find this information.',
     unavailable: () => 'We couldn\'t retrieve this information. Please try again.',
   }),

@@ -33,7 +33,7 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
     body,
     status: pipe(
       error.type,
-      DE.fold({
+      DE.match({
         notFound: () => StatusCodes.NOT_FOUND,
         unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
       }),
