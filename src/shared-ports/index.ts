@@ -3,6 +3,7 @@ import { CommitEvents } from './commit-events';
 import { CreateList } from './create-list';
 import { EditListDetails } from './edit-list-details';
 import { FetchArticle } from './fetch-article';
+import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetAllGroups } from './get-all-groups';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
@@ -28,6 +29,7 @@ export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
+export { FetchStaticFile } from './fetch-static-file';
 export { GetGroup } from './get-group';
 export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
@@ -52,6 +54,7 @@ export type SharedPorts = {
   createList: CreateList,
   editListDetails: EditListDetails,
   fetchArticle: FetchArticle,
+  fetchStaticFile: FetchStaticFile,
   getAllEvents: GetAllEvents,
   getAllGroups: GetAllGroups,
   getArticleIdsByState: GetArticleIdsByState,

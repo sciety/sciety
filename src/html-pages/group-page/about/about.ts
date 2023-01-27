@@ -1,10 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchStaticFile, renderDescription } from './render-description';
+import { renderDescription } from './render-description';
 import { renderOurLists } from './render-our-lists';
 import { toOurListsViewModel } from './to-our-lists-view-model';
-import { SelectAllListsOwnedBy } from '../../../shared-ports';
+import { FetchStaticFile, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { Group } from '../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';

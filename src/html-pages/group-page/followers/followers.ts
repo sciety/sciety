@@ -5,14 +5,14 @@ import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './
 import { findFollowers } from './find-followers';
 import { paginate } from './paginate';
 import { renderFollowers } from './render-followers';
-import { DomainEvent } from '../../../domain-events';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import * as DE from '../../../types/data-error';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
+import { GetAllEvents } from '../../../shared-ports';
 
 export type Ports = AugmentWithUserDetailsPorts & {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
 };
 
 const pageSize = 10;
