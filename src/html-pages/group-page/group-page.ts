@@ -8,7 +8,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { contentComponent, Ports as ContentComponentPorts, TabIndex } from './content-component';
 import { DomainEvent } from '../../domain-events';
-import { renderFollowToggle } from '../../write-side/follow/render-follow-toggle';
 import { GetGroupBySlug } from '../../shared-ports';
 import { isFollowing } from '../../shared-read-models/followings';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
@@ -60,7 +59,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
   TE.chain((group) => pipe(
     {
       group: TE.right(group),
-      followButton: pipe(
+      isFollowing: pipe(
         user,
         O.fold(
           () => T.of(false),
@@ -69,7 +68,6 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
             T.map(isFollowing(u.id, group.id)),
           ),
         ),
-        T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
       content: contentComponent(ports)(group, pageNumber, activeTabIndex),

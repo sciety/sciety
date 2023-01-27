@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { renderFollowToggle } from '../../../write-side/follow/render-follow-toggle';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel) => toHtmlFragment(`
@@ -15,7 +16,7 @@ export const renderPage = (viewmodel: ViewModel) => toHtmlFragment(`
     </p>
   </header>
   <div class="group-page-follow-toggle">
-    ${viewmodel.followButton}
+    ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
   </div>
   ${viewmodel.content}
 `);

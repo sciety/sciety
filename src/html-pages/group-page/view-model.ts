@@ -3,6 +3,6 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
   group: Group,
-  followButton: HtmlFragment,
+  isFollowing: boolean,
   content: HtmlFragment,
 };
