@@ -1,8 +1,7 @@
-import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
+import { ContentModel } from './content-model';
 
-export type ViewModel = {
-  group: Group,
+export type ViewModel = ContentModel & {
+  activeTabContent: HtmlFragment,
   isFollowing: boolean,
-  content: HtmlFragment,
 };

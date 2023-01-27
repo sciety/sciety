@@ -3,16 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { UserCardViewModel } from './render-followers';
 import { GetUser } from '../../../shared-ports';
-import { UserId } from '../../../types/user-id';
+import { Follower } from '../content-model';
 
 export type Ports = {
   getUser: GetUser,
-};
-
-export type Follower = {
-  userId: UserId,
-  listCount: number,
-  followedGroupCount: number,
 };
 
 export const augmentWithUserDetails = (

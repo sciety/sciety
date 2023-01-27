@@ -74,9 +74,9 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
   TE.chain((partial) => pipe(
     partial,
     contentComponent(ports),
-    TE.map((content) => ({
+    TE.map((activeTabContent) => ({
       ...partial,
-      content,
+      activeTabContent,
     })),
   )),
 );

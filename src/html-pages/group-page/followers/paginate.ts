@@ -2,9 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Follower } from './augment-with-user-details';
 import { PageOfItems, paginate as sharedPaginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
+import { Follower } from '../content-model';
 
 export const paginate = (
   pageNumber: number,
