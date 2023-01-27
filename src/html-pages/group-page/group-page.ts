@@ -12,7 +12,6 @@ import { GetGroupBySlug } from '../../shared-ports';
 import { isFollowing } from '../../shared-read-models/followings';
 import { UserIdFromString } from '../../types/codecs/UserIdFromString';
 import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { renderAsHtml } from './render-as-html/render-as-html';
@@ -39,11 +38,6 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const notFoundResponse = () => ({
-  type: DE.notFound,
-  message: toHtmlFragment('No such group. Please check and try again.'),
-} as const);
-
 type GroupPage = (
   ports: Ports
 ) => (
@@ -54,7 +48,7 @@ type GroupPage = (
 
 export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user, page: pageNumber }) => pipe(
   ports.getGroupBySlug(slug),
-  E.fromOption(notFoundResponse),
+  E.fromOption(() => DE.notFound),
   TE.fromEither,
   TE.chain((group) => pipe(
     {
@@ -73,6 +67,6 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
       content: contentComponent(ports)(group, pageNumber, activeTabIndex),
     },
     sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderAsHtml),
   )),
+  TE.bimap(renderErrorPage, renderAsHtml),
 );
