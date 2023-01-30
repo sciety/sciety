@@ -174,16 +174,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     pageHandler(adapters, () => pipe(learnAboutPage, TE.right)),
   );
 
-  router.get(
-    '/users/:descriptor',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/users/${context.params.descriptor}/lists`);
-
-      await next();
-    },
-  );
-
   configureRedirects(router, adapters);
 
   const matchHandle = '[^0-9][^/]+';
@@ -220,16 +210,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/articles/meta/:doi(.+)',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.doi}`);
-
-      await next();
-    },
-  );
-
-  router.get(
     '/evaluations/:reviewid/content',
     pageHandler(adapters, createPageFromParams(
       evaluationContentParams,
@@ -250,16 +230,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/groups',
     pageHandler(adapters, () => groupsPage(adapters)),
-  );
-
-  router.get(
-    '/groups/:idOrSlug',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.idOrSlug}/about`);
-
-      await next();
-    },
   );
 
   router.get(

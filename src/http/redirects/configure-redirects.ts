@@ -1,5 +1,6 @@
 import Router from '@koa/router';
-import { permanentRedirect } from './permanent-redirect';
+import { StatusCodes } from 'http-status-codes';
+import { Middleware } from 'koa';
 import { Ports as IdToHandlePorts, redirectUserIdToHandle } from './redirect-user-id-to-handle';
 import { Ports as UserToGenericListPorts, redirectUserListPageToGenericListPage } from './redirect-user-list-page-to-generic-list-page';
 
@@ -22,8 +23,29 @@ const permanentRedirects: ReadonlyArray<[string, (params: Record<string, string>
   ['/subscribe-to-mailing-list', () => 'http://eepurl.com/hBml3D'],
 ];
 
+const temporaryRedirects: ReadonlyArray<[string, (params: Record<string, string>) => string]> = [
+  ['/users/:descriptor', (params) => `/users/${params.descriptor}/lists`],
+  ['/articles/meta/:doi(.+)', (params) => `/articles/activity/${params.doi}`],
+  ['/groups/:idOrSlug', (params) => `/groups/${params.idOrSlug}/about`],
+];
+
+const permanentRedirect = (
+  constructUrl: (params: Record<string, string>) => string,
+): Middleware => async (context) => {
+  context.status = StatusCodes.PERMANENT_REDIRECT;
+  context.redirect(constructUrl(context.params));
+};
+
+const temporaryRedirect = (
+  constructUrl: (params: Record<string, string>) => string,
+): Middleware => async (context) => {
+  context.status = StatusCodes.TEMPORARY_REDIRECT;
+  context.redirect(constructUrl(context.params));
+};
+
 export const configureRedirects = (router: Router, adapters: Ports): void => {
   permanentRedirects.map(([url, targetConstructor]) => router.get(url, permanentRedirect(targetConstructor)));
+  temporaryRedirects.map(([url, targetConstructor]) => router.get(url, temporaryRedirect(targetConstructor)));
 
   router.get(
     '/users/:id([0-9]+)/lists',
