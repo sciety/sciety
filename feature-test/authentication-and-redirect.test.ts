@@ -100,6 +100,10 @@ describe('authentication-and-redirect', () => {
 
       expect(result).toContain('/users');
     });
+
+    it.todo('i can see my handle in the nav bar');
+
+    it.todo('i can see my avatar in the nav bar');
   });
 
   describe('not logged in', () => {
