@@ -1,23 +1,37 @@
 import {
-  $, click, goto, openBrowser,
+  $, click, goto, into, openBrowser, textBox, write,
 } from 'taiko';
+import { arbitraryString } from '../test/helpers';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
+import { callApi } from './call-api.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('journey-to-user-list', () => {
-  beforeEach(async () => {
-    await openBrowser();
+  const userId = arbitraryUserId();
+
+  beforeAll(async () => {
+    await callApi('api/create-user', {
+      userId,
+      handle: arbitraryUserHandle(),
+      avatarUrl: 'http://somethingthatproducesa404',
+      displayName: arbitraryString(),
+    });
   });
 
   afterEach(screenshotTeardown);
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
+      await openBrowser();
+      await goto('localhost:8080/');
+      await click('Log in');
+      await write(userId, into(textBox('User id')));
+      await click('Log in');
     });
 
     it('navigates to user list page via user page', async () => {
-      await goto('localhost:8080/my-feed');
+      await goto('localhost:8080/');
       await click('My lists');
       await click('Saved articles');
       const pageTitle = await $('h1').text();

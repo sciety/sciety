@@ -100,7 +100,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         '/local/submit-user-id',
         bodyParser({ enableTypes: ['form'] }),
         async (context: ParameterizedContext) => {
-          context.redirect(`/twitter/callback?username=${context.query.userId as string}&password=anypassword`);
+          context.redirect(`/twitter/callback?username=${context.request.body.userId as string}&password=anypassword`);
         },
       );
       break;
