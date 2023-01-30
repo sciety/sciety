@@ -93,6 +93,13 @@ describe('authentication-and-redirect', () => {
 
       expect(buttonText).toBe('Log Out');
     });
+
+    it('i can navigate to my lists from the nav bar', async () => {
+      await click('My lists');
+      const result = await currentURL();
+
+      expect(result).toContain('/users');
+    });
   });
 
   describe('not logged in', () => {
