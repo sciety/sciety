@@ -76,6 +76,7 @@ import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
+import { permanentRedirect } from './redirects/permanent-redirect';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -187,24 +188,14 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/users/:id/followed-groups',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/users/${context.params.id}/following`);
-
-      await next();
-    },
+    permanentRedirect((params) => `/users/${params.id}/following`),
   );
 
   const matchHandle = '[^0-9][^/]+';
 
   router.get(
     `/users/:handle(${matchHandle})/saved-articles`,
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/users/${context.params.handle}/lists`);
-
-      await next();
-    },
+    permanentRedirect((params) => `/users/${params.handle}/lists`),
   );
 
   router.get(
@@ -245,12 +236,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/articles',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect('/search');
-
-      await next();
-    },
+    permanentRedirect(() => ('/search')),
   );
 
   router.get(
@@ -270,12 +256,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/articles/:doi(10\\..+)',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.doi}`);
-
-      await next();
-    },
+    permanentRedirect((params) => `/articles/activity/${params.doi}`),
   );
 
   router.get(
@@ -347,12 +328,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/groups/:slug/evaluated-articles',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}`);
-
-      await next();
-    },
+    permanentRedirect((params) => `/groups/${params.slug}`),
   );
 
   router.get(
@@ -379,18 +355,18 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     )),
   );
 
-  router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
+  router.get('/privacy', permanentRedirect(() => '/legal'));
 
-  router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
+  router.get('/terms', permanentRedirect(() => '/legal'));
 
-  router.redirect('/blog', 'https://blog.sciety.org', StatusCodes.PERMANENT_REDIRECT);
+  router.get('/blog', permanentRedirect(() => 'https://blog.sciety.org'));
 
-  router.redirect('/feedback', 'http://eepurl.com/hBml3D', StatusCodes.PERMANENT_REDIRECT);
+  router.get('/feedback', permanentRedirect(() => 'http://eepurl.com/hBml3D'));
 
   const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
-  router.redirect('/contact-us', mailChimpUrl, StatusCodes.PERMANENT_REDIRECT);
+  router.get('/contact-us', permanentRedirect(() => mailChimpUrl));
 
-  router.redirect('/subscribe-to-mailing-list', 'http://eepurl.com/hBml3D', StatusCodes.PERMANENT_REDIRECT);
+  router.get('/subscribe-to-mailing-list', permanentRedirect(() => 'http://eepurl.com/hBml3D'));
 
   router.get(
     '/legal',
