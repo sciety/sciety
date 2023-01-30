@@ -13,6 +13,7 @@ import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { backfillGroupJoinedEvents } from './policies/backfill-group-joined-events';
+import { groupsToJoin } from './data/bootstrap-groups';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -42,7 +43,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
       setTimeout(resolve, 0);
     });
   }
-  const eventsToCommit = backfillGroupJoinedEvents(events)([]);
+  const eventsToCommit = backfillGroupJoinedEvents(events)(groupsToJoin);
   await ports.commitEvents(eventsToCommit)();
   const stop = performance.now();
   ports.logger('info', 'backfillGroupJoinedEventsPolicy', { countOfEventsToCommit: eventsToCommit.length });

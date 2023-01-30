@@ -24,7 +24,6 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
-import { bootstrapGroups as groupJoinedEvents } from '../data/bootstrap-groups';
 import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
   DomainEvent,
@@ -109,7 +108,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     TE.map((eventsFromDatabase) => pipe(
       [
         ...eventsFromDatabase,
-        ...groupJoinedEvents,
         ...hardcodedListCreationEvents(),
       ],
       sortEvents,

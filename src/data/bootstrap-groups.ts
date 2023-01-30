@@ -5,7 +5,7 @@ import * as DomainEvent from '../domain-events';
 import { fromValidatedString as descriptionPathFromValidatedString } from '../types/description-path';
 import * as Gid from '../types/group-id';
 
-export const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoinedEvent> = [
+const bootstrapGroups: RNEA.ReadonlyNonEmptyArray<DomainEvent.GroupJoinedEvent> = [
   DomainEvent.groupJoined(
     Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     'Biophysics Colab',
