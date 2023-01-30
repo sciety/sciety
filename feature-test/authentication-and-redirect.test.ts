@@ -72,6 +72,23 @@ describe('authentication-and-redirect', () => {
     expect(result).toBe(true);
   });
 
+  describe('on completing the sign up journey', () => {
+    beforeEach(async () => {
+      const newUserId = arbitraryUserId();
+      await goto('localhost:8080/groups');
+      await click('Sign Up');
+      await click('Sign up with your Twitter account');
+      await write(newUserId, into(textBox('User id')));
+      await click('Log in');
+    });
+
+    it('returns to the home page', async () => {
+      const result = await currentURL();
+
+      expect(result).toBe('http://localhost:8080/?login_success=twitter');
+    });
+  });
+
   describe('not logged in', () => {
     it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
@@ -115,19 +132,6 @@ describe('authentication-and-redirect', () => {
       const result = await currentURL();
 
       expect(result).toContain(`/groups/${groupASlug}`);
-    });
-
-    it('completing the sign up journey returns to the home page', async () => {
-      const newUserId = arbitraryUserId();
-      await goto('localhost:8080/groups');
-      await click('Sign Up');
-      await click('Sign up with your Twitter account');
-      await write(newUserId, into(textBox('User id')));
-      await click('Log in');
-
-      const result = await currentURL();
-
-      expect(result).toBe('http://localhost:8080/?login_success=twitter');
     });
   });
 
