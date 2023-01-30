@@ -76,7 +76,7 @@ import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
-import { permanentRedirect } from './redirects/permanent-redirect';
+import { configureRedirects } from './redirects/configure-redirects';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -186,17 +186,9 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     },
   );
 
-  router.get(
-    '/users/:id/followed-groups',
-    permanentRedirect((params) => `/users/${params.id}/following`),
-  );
+  configureRedirects(router);
 
   const matchHandle = '[^0-9][^/]+';
-
-  router.get(
-    `/users/:handle(${matchHandle})/saved-articles`,
-    permanentRedirect((params) => `/users/${params.handle}/lists`),
-  );
 
   router.get(
     `/users/:handle(${matchHandle})/lists`,
@@ -235,11 +227,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/articles',
-    permanentRedirect(() => ('/search')),
-  );
-
-  router.get(
     '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
@@ -252,11 +239,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
         searchResultsPage(adapters)(20),
       ),
     )),
-  );
-
-  router.get(
-    '/articles/:doi(10\\..+)',
-    permanentRedirect((params) => `/articles/activity/${params.doi}`),
   );
 
   router.get(
@@ -327,11 +309,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/groups/:slug/evaluated-articles',
-    permanentRedirect((params) => `/groups/${params.slug}`),
-  );
-
-  router.get(
     '/lists/:id',
     pageHandler(adapters, createPageFromParams(
       listPageParams,
@@ -354,19 +331,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       createAnnotationFormPage,
     )),
   );
-
-  router.get('/privacy', permanentRedirect(() => '/legal'));
-
-  router.get('/terms', permanentRedirect(() => '/legal'));
-
-  router.get('/blog', permanentRedirect(() => 'https://blog.sciety.org'));
-
-  router.get('/feedback', permanentRedirect(() => 'http://eepurl.com/hBml3D'));
-
-  const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
-  router.get('/contact-us', permanentRedirect(() => mailChimpUrl));
-
-  router.get('/subscribe-to-mailing-list', permanentRedirect(() => 'http://eepurl.com/hBml3D'));
 
   router.get(
     '/legal',
