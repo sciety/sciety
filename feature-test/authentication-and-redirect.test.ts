@@ -118,10 +118,11 @@ describe('authentication-and-redirect', () => {
     });
 
     it('completing the sign up journey returns to the home page', async () => {
+      const newUserId = arbitraryUserId();
       await goto('localhost:8080/groups');
       await click('Sign Up');
       await click('Sign up with your Twitter account');
-      await write(userId, into(textBox('User id')));
+      await write(newUserId, into(textBox('User id')));
       await click('Log in');
 
       const result = await currentURL();
