@@ -39,7 +39,7 @@
     "passport-auth0": "^1.4.3",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "pg": "^8.8.0",
+    "pg": "^8.9.0",
     "rdf-dataset-indexed": "^0.4.0",
     "redis": "2.8.0",
     "remarkable": "^2.0.1",
