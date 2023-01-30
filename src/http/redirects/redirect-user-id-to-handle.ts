@@ -8,6 +8,8 @@ import { UserId } from '../../types/user-id';
 import { toErrorResponse } from '../page-handler';
 import { getLoggedInScietyUser, Ports } from '../authentication-and-logging-in-of-sciety-users';
 
+export { Ports } from '../authentication-and-logging-in-of-sciety-users';
+
 export const redirectUserIdToHandle = (ports: Ports, path: string): Middleware => async (context, next) => {
   pipe(
     ports.getUser(context.params.id as UserId),

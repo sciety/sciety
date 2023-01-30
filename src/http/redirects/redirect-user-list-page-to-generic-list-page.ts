@@ -13,7 +13,7 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../a
 import { userHandleCodec } from '../../types/user-handle';
 import { UserDetails } from '../../types/user-details';
 
-type Ports = GetLoggedInScietyUserPorts & {
+export type Ports = GetLoggedInScietyUserPorts & {
   getUserViaHandle: GetUserViaHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
