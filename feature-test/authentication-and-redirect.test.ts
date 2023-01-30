@@ -87,6 +87,12 @@ describe('authentication-and-redirect', () => {
 
       expect(result).toBe('http://localhost:8080/?login_success=twitter');
     });
+
+    it('the login button says "Log Out"', async () => {
+      const buttonText = await $('.utility-bar__list_link_button').text();
+
+      expect(buttonText).toBe('Log Out');
+    });
   });
 
   describe('not logged in', () => {
