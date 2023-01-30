@@ -1,7 +1,7 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { arbitraryString } from '../../test/helpers';
+import { arbitraryString, arbitraryUri } from '../../test/helpers';
 import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
 import { callApi } from '../call-api.helper';
@@ -26,7 +26,7 @@ describe('remove an article from a list', () => {
         name: arbitraryString(),
         shortDescription: arbitraryString(),
         homepage: arbitraryString(),
-        avatarPath: 'http://somethingthatproducesa404',
+        avatarPath: arbitraryUri(),
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryString(),
       });

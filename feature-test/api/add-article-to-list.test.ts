@@ -2,7 +2,7 @@ import {
   $, goto, openBrowser,
 } from 'taiko';
 import { getFirstListOwnedByGroup } from '../get-first-list-owned-by.helper';
-import { arbitraryString } from '../../test/helpers';
+import { arbitraryString, arbitraryUri } from '../../test/helpers';
 import { callApi } from '../call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
@@ -26,7 +26,7 @@ describe('add an article to a list', () => {
         name: arbitraryString(),
         shortDescription: arbitraryString(),
         homepage: arbitraryString(),
-        avatarPath: 'http://somethingthatproducesa404',
+        avatarPath: arbitraryUri(),
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryString(),
       });

@@ -3,7 +3,9 @@ import {
 } from 'taiko';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
 import * as RI from '../../src/types/review-id';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../../test/helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
+} from '../../test/helpers';
 import { arbitraryReviewId } from '../../test/types/review-id.helper';
 import { callApi } from '../call-api.helper';
 import { screenshotTeardown } from '../utilities';
@@ -27,7 +29,7 @@ describe('record an evaluation', () => {
         name: arbitraryString(),
         shortDescription: arbitraryString(),
         homepage: arbitraryString(),
-        avatarPath: 'http://somethingthatproducesa404',
+        avatarPath: arbitraryUri(),
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryWord(),
       });
