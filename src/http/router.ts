@@ -193,16 +193,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     },
   );
 
-  router.get(
-    '/users/:id/followed-groups',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/users/${context.params.id}/following`);
-
-      await next();
-    },
-  );
-
   const matchHandle = '[^0-9][^/]+';
 
   router.get(
