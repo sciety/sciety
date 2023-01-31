@@ -9,7 +9,6 @@ import {
   stubTwitterCallback,
   logInTwitter,
   signUpAuth0,
-  stubLogInTwitterAsSpecificUser,
   completeAuthenticationJourney,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
@@ -52,8 +51,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         saveReferrerToSession,
         stubTwitterCallback,
       );
-
-      router.get('/log-in-as', stubLogInTwitterAsSpecificUser);
 
       router.get(
         '/sign-up-call-to-action',
