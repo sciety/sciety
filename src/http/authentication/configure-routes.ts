@@ -162,7 +162,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       );
 
       router.get(
-        '/log-in-auth0',
+        '/log-in',
         saveReferrerToSession,
         logInAuth0,
       );
