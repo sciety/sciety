@@ -6,6 +6,8 @@ import {
   openBrowser,
 } from 'taiko';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import { arbitraryUserId } from '../../test/types/user-id.helper';
+import { createUserAccountAndLogIn } from '../create-user-account-and-log-in.helper';
 import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
 describe('remove-article-from-list', () => {
@@ -18,10 +20,10 @@ describe('remove-article-from-list', () => {
   });
 
   describe('when the user is logged in', () => {
-    const testUserId = '1302891230918053888';
+    const testUserId = arbitraryUserId();
 
     beforeAll(async () => {
-      await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
+      await createUserAccountAndLogIn(testUserId);
     });
 
     describe('and has saved an article', () => {

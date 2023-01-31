@@ -5,15 +5,17 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
+import { arbitraryUserId } from '../../test/types/user-id.helper';
+import { createUserAccountAndLogIn } from '../create-user-account-and-log-in.helper';
 import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
 
 describe('add-previously-removed-article-to-list', () => {
-  const testUserId = '1384541806231175172';
+  const testUserId = arbitraryUserId();
   const articleId = '10.1101/2021.07.28.454225';
 
   beforeAll(async () => {
     await openBrowser();
-    await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
+    await createUserAccountAndLogIn(testUserId);
 
     await goto(`localhost:8080/articles/${articleId}`);
     await click('Save to my list');

@@ -2,12 +2,14 @@
 import {
   $, click, closeBrowser, currentURL, goto, openBrowser,
 } from 'taiko';
+import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
 import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
+import * as UID from '../src/types/user-id';
 
 describe('save-article-to-list', () => {
   describe('when a new user logs in and saves an article that isn\'t in any list', () => {
     const userHandle = 'DavidAshbrook';
-    const testUserId = '931653361';
+    const testUserId = UID.fromValidatedString('931653361');
     const userProfilePage = `localhost:8080/users/${userHandle}`;
     const scietyFeedPage = 'localhost:8080/sciety-feed';
 
@@ -22,7 +24,7 @@ describe('save-article-to-list', () => {
 
     beforeAll(async () => {
       await openBrowser();
-      await goto(`localhost:8080/log-in-as?userId=${testUserId}`);
+      await createUserAccountAndLogIn(testUserId);
       await goto(articlePage);
       await click('Save to my list');
     });
