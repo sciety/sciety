@@ -79,6 +79,7 @@ jest-test:
 	npx jest ${TEST}
 
 backstop-test: export TARGET = prod
+backstop-test: export AUTHENTICATION_STRATEGY = local
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
