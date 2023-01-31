@@ -387,10 +387,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     )),
   );
 
-  router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
-
-  router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
-
   router.redirect('/blog', 'https://blog.sciety.org', StatusCodes.PERMANENT_REDIRECT);
 
   const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
