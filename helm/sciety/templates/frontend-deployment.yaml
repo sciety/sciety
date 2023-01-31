@@ -29,6 +29,8 @@ spec:
               value: https://{{ .Values.hostname }}
             - name: APP_SECRET
               value: "{{ .Values.appSecret }}"
+            - name: AUTHENTICATION_STRATEGY
+              value: "{{ .Values.authenticationStrategy }}"
             - name: CROSSREF_API_BEARER_TOKEN
               value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED

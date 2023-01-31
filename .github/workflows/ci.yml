@@ -96,6 +96,7 @@ jobs:
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set-string experimentEnabled="true" \
             --set appSecret=${APP_SECRET} \
+            --set authenticationStrategy='auth0' \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
@@ -138,6 +139,7 @@ jobs:
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set appSecret=${APP_SECRET} \
+            --set authenticationStrategy='twitter' \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
