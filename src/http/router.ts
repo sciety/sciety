@@ -354,16 +354,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/groups/:slug/evaluated-articles',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}`);
-
-      await next();
-    },
-  );
-
-  router.get(
     '/lists/:id',
     pageHandler(adapters, createPageFromParams(
       listPageParams,
