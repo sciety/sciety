@@ -2,24 +2,9 @@ import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
 import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserId } from '../test/types/user-id.helper';
-import { UserId } from '../src/types/user-id';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { callApi } from './call-api.helper';
-
-const createUserAccountAndLogIn = async (userId: UserId) => {
-  await callApi('api/create-user', {
-    userId,
-    handle: arbitraryUserHandle(),
-    avatarUrl: arbitraryUri(),
-    displayName: arbitraryString(),
-  });
-  await goto('localhost:8080/');
-  await click('Log In');
-  await write(userId, into(textBox('User id')));
-  await click('Log in');
-};
+import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
 
 describe('edit-list-details', () => {
   let listId: string;
