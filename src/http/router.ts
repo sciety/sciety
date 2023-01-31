@@ -20,7 +20,6 @@ import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
-import { redirectUserListPageToGenericListPage } from './redirects/redirect-user-list-page-to-generic-list-page';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
@@ -219,16 +218,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/users/:id([0-9]+)/following',
     redirectUserIdToHandle(adapters, 'following'),
-  );
-
-  router.get(
-    `/users/:handle(${matchHandle})/lists/saved-articles`,
-    redirectUserListPageToGenericListPage(adapters),
-  );
-
-  router.get(
-    '/users/:id([0-9]+)/lists/saved-articles',
-    redirectUserIdToHandle(adapters, 'lists/saved-articles'),
   );
 
   router.get(
