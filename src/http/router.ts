@@ -206,16 +206,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   const matchHandle = '[^0-9][^/]+';
 
   router.get(
-    `/users/:handle(${matchHandle})/saved-articles`,
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/users/${context.params.handle}/lists`);
-
-      await next();
-    },
-  );
-
-  router.get(
     `/users/:handle(${matchHandle})/lists`,
     pageHandler(adapters, createPageFromParams(
       userPageParams,
