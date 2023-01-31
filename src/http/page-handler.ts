@@ -22,7 +22,7 @@ type ErrorToWebPage = (
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
-export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
+const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',

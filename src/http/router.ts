@@ -19,7 +19,6 @@ import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
-import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
@@ -203,21 +202,11 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/users/:id([0-9]+)/lists',
-    redirectUserIdToHandle(adapters, 'lists'),
-  );
-
-  router.get(
     `/users/:handle(${matchHandle})/following`,
     pageHandler(adapters, createPageFromParams(
       userPageParams,
       userPage(adapters)('followed-groups'),
     )),
-  );
-
-  router.get(
-    '/users/:id([0-9]+)/following',
-    redirectUserIdToHandle(adapters, 'following'),
   );
 
   router.get(
