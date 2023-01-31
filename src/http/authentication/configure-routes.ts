@@ -156,7 +156,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       );
 
       router.get(
-        '/sign-up-auth0',
+        '/sign-up',
         saveReferrerToSession,
         signUpAuth0,
       );
