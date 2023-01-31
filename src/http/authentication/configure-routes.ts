@@ -177,6 +177,9 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         logInAuth0,
         completeAuthenticationJourney(adapters),
       );
+
+      router.get('/log-out', logOut);
+
       break;
   }
 };
