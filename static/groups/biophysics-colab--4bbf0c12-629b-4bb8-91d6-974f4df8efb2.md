@@ -14,7 +14,7 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 
 ## Reading list
 
-[Articles that are being read by Biophysics Colab](/users/BiophysicsColab/lists/saved-articles)
+[Articles that are being read by Biophysics Colab](/lists/454ba80f-e0bc-47ed-ba76-c8f872c303d2)
 
 ## PReF
 
