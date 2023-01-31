@@ -1,6 +1,7 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
+import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 
@@ -13,7 +14,7 @@ describe('follow a group', () => {
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      await goto(`localhost:8080/log-in-as?userId=${arbitraryUserId()}`);
+      await createUserAccountAndLogIn(arbitraryUserId());
     });
 
     it.skip('adds the group to the user page', async () => {
