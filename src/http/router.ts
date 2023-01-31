@@ -287,16 +287,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/articles/meta/:doi(.+)',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.doi}`);
-
-      await next();
-    },
-  );
-
-  router.get(
     '/evaluations/:reviewid/content',
     pageHandler(adapters, createPageFromParams(
       evaluationContentParams,
