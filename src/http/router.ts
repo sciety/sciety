@@ -252,16 +252,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/articles',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect('/search');
-
-      await next();
-    },
-  );
-
-  router.get(
     '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
@@ -274,6 +264,16 @@ export const createRouter = (adapters: CollectedPorts): Router => {
         searchResultsPage(adapters)(20),
       ),
     )),
+  );
+
+  router.get(
+    '/articles',
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect('/search');
+
+      await next();
+    },
   );
 
   router.get(
