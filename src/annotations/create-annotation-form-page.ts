@@ -26,7 +26,7 @@ type CreateAnnotationFormPage = (params: { articleId: O.Option<string> }) => TE.
 export const createAnnotationFormPage: CreateAnnotationFormPage = ({ articleId }) => TE.right({
   title: 'Create an annotation',
   content: toHtmlFragment(`
-    <h1>Create an annotation for an article on <a href="https://sciety.org/users/AvasthiReading/lists/saved-articles">Prachee's list</a></h1>
+    <h1>Create an annotation for an article on <a href="https://sciety.org/lists/dcc7c864-6630-40e7-8eeb-9fb6f012e92b">Prachee's list</a></h1>
     <form method="POST" action="/annotations/create-annotation">
       <label for="annotationContent">Annotation content</label>
       <textarea id="annotationContent" name="annotationContent" rows="10" class="annotation-form-content"></textarea>
