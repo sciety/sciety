@@ -26,6 +26,10 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   scope: 'openid email profile',
 });
 
+export const stubLogInAuth0 = koaPassport.authenticate('local', {
+  failureRedirect: '/local/log-in-form',
+});
+
 export const completeAuthenticationJourney = (
   adapters: GetLoggedInScietyUserPorts,
 ): Middleware => async (context, next) => {
