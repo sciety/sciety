@@ -100,7 +100,7 @@
     },
     {
       "label": "ScietyHQ saved articles list page",
-      "url": "http://sciety_app/users/scietyHQ/lists/saved-articles",
+      "url": "http://sciety_app/lists/bcff0509-ad66-4868-a512-d762dd28f885",
       "selectors": [
         "main"
       ]
