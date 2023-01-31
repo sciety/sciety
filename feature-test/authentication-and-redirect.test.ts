@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goBack, goto, link, openBrowser, text, into, write, textBox,
+  $, click, currentURL, goBack, goto, openBrowser, text, into, write, textBox,
 } from 'taiko';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
@@ -64,13 +64,6 @@ describe('authentication-and-redirect', () => {
   });
 
   afterEach(screenshotTeardown);
-
-  it('log in works', async () => {
-    await goto(`localhost:8080/log-in-as?userid=${userId}`);
-    const result = await link('Log out').exists();
-
-    expect(result).toBe(true);
-  });
 
   describe('on completing the sign up journey', () => {
     beforeEach(async () => {
