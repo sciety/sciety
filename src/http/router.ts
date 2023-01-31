@@ -287,14 +287,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/evaluations/:reviewid/content',
-    pageHandler(adapters, createPageFromParams(
-      evaluationContentParams,
-      evaluationContent(adapters),
-    ), false),
-  );
-
-  router.get(
     '/articles/activity/:doi(.+)',
     pageHandler(adapters, flow(
       articlePageParams.decode,
@@ -302,6 +294,14 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       TE.fromEither,
       TE.chain(articlePage(adapters)),
     )),
+  );
+
+  router.get(
+    '/evaluations/:reviewid/content',
+    pageHandler(adapters, createPageFromParams(
+      evaluationContentParams,
+      evaluationContent(adapters),
+    ), false),
   );
 
   router.get(
