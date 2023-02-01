@@ -6,7 +6,6 @@ import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
   logInAuth0,
-  stubTwitterCallback,
   logInTwitter,
   signUpAuth0,
   completeAuthenticationJourney,
@@ -36,72 +35,11 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
 };
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
-  type AuthStrategy = 'local' | 'twitter' | 'auth0';
+  type AuthStrategy = 'twitter' | 'auth0';
 
   const authStrategy = process.env.AUTHENTICATION_STRATEGY ?? 'twitter';
 
   switch (authStrategy as AuthStrategy) {
-    case 'local':
-      router.get(
-        '/sign-up',
-        pageHandler(adapters, () => pipe(signUpPage, TE.right)),
-      );
-
-      router.get(
-        '/log-in',
-        saveReferrerToSession,
-        stubTwitterCallback,
-      );
-
-      router.get(
-        '/sign-up-call-to-action',
-        async (context: ParameterizedContext, next) => {
-          context.session.successRedirect = '/';
-          await next();
-        },
-        stubTwitterCallback,
-      );
-
-      router.get('/log-out', logOut);
-
-      // TODO set commands as an object on the session rather than individual properties
-      router.get(
-        '/twitter/callback',
-        catchErrors(
-          adapters.logger,
-          'Detected Twitter callback error',
-          'Something went wrong, please try again.',
-        ),
-        onlyIfNotLoggedIn(adapters, stubTwitterCallback),
-        finishCommand(adapters),
-        finishUnfollowCommand(adapters),
-        finishRespondCommand(adapters),
-        finishSaveArticleCommand(adapters),
-        redirectAfterSuccess(),
-      );
-
-      router.get(
-        '/local/log-in-form',
-        async (context: ParameterizedContext) => {
-          context.body = `
-          <h1>Local auth</h1>
-          <form action="/local/submit-user-id" method="post">
-            <label for="userId">User id</label>
-            <input type="text" id="userId" name="userId">
-            <button>Log in</button>
-          </form>
-        `;
-        },
-      );
-
-      router.post(
-        '/local/submit-user-id',
-        bodyParser({ enableTypes: ['form'] }),
-        async (context: ParameterizedContext) => {
-          context.redirect(`/twitter/callback?username=${context.request.body.userId as string}&password=anypassword`);
-        },
-      );
-      break;
     case 'twitter':
       router.get(
         '/sign-up',

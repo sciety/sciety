@@ -10,10 +10,6 @@ export const logInTwitter: Middleware = koaPassport.authenticate('twitter', {
   failureRedirect: '/',
 });
 
-export const stubTwitterCallback = koaPassport.authenticate('local', {
-  failureRedirect: '/local/log-in-form',
-});
-
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
