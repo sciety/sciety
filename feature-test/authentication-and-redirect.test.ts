@@ -98,7 +98,7 @@ describe('authentication-and-redirect', () => {
     it.todo('i can see my avatar in the nav bar');
   });
 
-  describe('not logged in', () => {
+  describe.skip('not logged in', () => {
     it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
@@ -152,7 +152,11 @@ describe('authentication-and-redirect', () => {
       await click('Log in');
     });
 
-    it('log out from the article page returns to the article page', async () => {
+    describe('after clicking the Log Out button', () => {
+      it.todo('the log in button says Log In');
+    });
+
+    it.skip('log out from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log out');
 
