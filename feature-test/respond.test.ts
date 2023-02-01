@@ -1,6 +1,7 @@
 import {
-  $, click, goto, into, openBrowser, text, textBox, within, write,
+  $, click, goto, openBrowser, text, within,
 } from 'taiko';
+import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
@@ -51,8 +52,7 @@ describe('respond', () => {
     it.skip('after authentication, returns and displays increased response count', async () => {
       await goto(`localhost:8080/articles/${articleId.value}`);
       await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
       const result = await text('1', within($('.activity-feed__item:first-child button[value="revoke-response"]'))).exists();
 
       expect(result).toBe(true);

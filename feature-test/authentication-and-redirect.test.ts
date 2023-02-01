@@ -9,6 +9,7 @@ import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
+import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -70,8 +71,7 @@ describe('authentication-and-redirect', () => {
       const newUserId = arbitraryUserId();
       await goto('localhost:8080/groups');
       await click('Sign Up');
-      await write(newUserId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(newUserId);
       await write('Full Name', into(textBox('Display name')));
       await write(arbitraryUserHandle(), into(textBox('Handle')));
       const createAccountButton = $('#createAccountButton');
@@ -108,8 +108,7 @@ describe('authentication-and-redirect', () => {
     it('save article command returns to the article page after saving the article', async () => {
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
       const result = await text('Saved to my list').exists();
 
       expect(result).toBe(true);
@@ -118,8 +117,7 @@ describe('authentication-and-redirect', () => {
     it('log in from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log in');
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
 
       const result = await currentURL();
 
@@ -129,8 +127,7 @@ describe('authentication-and-redirect', () => {
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
 
       const result = await currentURL();
 
@@ -141,8 +138,7 @@ describe('authentication-and-redirect', () => {
     it('follow command from the group page returns to the group page', async () => {
       await goto(`localhost:8080/groups/${groupASlug}`);
       await click('Follow');
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
 
       const result = await currentURL();
 
@@ -154,8 +150,7 @@ describe('authentication-and-redirect', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
-      await write(userId, into(textBox('User id')));
-      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
     });
 
     it.todo('the login button says "Log out"');
