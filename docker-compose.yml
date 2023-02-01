@@ -10,7 +10,7 @@ services:
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
       APP_CACHE: '${APP_CACHE:-in-memory}'
-      AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY:-twitter}'
+      FEATURE_FLAG_AUTH0: '${FEATURE_FLAG_AUTH0:-false}'
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
