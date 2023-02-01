@@ -162,7 +162,7 @@ prod-sql:
 	-- psql
 
 taiko: export TARGET = prod
-taiko: export AUTHENTICATION_STRATEGY = local
+taiko: export AUTHENTICATION_STRATEGY = auth0
 taiko: export USE_STUB_ADAPTERS = true
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d

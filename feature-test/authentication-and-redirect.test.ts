@@ -65,7 +65,7 @@ describe('authentication-and-redirect', () => {
 
   afterEach(screenshotTeardown);
 
-  describe.skip('on completing the sign up journey', () => {
+  describe('on completing the sign up journey', () => {
     beforeEach(async () => {
       const newUserId = arbitraryUserId();
       await goto('localhost:8080/groups');
