@@ -164,7 +164,7 @@ prod-sql:
 taiko: export TARGET = dev
 taiko: export FEATURE_FLAG_AUTH0 = true
 taiko: export USE_STUB_ADAPTERS = true
-taiko: node_modules build
+taiko: node_modules
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "delete from events; copy events from '/data/taiko.csv' with CSV" sciety user
