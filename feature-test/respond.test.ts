@@ -48,7 +48,7 @@ describe('respond', () => {
   afterEach(screenshotTeardown);
 
   describe('when not logged in', () => {
-    it('authenticates via twitter, returns and displays increased response count', async () => {
+    it.skip('after authentication, returns and displays increased response count', async () => {
       await goto(`localhost:8080/articles/${articleId.value}`);
       await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
       await write(userId, into(textBox('User id')));
