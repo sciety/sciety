@@ -161,17 +161,16 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-taiko: export TARGET = prod
+taiko: export TARGET = dev
 taiko: export FEATURE_FLAG_AUTH0 = true
 taiko: export USE_STUB_ADAPTERS = true
-taiko: node_modules clean-db build
+taiko: node_modules build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/taiko.csv' with CSV" sciety user
+	${DOCKER_COMPOSE} exec -T db psql -c "delete from events; copy events from '/data/taiko.csv' with CSV" sciety user
 	${DOCKER_COMPOSE} restart app
-	scripts/wait-for-healthy.sh
+	time scripts/wait-for-healthy.sh
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
-	${DOCKER_COMPOSE} down
 
 download-exploratory-test-from-prod:
 	kubectl run --rm --attach ship-events \
