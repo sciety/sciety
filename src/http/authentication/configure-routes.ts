@@ -10,7 +10,7 @@ import {
   logInTwitter,
   signUpAuth0,
   completeAuthenticationJourney,
-  stubLogInAuth0,
+  stubLogInAuth0, stubSignUpAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -156,7 +156,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       router.get(
         '/sign-up',
         saveReferrerToSession,
-        signUpAuth0,
+        (process.env.USE_STUB_ADAPTERS === 'true') ? stubSignUpAuth0 : signUpAuth0,
       );
 
       router.get(
