@@ -100,6 +100,8 @@ describe('authentication-and-redirect', () => {
     it.todo('i can see my handle in the nav bar');
 
     it.todo('i can see my avatar in the nav bar');
+
+    it.todo('i am on the home page');
   });
 
   describe.skip('not logged in', () => {
@@ -148,7 +150,7 @@ describe('authentication-and-redirect', () => {
     });
   });
 
-  describe('logged in', () => {
+  describe('when logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
       await click('Log in');
@@ -156,8 +158,26 @@ describe('authentication-and-redirect', () => {
       await click('Log in');
     });
 
+    it.todo('the login button says "Log out"');
+
+    it.todo('i can navigate to my lists from the nav bar');
+
+    it.todo('i can see my handle in the nav bar');
+
+    it.todo('i can see my avatar in the nav bar');
+
+    it.todo('i am on the home page');
+
     describe('after clicking the Log Out button', () => {
       it.todo('the log in button says Log In');
+
+      it.todo('my lists do not appear in the nav bar');
+
+      it.todo('my handle is not in the nav bar');
+
+      it.todo('my avatar is not in the nav bar');
+
+      it.todo('i am on the home page');
     });
 
     it.skip('log out from the article page returns to the article page', async () => {
