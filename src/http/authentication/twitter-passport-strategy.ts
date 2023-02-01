@@ -9,7 +9,7 @@ import { CreateUserAccountCommand } from '../../write-side/commands';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 import { setUpUserIfNecessary } from '../../write-side/create-user-account/set-up-user-if-necessary';
 
-export const setupTwitterStrategy = (ports: Ports) => new TwitterStrategy(
+export const twitterPassportStrategy = (ports: Ports) => new TwitterStrategy(
   {
     consumerKey: process.env.TWITTER_API_KEY ?? '',
     consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',

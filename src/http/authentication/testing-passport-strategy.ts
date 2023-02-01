@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { toUserId } from '../../types/user-id';
 import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
 
-export const setupLocalStrategy = new LocalStrategy(
+export const testingPassportStrategy = new LocalStrategy(
   (username, _password, cb) => {
     pipe(
       username,

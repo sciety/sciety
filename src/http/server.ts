@@ -5,9 +5,9 @@ import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import { setupAuth0Strategy } from './authentication/setup-auth0-strategy';
-import { setupLocalStrategy } from './authentication/setup-local-strategy';
-import { setupTwitterStrategy } from './authentication/setup-twitter-strategy';
+import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
+import { testingPassportStrategy } from './authentication/testing-passport-strategy';
+import { twitterPassportStrategy } from './authentication/twitter-passport-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 
@@ -83,12 +83,12 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
 
   if (shouldUseAuth0) {
-    koaPassport.use(setupAuth0Strategy());
+    koaPassport.use(auth0PassportStrategy());
     if (shouldUseStubAdapters) {
-      koaPassport.use(setupLocalStrategy);
+      koaPassport.use(testingPassportStrategy);
     }
   } else {
-    koaPassport.use(setupTwitterStrategy(ports));
+    koaPassport.use(twitterPassportStrategy(ports));
   }
 
   app.use(koaPassport.initialize());

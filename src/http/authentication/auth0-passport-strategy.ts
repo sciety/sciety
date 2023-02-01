@@ -11,7 +11,7 @@ const auth0Config = {
   callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
 };
 
-export const setupAuth0Strategy = () => new Auth0Strategy(
+export const auth0PassportStrategy = () => new Auth0Strategy(
   auth0Config,
   async (accessToken, refreshToken, extraParams, profile, done) => pipe(
     profile.id,
