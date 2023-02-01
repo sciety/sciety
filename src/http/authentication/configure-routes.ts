@@ -36,6 +36,8 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
+  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
+
   if (shouldUseAuth0) {
     router.get(
       '/create-account-form',
@@ -51,13 +53,13 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     router.get(
       '/sign-up',
       saveReferrerToSession,
-      (process.env.USE_STUB_ADAPTERS === 'true') ? stubSignUpAuth0 : signUpAuth0,
+      shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
     );
 
     router.get(
       '/log-in',
       saveReferrerToSession,
-      (process.env.USE_STUB_ADAPTERS === 'true') ? stubLogInAuth0 : logInAuth0,
+      shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
     );
 
     router.get(
@@ -67,13 +69,13 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
         'Detected Auth0 callback error',
         'Something went wrong, please try again.',
       ),
-      (process.env.USE_STUB_ADAPTERS === 'true') ? stubLogInAuth0 : logInAuth0,
+      shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
       completeAuthenticationJourney(adapters),
     );
 
     router.get('/log-out', logOut);
 
-    if (process.env.USE_STUB_ADAPTERS === 'true') {
+    if (shouldUseStubAdapters) {
       router.get(
         '/local/log-in-form',
         async (context: ParameterizedContext) => {

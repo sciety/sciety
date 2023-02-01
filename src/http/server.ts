@@ -80,10 +80,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
   ));
 
   const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
+  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
 
   if (shouldUseAuth0) {
     koaPassport.use(setupAuth0Strategy());
-    if (process.env.USE_STUB_ADAPTERS === 'true') {
+    if (shouldUseStubAdapters) {
       koaPassport.use(setupLocalStrategy);
     }
   } else {
