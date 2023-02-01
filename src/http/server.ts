@@ -90,7 +90,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     case 'auth0':
       koaPassport.use(setupAuth0Strategy());
       if (process.env.USE_STUB_ADAPTERS === 'true') {
-        koaPassport.use(setupLocalStrategy(ports));
+        koaPassport.use(setupLocalStrategy);
       }
       break;
   }
