@@ -165,13 +165,6 @@
       ]
     },
     {
-      "label": "Sign up",
-      "url": "http://sciety_app/sign-up",
-      "selectors": [
-        "main"
-      ]
-    },
-    {
       "label": "Site header",
       "url": "http://sciety_app/about",
       "selectors": [
