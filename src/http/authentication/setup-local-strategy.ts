@@ -37,8 +37,8 @@ const noop = (
 
 export const setupLocalStrategy = (ports: Ports) => new LocalStrategy(
   (username, _password, cb) => {
-    void createUserAccountForLocalStrategy(ports)(username)
-    // void noop(ports)(username)
+    // void createUserAccountForLocalStrategy(ports)(username)
+    void noop(ports)(username)
       .then(() => pipe(
         username,
         toUserId,

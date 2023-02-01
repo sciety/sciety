@@ -72,6 +72,10 @@ describe('authentication-and-redirect', () => {
       await click('Sign Up');
       await write(newUserId, into(textBox('User id')));
       await click('Log in');
+      await write('Full Name', into(textBox('Display name')));
+      await write(arbitraryUserHandle(), into(textBox('Handle')));
+      const createAccountButton = $('#createAccountButton');
+      await click(createAccountButton);
     });
 
     it('returns to the home page', async () => {
