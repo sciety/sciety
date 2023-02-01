@@ -168,8 +168,8 @@ taiko: node_modules build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "delete from events; copy events from '/data/taiko.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
-	time scripts/wait-for-healthy.sh
+	touch src/index.ts  # restarts the server without additional compilation
+	time -f '%E' scripts/wait-for-healthy.sh
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 
 download-exploratory-test-from-prod:
