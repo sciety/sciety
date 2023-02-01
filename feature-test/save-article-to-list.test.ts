@@ -2,8 +2,8 @@
 import {
   $, click, closeBrowser, currentURL, goto, openBrowser,
 } from 'taiko';
-import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
-import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
+import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import * as UID from '../src/types/user-id';
 
 describe('save-article-to-list', () => {

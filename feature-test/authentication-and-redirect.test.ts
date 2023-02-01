@@ -5,7 +5,7 @@ import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
-import { callApi } from './call-api.helper';
+import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';

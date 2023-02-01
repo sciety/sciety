@@ -4,10 +4,10 @@ import {
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
-import { callApi } from './call-api.helper';
+import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 
 describe('unfollow a group', () => {
   beforeEach(async () => {

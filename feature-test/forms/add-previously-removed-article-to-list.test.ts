@@ -6,8 +6,8 @@ import {
   openBrowser,
 } from 'taiko';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from '../create-user-account-and-log-in.helper';
-import { getFirstListOwnedByUser } from '../get-first-list-owned-by.helper';
+import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
+import { getFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
 
 describe('add-previously-removed-article-to-list', () => {
   const testUserId = arbitraryUserId();

@@ -7,7 +7,7 @@ import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../../test/helpers';
 import { arbitraryReviewId } from '../../test/types/review-id.helper';
-import { callApi } from '../call-api.helper';
+import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
 

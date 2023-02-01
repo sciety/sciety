@@ -1,10 +1,10 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
-import { getFirstListOwnedByUser } from './get-first-list-owned-by.helper';
+import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserId } from '../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 
 describe('edit-list-details', () => {
   let listId: string;

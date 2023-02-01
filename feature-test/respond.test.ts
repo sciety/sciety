@@ -1,7 +1,7 @@
 import {
   $, click, goto, into, openBrowser, text, textBox, within, write,
 } from 'taiko';
-import { callApi } from './call-api.helper';
+import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';

@@ -4,8 +4,8 @@ import {
 import { arbitraryString, arbitraryUri } from '../../test/helpers';
 import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
-import { callApi } from '../call-api.helper';
-import { getFirstListOwnedByGroup } from '../get-first-list-owned-by.helper';
+import { callApi } from '../helpers/call-api.helper';
+import { getFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
 import { screenshotTeardown } from '../utilities';
 
 describe('remove an article from a list', () => {

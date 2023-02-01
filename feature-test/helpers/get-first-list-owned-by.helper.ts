@@ -5,10 +5,10 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as GID from '../src/types/group-id';
-import * as UID from '../src/types/user-id';
-import * as LOID from '../src/types/list-owner-id';
-import { listCodec } from '../src/types/list';
+import * as GID from '../../src/types/group-id';
+import * as UID from '../../src/types/user-id';
+import * as LOID from '../../src/types/list-owner-id';
+import { listCodec } from '../../src/types/list';
 
 const responseCodec = t.type({
   data: t.type({

@@ -1,9 +1,9 @@
 import {
   click, goto, into, textBox, write,
 } from 'taiko';
-import { arbitraryString, arbitraryUri } from '../test/helpers';
-import { UserId } from '../src/types/user-id';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
+import { arbitraryString, arbitraryUri } from '../../test/helpers';
+import { UserId } from '../../src/types/user-id';
+import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { callApi } from './call-api.helper';
 
 export const createUserAccountAndLogIn = async (userId: UserId) => {

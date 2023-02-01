@@ -1,9 +1,9 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { getFirstListOwnedByGroup } from '../get-first-list-owned-by.helper';
+import { getFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
 import { arbitraryString, arbitraryUri } from '../../test/helpers';
-import { callApi } from '../call-api.helper';
+import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';

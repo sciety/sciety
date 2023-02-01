@@ -4,7 +4,7 @@ import {
 import { arbitraryWord, arbitraryString } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
-import { callApi } from './call-api.helper';
+import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 
 describe('journey-to-group-list', () => {

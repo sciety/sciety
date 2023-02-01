@@ -3,7 +3,7 @@ import {
 } from 'taiko';
 import { AddGroupCommand } from '../../src/write-side/commands';
 import { arbitraryGroup } from '../../test/types/group.helper';
-import { callApi } from '../call-api.helper';
+import { callApi } from '../helpers/call-api.helper';
 
 describe('add-group', () => {
   const newGroup = arbitraryGroup();

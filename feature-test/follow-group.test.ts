@@ -1,7 +1,7 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { createUserAccountAndLogIn } from './create-user-account-and-log-in.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 
