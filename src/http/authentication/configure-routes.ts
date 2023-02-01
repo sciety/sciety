@@ -27,6 +27,10 @@ import { finishRespondCommand } from '../../write-side/respond/finish-respond-co
 import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
 import { signUpPage } from '../../html-pages/sign-up-page';
 
+const signUpRoute = '/sign-up';
+const logInRoute = '/log-in';
+const logOutRoute = '/log-out';
+
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
   if (!context.session.successRedirect) {
     context.session.successRedirect = context.request.headers.referer ?? '/';
@@ -47,13 +51,13 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
   );
 
   router.get(
-    '/sign-up',
+    signUpRoute,
     saveReferrerToSession,
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
-    '/log-in',
+    logInRoute,
     saveReferrerToSession,
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
@@ -69,7 +73,7 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
     completeAuthenticationJourney(adapters),
   );
 
-  router.get('/log-out', logOut);
+  router.get(logOutRoute, logOut);
 
   if (shouldUseStubAdapters) {
     router.get(
@@ -98,12 +102,12 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
 
 const configureTwitterRoutes = (router: Router, adapters: CollectedPorts) => {
   router.get(
-    '/sign-up',
+    signUpRoute,
     pageHandler(adapters, () => pipe(signUpPage, TE.right)),
   );
 
   router.get(
-    '/log-in',
+    logInRoute,
     saveReferrerToSession,
     logInTwitter,
   );
@@ -117,7 +121,7 @@ const configureTwitterRoutes = (router: Router, adapters: CollectedPorts) => {
     logInTwitter,
   );
 
-  router.get('/log-out', logOut);
+  router.get(logOutRoute, logOut);
 
   // TODO set commands as an object on the session rather than individual properties
   router.get(
