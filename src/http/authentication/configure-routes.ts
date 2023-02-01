@@ -172,7 +172,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           'Detected Auth0 callback error',
           'Something went wrong, please try again.',
         ),
-        logInAuth0,
+        (process.env.USE_STUB_ADAPTERS === 'true') ? stubLogInAuth0 : logInAuth0,
         completeAuthenticationJourney(adapters),
       );
 
@@ -197,7 +197,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
           '/local/submit-user-id',
           bodyParser({ enableTypes: ['form'] }),
           async (context: ParameterizedContext) => {
-            context.redirect(`/twitter/callback?username=${context.request.body.userId as string}&password=anypassword`);
+            context.redirect(`/auth0/callback?username=${context.request.body.userId as string}&password=anypassword`);
           },
         );
       }
