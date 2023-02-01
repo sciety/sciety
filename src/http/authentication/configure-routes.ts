@@ -34,52 +34,48 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
   await next();
 };
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
-  const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
-  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
+const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUseStubAdapters: boolean) => {
+  router.get(
+    '/create-account-form',
+    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
+  );
 
-  if (shouldUseAuth0) {
+  router.post(
+    '/forms/create-user-account',
+    bodyParser({ enableTypes: ['form'] }),
+    createUserAccount(adapters),
+  );
+
+  router.get(
+    '/sign-up',
+    saveReferrerToSession,
+    shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
+  );
+
+  router.get(
+    '/log-in',
+    saveReferrerToSession,
+    shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
+  );
+
+  router.get(
+    '/auth0/callback',
+    catchErrors(
+      adapters.logger,
+      'Detected Auth0 callback error',
+      'Something went wrong, please try again.',
+    ),
+    shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
+    completeAuthenticationJourney(adapters),
+  );
+
+  router.get('/log-out', logOut);
+
+  if (shouldUseStubAdapters) {
     router.get(
-      '/create-account-form',
-      pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
-    );
-
-    router.post(
-      '/forms/create-user-account',
-      bodyParser({ enableTypes: ['form'] }),
-      createUserAccount(adapters),
-    );
-
-    router.get(
-      '/sign-up',
-      saveReferrerToSession,
-      shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
-    );
-
-    router.get(
-      '/log-in',
-      saveReferrerToSession,
-      shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
-    );
-
-    router.get(
-      '/auth0/callback',
-      catchErrors(
-        adapters.logger,
-        'Detected Auth0 callback error',
-        'Something went wrong, please try again.',
-      ),
-      shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
-      completeAuthenticationJourney(adapters),
-    );
-
-    router.get('/log-out', logOut);
-
-    if (shouldUseStubAdapters) {
-      router.get(
-        '/local/log-in-form',
-        async (context: ParameterizedContext) => {
-          context.body = `
+      '/local/log-in-form',
+      async (context: ParameterizedContext) => {
+        context.body = `
             <h1>Local auth</h1>
             <form action="/local/submit-user-id" method="post">
               <label for="userId">User id</label>
@@ -87,55 +83,67 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
               <button>Log in</button>
             </form>
           `;
-        },
-      );
-
-      router.post(
-        '/local/submit-user-id',
-        bodyParser({ enableTypes: ['form'] }),
-        async (context: ParameterizedContext) => {
-          context.redirect(`/auth0/callback?username=${context.request.body.userId as string}&password=anypassword`);
-        },
-      );
-    }
-  } else {
-    router.get(
-      '/sign-up',
-      pageHandler(adapters, () => pipe(signUpPage, TE.right)),
-    );
-
-    router.get(
-      '/log-in',
-      saveReferrerToSession,
-      logInTwitter,
-    );
-
-    router.get(
-      '/sign-up-call-to-action',
-      async (context: ParameterizedContext, next) => {
-        context.session.successRedirect = '/';
-        await next();
       },
-      logInTwitter,
     );
 
-    router.get('/log-out', logOut);
-
-    // TODO set commands as an object on the session rather than individual properties
-    router.get(
-      '/twitter/callback',
-      catchErrors(
-        adapters.logger,
-        'Detected Twitter callback error',
-        'Something went wrong, please try again.',
-      ),
-      onlyIfNotLoggedIn(adapters, logInTwitter),
-      finishCommand(adapters),
-      finishUnfollowCommand(adapters),
-      finishRespondCommand(adapters),
-      finishSaveArticleCommand(adapters),
-      redirectAfterSuccess(),
+    router.post(
+      '/local/submit-user-id',
+      bodyParser({ enableTypes: ['form'] }),
+      async (context: ParameterizedContext) => {
+        context.redirect(`/auth0/callback?username=${context.request.body.userId as string}&password=anypassword`);
+      },
     );
+  }
+};
+
+const configureTwitterRoutes = (router: Router, adapters: CollectedPorts) => {
+  router.get(
+    '/sign-up',
+    pageHandler(adapters, () => pipe(signUpPage, TE.right)),
+  );
+
+  router.get(
+    '/log-in',
+    saveReferrerToSession,
+    logInTwitter,
+  );
+
+  router.get(
+    '/sign-up-call-to-action',
+    async (context: ParameterizedContext, next) => {
+      context.session.successRedirect = '/';
+      await next();
+    },
+    logInTwitter,
+  );
+
+  router.get('/log-out', logOut);
+
+  // TODO set commands as an object on the session rather than individual properties
+  router.get(
+    '/twitter/callback',
+    catchErrors(
+      adapters.logger,
+      'Detected Twitter callback error',
+      'Something went wrong, please try again.',
+    ),
+    onlyIfNotLoggedIn(adapters, logInTwitter),
+    finishCommand(adapters),
+    finishUnfollowCommand(adapters),
+    finishRespondCommand(adapters),
+    finishSaveArticleCommand(adapters),
+    redirectAfterSuccess(),
+  );
+};
+
+export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
+  const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
+  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
+
+  if (shouldUseAuth0) {
+    configureAuth0Routes(router, adapters, shouldUseStubAdapters);
+  } else {
+    configureTwitterRoutes(router, adapters);
   }
 
 };
