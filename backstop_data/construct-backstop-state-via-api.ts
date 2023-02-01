@@ -1,4 +1,5 @@
-import { callApi } from './../feature-test/call-api.helper';
+import { callApi } from './../feature-test/helpers/call-api.helper';
+
 const constructBackstopStateViaApi = async () => {
     const groupA = {
         groupId: 'ba6327db-d783-49a4-af23-deece25d4053',
