@@ -7,7 +7,7 @@ import { GroupIdFromString } from './codecs/GroupIdFromString';
 import { userIdCodec, UserId } from './user-id';
 import { GroupId } from './group-id';
 
-const fromObjectOfStrings = t.union([
+export const fromObjectOfStrings = t.union([
   t.type({ value: GroupIdFromString, tag: t.literal('group-id') }),
   t.type({ value: userIdCodec, tag: t.literal('user-id') }),
 ]);

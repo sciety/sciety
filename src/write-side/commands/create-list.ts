@@ -1,9 +1,12 @@
-import { ListId } from '../../types/list-id';
+import * as t from 'io-ts';
+import { ListIdFromString } from '../../types/codecs/ListIdFromString';
 import * as LOID from '../../types/list-owner-id';
 
-export type CreateListCommand = {
-  listId: ListId,
-  ownerId: LOID.ListOwnerId,
-  name: string,
-  description: string,
-};
+const createListCommandCodec = t.type({
+  listId: ListIdFromString,
+  ownerId: LOID.fromObjectOfStrings,
+  name: t.string,
+  description: t.string,
+});
+
+export type CreateListCommand = t.TypeOf<typeof createListCommandCodec>;
