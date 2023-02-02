@@ -18,7 +18,7 @@ describe('execute-create-list-command', () => {
         name,
         description,
       },
-      executeCreateListCommand,
+      executeCreateListCommand([]),
     );
 
     it('returns a ListCreated event', () => {
@@ -41,5 +41,9 @@ describe('execute-create-list-command', () => {
     it('returns a ListCreated event containing the requested description', () => {
       expect(result[0].description).toStrictEqual(description);
     });
+  });
+
+  describe('when a command is received for an already existing listId', () => {
+    it.todo('does not return an event');
   });
 });

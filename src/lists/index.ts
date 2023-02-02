@@ -9,7 +9,7 @@ type Ports = {
 
 export const createListCommandHandler = (ports: Ports): CreateList => (command) => pipe(
   command,
-  executeCreateListCommand,
+  executeCreateListCommand([]),
   ports.commitEvents,
   TE.rightTask,
 );

@@ -65,7 +65,7 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
       () => [],
       () => pipe(
         constructCommand({ userId: command.userId, handle: command.handle }),
-        executeCreateListCommand,
+        executeCreateListCommand([]),
       ),
     ),
   ),

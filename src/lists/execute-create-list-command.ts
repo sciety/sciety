@@ -1,9 +1,14 @@
 import { CreateListCommand } from '../write-side/commands';
 import { listCreated, ListCreatedEvent } from '../domain-events';
+import { ListId } from '../types/list-id';
 
-type ExecuteCreateListCommand = (command: CreateListCommand) => ReadonlyArray<ListCreatedEvent>;
+type ListsResource = ReadonlyArray<ListId>;
 
-export const executeCreateListCommand: ExecuteCreateListCommand = (command) => [listCreated(
+type ExecuteCreateListCommand = (resource: ListsResource)
+=> (command: CreateListCommand)
+=> ReadonlyArray<ListCreatedEvent>;
+
+export const executeCreateListCommand: ExecuteCreateListCommand = () => (command) => [listCreated(
   command.listId,
   command.name,
   command.description,
