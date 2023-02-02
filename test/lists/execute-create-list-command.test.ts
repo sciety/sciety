@@ -6,11 +6,12 @@ import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 
 describe('execute-create-list-command', () => {
+  const listId = arbitraryListId();
+  const ownerId = arbitraryListOwnerId();
+  const name = arbitraryString();
+  const description = arbitraryString();
+
   describe('when a command is received', () => {
-    const listId = arbitraryListId();
-    const ownerId = arbitraryListOwnerId();
-    const name = arbitraryString();
-    const description = arbitraryString();
     const result = pipe(
       {
         listId,
@@ -44,6 +45,18 @@ describe('execute-create-list-command', () => {
   });
 
   describe('when a command is received for an already existing listId', () => {
-    it.todo('does not return an event');
+    const result = pipe(
+      {
+        listId,
+        ownerId,
+        name,
+        description,
+      },
+      executeCreateListCommand([listId]),
+    );
+
+    it.failing('does not return an event', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
