@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { isListCreatedEvent } from '../../src/domain-events/list-created-event';
-import { executeCreateListCommand } from '../../src/lists/execute-create-list-command';
+import { executeCreateListCommand } from '../../src/write-side/create-list/execute-create-list-command';
 import { arbitraryString } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';

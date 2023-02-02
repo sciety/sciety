@@ -30,7 +30,7 @@ import {
   isListCreatedEvent, sort as sortEvents,
 } from '../domain-events';
 import { editListDetailsCommandHandler } from '../write-side/edit-list-details';
-import { createListCommandHandler } from '../lists';
+import { createListCommandHandler } from '../write-side/create-list';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';

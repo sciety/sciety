@@ -1,6 +1,6 @@
-import { CreateListCommand } from '../write-side/commands';
-import { listCreated, ListCreatedEvent } from '../domain-events';
-import { ListId } from '../types/list-id';
+import { CreateListCommand } from '../commands';
+import { listCreated, ListCreatedEvent } from '../../domain-events';
+import { ListId } from '../../types/list-id';
 
 type ListsResource = ReadonlyArray<ListId>;
 
