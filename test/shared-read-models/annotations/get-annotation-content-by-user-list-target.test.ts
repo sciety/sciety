@@ -1,14 +1,20 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { annotationCreated } from '../../../src/domain-events';
 import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations';
 import * as LID from '../../../src/types/list-id';
-import { toUserId } from '../../../src/types/user-id';
+import { userIdCodec } from '../../../src/types/user-id';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('get-annotation-content-by-user-list-target', () => {
-  const avasthiReadingUserId = toUserId('1412019815619911685');
+  const avasthiReadingUserId = pipe(
+    '1412019815619911685',
+    userIdCodec.decode,
+    E.getOrElseW(shouldNotBeCalled),
+  );
 
   describe('hardcoded knowledge of user ids and user list ids, but content from events', () => {
     const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
