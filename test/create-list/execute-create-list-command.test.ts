@@ -60,7 +60,7 @@ describe('execute-create-list-command', () => {
       }),
     );
 
-    it.failing('does not return an event', () => {
+    it('does not return an event', () => {
       expect(result).toHaveLength(0);
     });
   });
