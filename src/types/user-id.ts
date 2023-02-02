@@ -13,6 +13,9 @@ export const userIdCodec = new t.Type(
     t.string.validate(u, c),
     E.chain((value) => {
       if (isUserId(value)) {
+        if (!value.includes('|')) {
+          return t.success(`twitter|${value}` as UserId);
+        }
         return t.success(value);
       }
       return t.failure(u, c);

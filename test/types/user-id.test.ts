@@ -7,7 +7,7 @@ describe('user-id', () => {
   it.each([
     ['auth0|63d8f06993ff1642c77e0e91', 'auth0|63d8f06993ff1642c77e0e91'],
     ['twitter|1295307136415735808', 'twitter|1295307136415735808'],
-    // ['1295307136415735808', 'twitter|1295307136415735808'],
+    ['1295307136415735808', 'twitter|1295307136415735808'],
   ])('encodes %s to a canonical value', (input, expectedValue) => {
     expect(pipe(
       input,
