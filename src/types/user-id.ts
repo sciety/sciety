@@ -7,14 +7,12 @@ export type UserId = string & { readonly UserId: unique symbol };
 
 const isUserId = (value: unknown): value is UserId => typeof value === 'string' && value !== '';
 
-const toUserId = (value: string): UserId => {
+const fromString = (value: string): O.Option<UserId> => {
   if (isUserId(value)) {
-    return value;
+    return O.some(value);
   }
-  throw new Error();
+  return O.none;
 };
-
-const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
 
 export const userIdCodec = new t.Type(
   'UserIdFromString',
