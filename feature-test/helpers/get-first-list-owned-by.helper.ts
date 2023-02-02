@@ -32,9 +32,8 @@ const fetchFirstListOwnedBy = async (ownerId: string): Promise<string> => pipe(
   ),
 )();
 
-export const getFirstListOwnedByUser = async (userId: string): Promise<string> => pipe(
+export const getFirstListOwnedByUser = async (userId: UID.UserId): Promise<string> => pipe(
   userId,
-  UID.fromValidatedString,
   LOID.fromUserId,
   LOID.toString,
   fetchFirstListOwnedBy,
