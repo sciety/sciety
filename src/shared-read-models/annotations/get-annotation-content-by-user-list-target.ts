@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -7,7 +8,7 @@ import { eqAnnotationTarget } from '../../types/annotation-target';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as LID from '../../types/list-id';
-import { UserId } from '../../types/user-id';
+import { UserId, userIdCodec } from '../../types/user-id';
 
 type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId)
 => (events: ReadonlyArray<DomainEvent>)
@@ -21,7 +22,13 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
   articleId,
   listOwnerId,
 ) => (events) => {
-  if (listOwnerId !== '1412019815619911685') {
+  const isAuthorised = pipe(
+    '1412019815619911685',
+    userIdCodec.decode,
+    E.filterOrElseW((uid) => uid === listOwnerId, () => 'not-authorised'),
+    E.isRight,
+  );
+  if (!isAuthorised) {
     return undefined;
   }
 
