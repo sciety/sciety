@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { UserIdFromString } from './codecs/UserIdFromString';
+import { UserIdFromString } from './user-id';
 
 const userCodec = t.type({
   id: UserIdFromString,

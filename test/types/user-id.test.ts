@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { UserIdFromString } from '../../../src/types/codecs/UserIdFromString';
-import { arbitraryUserId } from '../user-id.helper';
+import { UserIdFromString } from '../../src/types/user-id';
+import { arbitraryUserId } from './user-id.helper';
 
-describe('codec UserIdFromString', () => {
+describe('user-id', () => {
   it('encodes and decodes back to the same value', () => {
     const id = arbitraryUserId();
 

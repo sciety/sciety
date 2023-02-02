@@ -2,10 +2,9 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { UserIdFromString, UserId } from '../types/user-id';
 import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
 
 export const userFollowedEditorialCommunityEventCodec = t.type({
   id: EventIdFromString,

@@ -1,10 +1,9 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { UserIdFromString, UserId } from '../types/user-id';
 import { generate } from '../types/event-id';
 import { ReviewId, reviewIdCodec } from '../types/review-id';
-import { UserId } from '../types/user-id';
 
 export const userRevokedFindingReviewHelpfulEventCodec = t.type({
   id: EventIdFromString,

@@ -5,9 +5,8 @@ import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
 import { ErrorMessage } from '../types/error-message';
 import { GetUser } from '../shared-ports';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { UserIdFromString, UserId } from '../types/user-id';
 import { UserDetails } from '../types/user-details';
-import { UserId } from '../types/user-id';
 
 const passportUserCodec = t.type({
   state: t.type({

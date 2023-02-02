@@ -2,10 +2,9 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import { UserIdFromString, UserId } from '../types/user-id';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
-import { UserId } from '../types/user-id';
 
 export const userSavedArticleEventCodec = t.type({
   id: EventIdFromString,
