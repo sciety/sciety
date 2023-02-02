@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { isListCreatedEvent } from '../../src/domain-events/list-created-event';
+import { isListCreatedEvent, listCreated } from '../../src/domain-events/list-created-event';
 import { executeCreateListCommand } from '../../src/write-side/create-list/execute-create-list-command';
+import { replayAllLists } from '../../src/write-side/resources/all-lists';
 import { arbitraryString } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
@@ -14,6 +15,7 @@ describe('execute-create-list-command', () => {
   describe('when a command is received', () => {
     const result = pipe(
       [],
+      replayAllLists,
       executeCreateListCommand({
         listId,
         ownerId,
@@ -46,7 +48,10 @@ describe('execute-create-list-command', () => {
 
   describe('when a command is received for an already existing listId', () => {
     const result = pipe(
-      [listId],
+      [
+        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+      ],
+      replayAllLists,
       executeCreateListCommand({
         listId,
         ownerId,
