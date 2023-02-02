@@ -5,11 +5,12 @@ import { arbitraryString, arbitraryUri } from '../../test/helpers';
 import { UserId } from '../../src/types/user-id';
 import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { callApi } from './call-api.helper';
+import { UserHandle } from '../../src/types/user-handle';
 
-export const createUserAccountAndLogIn = async (userId: UserId) => {
+export const createUserAccountAndLogIn = async (userId: UserId, handle: UserHandle = arbitraryUserHandle()) => {
   await callApi('api/create-user', {
     userId,
-    handle: arbitraryUserHandle(),
+    handle,
     avatarUrl: arbitraryUri(),
     displayName: arbitraryString(),
   });

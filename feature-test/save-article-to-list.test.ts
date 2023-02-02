@@ -4,12 +4,13 @@ import {
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
-import * as UID from '../src/types/user-id';
+import { arbitraryUserId } from '../test/types/user-id.helper';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 
 describe('save-article-to-list', () => {
   describe('when a new user logs in and saves an article that isn\'t in any list', () => {
-    const userHandle = 'DavidAshbrook';
-    const testUserId = UID.fromValidatedString('931653361');
+    const userHandle = arbitraryUserHandle();
+    const testUserId = arbitraryUserId();
     const userProfilePage = `localhost:8080/users/${userHandle}`;
     const scietyFeedPage = 'localhost:8080/sciety-feed';
 
@@ -24,7 +25,7 @@ describe('save-article-to-list', () => {
 
     beforeAll(async () => {
       await openBrowser();
-      await createUserAccountAndLogIn(testUserId);
+      await createUserAccountAndLogIn(testUserId, userHandle);
       await goto(articlePage);
       await click('Save to my list');
     });

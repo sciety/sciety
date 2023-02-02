@@ -31,6 +31,3 @@ export const userIdCodec = new t.Type(
   ),
   identity,
 );
-
-// ts-unused-exports:disable-next-line
-export const fromValidatedString = (value: string): UserId => value as UserId;
