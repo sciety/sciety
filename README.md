@@ -169,6 +169,12 @@ make exploratory-test-from-prod
 curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST https://sciety.org/api/add-article-to-list -H "Content-type: application/json" -d '{"articleId": "10.21203/rs.3.rs-955726/v1", "listId": "5ac3a439-e5c6-4b15-b109-92928a740812"}'
 ```
 
+#### Adding a group
+
+```sh
+curl -v -H "Authorization: Bearer secret" -X POST http://localhost:8080/api/add-group -H "Content-type: application/json" -d '{"groupId": "1480d2dd-463f-4834-8e81-d89c8ae2b86f", "avatarPath": "/static/groups/life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.jpg", "descriptionPath": "life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.md", "homepage": "https://www.lifescienceeditors.com", "name": "Life Science Editors", "shortDescription": "Life Science Editors is a group of former journal editors and grant specialists who are passionate about helping scientists and science reach their full potential.", "slug": "life-science-editors"}'
+```
+
 License
 -------
 
