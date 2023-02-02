@@ -5,19 +5,26 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
+import { sequenceS } from 'fp-ts/Apply';
 import { redirectBack } from '../http/redirect-back';
 import { CommandResult } from '../types/command-result';
-import { toUserId } from '../types/user-id';
+import { userIdCodec } from '../types/user-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
 
 type CommandHandler = (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
-const avasthiReadingUserId = toUserId('1412019815619911685');
-
 const requireUserToBeAvasthiReading = (adapters: GetLoggedInScietyUserPorts): Middleware => async (context, next) => {
   pipe(
-    getLoggedInScietyUser(adapters, context),
-    O.filter((userDetails) => userDetails.id === avasthiReadingUserId),
+    {
+      loggedInUser: getLoggedInScietyUser(adapters, context),
+      avasthiReadingUserId: pipe(
+        '1412019815619911685',
+        userIdCodec.decode,
+        O.fromEither,
+      ),
+    },
+    sequenceS(O.Apply),
+    O.filter(({ loggedInUser, avasthiReadingUserId }) => loggedInUser.id === avasthiReadingUserId),
     O.match(
       () => {
         context.response.status = StatusCodes.FORBIDDEN;
