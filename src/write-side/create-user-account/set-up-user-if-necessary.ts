@@ -1,6 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { v4 } from 'uuid';
+import * as LID from '../../types/list-id';
 import { CreateUserAccountCommand } from '../commands/create-user-account';
 import { CreateListCommand } from '../commands';
 import {
@@ -35,10 +37,12 @@ const shouldCreateList = (userId: UserId) => (events: ReadonlyArray<DomainEvent>
 );
 
 const constructCommand = (userDetails: { userId: UserId, handle: UserHandle }): CreateListCommand => ({
+  listId: LID.fromValidatedString(v4()),
   ownerId: LOID.fromUserId(userDetails.userId),
   name: `@${userDetails.handle}'s saved articles`,
   description: `Articles that have been saved by @${userDetails.handle}`,
 });
+
 type SetUpUserIfNecessary = (command: CreateUserAccountCommand)
 => (events: ReadonlyArray<DomainEvent>)
 => ReadonlyArray<DomainEvent>;
