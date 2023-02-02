@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
-import { UserHandle, userHandleCodec } from '../../types/user-handle';
-import { UserId, userIdCodec } from '../../types/user-id';
+import { userHandleCodec } from '../../types/user-handle';
+import { userIdCodec } from '../../types/user-id';
 
 export const createUserAccountCommandCodec = t.type({
   userId: userIdCodec,
@@ -9,9 +9,4 @@ export const createUserAccountCommandCodec = t.type({
   displayName: t.string,
 });
 
-export type CreateUserAccountCommand = {
-  userId: UserId,
-  handle: UserHandle,
-  avatarUrl: string,
-  displayName: string,
-};
+export type CreateUserAccountCommand = t.TypeOf<typeof createUserAccountCommandCodec>;

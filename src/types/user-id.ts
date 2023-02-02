@@ -7,7 +7,7 @@ export type UserId = string & { readonly UserId: unique symbol };
 
 const isUserId = (value: unknown): value is UserId => typeof value === 'string' && value !== '';
 
-export const toUserId = (value: string): UserId => {
+const toUserId = (value: string): UserId => {
   if (isUserId(value)) {
     return value;
   }

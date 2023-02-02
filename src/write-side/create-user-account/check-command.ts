@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { CreateUserAccountCommand } from '../commands/create-user-account';
+import { CreateUserAccountCommand } from '../commands';
 import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
 import { toErrorMessage } from '../../types/error-message';
 
