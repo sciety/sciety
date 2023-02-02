@@ -16,6 +16,7 @@ import { hardcodedElifeArticle as elife_10_1101_2022_07_21_500925 } from './elif
 import { hardcodedElifeArticle as elife_10_1101_2022_07_26_501569 } from './elife-10.1101-2022.07.26.501569.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_11_08_515698 } from './elife-10.1101-2022.11.08.515698.docmap';
 import { hardcodedElifeArticle as elife_10_1101_2022_10_28_514241 } from './elife-10.1101-2022.10.28.514241.docmap';
+import { hardcodedElifeArticle as elife_10_1101_2022_12_01_518662 } from './elife-10.1101-2022.12.01.518662.docmap';
 import { Docmap } from '../docmap/docmap-type';
 
 export const hardcodedDocmaps: Record<string, Docmap> = {
@@ -37,4 +38,6 @@ export const hardcodedDocmaps: Record<string, Docmap> = {
   '10.1101/2021.11.12.468444': elife_10_1101_2021_11_12_468444,
   '10.1101/2022.11.08.515698': elife_10_1101_2022_11_08_515698,
   '10.1101/2022.10.28.514241': elife_10_1101_2022_10_28_514241,
+  '10.1101/2022.12.01.518662': elife_10_1101_2022_12_01_518662,
+
 };
