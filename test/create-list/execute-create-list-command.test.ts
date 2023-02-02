@@ -13,13 +13,13 @@ describe('execute-create-list-command', () => {
 
   describe('when a command is received', () => {
     const result = pipe(
-      {
+      [],
+      executeCreateListCommand({
         listId,
         ownerId,
         name,
         description,
-      },
-      executeCreateListCommand([]),
+      }),
     );
 
     it('returns a ListCreated event', () => {
@@ -46,13 +46,13 @@ describe('execute-create-list-command', () => {
 
   describe('when a command is received for an already existing listId', () => {
     const result = pipe(
-      {
+      [listId],
+      executeCreateListCommand({
         listId,
         ownerId,
         name,
         description,
-      },
-      executeCreateListCommand([listId]),
+      }),
     );
 
     it.failing('does not return an event', () => {
