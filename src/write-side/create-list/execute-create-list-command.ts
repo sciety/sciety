@@ -1,10 +1,8 @@
 import { CreateListCommand } from '../commands';
 import { listCreated, ListCreatedEvent } from '../../domain-events';
-import { ListId } from '../../types/list-id';
+import { AllListsResource } from '../resources/all-lists';
 
-type ListsResource = ReadonlyArray<ListId>;
-
-type ExecuteCreateListCommand = (resource: ListsResource)
+type ExecuteCreateListCommand = (resource: AllListsResource)
 => (command: CreateListCommand)
 => ReadonlyArray<ListCreatedEvent>;
 
