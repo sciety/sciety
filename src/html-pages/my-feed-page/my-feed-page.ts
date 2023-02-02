@@ -8,14 +8,14 @@ import * as tt from 'io-ts-types';
 import { myFeed, Ports } from './my-feed';
 import { renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { UserIdFromString } from '../../types/user-id';
+import { userIdCodec } from '../../types/user-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 
 export const myFeedParams = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
   user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
+    id: userIdCodec,
   })),
 });
 

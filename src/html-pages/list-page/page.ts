@@ -11,7 +11,7 @@ import { ContentViewModel, renderErrorPage } from './render-as-html/render-page'
 import { userHasEditCapability } from './user-has-edit-capability';
 import { GetList } from '../../shared-ports';
 import { ListIdFromString } from '../../types/codecs/ListIdFromString';
-import { UserIdFromString, UserId } from '../../types/user-id';
+import { userIdCodec, UserId } from '../../types/user-id';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { ListOwnerId } from '../../types/list-owner-id';
@@ -22,7 +22,7 @@ export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
   id: ListIdFromString,
   user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
+    id: userIdCodec,
   })),
 });
 

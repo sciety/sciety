@@ -9,7 +9,7 @@ import * as tt from 'io-ts-types';
 import * as LOID from '../../../types/list-owner-id';
 import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { isFollowing } from '../../../shared-read-models/followings';
-import { UserIdFromString } from '../../../types/user-id';
+import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
 import { ContentModel, TabIndex } from '../content-model';
@@ -61,7 +61,7 @@ const constructActiveTabModel = (
 export const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
+    id: userIdCodec,
   })),
   page: tt.withFallback(tt.NumberFromString, 1),
 });

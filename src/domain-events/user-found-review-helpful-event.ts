@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { UserIdFromString, UserId } from '../types/user-id';
+import { userIdCodec, UserId } from '../types/user-id';
 import { generate } from '../types/event-id';
 import { ReviewId, reviewIdCodec } from '../types/review-id';
 
@@ -9,7 +9,7 @@ export const userFoundReviewHelpfulEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('UserFoundReviewHelpful'),
   date: tt.DateFromISOString,
-  userId: UserIdFromString,
+  userId: userIdCodec,
   reviewId: reviewIdCodec,
 });
 

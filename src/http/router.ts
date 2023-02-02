@@ -63,7 +63,7 @@ import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page/
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { UserIdFromString } from '../types/user-id';
+import { userIdCodec } from '../types/user-id';
 import { CommandHandler, GenericCommand } from '../types/command-handler';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -101,7 +101,7 @@ const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: Gen
 
 const articlePageParams = t.type({
   doi: DoiFromString,
-  user: tt.optionFromNullable(t.type({ id: UserIdFromString })),
+  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
 export const createRouter = (adapters: CollectedPorts): Router => {

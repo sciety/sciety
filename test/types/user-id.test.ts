@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { UserIdFromString } from '../../src/types/user-id';
+import { userIdCodec } from '../../src/types/user-id';
 import { arbitraryUserId } from './user-id.helper';
 
 describe('user-id', () => {
@@ -9,8 +9,8 @@ describe('user-id', () => {
 
     expect(pipe(
       id,
-      UserIdFromString.encode,
-      UserIdFromString.decode,
+      userIdCodec.encode,
+      userIdCodec.decode,
     )).toStrictEqual(E.right(id));
   });
 
@@ -22,7 +22,7 @@ describe('user-id', () => {
   ])('cannot decode an invalid UserId', (input) => {
     expect(pipe(
       input,
-      UserIdFromString.decode,
+      userIdCodec.decode,
       E.isLeft,
     )).toBe(true);
   });

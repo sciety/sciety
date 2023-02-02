@@ -16,7 +16,7 @@ export const toUserId = (value: string): UserId => {
 
 const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
 
-export const UserIdFromString = new t.Type(
+export const userIdCodec = new t.Type(
   'UserIdFromString',
   isUserId,
   (u, c) => pipe(
