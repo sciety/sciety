@@ -22,10 +22,11 @@ describe('user-id', () => {
     null,
     undefined,
     '',
-    // 'unsupportedconnection|63d8f06993ff1642c77e0e91',
-    // 'unsupportedconnection|',
-    // '|',
-    // 'auth0|twitter|63d8f06993ff1642c77e0e91',
+    'unsupportedconnection|63d8f06993ff1642c77e0e91',
+    'unsupportedconnection|',
+    '|',
+    'auth0|twitter|63d8f06993ff1642c77e0e91',
+    'xauth0|63d8f06993ff1642c77e0e91',
   ])('cannot decode %s as a UserId', (input) => {
     expect(pipe(
       input,
