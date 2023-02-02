@@ -86,6 +86,11 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
     fetchFeed: fetchReviewsFromHypothesisGroup('NEGQVabn'),
   },
   {
+    id: '1480d2dd-463f-4834-8e81-d89c8ae2b86f',
+    name: 'Life Science Editors',
+    fetchFeed: fetchReviewsFromHypothesisUser('lifescienceeditors'),
+  },
+  {
     id: '8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65',
     name: 'ScreenIT',
     fetchFeed: fetchReviewsFromHypothesisUser('sciscore'),
