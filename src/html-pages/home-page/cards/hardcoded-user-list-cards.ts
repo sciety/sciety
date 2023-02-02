@@ -1,5 +1,6 @@
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { toUserId, UserId } from '../../../types/user-id';
+import { UserId, userIdCodec } from '../../../types/user-id';
 
 // TODO: these should be ListIds
 type Card = {
@@ -7,13 +8,25 @@ type Card = {
 };
 
 export const card1: Card = {
-  userId: O.some(toUserId('1384541806231175172')),
+  userId: pipe(
+    '1384541806231175172',
+    userIdCodec.decode,
+    O.fromEither,
+  ),
 };
 
 export const card2: Card = {
-  userId: O.some(toUserId('1412019815619911685')),
+  userId: pipe(
+    '1412019815619911685',
+    userIdCodec.decode,
+    O.fromEither,
+  ),
 };
 
 export const card3: Card = {
-  userId: O.some(toUserId('1122522190791028737')),
+  userId: pipe(
+    '1122522190791028737',
+    userIdCodec.decode,
+    O.fromEither,
+  ),
 };
