@@ -167,12 +167,6 @@ describe('authentication-and-redirect', () => {
         expect(buttonText).toBe('Log In');
       });
 
-      it.todo('my lists do not appear in the utility bar');
-
-      it.todo('my handle is not in the utility bar');
-
-      it.todo('my avatar is not in the utility bar');
-
       it.todo('clicking the back button doesn\'t result in an error');
     });
 
