@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { GetUser } from '../../../shared-ports';
 import { Follower } from '../content-model';
-import { UserCardViewModel } from '../render-as-html/render-followers';
+import { UserCardViewModel } from '../view-model';
 
 export type Ports = {
   getUser: GetUser,

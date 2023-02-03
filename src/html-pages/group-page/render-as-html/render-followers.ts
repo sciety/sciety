@@ -1,24 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { UserHandle } from '../../../types/user-handle';
+import { FollowersTab, UserCardViewModel } from '../view-model';
 
-export type UserCardViewModel = {
-  link: string,
-  title: string,
-  handle: UserHandle,
-  listCount: number,
-  followedGroupCount: number,
-  avatarUrl: string,
-};
-
-export type FollowerListViewModel = {
-  followerCount: number,
-  followers: ReadonlyArray<UserCardViewModel>,
-  nextLink: HtmlFragment,
-};
-
-type RenderFollowers = (followerListViewModel: FollowerListViewModel) => HtmlFragment;
+type RenderFollowers = (followerListViewModel: FollowersTab) => HtmlFragment;
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">

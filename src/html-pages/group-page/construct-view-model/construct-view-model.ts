@@ -43,10 +43,7 @@ const constructActiveTabModel = (
       return pipe(
         contentModel,
         constructFollowersTab(ports),
-        TE.map((followersTab) => ({
-          selector: 'followers' as const,
-          ...followersTab,
-        })),
+        TE.fromEither,
       );
   }
 };
