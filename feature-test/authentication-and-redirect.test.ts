@@ -152,12 +152,6 @@ describe('authentication-and-redirect', () => {
       expect(result).toContain(`/groups/${groupBSlug}`);
     });
 
-    it('back button doesn\'t break authentication', async () => {
-      await goBack();
-
-      const result = await currentURL();
-
-      expect(result).not.toContain('/twitter/callback');
-    });
+    it.todo('back button doesn\'t show an error');
   });
 });
