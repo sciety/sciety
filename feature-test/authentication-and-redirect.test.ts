@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goBack, goto, openBrowser, text, into, write, textBox,
+  $, click, currentURL, goto, openBrowser, text, into, write, textBox,
 } from 'taiko';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
