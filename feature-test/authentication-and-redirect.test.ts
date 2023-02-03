@@ -104,48 +104,6 @@ describe('authentication-and-redirect', () => {
     it.todo('i am on the home page');
   });
 
-  describe.skip('not logged in', () => {
-    it('save article command returns to the article page after saving the article', async () => {
-      await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
-      await click('Save to my list');
-      await logInWithSpecifiedUserId(userId);
-      const result = await text('Saved to my list').exists();
-
-      expect(result).toBe(true);
-    });
-
-    it('log in from the article page returns to the article page', async () => {
-      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click('Log in');
-      await logInWithSpecifiedUserId(userId);
-
-      const result = await currentURL();
-
-      expect(result).toContain('/articles/activity/10.1101/2020.07.13.199174');
-    });
-
-    it('respond command returns to review fragment on the article page', async () => {
-      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
-      await logInWithSpecifiedUserId(userId);
-
-      const result = await currentURL();
-
-      expect(result).toContain('10.1101/2020.07.13.199174');
-      expect(result).toMatch(/.*#[a-z]*:/);
-    });
-
-    it('follow command from the group page returns to the group page', async () => {
-      await goto(`localhost:8080/groups/${groupASlug}`);
-      await click('Follow');
-      await logInWithSpecifiedUserId(userId);
-
-      const result = await currentURL();
-
-      expect(result).toContain(`/groups/${groupASlug}`);
-    });
-  });
-
   describe('when logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
