@@ -6,9 +6,10 @@ import * as E from 'fp-ts/Either';
 import * as M from 'fp-ts/Map';
 import { Eq as stringEq } from 'fp-ts/string';
 import * as O from 'fp-ts/Option';
-import { DomainEvent, isListCreatedEvent, ListCreatedEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { EventId } from '../types/event-id';
 import { ListId } from '../types/list-id';
+import { filterByName, SubsetOfDomainEvent } from '../domain-events/domain-event';
 
 type BackfillDataForSingleEvent = {
   resourceId: ListId,
@@ -20,7 +21,7 @@ type BackfillDataForAllList = Map<ListId, Array<BackfillDataForSingleEvent>>;
 
 const updateListResourceBackfillData = (
   state: BackfillDataForAllList,
-  event: ListCreatedEvent,
+  event: SubsetOfDomainEvent<typeof namesOfEventsOwnedByListResource>,
 ): BackfillDataForAllList => {
   const updatedResource = pipe(
     state,
@@ -56,11 +57,19 @@ const backfillResourceColumnsForListCreatedEvent = (
   E.toError,
 );
 
+const namesOfEventsOwnedByListResource = [
+  'ListCreated' as const,
+  'ArticleAddedToList' as const,
+  'ArticleRemovedFromList' as const,
+  'ListDescriptionEdited' as const,
+  'ListNameEdited' as const,
+];
+
 export const backfillResourceColumnsForLists = (
   pool: Pool,
 ) => (events: Array<DomainEvent>): TE.TaskEither<Error, void> => pipe(
   events,
-  RA.filter(isListCreatedEvent),
+  filterByName(namesOfEventsOwnedByListResource),
   RA.reduce(new Map(), updateListResourceBackfillData),
   (allBackfillData) => Array.from(allBackfillData.values()),
   RA.flatten,
