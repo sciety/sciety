@@ -6,22 +6,19 @@ import { FetchStaticFile } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentModel } from '../content-model';
-import { OurListsViewModel, renderOurLists } from '../render-as-html/render-our-lists';
+import { renderOurLists } from '../render-as-html/render-our-lists';
 import { renderDescription } from '../render-as-html/render-description';
+import { AboutTab } from '../view-model';
 
 export type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
-export type AboutTabViewModel = {
-  lists: OurListsViewModel,
-  markdown: string,
-};
-
 export const constructAboutTab = (
   ports: Ports,
-) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTabViewModel> => pipe(
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTab> => pipe(
   {
+    selector: TE.right('about' as const),
     lists: pipe(
       contentModel.lists,
       toOurListsViewModel(contentModel.group.slug),
@@ -32,7 +29,7 @@ export const constructAboutTab = (
   sequenceS(TE.ApplyPar),
 );
 
-export const renderAboutTab = (viewmodel: AboutTabViewModel): HtmlFragment => toHtmlFragment(`
+export const renderAboutTab = (viewmodel: AboutTab): HtmlFragment => toHtmlFragment(`
   <div class="group-page-about">
     <section>
       ${renderOurLists(viewmodel.lists)}

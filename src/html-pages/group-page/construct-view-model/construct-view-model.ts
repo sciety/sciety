@@ -38,10 +38,6 @@ const constructActiveTabModel = (
       return pipe(
         contentModel,
         constructAboutTab(ports),
-        TE.map((aboutTab) => ({
-          selector: 'about' as const,
-          ...aboutTab,
-        })),
       );
     default:
       return pipe(

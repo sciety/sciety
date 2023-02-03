@@ -1,15 +1,17 @@
 import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
-import { AboutTabViewModel } from './about/about';
 import { ContentModel } from './content-model';
 import { FollowerListViewModel } from './render-as-html/render-followers';
+import { OurListsViewModel } from './render-as-html/render-our-lists';
 
 export type ListsTab = {
   selector: 'lists',
   lists: ReadonlyArray<ListCardViewModel>,
 };
 
-type AboutTab = AboutTabViewModel & {
+export type AboutTab = {
   selector: 'about',
+  lists: OurListsViewModel,
+  markdown: string,
 };
 
 type FollowersTab = FollowerListViewModel & {
