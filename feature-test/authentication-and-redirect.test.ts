@@ -115,8 +115,11 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('after clicking the Log In button', () => {
+    let userHandle: UserHandle;
+
     beforeEach(async () => {
-      await createUserAccountAndLogIn(arbitraryUserId());
+      userHandle = arbitraryUserHandle();
+      await createUserAccountAndLogIn(arbitraryUserId(), userHandle);
     });
 
     it('the login button says "Log Out"', async () => {
@@ -132,7 +135,11 @@ describe('authentication-and-redirect', () => {
       expect(result).toContain('/users');
     });
 
-    it.todo('i can see my handle in the utility bar');
+    it('i can see my handle in the utility bar', async () => {
+      const utilityBar = await $('.utility-bar').text();
+
+      expect(utilityBar).toContain(userHandle);
+    });
 
     it.todo('i can see my avatar in the utility bar');
 
