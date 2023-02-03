@@ -32,6 +32,7 @@ const constructActiveTabModel = (
       return pipe(
         contentModel,
         constructListsTab,
+        TE.right,
       );
     case 1:
       return pipe(

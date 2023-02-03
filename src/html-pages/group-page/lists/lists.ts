@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as TE from 'fp-ts/TaskEither';
 import { ContentModel } from '../content-model';
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
 import { List } from '../../../types/list';
@@ -16,7 +15,7 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   lastUpdated: O.some(list.lastUpdated),
 });
 
-export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<never, ListsTab> => pipe(
+export const constructListsTab = (contentModel: ContentModel): ListsTab => pipe(
   contentModel.lists,
   RA.reverse,
   RA.map(toListCardViewModel),
@@ -24,5 +23,4 @@ export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<nev
     selector: 'lists' as const,
     lists,
   }),
-  TE.right,
 );
