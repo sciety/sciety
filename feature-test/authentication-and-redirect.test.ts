@@ -10,6 +10,8 @@ import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
+import { UserId } from '../src/types/user-id';
+import { UserHandle } from '../src/types/user-handle';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -67,13 +69,17 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   describe('on completing the sign up journey', () => {
+    let newUserId: UserId;
+    let userHandle: UserHandle;
+
     beforeEach(async () => {
-      const newUserId = arbitraryUserId();
+      newUserId = arbitraryUserId();
+      userHandle = arbitraryUserHandle();
       await goto('localhost:8080/groups');
       await click('Sign Up');
       await logInWithSpecifiedUserId(newUserId);
       await write('Full Name', into(textBox('Display name')));
-      await write(arbitraryUserHandle(), into(textBox('Handle')));
+      await write(userHandle, into(textBox('Handle')));
       const createAccountButton = $('#createAccountButton');
       await click(createAccountButton);
     });
@@ -91,7 +97,11 @@ describe('authentication-and-redirect', () => {
       expect(result).toContain('/users');
     });
 
-    it.todo('i can see my handle in the nav bar');
+    it('i can see my handle in the utility bar', async () => {
+      const utilityBar = await $('.utility-bar').text();
+
+      expect(utilityBar).toContain(userHandle);
+    });
 
     it.todo('i can see my avatar in the nav bar');
 
