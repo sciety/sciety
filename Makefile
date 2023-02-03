@@ -167,9 +167,6 @@ taiko: export USE_STUB_ADAPTERS = true
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/taiko.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
-	scripts/wait-for-healthy.sh
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
