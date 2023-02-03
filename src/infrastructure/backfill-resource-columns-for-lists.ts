@@ -16,7 +16,8 @@ const backfillResourceColumnsForListCreatedEvent = (pool: Pool) => (backfillData
   async () => pool.query(`
       UPDATE events
         SET resource_name = 'List',
-          resource_id = $1
+          resource_id = $1,
+          resource_version = 0
         WHERE id = $2
     `,
   [backfillData.resourceId, backfillData.eventId]),
