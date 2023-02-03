@@ -92,16 +92,17 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: {
-                name: 'anonymous',
-                type: 'person',
-              },
-              role: 'peer-reviewer',
+              actor: { name: 'Michael B Eisen', type: 'person', _relatesToOrganization: 'University of California, Berkeley, United States' },
+              role: 'senior-editor',
+            },
+            {
+              actor: { name: 'Michael B Eisen', type: 'person', _relatesToOrganization: 'University of California, Berkeley, United States' },
+              role: 'editor',
             },
           ],
           outputs: [
             {
-              type: 'review-article',
+              type: 'evaluation-summary',
               published: '2023-02-02T18:41:22.966Z',
               content: [
                 {
