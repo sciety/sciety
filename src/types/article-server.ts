@@ -34,7 +34,7 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
   },
   osf: {
     name: 'OSF Preprints',
-    avatarUrl: '/static/images/scielo.svg',
+    avatarUrl: '/static/images/osf.png',
     versionsSupported: false,
     domain: 'osf.io',
   },
