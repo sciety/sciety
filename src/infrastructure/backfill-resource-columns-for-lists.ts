@@ -8,8 +8,9 @@ import { EventId } from '../types/event-id';
 import { ListId } from '../types/list-id';
 
 type BackfillData = {
-  eventId: EventId,
   resourceId: ListId,
+  resourceVersion: number,
+  eventId: EventId,
 };
 
 const backfillResourceColumnsForListCreatedEvent = (pool: Pool) => (backfillData: BackfillData) => TE.tryCatch(
@@ -17,10 +18,10 @@ const backfillResourceColumnsForListCreatedEvent = (pool: Pool) => (backfillData
       UPDATE events
         SET resource_name = 'List',
           resource_id = $1,
-          resource_version = 0
-        WHERE id = $2
+          resource_version = $2
+        WHERE id = $3
     `,
-  [backfillData.resourceId, backfillData.eventId]),
+  [backfillData.resourceId, backfillData.resourceVersion, backfillData.eventId]),
   E.toError,
 );
 
@@ -29,7 +30,7 @@ export const backfillResourceColumnsForLists = (
 ) => (events: Array<DomainEvent>): TE.TaskEither<Error, void> => pipe(
   events,
   RA.filter(isListCreatedEvent),
-  RA.map(({ id, listId }) => ({ eventId: id, resourceId: listId })),
+  RA.map(({ id, listId }) => ({ resourceId: listId, resourceVersion: 0, eventId: id })),
   TE.traverseArray(backfillResourceColumnsForListCreatedEvent(pool)),
   TE.map(() => undefined),
 );
