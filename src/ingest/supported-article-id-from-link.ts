@@ -66,7 +66,7 @@ const isSupported = (server: string, allServerData: DoiFromLinkData): server is 
 );
 
 export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
-  const [, server] = /([a-z]+)\.(com|org)/.exec(link) ?? [];
+  const [, server] = /([a-z]+)\.(com|org|io)/.exec(link) ?? [];
   if (!server) {
     return E.left(`server not found in "${link}"`);
   }

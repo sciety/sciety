@@ -125,4 +125,10 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
     name: 'ASAPbio-SciELO Preprint crowd review',
     fetchFeed: fetchReviewsFromHypothesisUser('ASAPbio_SciELO_preprint_review'),
   },
+
+  {
+    id: '1e6f6b49-2a9b-417e-831b-8cee5af033bd',
+    name: 'The Unjournal',
+    fetchFeed: fetchReviewsFromHypothesisUser('theunjournal', 60),
+  },
 ];
