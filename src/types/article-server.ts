@@ -32,6 +32,12 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     versionsSupported: false,
     domain: 'preprints.scielo.org',
   },
+  osf: {
+    name: 'OSF Preprints',
+    avatarUrl: '/static/images/scielo.svg',
+    versionsSupported: false,
+    domain: 'osf.io',
+  },
 };
 
 export const articleServerCodec = t.union(
@@ -40,10 +46,12 @@ export const articleServerCodec = t.union(
     t.literal('medrxiv'),
     t.literal('researchsquare'),
     t.literal('scielopreprints'),
+    t.literal('osf'),
   ],
 );
 
 export type ArticleServer = 'biorxiv'
 | 'medrxiv'
 | 'researchsquare'
-| 'scielopreprints';
+| 'scielopreprints'
+| 'osf';
