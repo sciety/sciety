@@ -39,6 +39,7 @@ import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxi
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
+import { backfillResourceColumnsForLists } from './backfill-resource-columns-for-lists';
 
 type Dependencies = {
   prettyLog: boolean,
@@ -116,12 +117,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
     TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
-    TE.map((eventsFromDatabase) => pipe(
-      [
-        ...eventsFromDatabase,
-      ],
-      sortEvents,
-    )),
+    TE.map(sortEvents),
+    TE.chainFirstTaskK(backfillResourceColumnsForLists(pool, logger)),
     TE.map((events) => (
       {
         events,
