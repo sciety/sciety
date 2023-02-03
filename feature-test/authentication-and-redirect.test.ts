@@ -2,7 +2,7 @@ import {
   $, click, currentURL, goto, openBrowser, into, write, textBox,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
@@ -116,10 +116,11 @@ describe('authentication-and-redirect', () => {
 
   describe('after clicking the Log In button', () => {
     let userHandle: UserHandle;
+    const userAvatar = arbitraryUri();
 
     beforeEach(async () => {
       userHandle = arbitraryUserHandle();
-      await createUserAccountAndLogIn(arbitraryUserId(), userHandle);
+      await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
     });
 
     it('the login button says "Log Out"', async () => {
@@ -141,7 +142,11 @@ describe('authentication-and-redirect', () => {
       expect(utilityBar).toContain(userHandle);
     });
 
-    it.todo('i can see my avatar in the utility bar');
+    it('i can see my avatar in the utility bar', async () => {
+      const avatar = await $('.utility-bar-user-avatar').attribute('src');
+
+      expect(avatar).toStrictEqual(userAvatar);
+    });
 
     it.todo('clicking the back button doesn\'t result in an error');
   });

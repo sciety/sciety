@@ -7,11 +7,15 @@ import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { callApi } from './call-api.helper';
 import { UserHandle } from '../../src/types/user-handle';
 
-export const createUserAccountAndLogIn = async (userId: UserId, handle: UserHandle = arbitraryUserHandle()) => {
+export const createUserAccountAndLogIn = async (
+  userId: UserId,
+  handle: UserHandle = arbitraryUserHandle(),
+  avatarUrl: string = arbitraryUri(),
+) => {
   await callApi('api/create-user', {
     userId,
     handle,
-    avatarUrl: arbitraryUri(),
+    avatarUrl,
     displayName: arbitraryString(),
   });
   await goto('localhost:8080/');
