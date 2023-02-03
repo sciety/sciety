@@ -92,7 +92,7 @@ describe('authentication-and-redirect', () => {
       expect(buttonText).toBe('Log Out');
     });
 
-    it('i can navigate to my lists from the nav bar', async () => {
+    it('i can navigate to my lists from the utility bar', async () => {
       await click('My lists');
       const result = await currentURL();
 
@@ -125,16 +125,16 @@ describe('authentication-and-redirect', () => {
       expect(buttonText).toBe('Log Out');
     });
 
-    it('i can navigate to my lists from the nav bar', async () => {
+    it('i can navigate to my lists from the utility bar', async () => {
       await click('My lists');
       const result = await currentURL();
 
       expect(result).toContain('/users');
     });
 
-    it.todo('i can see my handle in the nav bar');
+    it.todo('i can see my handle in the utility bar');
 
-    it.todo('i can see my avatar in the nav bar');
+    it.todo('i can see my avatar in the utility bar');
 
     it.todo('clicking the back button doesn\'t result in an error');
   });
@@ -149,11 +149,11 @@ describe('authentication-and-redirect', () => {
     describe('after clicking the Log Out button', () => {
       it.todo('the log in button says Log In');
 
-      it.todo('my lists do not appear in the nav bar');
+      it.todo('my lists do not appear in the utility bar');
 
-      it.todo('my handle is not in the nav bar');
+      it.todo('my handle is not in the utility bar');
 
-      it.todo('my avatar is not in the nav bar');
+      it.todo('my avatar is not in the utility bar');
 
       it.todo('clicking the back button doesn\'t result in an error');
     });
