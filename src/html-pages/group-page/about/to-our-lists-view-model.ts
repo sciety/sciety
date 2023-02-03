@@ -18,8 +18,8 @@ type ToOurListsViewModel = (groupSlug: string) => (lists: ReadonlyArray<List>) =
 export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) => pipe(
   lists,
   RA.map((list) => ({
+    listId: list.id,
     articleCount: list.articleIds.length,
-    href: `/lists/${list.id}`,
     title: list.name,
     lastUpdated: list.lastUpdated,
   })),
