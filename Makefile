@@ -187,9 +187,13 @@ download-exploratory-test-from-prod:
 			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/events.csv" \
 		'
 	aws s3 cp "s3://sciety-data-extractions/events.csv" "./data/exploratory-test-from-prod.csv"
+	sed -e 's/$$/,,,/' -i ./data/exploratory-test-from-prod.csv
 
 dump-local-event:
 	docker exec -it sciety_db psql -d sciety -U user -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;"
+
+dump-local-listids:
+	docker exec -it sciety_db psql -d sciety -U user -c "COPY (SELECT resource_id FROM events WHERE resource_name = 'List' ORDER BY date ASC) TO STDOUT CSV;"
 
 dump-local-db-colums:
 	docker exec -it sciety_db psql -d sciety -U user -c "SELECT column_name FROM information_schema.columns where table_name = 'events'; "

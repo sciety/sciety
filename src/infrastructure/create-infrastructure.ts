@@ -74,7 +74,7 @@ const addResourceRelatedColumns = ({ pool }: DatabaseConnectionPoolAndLogger) =>
   async () => pool.query(`
       ALTER TABLE events
         ADD COLUMN IF NOT EXISTS resource_name varchar,
-        ADD COLUMN IF NOT EXISTS resource_id uuid,
+        ADD COLUMN IF NOT EXISTS resource_id varchar,
         ADD COLUMN IF NOT EXISTS resource_version integer
     `),
   identity,
