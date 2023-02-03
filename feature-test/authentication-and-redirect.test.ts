@@ -86,7 +86,7 @@ describe('authentication-and-redirect', () => {
       await click(createAccountButton);
     });
 
-    it('the login button says "Log Out"', async () => {
+    it('the login button says Log Out', async () => {
       const buttonText = await $('.utility-bar__list_link_button').text();
 
       expect(buttonText).toBe('Log Out');
@@ -123,7 +123,7 @@ describe('authentication-and-redirect', () => {
       await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
     });
 
-    it('the login button says "Log Out"', async () => {
+    it('the login button says Log Out', async () => {
       const buttonText = await $('.utility-bar__list_link_button').text();
 
       expect(buttonText).toBe('Log Out');
