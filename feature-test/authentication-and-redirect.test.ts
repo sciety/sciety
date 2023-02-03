@@ -1,6 +1,7 @@
 import {
   $, click, currentURL, goto, openBrowser, into, write, textBox,
 } from 'taiko';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
@@ -114,7 +115,15 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('after clicking the Log In button', () => {
-    it.todo('the login button says "Log out"');
+    beforeEach(async () => {
+      await createUserAccountAndLogIn(arbitraryUserId());
+    });
+
+    it('the login button says "Log Out"', async () => {
+      const buttonText = await $('.utility-bar__list_link_button').text();
+
+      expect(buttonText).toBe('Log Out');
+    });
 
     it.todo('i can navigate to my lists from the nav bar');
 
