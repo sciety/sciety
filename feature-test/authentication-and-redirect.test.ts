@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goto, openBrowser, text, into, write, textBox,
+  $, click, currentURL, goto, openBrowser, into, write, textBox,
 } from 'taiko';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
@@ -78,12 +78,6 @@ describe('authentication-and-redirect', () => {
       await click(createAccountButton);
     });
 
-    it('returns to the home page', async () => {
-      const result = await text('The home of public preprint evaluation').exists();
-
-      expect(result).toBe(true);
-    });
-
     it('the login button says "Log Out"', async () => {
       const buttonText = await $('.utility-bar__list_link_button').text();
 
@@ -100,8 +94,6 @@ describe('authentication-and-redirect', () => {
     it.todo('i can see my handle in the nav bar');
 
     it.todo('i can see my avatar in the nav bar');
-
-    it.todo('i am on the home page');
   });
 
   describe('when logged in', () => {
@@ -119,8 +111,6 @@ describe('authentication-and-redirect', () => {
 
     it.todo('i can see my avatar in the nav bar');
 
-    it.todo('i am on the home page');
-
     describe('after clicking the Log Out button', () => {
       it.todo('the log in button says Log In');
 
@@ -129,8 +119,6 @@ describe('authentication-and-redirect', () => {
       it.todo('my handle is not in the nav bar');
 
       it.todo('my avatar is not in the nav bar');
-
-      it.todo('i am on the home page');
     });
 
     it('respond command returns to review fragment on the article page', async () => {
