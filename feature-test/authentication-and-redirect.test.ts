@@ -157,7 +157,15 @@ describe('authentication-and-redirect', () => {
     });
 
     describe('after clicking the Log Out button', () => {
-      it.todo('the log in button says Log In');
+      beforeEach(async () => {
+        await click('Log Out');
+      });
+
+      it('the log in button says Log In', async () => {
+        const buttonText = await $('.utility-bar__list_link_button').text();
+
+        expect(buttonText).toBe('Log In');
+      });
 
       it.todo('my lists do not appear in the utility bar');
 
