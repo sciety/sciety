@@ -69,6 +69,16 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
   identity,
 );
 
+const addResourceRelatedColumns = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryCatch(
+  async () => pool.query(`
+      ALTER TABLE events
+        ADD COLUMN IF NOT EXISTS resource_name varchar,
+        ADD COLUMN IF NOT EXISTS resource_id uuid,
+        ADD COLUMN IF NOT EXISTS resource_version integer
+    `),
+  identity,
+);
+
 const createGetJson = (logger: Logger) => async (uri: string) => {
   const response = await fetchData(logger)<Json>(uri);
   return response.data;
@@ -102,6 +112,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   },
   TE.right,
   TE.chainFirst(createEventsTable),
+  TE.chainFirst(addResourceRelatedColumns),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
     TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
