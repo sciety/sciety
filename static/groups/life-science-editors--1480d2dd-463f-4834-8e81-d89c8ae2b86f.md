@@ -1,7 +1,7 @@
 ## Who we are
 We are a group of scientists who are passionate about communicating science to fellow scientists and the public. We believe that scientific passion and progress rely on kindness, curiosity, trust and integrity. Our team brings diverse expertise from research, publishing, career development and grant writing. Life Science Editors provides a variety of services to help scientists obtain publications, funding and jobs, including editing, strategic advice, coaching, illustrations and workshops.
 
-[Visit our site](https://lifescienceeditors.org/)
+[Visit our site](https://www.lifescienceeditors.com/)
 
 ## Our evaluation model
 
