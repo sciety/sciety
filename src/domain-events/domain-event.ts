@@ -4,6 +4,7 @@ import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { annotationCreatedEventCodec } from './annotation-created-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
@@ -59,3 +60,15 @@ export const domainEventCodec = t.union([
 ], 'type');
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
+
+type EventName = DomainEvent['type'];
+
+export type SubsetOfDomainEvent<Names extends Array<EventName>> = Extract<DomainEvent, { type: Names[number] }>;
+
+export const filterByName = <T extends Array<EventName>>(names: T) => (
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<SubsetOfDomainEvent<T>> => pipe(
+  events,
+  RA.filter(({ type }) => names.includes(type)),
+  RA.map((filtered) => filtered as SubsetOfDomainEvent<T>),
+);
