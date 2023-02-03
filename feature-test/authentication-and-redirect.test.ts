@@ -133,15 +133,6 @@ describe('authentication-and-redirect', () => {
       it.todo('i am on the home page');
     });
 
-    it.skip('log out from the article page returns to the article page', async () => {
-      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click('Log out');
-
-      const result = await currentURL();
-
-      expect(result).toContain('/articles/activity/10.1101/2020.07.13.199174');
-    });
-
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click($('.activity-feed__item:first-child button[value="respond-not-helpful"]'));
