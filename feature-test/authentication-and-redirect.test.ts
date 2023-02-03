@@ -94,15 +94,11 @@ describe('authentication-and-redirect', () => {
     it.todo('i can see my handle in the nav bar');
 
     it.todo('i can see my avatar in the nav bar');
+
+    it.todo('clicking the back button doesn\'t result in an error');
   });
 
-  describe('when logged in', () => {
-    beforeEach(async () => {
-      await goto('localhost:8080/');
-      await click('Log in');
-      await logInWithSpecifiedUserId(userId);
-    });
-
+  describe('after clicking the Log In button', () => {
     it.todo('the login button says "Log out"');
 
     it.todo('i can navigate to my lists from the nav bar');
@@ -110,6 +106,16 @@ describe('authentication-and-redirect', () => {
     it.todo('i can see my handle in the nav bar');
 
     it.todo('i can see my avatar in the nav bar');
+
+    it.todo('clicking the back button doesn\'t result in an error');
+  });
+
+  describe('when I am logged in', () => {
+    beforeEach(async () => {
+      await goto('localhost:8080/');
+      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
+    });
 
     describe('after clicking the Log Out button', () => {
       it.todo('the log in button says Log In');
@@ -119,6 +125,8 @@ describe('authentication-and-redirect', () => {
       it.todo('my handle is not in the nav bar');
 
       it.todo('my avatar is not in the nav bar');
+
+      it.todo('clicking the back button doesn\'t result in an error');
     });
 
     it('respond command returns to review fragment on the article page', async () => {
@@ -139,7 +147,5 @@ describe('authentication-and-redirect', () => {
 
       expect(result).toContain(`/groups/${groupBSlug}`);
     });
-
-    it.todo('back button doesn\'t show an error');
   });
 });
