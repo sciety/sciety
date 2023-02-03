@@ -188,6 +188,12 @@ download-exploratory-test-from-prod:
 		'
 	aws s3 cp "s3://sciety-data-extractions/events.csv" "./data/exploratory-test-from-prod.csv"
 
+dump-local-event:
+	docker exec -it sciety_db psql -d sciety -U user -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;"
+
+dump-local-db-colums:
+	docker exec -it sciety_db psql -d sciety -U user -c "SELECT column_name FROM information_schema.columns where table_name = 'events'; "
+
 exploratory-test-from-prod: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
