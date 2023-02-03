@@ -129,23 +129,31 @@ describe('authentication-and-redirect', () => {
       it.todo('clicking the back button doesn\'t result in an error');
     });
 
-    it('respond command returns to review fragment on the article page', async () => {
-      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click($('.activity-feed__item:first-child button[value="respond-not-helpful"]'));
+    describe('after clicking on the thumbs down button for an evaluation', () => {
+      beforeEach(async () => {
+        await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
+        await click($('.activity-feed__item:first-child button[value="respond-not-helpful"]'));
+      });
 
-      const result = await currentURL();
+      it('returns to the review fragment on the article page', async () => {
+        const result = await currentURL();
 
-      expect(result).toContain('10.1101/2020.07.13.199174');
-      expect(result).toMatch(/.*#[a-z]*:/);
+        expect(result).toContain('10.1101/2020.07.13.199174');
+        expect(result).toMatch(/.*#[a-z]*:/);
+      });
     });
 
-    it('follow command from the group page returns to the group page', async () => {
-      await goto(`localhost:8080/groups/${groupBSlug}`);
-      await click('Follow');
+    describe('after clicking on the Follow button', () => {
+      beforeEach(async () => {
+        await goto(`localhost:8080/groups/${groupBSlug}`);
+        await click('Follow');
+      });
 
-      const result = await currentURL();
+      it('returns to the group page', async () => {
+        const result = await currentURL();
 
-      expect(result).toContain(`/groups/${groupBSlug}`);
+        expect(result).toContain(`/groups/${groupBSlug}`);
+      });
     });
   });
 });
