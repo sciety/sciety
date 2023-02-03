@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { ContentModel } from '../content-model';
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
 import { List } from '../../../types/list';
+import { ListsTab } from '../view-model';
 
 const toListCardViewModel = (list: List): ListCardViewModel => ({
   ...list,
@@ -15,14 +16,13 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   lastUpdated: O.some(list.lastUpdated),
 });
 
-export type ListsTabViewModel = {
-  lists: ReadonlyArray<ListCardViewModel>,
-};
-
-export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<never, ListsTabViewModel> => pipe(
+export const constructListsTab = (contentModel: ContentModel): TE.TaskEither<never, ListsTab> => pipe(
   contentModel.lists,
   RA.reverse,
   RA.map(toListCardViewModel),
-  (lists) => ({ lists }),
+  (lists) => ({
+    selector: 'lists' as const,
+    lists,
+  }),
   TE.right,
 );

@@ -32,10 +32,6 @@ const constructActiveTabModel = (
       return pipe(
         contentModel,
         constructListsTab,
-        TE.map((lists) => ({
-          selector: 'lists' as const,
-          ...lists,
-        })),
       );
     case 1:
       return pipe(
