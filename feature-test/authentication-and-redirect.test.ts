@@ -153,9 +153,7 @@ describe('authentication-and-redirect', () => {
 
   describe('when I am logged in', () => {
     beforeEach(async () => {
-      await goto('localhost:8080/');
-      await click('Log in');
-      await logInWithSpecifiedUserId(userId);
+      await createUserAccountAndLogIn(arbitraryUserId());
     });
 
     describe('after clicking the Log Out button', () => {
