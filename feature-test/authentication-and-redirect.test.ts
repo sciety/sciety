@@ -12,6 +12,7 @@ import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
+import { defaultSignUpAvatarUrl } from '../src/http/forms/create-user-account';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -103,7 +104,11 @@ describe('authentication-and-redirect', () => {
       expect(utilityBar).toContain(userHandle);
     });
 
-    it.todo('i can see my avatar in the nav bar');
+    it('i can see a default avatar in the utility bar', async () => {
+      const avatar = await $('.utility-bar-user-avatar').attribute('src');
+
+      expect(avatar).toStrictEqual(defaultSignUpAvatarUrl);
+    });
 
     it.todo('clicking the back button doesn\'t result in an error');
   });

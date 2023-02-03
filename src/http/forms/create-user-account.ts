@@ -11,6 +11,9 @@ import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
+// ts-unused-exports:disable-next-line
+export const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
+
 type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
@@ -33,7 +36,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       E.map((userId) => ({
         ...formUserDetails,
         userId,
-        avatarUrl: '/static/images/profile-dark.svg',
+        avatarUrl: defaultSignUpAvatarUrl,
       })),
     )),
     T.of,
