@@ -19,6 +19,11 @@ export const supportedServersDoiFromLinkConfiguration: DoiFromLinkData = {
     regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
     prefix: '10.1101',
   },
+  osf: {
+    startOfDoi: '10.31219/',
+    regexToCaptureEndOfDoi: /https:\/\/(.+)\//,
+    prefix: '10.31219',
+  },
 };
 
 export type ServerData = {
@@ -27,6 +32,6 @@ export type ServerData = {
   prefix: string,
 };
 
-export type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv';
+export type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv' | 'osf';
 
 export type DoiFromLinkData = Record<SupportedServerName, ServerData>;

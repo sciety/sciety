@@ -16,7 +16,7 @@ describe('supported-article-id-from-link', () => {
       ['research square link', 'https://www.researchsquare.com/article/rs-955726/v1', '10.21203/rs.3.rs-955726/v1'],
       ['research square DOI link', 'https://doi.org/10.21203/rs.3.rs-885194/v1', '10.21203/rs.3.rs-885194/v1'],
       ['SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/download/4639/8936/9328', '10.1590/SciELOPreprints.4639'],
-      // ['OSF link', 'https://osf.io/vrmpf/', '10.31219/osf.io/vrmpf'],
+      ['OSF link', 'https://osf.io/vrmpf/', '10.31219/osf.io/vrmpf'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
         const result = supportedArticleIdFromLink(input);
@@ -40,6 +40,7 @@ describe('supported-article-id-from-link', () => {
       // ['404 medrxiv link', 'https://medrxiv.org/10.1101/111111'],
       ['invalid research square link', 'https://www.researchsquare.com/article/955726'],
       ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
+      ['preprint aggregated by OSF, but not hosted by them', 'https://arxiv.org/abs/2005.05954v1'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
         const result = supportedArticleIdFromLink(input);
