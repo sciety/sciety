@@ -1,9 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Pool } from 'pg';
-import * as T from 'fp-ts/Task';
-import { DomainEvent } from '../domain-events';
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
+import { DomainEvent, isListCreatedEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
+import { EventId } from '../types/event-id';
+
+const backfillResourceColumnsForListCreatedEvent = (pool: Pool) => (eventId: EventId) => TE.tryCatch(
+  async () => pool.query(`
+      UPDATE events
+        SET resource_name = 'List'
+        WHERE id = $1
+    `,
+  [eventId]),
+  E.toError,
+);
 
 export const backfillResourceColumnsForLists = (
   pool: Pool, logger: Logger,
-) => (events: Array<DomainEvent>) => T.of(undefined);
+) => (events: Array<DomainEvent>): TE.TaskEither<Error, void> => pipe(
+  events,
+  RA.filter(isListCreatedEvent),
+  RA.map(({ id }) => id),
+  TE.traverseArray(backfillResourceColumnsForListCreatedEvent(pool)),
+  TE.map(() => undefined),
+);
