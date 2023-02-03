@@ -94,7 +94,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 ) => (
   events: ReadonlyArray<DomainEvent>,
 ) => pipe(
-  [],
+  hardcodedListCreationEvents(),
   TE.right,
   TE.map(RA.filter(isListCreatedEvent)),
   TE.map(RA.filter(needsToBeAdded(events))),
@@ -119,7 +119,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     TE.map((eventsFromDatabase) => pipe(
       [
         ...eventsFromDatabase,
-        ...hardcodedListCreationEvents(),
       ],
       sortEvents,
     )),
