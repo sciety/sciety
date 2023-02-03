@@ -125,7 +125,12 @@ describe('authentication-and-redirect', () => {
       expect(buttonText).toBe('Log Out');
     });
 
-    it.todo('i can navigate to my lists from the nav bar');
+    it('i can navigate to my lists from the nav bar', async () => {
+      await click('My lists');
+      const result = await currentURL();
+
+      expect(result).toContain('/users');
+    });
 
     it.todo('i can see my handle in the nav bar');
 
