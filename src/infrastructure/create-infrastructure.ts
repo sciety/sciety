@@ -118,7 +118,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     getEventsFromDatabase(pool, logger),
     TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
     TE.map(sortEvents),
-    TE.chainFirst(backfillResourceColumnsForLists(pool, logger)),
+    TE.chainFirst(backfillResourceColumnsForLists(pool)),
     TE.map((events) => (
       {
         events,
