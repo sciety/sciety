@@ -19,7 +19,7 @@ export const logOutTwitter: Middleware = async (context, next) => {
 
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const oAuthScope = 'openid email profile';
+const oAuthScope = 'openid profile';
 
 // https://auth0.com/docs/authenticate/login/auth0-universal-login/new-experience#signup
 // https://github.com/auth0/passport-auth0/pull/131
