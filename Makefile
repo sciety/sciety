@@ -167,7 +167,7 @@ taiko: export USE_STUB_ADAPTERS = true
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
+	npx jest ${TEST} --testTimeout=300000 --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
 download-exploratory-test-from-prod:
