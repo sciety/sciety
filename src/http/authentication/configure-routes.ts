@@ -9,7 +9,7 @@ import {
   logInTwitter,
   signUpAuth0,
   completeAuthenticationJourney,
-  stubLogInAuth0, stubSignUpAuth0,
+  stubLogInAuth0, stubSignUpAuth0, logOutTwitter,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
@@ -121,7 +121,7 @@ const configureTwitterRoutes = (router: Router, adapters: CollectedPorts) => {
     logInTwitter,
   );
 
-  router.get(logOutRoute, logOut);
+  router.get(logOutRoute, logOutTwitter);
 
   // TODO set commands as an object on the session rather than individual properties
   router.get(

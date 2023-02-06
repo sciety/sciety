@@ -10,6 +10,13 @@ export const logInTwitter: Middleware = koaPassport.authenticate('twitter', {
   failureRedirect: '/',
 });
 
+export const logOutTwitter: Middleware = async (context, next) => {
+  context.logout();
+  context.redirect('back');
+
+  await next();
+};
+
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
