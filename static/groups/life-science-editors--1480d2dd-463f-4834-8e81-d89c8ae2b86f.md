@@ -15,7 +15,7 @@ The Preprint Review Features [(PReF)](https://osf.io/8zj9w/) describes key eleme
     <dt>Review requested by</dt>
     <dd>Authors, Non-authors</dd>
     <dt>Reviewer selected by</dt>
-    <dd>Author, Self-nominated, Edito, service or community</dd>
+    <dd>Author, Self-nominated, Editor, service or community</dd>
     <dt>Public interaction</dt>
     <dd>Included</dd>
     <dt>Inclusion of author response</dt>
