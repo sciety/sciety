@@ -15,10 +15,21 @@ export const stubAdapters = {
   searchEuropePmc: () => (): TE.TaskEither<DE.DataError, SearchResults> => TE.right({
     items: [
       {
-        articleId: new Doi('10.1101/123456'),
+        articleId: new Doi('10.1101/2022.12.15.520598'),
         server: 'biorxiv' as const,
-        title: pipe('Lorem ipsum', toHtmlFragment, sanitise),
-        authors: O.some(['Fred Bloggs']),
+        title: pipe(
+          'Mapping current and future thermal limits to suitability for malaria transmission by the invasive mosquito <i>Anopheles stephens</i> i',
+          toHtmlFragment,
+          sanitise,
+        ),
+        authors: O.some([
+          'Sadie J. Ryan',
+          'Catherine A. Lippi',
+          'Oswaldo C. Villena',
+          'Aspen Singh',
+          'Courtney C. Murdock',
+          'Leah R. Johnson',
+        ]),
       },
       {
         articleId: new Doi('10.1101/123457'),
