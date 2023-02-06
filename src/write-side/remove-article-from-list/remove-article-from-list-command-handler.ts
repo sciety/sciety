@@ -2,13 +2,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { RemoveArticleFromListCommand } from '../commands';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
+import { ConcurrencySafeCommitEvents, GetAllEvents } from '../../shared-ports';
 import { replayListResource } from '../resources/replay-list-resource';
 import { CommandHandler } from '../../types/command-handler';
 
 type Ports = {
   getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
+  concurrencySafeCommitEvents: ConcurrencySafeCommitEvents,
 };
 
 type RemoveArticleFromListCommandHandler = (
@@ -28,5 +28,5 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
     TE.chainEitherK(replayListResource(command.listId)),
     TE.map(executeCommand(command)),
   )),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(ports.concurrencySafeCommitEvents),
 );

@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
-import { concurrencySafeCommitEvents } from './concurrency-safe-commit-events';
+import { concurrencySafeCommitEvents as createConcurrencySafeCommitEvents } from './concurrency-safe-commit-events';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { dispatcher } from './dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -165,6 +165,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         logger,
       });
 
+      const concurrencySafeCommitEvents = createConcurrencySafeCommitEvents(
+        events,
+        dispatchToAllReadModels,
+        pool,
+        logger,
+      );
+
       const commandHandlerAdapters = {
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
@@ -172,7 +179,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const concurrentCommandHandlerAdapters = {
         getAllEvents,
-        commitEvents: concurrencySafeCommitEvents(events, dispatchToAllReadModels, pool, logger),
+        concurrencySafeCommitEvents,
       };
 
       const collectedAdapters = {
@@ -201,6 +208,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const policiesAdapters = {
         ...queries,
         commitEvents: commitEventsWithoutListeners,
+        concurrencySafeCommitEvents,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
         getArticleSubjectArea: collectedAdapters.getArticleSubjectArea,
@@ -219,6 +227,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             T.traverseArray(executePolicies(policiesAdapters)),
           )),
         ),
+        concurrencySafeCommitEvents,
       };
 
       if (process.env.USE_STUB_ADAPTERS === 'true') {

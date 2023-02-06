@@ -1,5 +1,6 @@
 import { AddArticleToList } from './add-article-to-list';
 import { CommitEvents } from './commit-events';
+import { ConcurrencySafeCommitEvents } from './concurrency-safe-commit-events';
 import { CreateList } from './create-list';
 import { EditListDetails } from './edit-list-details';
 import { FetchArticle } from './fetch-article';
@@ -24,6 +25,7 @@ import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
+export { ConcurrencySafeCommitEvents } from './concurrency-safe-commit-events';
 export { EditListDetails } from './edit-list-details';
 export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
@@ -51,6 +53,7 @@ export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-lis
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
   commitEvents: CommitEvents,
+  concurrencySafeCommitEvents: ConcurrencySafeCommitEvents,
   createList: CreateList,
   editListDetails: EditListDetails,
   fetchArticle: FetchArticle,
