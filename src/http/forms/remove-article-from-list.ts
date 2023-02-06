@@ -6,9 +6,8 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
-import { removeArticleFromListCommandHandler } from '../../write-side/remove-article-from-list';
 import {
-  CommitEvents, GetAllEvents, GetList, Logger,
+  CommitEvents, GetAllEvents, GetList, Logger, RemoveArticleFromList,
 } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../../types/user-details';
@@ -18,6 +17,7 @@ type Ports = GetLoggedInScietyUserPorts & {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
   getList: GetList,
+  removeArticleFromList: RemoveArticleFromList,
 };
 
 type FormBody = {
@@ -64,7 +64,7 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
     }),
   )),
   TE.map(({ command }) => command),
-  TE.chainW(removeArticleFromListCommandHandler(adapters)),
+  TE.chainW(adapters.removeArticleFromList),
 );
 
 export const removeArticleFromList = (adapters: Ports): Middleware => async (context, next) => {
