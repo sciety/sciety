@@ -10,11 +10,10 @@ const auth0Config = {
   callbackURL: process.env.AUTH0_CALLBACK_URL ?? '',
 };
 
-export const auth0PassportStrategy = () => new Auth0Strategy(
-  auth0Config,
-  async (accessToken, refreshToken, extraParams, profile, done) => pipe(
-    profile.id,
-    userIdCodec.decode,
-    authenticateWithUserId(done),
-  ),
+const callback: Auth0Strategy.VerifyFunction = async (accessToken, refreshToken, extraParams, profile, done) => pipe(
+  profile.id,
+  userIdCodec.decode,
+  authenticateWithUserId(done),
 );
+
+export const auth0PassportStrategy = () => new Auth0Strategy(auth0Config, callback);
