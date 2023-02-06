@@ -13,7 +13,6 @@ import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
-import { defaultSignUpAvatarUrl } from '../src/http/forms/create-user-account';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
