@@ -1,4 +1,4 @@
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
@@ -19,6 +19,10 @@ export const logOutTwitter: Middleware = async (context, next) => {
 
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const removeLocalBrowserSession = (context: ParameterizedContext) => {
+  context.logout();
+};
+
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
@@ -30,7 +34,7 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
 });
 
 export const logOutAuth0: Middleware = async (context, next) => {
-  context.logout();
+  removeLocalBrowserSession(context);
   const domain = process.env.AUTH0_DOMAIN ?? '';
   const clientId = process.env.AUTH0_CLIENT_ID ?? '';
   const app = process.env.APP_ORIGIN ?? '';
@@ -49,7 +53,7 @@ export const stubLogInAuth0 = koaPassport.authenticate('local', {
 });
 
 export const stubLogOutAuth0: Middleware = async (context, next) => {
-  context.logout();
+  removeLocalBrowserSession(context);
   context.redirect('/');
 
   await next();
