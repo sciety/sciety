@@ -28,6 +28,7 @@ const targetPageAfterLogOut = '/';
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
+  screen_hint: 'signup',
 });
 
 export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
