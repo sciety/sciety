@@ -6,6 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
+import { concurrencySafeCommitEvents } from './concurrency-safe-commit-events';
 import { commitEvents, writeEventToDatabase } from './commit-events';
 import { dispatcher } from './dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -169,6 +170,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
+      const concurrentCommandHandlerAdapters = {
+        getAllEvents,
+        commitEvents: concurrencySafeCommitEvents(events, dispatchToAllReadModels, pool, logger),
+      };
+
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
@@ -185,10 +191,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
         }),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
-        editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
-        createList: createListCommandHandler(commandHandlerAdapters),
-        addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
-        removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),
+        editListDetails: editListDetailsCommandHandler(concurrentCommandHandlerAdapters),
+        createList: createListCommandHandler(concurrentCommandHandlerAdapters),
+        addArticleToList: addArticleToListCommandHandler(concurrentCommandHandlerAdapters),
+        removeArticleFromList: removeArticleFromListCommandHandler(concurrentCommandHandlerAdapters),
         ...partialAdapters,
       };
 
