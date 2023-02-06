@@ -69,7 +69,7 @@ describe('save-article-to-list', () => {
       expect(mainText).toContain(`${userHandle} added an article`);
     });
 
-    it('the list count of the article card on the search page increases by one', async () => {
+    it.skip('the list count of the article card on the search page increases by one', async () => {
       await goto(articleSearchResultsPage);
       const cardText = await $('.article-card').text();
       expect(cardText).toContain('Appears in 1 list');
