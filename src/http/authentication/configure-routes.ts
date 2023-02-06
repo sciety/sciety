@@ -9,12 +9,11 @@ import {
   logInTwitter,
   signUpAuth0,
   completeAuthenticationJourney,
-  stubLogInAuth0, stubSignUpAuth0, logOutTwitter,
+  stubLogInAuth0, stubSignUpAuth0, logOutTwitter, logOutAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { finishCommand } from '../finish-command';
 import { createUserAccount } from '../forms/create-user-account';
-import { logOut } from '../log-out';
 import { onlyIfNotLoggedIn } from '../only-if-not-logged-in';
 import { pageHandler } from '../page-handler';
 import { redirectAfterSuccess } from '../require-logged-in-user';
@@ -73,7 +72,7 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
     completeAuthenticationJourney(adapters),
   );
 
-  router.get(logOutRoute, logOut);
+  router.get(logOutRoute, logOutAuth0);
 
   if (shouldUseStubAdapters) {
     router.get(
