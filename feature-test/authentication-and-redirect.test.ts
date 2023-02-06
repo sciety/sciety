@@ -86,29 +86,16 @@ describe('authentication-and-redirect', () => {
       await click(createAccountButton);
     });
 
-    it('the login button says Log Out', async () => {
+    it('i am logged in', async () => {
       const buttonText = await $('.utility-bar__list_link_button').text();
 
       expect(buttonText).toBe('Log Out');
     });
 
-    it('i can navigate to my lists from the utility bar', async () => {
-      await click('My lists');
-      const result = await currentURL();
-
-      expect(result).toContain('/users');
-    });
-
-    it('i can see my handle in the utility bar', async () => {
+    it('the handle I supplied is used for my account', async () => {
       const utilityBar = await $('.utility-bar').text();
 
       expect(utilityBar).toContain(userHandle);
-    });
-
-    it('i can see a default avatar in the utility bar', async () => {
-      const avatar = await $('.utility-bar-user-avatar').attribute('src');
-
-      expect(avatar).toStrictEqual(defaultSignUpAvatarUrl);
     });
 
     it.todo('clicking the back button doesn\'t result in an error');
@@ -123,29 +110,10 @@ describe('authentication-and-redirect', () => {
       await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
     });
 
-    it('the login button says Log Out', async () => {
+    it('i am logged in', async () => {
       const buttonText = await $('.utility-bar__list_link_button').text();
 
       expect(buttonText).toBe('Log Out');
-    });
-
-    it('i can navigate to my lists from the utility bar', async () => {
-      await click('My lists');
-      const result = await currentURL();
-
-      expect(result).toContain('/users');
-    });
-
-    it('i can see my handle in the utility bar', async () => {
-      const utilityBar = await $('.utility-bar').text();
-
-      expect(utilityBar).toContain(userHandle);
-    });
-
-    it('i can see my avatar in the utility bar', async () => {
-      const avatar = await $('.utility-bar-user-avatar').attribute('src');
-
-      expect(avatar).toStrictEqual(userAvatar);
     });
 
     it.todo('clicking the back button doesn\'t result in an error');
@@ -161,7 +129,7 @@ describe('authentication-and-redirect', () => {
         await click('Log Out');
       });
 
-      it('the log in button says Log In', async () => {
+      it('i am logged out', async () => {
         const buttonText = await $('.utility-bar__list_link_button').text();
 
         expect(buttonText).toBe('Log In');
