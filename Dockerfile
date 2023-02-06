@@ -1,4 +1,4 @@
-FROM node:14.18.2-alpine3.12 AS node
+FROM node:16.19.0-alpine3.16 AS node
 ENV NODE_OPTIONS --unhandled-rejections=strict --enable-source-maps
 WORKDIR /app
 
