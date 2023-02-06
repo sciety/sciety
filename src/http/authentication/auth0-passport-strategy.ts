@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import Auth0Strategy from 'passport-auth0';
 import { userIdCodec } from '../../types/user-id';
-import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
+import { authenticateWithUserId } from '../authentication-and-logging-in-of-sciety-users';
 
 const auth0Config = {
   domain: process.env.AUTH0_DOMAIN ?? '',
@@ -15,6 +15,6 @@ export const auth0PassportStrategy = () => new Auth0Strategy(
   async (accessToken, refreshToken, extraParams, profile, done) => pipe(
     profile.id,
     userIdCodec.decode,
-    writeUserIdToState(done),
+    authenticateWithUserId(done),
   ),
 );

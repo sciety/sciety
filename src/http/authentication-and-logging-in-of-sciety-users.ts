@@ -15,14 +15,14 @@ const passportUserCodec = t.type({
   }),
 });
 
-export const writeUserIdToState = (
+export const authenticateWithUserId = (
   done: (error: unknown, user?: Record<string, unknown>) => void,
-) => (outcome: E.Either<unknown, UserId>) => {
+) => (userId: E.Either<unknown, UserId>) => {
   pipe(
-    outcome,
+    userId,
     E.match(
       (error) => done(error),
-      (userId) => done(undefined, { id: userId }),
+      (id) => done(undefined, { id }),
     ),
   );
 };

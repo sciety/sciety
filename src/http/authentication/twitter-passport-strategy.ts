@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { Ports } from '../../write-side/create-user-account';
-import { writeUserIdToState } from '../authentication-and-logging-in-of-sciety-users';
+import { authenticateWithUserId } from '../authentication-and-logging-in-of-sciety-users';
 import { setUpUserIfNecessary } from '../../write-side/create-user-account/set-up-user-if-necessary';
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
 
@@ -38,7 +38,7 @@ export const twitterPassportStrategy = (ports: Ports) => new TwitterStrategy(
       .then(() => pipe(
         command,
         E.map((c) => c.userId),
-        writeUserIdToState(cb),
+        authenticateWithUserId(cb),
       ));
   },
 );
