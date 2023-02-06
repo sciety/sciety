@@ -7,7 +7,7 @@ import { DomainEvent, domainEventCodec } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { Logger } from '../shared-ports';
 
-export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
+const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
   event,
   domainEventCodec.encode,
   ({
