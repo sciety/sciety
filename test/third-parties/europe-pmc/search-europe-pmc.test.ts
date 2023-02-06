@@ -2,10 +2,11 @@ import { URL, URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { Json } from 'io-ts-types';
-import { searchEuropePmc, SearchResults } from '../../../src/third-parties/europe-pmc';
+import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
+import { SearchResults } from '../../../src/shared-ports/search-for-articles';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {

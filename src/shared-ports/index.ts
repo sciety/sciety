@@ -1,3 +1,4 @@
+import { SearchForArticles } from './search-for-articles';
 import { AddArticleToList } from './add-article-to-list';
 import { CommitEvents } from './commit-events';
 import { CreateList } from './create-list';
@@ -47,6 +48,7 @@ export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 // ts-unused-exports:disable-next-line
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
+export { SearchForArticles } from './search-for-articles';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -72,4 +74,5 @@ export type SharedPorts = {
   removeArticleFromList: RemoveArticleFromList,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
+  searchForArticles: SearchForArticles,
 };

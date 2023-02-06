@@ -11,28 +11,14 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from '../../infrastructure/logger';
-import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { SearchForArticles } from '../../shared-ports';
 
 type GetJson = (uri: string) => Promise<Json>;
-
-type SearchResult = {
-  articleId: Doi,
-  server: ArticleServer,
-  title: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-};
-
-export type SearchResults = {
-  items: ReadonlyArray<SearchResult>,
-  total: number,
-  nextCursor: O.Option<string>,
-};
 
 type Dependencies = {
   getJson: GetJson,
@@ -154,14 +140,7 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
   )),
 );
 
-type SearchEuropePmc = (dependencies: Dependencies)
-=> (pageSize: number)
-=> (
-  query: string,
-  cursor: O.Option<string>,
-  evaluatedOnly: boolean
-)
-=> TE.TaskEither<DE.DataError, SearchResults>;
+type SearchEuropePmc = (dependencies: Dependencies) => SearchForArticles;
 
 export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (
   query,

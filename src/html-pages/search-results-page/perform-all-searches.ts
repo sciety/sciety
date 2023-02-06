@@ -6,17 +6,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ArticleResults } from './data-types';
+import { SearchForArticles } from '../../shared-ports';
 import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
 import * as DE from '../../types/data-error';
 
-type FindArticles = (
-  pageSize: number,
-) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, ArticleResults>;
-
 export type Ports = FindGroupsPorts & {
-  searchForArticles: FindArticles,
+  searchForArticles: SearchForArticles,
 };
 
 export const paramsCodec = t.type({

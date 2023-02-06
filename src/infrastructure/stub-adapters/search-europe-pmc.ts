@@ -1,13 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
-import { SearchResults } from '../../third-parties/europe-pmc';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { SearchForArticles } from '../../shared-ports';
 
-export const searchEuropePmc = () => (): TE.TaskEither<DE.DataError, SearchResults> => TE.right({
+export const searchEuropePmc: SearchForArticles = () => () => TE.right({
   items: [
     {
       articleId: new Doi('10.1101/2022.12.15.520598'),
