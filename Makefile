@@ -128,8 +128,8 @@ clean-db: stop
 stop:
 	$(DOCKER_COMPOSE) down
 
-ingest-events: export TARGET = dev
-ingest-events: build
+ingest-evaluations: export TARGET = dev
+ingest-evaluations: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
 	-e INGEST_DEBUG=${INGEST_DEBUG} \
 	-e INGEST_ONLY=${INGEST_ONLY} \
@@ -137,7 +137,7 @@ ingest-events: build
 	app \
 	npx ts-node src/ingest/update-event-data
 
-update-event-data: ingest-events backstop-test
+update-event-data: ingest-evaluations backstop-test
 
 dev-sql: export TARGET = dev
 dev-sql:
