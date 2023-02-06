@@ -17,6 +17,29 @@ We are building on existing initiatives and tools (using Kotahi and Sciety) whil
 
 Open, transparent peer review and feedback along with overall and multidimensional quantitative evaluations and predictions. We pay reviewers for their time, and encourage in-depth assessment, with incentives/prizes for the strongest work.  Reviewers can typically choose whether or not they want to disclose their identity (‘sign their review). See the our Guidelines for Evaluators.
 
+## PReF
+
+The Preprint Review Features [(PReF)](https://osf.io/8zj9w/) describes key elements of each group’s evaluation activities.
+
+<dl class="group-page-pref">
+    <dt>Review requested by</dt>
+    <dd>Authors, Non-authors</dd>
+    <dt>Reviewer selected by</dt>
+    <dd>Editor, service or community</dd>
+    <dt>Public interaction</dt>
+    <dd>Not included</dd>
+    <dt>Inclusion of author response</dt>
+    <dd>Included</dd>
+    <dt>Decision</dt>
+    <dd>Other scale or rating</dd>
+    <dt>Review coverage</dt>
+    <dd>Complete paper</dd>
+    <dt>Reviewer identity known to</dt>
+    <dd>Editor or Service, Public or Service</dd>
+    <dt>Competing interests</dt>
+    <dd>Not included</dd>
+</dl>
+
 ## Our team
 
 - David Reinstein
