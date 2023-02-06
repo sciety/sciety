@@ -5,5 +5,5 @@ import { searchEuropePmc } from './search-europe-pmc';
 export const stubAdapters = {
   fetchArticle: localFetchArticleAdapter,
   fetchStaticFile,
-  searchEuropePmc,
+  searchForArticles: searchEuropePmc,
 };
