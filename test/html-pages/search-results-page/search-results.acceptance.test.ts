@@ -22,7 +22,7 @@ const dummyAdapters: Ports = {
   fetchStaticFile: () => TE.right(''),
   getAllGroups: () => [],
   getGroup: () => O.some(arbitraryGroup()),
-  searchEuropePmc: () => () => TE.right({
+  searchForArticles: () => () => TE.right({
     items: [],
     total: 0,
     nextCursor: O.none,
@@ -118,7 +118,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                   arbitraryEuropePmcItem(),
@@ -146,7 +146,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                 ],
@@ -174,7 +174,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                 ],
@@ -201,7 +201,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                   arbitraryEuropePmcItem(),
@@ -231,7 +231,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                   arbitraryEuropePmcItem(),
@@ -260,7 +260,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => () => TE.right({
+              searchForArticles: () => () => TE.right({
                 items: [arbitraryEuropePmcItem()],
                 total: arbitraryNumber(5, 10),
                 nextCursor: O.some(arbitraryWord()),
@@ -288,7 +288,7 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              searchEuropePmc: () => searchEuropePmcMock.mockImplementation(() => TE.right({
+              searchForArticles: () => searchEuropePmcMock.mockImplementation(() => TE.right({
                 items: [
                   arbitraryEuropePmcItem(),
                 ],
@@ -396,7 +396,7 @@ describe('search-results-page acceptance', () => {
               },
               searchResultsPage({
                 ...dummyAdapters,
-                searchEuropePmc: () => () => TE.right({
+                searchForArticles: () => () => TE.right({
                   items: [arbitraryEuropePmcItem()],
                   total: 1,
                   nextCursor: O.none,
@@ -423,7 +423,7 @@ describe('search-results-page acceptance', () => {
               },
               searchResultsPage({
                 ...dummyAdapters,
-                searchEuropePmc: () => () => TE.left(DE.unavailable),
+                searchForArticles: () => () => TE.left(DE.unavailable),
               })(pageSize),
             )();
 
@@ -620,7 +620,7 @@ describe('search-results-page acceptance', () => {
     });
 
     describe('when onlyEvaluated is provided', () => {
-      const searchEuropePmcMock = jest.fn(() => TE.left(DE.unavailable));
+      const searchForArticlesMock = jest.fn(() => TE.left(DE.unavailable));
       const page = pipe(
         {
           query,
@@ -631,14 +631,14 @@ describe('search-results-page acceptance', () => {
         },
         searchResultsPage({
           ...dummyAdapters,
-          searchEuropePmc: () => searchEuropePmcMock,
+          searchForArticles: () => searchForArticlesMock,
         })(pageSize),
       );
 
       it('passes it to the EuropePMC port', async () => {
         await contentOf(page)();
 
-        expect(searchEuropePmcMock).toHaveBeenCalledWith(query, O.none, true);
+        expect(searchForArticlesMock).toHaveBeenCalledWith(query, O.none, true);
       });
     });
   });

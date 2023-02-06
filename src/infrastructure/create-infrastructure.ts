@@ -171,7 +171,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchStaticFile(loggerIO(logger)),
-        searchEuropePmc: searchEuropePmc({ getJson, logger }),
+        searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
           getJson: getCachedAxiosRequest(logger),

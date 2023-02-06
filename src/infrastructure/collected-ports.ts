@@ -11,7 +11,7 @@ export type CollectedPorts = SharedPorts & {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
-  searchEuropePmc: (
+  searchForArticles: (
     pageSize: number,
   ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>,
 };

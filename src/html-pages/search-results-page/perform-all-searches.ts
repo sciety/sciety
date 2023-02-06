@@ -16,7 +16,7 @@ type FindArticles = (
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, ArticleResults>;
 
 export type Ports = FindGroupsPorts & {
-  searchEuropePmc: FindArticles,
+  searchForArticles: FindArticles,
 };
 
 export const paramsCodec = t.type({
@@ -59,7 +59,7 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
           O.isSome,
         ),
       ],
-      tupled(ports.searchEuropePmc(pageSize)),
+      tupled(ports.searchForArticles(pageSize)),
     ),
     groups: pipe(
       findGroups(ports, params.query),
