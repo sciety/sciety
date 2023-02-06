@@ -23,6 +23,8 @@ const removeLocalBrowserSession = (context: ParameterizedContext) => {
   context.logout();
 };
 
+const targetPageAfterLogOut = '/';
+
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
   scope: 'openid email profile',
@@ -38,7 +40,7 @@ export const logOutAuth0: Middleware = async (context, next) => {
   const domain = process.env.AUTH0_DOMAIN ?? '';
   const clientId = process.env.AUTH0_CLIENT_ID ?? '';
   const app = process.env.APP_ORIGIN ?? '';
-  const auth0logout = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${app}/`;
+  const auth0logout = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${app}${targetPageAfterLogOut}`;
   context.redirect(auth0logout);
 
   await next();
@@ -54,7 +56,7 @@ export const stubLogInAuth0 = koaPassport.authenticate('local', {
 
 export const stubLogOutAuth0: Middleware = async (context, next) => {
   removeLocalBrowserSession(context);
-  context.redirect('/');
+  context.redirect(targetPageAfterLogOut);
 
   await next();
 };
