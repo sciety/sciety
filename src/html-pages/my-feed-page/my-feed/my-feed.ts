@@ -20,7 +20,7 @@ import {
 import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
-import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings-stateless';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';

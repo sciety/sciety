@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetUserViaHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
-import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings-stateless';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';

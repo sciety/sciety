@@ -8,7 +8,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as LOID from '../../../types/list-owner-id';
 import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
-import { isFollowing } from '../../../shared-read-models/followings';
+import { isFollowing } from '../../../shared-read-models/followings-stateless';
 import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';

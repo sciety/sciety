@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../domain-events';
-import { getGroupIdsFollowedBy, getUsersFollowing } from '../../../shared-read-models/followings';
+import { getGroupIdsFollowedBy, getUsersFollowing } from '../../../shared-read-models/followings-stateless';
 import { GroupId } from '../../../types/group-id';
 import { Follower } from '../content-model';
 

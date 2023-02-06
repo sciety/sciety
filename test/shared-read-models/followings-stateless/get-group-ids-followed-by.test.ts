@@ -1,5 +1,5 @@
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
-import { getGroupIdsFollowedBy } from '../../../src/shared-read-models/followings';
+import { getGroupIdsFollowedBy } from '../../../src/shared-read-models/followings-stateless';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
