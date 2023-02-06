@@ -19,6 +19,8 @@ export const logOutTwitter: Middleware = async (context, next) => {
 
 // auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+const oAuthScope = 'openid email profile';
+
 const removeLocalBrowserSession = (context: ParameterizedContext) => {
   context.logout();
 };
@@ -27,13 +29,13 @@ const targetPageAfterLogOut = '/';
 
 export const signUpAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
-  scope: 'openid email profile',
+  scope: oAuthScope,
   screen_hint: 'signup',
 });
 
 export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   failureRedirect: '/',
-  scope: 'openid email profile',
+  scope: oAuthScope,
 });
 
 export const logOutAuth0: Middleware = async (context, next) => {
