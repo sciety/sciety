@@ -48,6 +48,17 @@ export const stubLogInAuth0 = koaPassport.authenticate('local', {
   failureRedirect: '/local/log-in-form',
 });
 
+export const stubLogOutAuth0: Middleware = async (context, next) => {
+  context.logout();
+  const domain = process.env.AUTH0_DOMAIN ?? '';
+  const clientId = process.env.AUTH0_CLIENT_ID ?? '';
+  const app = process.env.APP_ORIGIN ?? '';
+  const auth0logout = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${app}/`;
+  context.redirect(auth0logout);
+
+  await next();
+};
+
 export const completeAuthenticationJourney = (
   adapters: GetLoggedInScietyUserPorts,
 ): Middleware => async (context, next) => {
