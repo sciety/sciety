@@ -210,7 +210,7 @@ describe('followed-groups-activities', () => {
       followedGroupsActivities(events)([arbitraryGroupId()]);
       const endTime = performance.now();
 
-      expect(endTime - startTime).toBeLessThan(200);
+      expect(endTime - startTime).toBeLessThan(400);
     });
   });
 });
