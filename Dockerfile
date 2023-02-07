@@ -54,6 +54,15 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
+#
+# Stage: Fast build without type checking
+#
+FROM dev AS build-fast
+ENV NODE_ENV=production
+
+COPY .swcrc ./
+RUN npx swc src -d build/src
+RUN npm run build:css
 
 
 #
@@ -88,8 +97,8 @@ FROM node AS fast
 ENV NODE_ENV=production
 
 COPY --from=npm-prod /app/ .
-COPY --from=build-prod /app/build/src/ build/
-COPY --from=build-prod /app/static/ static/
+COPY --from=build-fast /app/build/src/ build/
+COPY --from=build-fast /app/static/ static/
 COPY data/ data/
 
 HEALTHCHECK --interval=5s --timeout=1s \
