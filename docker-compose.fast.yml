@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      target: fast
+    environment:
+      EXPERIMENT_ENABLED: "false"
+    image: ${IMAGE}:${IMAGE_TAG}
+    volumes:
+      - './.gcp-ncrc-key.json:/var/run/secrets/app/.gcp-ncrc-key.json'

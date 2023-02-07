@@ -78,7 +78,7 @@ test-coverage: build
 jest-test:
 	npx jest ${TEST}
 
-backstop-test: export TARGET = prod
+backstop-test: export TARGET = fast
 backstop-test: export FEATURE_FLAG_AUTH0 = true
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export DISABLE_COOKIEBOT = true
