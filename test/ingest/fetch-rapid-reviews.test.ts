@@ -82,31 +82,6 @@ describe('fetch-rapid-reviews', () => {
     });
   });
 
-  describe('when there is a Crossref review for a article that is not on bioRxiv nor medRxiv', () => {
-    it('returns 0 evaluations and 1 skipped item', async () => {
-      const articleDoi = '10.26434/chemrxiv.12770225.v1';
-      const date = arbitraryDate();
-      const reviewUrl = arbitraryUri();
-      const items = [
-        {
-          URL: reviewUrl,
-          created: { 'date-time': date.toString() },
-          relation: { 'is-review-of': [{ id: articleDoi }] },
-        },
-      ];
-
-      expect(await ingest(items)()).toStrictEqual(E.right({
-        evaluations: [],
-        skippedItems: [
-          {
-            item: articleDoi,
-            reason: 'Not a biorxiv article',
-          },
-        ],
-      }));
-    });
-  });
-
   describe('when there is an Crossref review with no author field', () => {
     const items = [
       {

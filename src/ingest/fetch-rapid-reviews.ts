@@ -29,10 +29,6 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
       O.getOrElseW(() => []),
     ),
   })),
-  E.filterOrElse(
-    (review) => review.articleDoi.startsWith('10.1101/'),
-    (review) => ({ item: review.articleDoi, reason: 'Not a biorxiv article' }),
-  ),
 );
 
 export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
