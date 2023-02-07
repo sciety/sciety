@@ -30,8 +30,6 @@ const preReviewResponse = t.type({
 
 type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
-const biorxivPrefix = '10.1101';
-
 type Review = {
   date: Date,
   handle: string | Doi,
@@ -49,10 +47,6 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
   E.filterOrElse(
     (p): p is Review & { handle: Doi } => isDoi(p.handle),
     () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
-  ),
-  E.filterOrElse(
-    (p) => p.handle.hasPrefix(biorxivPrefix),
-    () => ({ item: preprint.handle.toString(), reason: 'not a biorxiv DOI' }),
   ),
   E.filterOrElse(
     (p): p is Review & { handle: Doi, reviewDoi: O.Some<Doi> } => O.isSome(p.reviewDoi),
