@@ -5,10 +5,10 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const supplementaryItems = [
   supplementaryCard(
-    'How do groups join sciety?',
+    'Share your insights',
     toHtmlFragment(`
-      <p>Built for researchers to learn about the latest results, Sciety adds to its growing network by showcasing open preprint evaluations from groups of experts.</p>
-      <a href="https://blog.sciety.org/covid-groups/">Read more about how groups are selected for Sciety</a>.
+      <p>Join the growing number of journals, societies and preprint review clubs that are making Sciety their home.</p>
+      <a href="https://xag0lodamyw.typeform.com/groups-signup">Create a group</a>
     `),
   ),
 ];
