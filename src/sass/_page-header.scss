@@ -8,6 +8,14 @@
   @include layout.page-header-top-space();
   @include layout.page-content-horizontal-margins();
   margin-bottom: #{baseline.increments(6)};
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .page-header__identity {
