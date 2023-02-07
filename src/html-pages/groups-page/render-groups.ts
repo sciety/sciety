@@ -5,13 +5,6 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const supplementaryItems = [
   supplementaryCard(
-    'What is a group?',
-    toHtmlFragment(`
-      <p>A Sciety group is a team of scientists who evaluate, curate and screen research articles.</p>
-      <a href="https://blog.sciety.org/sciety-groups/">Read more about Sciety groups</a>.
-    `),
-  ),
-  supplementaryCard(
     'How do groups join sciety?',
     toHtmlFragment(`
       <p>Built for researchers to learn about the latest results, Sciety adds to its growing network by showcasing open preprint evaluations from groups of experts.</p>
