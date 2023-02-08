@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
+import * as t from 'io-ts';
 import { checkUserOwnsList } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../write-side/remove-article-from-list';
@@ -20,10 +21,12 @@ type Ports = GetLoggedInScietyUserPorts & {
   getList: GetList,
 };
 
-type FormBody = {
-  articleid: unknown,
-  listid: unknown,
-};
+const formBodyCodec = t.type({
+  articleid: t.unknown,
+  listid: t.unknown,
+});
+
+type FormBody = t.TypeOf<typeof formBodyCodec>;
 
 const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => pipe(
   {
@@ -71,10 +74,12 @@ export const removeArticleFromListHandler = (adapters: Ports): Middleware => asy
   const user = getLoggedInScietyUser(adapters, context);
   await pipe(
     context.request.body,
-    handleFormSubmission(adapters, user),
-    TE.mapLeft(() => {
-      context.redirect('/action-failed');
-    }),
+    formBodyCodec.decode,
+    TE.fromEither,
+    TE.bimap(
+      () => { context.redirect('/action-failed'); },
+      handleFormSubmission(adapters, user),
+    ),
     TE.chainTaskK(() => async () => {
       await next();
     }),
