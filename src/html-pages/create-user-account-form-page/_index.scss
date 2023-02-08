@@ -1,4 +1,5 @@
 @use '../../sass/breakpoints';
+@use '../../sass/button';
 @use '../../sass/card';
 @use '../../sass/functions';
 @use '../../sass/settings';
@@ -26,4 +27,8 @@
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
+}
+
+.create-user-account-form__submit {
+  @include button.button(); 
 }
