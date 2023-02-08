@@ -1,9 +1,13 @@
+@use '../../sass/breakpoints';
 @use '../../sass/card';
 @use '../../sass/functions';
 @use '../../sass/settings';
 
 .create-user-account-form {
   @include card.basics();
+  @include breakpoints.not-narrow {
+    max-width: 19rem;
+  }
 }
 
 .create-user-account-form__label {
