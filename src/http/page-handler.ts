@@ -5,8 +5,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { renderErrorPage } from './render-error-page';
 import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -14,7 +14,8 @@ import { User } from '../types/user';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 
 type ErrorToWebPage = (
-  user: O.Option<User>
+  user: O.Option<User>,
+  pageLayout: PageLayout,
 ) => (
   error: RenderPageError
 ) => {
@@ -22,13 +23,15 @@ type ErrorToWebPage = (
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
-const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
+type PageLayout = (user: O.Option<User>) => (page: Page) => string;
+
+const toErrorResponse: ErrorToWebPage = (user, pageLayout) => (error) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',
     content,
   }),
-  standardPageLayout(user),
+  pageLayout(user),
   (body) => ({
     body,
     status: pipe(
@@ -41,14 +44,18 @@ const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   }),
 );
 
-const pageToSuccessResponse = (user: O.Option<User>, applyStandardPageLayout: boolean) => (page: Page) => ({
-  body: (applyStandardPageLayout) ? standardPageLayout(user)(page) : page.content,
+const pageToSuccessResponse = (
+  user: O.Option<User>,
+  applyPageLayout: boolean,
+  pageLayout: PageLayout,
+) => (page: Page) => ({
+  body: (applyPageLayout) ? pageLayout(user)(page) : page.content,
   status: StatusCodes.OK,
 });
 
-const toWebPage = (user: O.Option<User>, applyStandardPageLayout: boolean) => E.fold(
-  toErrorResponse(user),
-  pageToSuccessResponse(user, applyStandardPageLayout),
+const toWebPage = (user: O.Option<User>, applyPageLayout: boolean, pageLayout: PageLayout) => E.fold(
+  toErrorResponse(user, pageLayout),
+  pageToSuccessResponse(user, applyPageLayout, pageLayout),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
@@ -56,7 +63,8 @@ type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
   handler: HandlePage,
-  applyStandardPageLayout = true,
+  applyPageLayout = true,
+  pageLayout: PageLayout = standardPageLayout,
 ): Middleware => (
   async (context, next) => {
     const response = await pipe(
@@ -79,7 +87,7 @@ export const pageHandler = (
         ),
       ),
       handler,
-      T.map(toWebPage(getLoggedInScietyUser(adapters, context), applyStandardPageLayout)),
+      T.map(toWebPage(getLoggedInScietyUser(adapters, context), applyPageLayout, pageLayout)),
     )();
 
     context.response.status = response.status;
