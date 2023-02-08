@@ -25,6 +25,7 @@ import { CollectedPorts } from '../../infrastructure';
 import { finishRespondCommand } from '../../write-side/respond/finish-respond-command';
 import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
 import { signUpPage } from '../../html-pages/sign-up-page';
+import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
@@ -40,7 +41,7 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
 const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUseStubAdapters: boolean) => {
   router.get(
     '/create-account-form',
-    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right)),
+    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right), true, createUserAccountFormPageLayout),
   );
 
   router.post(
