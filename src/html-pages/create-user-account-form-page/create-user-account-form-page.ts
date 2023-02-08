@@ -6,10 +6,10 @@ export const createUserAccountFormPage: Page = {
   content: toHtmlFragment(`
     <h1>Create user account</h1>
     <form action="/forms/create-user-account" method="post" class="create-user-account-form">
-      <label for="displayName">Display name</label>
-      <input type="text" id="displayName" name="displayName">
-      <label for="handle">Handle</label>
-      <input type="text" id="handle" name="handle">
+      <label for="displayName" class="create-user-account-form__label">Display name</label>
+      <input type="text" id="displayName" name="displayName" class="create-user-account-form__input">
+      <label for="handle" class="create-user-account-form__label">Handle</label>
+      <input type="text" id="handle" name="handle" class="create-user-account-form__input">
       <button id='createAccountButton'>Create account</button>
       <button type="reset">Clear form</button>
     </form>

@@ -1,5 +1,21 @@
 @use '../../sass/card';
+@use '../../sass/functions';
+@use '../../sass/settings';
 
 .create-user-account-form {
   @include card.basics();
+}
+
+.create-user-account-form__label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+}
+
+.create-user-account-form__input {
+  display: block;
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
 }
