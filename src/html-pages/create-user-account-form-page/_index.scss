@@ -1,0 +1,5 @@
+@use '../../sass/card';
+
+.create-user-account-form {
+  @include card.basics();
+}

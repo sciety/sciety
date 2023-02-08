@@ -5,7 +5,7 @@ export const createUserAccountFormPage: Page = {
   title: 'Create user account',
   content: toHtmlFragment(`
     <h1>Create user account</h1>
-    <form action="/forms/create-user-account" method="post">
+    <form action="/forms/create-user-account" method="post" class="create-user-account-form">
       <label for="displayName">Display name</label>
       <input type="text" id="displayName" name="displayName">
       <label for="handle">Handle</label>
