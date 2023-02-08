@@ -3,11 +3,15 @@
 @use '../../sass/functions';
 @use '../../sass/settings';
 
-.create-user-account-form {
-  @include card.basics();
+.create-user-account-form-wrapper {
   @include breakpoints.not-narrow {
+    margin: 0 auto;
     max-width: 19rem;
   }
+}
+
+.create-user-account-form {
+  @include card.basics();
 }
 
 .create-user-account-form__label {

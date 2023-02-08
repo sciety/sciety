@@ -4,6 +4,7 @@ import { Page } from '../../types/page';
 export const createUserAccountFormPage: Page = {
   title: 'Create user account',
   content: toHtmlFragment(`
+    <div class="create-user-account-form-wrapper">
     <h1>Create user account</h1>
     <form action="/forms/create-user-account" method="post" class="create-user-account-form">
       <label for="displayName" class="create-user-account-form__label">Display name</label>
@@ -13,5 +14,6 @@ export const createUserAccountFormPage: Page = {
       <button id='createAccountButton'>Create account</button>
       <button type="reset">Clear form</button>
     </form>
+    </div>
   `),
 };
