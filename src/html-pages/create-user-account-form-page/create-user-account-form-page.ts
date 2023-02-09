@@ -5,15 +5,17 @@ export const createUserAccountFormPage: Page = {
   title: 'Create user account',
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
-    <h1>Create user account</h1>
-    <form action="/forms/create-user-account" method="post" class="create-user-account-form">
-      <label for="displayName" class="create-user-account-form__label">Display name</label>
-      <input type="text" id="displayName" name="displayName" class="create-user-account-form__input">
-      <label for="handle" class="create-user-account-form__label">Handle</label>
-      <input type="text" id="handle" name="handle" class="create-user-account-form__input">
-      <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
-      <button type="reset" class="create-user-account-form__reset">Clear form</button>
-    </form>
+      <header class="page-header">
+        <h1>Create user account</h1>
+      </header>
+      <form action="/forms/create-user-account" method="post" class="create-user-account-form">
+        <label for="displayName" class="create-user-account-form__label">Display name</label>
+        <input type="text" id="displayName" name="displayName" class="create-user-account-form__input">
+        <label for="handle" class="create-user-account-form__label">Handle</label>
+        <input type="text" id="handle" name="handle" class="create-user-account-form__input">
+        <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
+        <button type="reset" class="create-user-account-form__reset">Clear form</button>
+      </form>
     </div>
   `),
 };
