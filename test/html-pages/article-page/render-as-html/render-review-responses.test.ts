@@ -4,28 +4,28 @@ import { arbitraryReviewId } from '../../../types/review-id.helper';
 
 describe('render-review-responses', () => {
   it('displays the response counts by type', () => {
-    const rendered = renderReviewResponses({
-      evaluationLocator: arbitraryReviewId(),
-      counts: {
+    const rendered = renderReviewResponses(
+      arbitraryReviewId(),
+      {
         helpfulCount: 35,
         notHelpfulCount: 17,
       },
-      current: O.none,
-    });
+      O.none,
+    );
 
     expect(rendered).toStrictEqual(expect.stringContaining('35'));
     expect(rendered).toStrictEqual(expect.stringContaining('17'));
   });
 
   describe('when there is no current user response', () => {
-    const rendered = renderReviewResponses({
-      evaluationLocator: arbitraryReviewId(),
-      counts: {
+    const rendered = renderReviewResponses(
+      arbitraryReviewId(),
+      {
         helpfulCount: 35,
         notHelpfulCount: 17,
       },
-      current: O.none,
-    });
+      O.none,
+    );
 
     it('displays an off `helpful` button', () => {
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
@@ -37,14 +37,14 @@ describe('render-review-responses', () => {
   });
 
   describe('when the user response is `helpful`', () => {
-    const rendered = renderReviewResponses({
-      evaluationLocator: arbitraryReviewId(),
-      counts: {
+    const rendered = renderReviewResponses(
+      arbitraryReviewId(),
+      {
         helpfulCount: 1,
         notHelpfulCount: 0,
       },
-      current: O.some('helpful'),
-    });
+      O.some('helpful'),
+    );
 
     it('displays an on `helpful` button', () => {
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-solid'));
@@ -56,14 +56,14 @@ describe('render-review-responses', () => {
   });
 
   describe('when the user response is `not helpful`', () => {
-    const rendered = renderReviewResponses({
-      evaluationLocator: arbitraryReviewId(),
-      counts: {
+    const rendered = renderReviewResponses(
+      arbitraryReviewId(),
+      {
         helpfulCount: 1,
         notHelpfulCount: 0,
       },
-      current: O.some('not-helpful'),
-    });
+      O.some('not-helpful'),
+    );
 
     it('displays an on `not helpful` button', () => {
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-down-solid'));

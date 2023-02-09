@@ -3,12 +3,13 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/review-id';
 
-// TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
-type RenderReviewResponses = (params: { evaluationLocator: RI.ReviewId, counts: { helpfulCount: number, notHelpfulCount: number }, current: O.Option<'helpful' | 'not-helpful'> }) => HtmlFragment;
+type Counts = { helpfulCount: number, notHelpfulCount: number };
 
-export const renderReviewResponses: RenderReviewResponses = ({
-  evaluationLocator, counts: { helpfulCount, notHelpfulCount }, current,
-}) => {
+export const renderReviewResponses = (
+  evaluationLocator: RI.ReviewId,
+  counts: Counts,
+  current: O.Option<'helpful' | 'not-helpful'>,
+): HtmlFragment => {
   const saidHelpful = pipe(current, O.filter((value) => value === 'helpful'), O.isSome);
   const saidNotHelpful = pipe(current, O.filter((value) => value === 'not-helpful'), O.isSome);
 
@@ -29,13 +30,13 @@ export const renderReviewResponses: RenderReviewResponses = ({
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(evaluationLocator)}">
-            ${helpfulButton(helpfulCount)}
+            ${helpfulButton(counts.helpfulCount)}
           </form>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(evaluationLocator)}">
-            ${notHelpfulButton(notHelpfulCount)}
+            ${notHelpfulButton(counts.notHelpfulCount)}
           </form>
         </div>
       </div>
