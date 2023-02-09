@@ -8,13 +8,7 @@ import { utilityBar } from '../../shared-components/utility-bar';
 import { User } from '../../types/user';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, { title: 'Menu' })}
-<body>
-  ${googleTagManagerNoScript()}
-
-<div class="menu-page-container">
+export const menuPage = (user: O.Option<User>, referer: O.Option<string>): string => `
 
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
 
@@ -24,7 +18,16 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
       ${siteMenuItems(user)}
     </nav>
   </main>
+`;
+export const menuPageLayout = (user: O.Option<User>) => (page: string): string => `<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  ${head(user, { title: 'Menu' })}
+<body>
+  ${googleTagManagerNoScript()}
 
+<div class="menu-page-container">
+
+  ${page}
   <header class="menu-page-header">
     <a href="/search" class="site-header__search_link">
       <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>

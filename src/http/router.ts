@@ -51,7 +51,7 @@ import { page as listPage, paramsCodec as listPageParams } from '../html-pages/l
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../html-pages/legal-page';
-import { menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
+import { menuPage, menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
@@ -137,8 +137,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.type = 'html';
       context.response.body = menuPageLayout(
         getLoggedInScietyUser(adapters, context),
+      )(menuPage(
+        getLoggedInScietyUser(adapters, context),
         O.fromNullable(context.request.header.referer),
-      );
+      ));
       context.set('Vary', 'Referer');
 
       await next();
