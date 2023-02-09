@@ -3,9 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
 import * as RI from '../types/review-id';
-import { Evaluation } from '../types/evaluation';
-
-export type FetchReview = (id: RI.ReviewId) => TE.TaskEither<DE.DataError, Evaluation>;
+import { FetchReview } from '../shared-ports';
 
 export type EvaluationFetcher = (key: string) => ReturnType<FetchReview>;
 
