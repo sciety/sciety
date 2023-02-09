@@ -51,7 +51,7 @@ export type Ports = {
   getGroup: GetGroup,
 };
 
-const reviewToFeedItem = (
+export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
