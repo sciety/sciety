@@ -15,7 +15,7 @@ import { DomainEvent } from '../../../domain-events';
 import { GetGroup } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
 
-type Ports = {
+export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,

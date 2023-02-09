@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../domain-events';
-import { GetGroup } from '../../../shared-ports';
 import { ArticleServer } from '../../../types/article-server';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { ReviewId } from '../../../types/review-id';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { ReviewEvent, reviewToFeedItem } from './review-to-feed-item';
+import { ReviewEvent, Ports, reviewToFeedItem } from './review-to-feed-item';
+
+export { Ports } from './review-to-feed-item';
 
 type ArticleVersionEvent = {
   type: 'article-version',
@@ -32,12 +32,6 @@ const articleVersionToFeedItem = (
 ) => (
   T.of({ ...feedEvent, server })
 );
-
-export type Ports = {
-  fetchReview: FetchReview,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  getGroup: GetGroup,
-};
 
 type GetFeedEventsContent = (adapters: Ports, server: ArticleServer, userId: O.Option<UserId>)
 => (feedEvents: ReadonlyArray<FeedEvent>)
