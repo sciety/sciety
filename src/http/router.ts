@@ -107,28 +107,11 @@ const articlePageParams = t.type({
 export const createRouter = (adapters: CollectedPorts): Router => {
   const router = new Router();
 
-  const toSuccessResponse = (body: string) => ({
-    body,
-    status: StatusCodes.OK,
-  });
-
   // PAGES
 
   router.get(
     '/',
-    async (context, next) => {
-      const response = pipe(
-        adapters,
-        homePage,
-        homePageLayout(getLoggedInScietyUser(adapters, context)),
-        toSuccessResponse,
-      );
-
-      context.response.status = response.status;
-      context.response.type = 'html';
-      context.response.body = response.body;
-      await next();
-    },
+    pageHandler(adapters, () => TE.right(homePage(adapters)), true, homePageLayout),
   );
 
   router.get(
