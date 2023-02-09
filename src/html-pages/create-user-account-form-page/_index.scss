@@ -32,7 +32,7 @@
 
 .create-user-account-form__input {
   display: block;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: 1.5rem;
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
@@ -40,6 +40,7 @@
 
 .create-user-account-form__submit {
   @include button.button(); 
+  margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
 .create-user-account-form__reset {
