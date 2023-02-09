@@ -138,8 +138,9 @@ export const createRouter = (adapters: CollectedPorts): Router => {
       context.response.body = menuPageLayout(
         getLoggedInScietyUser(adapters, context),
       )(menuPage(
-        getLoggedInScietyUser(adapters, context),
         O.fromNullable(context.request.header.referer),
+      )(
+        getLoggedInScietyUser(adapters, context),
       ));
       context.set('Vary', 'Referer');
 
