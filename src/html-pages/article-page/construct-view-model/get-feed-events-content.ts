@@ -1,11 +1,8 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../../types/article-server';
-import { HtmlFragment } from '../../../types/html-fragment';
-import { ReviewId } from '../../../types/review-id';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { ReviewEvent, Ports, reviewToFeedItem } from './review-to-feed-item';
@@ -20,11 +17,6 @@ type ArticleVersionEvent = {
 };
 
 export type FeedEvent = ReviewEvent | ArticleVersionEvent;
-
-export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
-  fullText: HtmlFragment,
-  url: URL,
-}>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,

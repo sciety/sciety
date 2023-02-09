@@ -9,7 +9,6 @@ import {
   getArticleFeedEventsByDateDescending,
   Ports as GetArticleFeedEventsPorts,
 } from './get-article-feed-events';
-import { FetchReview } from './get-feed-events-content';
 import { DomainEvent } from '../../../domain-events';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
@@ -36,7 +35,6 @@ export type Ports = ConstructUserListUrlPorts
 & GetArticleFeedEventsPorts
 & {
   fetchArticle: GetArticleDetails,
-  fetchReview: FetchReview,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
