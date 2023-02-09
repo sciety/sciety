@@ -64,7 +64,7 @@
   }
 }
 
-@mixin button-secondary() {
+@mixin button-inverted() {
   @include button();
 
   background-color: settings.$colour-white;

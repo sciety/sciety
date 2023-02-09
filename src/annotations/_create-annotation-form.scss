@@ -21,6 +21,6 @@
 }
 
 .annotation-form-reset {
-  @include button.button-secondary();
+  @include button.button-inverted();
   margin-left: auto;
 }
