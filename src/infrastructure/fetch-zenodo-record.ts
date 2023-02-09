@@ -6,9 +6,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Evaluation } from './evaluation';
 import * as DE from '../types/data-error';
 import { htmlFragmentCodec } from '../types/html-fragment';
+import { Evaluation } from '../types/evaluation';
 
 type GetJson = (uri: string) => Promise<Json>;
 

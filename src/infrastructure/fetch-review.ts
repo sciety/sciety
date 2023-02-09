@@ -1,9 +1,9 @@
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Evaluation } from './evaluation';
 import * as DE from '../types/data-error';
 import * as RI from '../types/review-id';
+import { Evaluation } from '../types/evaluation';
 
 export type FetchReview = (id: RI.ReviewId) => TE.TaskEither<DE.DataError, Evaluation>;
 

@@ -8,11 +8,11 @@ import * as PR from 'io-ts/PathReporter';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
-import { Evaluation } from './evaluation';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
+import { Evaluation } from '../types/evaluation';
 
 type GetJson = (uri: string) => Promise<Json>;
 

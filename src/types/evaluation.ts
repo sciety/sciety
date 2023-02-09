@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { HtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from './html-fragment';
 
 export type Evaluation = {
   fullText: HtmlFragment,

@@ -2,7 +2,6 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
-import { Evaluation } from '../../src/infrastructure/evaluation';
 import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
 import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
@@ -18,7 +17,7 @@ describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
     describe('and the DOI suffix has an unexpected format', () => {
       let getJson: (uri: string) => Promise<Json>;
-      let evaluation: E.Either<unknown, Evaluation>;
+      let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
         getJson = jest.fn();
@@ -55,13 +54,10 @@ describe('fetch-zenodo-record', () => {
           description,
         },
       });
-      let evaluation: E.Either<unknown, Evaluation>;
 
-      beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
-      });
+      it('returns the metadata description as full text', async () => {
+        const evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
 
-      it('returns the metadata description as full text', () => {
         expect(
           pipe(
             evaluation,
@@ -70,7 +66,9 @@ describe('fetch-zenodo-record', () => {
         ).toStrictEqual(E.right(description));
       });
 
-      it('returns the Doi.org url as url', () => {
+      it('returns the Doi.org url as url', async () => {
+        const evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+
         expect(
           pipe(
             evaluation,
@@ -82,7 +80,7 @@ describe('fetch-zenodo-record', () => {
 
     describe('when the request fails', () => {
       const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
-      let evaluation: E.Either<unknown, Evaluation>;
+      let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
         evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
@@ -100,7 +98,7 @@ describe('fetch-zenodo-record', () => {
           wrongProperty,
         },
       });
-      let evaluation: E.Either<unknown, Evaluation>;
+      let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
         evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
@@ -113,7 +111,7 @@ describe('fetch-zenodo-record', () => {
   });
 
   describe('when the DOI is not from Zenodo', () => {
-    let evaluation: E.Either<unknown, Evaluation>;
+    let evaluation: E.Either<unknown, unknown>;
     let getJson: (uri: string) => Promise<Json>;
 
     beforeEach(async () => {
