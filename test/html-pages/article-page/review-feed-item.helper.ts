@@ -16,11 +16,10 @@ export const arbitrary = (): ReviewFeedItem => ({
   groupName: 'group 1',
   groupAvatar: '/avatar',
   fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
-  counts: {
-    helpfulCount: 0,
-    notHelpfulCount: 0,
-  },
-  current: O.none,
+  responses: O.some({
+    counts: { helpfulCount: 0, notHelpfulCount: 0 },
+    current: O.none,
+  }),
 });
 
 export const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({

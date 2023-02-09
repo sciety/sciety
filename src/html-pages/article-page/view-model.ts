@@ -9,6 +9,11 @@ import { ListId } from '../../types/list-id';
 import * as RI from '../../types/review-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
+type Responses = {
+  counts: { helpfulCount: number, notHelpfulCount: number },
+  current: O.Option<'helpful' | 'not-helpful'>,
+};
+
 export type ReviewFeedItem = {
   type: 'review',
   id: RI.ReviewId,
@@ -18,8 +23,7 @@ export type ReviewFeedItem = {
   groupHref: string,
   groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
-  counts: { helpfulCount: number, notHelpfulCount: number },
-  current: O.Option<'helpful' | 'not-helpful'>,
+  responses: O.Option<Responses>,
 };
 
 export type ArticleVersionFeedItem = {

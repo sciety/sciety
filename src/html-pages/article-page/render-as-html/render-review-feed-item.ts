@@ -105,7 +105,11 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
 );
 
 export const renderReviewFeedItem = (feedItem: ReviewFeedItem, teaserChars: number): HtmlFragment => pipe(
-  renderReviewResponses(feedItem.id, feedItem.counts, feedItem.current),
+  feedItem.responses,
+  O.match(
+    () => toHtmlFragment(''),
+    (responses) => renderReviewResponses(feedItem.id, responses.counts, responses.current),
+  ),
   render(teaserChars, feedItem),
   toHtmlFragment,
 );

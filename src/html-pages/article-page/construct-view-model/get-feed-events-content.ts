@@ -104,8 +104,10 @@ const reviewToFeedItem = (
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
-    counts: reviewResponses,
-    current: userReviewResponse,
+    responses: O.some({
+      counts: reviewResponses,
+      current: userReviewResponse,
+    }),
   })),
 );
 
