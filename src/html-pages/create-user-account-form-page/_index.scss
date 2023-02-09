@@ -3,6 +3,15 @@
 @use '../../sass/card';
 @use '../../sass/functions';
 @use '../../sass/settings';
+@use '../../sass/layout';
+
+.create-user-account-form-page__container {
+  @include layout.page-container();
+}
+
+.create-user-account-form-page__main {
+  flex-grow: 1;
+}
 
 .create-user-account-form-wrapper {
   @include breakpoints.not-narrow {

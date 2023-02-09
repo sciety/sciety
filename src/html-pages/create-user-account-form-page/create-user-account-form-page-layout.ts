@@ -11,10 +11,10 @@ export const createUserAccountFormPageLayout = (user: O.Option<User>) => (page: 
   ${head(O.none, page)}
 <body>
   ${googleTagManagerNoScript()}
-  <div>
+  <div class="create-user-account-form-page__container">
     ${siteHeader(user)}
 
-    <main id="mainContent">
+    <main id="mainContent" class="create-user-account-form-page__main">
       ${page.content}
     </main>
 
