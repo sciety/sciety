@@ -73,7 +73,7 @@ describe('review-to-feed-item', () => {
   });
 
   describe('when there is no logged in user', () => {
-    it.failing('responses are not present in the view model', async () => {
+    it('responses are not present in the view model', async () => {
       const ports = {
         getAllEvents: T.of([]),
         fetchReview: () => TE.right({

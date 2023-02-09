@@ -51,6 +51,7 @@ export type Ports = {
   getGroup: GetGroup,
 };
 
+// ts-unused-exports:disable-next-line
 export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
@@ -104,10 +105,13 @@ export const reviewToFeedItem = (
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
-    responses: O.some({
-      counts: reviewResponses,
-      current: userReviewResponse,
-    }),
+    responses: pipe(
+      userId,
+      O.map(() => ({
+        counts: reviewResponses,
+        current: userReviewResponse,
+      })),
+    ),
   })),
 );
 
