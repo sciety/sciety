@@ -3,15 +3,17 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { articlePage } from '../../../../src/html-pages/article-page';
+import * as DE from '../../../../src/types/data-error';
+import { articlePage, Ports } from '../../../../src/html-pages/article-page';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {
-    const irrelevantAdapters = {
-      fetchReview: () => TE.left(undefined),
+    const defaultAdapters: Ports = {
+      fetchArticle: () => TE.left(DE.unavailable),
+      fetchReview: () => TE.left(DE.unavailable),
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),
       isArticleOnTheListOwnedBy: () => () => O.none,
@@ -33,8 +35,8 @@ describe('correct-language-semantics', () => {
         ['pt', 'Título arbitrário em português'],
       ])('is correctly inferred as %s', async (code, title) => {
         const adapters = {
+          ...defaultAdapters,
           fetchArticle: createGetArticleDetails(title),
-          ...irrelevantAdapters,
         };
         const renderPage = articlePage(adapters);
         const rendered = await renderPage({
@@ -63,8 +65,8 @@ describe('correct-language-semantics', () => {
         ['pt', 'Este texto representa o resumo deste artigo em português.'],
       ])('is correctly inferred as %s', async (code, articleAbstract) => {
         const adapters = {
+          ...defaultAdapters,
           fetchArticle: createGetArticleDetails(articleAbstract),
-          ...irrelevantAdapters,
         };
         const renderPage = articlePage(adapters);
         const rendered = await renderPage({

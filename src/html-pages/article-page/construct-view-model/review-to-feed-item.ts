@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
-import { URL } from 'url';
 import { UserId } from '../../../types/user-id';
 import * as RI from '../../../types/review-id';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -12,19 +11,13 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { ReviewId } from '../../../types/review-id';
 import { DomainEvent } from '../../../domain-events';
-import { GetGroup } from '../../../shared-ports';
-import { HtmlFragment } from '../../../types/html-fragment';
+import { FetchReview, GetGroup } from '../../../shared-ports';
 
 export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,
 };
-
-type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
-  fullText: HtmlFragment,
-  url: URL,
-}>;
 
 export type ReviewEvent = {
   type: 'review',

@@ -31,7 +31,6 @@ export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
-// ts-unused-exports:disable-next-line
 export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { GetGroup } from './get-group';
