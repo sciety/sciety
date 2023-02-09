@@ -135,13 +135,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     async (context, next) => {
       context.response.status = StatusCodes.OK;
       context.response.type = 'html';
-      context.response.body = menuPageLayout(
-        getLoggedInScietyUser(adapters, context),
-      )(menuPage(
-        O.fromNullable(context.request.header.referer),
-      )(
-        getLoggedInScietyUser(adapters, context),
-      ));
+      context.response.body = pipe(
+        context.request.header.referer,
+        O.fromNullable,
+        menuPage(getLoggedInScietyUser(adapters, context)),
+        menuPageLayout(getLoggedInScietyUser(adapters, context)),
+      );
       context.set('Vary', 'Referer');
 
       await next();

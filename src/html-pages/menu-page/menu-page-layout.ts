@@ -10,7 +10,7 @@ import { Page } from '../../types/page';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPage = (referer: O.Option<string>) => (user: O.Option<User>) => ({
+export const menuPage = (user: O.Option<User>) => (referer: O.Option<string>) => ({
   title: 'Menu',
   content: toHtmlFragment(`
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
