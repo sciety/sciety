@@ -6,10 +6,13 @@ import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
 import { utilityBar } from '../../shared-components/utility-bar';
 import { User } from '../../types/user';
+import { Page } from '../../types/page';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPage = (user: O.Option<User>, referer: O.Option<string>): string => `
-
+export const menuPage = (user: O.Option<User>, referer: O.Option<string>) => ({
+  title: 'Menu',
+  content: toHtmlFragment(`
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
 
   <main class="menu-page-main-content">
@@ -18,16 +21,18 @@ export const menuPage = (user: O.Option<User>, referer: O.Option<string>): strin
       ${siteMenuItems(user)}
     </nav>
   </main>
-`;
-export const menuPageLayout = (user: O.Option<User>) => (page: string): string => `<!doctype html>
+`),
+});
+
+export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, { title: 'Menu' })}
+  ${head(user, page)}
 <body>
   ${googleTagManagerNoScript()}
 
 <div class="menu-page-container">
 
-  ${page}
+  ${page.content}
   <header class="menu-page-header">
     <a href="/search" class="site-header__search_link">
       <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>
