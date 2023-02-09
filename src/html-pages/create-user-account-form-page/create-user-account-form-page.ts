@@ -12,7 +12,7 @@ export const createUserAccountFormPage: Page = {
       <label for="handle" class="create-user-account-form__label">Handle</label>
       <input type="text" id="handle" name="handle" class="create-user-account-form__input">
       <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
-      <button type="reset">Clear form</button>
+      <button type="reset" class="create-user-account-form__reset">Clear form</button>
     </form>
     </div>
   `),
