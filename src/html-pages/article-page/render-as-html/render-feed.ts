@@ -14,7 +14,7 @@ const renderFeedItem = (feedItem: FeedItem) => {
     case 'article-version-error':
       return renderVersionErrorFeedItem(feedItem.server);
     default:
-      return renderReviewFeedItem(850)(feedItem);
+      return renderReviewFeedItem(feedItem, 850);
   }
 };
 

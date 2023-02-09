@@ -19,8 +19,7 @@ describe('render-review-feed-item', () => {
         RFI.withFullText(fullText),
       );
       const rendered: DocumentFragment = pipe(
-        item,
-        renderReviewFeedItem(teaserLength),
+        renderReviewFeedItem(item, teaserLength),
         JSDOM.fragment,
       );
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -55,8 +54,7 @@ describe('render-review-feed-item', () => {
         RFI.withSource(source),
       );
       const rendered: DocumentFragment = pipe(
-        item,
-        renderReviewFeedItem(200),
+        renderReviewFeedItem(item, 200),
         JSDOM.fragment,
       );
       const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
@@ -94,8 +92,7 @@ describe('render-review-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          item,
-          renderReviewFeedItem(6),
+          renderReviewFeedItem(item, 6),
           JSDOM.fragment,
         );
       });
@@ -123,8 +120,7 @@ describe('render-review-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          item,
-          renderReviewFeedItem(arbitraryNumber(6, 10)),
+          renderReviewFeedItem(item, arbitraryNumber(6, 10)),
           JSDOM.fragment,
         );
       });

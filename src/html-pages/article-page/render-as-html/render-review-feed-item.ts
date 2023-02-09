@@ -10,8 +10,6 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/review-id';
 import { ReviewFeedItem } from '../view-model';
 
-type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
-
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
 `);
@@ -106,9 +104,7 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
   ),
 );
 
-export const renderReviewFeedItem = (
-  teaserChars: number,
-): RenderReviewFeedItem => flow(
-  (review) => render(teaserChars, review, renderReviewResponses({ ...review, evaluationLocator: review.id })),
+export const renderReviewFeedItem = (feedItem: ReviewFeedItem, teaserChars: number): HtmlFragment => pipe(
+  render(teaserChars, feedItem, renderReviewResponses({ ...feedItem, evaluationLocator: feedItem.id })),
   toHtmlFragment,
 );
