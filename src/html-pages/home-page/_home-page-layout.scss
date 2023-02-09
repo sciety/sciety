@@ -3,3 +3,7 @@
 .home-page-container {
   @include layout.page-container();
 }
+
+.home-page-main {
+  flex-grow: 1;
+}

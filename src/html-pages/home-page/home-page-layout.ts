@@ -14,7 +14,7 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
   <div class="home-page-container">
     ${siteHeader(user)}
 
-    <main id="mainContent">
+    <main id="mainContent" class="home-page-main">
       ${page.content}
     </main>
 
