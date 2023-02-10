@@ -6,7 +6,7 @@ metadata:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingestion
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/30 * * * *"
   concurrencyPolicy: "Forbid"
   startingDeadlineSeconds: 720
   jobTemplate:
