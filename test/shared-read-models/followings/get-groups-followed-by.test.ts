@@ -20,7 +20,7 @@ describe('get-group-ids-followed-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns all groups in unspecified order', () => {
+    it('returns all groups in unspecified order', () => {
       expect(getGroupsFollowedBy(readmodel)(userId)).toStrictEqual([groupId1, groupId2]);
     });
   });
@@ -51,7 +51,7 @@ describe('get-group-ids-followed-by', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('lists that group', () => {
+    it('lists that group', () => {
       expect(getGroupsFollowedBy(readmodel)(userId)).toStrictEqual([groupId]);
     });
   });
