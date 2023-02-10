@@ -40,11 +40,11 @@
   @include typography.details();
 }
 
-.edit-list-details-form__cancel {
-  @include button.button-link-secondary();
+.edit-list-details-form__save {
+  @include button.button();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
-.edit-list-details-form__save {
-  @include button.button();
+.edit-list-details-form__cancel {
+  @include button.button-link-secondary();
 }
