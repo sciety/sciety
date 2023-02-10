@@ -13,7 +13,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleSearchResult } from '../../third-parties/europe-pmc/helpers';
+import { arbitraryArticleSearchResult } from './helpers';
 import { arbitraryGroup } from '../../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
