@@ -7,6 +7,7 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import axiosRetry, { exponentialDelay } from 'axios-retry';
 import { batchTaskTraverse } from './batch-traverse';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
@@ -68,6 +69,16 @@ type EvaluationCommand = {
   publishedAt: Date,
   authors: ReadonlyArray<string>,
 };
+
+axiosRetry(axios, {
+  retries: 3,
+  retryCondition: () => true,
+  retryDelay: exponentialDelay,
+  onRetry: (retryCount: number, error) => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    process.stderr.write(`Retrying retryCount: ${retryCount}, error: ${error}\n`);
+  },
+});
 
 const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
   async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation`, JSON.stringify(evaluationCommand), {
