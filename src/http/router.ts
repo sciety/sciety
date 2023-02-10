@@ -74,6 +74,7 @@ import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
+import { contentOnlyLayout } from '../shared-components/content-only-layout';
 
 const toNotFound = () => ({
   type: DE.notFound,
@@ -247,7 +248,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
         evaluationContentParams,
         evaluationContent(adapters),
       ),
-      () => (page: Page) => page.content,
+      contentOnlyLayout,
     ),
   );
 
