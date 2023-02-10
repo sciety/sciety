@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 } from 'uuid';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -36,10 +37,13 @@ export type GroupIngestionConfiguration = {
 
 type LevelName = 'error' | 'warn' | 'info' | 'debug';
 
+const correlationId = v4();
+
 const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
   const thingToLog = {
     timestamp: new Date(),
     level,
+    correlationId,
     message,
     payload,
   };
