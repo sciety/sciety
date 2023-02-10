@@ -33,7 +33,7 @@
 
 .create-user-account-form__input {
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
