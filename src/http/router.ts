@@ -111,7 +111,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/',
-    pageHandler(adapters, () => TE.right(homePage(adapters)), true, homePageLayout),
+    pageHandler(adapters, () => TE.right(homePage(adapters)), homePageLayout),
   );
 
   router.get(
@@ -247,7 +247,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
         evaluationContentParams,
         evaluationContent(adapters),
       ),
-      true,
       () => (page: Page) => page.content,
     ),
   );

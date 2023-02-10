@@ -46,16 +46,15 @@ const toErrorResponse: ErrorToWebPage = (user, pageLayout) => (error) => pipe(
 
 const pageToSuccessResponse = (
   user: O.Option<User>,
-  applyPageLayout: boolean,
   pageLayout: PageLayout,
 ) => (page: Page) => ({
-  body: (applyPageLayout) ? pageLayout(user)(page) : page.content,
+  body: pageLayout(user)(page),
   status: StatusCodes.OK,
 });
 
-const toWebPage = (user: O.Option<User>, applyPageLayout: boolean, pageLayout: PageLayout) => E.fold(
+const toWebPage = (user: O.Option<User>, pageLayout: PageLayout) => E.fold(
   toErrorResponse(user, pageLayout),
-  pageToSuccessResponse(user, applyPageLayout, pageLayout),
+  pageToSuccessResponse(user, pageLayout),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
@@ -63,7 +62,6 @@ type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
   handler: HandlePage,
-  applyPageLayout = true,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => (
   async (context, next) => {
@@ -87,7 +85,7 @@ export const pageHandler = (
         ),
       ),
       handler,
-      T.map(toWebPage(getLoggedInScietyUser(adapters, context), applyPageLayout, pageLayout)),
+      T.map(toWebPage(getLoggedInScietyUser(adapters, context), pageLayout)),
     )();
 
     context.response.status = response.status;

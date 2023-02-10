@@ -41,7 +41,7 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
 const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUseStubAdapters: boolean) => {
   router.get(
     '/create-account-form',
-    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right), true, createUserAccountFormPageLayout),
+    pageHandler(adapters, () => pipe(createUserAccountFormPage, TE.right), createUserAccountFormPageLayout),
   );
 
   router.post(
