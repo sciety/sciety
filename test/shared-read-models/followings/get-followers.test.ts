@@ -5,6 +5,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/follo
 import { getFollowers } from '../../../src/shared-read-models/followings/get-followers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import * as UID from '../../../src/types/user-id';
 
 describe('get-users-following', () => {
   const groupId = arbitraryGroupId();
@@ -29,7 +30,7 @@ describe('get-users-following', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns a list containing them as a follower', () => {
+    it('returns a list containing them as a follower', () => {
       expect(getFollowers(readmodel)(groupId)).toStrictEqual([userId]);
     });
   });
@@ -59,14 +60,14 @@ describe('get-users-following', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns a list containing them as a follower', () => {
+    it('returns a list containing them as a follower', () => {
       expect(getFollowers(readmodel)(groupId)).toStrictEqual([userId]);
     });
   });
 
   describe('when multiple users have followed the group', () => {
-    const userId1 = arbitraryUserId();
-    const userId2 = arbitraryUserId();
+    const userId1 = arbitraryUserId(UID.twitterPrefix);
+    const userId2 = arbitraryUserId(UID.auth0Prefix);
     const readmodel = pipe(
       [
         userFollowedEditorialCommunity(userId1, groupId),
@@ -75,8 +76,8 @@ describe('get-users-following', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns a list containing them as followers', () => {
-      expect(getFollowers(readmodel)(groupId)).toStrictEqual([userId1, userId2]);
+    it('returns the followers sorted alphabetically', () => {
+      expect(getFollowers(readmodel)(groupId)).toStrictEqual([userId2, userId1]);
     });
   });
 });

@@ -8,8 +8,8 @@ const prefixes = ['auth0|', 'twitter|', ''];
 
 const generatePrefix = () => prefixes[arbitraryNumber(0, prefixes.length - 1)];
 
-export const arbitraryUserId = (): UserId => pipe(
-  `${generatePrefix()}${arbitraryWord()}`,
+export const arbitraryUserId = (prefix = generatePrefix()): UserId => pipe(
+  `${prefix}${arbitraryWord()}`,
   userIdCodec.decode,
   E.getOrElseW(shouldNotBeCalled),
 );
