@@ -43,7 +43,7 @@ describe('is-following', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns true', () => {
+    it('returns true', () => {
       expect(isFollowing(readmodel)(groupId)(userId)).toBe(true);
     });
   });
