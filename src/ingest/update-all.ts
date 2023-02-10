@@ -148,5 +148,6 @@ export const updateAll = (
   groups: ReadonlyArray<GroupIngestionConfiguration>,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   groups,
-  TE.traverseArray(updateGroup),
+  T.traverseSeqArray(updateGroup),
+  T.map(E.sequenceArray),
 );
