@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
+import * as followings from '../shared-read-models/followings';
 import * as groups from '../shared-read-models/groups';
 import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
 import * as lists from '../shared-read-models/lists';
@@ -11,6 +12,7 @@ type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
   & lists.Queries
+  & followings.Queries
   & groups.Queries
   & idsOfEvaluatedArticlesLists.Queries
   & users.Queries,
@@ -21,6 +23,7 @@ export const dispatcher = (): Dispatcher => {
   const readModels = {
     addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
     listsReadModel: lists.initialState(),
+    followingsReadModel: followings.initialState(),
     groupsReadModel: groups.initialState(),
     idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
     usersReadModel: users.initialState(),
@@ -52,6 +55,7 @@ export const dispatcher = (): Dispatcher => {
   const queries = {
     ...lists.queries(readModels.listsReadModel),
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
+    ...followings.queries(readModels.followingsReadModel),
     ...groups.queries(readModels.groupsReadModel),
     ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
     ...users.queries(readModels.usersReadModel),

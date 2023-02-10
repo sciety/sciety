@@ -11,6 +11,7 @@ import { GetAllGroups } from './get-all-groups';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
+import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
 import { GetList } from './get-list';
@@ -51,6 +52,7 @@ export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluat
 // ts-unused-exports:disable-next-line
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
+export { GetFollowers } from './get-followers';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -64,6 +66,7 @@ export type SharedPorts = {
   getAllGroups: GetAllGroups,
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
+  getFollowers: GetFollowers,
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
   getList: GetList,
