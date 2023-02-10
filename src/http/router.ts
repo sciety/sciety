@@ -241,10 +241,15 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   router.get(
     '/evaluations/:reviewid/content',
-    pageHandler(adapters, createPageFromParams(
-      evaluationContentParams,
-      evaluationContent(adapters),
-    ), false),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        evaluationContentParams,
+        evaluationContent(adapters),
+      ),
+      true,
+      () => (page: Page) => page.content,
+    ),
   );
 
   router.get(
