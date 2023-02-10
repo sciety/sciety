@@ -6,7 +6,7 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
-export const arbitraryEuropePmcItem = (): ArticleItem => ({
+export const arbitraryArticleSearchResult = (): ArticleItem => ({
   articleId: arbitraryDoi(),
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),

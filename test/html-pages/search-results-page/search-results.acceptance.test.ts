@@ -13,7 +13,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryEuropePmcItem } from '../../third-parties/europe-pmc/helpers';
+import { arbitraryArticleSearchResult } from '../../third-parties/europe-pmc/helpers';
 import { arbitraryGroup } from '../../types/group.helper';
 
 const pageSize = arbitraryNumber(5, 10);
@@ -120,8 +120,8 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -148,7 +148,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
@@ -176,7 +176,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: arbitraryNumber(2, 50),
                 nextCursor: O.some(arbitraryWord()),
@@ -203,9 +203,9 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
-                  arbitraryEuropePmcItem(),
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
+                  arbitraryArticleSearchResult(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: 4,
                 nextCursor: O.some(arbitraryWord()),
@@ -233,9 +233,9 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
-                  arbitraryEuropePmcItem(),
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
+                  arbitraryArticleSearchResult(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -261,7 +261,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               searchForArticles: () => () => TE.right({
-                items: [arbitraryEuropePmcItem()],
+                items: [arbitraryArticleSearchResult()],
                 total: arbitraryNumber(5, 10),
                 nextCursor: O.some(arbitraryWord()),
               }),
@@ -290,7 +290,7 @@ describe('search-results-page acceptance', () => {
               ...dummyAdapters,
               searchForArticles: () => searchEuropePmcMock.mockImplementation(() => TE.right({
                 items: [
-                  arbitraryEuropePmcItem(),
+                  arbitraryArticleSearchResult(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
@@ -397,7 +397,7 @@ describe('search-results-page acceptance', () => {
               searchResultsPage({
                 ...dummyAdapters,
                 searchForArticles: () => () => TE.right({
-                  items: [arbitraryEuropePmcItem()],
+                  items: [arbitraryArticleSearchResult()],
                   total: 1,
                   nextCursor: O.none,
                 }),
