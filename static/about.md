@@ -2,6 +2,10 @@
 
 Sciety opens the world of preprint curation to the community by aggregating evaluated preprints into one place so you can easily find, save, and share what you're interested in.
 
+We're building Sciety with researchers across the globe and we'd love for you to be part of it.
+
+[Schedule a call with the Sciety team](https://calendly.com/sciety/20)
+
 ### Discover evaluated preprints from trusted experts
 
 Sciety helps you navigate the enormous quantity of scientific preprints so you can easily find what interests you most. We aggregate peer-reviewed, assessed, evaluated preprints from trusted sources in one place, making them easy to organise and share.
@@ -24,7 +28,7 @@ Follow your favourite Groups to stay up-to-date on their newest evaluations or s
 
 Researchers can create a Group on Sciety to share their own evaluations of preprints and create Group Lists.
 
-[Start a Group](https://blog.sciety.org/faq#how-can-i-start-or-join-a-group)
+[Start a Group](https://blog.sciety.org/join-the-growing-number-of-preprint-evaluation-communities-on-sciety)
 
 ### See what people are doing on Sciety
 
