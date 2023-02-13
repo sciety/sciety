@@ -31,7 +31,7 @@ const listId = arbitraryListId();
 const defaultPorts: Ports = {
   getGroup: () => O.some(arbitraryGroup()),
   getAllEvents: T.of([]),
-  getUserViaHandle: () => O.some(arbitraryUserDetails()),
+  lookupUser: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
     id: listId,
     ownerId,
@@ -51,7 +51,7 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some({
+        lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
         }),
@@ -79,7 +79,7 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some({
+        lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
         }),
@@ -101,7 +101,7 @@ describe('user-page', () => {
       const user = arbitraryUserDetails();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some(user),
+        lookupUser: () => O.some(user),
         getAllEvents: T.of([
           userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
           userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
@@ -126,7 +126,7 @@ describe('user-page', () => {
       const handle = arbitraryUserHandle();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some({
+        lookupUser: () => O.some({
           avatarUrl,
           displayName,
           handle,
@@ -146,7 +146,7 @@ describe('user-page', () => {
       const user = arbitraryUserDetails();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some(user),
+        lookupUser: () => O.some(user),
         getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
       const params = { handle: arbitraryUserHandle() };
@@ -207,7 +207,7 @@ describe('user-page', () => {
             userFollowedEditorialCommunity(user.id, group1.id),
             userFollowedEditorialCommunity(user.id, group2.id),
           ]),
-          getUserViaHandle: () => O.some(user),
+          lookupUser: () => O.some(user),
         };
         const params = { handle: arbitraryUserHandle() };
         const page = await pipe(
@@ -231,7 +231,7 @@ describe('user-page', () => {
               userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
               userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
             ]),
-            getUserViaHandle: () => O.some(user),
+            lookupUser: () => O.some(user),
           };
           const params = { handle: arbitraryUserHandle() };
 
@@ -294,7 +294,7 @@ describe('user-page', () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
         ...defaultPorts,
-        getUserViaHandle: () => O.some({
+        lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
         }),
@@ -315,7 +315,7 @@ describe('user-page', () => {
         params,
         userPage({
           ...defaultPorts,
-          getUserViaHandle: () => O.some({
+          lookupUser: () => O.some({
             ...arbitraryUserDetails(),
             handle: params.handle,
           }),

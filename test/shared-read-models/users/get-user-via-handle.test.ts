@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
-import { getUserViaHandle } from '../../../src/shared-read-models/users/get-user-via-handle';
+import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 
 describe('getUserViaHandle', () => {
@@ -18,7 +18,7 @@ describe('getUserViaHandle', () => {
     );
 
     it('returns the user', () => {
-      expect(getUserViaHandle(readmodel)(user.handle)).toStrictEqual(O.some(user));
+      expect(lookupUser(readmodel)(user.handle)).toStrictEqual(O.some(user));
     });
   });
 
@@ -29,7 +29,7 @@ describe('getUserViaHandle', () => {
     );
 
     it('returns none', () => {
-      expect(getUserViaHandle(readmodel)(user.handle)).toStrictEqual(O.none);
+      expect(lookupUser(readmodel)(user.handle)).toStrictEqual(O.none);
     });
   });
 });

@@ -1,14 +1,14 @@
 import { getUser } from './get-user';
-import { getUserViaHandle } from './get-user-via-handle';
+import { lookupUser } from './lookup-user';
 import { ReadModel } from './handle-event';
-import { GetUser, GetUserViaHandle } from '../../shared-ports';
+import { GetUser, LookupUser } from '../../shared-ports';
 
 export type Queries = {
   getUser: GetUser,
-  getUserViaHandle: GetUserViaHandle,
+  lookupUser: LookupUser,
 };
 
 export const queries = (instance: ReadModel): Queries => ({
   getUser: getUser(instance),
-  getUserViaHandle: getUserViaHandle(instance),
+  lookupUser: lookupUser(instance),
 });
