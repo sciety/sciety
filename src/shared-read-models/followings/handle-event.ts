@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
@@ -10,10 +9,8 @@ import {
 
 export type ReadModel = Record<UserId, Array<GroupId>>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isUserFollowedEditorialCommunityEvent(event)) {
     const current = readmodel[event.userId] ?? [];

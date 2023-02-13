@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { GetFollowers } from '../../shared-ports';
 
-// ts-unused-exports:disable-next-line
 export const getFollowers = (readmodel: ReadModel): GetFollowers => (groupId) => pipe(
   readmodel,
   R.toEntries,
