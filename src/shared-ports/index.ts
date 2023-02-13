@@ -14,12 +14,14 @@ import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-lis
 import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
+import { GetGroupsFollowedBy } from './get-groups-followed-by';
 import { GetList } from './get-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { GetUser } from './get-user';
 import { GetUserViaHandle } from './get-user-via-handle';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
+import { IsFollowing } from './is-following';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
@@ -53,6 +55,8 @@ export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluat
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { GetFollowers } from './get-followers';
+export { GetGroupsFollowedBy } from './get-groups-followed-by';
+export { IsFollowing } from './is-following';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -69,12 +73,14 @@ export type SharedPorts = {
   getFollowers: GetFollowers,
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
+  getGroupsFollowedBy: GetGroupsFollowedBy,
   getList: GetList,
   getUser: GetUser,
   getUserViaHandle: GetUserViaHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
   isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
+  isFollowing: IsFollowing,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
