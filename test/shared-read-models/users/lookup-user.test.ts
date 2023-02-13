@@ -5,12 +5,12 @@ import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import {UserHandle} from '../../../src/types/user-handle';
+import { UserHandle } from '../../../src/types/user-handle';
 
 describe('lookupUser', () => {
   const user = arbitraryUserDetails();
 
-  describe('when the requested handle matches that of an existing user in a case sensitive way', () => {
+  describe('when the user exists', () => {
     const readmodel = pipe(
       [
         userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
@@ -18,21 +18,20 @@ describe('lookupUser', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('returns the user', () => {
-      expect(lookupUser(readmodel)(user.handle)).toStrictEqual(O.some(user));
+    describe('and the requested handle is an identical match', () => {
+      const candidateHandle = user.handle;
+
+      it('returns the user', () => {
+        expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
+      });
     });
-  });
 
-  describe('when the requested handle matches that of an existing user in a case insensitive way', () => {
-    const readmodel = pipe(
-      [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
+    describe('and the requested handle only differs in case', () => {
+      const candidateHandle = user.handle.toUpperCase() as UserHandle;
 
-    it.failing('returns the user', () => {
-      expect(lookupUser(readmodel)(user.handle.toUpperCase() as UserHandle)).toStrictEqual(O.some(user));
+      it.failing('returns the user', () => {
+        expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
+      });
     });
   });
 
