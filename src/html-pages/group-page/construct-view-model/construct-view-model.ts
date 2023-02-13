@@ -1,7 +1,5 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -62,8 +60,7 @@ export type Params = t.TypeOf<typeof paramsCodec>;
 
 type ConstructViewModel = (
   ports: Ports,
-  activeTabIndex: TabIndex
-) => (
+  activeTabIndex: TabIndex) => (
   params: Params
 ) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -71,35 +68,25 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
   ports.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
   TE.fromEither,
-  TE.chainTaskK((group) => pipe(
+  TE.map((group) => pipe(
     {
-      activeTabIndex: T.of(activeTabIndex),
-      pageNumber: T.of(params.page),
-      group: T.of(group),
+      activeTabIndex,
+      pageNumber: params.page,
+      group,
       isFollowing: pipe(
         params.user,
         O.fold(
-          () => T.of(false),
-          (u) => pipe(
-            u.id,
-            ports.isFollowing(group.id),
-            T.of,
-          ),
+          () => false,
+          (u) => ports.isFollowing(group.id)(u.id),
         ),
       ),
-      followers: pipe(
-        group.id,
-        findFollowers(ports),
-        T.of,
-      ),
+      followers: findFollowers(ports)(group.id),
       lists: pipe(
         group.id,
         LOID.fromGroupId,
         ports.selectAllListsOwnedBy,
-        T.of,
       ),
     },
-    sequenceS(T.ApplyPar),
   )),
   TE.chain((partial) => pipe(
     partial,
