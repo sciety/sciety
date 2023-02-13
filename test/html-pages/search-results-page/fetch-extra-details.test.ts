@@ -37,6 +37,7 @@ describe('fetch-extra-details', () => {
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], laterPublicationDate, arbitraryDate()),
           evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
         ]),
+        getFollowers: () => [],
         getGroup: () => O.some(arbitraryGroup()),
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
         selectAllListsOwnedBy: shouldNotBeCalled,
@@ -99,6 +100,7 @@ describe('fetch-extra-details', () => {
             group.homepage,
             group.slug,
           )]),
+          getFollowers: () => [],
           getGroup: () => O.some(group),
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: () => [],
@@ -146,6 +148,7 @@ describe('fetch-extra-details', () => {
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
+          getFollowers: () => [],
           getGroup: () => O.none,
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: shouldNotBeCalled,

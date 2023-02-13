@@ -21,6 +21,7 @@ const pageSize = arbitraryNumber(5, 10);
 const dummyAdapters: Ports = {
   fetchStaticFile: () => TE.right(''),
   getAllGroups: () => [],
+  getFollowers: () => [],
   getGroup: () => O.some(arbitraryGroup()),
   searchForArticles: () => () => TE.right({
     items: [],

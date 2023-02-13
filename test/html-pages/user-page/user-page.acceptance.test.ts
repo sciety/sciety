@@ -31,6 +31,7 @@ const listId = arbitraryListId();
 const defaultAdapters: Ports = {
   getGroup: () => O.some(arbitraryGroup()),
   getAllEvents: T.of([]),
+  getFollowers: () => [],
   getGroupsFollowedBy: () => [arbitraryGroupId()],
   lookupUser: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{

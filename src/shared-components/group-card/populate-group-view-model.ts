@@ -5,7 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
-import { GetAllEvents, GetGroup, SelectAllListsOwnedBy } from '../../shared-ports';
+import {
+  GetAllEvents, GetFollowers, GetGroup, SelectAllListsOwnedBy,
+} from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -15,6 +17,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 export type Ports = {
   getAllEvents: GetAllEvents,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  getFollowers: GetFollowers,
   getGroup: GetGroup,
 };
 
@@ -31,6 +34,7 @@ export const populateGroupViewModel = (
     T.map((meta) => ({
       ...group,
       ...meta,
+      followerCount: ports.getFollowers(group.id).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
   )),

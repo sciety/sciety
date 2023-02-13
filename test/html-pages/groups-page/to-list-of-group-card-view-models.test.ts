@@ -50,6 +50,7 @@ describe('to-list-of-group-card-view-models', () => {
 
   const ports: Ports = {
     getAllEvents: T.of(events),
+    getFollowers: () => [],
     selectAllListsOwnedBy: () => [],
     getGroup: getGroup(groupReadModelInstance),
   };
