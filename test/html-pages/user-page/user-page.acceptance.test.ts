@@ -31,6 +31,7 @@ const listId = arbitraryListId();
 const defaultPorts: Ports = {
   getGroup: () => O.some(arbitraryGroup()),
   getAllEvents: T.of([]),
+  getGroupsFollowedBy: () => [arbitraryGroupId()],
   lookupUser: () => O.some(arbitraryUserDetails()),
   selectAllListsOwnedBy: (ownerId: ListOwnerId) => [{
     id: listId,
@@ -99,13 +100,16 @@ describe('user-page', () => {
 
     it('includes the count of lists and followed groups in the opengraph description', async () => {
       const user = arbitraryUserDetails();
+      const groupId1 = arbitraryGroupId();
+      const groupId2 = arbitraryGroupId();
       const ports: Ports = {
         ...defaultPorts,
         lookupUser: () => O.some(user),
         getAllEvents: T.of([
-          userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
-          userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
+          userFollowedEditorialCommunity(user.id, groupId1),
+          userFollowedEditorialCommunity(user.id, groupId2),
         ]),
+        getGroupsFollowedBy: () => [groupId1, groupId2],
       };
       const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
@@ -207,6 +211,7 @@ describe('user-page', () => {
             userFollowedEditorialCommunity(user.id, group1.id),
             userFollowedEditorialCommunity(user.id, group2.id),
           ]),
+          getGroupsFollowedBy: () => [group1.id, group2.id],
           lookupUser: () => O.some(user),
         };
         const params = { handle: arbitraryUserHandle() };
@@ -254,9 +259,13 @@ describe('user-page', () => {
 
       beforeAll(async () => {
         const params = { handle: arbitraryUserHandle() };
+        const adapters: Ports = {
+          ...defaultPorts,
+          getGroupsFollowedBy: () => [],
+        };
         page = await pipe(
           params,
-          userPage(defaultPorts)('followed-groups'),
+          userPage(adapters)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
         )();

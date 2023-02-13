@@ -5,8 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
-import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings-stateless';
+import { GetGroupsFollowedBy, LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
@@ -15,6 +14,7 @@ import { constructListsTab } from './construct-lists-tab';
 import { constructFollowingTab, Ports as ConstructFollowingTabPorts } from './construct-following-tab';
 
 export type Ports = ConstructFollowingTabPorts & {
+  getGroupsFollowedBy: GetGroupsFollowedBy,
   lookupUser: LookupUser,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
@@ -34,9 +34,8 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   TE.chainW((user) => pipe(
     {
       groupIds: pipe(
-        ports.getAllEvents,
-        T.map(getGroupIdsFollowedBy(user.id)),
-        TE.rightTask,
+        ports.getGroupsFollowedBy(user.id),
+        TE.right,
       ),
       userDetails: TE.right(user),
       list: pipe(
