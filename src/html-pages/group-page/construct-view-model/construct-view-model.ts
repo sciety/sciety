@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -66,9 +65,7 @@ type ConstructViewModel = (
 
 export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) => (params) => pipe(
   ports.getGroupBySlug(params.slug),
-  E.fromOption(() => DE.notFound),
-  TE.fromEither,
-  TE.map((group) => pipe(
+  O.map((group) => pipe(
     {
       activeTabIndex,
       pageNumber: params.page,
@@ -88,6 +85,7 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
       ),
     },
   )),
+  TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
     partial,
     constructActiveTabModel(ports),
