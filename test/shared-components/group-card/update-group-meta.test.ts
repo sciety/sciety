@@ -13,20 +13,20 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();
-  const initial = { followerCount: 41, evaluationCount: 27, latestActivity: O.some(new Date('1970')) };
+  const initial = { evaluationCount: 27, latestActivity: O.some(new Date('1970')) };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ ...initial, followerCount: 42 });
+    expect(result).toStrictEqual({ ...initial });
   });
 
   it('updates the meta when passed a UserUnfollowedEditorialCommunityEvent', () => {
     const event = userUnfollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ ...initial, followerCount: 40 });
+    expect(result).toStrictEqual({ ...initial });
   });
 
   describe('when passed the first EvaluationRecorded', () => {
