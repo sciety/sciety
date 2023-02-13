@@ -177,10 +177,8 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     },
   );
 
-  const matchHandle = '[^0-9][^/]+';
-
   router.get(
-    `/users/:handle(${matchHandle})/lists`,
+    '/users/:handle/lists',
     pageHandler(adapters, createPageFromParams(
       userPageParams,
       userPage(adapters)('lists'),
@@ -188,7 +186,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    `/users/:handle(${matchHandle})/following`,
+    '/users/:handle/following',
     pageHandler(adapters, createPageFromParams(
       userPageParams,
       userPage(adapters)('followed-groups'),
