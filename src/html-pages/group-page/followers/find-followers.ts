@@ -1,6 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../domain-events';
 import { GroupId } from '../../../types/group-id';
 import { Follower } from '../content-model';
 import { GetFollowers, GetGroupsFollowedBy } from '../../../shared-ports';
@@ -10,18 +9,14 @@ export type Ports = {
   getGroupsFollowedBy: GetGroupsFollowedBy,
 };
 
-type FindFollowers = (
-  ports: Ports,
-  groupId: GroupId,
-) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;
+type FindFollowers = (ports: Ports) => (groupId: GroupId) => ReadonlyArray<Follower>;
 
-export const findFollowers: FindFollowers = (ports, groupId) => (events) => pipe(
+export const findFollowers: FindFollowers = (ports) => (groupId) => pipe(
   ports.getFollowers(groupId),
   RA.map((userId) => ({
     userId,
     followedGroupCount: pipe(
-      events,
-      () => ports.getGroupsFollowedBy(userId),
+      ports.getGroupsFollowedBy(userId),
       RA.size,
     ),
     listCount: 1,

@@ -85,8 +85,9 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
         ),
       ),
       followers: pipe(
-        ports.getAllEvents,
-        T.map(findFollowers(ports, group.id)),
+        group.id,
+        findFollowers(ports),
+        T.of,
       ),
       lists: pipe(
         group.id,
