@@ -13,12 +13,12 @@ import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
 import { ContentModel, TabIndex } from '../content-model';
-import { findFollowers } from '../followers/find-followers';
+import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
 import { constructListsTab } from '../lists/lists';
 import { constructAboutTab, Ports as AboutPorts } from '../about/about';
 import { constructFollowersTab, Ports as FollowersPorts } from '../followers/followers';
 
-export type Ports = AboutPorts & FollowersPorts & {
+export type Ports = AboutPorts & FindFollowersPorts & FollowersPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -86,7 +86,7 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
       ),
       followers: pipe(
         ports.getAllEvents,
-        T.map(findFollowers(group.id)),
+        T.map(findFollowers(ports, group.id)),
       ),
       lists: pipe(
         group.id,

@@ -19,6 +19,7 @@ describe('group page', () => {
         groupPage({
           fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
+          getFollowers: () => [],
           selectAllListsOwnedBy: shouldNotBeCalled,
           getUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
