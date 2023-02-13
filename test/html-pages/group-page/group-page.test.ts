@@ -21,6 +21,7 @@ describe('group page', () => {
           getAllEvents: T.of([]),
           getFollowers: () => [],
           getGroupsFollowedBy: () => [],
+          isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
           getUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,

@@ -7,8 +7,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as LOID from '../../../types/list-owner-id';
-import { GetAllEvents, GetGroupBySlug, SelectAllListsOwnedBy } from '../../../shared-ports';
-import { isFollowing } from '../../../shared-read-models/followings-stateless';
+import {
+  GetAllEvents, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
+} from '../../../shared-ports';
 import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
@@ -21,6 +22,7 @@ import { constructFollowersTab, Ports as FollowersPorts } from '../followers/fol
 export type Ports = AboutPorts & FindFollowersPorts & FollowersPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
+  isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
@@ -79,8 +81,9 @@ export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) =>
         O.fold(
           () => T.of(false),
           (u) => pipe(
-            ports.getAllEvents,
-            T.map(isFollowing(u.id, group.id)),
+            u.id,
+            ports.isFollowing(group.id),
+            T.of,
           ),
         ),
       ),
