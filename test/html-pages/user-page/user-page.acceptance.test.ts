@@ -28,7 +28,7 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
 
 const listId = arbitraryListId();
 
-const defaultPorts: Ports = {
+const defaultAdapters: Ports = {
   getGroup: () => O.some(arbitraryGroup()),
   getAllEvents: T.of([]),
   getGroupsFollowedBy: () => [arbitraryGroupId()],
@@ -51,7 +51,7 @@ describe('user-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
@@ -70,7 +70,7 @@ describe('user-page', () => {
       const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
-        userPage(defaultPorts)(tabName),
+        userPage(defaultAdapters)(tabName),
       )();
 
       expect(E.isRight(page)).toBe(true);
@@ -79,7 +79,7 @@ describe('user-page', () => {
     it('uses the user displayname as the opengraph title', async () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
@@ -103,7 +103,7 @@ describe('user-page', () => {
       const groupId1 = arbitraryGroupId();
       const groupId2 = arbitraryGroupId();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some(user),
         getAllEvents: T.of([
           userFollowedEditorialCommunity(user.id, groupId1),
@@ -129,7 +129,7 @@ describe('user-page', () => {
       const displayName = arbitraryString();
       const handle = arbitraryUserHandle();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some({
           avatarUrl,
           displayName,
@@ -149,7 +149,7 @@ describe('user-page', () => {
     it('always shows the counts in the tab titles', async () => {
       const user = arbitraryUserDetails();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some(user),
         getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
@@ -173,7 +173,7 @@ describe('user-page', () => {
       const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
-        userPage(defaultPorts)('followed-groups'),
+        userPage(defaultAdapters)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -188,7 +188,7 @@ describe('user-page', () => {
         const group2 = arbitraryGroup();
         const user = arbitraryUserDetails();
         const ports: Ports = {
-          ...defaultPorts,
+          ...defaultAdapters,
           getAllEvents: T.of([
             groupJoined(
               group1.id,
@@ -230,7 +230,7 @@ describe('user-page', () => {
         it('displays a single error message as the tab panel content', async () => {
           const user = arbitraryUserDetails();
           const ports: Ports = {
-            ...defaultPorts,
+            ...defaultAdapters,
             getGroup: () => O.none,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
@@ -260,7 +260,7 @@ describe('user-page', () => {
       beforeAll(async () => {
         const params = { handle: arbitraryUserHandle() };
         const adapters: Ports = {
-          ...defaultPorts,
+          ...defaultAdapters,
           getGroupsFollowedBy: () => [],
         };
         page = await pipe(
@@ -290,7 +290,7 @@ describe('user-page', () => {
       const params = { handle: arbitraryUserHandle() };
       const page = await pipe(
         params,
-        userPage(defaultPorts)('lists'),
+        userPage(defaultAdapters)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -302,7 +302,7 @@ describe('user-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {
-        ...defaultPorts,
+        ...defaultAdapters,
         lookupUser: () => O.some({
           ...arbitraryUserDetails(),
           displayName: userDisplayName,
@@ -323,7 +323,7 @@ describe('user-page', () => {
       const page = await pipe(
         params,
         userPage({
-          ...defaultPorts,
+          ...defaultAdapters,
           lookupUser: () => O.some({
             ...arbitraryUserDetails(),
             handle: params.handle,
