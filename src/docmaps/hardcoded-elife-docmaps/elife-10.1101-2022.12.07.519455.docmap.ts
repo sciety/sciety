@@ -183,37 +183,6 @@ export const hardcodedElifeArticle: Docmap = {
             },
           ],
         },
-        {
-          participants: [
-            {
-              actor: {
-                name: 'anonymous',
-                type: 'person',
-              },
-              role: 'peer-reviewer',
-            },
-          ],
-          outputs: [
-            {
-              type: 'review-article',
-              published: '2023-02-12T09:22:31.097Z',
-              content: [
-                {
-                  type: 'web-page',
-                  url: 'https://hypothes.is/a/xpvIZqq2Ee2eybM0RkhSeQ',
-                },
-                {
-                  type: 'web-page',
-                  url: 'https://sciety.org/articles/activity/10.1101/2022.12.07.519455#hypothesis:xpvIZqq2Ee2eybM0RkhSeQ',
-                },
-                {
-                  type: 'web-content',
-                  url: 'https://sciety.org/evaluations/hypothesis:xpvIZqq2Ee2eybM0RkhSeQ/content',
-                },
-              ],
-            },
-          ],
-        },
       ],
     },
   },
