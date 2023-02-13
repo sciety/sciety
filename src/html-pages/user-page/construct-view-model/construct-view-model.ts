@@ -30,25 +30,25 @@ type ConstructViewModel = (tab: string, ports: Ports) => (params: Params) => TE.
 export const constructViewModel: ConstructViewModel = (tab, ports) => (params) => pipe(
   params.handle,
   ports.lookupUser,
-  TE.fromOption(() => DE.notFound),
-  TE.chainW((user) => pipe(
+  E.fromOption(() => DE.notFound),
+  E.chain((user) => pipe(
     {
       groupIds: pipe(
         ports.getGroupsFollowedBy(user.id),
-        TE.right,
+        E.right,
       ),
-      userDetails: TE.right(user),
+      userDetails: E.right(user),
       list: pipe(
         user.id,
         LOID.fromUserId,
         ports.selectAllListsOwnedBy,
         RA.head,
         E.fromOption(() => DE.notFound),
-        T.of,
       ),
     },
-    sequenceS(TE.ApplyPar),
+    sequenceS(E.Apply),
   )),
+  TE.fromEither,
   TE.chainTaskK(({ groupIds, userDetails, list }) => pipe(
     ({
       groupIds: T.of(groupIds),
