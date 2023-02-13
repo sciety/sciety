@@ -29,7 +29,7 @@ describe('lookupUser', () => {
     describe('and the requested handle only differs in case', () => {
       const candidateHandle = user.handle.toUpperCase() as UserHandle;
 
-      it.failing('returns the user', () => {
+      it('returns the user', () => {
         expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
       });
     });

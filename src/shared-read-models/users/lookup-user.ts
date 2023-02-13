@@ -5,5 +5,5 @@ import { LookupUser } from '../../shared-ports';
 
 export const lookupUser = (readModel: ReadModel): LookupUser => (handle) => pipe(
   Object.values(readModel),
-  RA.findFirst((user) => user.handle === handle),
+  RA.findFirst((user) => user.handle.toLocaleLowerCase() === handle.toLowerCase()),
 );
