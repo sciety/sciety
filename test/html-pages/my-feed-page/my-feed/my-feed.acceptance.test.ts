@@ -5,10 +5,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import { evaluationRecorded, userFollowedEditorialCommunity } from '../../../../src/domain-events';
-import { myFeed } from '../../../../src/html-pages/my-feed-page/my-feed';
+import { myFeed, Ports } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
-  followSomething, noEvaluationsYet, troubleFetchingTryAgain,
+  followSomething,
+  noEvaluationsYet,
+  troubleFetchingTryAgain,
 } from '../../../../src/html-pages/my-feed-page/my-feed/static-content';
 import * as DE from '../../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../../src/types/doi';
@@ -21,13 +23,16 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryReviewId } from '../../../types/review-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
+const defaultAdapters: Ports = {
+  fetchArticle: shouldNotBeCalled,
+  findVersionsForArticleDoi: shouldNotBeCalled,
+  getAllEvents: T.of([]),
+  getGroupsFollowedBy: () => [],
+};
+
 describe('my-feed acceptance', () => {
   it('displays the feed title', async () => {
-    const html = await myFeed({
-      fetchArticle: shouldNotBeCalled,
-      findVersionsForArticleDoi: shouldNotBeCalled,
-      getAllEvents: T.of([]),
-    })(arbitraryUserId(), 20, 1)();
+    const html = await myFeed(defaultAdapters)(arbitraryUserId(), 20, 1)();
 
     expect(html).toContain(feedTitle);
   });
@@ -36,11 +41,13 @@ describe('my-feed acceptance', () => {
     const userId = arbitraryUserId();
 
     describe('following groups that have no evaluations', () => {
+      const groupId = arbitraryGroupId();
+
       it('displays the calls to action to follow other groups or return later', async () => {
         const adapters = {
-          fetchArticle: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
-          getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
+          ...defaultAdapters,
+          getAllEvents: T.of([userFollowedEditorialCommunity(userId, groupId)]),
+          getGroupsFollowedBy: () => [groupId],
         };
 
         const html = await myFeed(adapters)(userId, 20, 1)();
@@ -53,8 +60,7 @@ describe('my-feed acceptance', () => {
     describe('not following any groups', () => {
       it('displays call to action to follow groups', async () => {
         const adapters = {
-          fetchArticle: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
+          ...defaultAdapters,
           getAllEvents: T.of([]),
         };
         const html = await myFeed(adapters)(userId, 20, 1)();
@@ -73,6 +79,7 @@ describe('my-feed acceptance', () => {
       it('displays content in the form of article cards', async () => {
         const groupId = arbitraryGroupId();
         const adapters = {
+          ...defaultAdapters,
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
@@ -83,6 +90,7 @@ describe('my-feed acceptance', () => {
             userFollowedEditorialCommunity(userId, groupId),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
+          getGroupsFollowedBy: () => [groupId],
         };
         const html = await myFeed(adapters)(userId, 20, 1)();
 
@@ -92,6 +100,7 @@ describe('my-feed acceptance', () => {
       it('renders at most a page of cards at a time', async () => {
         const groupId = arbitraryGroupId();
         const adapters = {
+          ...defaultAdapters,
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
@@ -104,6 +113,7 @@ describe('my-feed acceptance', () => {
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
+          getGroupsFollowedBy: () => [groupId],
         };
         const pageSize = 2;
         const renderedComponent = await myFeed(adapters)(userId, pageSize, 1)();
@@ -122,6 +132,7 @@ describe('my-feed acceptance', () => {
       it('displayed articles have to have been evaluated by a followed group', async () => {
         const groupId = arbitraryGroupId();
         const adapters = {
+          ...defaultAdapters,
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
@@ -132,6 +143,7 @@ describe('my-feed acceptance', () => {
             userFollowedEditorialCommunity(userId, groupId),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
           ]),
+          getGroupsFollowedBy: () => [groupId],
         };
         const html = await myFeed(adapters)(userId, 20, 1)();
 
@@ -143,6 +155,7 @@ describe('my-feed acceptance', () => {
           const groupId = arbitraryGroupId();
           const failingDoi = arbitraryDoi();
           const adapters = {
+            ...defaultAdapters,
             fetchArticle: (doi: Doi) => (
               eqDoi.equals(doi, failingDoi)
                 ? TE.left(DE.unavailable)
@@ -157,6 +170,7 @@ describe('my-feed acceptance', () => {
               evaluationRecorded(groupId, failingDoi, arbitraryReviewId()),
               evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
             ]),
+            getGroupsFollowedBy: () => [groupId],
           };
 
           const html = await myFeed(adapters)(userId, 20, 1)();
@@ -171,12 +185,13 @@ describe('my-feed acceptance', () => {
         it('display only an error message', async () => {
           const groupId = arbitraryGroupId();
           const adapters = {
+            ...defaultAdapters,
             fetchArticle: () => TE.left(DE.unavailable),
-            findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
             ]),
+            getGroupsFollowedBy: () => [groupId],
           };
           const html = await myFeed(adapters)(userId, 20, 1)();
 

@@ -20,10 +20,10 @@ import {
 import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
-import { getGroupIdsFollowedBy } from '../../../shared-read-models/followings-stateless';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
+import { GetGroupsFollowedBy } from '../../../shared-ports';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -31,6 +31,7 @@ export type Ports = {
   fetchArticle: GetArticle,
   getAllEvents: GetAllEvents,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getGroupsFollowedBy: GetGroupsFollowedBy,
 };
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
@@ -43,8 +44,8 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
 `);
 
 const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
-  ports.getAllEvents,
-  T.map(getGroupIdsFollowedBy(uid)),
+  ports.getGroupsFollowedBy(uid),
+  T.of,
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('no-groups-followed'))),
 );
