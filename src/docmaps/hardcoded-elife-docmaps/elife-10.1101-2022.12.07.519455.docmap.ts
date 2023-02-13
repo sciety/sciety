@@ -5,7 +5,7 @@ export const hardcodedElifeArticle: Docmap = {
   id: 'https://sciety.org/docmaps/v1/articles/10.1101/2022.12.07.519455/elife.docmap.json',
   type: 'docmap',
   created: '2023-02-10T11:50:07.942Z',
-  updated: '2023-02-10T11:50:08.268Z',
+  updated: '2023-02-12T09:30:07.568Z',
   publisher: {
     id: 'https://elifesciences.org/',
     name: 'eLife',
@@ -123,20 +123,12 @@ export const hardcodedElifeArticle: Docmap = {
         {
           participants: [
             {
-              actor: {
-                name: 'Laura Colgin',
-                type: 'person',
-                _relatesToOrganization: 'University of Texas at Austin, United States',
-              },
-              role: 'senior-editor',
+              actor: { name: 'Laura Colgin', type: 'person', _relatesToOrganization: 'University of Texas at Austin, United States' },
+              role: 'editor',
             },
             {
-              actor: {
-                name: 'Laura Colgin',
-                type: 'person',
-                _relatesToOrganization: 'University of Texas at Austin, United States',
-              },
-              role: 'editor',
+              actor: { name: 'Laura Colgin', type: 'person', _relatesToOrganization: 'University of Texas at Austin, United States' },
+              role: 'senior-editor',
             },
           ],
           outputs: [
@@ -155,6 +147,68 @@ export const hardcodedElifeArticle: Docmap = {
                 {
                   type: 'web-content',
                   url: 'https://sciety.org/evaluations/hypothesis:_49Ppqk3Ee2tA3NDOvemrg/content',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          participants: [
+            {
+              actor: {
+                name: 'anonymous',
+                type: 'person',
+              },
+              role: 'peer-reviewer',
+            },
+          ],
+          outputs: [
+            {
+              type: 'reply',
+              published: '2023-02-12T09:20:16.079Z',
+              content: [
+                {
+                  type: 'web-page',
+                  url: 'https://hypothes.is/a/diFO2Kq2Ee2jHTOTF0-Dkw',
+                },
+                {
+                  type: 'web-page',
+                  url: 'https://sciety.org/articles/activity/10.1101/2022.12.07.519455#hypothesis:diFO2Kq2Ee2jHTOTF0-Dkw',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/evaluations/hypothesis:diFO2Kq2Ee2jHTOTF0-Dkw/content',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          participants: [
+            {
+              actor: {
+                name: 'anonymous',
+                type: 'person',
+              },
+              role: 'peer-reviewer',
+            },
+          ],
+          outputs: [
+            {
+              type: 'review-article',
+              published: '2023-02-12T09:22:31.097Z',
+              content: [
+                {
+                  type: 'web-page',
+                  url: 'https://hypothes.is/a/xpvIZqq2Ee2eybM0RkhSeQ',
+                },
+                {
+                  type: 'web-page',
+                  url: 'https://sciety.org/articles/activity/10.1101/2022.12.07.519455#hypothesis:xpvIZqq2Ee2eybM0RkhSeQ',
+                },
+                {
+                  type: 'web-content',
+                  url: 'https://sciety.org/evaluations/hypothesis:xpvIZqq2Ee2eybM0RkhSeQ/content',
                 },
               ],
             },
