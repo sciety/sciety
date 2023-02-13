@@ -9,7 +9,7 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 describe('lookupUser', () => {
   const user = arbitraryUserDetails();
 
-  describe('when the user exists', () => {
+  describe('when the requested handle matches that of an existing user in a case sensitive way', () => {
     const readmodel = pipe(
       [
         userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
@@ -20,6 +20,10 @@ describe('lookupUser', () => {
     it('returns the user', () => {
       expect(lookupUser(readmodel)(user.handle)).toStrictEqual(O.some(user));
     });
+  });
+
+  describe('when the requested handle matches that of an existing user in a case insensitive way', () => {
+    it.todo('returns the user');
   });
 
   describe('when the user does not exist', () => {
