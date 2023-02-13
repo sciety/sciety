@@ -6,7 +6,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/users
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 
-describe('getUserViaHandle', () => {
+describe('lookupUser', () => {
   const user = arbitraryUserDetails();
 
   describe('when the user exists', () => {
