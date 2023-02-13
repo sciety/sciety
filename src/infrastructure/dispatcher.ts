@@ -38,6 +38,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.listsReadModel,
       lists.handleEvent,
     )(events);
+    readModels.followingsReadModel = RA.reduce(
+      readModels.followingsReadModel,
+      followings.handleEvent,
+    )(events);
     readModels.groupsReadModel = RA.reduce(
       readModels.groupsReadModel,
       groups.handleEvent,
