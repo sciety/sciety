@@ -45,9 +45,8 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
 
 const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
   ports.getGroupsFollowedBy(uid),
-  T.of,
-  T.map(RNEA.fromReadonlyArray),
-  T.map(E.fromOption(constant('no-groups-followed'))),
+  RNEA.fromReadonlyArray,
+  E.fromOption(constant('no-groups-followed')),
 );
 
 const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) => pipe(
@@ -88,9 +87,9 @@ type YourFeed = (ports: Ports) => (
 export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pipe(
   userId,
   TE.right,
-  TE.chain(flow(
+  TE.chainEitherK(flow(
     getFollowedGroups(ports),
-    TE.mapLeft(constant(followSomething)),
+    E.mapLeft(constant(followSomething)),
   )),
   TE.chain(flow(
     getEvaluatedArticles(ports),
