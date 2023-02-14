@@ -324,13 +324,7 @@ describe('user-page', () => {
 
       const page = await pipe(
         params,
-        userPage({
-          ...defaultAdapters,
-          lookupUser: () => O.some({
-            ...arbitraryUserDetails(),
-            handle: params.handle,
-          }),
-        })('lists'),
+        userPage(defaultAdapters)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
       )();

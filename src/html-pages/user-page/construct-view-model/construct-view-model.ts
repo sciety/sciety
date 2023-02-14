@@ -9,9 +9,9 @@ import { GetGroupsFollowedBy, LookupUser, SelectAllListsOwnedBy } from '../../..
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
-import { userHandleCodec } from '../../../types/user-handle';
 import { constructListsTab } from './construct-lists-tab';
 import { constructFollowingTab, Ports as ConstructFollowingTabPorts } from './construct-following-tab';
+import { candidateUserHandleCodec } from '../../../types/candidate-user-handle';
 
 export type Ports = ConstructFollowingTabPorts & {
   getGroupsFollowedBy: GetGroupsFollowedBy,
@@ -20,7 +20,7 @@ export type Ports = ConstructFollowingTabPorts & {
 };
 
 export const userPageParams = t.type({
-  handle: userHandleCodec,
+  handle: candidateUserHandleCodec,
 });
 
 export type Params = t.TypeOf<typeof userPageParams>;

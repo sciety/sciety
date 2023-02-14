@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { UserDetails } from '../types/user-details';
-import { UserHandle } from '../types/user-handle';
+import { CandidateUserHandle } from '../types/candidate-user-handle';
 
-export type LookupUser = (handle: UserHandle) => O.Option<UserDetails>;
+export type LookupUser = (handle: CandidateUserHandle) => O.Option<UserDetails>;

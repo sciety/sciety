@@ -6,7 +6,7 @@ import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { UserHandle } from '../../../src/types/user-handle';
+import { CandidateUserHandle } from '../../../src/types/candidate-user-handle';
 
 describe('lookupUser', () => {
   const user = arbitraryUserDetails();
@@ -20,7 +20,7 @@ describe('lookupUser', () => {
     );
 
     describe('and the requested handle is an identical match', () => {
-      const candidateHandle = user.handle;
+      const candidateHandle = user.handle as string as CandidateUserHandle;
 
       it('returns the user', () => {
         expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
@@ -28,7 +28,7 @@ describe('lookupUser', () => {
     });
 
     describe('and the requested handle only differs in case', () => {
-      const candidateHandle = user.handle.toUpperCase() as UserHandle;
+      const candidateHandle = user.handle.toUpperCase() as CandidateUserHandle;
 
       it('returns the user', () => {
         expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
