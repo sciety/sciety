@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded,
@@ -11,19 +12,21 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity';
+import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
 
   describe('when an article has no evaluations and is in no list', () => {
     describe('because it has never been added to a list', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
       it('article has no activity', () => {
-        expect(articleActivity).toStrictEqual({
+        expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual({
           articleId,
           latestActivityDate: O.none,
           evaluationCount: 0,
