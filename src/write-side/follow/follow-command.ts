@@ -6,18 +6,18 @@ import { DomainEvent, userFollowedEditorialCommunity } from '../../domain-events
 import { CommitEvents } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
 import { GroupId } from '../../types/group-id';
-import { User } from '../../types/user';
+import { UserId } from '../../types/user-id';
 
 export type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: CommitEvents,
 };
 
-export const followCommand = (ports: Ports) => (user: User, groupId: GroupId): T.Task<CommandResult> => pipe(
+export const followCommand = (ports: Ports) => (userId: UserId, groupId: GroupId): T.Task<CommandResult> => pipe(
   ports.getAllEvents,
-  T.map(isFollowing(user.id, groupId)),
+  T.map(isFollowing(userId, groupId)),
   T.map(B.fold(
-    () => [userFollowedEditorialCommunity(user.id, groupId)],
+    () => [userFollowedEditorialCommunity(userId, groupId)],
     () => [],
   )),
   T.chain(ports.commitEvents),

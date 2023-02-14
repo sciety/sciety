@@ -60,7 +60,7 @@ export const executeFollowCommandIfUserLoggedIn = (ports: Ports): Middleware => 
           (userDetails) => {
             context.redirect('back');
             return pipe(
-              followCommand(ports)(userDetails, params.groupId),
+              followCommand(ports)(userDetails.id, params.groupId),
               T.chain(() => next),
             );
           },

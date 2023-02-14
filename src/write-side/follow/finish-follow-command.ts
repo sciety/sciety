@@ -13,5 +13,5 @@ export const finishFollowCommand = (ports: Ports) => (g: string, user: User): TO
   g,
   GroupId.fromNullable,
   TO.fromOption,
-  TO.chainTaskK((groupId) => followCommand(ports)(user, groupId)),
+  TO.chainTaskK((groupId) => followCommand(ports)(user.id, groupId)),
 );
