@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { User } from '../types/user';
 import { UserDetails } from '../types/user-details';
+import { UserHandle } from '../types/user-handle';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">
@@ -39,16 +39,16 @@ const myFeedMenuItem = () => `
   </li>
 `;
 
-const myProfileMenuItem = (user: User) => `
+const myProfileMenuItem = (handle: UserHandle) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${user.handle}" class="utility-bar__list_nav_link">My Lists</a>
+    <a href="/users/${handle}" class="utility-bar__list_nav_link">My Lists</a>
   </li>
 `;
 
-const myUsernameMenuItem = (user: User) => `
+const myUsernameMenuItem = (handle: UserHandle, avatarUrl: string) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <img src="${user.avatarUrl}" alt="" class="utility-bar-user-avatar">
-    <span class="utility-bar-user-handle">${user.handle}</span>
+    <img src="${avatarUrl}" alt="" class="utility-bar-user-avatar">
+    <span class="utility-bar-user-handle">${handle}</span>
   </li>
 `;
 
@@ -73,12 +73,12 @@ const loggedOutMenuItems = () => `
   ${signUpMenuItem()}
 `;
 
-const loggedInMenuItems = (user: User) => `
+const loggedInMenuItems = (user: UserDetails) => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
   ${myFeedMenuItem()}
-  ${myProfileMenuItem(user)}
-  ${myUsernameMenuItem(user)}
+  ${myProfileMenuItem(user.handle)}
+  ${myUsernameMenuItem(user.handle, user.avatarUrl)}
   ${logOutMenuItem()}
 `;
 
