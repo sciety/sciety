@@ -37,16 +37,16 @@ describe('get-activity-for-doi', () => {
 
     describe('because it has been added and removed from a list', () => {
       const listId = arbitraryListId();
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           articleAddedToList(articleId, listId),
           articleRemovedFromList(articleId, listId),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
       it('has a listMemberShipCount of 0', () => {
-        expect(articleActivity.listMembershipCount).toBe(0);
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(0);
       });
     });
   });
