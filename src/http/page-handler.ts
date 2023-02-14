@@ -10,11 +10,11 @@ import { renderErrorPage } from './render-error-page';
 import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { User } from '../types/user';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
+import { UserDetails } from '../types/user-details';
 
 type ErrorToWebPage = (
-  user: O.Option<User>,
+  user: O.Option<UserDetails>,
   pageLayout: PageLayout,
 ) => (
   error: RenderPageError
@@ -23,7 +23,7 @@ type ErrorToWebPage = (
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
-type PageLayout = (user: O.Option<User>) => (page: Page) => string;
+type PageLayout = (user: O.Option<UserDetails>) => (page: Page) => string;
 
 const toErrorResponse: ErrorToWebPage = (user, pageLayout) => (error) => pipe(
   renderErrorPage(error.message),
@@ -45,14 +45,14 @@ const toErrorResponse: ErrorToWebPage = (user, pageLayout) => (error) => pipe(
 );
 
 const pageToSuccessResponse = (
-  user: O.Option<User>,
+  user: O.Option<UserDetails>,
   pageLayout: PageLayout,
 ) => (page: Page) => ({
   body: pageLayout(user)(page),
   status: StatusCodes.OK,
 });
 
-const toWebPage = (user: O.Option<User>, pageLayout: PageLayout) => E.fold(
+const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
   toErrorResponse(user, pageLayout),
   pageToSuccessResponse(user, pageLayout),
 );
