@@ -10,6 +10,12 @@ import { ReadModel } from './handle-event';
 export const getActivityForDoi = (readmodel: ReadModel) => (articleId: Doi) => pipe(
   readmodel,
   RM.lookup(S.Eq)(articleId.value),
+  O.map((act) => ({
+    articleId: act.articleId,
+    latestActivityDate: act.latestActivityDate,
+    evaluationCount: act.evaluationCount,
+    listMembershipCount: act.listMembershipCount,
+  })),
   O.getOrElseW(() => ({
     articleId,
     latestActivityDate: O.none,

@@ -27,7 +27,7 @@ describe('get-activity-for-dois', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the activity for those articles', () => {
+    it('returns the activity for those articles', () => {
       expect(getActivityForDois(readmodel)([articleId1, articleId2])).toStrictEqual([
         {
           articleId: articleId1,
