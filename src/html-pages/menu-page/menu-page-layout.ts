@@ -8,6 +8,7 @@ import { utilityBar } from '../../shared-components/utility-bar';
 import { User } from '../../types/user';
 import { Page } from '../../types/page';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { UserDetails } from '../../types/user-details';
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const menuPage = (user: O.Option<User>) => (referer: O.Option<string>) => ({
@@ -24,7 +25,7 @@ export const menuPage = (user: O.Option<User>) => (referer: O.Option<string>) =>
 `),
 });
 
-export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const menuPageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(
     pipe(

@@ -4,9 +4,9 @@ import { head } from '../../shared-components/head';
 import { siteFooter } from '../../shared-components/site-footer';
 import { siteHeader } from '../../shared-components/site-header';
 import { Page } from '../../types/page';
-import { User } from '../../types/user';
+import { UserDetails } from '../../types/user-details';
 
-export const homePageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const homePageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(O.none, page)}
 <body>

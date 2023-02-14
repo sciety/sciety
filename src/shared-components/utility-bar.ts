@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
+import { UserDetails } from '../types/user-details';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">
@@ -81,7 +82,7 @@ const loggedInMenuItems = (user: User) => `
   ${logOutMenuItem()}
 `;
 
-export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
+export const utilityBar = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
