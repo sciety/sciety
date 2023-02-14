@@ -1,3 +1,4 @@
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
@@ -8,7 +9,13 @@ import { UserDetails } from '../../types/user-details';
 
 export const homePageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(O.none, page)}
+  ${head(
+    pipe(
+      user,
+      O.map((u) => u.id),
+    ),
+    page,
+  )}
 <body>
   ${googleTagManagerNoScript()}
   <div class="home-page-container">
