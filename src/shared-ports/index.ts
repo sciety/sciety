@@ -26,6 +26,8 @@ import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
+import { GetActivityForDoi } from './get-activity-for-doi';
+import { GetActivityForDois } from './get-activity-for-dois';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -57,6 +59,10 @@ export { SearchForArticles } from './search-for-articles';
 export { GetFollowers } from './get-followers';
 export { GetGroupsFollowedBy } from './get-groups-followed-by';
 export { IsFollowing } from './is-following';
+// ts-unused-exports:disable-next-line
+export { GetActivityForDoi } from './get-activity-for-doi';
+// ts-unused-exports:disable-next-line
+export { GetActivityForDois } from './get-activity-for-dois';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -87,4 +93,6 @@ export type SharedPorts = {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,
+  getActivityForDoi: GetActivityForDoi,
+  getActivityForDois: GetActivityForDois,
 };

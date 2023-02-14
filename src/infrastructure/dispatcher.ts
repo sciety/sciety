@@ -6,6 +6,7 @@ import * as groups from '../shared-read-models/groups';
 import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
 import * as lists from '../shared-read-models/lists';
 import * as users from '../shared-read-models/users';
+import * as articleActivity from '../shared-read-models/article-activity';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
@@ -15,7 +16,8 @@ type Dispatcher = {
   & followings.Queries
   & groups.Queries
   & idsOfEvaluatedArticlesLists.Queries
-  & users.Queries,
+  & users.Queries
+  & articleActivity.Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
@@ -27,6 +29,7 @@ export const dispatcher = (): Dispatcher => {
     groupsReadModel: groups.initialState(),
     idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
     usersReadModel: users.initialState(),
+    articleActivityReadModel: articleActivity.initialState(),
   };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
@@ -63,6 +66,7 @@ export const dispatcher = (): Dispatcher => {
     ...groups.queries(readModels.groupsReadModel),
     ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
     ...users.queries(readModels.usersReadModel),
+    ...articleActivity.queries(readModels.articleActivityReadModel),
   };
 
   return {
