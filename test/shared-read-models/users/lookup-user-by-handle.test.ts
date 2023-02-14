@@ -1,12 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
+import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUserByHandle } from '../../../src/shared-read-models/users/lookup-user-by-handle';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { CandidateUserHandle } from '../../../src/types/candidate-user-handle';
 
 describe('lookup-user-by-handle', () => {
   const user = arbitraryUserDetails();
@@ -20,7 +19,7 @@ describe('lookup-user-by-handle', () => {
     );
 
     describe('and the requested handle is an identical match', () => {
-      const candidateHandle = user.handle as string as CandidateUserHandle;
+      const candidateHandle = candidateUserHandleFromString(user.handle);
 
       it('returns the user', () => {
         expect(lookupUserByHandle(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
@@ -28,7 +27,7 @@ describe('lookup-user-by-handle', () => {
     });
 
     describe('and the requested handle only differs in case', () => {
-      const candidateHandle = user.handle.toUpperCase() as CandidateUserHandle;
+      const candidateHandle = candidateUserHandleFromString(user.handle.toUpperCase());
 
       it('returns the user', () => {
         expect(lookupUserByHandle(readmodel)(candidateHandle)).toStrictEqual(O.some(user));

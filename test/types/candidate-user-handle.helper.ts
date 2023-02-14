@@ -9,3 +9,5 @@ export const arbitraryCandidateUserHandle = (): CandidateUserHandle => pipe(
   candidateUserHandleCodec.decode,
   E.getOrElseW((errors) => { throw new Error(PR.failure(errors).join('')); }),
 );
+
+export const candidateUserHandleFromString = (input: string): CandidateUserHandle => input as CandidateUserHandle;
