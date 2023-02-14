@@ -20,7 +20,7 @@ export const finishCommand = (ports: Ports): Middleware => async (context, next)
       await next();
       return;
     }
-    const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], user.value)();
+    const result = await finishFollowCommand(ports)(context.session[sessionGroupProperty], user.value.id)();
     delete context.session.command;
     delete context.session[sessionGroupProperty];
     if (O.isNone(result)) {
