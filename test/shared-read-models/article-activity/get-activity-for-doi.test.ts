@@ -77,7 +77,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('returns the activity for that article', () => {
+      it('returns the activity for that article', () => {
         expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
@@ -108,7 +108,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('returns the activity for that article', () => {
+      it('returns the activity for that article', () => {
         expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
@@ -126,7 +126,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
@@ -143,7 +143,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
@@ -157,7 +157,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
@@ -171,11 +171,11 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('has a listMemberShipCount of 1', () => {
+      it('has a listMemberShipCount of 1', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
 
-      it.failing('has an evaluationCount of 1', () => {
+      it('has an evaluationCount of 1', () => {
         expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
       });
     });
@@ -191,7 +191,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('has a listMemberShipCount of 2', () => {
+      it('has a listMemberShipCount of 2', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(2);
       });
     });
