@@ -26,7 +26,7 @@ export const finishUnfollowCommand = (ports: Ports): Middleware => async (contex
               context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
             },
             async (userDetails) => {
-              await unfollowCommand(ports)(userDetails, groupId)();
+              await unfollowCommand(ports)(userDetails.id, groupId)();
             },
           ),
         ),

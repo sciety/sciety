@@ -7,4 +7,5 @@ const userCodec = t.type({
   avatarUrl: t.string,
 });
 
+// ts-unused-exports:disable-next-line
 export type User = t.TypeOf<typeof userCodec>;

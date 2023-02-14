@@ -26,7 +26,7 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
           },
           async (userDetails) => {
             context.redirect('back');
-            await unfollowCommand(ports)(userDetails, groupId)();
+            await unfollowCommand(ports)(userDetails.id, groupId)();
           },
         ),
       ),
