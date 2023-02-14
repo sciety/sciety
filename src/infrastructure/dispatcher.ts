@@ -37,6 +37,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.addArticleToElifeSubjectAreaListReadModel,
       addArticleToElifeSubjectAreaList.handleEvent,
     )(events);
+    readModels.articleActivityReadModel = RA.reduce(
+      readModels.articleActivityReadModel,
+      articleActivity.handleEvent,
+    )(events);
     readModels.listsReadModel = RA.reduce(
       readModels.listsReadModel,
       lists.handleEvent,
