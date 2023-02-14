@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '.';
 import { DomainEvent } from '../../domain-events';
-import { getActivityForDoi } from '../../shared-read-models/article-activity';
+import { getActivityForDoi } from '../../shared-read-models/article-activity-stateless';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';

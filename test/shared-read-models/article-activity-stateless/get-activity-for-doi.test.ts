@@ -4,7 +4,7 @@ import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded,
 } from '../../../src/domain-events';
 import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
-import { getActivityForDoi } from '../../../src/shared-read-models/article-activity';
+import { getActivityForDoi } from '../../../src/shared-read-models/article-activity-stateless';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';

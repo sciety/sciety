@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../domain-events';
 import { PageOfItems } from '../../../shared-components/paginate';
-import { getActivityForDois } from '../../../shared-read-models/article-activity/get-activity-for-dois';
+import { getActivityForDois } from '../../../shared-read-models/article-activity-stateless/get-activity-for-dois';
 import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
 

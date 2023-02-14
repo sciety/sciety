@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../../src/domain-events';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
-import { getActivityForDois } from '../../../src/shared-read-models/article-activity/get-activity-for-dois';
+import { getActivityForDois } from '../../../src/shared-read-models/article-activity-stateless/get-activity-for-dois';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
