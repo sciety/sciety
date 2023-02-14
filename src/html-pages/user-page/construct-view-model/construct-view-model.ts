@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetGroupsFollowedBy, LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
@@ -15,7 +15,7 @@ import { candidateUserHandleCodec } from '../../../types/candidate-user-handle';
 
 export type Ports = ConstructFollowingTabPorts & {
   getGroupsFollowedBy: GetGroupsFollowedBy,
-  lookupUser: LookupUser,
+  lookupUserByHandle: LookupUserByHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
@@ -29,7 +29,7 @@ type ConstructViewModel = (tab: string, ports: Ports) => (params: Params) => TE.
 
 export const constructViewModel: ConstructViewModel = (tab, ports) => (params) => pipe(
   params.handle,
-  ports.lookupUser,
+  ports.lookupUserByHandle,
   E.fromOption(() => DE.notFound),
   E.chain((user) => pipe(
     {

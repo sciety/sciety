@@ -4,11 +4,11 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
-import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
+import { lookupUserByHandle } from '../../../src/shared-read-models/users/lookup-user-by-handle';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { CandidateUserHandle } from '../../../src/types/candidate-user-handle';
 
-describe('lookupUser', () => {
+describe('lookup-user-by-handle', () => {
   const user = arbitraryUserDetails();
 
   describe('when the user exists', () => {
@@ -23,7 +23,7 @@ describe('lookupUser', () => {
       const candidateHandle = user.handle as string as CandidateUserHandle;
 
       it('returns the user', () => {
-        expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
+        expect(lookupUserByHandle(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
       });
     });
 
@@ -31,7 +31,7 @@ describe('lookupUser', () => {
       const candidateHandle = user.handle.toUpperCase() as CandidateUserHandle;
 
       it('returns the user', () => {
-        expect(lookupUser(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
+        expect(lookupUserByHandle(readmodel)(candidateHandle)).toStrictEqual(O.some(user));
       });
     });
   });
@@ -43,7 +43,7 @@ describe('lookupUser', () => {
     );
 
     it('returns none', () => {
-      expect(lookupUser(readmodel)(arbitraryCandidateUserHandle())).toStrictEqual(O.none);
+      expect(lookupUserByHandle(readmodel)(arbitraryCandidateUserHandle())).toStrictEqual(O.none);
     });
   });
 });
