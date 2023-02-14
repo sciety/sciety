@@ -23,7 +23,7 @@ describe('group page', () => {
           getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
-          getUser: shouldNotBeCalled,
+          lookupUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
         })(groupPageTabs.lists),
         T.map(flow(

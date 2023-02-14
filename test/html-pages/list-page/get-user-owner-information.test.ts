@@ -14,7 +14,7 @@ describe('get-user-owner-information', () => {
       const userAvatarUrl = arbitraryUri().toString();
       const userHandle = arbitraryUserHandle();
       const ports: Ports = {
-        getUser: () => O.some({
+        lookupUser: () => O.some({
           displayName: userDisplayName,
           handle: userHandle,
           avatarUrl: userAvatarUrl,
@@ -38,7 +38,7 @@ describe('get-user-owner-information', () => {
   describe('when Twitter does not find the given user', () => {
     it('returns a not-found error', () => {
       const ports = {
-        getUser: () => O.none,
+        lookupUser: () => O.none,
       };
 
       const ownerInfo = pipe(

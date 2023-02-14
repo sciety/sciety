@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { userCreatedAccount } from '../../../src/domain-events/user-created-account-event';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
-import { getUser } from '../../../src/shared-read-models/users/get-user';
+import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
@@ -23,7 +23,7 @@ describe('get-user', () => {
     );
 
     it('returns the correct user details', () => {
-      expect(getUser(readModel)(userId)).toStrictEqual(O.some({
+      expect(lookupUser(readModel)(userId)).toStrictEqual(O.some({
         avatarUrl,
         displayName,
         handle,
@@ -39,7 +39,7 @@ describe('get-user', () => {
     );
 
     it('returns None', () => {
-      expect(getUser(readModel)(userId)).toStrictEqual(O.none);
+      expect(lookupUser(readModel)(userId)).toStrictEqual(O.none);
     });
   });
 });

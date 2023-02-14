@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { GetUser } from '../shared-ports';
+import { LookupUser } from '../shared-ports';
 import { userIdCodec, UserId } from '../types/user-id';
 import { UserDetails } from '../types/user-details';
 
@@ -28,7 +28,7 @@ export const authenticateWithUserId = (
 };
 
 export type Ports = {
-  getUser: GetUser,
+  lookupUser: LookupUser,
 };
 
 export const getAuthenticatedUserIdFromContext = (
@@ -43,5 +43,5 @@ export const getAuthenticatedUserIdFromContext = (
 export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedContext): O.Option<UserDetails> => pipe(
   context,
   getAuthenticatedUserIdFromContext,
-  O.chain((id) => adapters.getUser(id)),
+  O.chain((id) => adapters.lookupUser(id)),
 );

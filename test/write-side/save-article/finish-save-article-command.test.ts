@@ -47,7 +47,7 @@ describe('finish-save-article-command', () => {
 
     it('logs an error', async () => {
       await finishSaveArticleCommand({
-        getUser: () => O.some(user),
+        lookupUser: () => O.some(user),
         selectAllListsOwnedBy,
         addArticleToList,
         logger,
@@ -77,7 +77,7 @@ describe('finish-save-article-command', () => {
     it('calls the add article to list command with the list id owned by the user', async () => {
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
-        getUser: () => O.some(user),
+        lookupUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
       })(context, jest.fn());
@@ -107,7 +107,7 @@ describe('finish-save-article-command', () => {
 
       await finishSaveArticleCommand({
         selectAllListsOwnedBy,
-        getUser: () => O.some(user),
+        lookupUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
       })(context, jest.fn());

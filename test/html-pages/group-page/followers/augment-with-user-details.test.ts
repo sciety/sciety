@@ -11,7 +11,7 @@ describe('augment-with-user-details', () => {
   describe('not all user details are returned from the port', () => {
     it('returns a shorter array of user card view models', () => {
       const ports: Ports = {
-        getUser: () => O.none,
+        lookupUser: () => O.none,
       };
       const followers = [
         {
@@ -37,7 +37,7 @@ describe('augment-with-user-details', () => {
       [userId2]: { ...arbitraryUserDetails(), id: userId2 },
     };
     const ports = {
-      getUser: (userId: UserId) => O.some(usersReadmodel[userId]),
+      lookupUser: (userId: UserId) => O.some(usersReadmodel[userId]),
     };
     const followers = [
       {

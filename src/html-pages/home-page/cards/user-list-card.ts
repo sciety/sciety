@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../../../domain-events';
-import { GetUser, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
 import * as LOID from '../../../types/list-owner-id';
 import { UserId } from '../../../types/user-id';
@@ -14,7 +14,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
   getAllEvents: GetAllEvents,
-  getUser: GetUser,
+  lookupUser: LookupUser,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
@@ -28,7 +28,7 @@ export const userListCard = (
       ports.selectAllListsOwnedBy,
       RA.head,
     ),
-    listOwner: ports.getUser(userId),
+    listOwner: ports.lookupUser(userId),
   },
   sequenceS(O.Apply),
   O.map(({ list, listOwner }) => ({

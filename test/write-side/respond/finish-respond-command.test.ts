@@ -27,7 +27,7 @@ describe('finish-respond-command', () => {
       await finishRespondCommand({
         commitEvents: shouldNotBeCalled,
         getAllEvents: shouldNotBeCalled,
-        getUser: () => O.some(arbitraryUserDetails()),
+        lookupUser: () => O.some(arbitraryUserDetails()),
       })(context, jest.fn());
 
       expect(context.session).toStrictEqual(originalContext.session);

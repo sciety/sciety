@@ -35,7 +35,7 @@ describe('article-added-to-list-card', () => {
       const ports: Ports = {
         getAllEvents,
         getList,
-        getUser: () => O.some({
+        lookupUser: () => O.some({
           handle,
           avatarUrl,
           id: arbitraryUserId(),
@@ -72,7 +72,7 @@ describe('article-added-to-list-card', () => {
       const ports: Ports = {
         getAllEvents,
         getList,
-        getUser: () => O.none,
+        lookupUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),
         logger: dummyLogger,
       };

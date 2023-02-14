@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
 import {
-  GetAllEvents, GetGroup, GetUser, Logger,
+  GetAllEvents, GetGroup, LookupUser, Logger,
 } from '../../../shared-ports';
 import { List } from '../../../types/list';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
-  getUser: GetUser,
+  lookupUser: LookupUser,
   getGroup: GetGroup,
   logger: Logger,
 };
@@ -54,7 +54,7 @@ export const addListOwnershipInformation = (
     case 'user-id':
       return pipe(
         list.ownerId.value,
-        ports.getUser,
+        ports.lookupUser,
         O.match(
           () => {
             ports.logger('error', 'Could not find user who owns list', {

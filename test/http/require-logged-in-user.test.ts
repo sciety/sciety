@@ -19,7 +19,7 @@ describe('require-logged-in-user', () => {
       redirect: () => {},
     } as unknown) as ParameterizedContext;
     const adapters: GetLoggedInScietyUserPorts = {
-      getUser: () => O.some(arbitraryUserDetails()),
+      lookupUser: () => O.some(arbitraryUserDetails()),
     };
 
     await requireLoggedInUser(adapters)(context, async () => {});

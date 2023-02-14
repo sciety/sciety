@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { GetUser } from '../../../shared-ports';
+import { LookupUser } from '../../../shared-ports';
 import { Follower } from '../content-model';
 import { UserCardViewModel } from '../view-model';
 
 export type Ports = {
-  getUser: GetUser,
+  lookupUser: LookupUser,
 };
 
 export const augmentWithUserDetails = (
@@ -16,7 +16,7 @@ export const augmentWithUserDetails = (
 ): ReadonlyArray<UserCardViewModel> => pipe(
   followers,
   RA.map((follower) => follower.userId),
-  RA.map(ports.getUser),
+  RA.map(ports.lookupUser),
   RA.compact,
   (userDetailsArray) => pipe(
     followers,

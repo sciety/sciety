@@ -31,7 +31,7 @@ describe('user-followed-a-group-card', () => {
         group.slug,
       )]),
       getGroup: () => O.some(group),
-      getUser: () => O.some({
+      lookupUser: () => O.some({
         handle,
         avatarUrl,
         id: arbitraryUserId(),
@@ -82,7 +82,7 @@ describe('user-followed-a-group-card', () => {
         group.slug,
       )]),
       getGroup: () => O.some(group),
-      getUser: () => O.none,
+      lookupUser: () => O.none,
     };
 
     const viewModel = pipe(
@@ -116,7 +116,7 @@ describe('user-followed-a-group-card', () => {
     const ports: UserFollowedAGroupCardPorts = {
       getAllEvents: T.of([]),
       getGroup: () => O.none,
-      getUser: () => O.some({
+      lookupUser: () => O.some({
         handle: arbitraryUserHandle(),
         avatarUrl: arbitraryUri(),
         id: arbitraryUserId(),

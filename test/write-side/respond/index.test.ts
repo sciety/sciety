@@ -29,7 +29,7 @@ describe('index', () => {
     const adapters: RespondHandlerPorts = {
       getAllEvents: async () => [],
       commitEvents: () => T.of('events-created' as const),
-      getUser: () => O.some(arbitraryUserDetails()),
+      lookupUser: () => O.some(arbitraryUserDetails()),
     };
     const respond = respondHandler(adapters);
     await respond(context, async () => {});

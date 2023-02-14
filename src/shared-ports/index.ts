@@ -18,7 +18,7 @@ import { GetGroupsFollowedBy } from './get-groups-followed-by';
 import { GetList } from './get-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
-import { GetUser } from './get-user';
+import { LookupUser } from './lookup-user';
 import { LookupUserByHandle } from './lookup-user-by-handle';
 import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
 import { IsFollowing } from './is-following';
@@ -40,7 +40,7 @@ export { GetGroup } from './get-group';
 export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
 export { GetList } from './get-list';
-export { GetUser } from './get-user';
+export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
 // ts-unused-exports:disable-next-line
 export { RemoveArticleFromList } from './remove-article-from-list';
@@ -75,7 +75,7 @@ export type SharedPorts = {
   getGroupBySlug: GetGroupBySlug,
   getGroupsFollowedBy: GetGroupsFollowedBy,
   getList: GetList,
-  getUser: GetUser,
+  lookupUser: LookupUser,
   lookupUserByHandle: LookupUserByHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,

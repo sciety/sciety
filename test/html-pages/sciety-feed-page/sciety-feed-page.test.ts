@@ -27,11 +27,11 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { GetUser } from '../../../src/shared-ports';
+import { LookupUser } from '../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
 describe('sciety-feed-page', () => {
-  const getUser: GetUser = () => O.some({
+  const getUser: LookupUser = () => O.some({
     handle: arbitraryUserHandle(),
     avatarUrl: arbitraryUri(),
     id: arbitraryUserId(),
@@ -41,7 +41,7 @@ describe('sciety-feed-page', () => {
   const group = arbitraryGroup();
 
   const defaultPorts: Ports = {
-    getUser,
+    lookupUser: getUser,
     getGroup: () => O.some(arbitraryGroup()),
     getList: () => O.some(arbitraryList()),
     logger: dummyLogger,
