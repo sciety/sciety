@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
-import { populateArticleViewModel } from '../../../src/shared-components/article-card/populate-article-view-model';
+import { populateArticleViewModel, Ports } from '../../../src/shared-components/article-card/populate-article-view-model';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryDate } from '../../helpers';
@@ -20,7 +20,7 @@ describe('populate-article-view-model', () => {
     const latestVersionDate = new Date();
     const earlierPublicationDate = new Date('1970');
     const laterPublicationDate = new Date('2020');
-    const ports = {
+    const ports: Ports = {
       getAllEvents: T.of([
         groupJoined(
           group.id,
@@ -35,6 +35,12 @@ describe('populate-article-view-model', () => {
         evaluationRecorded(group.id, articleId, arbitraryReviewId(), [], earlierPublicationDate, arbitraryDate()),
       ]),
       getLatestArticleVersionDate: () => TO.some(latestVersionDate),
+      getActivityForDoi: (a) => ({
+        articleId: a,
+        latestActivityDate: O.some(laterPublicationDate),
+        evaluationCount: 2,
+        listMembershipCount: 0,
+      }),
     };
 
     const article = {

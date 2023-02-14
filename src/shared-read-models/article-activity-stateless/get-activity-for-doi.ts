@@ -7,6 +7,7 @@ import { DomainEvent } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 
+// ts-unused-exports:disable-next-line
 export const getActivityForDoi = (
   articleId: Doi,
 ) => (

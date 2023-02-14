@@ -6,13 +6,13 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
-import { populateArticleViewModel } from '../../shared-components/article-card/populate-article-view-model';
+import { populateArticleViewModel, Ports as PopulateArticleViewModelPorts } from '../../shared-components/article-card/populate-article-view-model';
 import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../../shared-components/group-card';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 
-export type Ports = PopulateGroupViewModelPorts & {
+export type Ports = PopulateGroupViewModelPorts & PopulateArticleViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 

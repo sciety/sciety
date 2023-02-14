@@ -31,6 +31,12 @@ const dummyAdapters: Ports = {
   findVersionsForArticleDoi: shouldNotBeCalled,
   getAllEvents: T.of([]),
   selectAllListsOwnedBy: () => [],
+  getActivityForDoi: (a) => ({
+    articleId: a,
+    latestActivityDate: O.none,
+    evaluationCount: 0,
+    listMembershipCount: 0,
+  }),
 };
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(

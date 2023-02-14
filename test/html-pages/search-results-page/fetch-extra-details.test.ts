@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
-import { fetchExtraDetails } from '../../../src/html-pages/search-results-page/fetch-extra-details';
+import { fetchExtraDetails, Ports } from '../../../src/html-pages/search-results-page/fetch-extra-details';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryDate, arbitraryNumber } from '../../helpers';
@@ -23,7 +23,7 @@ describe('fetch-extra-details', () => {
       const latestVersionDate = new Date();
       const earlierPublicationDate = new Date('1970');
       const laterPublicationDate = new Date('2020');
-      const ports = {
+      const ports: Ports = {
         getAllEvents: T.of([
           groupJoined(
             group.id,
@@ -41,6 +41,12 @@ describe('fetch-extra-details', () => {
         getGroup: () => O.some(arbitraryGroup()),
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
         selectAllListsOwnedBy: shouldNotBeCalled,
+        getActivityForDoi: (a) => ({
+          articleId: a,
+          latestActivityDate: O.some(laterPublicationDate),
+          evaluationCount: 2,
+          listMembershipCount: 0,
+        }),
       };
 
       const matches = {
@@ -89,8 +95,7 @@ describe('fetch-extra-details', () => {
       it('returns a correct view model', async () => {
         const pageNumber = arbitraryNumber(2, 5);
         const group = arbitraryGroup();
-        const ports = {
-          findReviewsForArticleDoi: shouldNotBeCalled,
+        const ports: Ports = {
           getAllEvents: T.of([groupJoined(
             group.id,
             group.name,
@@ -104,6 +109,12 @@ describe('fetch-extra-details', () => {
           getGroup: () => O.some(group),
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: () => [],
+          getActivityForDoi: (a) => ({
+            articleId: a,
+            latestActivityDate: O.none,
+            evaluationCount: 0,
+            listMembershipCount: 0,
+          }),
         };
         const matches = {
           query: '',
@@ -145,13 +156,18 @@ describe('fetch-extra-details', () => {
     describe('when the details cannot be fetched', () => {
       it('removes the group from the list', async () => {
         const pageNumber = arbitraryNumber(2, 5);
-        const ports = {
-          findReviewsForArticleDoi: shouldNotBeCalled,
+        const ports: Ports = {
           getAllEvents: T.of([]),
           getFollowers: () => [],
           getGroup: () => O.none,
           getLatestArticleVersionDate: shouldNotBeCalled,
           selectAllListsOwnedBy: shouldNotBeCalled,
+          getActivityForDoi: (a) => ({
+            articleId: a,
+            latestActivityDate: O.none,
+            evaluationCount: 0,
+            listMembershipCount: 0,
+          }),
         };
         const matches = {
           query: '',

@@ -3,9 +3,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { GetActivityForDoi } from '../../shared-ports';
 import { ArticleViewModel } from '.';
 import { DomainEvent } from '../../domain-events';
-import { getActivityForDoi } from '../../shared-read-models/article-activity-stateless';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -21,9 +21,11 @@ type ArticleItem = {
 
 type GetLatestArticleVersionDate = (articleId: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
-type Ports = {
+// ts-unused-exports:disable-next-line
+export type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getActivityForDoi: GetActivityForDoi,
 };
 
 export const populateArticleViewModel = (
@@ -32,8 +34,8 @@ export const populateArticleViewModel = (
   {
     latestVersionDate: ports.getLatestArticleVersionDate(item.articleId, item.server),
     articleActivity: pipe(
-      ports.getAllEvents,
-      T.map(getActivityForDoi(item.articleId)),
+      ports.getActivityForDoi(item.articleId),
+      T.of,
     ),
   },
   sequenceS(T.ApplyPar),
