@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../../src/write-side/save-article/finish-save-article-command';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
-import { User } from '../../../src/types/user';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -14,6 +13,7 @@ import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
+import { UserId } from '../../../src/types/user-id';
 
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
@@ -41,7 +41,7 @@ describe('finish-save-article-command', () => {
           id: userId,
         },
       },
-    } as unknown) as RouterContext<{ user: User }>;
+    } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
     const logger = jest.fn(dummyLogger);
 
@@ -72,7 +72,7 @@ describe('finish-save-article-command', () => {
           id: userId,
         },
       },
-    } as unknown) as RouterContext<{ user: User }>;
+    } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
     it('calls the add article to list command with the list id owned by the user', async () => {
       await finishSaveArticleCommand({

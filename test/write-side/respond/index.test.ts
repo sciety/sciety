@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { respondHandler, Ports as RespondHandlerPorts } from '../../../src/write-side/respond';
-import { User } from '../../../src/types/user';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { UserId } from '../../../src/types/user-id';
 
 describe('index', () => {
   it('redirects to review anchor on referer', async () => {
@@ -25,7 +25,7 @@ describe('index', () => {
         },
       },
       redirect: jest.fn(),
-    } as unknown) as ParameterizedContext<{ user: User }, RouterParamContext<{ user: User }>>;
+    } as unknown) as ParameterizedContext<{ user: { id: UserId } }, RouterParamContext<{ user: { id: UserId } }>>;
     const adapters: RespondHandlerPorts = {
       getAllEvents: async () => [],
       commitEvents: () => T.of('events-created' as const),
