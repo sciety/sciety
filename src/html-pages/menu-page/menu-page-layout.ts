@@ -5,13 +5,12 @@ import { siteMenuItems } from './site-menu';
 import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
 import { utilityBar } from '../../shared-components/utility-bar';
-import { User } from '../../types/user';
 import { Page } from '../../types/page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPage = (user: O.Option<User>) => (referer: O.Option<string>) => ({
+export const menuPage = (user: O.Option<UserDetails>) => (referer: O.Option<string>) => ({
   title: 'Menu',
   content: toHtmlFragment(`
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
