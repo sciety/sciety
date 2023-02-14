@@ -17,6 +17,7 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -58,7 +59,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -68,7 +69,7 @@ describe('user-page', () => {
     });
 
     it('accepts handle as a string', async () => {
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultAdapters)(tabName),
@@ -86,7 +87,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -112,7 +113,7 @@ describe('user-page', () => {
         ]),
         getGroupsFollowedBy: () => [groupId1, groupId2],
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -138,7 +139,7 @@ describe('user-page', () => {
           id: arbitraryUserId(),
         }),
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
 
       const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
 
@@ -154,7 +155,7 @@ describe('user-page', () => {
         lookupUser: () => O.some(user),
         getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -171,7 +172,7 @@ describe('user-page', () => {
 
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultAdapters)('followed-groups'),
@@ -215,7 +216,7 @@ describe('user-page', () => {
           getGroupsFollowedBy: () => [group1.id, group2.id],
           lookupUser: () => O.some(user),
         };
-        const params = { handle: arbitraryUserHandle() };
+        const params = { handle: arbitraryCandidateUserHandle() };
         const page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -239,7 +240,7 @@ describe('user-page', () => {
             ]),
             lookupUser: () => O.some(user),
           };
-          const params = { handle: arbitraryUserHandle() };
+          const params = { handle: arbitraryCandidateUserHandle() };
 
           const content = await pipe(
             params,
@@ -259,7 +260,7 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const params = { handle: arbitraryUserHandle() };
+        const params = { handle: arbitraryCandidateUserHandle() };
         const adapters: Ports = {
           ...defaultAdapters,
           getGroupsFollowedBy: () => [],
@@ -288,7 +289,7 @@ describe('user-page', () => {
 
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(defaultAdapters)('lists'),
@@ -309,7 +310,7 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
         params,
         userPage(ports)('lists'),
@@ -319,7 +320,7 @@ describe('user-page', () => {
     });
 
     it('shows a card linking to the saved-articles list page', async () => {
-      const params = { handle: arbitraryUserHandle() };
+      const params = { handle: arbitraryCandidateUserHandle() };
 
       const page = await pipe(
         params,
