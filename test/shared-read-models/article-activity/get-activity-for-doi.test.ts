@@ -4,7 +4,7 @@ import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded,
 } from '../../../src/domain-events';
 import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
-import { getActivityForDoi } from '../../../src/shared-read-models/article-activity-stateless';
+import { getActivityForDoi as getActivityForDoiStateless } from '../../../src/shared-read-models/article-activity-stateless';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -19,7 +19,7 @@ describe('get-activity-for-doi', () => {
     describe('because it has never been added to a list', () => {
       const articleActivity = pipe(
         [],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('article has no activity', () => {
@@ -39,7 +39,7 @@ describe('get-activity-for-doi', () => {
           articleAddedToList(articleId, listId),
           articleRemovedFromList(articleId, listId),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 0', () => {
@@ -72,7 +72,7 @@ describe('get-activity-for-doi', () => {
             arbitraryDate(),
           ),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('returns the activity for that article', () => {
@@ -103,7 +103,7 @@ describe('get-activity-for-doi', () => {
             arbitraryDate(),
           ),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('returns the activity for that article', () => {
@@ -121,7 +121,7 @@ describe('get-activity-for-doi', () => {
         [
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 1', () => {
@@ -138,7 +138,7 @@ describe('get-activity-for-doi', () => {
           articleRemovedFromList(articleId, listAId),
           articleAddedToList(articleId, listBId),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 1', () => {
@@ -152,7 +152,7 @@ describe('get-activity-for-doi', () => {
           userSavedArticle(arbitraryUserId(), articleId),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 1', () => {
@@ -166,7 +166,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 1', () => {
@@ -186,7 +186,7 @@ describe('get-activity-for-doi', () => {
           articleAddedToList(articleId, arbitraryListId()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoi(articleId),
+        getActivityForDoiStateless(articleId),
       );
 
       it('has a listMemberShipCount of 2', () => {

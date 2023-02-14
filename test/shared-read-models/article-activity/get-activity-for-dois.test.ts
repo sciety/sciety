@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../../src/domain-events';
 import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
-import { getActivityForDois } from '../../../src/shared-read-models/article-activity-stateless/get-activity-for-dois';
+import { getActivityForDois as getActivityForDoisStateless } from '../../../src/shared-read-models/article-activity-stateless/get-activity-for-dois';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -23,7 +23,7 @@ describe('get-activity-for-dois', () => {
           evaluationRecorded(arbitraryGroupId(), articleId2, arbitraryReviewId(), [], date2),
           articleAddedToList(articleId2, arbitraryListId()),
         ],
-        getActivityForDois([articleId1, articleId2]),
+        getActivityForDoisStateless([articleId1, articleId2]),
       );
 
       expect(activity).toStrictEqual([
@@ -48,7 +48,7 @@ describe('get-activity-for-dois', () => {
       const articleId = arbitraryDoi();
       const activity = pipe(
         [],
-        getActivityForDois([articleId]),
+        getActivityForDoisStateless([articleId]),
       );
 
       expect(activity).toStrictEqual([
