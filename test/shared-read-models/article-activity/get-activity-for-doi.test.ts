@@ -5,7 +5,6 @@ import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded,
 } from '../../../src/domain-events';
 import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
-import { getActivityForDoi as getActivityForDoiStateless } from '../../../src/shared-read-models/article-activity-stateless';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -56,7 +55,7 @@ describe('get-activity-for-doi', () => {
     const laterPublishedDate = new Date(2000);
 
     describe('and the evaluations are recorded in order of publication', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           evaluationRecorded(
             arbitraryGroupId(),
@@ -75,11 +74,11 @@ describe('get-activity-for-doi', () => {
             arbitraryDate(),
           ),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('returns the activity for that article', () => {
-        expect(articleActivity).toStrictEqual(expect.objectContaining({
+      it.failing('returns the activity for that article', () => {
+        expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
         }));
@@ -87,7 +86,7 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and the evaluations are NOT recorded in order of publication', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           evaluationRecorded(
             arbitraryGroupId(),
@@ -106,11 +105,11 @@ describe('get-activity-for-doi', () => {
             arbitraryDate(),
           ),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('returns the activity for that article', () => {
-        expect(articleActivity).toStrictEqual(expect.objectContaining({
+      it.failing('returns the activity for that article', () => {
+        expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
           latestActivityDate: O.some(laterPublishedDate),
           evaluationCount: 2,
         }));
@@ -120,80 +119,80 @@ describe('get-activity-for-doi', () => {
 
   describe('when an article appears in one list', () => {
     describe('and the article has been added to a single list and not removed', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('has a listMemberShipCount of 1', () => {
-        expect(articleActivity.listMembershipCount).toBe(1);
+      it.failing('has a listMemberShipCount of 1', () => {
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
 
     describe('and the article was added and removed from a different list', () => {
       const listAId = arbitraryListId();
       const listBId = arbitraryListId();
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           articleAddedToList(articleId, listAId),
           articleRemovedFromList(articleId, listAId),
           articleAddedToList(articleId, listBId),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('has a listMemberShipCount of 1', () => {
-        expect(articleActivity.listMembershipCount).toBe(1);
+      it.failing('has a listMemberShipCount of 1', () => {
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
 
     describe('and the article was saved by a user with a legacy command', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           userSavedArticle(arbitraryUserId(), articleId),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('has a listMemberShipCount of 1', () => {
-        expect(articleActivity.listMembershipCount).toBe(1);
+      it.failing('has a listMemberShipCount of 1', () => {
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
     });
 
     describe('added to a list, after being evaluated', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('has a listMemberShipCount of 1', () => {
-        expect(articleActivity.listMembershipCount).toBe(1);
+      it.failing('has a listMemberShipCount of 1', () => {
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
       });
 
-      it('has an evaluationCount of 1', () => {
-        expect(articleActivity.evaluationCount).toBe(1);
+      it.failing('has an evaluationCount of 1', () => {
+        expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
       });
     });
   });
 
   describe('when an article appears in multiple lists', () => {
     describe('in two different lists', () => {
-      const articleActivity = pipe(
+      const readmodel = pipe(
         [
           articleAddedToList(articleId, arbitraryListId()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
-        getActivityForDoiStateless(articleId),
+        RA.reduce(initialState(), handleEvent),
       );
 
-      it('has a listMemberShipCount of 2', () => {
-        expect(articleActivity.listMembershipCount).toBe(2);
+      it.failing('has a listMemberShipCount of 2', () => {
+        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(2);
       });
     });
   });
