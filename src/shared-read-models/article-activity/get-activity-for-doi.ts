@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
@@ -9,7 +8,6 @@ import { ReadModel } from './handle-event';
 
 type GetActivityForDoi = (articleId: Doi) => ArticleActivity;
 
-// ts-unused-exports:disable-next-line
 export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (articleId) => pipe(
   readmodel,
   RM.lookup(S.Eq)(articleId.value),

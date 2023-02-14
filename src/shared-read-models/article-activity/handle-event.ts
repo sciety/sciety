@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -21,10 +20,8 @@ const deleteFromSet = (set: Set<ListId>, element: ListId) => {
 
 export type ReadModel = Map<string, ArticleState>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => new Map();
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   switch (event.type) {
     case 'ArticleAddedToList':
