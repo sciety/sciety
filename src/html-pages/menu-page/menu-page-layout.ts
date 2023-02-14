@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { constant } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import { siteMenuItems } from './site-menu';
 import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
@@ -26,7 +26,13 @@ export const menuPage = (user: O.Option<User>) => (referer: O.Option<string>) =>
 
 export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, page)}
+  ${head(
+    pipe(
+      user,
+      O.map((u) => u.id),
+    ),
+    page,
+  )}
 <body>
   ${googleTagManagerNoScript()}
 

@@ -1,13 +1,12 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
-import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 export const head = (
-  user: O.Option<User>,
+  userId: O.Option<UserId>,
   page: Omit<Page, 'content'>,
 ): HtmlFragment => toHtmlFragment(`
 <head>
@@ -36,7 +35,7 @@ export const head = (
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
-  ${googleTagManager(pipe(user, O.map((u) => u.id)))}
+  ${googleTagManager(userId)}
   ${fathom()}
 </head>
 `);

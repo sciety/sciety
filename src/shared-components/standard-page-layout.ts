@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { googleTagManagerNoScript } from './analytics';
 import { head } from './head';
 import { siteFooter } from './site-footer';
@@ -9,7 +10,13 @@ import { User } from '../types/user';
 // TODO: return a more specific type e.g. HtmlDocument
 export const standardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, page)}
+  ${head(
+    pipe(
+      user,
+      O.map((u) => u.id),
+    ),
+    page,
+  )}
 <body>
   ${googleTagManagerNoScript()}
   <div class="standard-page-container">
