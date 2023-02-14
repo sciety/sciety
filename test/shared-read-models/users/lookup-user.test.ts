@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
@@ -42,7 +43,7 @@ describe('lookupUser', () => {
     );
 
     it('returns none', () => {
-      expect(lookupUser(readmodel)(user.handle)).toStrictEqual(O.none);
+      expect(lookupUser(readmodel)(arbitraryCandidateUserHandle())).toStrictEqual(O.none);
     });
   });
 });
