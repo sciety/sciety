@@ -4,6 +4,7 @@ import * as User from '../../../src/write-side/resources/user-resource';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
+import { UserHandle } from '../../../src/types/user-handle';
 
 describe('user-resource', () => {
   describe('exists', () => {
@@ -28,7 +29,21 @@ describe('user-resource', () => {
       });
 
       describe('with a handle matching except for case', () => {
-        it.todo('returns true');
+        it.failing('returns true', () => {
+          const result = pipe(
+            [
+              userCreatedAccount(
+                arbitraryUserId(),
+                'ahandle' as UserHandle,
+                arbitraryUri(),
+                arbitraryString(),
+              ),
+            ],
+            User.exists('AHandle' as UserHandle),
+          );
+
+          expect(result).toBe(true);
+        });
       });
     });
 
