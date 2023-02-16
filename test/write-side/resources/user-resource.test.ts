@@ -1,6 +1,4 @@
-import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../src/types/data-error';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
@@ -10,7 +8,7 @@ describe('user-resource', () => {
   describe('exists', () => {
     describe('when the user exists', () => {
       describe('with an identical handle', () => {
-        it.failing('returns the user', () => {
+        it('returns the user', () => {
           const userDetails = arbitraryUserDetails();
           const result = pipe(
             [
@@ -24,7 +22,7 @@ describe('user-resource', () => {
             User.exists(userDetails.handle),
           );
 
-          expect(result).toStrictEqual(E.right(userDetails));
+          expect(result).toBe(true);
         });
       });
 
@@ -40,7 +38,7 @@ describe('user-resource', () => {
           User.exists(arbitraryUserHandle()),
         );
 
-        expect(result).toStrictEqual(E.left(DE.notFound));
+        expect(result).toBe(false);
       });
     });
   });
