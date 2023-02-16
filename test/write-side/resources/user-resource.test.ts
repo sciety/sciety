@@ -1,8 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
+import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
 describe('user-resource', () => {
   describe('exists', () => {
@@ -32,7 +34,14 @@ describe('user-resource', () => {
     });
 
     describe('when the user does not exist', () => {
-      it.todo('returns not-found');
+      it('returns not-found', () => {
+        const result = pipe(
+          [],
+          User.exists(arbitraryUserHandle()),
+        );
+
+        expect(result).toStrictEqual(E.left(DE.notFound));
+      });
     });
   });
 });
