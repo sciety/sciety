@@ -1,17 +1,16 @@
-import * as RA from 'fp-ts/ReadonlyArray';
+import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { CreateUserAccountCommand } from '../commands';
-import { DomainEvent, isUserCreatedAccountEvent } from '../../domain-events';
+import { DomainEvent } from '../../domain-events';
 import { toErrorMessage } from '../../types/error-message';
+import * as User from '../resources/user-resource';
 
 export const checkCommand = (command: CreateUserAccountCommand) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter(isUserCreatedAccountEvent),
-  RA.map((event) => event.handle),
-  RA.filter((handle) => handle === command.handle),
-  RA.match(
+  User.exists(command.handle),
+  B.match(
     () => E.right(command),
-    () => E.left(toErrorMessage('handle-already-exists')),
+    () => E.left(toErrorMessage('user-handle-already-exists')),
   ),
 );
