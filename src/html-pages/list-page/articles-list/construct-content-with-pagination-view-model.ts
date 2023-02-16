@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -24,8 +25,8 @@ export const constructContentWithPaginationViewModel = (
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
   paginate(20, pageNumber),
+  E.map(populateArticleActivities(ports)),
   TE.fromEither,
-  TE.chainTaskK(populateArticleActivities(ports)),
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
     toPageOfCards(ports, editCapability, listId, listOwnerId),

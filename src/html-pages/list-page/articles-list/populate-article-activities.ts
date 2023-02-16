@@ -1,5 +1,4 @@
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../domain-events';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
@@ -13,16 +12,9 @@ export type Ports = {
 
 type PopulateArticleActivities = (ports: Ports)
 => (pageOfItems: PageOfItems<Doi>)
-=> T.Task<PageOfItems<ArticleActivity>>;
+=> PageOfItems<ArticleActivity>;
 
-export const populateArticleActivities: PopulateArticleActivities = (ports) => (pageOfItems) => pipe(
-  pageOfItems.items,
-  (dois) => pipe(
-    ports.getActivityForDois(dois),
-    T.of,
-  ),
-  T.map((items) => ({
-    ...pageOfItems,
-    items,
-  })),
-);
+export const populateArticleActivities: PopulateArticleActivities = (ports) => (pageOfItems) => ({
+  ...pageOfItems,
+  items: ports.getActivityForDois(pageOfItems.items),
+});
