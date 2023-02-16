@@ -1,10 +1,12 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
-import { GetActivityForDois } from '../../../shared-ports';
+import { GetActivityForDoi } from '../../../shared-ports';
 
 export type Ports = {
-  getActivityForDois: GetActivityForDois,
+  getActivityForDoi: GetActivityForDoi,
 };
 
 type PopulateArticleActivities = (ports: Ports)
@@ -13,5 +15,8 @@ type PopulateArticleActivities = (ports: Ports)
 
 export const populateArticleActivities: PopulateArticleActivities = (ports) => (pageOfItems) => ({
   ...pageOfItems,
-  items: ports.getActivityForDois(pageOfItems.items),
+  items: pipe(
+    pageOfItems.items,
+    RA.map(ports.getActivityForDoi),
+  ),
 });
