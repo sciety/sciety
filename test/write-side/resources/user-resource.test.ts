@@ -1,25 +1,26 @@
 import { pipe } from 'fp-ts/function';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryString, arbitraryUri } from '../../helpers';
 
 describe('user-resource', () => {
   describe('exists', () => {
     describe('when the user exists', () => {
       describe('with an identical handle', () => {
         it('returns true', () => {
-          const userDetails = arbitraryUserDetails();
+          const handle = arbitraryUserHandle();
           const result = pipe(
             [
               userCreatedAccount(
-                userDetails.id,
-                userDetails.handle,
-                userDetails.avatarUrl,
-                userDetails.displayName,
+                arbitraryUserId(),
+                handle,
+                arbitraryUri(),
+                arbitraryString(),
               ),
             ],
-            User.exists(userDetails.handle),
+            User.exists(handle),
           );
 
           expect(result).toBe(true);
