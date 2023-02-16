@@ -10,12 +10,11 @@ import { projectUserReviewResponse } from './project-user-review-response';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { ReviewId } from '../../../types/review-id';
-import { DomainEvent } from '../../../domain-events';
-import { FetchReview, GetGroup } from '../../../shared-ports';
+import { FetchReview, GetAllEvents, GetGroup } from '../../../shared-ports';
 
 export type Ports = {
   fetchReview: FetchReview,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   getGroup: GetGroup,
 };
 

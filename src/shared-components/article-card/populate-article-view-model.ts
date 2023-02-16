@@ -5,7 +5,6 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { GetActivityForDoi } from '../../shared-ports';
 import { ArticleViewModel } from '.';
-import { DomainEvent } from '../../domain-events';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -24,7 +23,6 @@ type GetLatestArticleVersionDate = (articleId: Doi, server: ArticleServer) => TO
 // ts-unused-exports:disable-next-line
 export type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getActivityForDoi: GetActivityForDoi,
 };
 

@@ -8,12 +8,12 @@ import { constant, pipe } from 'fp-ts/function';
 import { getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
-import { DomainEvent } from '../../../domain-events';
 import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
+import { GetAllEvents } from '../../../shared-ports';
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,
@@ -26,7 +26,7 @@ export type FindVersionsForArticleDoi = (
 
 export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
 };
 
 type GetArticleFeedEventsByDateDescending = (

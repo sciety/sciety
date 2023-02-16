@@ -6,13 +6,13 @@ import { StatusCodes } from 'http-status-codes';
 import * as ER from './error-response';
 import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesPorts } from './identify-all-possible-index-entries';
-import { DomainEvent } from '../../domain-events';
 import { Ports as DocmapPorts, generateDocmapViewModel } from '../docmap/generate-docmap-view-model';
 import { toDocmap } from '../docmap/to-docmap';
 import { supportedGroups } from '../supported-groups';
+import { GetAllEvents } from '../../shared-ports';
 
 type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts & {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
 };
 
 type DocmapIndexBody = {

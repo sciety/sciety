@@ -4,13 +4,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
-import { DomainEvent } from '../../domain-events';
-import { GetGroup } from '../../shared-ports';
+import { GetAllEvents, GetGroup } from '../../shared-ports';
 import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -46,7 +44,7 @@ type ReviewForArticle = {
 
 export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   getGroup: GetGroup,
 };
 

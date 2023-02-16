@@ -2,14 +2,14 @@ import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
-import { DomainEvent, userFollowedEditorialCommunity } from '../../domain-events';
-import { CommitEvents } from '../../shared-ports';
+import { userFollowedEditorialCommunity } from '../../domain-events';
+import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
 

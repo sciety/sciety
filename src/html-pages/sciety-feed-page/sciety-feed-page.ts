@@ -6,9 +6,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import { identifyFeedItems } from './identify-feed-items';
-import {
-  DomainEvent,
-} from '../../domain-events';
+
 import { templateListItems } from '../../shared-components/list-items';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { supplementaryCard } from '../../shared-components/supplementary-card';
@@ -17,6 +15,7 @@ import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
+import { GetAllEvents } from '../../shared-ports';
 
 type ViewModel = {
   cards: ReadonlyArray<HtmlFragment>,
@@ -58,7 +57,7 @@ export const scietyFeedCodec = t.type({
 
 // ts-unused-exports:disable-next-line
 export type Ports = EventCardPorts & {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
 };
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
