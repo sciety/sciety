@@ -8,7 +8,7 @@ import { arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 
-describe('get-user', () => {
+describe('lookup-user', () => {
   const userId = arbitraryUserId();
 
   describe('when user exists', () => {
