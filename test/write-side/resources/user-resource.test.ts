@@ -8,7 +8,7 @@ describe('user-resource', () => {
   describe('exists', () => {
     describe('when the user exists', () => {
       describe('with an identical handle', () => {
-        it('returns the user', () => {
+        it('returns true', () => {
           const userDetails = arbitraryUserDetails();
           const result = pipe(
             [
@@ -27,12 +27,12 @@ describe('user-resource', () => {
       });
 
       describe('with a handle matching except for case', () => {
-        it.todo('returns the user');
+        it.todo('returns true');
       });
     });
 
     describe('when the user does not exist', () => {
-      it('returns not-found', () => {
+      it('returns false', () => {
         const result = pipe(
           [],
           User.exists(arbitraryUserHandle()),
