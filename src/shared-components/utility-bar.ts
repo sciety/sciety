@@ -39,9 +39,9 @@ const myFeedMenuItem = () => `
   </li>
 `;
 
-const myProfileMenuItem = (handle: UserHandle) => `
+const myListsMenuItem = (handle: UserHandle) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/users/${handle}" class="utility-bar__list_nav_link">My Lists</a>
+    <a href="/users/${handle}/lists" class="utility-bar__list_nav_link">My Lists</a>
   </li>
 `;
 
@@ -77,7 +77,7 @@ const loggedInMenuItems = (user: UserDetails) => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
   ${myFeedMenuItem()}
-  ${myProfileMenuItem(user.handle)}
+  ${myListsMenuItem(user.handle)}
   ${myUsernameMenuItem(user.handle, user.avatarUrl)}
   ${logOutMenuItem()}
 `;
