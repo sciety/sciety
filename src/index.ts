@@ -57,7 +57,6 @@ void pipe(
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
-    twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   }),
   TE.map((adapters) => pipe(
     adapters,

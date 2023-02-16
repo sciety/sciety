@@ -63,7 +63,6 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
-          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Taiko
         if: github.ref == 'refs/heads/main'
@@ -73,7 +72,6 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
-          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Push Image to Docker Hub
         if: github.ref == 'refs/heads/main'
@@ -99,7 +97,6 @@ jobs:
             --set featureFlagAuth0="true" \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
-            --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set auth0ClientId=${AUTH0_CLIENT_ID} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
             --set auth0Domain='dev-sqa2k3wwnhpxk36d.eu.auth0.com' \
@@ -120,7 +117,6 @@ jobs:
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
-          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
@@ -142,7 +138,6 @@ jobs:
             --set featureFlagAuth0="false" \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
-            --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set auth0ClientId=${AUTH0_CLIENT_ID} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
             --set auth0Domain='dev-sqa2k3wwnhpxk36d.eu.auth0.com' \
@@ -162,7 +157,6 @@ jobs:
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
-          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}

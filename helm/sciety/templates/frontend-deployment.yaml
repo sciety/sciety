@@ -72,8 +72,6 @@ spec:
               value: {{ .Values.twitterApiKey }}
             - name: TWITTER_API_SECRET_KEY
               value: {{ .Values.twitterApiSecretKey }}
-            - name: TWITTER_API_BEARER_TOKEN
-              value: {{ .Values.twitterApiBearerToken }}
             - name: AUTH0_CLIENT_ID
               value: {{ .Values.auth0ClientId }}
             - name: AUTH0_CLIENT_SECRET

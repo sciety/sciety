@@ -44,7 +44,6 @@ type Dependencies = {
   prettyLog: boolean,
   logLevel: string, // TODO: Make this a level name
   crossrefApiBearerToken: O.Option<string>,
-  twitterApiBearerToken: string,
 };
 
 const createLogger = (dependencies: Dependencies) => pipe(

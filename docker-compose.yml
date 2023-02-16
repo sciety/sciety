@@ -30,7 +30,6 @@ services:
       PRELIGHTS_FEED_KEY:
       TWITTER_API_KEY: '${TWITTER_API_KEY:-twitter-api-key}'
       TWITTER_API_SECRET_KEY: '${TWITTER_API_SECRET_KEY:-twitter-api-secret-key}'
-      TWITTER_API_BEARER_TOKEN: '${TWITTER_API_BEARER_TOKEN:-twitter-api-bearer-token}'
       AUTH0_CLIENT_ID: '${AUTH0_CLIENT_ID:-auth0-client-id}'
       AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
       AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
