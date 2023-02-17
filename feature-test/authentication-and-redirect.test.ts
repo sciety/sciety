@@ -79,8 +79,8 @@ describe('authentication-and-redirect', () => {
       await goto('localhost:8080/groups');
       await click('Sign Up');
       await logInWithSpecifiedUserId(newUserId);
-      await write('Full Name', into(textBox('Display name')));
-      await write(userHandle, into(textBox('Handle')));
+      await write('Full Name', into(textBox('Full name')));
+      await write(userHandle, into(textBox('Create a handle')));
       const createAccountButton = $('#createAccountButton');
       await click(createAccountButton);
     });

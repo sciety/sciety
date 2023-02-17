@@ -20,7 +20,7 @@ type Ports = {
 };
 
 const createUserAccountFormCodec = t.type({
-  displayName: userGeneratedInputCodec(30),
+  fullName: userGeneratedInputCodec(30),
   handle: userHandleCodec,
 });
 
@@ -35,6 +35,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
       E.fromOption(() => 'no-authenticated-user-id'),
       E.map((userId) => ({
         ...formUserDetails,
+        displayName: formUserDetails.fullName,
         userId,
         avatarUrl: defaultSignUpAvatarUrl,
       })),
