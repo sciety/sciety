@@ -47,7 +47,7 @@
 .create-user-account-form__handle {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
 
   .create-user-account-form__handle-url {
     background-color: settings.$colour-site-header-background-darker;
