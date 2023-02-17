@@ -9,6 +9,7 @@ export const createUserAccountFormPage: Page = {
         <h1>Sign up</h1>
       </header>
       <form action="/forms/create-user-account" method="post" class="create-user-account-form">
+        <h2>Sign up &ndash; Step 2 of 2</h2>
         <label for="displayName" class="create-user-account-form__label">Create a display name</label>
         <input type="text" id="displayName" name="displayName" placeholder="Ada Lovelace" class="create-user-account-form__input">
         <label for="handle" class="create-user-account-form__label">Create a handle</label>
