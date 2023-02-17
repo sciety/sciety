@@ -37,6 +37,7 @@
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
+  width: 100%;
 }
 
 .create-user-account-form__submit {
