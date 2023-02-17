@@ -43,3 +43,29 @@
   @include button.button();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
+
+.create-user-account-form__handle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .create-user-account-form__handle-url {
+    background-color: settings.$colour-site-header-background-darker;
+    padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+    border-top: settings.$border-width solid settings.$colour-furniture;
+    border-left: settings.$border-width solid settings.$colour-furniture;
+    border-bottom: settings.$border-width solid settings.$colour-furniture;
+    border-top-left-radius: settings.$border-radius;
+    border-bottom-left-radius: settings.$border-radius;
+    line-height: normal;
+    color: settings.$colour-text-secondary;
+  }
+
+  .create-user-account-form__input {
+    width: 100%;
+    margin-bottom: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+}

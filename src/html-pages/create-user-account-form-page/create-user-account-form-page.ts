@@ -13,7 +13,9 @@ export const createUserAccountFormPage: Page = {
         <label for="fullName" class="create-user-account-form__label">Full name</label>
         <input type="text" id="fullName" name="fullName" placeholder="Alec Jeffreys" class="create-user-account-form__input">
         <label for="handle" class="create-user-account-form__label">Create a handle</label>
-        <input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input">
+        <div class='create-user-account-form__handle'>
+          <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input">
+        </div>
         <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
       </form>
     </div>
