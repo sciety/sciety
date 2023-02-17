@@ -40,10 +40,6 @@
 }
 
 .create-user-account-form__submit {
-  @include button.button(); 
+  @include button.button();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
-}
-
-.create-user-account-form__reset {
-  @include button.button-secondary(); 
 }
