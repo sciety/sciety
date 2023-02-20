@@ -14,7 +14,7 @@ type Dependencies = {
   logger: L.Logger,
 };
 
-export const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
+const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
   event,
   domainEventCodec.encode,
   ({

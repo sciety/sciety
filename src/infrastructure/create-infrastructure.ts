@@ -1,12 +1,11 @@
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { CollectedPorts } from './collected-ports';
-import { commitEvents, writeEventToDatabase } from './commit-events';
+import { commitEvents } from './commit-events';
 import { dispatcher } from './dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
@@ -21,12 +20,10 @@ import { getHtml } from './get-html';
 import {
   jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
-import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
 import {
-  DomainEvent,
-  isListCreatedEvent, sort as sortEvents,
+  DomainEvent, sort as sortEvents,
 } from '../domain-events';
 import { editListDetailsCommandHandler } from '../write-side/edit-list-details';
 import { createListCommandHandler } from '../write-side/create-list';
@@ -77,22 +74,6 @@ const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri
   return response.data;
 };
 
-const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
-  pool: Pool,
-) => (
-  events: ReadonlyArray<DomainEvent>,
-) => pipe(
-  [],
-  TE.right,
-  TE.map(RA.filter(isListCreatedEvent)),
-  TE.map(RA.filter(needsToBeAdded(events))),
-  TE.chainFirstTaskK(T.traverseArray(writeEventToDatabase(pool))),
-  TE.map((eventsToAdd) => [
-    ...events,
-    ...eventsToAdd,
-  ]),
-);
-
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
@@ -102,7 +83,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
-    TE.chainW(addSpecifiedEventsFromCodeIntoDatabaseAndAppend(pool)),
     TE.map((eventsFromDatabase) => pipe(
       [
         ...eventsFromDatabase,

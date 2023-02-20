@@ -1,9 +1,9 @@
-import * as A from 'fp-ts/Array';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
+import * as A from 'fp-ts/Array';
 import { annotationCreatedEventCodec } from './annotation-created-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
