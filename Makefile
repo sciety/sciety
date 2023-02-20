@@ -196,14 +196,6 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
-exploratory-test: node_modules clean-db build
-	${DOCKER_COMPOSE} up -d
-	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/exploratory-test.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
-	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} logs -f app
-
 download-db-dump-staging:
 	kubectl run psql \
 	--image=postgres:12.3 \

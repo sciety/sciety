@@ -47,7 +47,6 @@ services:
       POSTGRES_DB: sciety
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
-      - './data/exploratory-test.csv:/data/exploratory-test.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
