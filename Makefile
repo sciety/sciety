@@ -161,7 +161,7 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-taiko: export TARGET = prod
+taiko: export TARGET = fast
 taiko: export FEATURE_FLAG_AUTH0 = true
 taiko: export USE_STUB_ADAPTERS = true
 taiko: node_modules clean-db build
