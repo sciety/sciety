@@ -118,6 +118,12 @@ describe('authentication-and-redirect', () => {
 
       it.todo('clicking the back button doesn\'t result in an error');
     });
+
+    describe('after clicking save to my list', () => {
+      it.todo('i am logged in');
+
+      it.todo('i am returned to the article page');
+    });
   });
 
   describe('when I am logged in', () => {
