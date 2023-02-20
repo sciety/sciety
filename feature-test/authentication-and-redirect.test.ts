@@ -145,7 +145,7 @@ describe('authentication-and-redirect', () => {
         expect(buttonText).toBe('Log Out');
       });
 
-      it.failing('i am returned to the article page', async () => {
+      it('i am returned to the article page', async () => {
         const result = await currentURL();
 
         expect(result).toContain(articlePage);

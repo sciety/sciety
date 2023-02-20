@@ -79,7 +79,8 @@ export const completeAuthenticationJourney = (
     getLoggedInScietyUser(adapters, context),
     O.match(
       () => '/create-account-form',
-      () => '/',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      () => context.session.successRedirect || '/',
     ),
     (page) => context.redirect(page),
   );

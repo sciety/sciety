@@ -42,6 +42,6 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     )),
     T.of,
     TE.chainW(createUserAccountCommandHandler(adapters)),
-    TE.map(() => context.redirect('/')),
+    TE.map(() => context.redirect(context.session.successRedirect || '/')),
   )();
 };
