@@ -27,6 +27,7 @@ import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { GetActivityForDoi } from './get-activity-for-doi';
+import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -59,6 +60,7 @@ export { GetFollowers } from './get-followers';
 export { GetGroupsFollowedBy } from './get-groups-followed-by';
 export { IsFollowing } from './is-following';
 export { GetActivityForDoi } from './get-activity-for-doi';
+export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -68,6 +70,7 @@ export type SharedPorts = {
   fetchArticle: FetchArticle,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getAllGroups: GetAllGroups,
   getArticleIdsByState: GetArticleIdsByState,

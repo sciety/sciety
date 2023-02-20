@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -13,16 +12,7 @@ import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { GetAllEvents } from '../../../shared-ports';
-
-export type FindVersionsForArticleDoi = (
-  doi: Doi,
-  server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
-  source: URL,
-  publishedAt: Date,
-  version: number,
-}>>;
+import { FindVersionsForArticleDoi, GetAllEvents } from '../../../shared-ports';
 
 export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

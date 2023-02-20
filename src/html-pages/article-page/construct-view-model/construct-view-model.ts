@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { checkIfArticleInList, Ports as ConstructUserListUrlPorts } from './check-if-article-in-list';
 import { feedSummary } from './feed-summary';
 import {
-  FindVersionsForArticleDoi,
   getArticleFeedEventsByDateDescending,
   Ports as GetArticleFeedEventsPorts,
 } from './get-article-feed-events';
@@ -31,7 +30,6 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 
 export type Ports = ConstructUserListUrlPorts & GetArticleFeedEventsPorts & {
   fetchArticle: GetArticleDetails,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
