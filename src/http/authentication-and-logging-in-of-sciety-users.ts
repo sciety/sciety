@@ -46,7 +46,15 @@ export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedCon
   O.chain((id) => adapters.lookupUser(id)),
 );
 
-export const referringPage = (context: ParameterizedContext): string => (
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  context.session.successRedirect || '/'
+const referringPageCodec = t.type({
+  session: t.type({
+    successRedirect: t.string,
+  }),
+});
+
+export const referringPage = (context: ParameterizedContext): string => pipe(
+  context,
+  referringPageCodec.decode,
+  E.map((ctx) => ctx.session.successRedirect),
+  E.getOrElse(() => '/'),
 );
