@@ -24,7 +24,6 @@ import {
 import { needsToBeAdded } from './needs-to-be-added';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
-import { hardcodedListCreationEvents } from '../data/hardcoded-list-creation-events';
 import {
   DomainEvent,
   isListCreatedEvent, sort as sortEvents,
@@ -83,9 +82,7 @@ const addSpecifiedEventsFromCodeIntoDatabaseAndAppend = (
 ) => (
   events: ReadonlyArray<DomainEvent>,
 ) => pipe(
-  [
-    ...hardcodedListCreationEvents(),
-  ],
+  [],
   TE.right,
   TE.map(RA.filter(isListCreatedEvent)),
   TE.map(RA.filter(needsToBeAdded(events))),
