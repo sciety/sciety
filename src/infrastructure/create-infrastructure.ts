@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from './dispatcher';
@@ -83,12 +84,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
-    TE.map((eventsFromDatabase) => pipe(
-      [
-        ...eventsFromDatabase,
-      ],
-      sortEvents,
-    )),
+    TE.map(RA.toArray),
+    TE.map(sortEvents),
     TE.map((events) => (
       {
         events,
