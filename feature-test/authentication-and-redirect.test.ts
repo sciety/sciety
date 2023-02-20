@@ -69,53 +69,55 @@ describe('authentication-and-redirect', () => {
 
   afterEach(screenshotTeardown);
 
-  describe('on completing the sign up journey', () => {
-    let newUserId: UserId;
-    let userHandle: UserHandle;
+  describe('when I am not logged in', () => {
+    describe('on completing the sign up journey', () => {
+      let newUserId: UserId;
+      let userHandle: UserHandle;
 
-    beforeEach(async () => {
-      newUserId = arbitraryUserId();
-      userHandle = arbitraryUserHandle();
-      await goto('localhost:8080/groups');
-      await click('Sign Up');
-      await logInWithSpecifiedUserId(newUserId);
-      await write('Full Name', into(textBox('Full name')));
-      await write(userHandle, into(textBox('Create a handle')));
-      const createAccountButton = $('#createAccountButton');
-      await click(createAccountButton);
+      beforeEach(async () => {
+        newUserId = arbitraryUserId();
+        userHandle = arbitraryUserHandle();
+        await goto('localhost:8080/groups');
+        await click('Sign Up');
+        await logInWithSpecifiedUserId(newUserId);
+        await write('Full Name', into(textBox('Full name')));
+        await write(userHandle, into(textBox('Create a handle')));
+        const createAccountButton = $('#createAccountButton');
+        await click(createAccountButton);
+      });
+
+      it('i am logged in', async () => {
+        const buttonText = await $('.utility-bar__list_link_button').text();
+
+        expect(buttonText).toBe('Log Out');
+      });
+
+      it('the handle I supplied is used for my account', async () => {
+        const utilityBar = await $('.utility-bar').text();
+
+        expect(utilityBar).toContain(userHandle);
+      });
+
+      it.todo('clicking the back button doesn\'t result in an error');
     });
 
-    it('i am logged in', async () => {
-      const buttonText = await $('.utility-bar__list_link_button').text();
+    describe('after clicking the Log In button', () => {
+      let userHandle: UserHandle;
+      const userAvatar = arbitraryUri();
 
-      expect(buttonText).toBe('Log Out');
+      beforeEach(async () => {
+        userHandle = arbitraryUserHandle();
+        await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
+      });
+
+      it('i am logged in', async () => {
+        const buttonText = await $('.utility-bar__list_link_button').text();
+
+        expect(buttonText).toBe('Log Out');
+      });
+
+      it.todo('clicking the back button doesn\'t result in an error');
     });
-
-    it('the handle I supplied is used for my account', async () => {
-      const utilityBar = await $('.utility-bar').text();
-
-      expect(utilityBar).toContain(userHandle);
-    });
-
-    it.todo('clicking the back button doesn\'t result in an error');
-  });
-
-  describe('after clicking the Log In button', () => {
-    let userHandle: UserHandle;
-    const userAvatar = arbitraryUri();
-
-    beforeEach(async () => {
-      userHandle = arbitraryUserHandle();
-      await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
-    });
-
-    it('i am logged in', async () => {
-      const buttonText = await $('.utility-bar__list_link_button').text();
-
-      expect(buttonText).toBe('Log Out');
-    });
-
-    it.todo('clicking the back button doesn\'t result in an error');
   });
 
   describe('when I am logged in', () => {
