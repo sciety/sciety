@@ -2,7 +2,7 @@ import { Middleware, ParameterizedContext } from 'koa';
 import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts, referringPage } from '../authentication-and-logging-in-of-sciety-users';
 
 // twitter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -79,8 +79,7 @@ export const completeAuthenticationJourney = (
     getLoggedInScietyUser(adapters, context),
     O.match(
       () => '/create-account-form',
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      () => context.session.successRedirect || '/',
+      () => referringPage(context),
     ),
     (page) => context.redirect(page),
   );

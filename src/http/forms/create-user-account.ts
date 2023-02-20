@@ -9,7 +9,7 @@ import { createUserAccountCommandHandler } from '../../write-side/create-user-ac
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, referringPage } from '../authentication-and-logging-in-of-sciety-users';
 
 // ts-unused-exports:disable-next-line
 export const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
@@ -42,6 +42,6 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     )),
     T.of,
     TE.chainW(createUserAccountCommandHandler(adapters)),
-    TE.map(() => context.redirect(context.session.successRedirect || '/')),
+    TE.map(() => referringPage(context)),
   )();
 };
