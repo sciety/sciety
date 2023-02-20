@@ -154,7 +154,7 @@ const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown,
   ),
   TE.chainW(sendRecordEvaluationCommands(group)),
   TE.bimap(
-    report('error', 'Ingestion failed'),
+    report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
   ),
 );
