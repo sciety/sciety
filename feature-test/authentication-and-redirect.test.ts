@@ -120,7 +120,30 @@ describe('authentication-and-redirect', () => {
     });
 
     describe('after clicking save to my list', () => {
-      it.todo('i am logged in');
+      let newUserId: UserId;
+      let userHandle: UserHandle;
+      const articleId = '10.1101/2022.09.23.22280264';
+      const articlePage = `localhost:8080/articles/activity/${articleId}`;
+
+      beforeEach(async () => {
+        await goto(articlePage);
+        await click('Save to my list');
+        newUserId = arbitraryUserId();
+        userHandle = arbitraryUserHandle();
+        await goto('localhost:8080/groups');
+        await click('Sign Up');
+        await logInWithSpecifiedUserId(newUserId);
+        await write('Full Name', into(textBox('Full name')));
+        await write(userHandle, into(textBox('Create a handle')));
+        const createAccountButton = $('#createAccountButton');
+        await click(createAccountButton);
+      });
+
+      it('i am logged in', async () => {
+        const buttonText = await $('.utility-bar__list_link_button').text();
+
+        expect(buttonText).toBe('Log Out');
+      });
 
       it.todo('i am returned to the article page');
     });
