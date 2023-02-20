@@ -7,13 +7,13 @@ import {
 import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './perform-all-searches';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { selectSubsetToDisplay } from './select-subset-to-display';
-import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card';
+import { Ports as GetArticleVersionDatePorts, getLatestArticleVersionDate } from '../../shared-components/article-card';
 
 // ts-unused-exports:disable-next-line
 export type Ports = PerformAllSearchesPorts
 // The next two lines are necessary as getLatestVersionDate is not in CollectedPorts and is constructed locally
 & Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>
-& { findVersionsForArticleDoi: FindVersionsForArticleDoi };
+& GetArticleVersionDatePorts;
 
 type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;
 
@@ -23,7 +23,7 @@ export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (pa
   TE.map(selectSubsetToDisplay),
   TE.chainTaskK(fetchExtraDetails({
     ...ports,
-    getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+    getLatestArticleVersionDate: getLatestArticleVersionDate(ports),
   })),
   TE.bimap(renderErrorPage, renderPage),
 );

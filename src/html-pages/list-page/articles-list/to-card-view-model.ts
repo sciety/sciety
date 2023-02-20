@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { ArticleViewModel, FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../../shared-components/article-card';
+import { ArticleViewModel, Ports as ArticleCardPorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
 import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleAuthors } from '../../../types/article-authors';
@@ -18,13 +18,12 @@ type Article = {
 
 type GetArticle = (articleId: Doi) => TE.TaskEither<DE.DataError, Article>;
 
-export type Ports = {
+export type Ports = ArticleCardPorts & {
   fetchArticle: GetArticle,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
 const getArticleDetails = (ports: Ports) => fetchArticleDetails(
-  getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+  getLatestArticleVersionDate(ports),
   ports.fetchArticle,
 );
 

@@ -5,23 +5,23 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
+import { FindVersionsForArticleDoi } from '../../shared-ports';
 
-export type FindVersionsForArticleDoi = (
-  doi: Doi,
-  server: ArticleServer,
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ publishedAt: Date }>>;
+export type Ports = {
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+};
 
 type GetLatestArticleVersionDate = (
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  ports: Ports,
 ) => (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
-  findVersionsForArticleDoi,
+  ports,
 ) => (
   doi, server,
 ) => pipe(
   [doi, server],
-  tupled(findVersionsForArticleDoi),
+  tupled(ports.findVersionsForArticleDoi),
   T.map(O.map(flow(
     RNEA.last,
     (version) => version.publishedAt,

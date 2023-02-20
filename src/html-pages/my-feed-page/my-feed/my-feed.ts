@@ -11,9 +11,8 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
-import { DomainEvent } from '../../../domain-events';
 import {
-  FindVersionsForArticleDoi,
+  Ports as ArticleCardPorts,
   getLatestArticleVersionDate,
   renderArticleCard,
 } from '../../../shared-components/article-card';
@@ -23,14 +22,11 @@ import { paginationControls } from '../../../shared-components/pagination-contro
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
-import { GetGroupsFollowedBy } from '../../../shared-ports';
+import { GetAllEvents, GetGroupsFollowedBy } from '../../../shared-ports';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-
-export type Ports = {
+export type Ports = ArticleCardPorts & {
   fetchArticle: GetArticle,
   getAllEvents: GetAllEvents,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getGroupsFollowedBy: GetGroupsFollowedBy,
 };
 
@@ -59,7 +55,7 @@ const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) 
 const constructArticleViewModels = (ports: Ports) => flow(
   populateArticleViewModelsSkippingFailures(
     fetchArticleDetails(
-      getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+      getLatestArticleVersionDate(ports),
       ports.fetchArticle,
     ),
   ),

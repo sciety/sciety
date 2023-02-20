@@ -1,5 +1,5 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -12,10 +12,12 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from '../../../../src/html-pages/my-feed-page/my-feed/static-content';
+import { FindVersionsForArticleDoi } from '../../../../src/shared-ports';
 import * as DE from '../../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../../src/types/doi';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
+import { arbitraryNumber, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
@@ -72,9 +74,11 @@ describe('my-feed acceptance', () => {
     describe('following groups with evaluations', () => {
       const arbitraryVersions = () => TO.some([
         {
+          source: new URL(arbitraryUri()),
+          version: arbitraryNumber(1, 5),
           publishedAt: new Date(),
         },
-      ] as RNEA.ReadonlyNonEmptyArray<{ publishedAt: Date }>);
+      ]) as ReturnType<FindVersionsForArticleDoi>;
 
       it('displays content in the form of article cards', async () => {
         const groupId = arbitraryGroupId();
