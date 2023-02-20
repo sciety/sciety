@@ -29,7 +29,7 @@ describe('user-resource', () => {
       });
 
       describe('with a handle matching except for case', () => {
-        it.failing('returns true', () => {
+        it('returns true', () => {
           const result = pipe(
             [
               userCreatedAccount(

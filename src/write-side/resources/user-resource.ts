@@ -7,7 +7,7 @@ export const exists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainE
   events,
   RA.filter(isUserCreatedAccountEvent),
   RA.map((event) => event.handle),
-  RA.filter((handle) => handle === userHandle),
+  RA.filter((handle) => handle.toLowerCase() === userHandle.toLowerCase()),
   RA.match(
     () => false,
     () => true,
