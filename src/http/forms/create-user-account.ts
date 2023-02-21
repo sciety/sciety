@@ -42,6 +42,9 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     )),
     T.of,
     TE.chainW(createUserAccountCommandHandler(adapters)),
-    TE.map(() => context.redirect(referringPage(context))),
+    TE.bimap(
+      () => context.redirect('/create-account-form?errorSummary=generic'),
+      () => context.redirect(referringPage(context)),
+    ),
   )();
 };
