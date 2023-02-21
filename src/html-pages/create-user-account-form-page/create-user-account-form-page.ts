@@ -16,7 +16,10 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
   O.match(
     () => '',
-    () => '<h3>Placeholder</h3>',
+    () => `
+    <h3>Something went wrong</h3>
+    <p>Your handle must contain more than 3 characters and less than 15 characters.</p>
+    `,
   ),
 );
 
