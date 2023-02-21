@@ -31,9 +31,9 @@ export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, 
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
         <header class="page-header">
+          ${errorSummary}
           <h1>Sign up</h1>
         </header>
-        ${errorSummary}
         <form action="/forms/create-user-account" method="post" class="create-user-account-form">
           <h2>Sign up &ndash; Step 2 of 2</h2>
           <label for="fullName" class="create-user-account-form__label">Full name</label>
