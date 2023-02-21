@@ -1,17 +1,30 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 
-export const createUserAccountFormPage = (params: unknown): TE.TaskEither<never, Page> => pipe(
-  params,
-  () => TE.right({
+export const paramsCodec = t.type({
+  errorSummary: tt.optionFromNullable(t.unknown),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
+
+const renderErrorSummary = (errorSummary: O.Option<unknown>) => (errorSummary ? '<h3>Placeholder</h3>' : '');
+
+export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
+  params.errorSummary,
+  renderErrorSummary,
+  (errorSummary) => TE.right({
     title: 'Sign up',
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
         <header class="page-header">
           <h1>Sign up</h1>
         </header>
+        ${errorSummary}
         <form action="/forms/create-user-account" method="post" class="create-user-account-form">
           <h2>Sign up &ndash; Step 2 of 2</h2>
           <label for="fullName" class="create-user-account-form__label">Full name</label>
