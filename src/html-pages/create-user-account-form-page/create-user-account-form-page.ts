@@ -12,7 +12,13 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const renderErrorSummary = (errorSummary: O.Option<unknown>) => (errorSummary ? '<h3>Placeholder</h3>' : '');
+const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
+  errorSummary,
+  O.match(
+    () => '',
+    () => '<h3>Placeholder</h3>',
+  ),
+);
 
 export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
   params.errorSummary,
