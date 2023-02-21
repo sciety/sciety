@@ -65,21 +65,13 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../ht
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { userIdCodec } from '../types/user-id';
 import { CommandHandler, GenericCommand } from '../types/command-handler';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
 import { userPage, userPageParams } from '../html-pages/user-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
-
-const toNotFound = () => ({
-  type: DE.notFound,
-  message: toHtmlFragment('Page not found'),
-});
+import { createPageFromParams, toNotFound } from './create-page-from-params';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -90,15 +82,6 @@ const createApiRouteForCommand = <C extends GenericCommand>(
     TE.fromEither,
     TE.chain(commandHandler),
   ));
-
-type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
-
-const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
-  codec.decode,
-  E.mapLeft(toNotFound),
-  TE.fromEither,
-  TE.chain(generatePage),
-);
 
 const articlePageParams = t.type({
   doi: DoiFromString,

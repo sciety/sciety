@@ -1,11 +1,9 @@
 /* eslint-disable padded-blocks */
 import Router from '@koa/router';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe, flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
-import * as t from 'io-ts';
-import * as E from 'fp-ts/Either';
 import {
   logInAuth0,
   logInTwitter,
@@ -28,28 +26,11 @@ import { finishRespondCommand } from '../../write-side/respond/finish-respond-co
 import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
 import { signUpPage } from '../../html-pages/sign-up-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
-import { RenderPageError } from '../../types/render-page-error';
-import { Page } from '../../types/page';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { createPageFromParams } from '../create-page-from-params';
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
-
-const toNotFound = () => ({
-  type: DE.notFound,
-  message: toHtmlFragment('Page not found'),
-});
-
-type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
-
-const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
-  codec.decode,
-  E.mapLeft(toNotFound),
-  TE.fromEither,
-  TE.chain(generatePage),
-);
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
   if (!context.session.successRedirect) {
