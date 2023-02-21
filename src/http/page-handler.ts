@@ -52,7 +52,7 @@ const pageToSuccessResponse = (
   status: StatusCodes.OK,
 });
 
-const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
+export const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
   toErrorResponse(user, pageLayout),
   pageToSuccessResponse(user, pageLayout),
 );

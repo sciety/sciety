@@ -25,10 +25,10 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   ),
 );
 
-export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
+export const renderFormPage = (params: Params): Page => pipe(
   params.errorSummary,
   renderErrorSummary,
-  (errorSummary) => TE.right({
+  (errorSummary) => ({
     title: 'Sign up',
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
@@ -49,4 +49,10 @@ export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, 
       </div>
     `),
   }),
+);
+
+export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
+  params,
+  renderFormPage,
+  TE.right,
 );
