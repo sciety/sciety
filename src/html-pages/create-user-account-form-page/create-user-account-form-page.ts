@@ -17,8 +17,10 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   O.match(
     () => '',
     () => `
-    <h3>Something went wrong</h3>
-    <p>Your handle must contain more than 3 characters and less than 15 characters.</p>
+    <div role='alert' class='error-summary'>
+      <h3>Something went wrong</h3>
+      <p>Your handle must contain more than 3 characters and less than 15 characters.</p>
+    </div>
     `,
   ),
 );
