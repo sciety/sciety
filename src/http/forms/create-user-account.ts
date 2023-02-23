@@ -9,7 +9,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
-import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
+import { userGeneratedInputCodec } from '../../types/user-generated-input';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import {
   getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser, referringPage,

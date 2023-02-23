@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import { ListIdFromString } from '../../types/codecs/ListIdFromString';
-import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
+import { userGeneratedInputCodec } from '../../types/user-generated-input';
 
 export const listNameMaxLength = 100;
 export const listDescriptionMaxLength = 250;

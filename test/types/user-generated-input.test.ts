@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
-import { userGeneratedInputCodec } from '../../../src/types/codecs/user-generated-input-codec';
-import { arbitraryWord } from '../../helpers';
+import { userGeneratedInputCodec } from '../../src/types/user-generated-input';
+import { arbitraryWord } from '../helpers';
 
-describe('user-generated-input-codec', () => {
+describe('user-generated-input', () => {
   it('fails when supplied with script tag', () => {
     const result = userGeneratedInputCodec(100).decode('<script>');
 
