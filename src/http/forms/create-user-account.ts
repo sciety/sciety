@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -36,38 +36,41 @@ const unvalidatedFormDetailsCodec = t.type({
   handle: t.string,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const validateAndExecuteCommand = (context: ParameterizedContext, adapters: Ports) => pipe(
+  {
+    formUserDetails: pipe(
+      context.request.body,
+      createUserAccountFormCodec.decode,
+      E.mapLeft(() => 'validation-error'),
+    ),
+    authenticatedUserId: pipe(
+      context,
+      getAuthenticatedUserIdFromContext,
+      E.fromOption(() => 'no-authenticated-user-id'),
+    ),
+  },
+  sequenceS(E.Apply),
+  E.map(({ formUserDetails, authenticatedUserId }) => ({
+    ...formUserDetails,
+    displayName: formUserDetails.fullName,
+    userId: authenticatedUserId,
+    avatarUrl: defaultSignUpAvatarUrl,
+  })),
+  T.of,
+  TE.chainW(createUserAccountCommandHandler(adapters)),
+  TE.mapLeft(() => pipe(
+    context.request.body,
+    unvalidatedFormDetailsCodec.decode,
+    E.getOrElse(() => ({
+      fullName: '',
+      handle: '',
+    })),
+  )),
+);
+
 export const createUserAccount = (adapters: Ports): Middleware => async (context, next) => {
   await pipe(
-    {
-      formUserDetails: pipe(
-        context.request.body,
-        createUserAccountFormCodec.decode,
-        E.mapLeft(() => 'validation-error'),
-      ),
-      authenticatedUserId: pipe(
-        context,
-        getAuthenticatedUserIdFromContext,
-        E.fromOption(() => 'no-authenticated-user-id'),
-      ),
-    },
-    sequenceS(E.Apply),
-    E.map(({ formUserDetails, authenticatedUserId }) => ({
-      ...formUserDetails,
-      displayName: formUserDetails.fullName,
-      userId: authenticatedUserId,
-      avatarUrl: defaultSignUpAvatarUrl,
-    })),
-    T.of,
-    TE.chainW(createUserAccountCommandHandler(adapters)),
-    TE.mapLeft(() => pipe(
-      context.request.body,
-      unvalidatedFormDetailsCodec.decode,
-      E.getOrElse(() => ({
-        fullName: '',
-        handle: '',
-      })),
-    )),
+    validateAndExecuteCommand(context, adapters),
     TE.bimap(
       (formDetails) => {
         const page = pipe(
