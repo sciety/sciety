@@ -54,7 +54,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
           {
             errorSummary: O.some(''),
           },
-          renderFormPage,
+          renderFormPage('', ''),
           E.right,
           toWebPage(getLoggedInScietyUser(adapters, context), createUserAccountFormPageLayout),
         );
