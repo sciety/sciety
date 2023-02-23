@@ -1,6 +1,38 @@
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { ParameterizedContext } from 'koa';
+import { validateAndExecuteCommand, Ports } from '../../../src/http/forms/validate-and-execute-command';
+import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
+import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
+
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
-    it.todo('raises the necessary events');
+    it.failing('raises the necessary events', async () => {
+      const context: ParameterizedContext = ({
+        request: {
+          body: {
+            fullName: arbitraryUserGeneratedInput(),
+            handle: arbitraryUserHandle(),
+          },
+          state: {
+            user: {
+              userId: arbitraryUserId(),
+            },
+          },
+        },
+      } as unknown) as ParameterizedContext;
+      const adapters: Ports = {
+        commitEvents: () => T.of('events-created'),
+        getAllEvents: T.of([]),
+        lookupUser: () => O.some(arbitraryUserDetails()),
+      };
+      const result = await validateAndExecuteCommand(context, adapters)();
+
+      expect(result).toStrictEqual(E.right('events-created'));
+    });
   });
 
   describe('when one or more fields are missing from the form', () => {
