@@ -17,6 +17,7 @@ import {
 import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { toWebPage } from '../page-handler';
+import { CommandResult } from '../../types/command-result';
 
 // ts-unused-exports:disable-next-line
 export const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
@@ -36,7 +37,12 @@ const unvalidatedFormDetailsCodec = t.type({
   handle: t.string,
 });
 
-const validateAndExecuteCommand = (context: ParameterizedContext, adapters: Ports) => pipe(
+type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
+
+type ValidateAndExecuteCommand = (context: ParameterizedContext, adapters: Ports)
+=> TE.TaskEither<UnvalidatedFormDetails, CommandResult>;
+
+const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, adapters) => pipe(
   {
     formUserDetails: pipe(
       context.request.body,
