@@ -5,6 +5,7 @@ import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
+import { UserGeneratedInput } from '../../types/user-generated-input';
 
 export const paramsCodec = t.type({
   errorSummary: tt.optionFromNullable(t.unknown),
@@ -25,7 +26,10 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   ),
 );
 
-export const renderFormPage = (fullName: string, handle: string) => (params: Params): Page => pipe(
+export const renderFormPage = (
+  fullName: UserGeneratedInput,
+  handle: UserGeneratedInput,
+) => (params: Params): Page => pipe(
   params.errorSummary,
   renderErrorSummary,
   (errorSummary) => ({
@@ -53,6 +57,6 @@ export const renderFormPage = (fullName: string, handle: string) => (params: Par
 
 export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
   params,
-  renderFormPage('', ''),
+  renderFormPage('' as UserGeneratedInput, '' as UserGeneratedInput),
   TE.right,
 );

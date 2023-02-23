@@ -9,7 +9,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
-import { userGeneratedInputCodec } from '../../types/user-generated-input';
+import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import {
   getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser, referringPage,
@@ -33,8 +33,8 @@ const createUserAccountFormCodec = t.type({
 });
 
 const unvalidatedFormDetailsCodec = t.type({
-  fullName: t.string,
-  handle: t.string,
+  fullName: userGeneratedInputCodec(1000),
+  handle: userGeneratedInputCodec(1000),
 });
 
 type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
@@ -68,8 +68,8 @@ const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, adapters)
     context.request.body,
     unvalidatedFormDetailsCodec.decode,
     E.getOrElse(() => ({
-      fullName: '',
-      handle: '',
+      fullName: '' as UserGeneratedInput,
+      handle: '' as UserGeneratedInput,
     })),
   )),
 );
