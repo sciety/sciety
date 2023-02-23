@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -33,8 +34,8 @@ const createUserAccountFormCodec = t.type({
 });
 
 const unvalidatedFormDetailsCodec = t.type({
-  fullName: userGeneratedInputCodec(1000),
-  handle: userGeneratedInputCodec(1000),
+  fullName: tt.withFallback(userGeneratedInputCodec(1000), '' as UserGeneratedInput),
+  handle: tt.withFallback(userGeneratedInputCodec(1000), '' as UserGeneratedInput),
 });
 
 type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
