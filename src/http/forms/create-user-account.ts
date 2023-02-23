@@ -30,6 +30,11 @@ const createUserAccountFormCodec = t.type({
   handle: userHandleCodec,
 });
 
+const unvalidatedFormDetailsCodec = t.type({
+  fullName: t.string,
+  handle: t.string,
+});
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context, next) => {
   await pipe(
@@ -48,13 +53,21 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
     )),
     T.of,
     TE.chainW(createUserAccountCommandHandler(adapters)),
+    TE.mapLeft(() => pipe(
+      context.request.body,
+      unvalidatedFormDetailsCodec.decode,
+      E.getOrElse(() => ({
+        fullName: '',
+        handle: '',
+      })),
+    )),
     TE.bimap(
-      () => {
+      (formDetails) => {
         const page = pipe(
           {
             errorSummary: O.some(''),
           },
-          renderFormPage('', ''),
+          renderFormPage(formDetails.fullName, formDetails.handle),
           E.right,
           toWebPage(getLoggedInScietyUser(adapters, context), createUserAccountFormPageLayout),
         );
