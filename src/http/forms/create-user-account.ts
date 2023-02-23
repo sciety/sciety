@@ -6,6 +6,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
+import { sequenceS } from 'fp-ts/Apply';
 import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { userGeneratedInputCodec } from '../../types/codecs/user-generated-input-codec';
@@ -38,19 +39,25 @@ const unvalidatedFormDetailsCodec = t.type({
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserAccount = (adapters: Ports): Middleware => async (context, next) => {
   await pipe(
-    context.request.body,
-    createUserAccountFormCodec.decode,
-    E.chainW((formUserDetails) => pipe(
-      context,
-      getAuthenticatedUserIdFromContext,
-      E.fromOption(() => 'no-authenticated-user-id'),
-      E.map((userId) => ({
-        ...formUserDetails,
-        displayName: formUserDetails.fullName,
-        userId,
-        avatarUrl: defaultSignUpAvatarUrl,
-      })),
-    )),
+    {
+      formUserDetails: pipe(
+        context.request.body,
+        createUserAccountFormCodec.decode,
+        E.mapLeft(() => 'validation-error'),
+      ),
+      authenticatedUserId: pipe(
+        context,
+        getAuthenticatedUserIdFromContext,
+        E.fromOption(() => 'no-authenticated-user-id'),
+      ),
+    },
+    sequenceS(E.Apply),
+    E.map(({ formUserDetails, authenticatedUserId }) => ({
+      ...formUserDetails,
+      displayName: formUserDetails.fullName,
+      userId: authenticatedUserId,
+      avatarUrl: defaultSignUpAvatarUrl,
+    })),
     T.of,
     TE.chainW(createUserAccountCommandHandler(adapters)),
     TE.mapLeft(() => pipe(
