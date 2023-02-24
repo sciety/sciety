@@ -1,8 +1,5 @@
 import axios from 'axios';
 import rTracer from 'cls-rtracer';
-import { sequenceS } from 'fp-ts/Apply';
-import * as D from 'fp-ts/Date';
-import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
@@ -17,7 +14,6 @@ type LevelName = keyof typeof Level;
 export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
-export type LoggerIO = (entry: LogEntry) => IO.IO<void>;
 
 export type LogEntry = { timestamp: Date, level: LevelName, message: string, payload?: Payload };
 
@@ -98,22 +94,3 @@ export const streamLogger = (
     stream.write(`${serializer(entry)}\n`);
   };
 };
-
-export const loggerIO = (logger: Logger): LoggerIO => (
-  (entry) => () => logger(entry.level, entry.message, entry.payload, entry.timestamp)
-);
-
-const logEntry = (level: LevelName) => (message: string) => (payload?: Payload): IO.IO<LogEntry> => pipe(
-  {
-    timestamp: D.create,
-    level: pipe(level, IO.of),
-    message: pipe(message, IO.of),
-    payload: pipe(payload, IO.of),
-  },
-  sequenceS(IO.Apply),
-);
-
-export const error = logEntry('error');
-export const info = logEntry('info');
-export const warn = logEntry('warn');
-export const debug = logEntry('debug');
