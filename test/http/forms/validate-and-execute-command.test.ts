@@ -93,8 +93,6 @@ describe('validate-and-execute-command', () => {
     };
     const koaContext = buildKoaContext(formBody, existingUser.id);
 
-    it.todo('return a pertinent error summary');
-
     it('return a form populated with user input', async () => {
       const result = await validateAndExecuteCommand(koaContext, adapters)();
 
@@ -103,5 +101,7 @@ describe('validate-and-execute-command', () => {
         handle: existingUser.handle,
       }));
     });
+
+    it.todo('return a pertinent error summary');
   });
 });
