@@ -95,7 +95,7 @@ const streamLogger = (
   };
 };
 
-type Config = {
+export type Config = {
   prettyLog: boolean,
   logLevel: string, // TODO: Make this a level name
 };

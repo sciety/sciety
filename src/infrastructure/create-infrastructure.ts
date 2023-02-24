@@ -19,7 +19,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  createLogger, Logger,
+  createLogger, Logger, Config as LoggerConfig,
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -37,9 +37,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 
-type Dependencies = {
-  prettyLog: boolean,
-  logLevel: string, // TODO: Make this a level name
+type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
 };
 
