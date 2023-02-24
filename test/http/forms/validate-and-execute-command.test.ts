@@ -67,19 +67,43 @@ describe('validate-and-execute-command', () => {
     });
   });
 
-  describe.each([
-    ['Valid Full Name', '<unsafe>handle', 'full name shown, handle blank'],
-    ['Valid Full Name', '"unsafe"handle', 'full name shown, handle blank'],
-    ['Valid Full Name', 'invalidhandletoolong', 'full name shown, handle shown'],
-    ['<unsafe> Full Name', 'validhandle', 'full name blank, handle shown'],
-    ['"unsafe" Full Name', 'validhandle', 'full name blank, handle shown'],
-    ['<unsafe> Full Name', '<unsafe>handle', 'full name blank, handle blank'],
-    ['<unsafe> Full Name', 'invalidhandletoolong', 'full name blank, handle shown'],
-    ['Invalid Full Name Due to being too looooong', 'validhandle', 'full name shown, handle shown'],
-    ['Invalid Full Name Due to being too looooong', '<unsafe>handle', 'full name shown, handle blank'],
-    ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', 'full name shown, handle shown'],
-  ])('given %s and %s', (fullName, handle, outcome) => {
-    it.todo(`${outcome}`);
+  describe.skip('given unsafe or invalid inputs', () => {
+    const handle = arbitraryUserHandle();
+    const fullName = arbitraryUserGeneratedInput();
+
+    it.each([
+      ['Valid Full Name', '<unsafe>handle', { fullName, handle: '' as UserGeneratedInput }],
+      ['Valid Full Name', '"unsafe"handle', { fullName, handle: '' as UserGeneratedInput }],
+      ['Valid Full Name', 'invalidhandletoolong', { fullName, handle }],
+      ['<unsafe> Full Name', 'validhandle', { fullName: '' as UserGeneratedInput, handle }],
+      ['"unsafe" Full Name', 'validhandle', { fullName: '' as UserGeneratedInput, handle }],
+      ['<unsafe> Full Name', '<unsafe>handle', { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
+      ['<unsafe> Full Name', 'invalidhandletoolong', { fullName: '' as UserGeneratedInput, handle }],
+      ['Invalid Full Name Due to being too looooong', 'validhandle', { fullName, handle }],
+      ['Invalid Full Name Due to being too looooong', '<unsafe>handle', { fullName, handle: '' as UserGeneratedInput }],
+      ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', { fullName, handle }],
+    ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
+      const user = arbitraryUserDetails();
+      const context: ParameterizedContext = ({
+        request: {
+          fullName: fullNameInput,
+          handle: handleInput,
+        },
+        state: {
+          user: {
+            id: user.id,
+          },
+        },
+      } as unknown) as ParameterizedContext;
+      const adapters: Ports = {
+        commitEvents: () => T.of('events-created'),
+        getAllEvents: T.of([]),
+        lookupUser: () => O.some(user),
+      };
+      const result = await validateAndExecuteCommand(context, adapters)();
+
+      expect(result).toStrictEqual(E.left(expectedFormOutput));
+    });
   });
 
   describe('when there is no authenticated user', () => {
