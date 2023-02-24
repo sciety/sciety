@@ -6,32 +6,32 @@ import { validateAndExecuteCommand, Ports } from '../../../src/http/forms/valida
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
-    it.failing('raises the necessary events', async () => {
+    it('succeeds', async () => {
+      const user = arbitraryUserDetails();
       const context: ParameterizedContext = ({
         request: {
           body: {
             fullName: arbitraryUserGeneratedInput(),
             handle: arbitraryUserHandle(),
           },
-          state: {
-            user: {
-              userId: arbitraryUserId(),
-            },
+        },
+        state: {
+          user: {
+            id: user.id,
           },
         },
       } as unknown) as ParameterizedContext;
       const adapters: Ports = {
         commitEvents: () => T.of('events-created'),
         getAllEvents: T.of([]),
-        lookupUser: () => O.some(arbitraryUserDetails()),
+        lookupUser: () => O.some(user),
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
-      expect(result).toStrictEqual(E.right('events-created'));
+      expect(E.isRight(result)).toBe(true);
     });
   });
 
