@@ -1,10 +1,10 @@
 export const card1 = {
-  articleId: '10.1101/2022.08.20.504530',
-  articleTitle: 'Universal gut microbial relationships in the gut microbiome of wild baboons',
-  date: new Date('2023-01-11'),
-  groupSlug: 'elife',
-  groupName: 'eLife',
-  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+  articleId: '10.1101/2023.02.09.527915',
+  articleTitle: 'Enhanced Branched-Chain Amino Acid Metabolism Improves Age-related Reproductive Function',
+  date: new Date('2023-02-21'),
+  groupSlug: 'life-science-editors',
+  groupName: 'Life Science Editors',
+  avatarPath: '/static/groups/life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.jpg',
 };
 
 export const card2 = {
