@@ -6,6 +6,7 @@ import { validateAndExecuteCommand, Ports } from '../../../src/http/forms/valida
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
@@ -35,8 +36,34 @@ describe('validate-and-execute-command', () => {
     });
   });
 
-  describe('when one or more fields are missing from the form', () => {
-    it.todo('return to an empty form');
+  describe('when one or more fields are not present in the form', () => {
+    it('returns the form with the valid fields populated', async () => {
+      const user = arbitraryUserDetails();
+      const handle = arbitraryUserHandle();
+      const context: ParameterizedContext = ({
+        request: {
+          body: {
+            handle,
+          },
+        },
+        state: {
+          user: {
+            id: user.id,
+          },
+        },
+      } as unknown) as ParameterizedContext;
+      const adapters: Ports = {
+        commitEvents: () => T.of('events-created'),
+        getAllEvents: T.of([]),
+        lookupUser: () => O.some(user),
+      };
+      const result = await validateAndExecuteCommand(context, adapters)();
+
+      expect(result).toStrictEqual(E.left({
+        fullName: '' as UserGeneratedInput,
+        handle,
+      }));
+    });
   });
 
   describe.each([
