@@ -9,6 +9,11 @@ import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { userCreatedAccount } from '../../../src/domain-events';
 
+const defaultAdapters: Ports = {
+  commitEvents: shouldNotBeCalled,
+  getAllEvents: T.of([]),
+};
+
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
     it('succeeds', async () => {
@@ -27,8 +32,8 @@ describe('validate-and-execute-command', () => {
         },
       } as unknown) as ParameterizedContext;
       const adapters: Ports = {
+        ...defaultAdapters,
         commitEvents: () => T.of('events-created'),
-        getAllEvents: T.of([]),
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
@@ -56,11 +61,7 @@ describe('validate-and-execute-command', () => {
           },
         },
       } as unknown) as ParameterizedContext;
-      const adapters: Ports = {
-        commitEvents: shouldNotBeCalled,
-        getAllEvents: T.of([]),
-      };
-      const result = await validateAndExecuteCommand(context, adapters)();
+      const result = await validateAndExecuteCommand(context, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -93,11 +94,7 @@ describe('validate-and-execute-command', () => {
           },
         },
       } as unknown) as ParameterizedContext;
-      const adapters: Ports = {
-        commitEvents: shouldNotBeCalled,
-        getAllEvents: T.of([]),
-      };
-      const result = await validateAndExecuteCommand(context, adapters)();
+      const result = await validateAndExecuteCommand(context, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -127,7 +124,7 @@ describe('validate-and-execute-command', () => {
         },
       } as unknown) as ParameterizedContext;
       const adapters: Ports = {
-        commitEvents: shouldNotBeCalled,
+        ...defaultAdapters,
         getAllEvents: T.of([
           userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
         ]),
