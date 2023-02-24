@@ -7,6 +7,7 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { UserGeneratedInput } from '../../../src/types/user-generated-input';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
@@ -57,7 +58,7 @@ describe('validate-and-execute-command', () => {
         },
       } as unknown) as ParameterizedContext;
       const adapters: Ports = {
-        commitEvents: () => T.of('events-created'),
+        commitEvents: shouldNotBeCalled,
         getAllEvents: T.of([]),
         lookupUser: () => O.some(user),
       };
@@ -86,8 +87,10 @@ describe('validate-and-execute-command', () => {
       const user = arbitraryUserDetails();
       const context: ParameterizedContext = ({
         request: {
-          fullName: fullNameInput,
-          handle: handleInput,
+          body: {
+            fullName: fullNameInput,
+            handle: handleInput,
+          },
         },
         state: {
           user: {
@@ -96,7 +99,7 @@ describe('validate-and-execute-command', () => {
         },
       } as unknown) as ParameterizedContext;
       const adapters: Ports = {
-        commitEvents: () => T.of('events-created'),
+        commitEvents: shouldNotBeCalled,
         getAllEvents: T.of([]),
         lookupUser: () => O.some(user),
       };
