@@ -28,14 +28,14 @@ describe('validate-and-execute-command', () => {
       fullName: arbitraryUserGeneratedInput(),
       handle: arbitraryUserHandle(),
     };
-    const context = buildKoaContext(formBody);
+    const koaContext = buildKoaContext(formBody);
     const adapters: Ports = {
       ...defaultAdapters,
       commitEvents: () => T.of('events-created'),
     };
 
     it('succeeds', async () => {
-      const result = await validateAndExecuteCommand(context, adapters)();
+      const result = await validateAndExecuteCommand(koaContext, adapters)();
 
       expect(E.isRight(result)).toBe(true);
     });
@@ -50,8 +50,8 @@ describe('validate-and-execute-command', () => {
       [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
       [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
     ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
-      const context = buildKoaContext(body);
-      const result = await validateAndExecuteCommand(context, defaultAdapters)();
+      const koaContext = buildKoaContext(body);
+      const result = await validateAndExecuteCommand(koaContext, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -71,8 +71,8 @@ describe('validate-and-execute-command', () => {
       ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'invalidhandletoolong' }],
     ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
       const formBody = { fullName: fullNameInput, handle: handleInput };
-      const context = buildKoaContext(formBody);
-      const result = await validateAndExecuteCommand(context, defaultAdapters)();
+      const koaContext = buildKoaContext(formBody);
+      const result = await validateAndExecuteCommand(koaContext, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -91,12 +91,12 @@ describe('validate-and-execute-command', () => {
         userCreatedAccount(existingUser.id, existingUser.handle, existingUser.avatarUrl, existingUser.displayName),
       ]),
     };
-    const context = buildKoaContext(formBody, existingUser.id);
+    const koaContext = buildKoaContext(formBody, existingUser.id);
 
     it.todo('return a pertinent error summary');
 
     it('return a form populated with user input', async () => {
-      const result = await validateAndExecuteCommand(context, adapters)();
+      const result = await validateAndExecuteCommand(koaContext, adapters)();
 
       expect(result).toStrictEqual(E.left({
         fullName: formBody.fullName,
