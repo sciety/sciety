@@ -10,14 +10,14 @@ enum Level {
   info,
   debug,
 }
+
 type LevelName = keyof typeof Level;
+
 export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
 
-export type LogEntry = { timestamp: Date, level: LevelName, message: string, payload?: Payload };
-
-export const rTracerLogger = (logger: Logger): Logger => {
+const rTracerLogger = (logger: Logger): Logger => {
   const withRequestId = (payload: Payload) => pipe(
     O.of(rTracer.id()),
     O.fold(
@@ -64,7 +64,7 @@ const filterAxiosGarbageInPayload = (payload: Payload) => {
   return payload;
 };
 
-export const jsonSerializer = (prettyPrint = false): Serializer => flow(
+const jsonSerializer = (prettyPrint = false): Serializer => flow(
   (entry) => ({
     ...entry,
     payload: filterAxiosGarbageInPayload(entry.payload),
@@ -74,7 +74,7 @@ export const jsonSerializer = (prettyPrint = false): Serializer => flow(
   ),
 );
 
-export const streamLogger = (
+const streamLogger = (
   stream: NodeJS.WritableStream,
   serializer: Serializer,
   logLevelName: string,
@@ -94,3 +94,15 @@ export const streamLogger = (
     stream.write(`${serializer(entry)}\n`);
   };
 };
+
+type Config = {
+  prettyLog: boolean,
+  logLevel: string, // TODO: Make this a level name
+};
+
+export const createLogger = (dependencies: Config) => pipe(
+  dependencies.prettyLog,
+  jsonSerializer,
+  (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
+  rTracerLogger,
+);

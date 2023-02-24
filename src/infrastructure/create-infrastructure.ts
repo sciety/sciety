@@ -19,7 +19,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, Logger, rTracerLogger, streamLogger,
+  createLogger, Logger,
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -42,13 +42,6 @@ type Dependencies = {
   logLevel: string, // TODO: Make this a level name
   crossrefApiBearerToken: O.Option<string>,
 };
-
-const createLogger = (dependencies: Dependencies) => pipe(
-  dependencies.prettyLog,
-  jsonSerializer,
-  (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
-  rTracerLogger,
-);
 
 type DatabaseConnectionPoolAndLogger = { pool: Pool, logger: Logger };
 
