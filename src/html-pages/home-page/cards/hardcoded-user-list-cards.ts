@@ -25,7 +25,7 @@ export const card2: Card = {
 
 export const card3: Card = {
   userId: pipe(
-    '1122522190791028737',
+    '991777251543793665',
     userIdCodec.decode,
     O.fromEither,
   ),
