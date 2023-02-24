@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 
-const regex = /^[^<>]+$/;
+const regex = /^[^<>"]+$/;
 
 type UserGeneratedInputBrand = {
   readonly UserGeneratedInput: unique symbol,

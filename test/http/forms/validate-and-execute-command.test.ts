@@ -41,8 +41,10 @@ describe('validate-and-execute-command', () => {
 
   describe.each([
     ['Valid Full Name', '<unsafe>handle', 'full name shown, handle blank'],
+    ['Valid Full Name', '"unsafe"handle', 'full name shown, handle blank'],
     ['Valid Full Name', 'invalidhandletoolong', 'full name shown, handle shown'],
     ['<unsafe> Full Name', 'validhandle', 'full name blank, handle shown'],
+    ['"unsafe" Full Name', 'validhandle', 'full name blank, handle shown'],
     ['<unsafe> Full Name', '<unsafe>handle', 'full name blank, handle blank'],
     ['<unsafe> Full Name', 'invalidhandletoolong', 'full name blank, handle shown'],
     ['Invalid Full Name Due to being too looooong', 'validhandle', 'full name shown, handle shown'],
