@@ -9,14 +9,12 @@ import { sequenceS } from 'fp-ts/Apply';
 import { createUserAccountCommandHandler, Ports as CreateUserAccountCommandHandlerPorts } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
-import {
-  getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts,
-} from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export type Ports = GetLoggedInScietyUserPorts & CreateUserAccountCommandHandlerPorts;
+export type Ports = CreateUserAccountCommandHandlerPorts;
 
 const createUserAccountFormCodec = t.type({
   fullName: userGeneratedInputCodec(30),

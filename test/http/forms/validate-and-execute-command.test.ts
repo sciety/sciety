@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { validateAndExecuteCommand, Ports } from '../../../src/http/forms/validate-and-execute-command';
@@ -8,6 +7,7 @@ import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.he
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { userCreatedAccount } from '../../../src/domain-events';
 
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
@@ -29,7 +29,6 @@ describe('validate-and-execute-command', () => {
       const adapters: Ports = {
         commitEvents: () => T.of('events-created'),
         getAllEvents: T.of([]),
-        lookupUser: () => O.some(user),
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
@@ -60,7 +59,6 @@ describe('validate-and-execute-command', () => {
       const adapters: Ports = {
         commitEvents: shouldNotBeCalled,
         getAllEvents: T.of([]),
-        lookupUser: () => O.some(user),
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
@@ -98,7 +96,6 @@ describe('validate-and-execute-command', () => {
       const adapters: Ports = {
         commitEvents: shouldNotBeCalled,
         getAllEvents: T.of([]),
-        lookupUser: () => O.some(user),
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
@@ -113,6 +110,34 @@ describe('validate-and-execute-command', () => {
   describe('when the user handle already exists', () => {
     it.todo('return a pertinent error summary');
 
-    it.todo('return a form populated with user input');
+    it('return a form populated with user input', async () => {
+      const user = arbitraryUserDetails();
+      const fullName = arbitraryUserGeneratedInput();
+      const context: ParameterizedContext = ({
+        request: {
+          body: {
+            fullName,
+            handle: user.handle,
+          },
+        },
+        state: {
+          user: {
+            id: user.id,
+          },
+        },
+      } as unknown) as ParameterizedContext;
+      const adapters: Ports = {
+        commitEvents: shouldNotBeCalled,
+        getAllEvents: T.of([
+          userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        ]),
+      };
+      const result = await validateAndExecuteCommand(context, adapters)();
+
+      expect(result).toStrictEqual(E.left({
+        fullName,
+        handle: user.handle,
+      }));
+    });
   });
 });
