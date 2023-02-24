@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
+.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod load-test
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -224,6 +224,16 @@ crossref-response:
 		-H 'Accept: application/vnd.crossref.unixref+xml' \
 		-H 'User-Agent: Sciety (https://sciety.org; mailto:team@sciety.org)' \
 		'https://api.crossref.org/works/${DOI}/transform'
+
+load-test: export TARGET = fast
+load-test: export FEATURE_FLAG_AUTH0 = true
+load-test: export USE_STUB_ADAPTERS = true
+load-test: clean-db build
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
+	${DOCKER_COMPOSE} restart app
+	scripts/wait-for-healthy.sh
 
 #------------------------------------------------------------------------------
 
