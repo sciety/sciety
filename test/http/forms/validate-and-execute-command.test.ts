@@ -37,14 +37,18 @@ describe('validate-and-execute-command', () => {
   });
 
   describe('when one or more fields are not present in the form', () => {
-    it('returns the form with the valid fields populated', async () => {
+    const handle = arbitraryUserHandle();
+    const fullName = arbitraryUserGeneratedInput();
+
+    it.each([
+      [{ handle }, { fullName: '' as UserGeneratedInput, handle }],
+      [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
+      [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
+    ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
       const user = arbitraryUserDetails();
-      const handle = arbitraryUserHandle();
       const context: ParameterizedContext = ({
         request: {
-          body: {
-            handle,
-          },
+          body,
         },
         state: {
           user: {
@@ -59,10 +63,7 @@ describe('validate-and-execute-command', () => {
       };
       const result = await validateAndExecuteCommand(context, adapters)();
 
-      expect(result).toStrictEqual(E.left({
-        fullName: '' as UserGeneratedInput,
-        handle,
-      }));
+      expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
   });
 
