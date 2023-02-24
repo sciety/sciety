@@ -19,7 +19,7 @@ import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
-  jsonSerializer, Logger, loggerIO, rTracerLogger, streamLogger,
+  jsonSerializer, Logger, rTracerLogger, streamLogger,
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
@@ -144,7 +144,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           dependencies.crossrefApiBearerToken,
         ),
         fetchReview: fetchReview(fetchers),
-        fetchStaticFile: fetchStaticFile(loggerIO(logger)),
+        fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
