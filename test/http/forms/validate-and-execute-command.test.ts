@@ -8,33 +8,33 @@ import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { userCreatedAccount } from '../../../src/domain-events';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const defaultAdapters: Ports = {
   commitEvents: shouldNotBeCalled,
   getAllEvents: T.of([]),
 };
 
+const buildKoaContext = (body: unknown, userId = arbitraryUserId()): ParameterizedContext => ({
+  request: { body },
+  state: {
+    user: { id: userId },
+  },
+} as unknown) as ParameterizedContext;
+
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
+    const formBody = {
+      fullName: arbitraryUserGeneratedInput(),
+      handle: arbitraryUserHandle(),
+    };
+    const context = buildKoaContext(formBody);
+    const adapters: Ports = {
+      ...defaultAdapters,
+      commitEvents: () => T.of('events-created'),
+    };
+
     it('succeeds', async () => {
-      const user = arbitraryUserDetails();
-      const context: ParameterizedContext = ({
-        request: {
-          body: {
-            fullName: arbitraryUserGeneratedInput(),
-            handle: arbitraryUserHandle(),
-          },
-        },
-        state: {
-          user: {
-            id: user.id,
-          },
-        },
-      } as unknown) as ParameterizedContext;
-      const adapters: Ports = {
-        ...defaultAdapters,
-        commitEvents: () => T.of('events-created'),
-      };
       const result = await validateAndExecuteCommand(context, adapters)();
 
       expect(E.isRight(result)).toBe(true);
