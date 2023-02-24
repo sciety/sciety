@@ -50,17 +50,7 @@ describe('validate-and-execute-command', () => {
       [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
       [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
     ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
-      const user = arbitraryUserDetails();
-      const context: ParameterizedContext = ({
-        request: {
-          body,
-        },
-        state: {
-          user: {
-            id: user.id,
-          },
-        },
-      } as unknown) as ParameterizedContext;
+      const context = buildKoaContext(body);
       const result = await validateAndExecuteCommand(context, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
@@ -80,20 +70,8 @@ describe('validate-and-execute-command', () => {
       ['Invalid Full Name Due to being too looooong', '<unsafe>handle', { fullName: 'Invalid Full Name Due to being too looooong', handle: '' as UserGeneratedInput }],
       ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'invalidhandletoolong' }],
     ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
-      const user = arbitraryUserDetails();
-      const context: ParameterizedContext = ({
-        request: {
-          body: {
-            fullName: fullNameInput,
-            handle: handleInput,
-          },
-        },
-        state: {
-          user: {
-            id: user.id,
-          },
-        },
-      } as unknown) as ParameterizedContext;
+      const formBody = { fullName: fullNameInput, handle: handleInput };
+      const context = buildKoaContext(formBody);
       const result = await validateAndExecuteCommand(context, defaultAdapters)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
@@ -105,35 +83,24 @@ describe('validate-and-execute-command', () => {
   });
 
   describe('when the user handle already exists', () => {
+    const existingUser = arbitraryUserDetails();
+    const formBody = { fullName: arbitraryUserGeneratedInput(), handle: existingUser.handle };
+    const adapters: Ports = {
+      ...defaultAdapters,
+      getAllEvents: T.of([
+        userCreatedAccount(existingUser.id, existingUser.handle, existingUser.avatarUrl, existingUser.displayName),
+      ]),
+    };
+    const context = buildKoaContext(formBody, existingUser.id);
+
     it.todo('return a pertinent error summary');
 
     it('return a form populated with user input', async () => {
-      const user = arbitraryUserDetails();
-      const fullName = arbitraryUserGeneratedInput();
-      const context: ParameterizedContext = ({
-        request: {
-          body: {
-            fullName,
-            handle: user.handle,
-          },
-        },
-        state: {
-          user: {
-            id: user.id,
-          },
-        },
-      } as unknown) as ParameterizedContext;
-      const adapters: Ports = {
-        ...defaultAdapters,
-        getAllEvents: T.of([
-          userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-        ]),
-      };
       const result = await validateAndExecuteCommand(context, adapters)();
 
       expect(result).toStrictEqual(E.left({
-        fullName,
-        handle: user.handle,
+        fullName: formBody.fullName,
+        handle: existingUser.handle,
       }));
     });
   });
