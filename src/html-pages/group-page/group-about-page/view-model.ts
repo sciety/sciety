@@ -13,7 +13,7 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-export type ListsTab = {
+type ListsTab = {
   selector: 'lists',
   lists: ReadonlyArray<ListCardViewModel>,
 };

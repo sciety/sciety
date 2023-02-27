@@ -9,7 +9,7 @@ import { renderAboutTab } from './render-about-tab';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel),
-  activeTabIndex: viewmodel.activeTabIndex,
+  activeTabIndex: 1,
 });
 
 const renderActiveTabContents = (viewmodel: ViewModel) => {

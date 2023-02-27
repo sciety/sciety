@@ -23,7 +23,6 @@ describe('group page', () => {
           getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
-          lookupUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
         }),
         T.map(flow(

@@ -10,13 +10,11 @@ import {
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
-import { ContentModel, TabIndex } from '../content-model';
+import { ContentModel } from '../content-model';
 import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
-import { constructListsTab } from '../lists/lists';
 import { constructAboutTab, Ports as AboutPorts } from '../about/about';
-import { constructFollowersTab, Ports as FollowersPorts } from '../followers/followers';
 
-export type Ports = AboutPorts & FindFollowersPorts & FollowersPorts & {
+export type Ports = AboutPorts & FindFollowersPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
@@ -25,27 +23,10 @@ export type Ports = AboutPorts & FindFollowersPorts & FollowersPorts & {
 
 const constructActiveTabModel = (
   ports: Ports,
-) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, ActiveTab> => {
-  switch (contentModel.activeTabIndex) {
-    case 0:
-      return pipe(
-        contentModel,
-        constructListsTab,
-        TE.right,
-      );
-    case 1:
-      return pipe(
-        contentModel,
-        constructAboutTab(ports),
-      );
-    default:
-      return pipe(
-        contentModel,
-        constructFollowersTab(ports),
-        TE.fromEither,
-      );
-  }
-};
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, ActiveTab> => pipe(
+  contentModel,
+  constructAboutTab(ports),
+);
 
 // ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
@@ -58,17 +39,12 @@ export const paramsCodec = t.type({
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
-type ConstructViewModel = (
-  ports: Ports,
-  activeTabIndex: TabIndex) => (
-  params: Params
-) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) => (params) => pipe(
+export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.getGroupBySlug(params.slug),
   O.map((group) => pipe(
     {
-      activeTabIndex,
       pageNumber: params.page,
       group,
       isFollowing: pipe(
