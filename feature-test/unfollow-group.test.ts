@@ -38,6 +38,7 @@ describe('unfollow a group', () => {
         await click('Follow');
         await click('Unfollow');
         await click('My lists');
+        await click('Following');
         const groupExists = await text(groupName, within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);
