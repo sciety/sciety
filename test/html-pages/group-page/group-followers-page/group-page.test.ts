@@ -17,7 +17,6 @@ describe('group page', () => {
           page: 1,
         },
         constructAndRenderPage({
-          fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getFollowers: () => [],
           getGroupsFollowedBy: () => [],
