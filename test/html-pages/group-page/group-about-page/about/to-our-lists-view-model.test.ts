@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/about/to-our-lists-view-model';
+import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/about/to-our-lists-view-model';
 import { arbitraryString } from '../../../../helpers';
 import { arbitraryGroup } from '../../../../types/group.helper';
 import { arbitraryList } from '../../../../types/list-helper';

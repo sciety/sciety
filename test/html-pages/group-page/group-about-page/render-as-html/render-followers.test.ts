@@ -1,5 +1,5 @@
-import { renderFollowers } from '../../../../../src/html-pages/group-page/render-as-html/render-followers';
-import { FollowersTab } from '../../../../../src/html-pages/group-page/view-model';
+import { renderFollowers } from '../../../../../src/html-pages/group-page/group-about-page/render-as-html/render-followers';
+import { FollowersTab } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
 import { toHtmlFragment } from '../../../../../src/types/html-fragment';
 
 describe('render-followers', () => {

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { paginate } from '../../../../../src/html-pages/group-page/followers/paginate';
+import { paginate } from '../../../../../src/html-pages/group-page/group-lists-page/followers/paginate';
 import * as DE from '../../../../../src/types/data-error';
 import { arbitraryNumber } from '../../../../helpers';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';

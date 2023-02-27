@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { augmentWithUserDetails, Ports } from '../../../../../src/html-pages/group-page/followers/augment-with-user-details';
+import { augmentWithUserDetails, Ports } from '../../../../../src/html-pages/group-page/group-lists-page/followers/augment-with-user-details';
 import { UserId } from '../../../../../src/types/user-id';
 import { arbitraryNumber } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
