@@ -6,6 +6,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { createUserAccountCommandHandler, Ports as CreateUserAccountCommandHandlerPorts } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
@@ -37,8 +38,8 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
     formUserDetails: pipe(
       context.request.body,
       createUserAccountFormCodec.decode,
-      E.mapLeft((error) => {
-        adapters.logger('error', 'createUserAccountForm validation-error', { error });
+      E.mapLeft((errors) => {
+        adapters.logger('error', 'createUserAccountForm validation-error', { error: formatValidationErrors(errors) });
         return 'validation-error';
       }),
     ),
