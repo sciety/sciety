@@ -3,7 +3,6 @@ import { ContentModel } from './content-model';
 import { OurListsViewModel } from './render-as-html/render-our-lists';
 
 export type AboutTab = {
-  selector: 'about',
   lists: OurListsViewModel,
   markdown: string,
 };

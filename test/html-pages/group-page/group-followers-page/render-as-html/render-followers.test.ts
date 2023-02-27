@@ -5,7 +5,6 @@ import { toHtmlFragment } from '../../../../../src/types/html-fragment';
 describe('render-followers', () => {
   it('renders the follower count', async () => {
     const tab: FollowersTab = {
-      selector: 'followers' as const,
       followerCount: 0,
       followers: [],
       nextLink: toHtmlFragment(''),

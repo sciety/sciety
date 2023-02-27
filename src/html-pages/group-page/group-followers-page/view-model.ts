@@ -13,7 +13,6 @@ export type UserCardViewModel = {
 };
 
 export type FollowersTab = {
-  selector: 'followers',
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   nextLink: HtmlFragment,

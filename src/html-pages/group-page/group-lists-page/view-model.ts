@@ -3,7 +3,6 @@ import { PageHeaderViewModel } from '../common-components/page-header';
 import { ContentModel } from './content-model';
 
 export type ListsTab = {
-  selector: 'lists',
   lists: ReadonlyArray<ListCardViewModel>,
 };
 
