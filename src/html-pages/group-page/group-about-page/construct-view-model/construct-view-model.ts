@@ -9,7 +9,7 @@ import {
 } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
-import { ActiveTab, ViewModel } from '../view-model';
+import { AboutTab, ViewModel } from '../view-model';
 import { ContentModel } from '../content-model';
 import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
 import { constructAboutTab, Ports as AboutPorts } from '../about/about';
@@ -23,7 +23,7 @@ export type Ports = AboutPorts & FindFollowersPorts & {
 
 const constructActiveTabModel = (
   ports: Ports,
-) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, ActiveTab> => pipe(
+) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTab> => pipe(
   contentModel,
   constructAboutTab(ports),
 );
