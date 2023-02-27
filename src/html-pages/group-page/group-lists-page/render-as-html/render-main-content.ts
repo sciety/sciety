@@ -11,6 +11,6 @@ const tabProps = (viewmodel: ViewModel) => ({
 });
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderListOfListCardsWithFallback(viewmodel.activeTab.lists),
+  renderListOfListCardsWithFallback(viewmodel.listCards),
   renderTabs(tabProps(viewmodel)),
 );

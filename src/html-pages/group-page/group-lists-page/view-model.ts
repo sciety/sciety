@@ -1,12 +1,17 @@
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
+import { Group } from '../../../types/group';
+import { UserId } from '../../../types/user-id';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabListViewModel } from '../common-components/tab-list';
-import { ContentModel } from './content-model';
 
-export type ListsTab = {
-  lists: ReadonlyArray<ListCardViewModel>,
+export type Follower = {
+  userId: UserId,
+  listCount: number,
+  followedGroupCount: number,
 };
 
-export type ViewModel = PageHeaderViewModel & TabListViewModel & ContentModel & {
-  activeTab: ListsTab,
+export type ViewModel = PageHeaderViewModel & TabListViewModel & {
+  followers: ReadonlyArray<Follower>,
+  group: Group,
+  listCards: ReadonlyArray<ListCardViewModel>,
 };

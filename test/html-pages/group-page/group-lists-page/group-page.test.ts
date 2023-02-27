@@ -17,7 +17,6 @@ describe('group page', () => {
           page: 1,
         },
         constructAndRenderPage({
-          getAllEvents: T.of([]),
           getFollowers: () => [],
           getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,

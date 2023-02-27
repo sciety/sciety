@@ -1,10 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ContentModel } from '../content-model';
 import { ListCardViewModel } from '../../../../shared-components/list-card/render-list-card';
+import { SelectAllListsOwnedBy } from '../../../../shared-ports';
+import { Group } from '../../../../types/group';
 import { List } from '../../../../types/list';
-import { ListsTab } from '../view-model';
+import * as LOID from '../../../../types/list-owner-id';
+
+export type Ports = {
+  selectAllListsOwnedBy: SelectAllListsOwnedBy,
+};
 
 const toListCardViewModel = (list: List): ListCardViewModel => ({
   ...list,
@@ -15,11 +20,10 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   lastUpdated: O.some(list.lastUpdated),
 });
 
-export const constructListsTab = (contentModel: ContentModel): ListsTab => pipe(
-  contentModel.lists,
+export const constructListCards = (ports: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
+  group.id,
+  LOID.fromGroupId,
+  ports.selectAllListsOwnedBy,
   RA.reverse,
   RA.map(toListCardViewModel),
-  (lists) => ({
-    lists,
-  }),
 );

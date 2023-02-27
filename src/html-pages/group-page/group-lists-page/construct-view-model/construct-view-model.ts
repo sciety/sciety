@@ -3,21 +3,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as LOID from '../../../../types/list-owner-id';
-import {
-  GetAllEvents, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
-} from '../../../../shared-ports';
+import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
-import { constructListsTab } from '../lists/lists';
+import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
 
-export type Ports = FindFollowersPorts & {
-  getAllEvents: GetAllEvents,
+export type Ports = FindFollowersPorts & ConstructListCardsPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 export const paramsCodec = t.type({
@@ -44,20 +39,9 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         ),
       ),
       followers: findFollowers(ports)(group.id),
-      lists: pipe(
-        group.id,
-        LOID.fromGroupId,
-        ports.selectAllListsOwnedBy,
-      ),
+      lists: constructListCards(ports, group),
+      listCards: constructListCards(ports, group),
     },
   )),
   TE.fromOption(() => DE.notFound),
-  TE.map((partial) => pipe(
-    partial,
-    constructListsTab,
-    (activeTab) => ({
-      ...partial,
-      activeTab,
-    }),
-  )),
 );
