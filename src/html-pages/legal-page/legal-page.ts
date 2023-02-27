@@ -48,9 +48,37 @@ export const legalPage: Page = {
         This site adds the following to the information specified in the privacy notice linked above.
       </p>
 
+      <h4>Auth0</h4>
+      <p>
+        Sciety uses Auth0 to authenticate you to the web app when you sign up or log in with an email address and password or choose an alternative login provider.
+      </p>
+
+      <p>
+        When you provide profile information such as email and password, you consent to this information being passed to and  stored in Auth0. The personal data stored in Auth0 is used only for the purposes of providing its services, namely authenticating users and not passed to any third party.  If you log in using any other type of connection, for example Twitter, Auth0 stores information provided by the external identity provider for future queries. 
+      </p>
+
+      <p>
+        Should you wish to withdraw this consent at any time, email <a href="mailto:data@elifesciences.org">data@elifesciences.org</a>.
+      </p>
+
+      <p>
+        For further details, please see the <a href="https://auth0.com/docs/secure/data-privacy-and-compliance">Auth0 Privacy Policy</a>.
+      </p>
+
       <h4>Twitter</h4>
       <p>
         When you log in to your Twitter account through our site (for example to store your feed preferences) that interaction is directly with Twitter Inc. We only receive from Twitter a user name and user identifier. Your Twitter user identifier is associated with items that you follow on the site (groups, people, papers and evaluation events) and used to publicly display events that you follow on your user page.
+      </p>
+
+      <h4>Hotjar</h4>
+      <p>
+        Sciety makes use of a user behaviour analytics tool called Hotjar that helps us better understand the experience of using Sciety (e.g. how much time you spend on which pages, which links you choose to click, what you like and don’t like, etc.) and this enables us to build and maintain our service with user feedback. 
+      </p>
+      <p>
+        Hotjar uses cookies and other technologies to collect data on our users’ behaviour and their devices. This includes a device's IP address (processed during your session and stored in a de-identified form), device screen size, device type (unique device identifiers), browser information, geographic location (country only), and the preferred language used to display our website. Hotjar stores this information on our behalf in a pseudonymized user profile. Hotjar is contractually forbidden to sell any of the data collected on our behalf.
+      </p>
+      <p>
+        For further details, please see the ‘about Hotjar’ section of <a href="https://help.hotjar.com/hc/en-us/categories/115001323967-About-Hotjar">Hotjar’s support site</a>.
       </p>
 
       <h3>
@@ -77,6 +105,10 @@ export const legalPage: Page = {
 
       <p>
         22nd September 2022: removed Intercom and Microsoft Clarity information from Sciety privacy policy as we are no longer using these services.
+      </p>
+
+      <p>
+        01st March 2023: added  Auth0 and Hotjar information.
       </p>
 
       <div id="cookieDeclaration">
