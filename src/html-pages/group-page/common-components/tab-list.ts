@@ -1,8 +1,14 @@
-import { Tab } from '../../../../shared-components/tabs';
-import { toHtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { Tab } from '../../../shared-components/tabs';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { Group } from '../../../types/group';
 
-export const tabList = (viewmodel: ViewModel): [Tab, Tab, Tab] => [
+export type TabListViewModel = {
+  group: Group,
+  lists: ReadonlyArray<unknown>,
+  followers: ReadonlyArray<unknown>,
+};
+
+export const tabList = (viewmodel: TabListViewModel): [Tab, Tab, Tab] => [
   {
     label: toHtmlFragment(`<span class="visually-hidden">This group has ${viewmodel.lists.length} </span>Lists<span aria-hidden="true"> (${viewmodel.lists.length})</span>`),
     url: `/groups/${viewmodel.group.slug}/lists`,

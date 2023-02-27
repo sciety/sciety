@@ -3,7 +3,7 @@ import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment } from '../../../../types/html-fragment';
 import { renderFollowers } from './render-followers';
 import { ViewModel } from '../view-model';
-import { tabList } from './tab-list';
+import { tabList } from '../../common-components/tab-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel),

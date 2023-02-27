@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment } from '../../../../types/html-fragment';
+import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
-import { tabList } from './tab-list';
 import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
 
 const tabProps = (viewmodel: ViewModel) => ({
