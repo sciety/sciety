@@ -20,7 +20,6 @@ export const constructListsTab = (contentModel: ContentModel): ListsTab => pipe(
   RA.reverse,
   RA.map(toListCardViewModel),
   (lists) => ({
-    selector: 'lists' as const,
     lists,
   }),
 );

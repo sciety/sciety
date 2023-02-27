@@ -17,7 +17,6 @@ export const constructFollowersTab = (
   contentModel.followers,
   paginate(contentModel.pageNumber, pageSize),
   E.map((pageOfFollowers) => ({
-    selector: 'followers' as const,
     followerCount: pageOfFollowers.numberOfOriginalItems,
     followers: pipe(
       pageOfFollowers.items,
