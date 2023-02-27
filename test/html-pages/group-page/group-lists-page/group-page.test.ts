@@ -17,13 +17,11 @@ describe('group page', () => {
           page: 1,
         },
         constructAndRenderPage({
-          fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getFollowers: () => [],
           getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
-          lookupUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
         }),
         T.map(flow(

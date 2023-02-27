@@ -31,7 +31,7 @@ export type FollowersTab = {
   nextLink: HtmlFragment,
 };
 
-export type ActiveTab = ListsTab | AboutTab | FollowersTab;
+type ActiveTab = ListsTab | AboutTab | FollowersTab;
 
 export type ViewModel = ContentModel & {
   isFollowing: boolean,

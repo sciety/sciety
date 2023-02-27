@@ -10,6 +10,6 @@ type GroupPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageE
 
 export const constructAndRenderPage: GroupPage = (ports) => (params) => pipe(
   params,
-  constructViewModel(ports, 0),
+  constructViewModel(ports),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
