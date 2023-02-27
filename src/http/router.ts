@@ -239,10 +239,10 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   );
 
   router.get(
-    '/groups/:idOrSlug',
+    '/groups/:slug',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.idOrSlug}/about`);
+      context.redirect(`/groups/${context.params.slug}/about`);
 
       await next();
     },
