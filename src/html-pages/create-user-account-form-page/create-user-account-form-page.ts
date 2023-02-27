@@ -20,7 +20,15 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
     () => `
     <div role='alert' class='error-summary'>
       <h3>Something went wrong</h3>
-      <p>Your handle must contain more than 3 characters and less than 15 characters.</p>
+      <p>
+      Please check the following:
+      </p>
+        <ul>
+        <li>Your Full Name must not contain an angle bracket (<>)</li>
+        <li>Your handle must contain more than 3 characters</li>
+        <li>Your handle must contain less than 15 characters</li>
+        <li>Your handle must not be a duplicate of an existing handle. Try choosing another.</li>
+        </ul>
     </div>
     `,
   ),
