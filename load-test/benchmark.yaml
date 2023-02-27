@@ -1,0 +1,78 @@
+---
+
+concurrency: 1
+base: 'http://localhost:8080'
+iterations: 10 
+
+plan:
+  - name: Homepage
+    request:
+      url: /
+
+  - name: Groups
+    request:
+      url: /groups
+
+  - name: My Feed
+    request:
+      url: /my-feed
+
+  - name: Sciety Feed
+    request:
+      url: /sciety-feed
+
+  - name: Article
+    request:
+      url: /articles/10.1101/646810
+
+  - name: Search
+    request:
+      url: /search?query=elephant+shark
+
+  - name: Group Search
+    request:
+      url: /search?query=peer+community+in+archaeology&category=groups
+
+  - name: User Lists
+    request:
+      url: /users/scietyHQ/lists
+
+  - name: User Following
+    request:
+      url: /users/scietyHQ/following
+
+  - name: Group Lists
+    request:
+      url: /groups/pci-zoology/lists
+
+  - name: Groups About
+    request:
+      url: /groups/pci-zoology/about
+
+  - name: Group Followers
+    request:
+      url: /groups/pci-zoology/followers
+
+  - name: List
+    request:
+      url: /lists/454ba80f-e0bc-47ed-ba76-c8f872c303d2
+
+  - name: Edit List Details
+    request:
+      url: /lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7/edit-details
+
+  - name: Legal
+    request:
+      url: /legal
+
+  - name: About
+    request:
+      url: /about
+
+  - name: Oops
+    request:
+      url: /garbage-url
+
+  - name: Menu
+    request:
+      url: /menu
