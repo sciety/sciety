@@ -1,3 +1,4 @@
+import { PageHeaderViewModel } from '../common-components/page-header';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { UserHandle } from '../../../types/user-handle';
 import { ContentModel } from './content-model';
@@ -18,7 +19,6 @@ export type FollowersTab = {
   nextLink: HtmlFragment,
 };
 
-export type ViewModel = ContentModel & {
-  isFollowing: boolean,
+export type ViewModel = PageHeaderViewModel & ContentModel & {
   activeTab: FollowersTab,
 };
