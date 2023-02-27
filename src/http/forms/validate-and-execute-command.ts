@@ -39,7 +39,7 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
       context.request.body,
       createUserAccountFormCodec.decode,
       E.mapLeft((errors) => {
-        adapters.logger('error', 'createUserAccountForm validation-error', { error: formatValidationErrors(errors) });
+        adapters.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
         return 'validation-error';
       }),
     ),
@@ -60,7 +60,7 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
   TE.chainW(flow(
     createUserAccountCommandHandler(adapters),
     TE.mapLeft((error) => {
-      adapters.logger('error', 'createUserAccountForm command-failed', { error });
+      adapters.logger('error', 'createUserAccountCommandHandler failed', { error });
       return 'command-failed';
     }),
   )),
