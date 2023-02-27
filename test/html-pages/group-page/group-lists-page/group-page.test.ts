@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { groupPageTabs } from '../../../../src/html-pages/group-page/group-page';
 import { groupPage } from '../../../../src/html-pages/group-page/group-about-page/group-page';
 import * as DE from '../../../../src/types/data-error';
 import { arbitraryWord } from '../../../helpers';
@@ -26,7 +25,7 @@ describe('group page', () => {
           selectAllListsOwnedBy: shouldNotBeCalled,
           lookupUser: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
-        })(groupPageTabs.lists),
+        }),
         T.map(flow(
           E.matchW(
             (res) => res.type,
