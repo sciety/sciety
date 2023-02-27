@@ -1,17 +1,21 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { arbitraryGroupId } from '../test/types/group-id.helper';
-import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
+import { arbitraryGroup } from '../test/types/group.helper';
 
 describe('unfollow a group', () => {
+  const group = arbitraryGroup();
+
   beforeEach(async () => {
     await openBrowser();
+    await callApi('api/add-group', {
+      ...group,
+      groupId: group.id,
+    });
   });
 
   afterEach(screenshotTeardown);
@@ -23,23 +27,12 @@ describe('unfollow a group', () => {
 
     describe('from a group page', () => {
       it('removes the group from user page', async () => {
-        const groupSlug = arbitraryWord();
-        const groupName = arbitraryString();
-        await callApi('api/add-group', {
-          groupId: arbitraryGroupId(),
-          name: groupName,
-          shortDescription: arbitraryString(),
-          homepage: arbitraryString(),
-          avatarPath: 'http://somethingthatreturns404',
-          descriptionPath: arbitraryDescriptionPath(),
-          slug: groupSlug,
-        });
-        await goto(`localhost:8080/groups/${groupSlug}`);
+        await goto(`localhost:8080/groups/${group.slug}`);
         await click('Follow');
         await click('Unfollow');
         await click('My lists');
         await click('Following');
-        const groupExists = await text(groupName, within($('.followed-groups'))).exists();
+        const groupExists = await text(group.name, within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);
       });
