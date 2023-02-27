@@ -12,5 +12,4 @@ export type ContentModel = {
   followers: ReadonlyArray<Follower>,
   group: Group,
   lists: ReadonlyArray<List>,
-  pageNumber: number,
 };

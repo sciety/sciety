@@ -28,13 +28,11 @@ const constructActiveTabModel = (
   constructAboutTab(ports),
 );
 
-// ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
-  page: tt.withFallback(tt.NumberFromString, 1),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
@@ -45,7 +43,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   ports.getGroupBySlug(params.slug),
   O.map((group) => pipe(
     {
-      pageNumber: params.page,
       group,
       isFollowing: pipe(
         params.user,
