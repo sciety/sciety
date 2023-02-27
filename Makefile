@@ -234,7 +234,7 @@ load-test: clean-db build
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
 	${DOCKER_COMPOSE} restart app
 	scripts/wait-for-healthy.sh
-	docker run --rm -it -v $$(pwd)/load-test:/load-test --network sciety_default grafana/k6 run /load-test/script.js
+	cassowary run -u http://localhost:8080 -c 10 -n 1000
 
 #------------------------------------------------------------------------------
 
