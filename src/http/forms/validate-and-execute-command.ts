@@ -11,10 +11,11 @@ import { userHandleCodec } from '../../types/user-handle';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
+import { Logger } from '../../shared-ports';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export type Ports = CreateUserAccountCommandHandlerPorts;
+export type Ports = CreateUserAccountCommandHandlerPorts & { logger: Logger };
 
 const createUserAccountFormCodec = t.type({
   fullName: userGeneratedInputCodec(30),
@@ -36,7 +37,10 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
     formUserDetails: pipe(
       context.request.body,
       createUserAccountFormCodec.decode,
-      E.mapLeft(() => 'validation-error'),
+      E.mapLeft((error) => {
+        adapters.logger('error', 'validation-error', { error });
+        return 'validation-error';
+      }),
     ),
     authenticatedUserId: pipe(
       context,

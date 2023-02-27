@@ -9,10 +9,12 @@ import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { userCreatedAccount } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { dummyLogger } from '../../dummy-logger';
 
 const defaultAdapters: Ports = {
   commitEvents: shouldNotBeCalled,
   getAllEvents: T.of([]),
+  logger: dummyLogger,
 };
 
 const buildKoaContext = (body: unknown, userId = arbitraryUserId()): ParameterizedContext => ({
