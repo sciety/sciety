@@ -42,9 +42,10 @@ import {
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
-import {
-  groupPage, paramsCodec as groupPageParamsCodec, groupPageTabs,
-} from '../html-pages/group-page/group-page';
+import { paramsCodec as groupPageParamsCodec, groupPageTabs } from '../html-pages/group-page/group-page';
+import { groupPage as groupListsPage } from '../html-pages/group-page/group-lists-page/group-page';
+import { groupPage as groupAboutPage } from '../html-pages/group-page/group-about-page/group-page';
+import { groupPage as groupFollowersPage } from '../html-pages/group-page/group-followers-page/group-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
@@ -252,7 +253,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/groups/:slug/lists',
     pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.lists),
+      groupListsPage(adapters)(groupPageTabs.lists),
     )),
   );
 
@@ -260,7 +261,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/groups/:slug/about',
     pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.about),
+      groupAboutPage(adapters)(groupPageTabs.about),
     )),
   );
 
@@ -268,7 +269,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/groups/:slug/followers',
     pageHandler(adapters, createPageFromParams(
       groupPageParamsCodec,
-      groupPage(adapters)(groupPageTabs.followers),
+      groupFollowersPage(adapters)(groupPageTabs.followers),
     )),
   );
 

@@ -3,12 +3,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as LOID from '../../../types/list-owner-id';
+import * as LOID from '../../../../types/list-owner-id';
 import {
   GetAllEvents, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
-} from '../../../shared-ports';
-import { userIdCodec } from '../../../types/user-id';
-import * as DE from '../../../types/data-error';
+} from '../../../../shared-ports';
+import { userIdCodec } from '../../../../types/user-id';
+import * as DE from '../../../../types/data-error';
 import { ActiveTab, ViewModel } from '../view-model';
 import { ContentModel, TabIndex } from '../content-model';
 import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
@@ -16,7 +16,6 @@ import { constructListsTab } from '../lists/lists';
 import { constructAboutTab, Ports as AboutPorts } from '../about/about';
 import { constructFollowersTab, Ports as FollowersPorts } from '../followers/followers';
 
-// ts-unused-exports:disable-next-line
 export type Ports = AboutPorts & FindFollowersPorts & FollowersPorts & {
   getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
@@ -48,6 +47,7 @@ const constructActiveTabModel = (
   }
 };
 
+// ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
@@ -56,7 +56,6 @@ export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
-// ts-unused-exports:disable-next-line
 export type Params = t.TypeOf<typeof paramsCodec>;
 
 type ConstructViewModel = (
@@ -65,7 +64,6 @@ type ConstructViewModel = (
   params: Params
 ) => TE.TaskEither<DE.DataError, ViewModel>;
 
-// ts-unused-exports:disable-next-line
 export const constructViewModel: ConstructViewModel = (ports, activeTabIndex) => (params) => pipe(
   ports.getGroupBySlug(params.slug),
   O.map((group) => pipe(

@@ -1,9 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../types/data-error';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { RenderPageError } from '../../../types/render-page-error';
+import * as DE from '../../../../types/data-error';
+import { toHtmlFragment } from '../../../../types/html-fragment';
+import { RenderPageError } from '../../../../types/render-page-error';
 
-// ts-unused-exports:disable-next-line
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
   e,
   DE.match({
