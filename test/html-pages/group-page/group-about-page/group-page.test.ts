@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { groupPage } from '../../../../src/html-pages/group-page/group-about-page/group-page';
+import { constructAndRenderPage } from '../../../../src/html-pages/group-page/group-about-page';
 import * as DE from '../../../../src/types/data-error';
 import { arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -16,7 +16,7 @@ describe('group page', () => {
           user: O.none,
           page: 1,
         },
-        groupPage({
+        constructAndRenderPage({
           fetchStaticFile: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getFollowers: () => [],

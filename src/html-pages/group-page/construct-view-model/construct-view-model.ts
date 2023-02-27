@@ -48,7 +48,7 @@ const constructActiveTabModel = (
   }
 };
 
-export const paramsCodec = t.type({
+const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
@@ -56,8 +56,7 @@ export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
-// ts-unused-exports:disable-next-line
-export type Params = t.TypeOf<typeof paramsCodec>;
+type Params = t.TypeOf<typeof paramsCodec>;
 
 type ConstructViewModel = (
   ports: Ports,

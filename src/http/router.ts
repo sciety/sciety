@@ -42,10 +42,9 @@ import {
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
-import { paramsCodec as groupPageParamsCodec } from '../html-pages/group-page/group-page';
-import { groupPage as groupListsPage } from '../html-pages/group-page/group-lists-page/group-page';
-import { groupPage as groupAboutPage } from '../html-pages/group-page/group-about-page/group-page';
-import { groupPage as groupFollowersPage } from '../html-pages/group-page/group-followers-page/group-page';
+import * as GLP from '../html-pages/group-page/group-lists-page';
+import * as GAP from '../html-pages/group-page/group-about-page';
+import * as GFP from '../html-pages/group-page/group-followers-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
@@ -252,24 +251,24 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.get(
     '/groups/:slug/lists',
     pageHandler(adapters, createPageFromParams(
-      groupPageParamsCodec,
-      groupListsPage(adapters),
+      GLP.paramsCodec,
+      GLP.constructAndRenderPage(adapters),
     )),
   );
 
   router.get(
     '/groups/:slug/about',
     pageHandler(adapters, createPageFromParams(
-      groupPageParamsCodec,
-      groupAboutPage(adapters),
+      GAP.paramsCodec,
+      GAP.constructAndRenderPage(adapters),
     )),
   );
 
   router.get(
     '/groups/:slug/followers',
     pageHandler(adapters, createPageFromParams(
-      groupPageParamsCodec,
-      groupFollowersPage(adapters),
+      GFP.paramsCodec,
+      GFP.constructAndRenderPage(adapters),
     )),
   );
 

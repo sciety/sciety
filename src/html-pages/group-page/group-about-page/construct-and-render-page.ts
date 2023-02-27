@@ -6,13 +6,10 @@ import { renderAsHtml } from './render-as-html/render-as-html';
 import { renderErrorPage } from './render-as-html/render-error-page';
 import { constructViewModel, Ports, Params } from './construct-view-model/construct-view-model';
 
-// ts-unused-exports:disable-next-line
-export { paramsCodec } from './construct-view-model/construct-view-model';
-
 type GroupPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const groupPage: GroupPage = (ports) => (params) => pipe(
+export const constructAndRenderPage: GroupPage = (ports) => (params) => pipe(
   params,
-  constructViewModel(ports, 2),
+  constructViewModel(ports, 1),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
