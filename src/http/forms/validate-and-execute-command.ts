@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import * as t from 'io-ts';
@@ -38,7 +38,7 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
       context.request.body,
       createUserAccountFormCodec.decode,
       E.mapLeft((error) => {
-        adapters.logger('error', 'validation-error', { error });
+        adapters.logger('error', 'createUserAccountForm validation-error', { error });
         return 'validation-error';
       }),
     ),
@@ -56,7 +56,13 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
     avatarUrl: defaultSignUpAvatarUrl,
   })),
   T.of,
-  TE.chainW(createUserAccountCommandHandler(adapters)),
+  TE.chainW(flow(
+    createUserAccountCommandHandler(adapters),
+    TE.mapLeft((error) => {
+      adapters.logger('error', 'createUserAccountForm command-failed', { error });
+      return 'command-failed';
+    }),
+  )),
   TE.mapLeft(() => pipe(
     context.request.body,
     unvalidatedFormDetailsCodec.decode,
