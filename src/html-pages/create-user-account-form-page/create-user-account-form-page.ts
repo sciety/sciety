@@ -27,7 +27,7 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
         <li>Your Full Name must not contain an angle bracket (<>)</li>
         <li>Your handle must contain more than 3 characters</li>
         <li>Your handle must contain less than 15 characters</li>
-        <li>Your handle must not be a duplicate of an existing handle. Try choosing another.</li>
+        <li>Your handle must not be a duplicate of an existing handle</li>
         </ul>
     </div>
     `,
