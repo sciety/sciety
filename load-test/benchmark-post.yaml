@@ -1,0 +1,22 @@
+---
+
+concurrency: 1
+base: 'http://localhost:8080'
+iterations: 10 
+
+plan:
+  - name: Record Evaluation
+    request:
+      url: /api/record-evaluation
+      method: POST
+      body: >
+        {
+          "evaluationLocator": "hypothesis:foo",
+          "articleId": "10.1011/abc",
+          "groupId": "b560187e-f2fb-4ff9-a861-a204f3fc0fb0",
+          "publishedAt": "1970",
+          "authors": []
+        }
+      headers: 
+        Authorization: 'Bearer secret'
+        Content-Type: 'application/json'
