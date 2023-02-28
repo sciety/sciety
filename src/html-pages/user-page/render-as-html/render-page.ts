@@ -9,7 +9,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     <h1>
       <span class="visually-hidden">Sciety user </span>${htmlEscape(viewmodel.userDetails.displayName)}
       <div class="page-header__handle">
-        <span class="visually-hidden">Twitter handle </span>@${viewmodel.userDetails.handle}
+        <span class="visually-hidden">Sciety handle </span>@${viewmodel.userDetails.handle}
       </div>
     </h1>
   </header>

@@ -8,7 +8,7 @@ import { arbitraryUserHandle } from '../../types/user-handle.helper';
 describe('get-user-owner-information', () => {
   const userId = arbitraryUserId();
 
-  describe('when Twitter finds the given user', () => {
+  describe('when given user exists', () => {
     it('returns the corresponding owner info', () => {
       const userDisplayName = arbitraryString();
       const userAvatarUrl = arbitraryUri().toString();
@@ -35,7 +35,7 @@ describe('get-user-owner-information', () => {
     });
   });
 
-  describe('when Twitter does not find the given user', () => {
+  describe('when the given user does not exist', () => {
     it('returns a not-found error', () => {
       const ports = {
         lookupUser: () => O.none,
