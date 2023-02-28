@@ -61,8 +61,6 @@ jobs:
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
         env:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
 
       - name: Taiko
         if: github.ref == 'refs/heads/main'
@@ -70,8 +68,6 @@ jobs:
           make taiko
         env:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
 
       - name: Push Image to Docker Hub
         if: github.ref == 'refs/heads/main'
@@ -112,8 +108,6 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
           AUTH0_CLIENT_SECRET_STAGING: ${{ secrets.AUTH0_CLIENT_SECRET_STAGING }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
@@ -149,8 +143,6 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
