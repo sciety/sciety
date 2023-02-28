@@ -4,9 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as LOID from '../../../../types/list-owner-id';
-import {
-  GetAllEvents, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
-} from '../../../../shared-ports';
+import { GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { AboutTab, ViewModel } from '../view-model';
@@ -15,7 +13,6 @@ import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-fo
 import { constructAboutTab, Ports as AboutPorts } from '../about/about';
 
 export type Ports = AboutPorts & FindFollowersPorts & {
-  getAllEvents: GetAllEvents,
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
