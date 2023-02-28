@@ -37,7 +37,7 @@ import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
-  executeFollowCommandIfUserLoggedIn, saveUnfollowCommand, unfollowHandler,
+  executeFollowCommandIfUserLoggedIn, unfollowHandler,
 } from '../write-side/follow';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
@@ -319,7 +319,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/unfollow',
     bodyParser({ enableTypes: ['form'] }),
-    saveUnfollowCommand(),
     requireLoggedInUser(adapters),
     unfollowHandler(adapters),
   );
