@@ -79,7 +79,6 @@ jest-test:
 	npx jest ${TEST}
 
 backstop-test: export TARGET = fast
-backstop-test: export FEATURE_FLAG_AUTH0 = true
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
@@ -162,7 +161,6 @@ prod-sql:
 	-- psql
 
 taiko: export TARGET = fast
-taiko: export FEATURE_FLAG_AUTH0 = true
 taiko: export USE_STUB_ADAPTERS = true
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
