@@ -10,8 +10,8 @@ import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { FollowersTab, ViewModel } from '../view-model';
 import { ContentModel } from '../content-model';
-import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
-import { constructFollowersTab, Ports as FollowersPorts } from '../followers/followers';
+import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
+import { constructFollowersTab, Ports as FollowersPorts } from './followers';
 
 export type Ports = FindFollowersPorts & FollowersPorts & {
   getGroupBySlug: GetGroupBySlug,

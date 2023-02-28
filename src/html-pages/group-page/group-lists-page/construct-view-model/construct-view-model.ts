@@ -7,7 +7,7 @@ import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { findFollowers, Ports as FindFollowersPorts } from '../followers/find-followers';
+import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
 
 export type Ports = FindFollowersPorts & ConstructListCardsPorts & {
