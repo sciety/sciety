@@ -1,1 +1,1 @@
-export { createUserAccountCommandHandler, Ports } from './create-user-account-command-handler';
+export { createUserAccountCommandHandler } from './create-user-account-command-handler';

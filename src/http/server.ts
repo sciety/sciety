@@ -7,7 +7,6 @@ import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
-import { twitterPassportStrategy } from './authentication/twitter-passport-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 
@@ -78,16 +77,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     app,
   ));
 
-  const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
   const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
 
-  if (shouldUseAuth0) {
-    koaPassport.use(auth0PassportStrategy());
-    if (shouldUseStubAdapters) {
-      koaPassport.use(testingPassportStrategy);
-    }
-  } else {
-    koaPassport.use(twitterPassportStrategy(ports));
+  koaPassport.use(auth0PassportStrategy());
+  if (shouldUseStubAdapters) {
+    koaPassport.use(testingPassportStrategy);
   }
 
   app.use(koaPassport.initialize());
