@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import { Middleware, ParameterizedContext } from 'koa';
 import { pipe } from 'fp-ts/function';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
-import { annotateWithTwitterSuccess } from './annotate-with-twitter-success';
 
 type State = {
   targetFragmentId?: string,
@@ -30,13 +29,3 @@ export const requireLoggedInUser = (
     ),
   );
 };
-
-export const redirectAfterSuccess = (): Middleware => (
-  async (context, next) => {
-    const successRedirect = context.session.successRedirect || '/';
-    context.redirect(annotateWithTwitterSuccess(successRedirect));
-    delete context.session.successRedirect;
-
-    await next();
-  }
-);

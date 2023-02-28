@@ -11,7 +11,7 @@ import { CommandResult } from '../../types/command-result';
 import { ReviewId } from '../../types/review-id';
 import { UserId } from '../../types/user-id';
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type CommitEvents = (events: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 

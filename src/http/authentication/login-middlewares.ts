@@ -4,21 +4,6 @@ import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts, referringPage } from '../authentication-and-logging-in-of-sciety-users';
 
-// twitter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-export const logInTwitter: Middleware = koaPassport.authenticate('twitter', {
-  failureRedirect: '/',
-});
-
-export const logOutTwitter: Middleware = async (context, next) => {
-  context.logout();
-  context.redirect('back');
-
-  await next();
-};
-
-// auth0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 const oAuthScope = 'openid profile';
 
 // https://auth0.com/docs/authenticate/login/auth0-universal-login/new-experience#signup

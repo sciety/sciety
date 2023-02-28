@@ -1,30 +1,19 @@
 /* eslint-disable padded-blocks */
 import Router from '@koa/router';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
   logInAuth0,
-  logInTwitter,
   signUpAuth0,
   completeAuthenticationJourney,
-  stubLogInAuth0, stubSignUpAuth0, logOutTwitter, logOutAuth0, stubLogOutAuth0,
+  stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
-import { finishCommand } from '../finish-command';
 import { createUserAccount } from '../forms/create-user-account';
-import { onlyIfNotLoggedIn } from '../only-if-not-logged-in';
 import { pageHandler } from '../page-handler';
-import { redirectAfterSuccess } from '../require-logged-in-user';
 import { createUserAccountFormPage, paramsCodec as createUserAccountFormPageParamsCodec } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
-import {
-  finishUnfollowCommand,
-} from '../../write-side/follow';
+
 import { CollectedPorts } from '../../infrastructure';
-import { finishRespondCommand } from '../../write-side/respond/finish-respond-command';
-import { finishSaveArticleCommand } from '../../write-side/save-article/finish-save-article-command';
-import { signUpPage } from '../../html-pages/sign-up-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
 
@@ -105,54 +94,8 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
   }
 };
 
-const configureTwitterRoutes = (router: Router, adapters: CollectedPorts) => {
-  router.get(
-    signUpRoute,
-    pageHandler(adapters, () => pipe(signUpPage, TE.right)),
-  );
-
-  router.get(
-    logInRoute,
-    saveReferrerToSession,
-    logInTwitter,
-  );
-
-  router.get(
-    '/sign-up-call-to-action',
-    async (context: ParameterizedContext, next) => {
-      context.session.successRedirect = '/';
-      await next();
-    },
-    logInTwitter,
-  );
-
-  router.get(logOutRoute, logOutTwitter);
-
-  // TODO set commands as an object on the session rather than individual properties
-  router.get(
-    '/twitter/callback',
-    catchErrors(
-      adapters.logger,
-      'Detected Twitter callback error',
-      'Something went wrong, please try again.',
-    ),
-    onlyIfNotLoggedIn(adapters, logInTwitter),
-    finishCommand(adapters),
-    finishUnfollowCommand(adapters),
-    finishRespondCommand(adapters),
-    finishSaveArticleCommand(adapters),
-    redirectAfterSuccess(),
-  );
-};
-
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
-  const shouldUseAuth0 = process.env.FEATURE_FLAG_AUTH0 === 'true';
   const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
 
-  if (shouldUseAuth0) {
-    configureAuth0Routes(router, adapters, shouldUseStubAdapters);
-  } else {
-    configureTwitterRoutes(router, adapters);
-  }
-
+  configureAuth0Routes(router, adapters, shouldUseStubAdapters);
 };
