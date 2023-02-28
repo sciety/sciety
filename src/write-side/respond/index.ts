@@ -1,2 +1,1 @@
-// ts-unused-exports:disable-next-line
-export { respondHandler, Ports } from './respond-handler';
+export { respondHandler } from './respond-handler';

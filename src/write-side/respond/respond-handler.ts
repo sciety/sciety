@@ -14,7 +14,6 @@ export type Ports = GetLoggedInScietyUserPorts & {
   getAllEvents: GetAllEvents,
 };
 
-// ts-unused-exports:disable-next-line
 export const respondHandler = (ports: Ports): Middleware => async (context, next) => {
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
@@ -36,7 +35,7 @@ export const respondHandler = (ports: Ports): Middleware => async (context, next
     ),
   )();
 
-  context.redirect(`${referrer}#${String(context.request.body.reviewid)}`); // TODO needs moving somewhere else
+  context.redirect(`${referrer}#${String(context.request.body.reviewid)}`);
 
   await next();
 };

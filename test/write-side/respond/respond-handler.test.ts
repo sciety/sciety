@@ -2,12 +2,12 @@ import { RouterParamContext } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
-import { respondHandler, Ports as RespondHandlerPorts } from '../../../src/write-side/respond';
+import { respondHandler, Ports as RespondHandlerPorts } from '../../../src/write-side/respond/respond-handler';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { UserId } from '../../../src/types/user-id';
 
-describe('index', () => {
+describe('respond-handler', () => {
   it('redirects to review anchor on referer', async () => {
     const context = ({
       request: {
