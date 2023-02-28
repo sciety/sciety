@@ -1,7 +1,6 @@
 import { RouterContext } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../../src/write-side/save-article/finish-save-article-command';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { dummyLogger } from '../../dummy-logger';
@@ -14,6 +13,7 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
+import { articleIdFieldName } from '../../../src/write-side/save-article/save-save-article-command';
 
 describe('finish-save-article-command', () => {
   const listId = arbitraryListId();
@@ -32,9 +32,10 @@ describe('finish-save-article-command', () => {
     const userId = user.id;
     const articleId = arbitraryArticleId();
     const context = ({
-      session: {
-        command: 'save-article',
-        articleId: articleId.toString(),
+      request: {
+        body: {
+          [articleIdFieldName]: articleId.toString(),
+        },
       },
       state: {
         user: {
@@ -63,9 +64,10 @@ describe('finish-save-article-command', () => {
     const userId = user.id;
     const articleId = arbitraryArticleId();
     const context = ({
-      session: {
-        command: 'save-article',
-        articleId: articleId.toString(),
+      request: {
+        body: {
+          [articleIdFieldName]: articleId.toString(),
+        },
       },
       state: {
         user: {
@@ -83,36 +85,6 @@ describe('finish-save-article-command', () => {
       })(context, jest.fn());
 
       expect(addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId, articleId }));
-    });
-  });
-
-  describe('after saving', () => {
-    const addArticleToList = () => TE.right(arbitraryCommandResult());
-
-    it('deletes session parameters', async () => {
-      const user = arbitraryUserDetails();
-      const userId = user.id;
-      const articleId = arbitraryArticleId();
-      const context = ({
-        session: {
-          command: 'save-article',
-          articleId: articleId.toString(),
-        },
-        state: {
-          user: {
-            id: userId,
-          },
-        },
-      } as unknown) as ParameterizedContext;
-
-      await finishSaveArticleCommand({
-        selectAllListsOwnedBy,
-        lookupUser: () => O.some(user),
-        addArticleToList,
-        logger: dummyLogger,
-      })(context, jest.fn());
-
-      expect(context.session).toStrictEqual({});
     });
   });
 });

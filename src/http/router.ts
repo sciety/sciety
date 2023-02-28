@@ -57,7 +57,6 @@ import { recordEvaluationCommandHandler } from '../write-side/record-evaluation'
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { respondHandler } from '../write-side/respond';
 import { finishSaveArticleCommand } from '../write-side/save-article/finish-save-article-command';
-import { saveSaveArticleCommand } from '../write-side/save-article/save-save-article-command';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
@@ -332,7 +331,6 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/save-article',
     bodyParser({ enableTypes: ['form'] }),
-    saveSaveArticleCommand,
     requireLoggedInUser(adapters),
     finishSaveArticleCommand(adapters),
     redirectBack,

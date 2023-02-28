@@ -17,6 +17,7 @@ import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
+import { articleIdFieldName } from './save-save-article-command';
 
 type Ports = GetLoggedInScietyUserPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -44,9 +45,10 @@ const constructCommand: ConstructCommand = (
 );
 
 const contextCodec = t.type({
-  session: t.type({
-    articleId: DoiFromString,
-    command: t.literal('save-article'),
+  request: t.type({
+    body: t.type({
+      [articleIdFieldName]: DoiFromString,
+    }),
   }),
 });
 
@@ -56,7 +58,7 @@ export const finishSaveArticleCommand = (ports: Ports): Middleware => async (con
       articleId: pipe(
         context,
         contextCodec.decode,
-        E.map((ctx) => ctx.session.articleId),
+        E.map((ctx) => ctx.request.body[articleIdFieldName]),
         O.fromEither,
       ),
       userId: pipe(
@@ -74,11 +76,7 @@ export const finishSaveArticleCommand = (ports: Ports): Middleware => async (con
           ports.logger('error', 'finishSaveArticleCommand failed', { error });
           return T.of(error);
         }),
-        T.map(() => {
-          delete context.session.command;
-          delete context.session.articleId;
-          return undefined;
-        }),
+        T.map(() => undefined),
       ),
     ),
   )();
