@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { sessionGroupProperty } from './finish-follow-command';
 import { followCommand, Ports as FollowCommandPorts } from './follow-command';
 import { groupProperty } from './follow-handler';
 import { renderErrorPage } from '../../http/render-error-page';
@@ -51,8 +50,6 @@ export const executeFollowCommandIfUserLoggedIn = (ports: Ports): Middleware => 
         getLoggedInScietyUser(ports, context),
         O.match(
           () => {
-            context.session.command = 'follow';
-            context.session[sessionGroupProperty] = params.groupId.toString();
             context.session.successRedirect = constructRedirectUrl(context);
             context.redirect('/log-in');
             return T.of(undefined);
