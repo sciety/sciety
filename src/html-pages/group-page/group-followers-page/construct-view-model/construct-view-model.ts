@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -20,10 +21,9 @@ export type Ports = FindFollowersPorts & FollowersPorts & {
 
 const constructActiveTabModel = (
   ports: Ports,
-) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, FollowersTab> => pipe(
+) => (contentModel: ContentModel): E.Either<DE.DataError, FollowersTab> => pipe(
   contentModel,
   constructFollowersTab(ports),
-  TE.fromEither,
 );
 
 export const paramsCodec = t.type({
@@ -59,13 +59,14 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ),
     },
   )),
-  TE.fromOption(() => DE.notFound),
-  TE.chain((partial) => pipe(
+  E.fromOption(() => DE.notFound),
+  E.chain((partial) => pipe(
     partial,
     constructActiveTabModel(ports),
-    TE.map((activeTab) => ({
+    E.map((activeTab) => ({
       ...partial,
       activeTab,
     })),
   )),
+  TE.fromEither,
 );
