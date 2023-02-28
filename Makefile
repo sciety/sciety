@@ -234,7 +234,8 @@ load-test: clean-db build
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
 	${DOCKER_COMPOSE} restart app
 	scripts/wait-for-healthy.sh
-	drill --benchmark load-test/benchmark.yaml -s
+	drill --benchmark load-test/benchmark-get.yaml -s
+	drill --benchmark load-test/benchmark-post.yaml -s
 
 #------------------------------------------------------------------------------
 
