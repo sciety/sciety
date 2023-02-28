@@ -1,32 +1,47 @@
-@use '../../sass/settings';
-@use '../../sass/card';
-@use '../../sass/functions';
-@use '../../sass/baseline';
-@use '../../sass/typography';
-@use '../../sass/breakpoints';
-@use '../../sass/layout';
-@use '../../sass/list';
-@use '../../sass/avatar';
 
-@use './about';
-@use './followers';
-@use './lists';
+@use '../../../sass/settings';
+@use '../../../sass/functions';
+@use '../../../sass/baseline';
+@use '../../../sass/breakpoints';
 
-.page-header.page-header--group {
+.group-page-about {
   margin-bottom: baseline.increments(3);
+  padding: 1rem;
+  background-color: settings.$colour-white;
+
+  @include breakpoints.not-narrow {
+    border-radius: settings.$border-radius;
+  }
 }
 
-.group-page-follow-toggle {
-  @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(6);
+.group-page-pref {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: functions.px-to-rem(6px);
+  font-size: functions.px-to-rem(14px);
+  border-top: 1px solid settings.$colour-furniture;
+  border-bottom: 1px solid settings.$colour-furniture;
+  padding: functions.px-to-rem(12px) 0;
+  margin-bottom: #{baseline.increments(3)};
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 0;
+  }
 }
 
-.page-header--group {
-  .page-header__avatar {
-    @include avatar.border();
-    width: avatar.$size--large;
-    height: avatar.$size--large;
-    flex: 0 0 avatar.$size--large;
-    margin-right: 1rem;
+.our-lists__article_count {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.our-lists__updated_label {
+  display: block;
+
+  @include breakpoints.not-narrow {
+    display: inline;
   }
 }

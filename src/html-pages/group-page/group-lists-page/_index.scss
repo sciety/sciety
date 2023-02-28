@@ -1,32 +1,5 @@
-@use '../../sass/settings';
-@use '../../sass/card';
-@use '../../sass/functions';
-@use '../../sass/baseline';
-@use '../../sass/typography';
-@use '../../sass/breakpoints';
-@use '../../sass/layout';
-@use '../../sass/list';
-@use '../../sass/avatar';
+@use '../../../sass/baseline';
 
-@use './about';
-@use './followers';
-@use './lists';
-
-.page-header.page-header--group {
+.group-page-lists {
   margin-bottom: baseline.increments(3);
-}
-
-.group-page-follow-toggle {
-  @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(6);
-}
-
-.page-header--group {
-  .page-header__avatar {
-    @include avatar.border();
-    width: avatar.$size--large;
-    height: avatar.$size--large;
-    flex: 0 0 avatar.$size--large;
-    margin-right: 1rem;
-  }
 }

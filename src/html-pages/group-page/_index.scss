@@ -8,25 +8,8 @@
 @use '../../sass/list';
 @use '../../sass/avatar';
 
-@use './about';
-@use './followers';
-@use './lists';
+@use './group-about-page';
+@use './group-followers-page';
+@use './group-lists-page';
 
-.page-header.page-header--group {
-  margin-bottom: baseline.increments(3);
-}
-
-.group-page-follow-toggle {
-  @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(6);
-}
-
-.page-header--group {
-  .page-header__avatar {
-    @include avatar.border();
-    width: avatar.$size--large;
-    height: avatar.$size--large;
-    flex: 0 0 avatar.$size--large;
-    margin-right: 1rem;
-  }
-}
+@use './common-components';
