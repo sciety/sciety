@@ -50,8 +50,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     'PGHOST',
     'PGPASSWORD',
     'PGDATABASE',
-    'TWITTER_API_KEY',
-    'TWITTER_API_SECRET_KEY',
   ];
 
   const missingVariables = requiredEnvironmentVariables.filter((variableName) => !process.env[variableName]);
