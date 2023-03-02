@@ -12,8 +12,9 @@ import { FollowersTab, ViewModel } from '../view-model';
 import { ContentModel } from '../content-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructFollowersTab, Ports as FollowersPorts } from './followers';
+import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 
-export type Ports = FindFollowersPorts & FollowersPorts & {
+export type Ports = FindFollowersPorts & FollowersPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -51,6 +52,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
           (u) => ports.isFollowing(group.id)(u.id),
         ),
       ),
+      tabs: constructTabsViewModel(ports, group),
       followers: findFollowers(ports)(group.id),
       lists: pipe(
         group.id,

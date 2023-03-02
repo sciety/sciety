@@ -2,6 +2,7 @@ import { PageHeaderViewModel } from '../common-components/page-header';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { UserHandle } from '../../../types/user-handle';
 import { ContentModel } from './content-model';
+import { TabsViewModel } from '../common-components/tabs-view-model';
 
 export type UserCardViewModel = {
   link: string,
@@ -20,4 +21,5 @@ export type FollowersTab = {
 
 export type ViewModel = PageHeaderViewModel & ContentModel & {
   activeTab: FollowersTab,
+  tabs: TabsViewModel,
 };
