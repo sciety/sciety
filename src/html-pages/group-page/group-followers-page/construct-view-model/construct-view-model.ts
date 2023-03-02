@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as LOID from '../../../../types/list-owner-id';
 import { GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
@@ -54,11 +53,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ),
       tabs: constructTabsViewModel(ports, group),
       followers: findFollowers(ports)(group.id),
-      lists: pipe(
-        group.id,
-        LOID.fromGroupId,
-        ports.selectAllListsOwnedBy,
-      ),
     },
   )),
   E.fromOption(() => DE.notFound),

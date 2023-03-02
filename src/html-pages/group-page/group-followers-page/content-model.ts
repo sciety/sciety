@@ -1,5 +1,4 @@
 import { Group } from '../../../types/group';
-import { List } from '../../../types/list';
 import { UserId } from '../../../types/user-id';
 
 export type Follower = {
@@ -11,6 +10,5 @@ export type Follower = {
 export type ContentModel = {
   followers: ReadonlyArray<Follower>,
   group: Group,
-  lists: ReadonlyArray<List>,
   pageNumber: number,
 };
