@@ -6,7 +6,7 @@ import { ViewModel } from '../view-model';
 import { renderAboutTab } from './render-about-tab';
 
 const tabProps = (viewmodel: ViewModel) => ({
-  tabList: tabList(viewmodel),
+  tabList: tabList(viewmodel.tabs),
   activeTabIndex: 1,
 });
 

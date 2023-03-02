@@ -6,7 +6,7 @@ import { ViewModel } from '../view-model';
 import { tabList } from '../../common-components/tab-list';
 
 const tabProps = (viewmodel: ViewModel) => ({
-  tabList: tabList(viewmodel),
+  tabList: tabList(viewmodel.tabs),
   activeTabIndex: 2,
 });
 

@@ -6,7 +6,7 @@ import { ViewModel } from '../view-model';
 import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
 
 const tabProps = (viewmodel: ViewModel) => ({
-  tabList: tabList(viewmodel),
+  tabList: tabList(viewmodel.tabs),
   activeTabIndex: 0,
 });
 
