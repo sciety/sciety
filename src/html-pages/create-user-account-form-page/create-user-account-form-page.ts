@@ -24,10 +24,10 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
       Please check the following:
       </p>
         <ul>
-        <li>Your Full Name must not contain an angle bracket (<>)</li>
-        <li>Your handle must contain more than 3 characters</li>
-        <li>Your handle must contain less than 15 characters</li>
-        <li>Your handle must not be a duplicate of an existing handle</li>
+        <li>Your full name and handle must not contain any of &quot;,&lt;,&gt;</li>
+        <li>Your full name must be 1-30 characters long</li>
+        <li>Your handle must be 4-15 characters long</li>
+        <li>Your handle must not be in use by anyone else</li>
         </ul>
     </div>
     `,
