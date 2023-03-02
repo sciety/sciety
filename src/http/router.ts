@@ -12,7 +12,7 @@ import * as tt from 'io-ts-types';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
-import { editListDetails } from './forms/edit-list-details';
+import { editListDetailsHandler } from './forms/edit-list-details-handler';
 import { removeArticleFromListHandler } from './forms/remove-article-from-list-handler';
 import { loadStaticFile } from './load-static-file';
 import { ownedBy } from './owned-by-api';
@@ -347,7 +347,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/forms/edit-list-details',
     bodyParser({ enableTypes: ['form'] }),
-    editListDetails(adapters),
+    editListDetailsHandler(adapters),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));

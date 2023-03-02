@@ -55,7 +55,7 @@ const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   ),
 );
 
-export const editListDetails = (adapters: Ports): Middleware => async (context) => {
+export const editListDetailsHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(
     {
       userId: pipe(
