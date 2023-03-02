@@ -18,7 +18,6 @@ describe('group page', () => {
         },
         constructAndRenderPage({
           getFollowers: () => [],
-          getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
           getGroupBySlug: () => O.none,

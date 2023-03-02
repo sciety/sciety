@@ -7,11 +7,10 @@ import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 
-export type Ports = FindFollowersPorts & ConstructListCardsPorts & TabsViewModelPorts & {
+export type Ports = ConstructListCardsPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
 };
@@ -39,8 +38,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
           (u) => ports.isFollowing(group.id)(u.id),
         ),
       ),
-      followers: findFollowers(ports)(group.id),
-      lists: constructListCards(ports, group),
       listCards: constructListCards(ports, group),
       tabs: constructTabsViewModel(ports, group),
     },
