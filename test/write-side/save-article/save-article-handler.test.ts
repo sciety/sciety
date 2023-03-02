@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { finishSaveArticleCommand } from '../../../src/write-side/save-article/finish-save-article-command';
+import { saveArticleHandler } from '../../../src/write-side/save-article/save-article-handler';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
@@ -15,7 +15,7 @@ import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import { articleIdFieldName } from '../../../src/write-side/save-article/save-save-article-command';
 
-describe('finish-save-article-command', () => {
+describe('save-article-handler', () => {
   const listId = arbitraryListId();
   const selectAllListsOwnedBy: SelectAllListsOwnedBy = (listOwnerId: ListOwnerId) => [{
     id: listId,
@@ -47,7 +47,7 @@ describe('finish-save-article-command', () => {
     const logger = jest.fn(dummyLogger);
 
     it('logs an error', async () => {
-      await finishSaveArticleCommand({
+      await saveArticleHandler({
         lookupUser: () => O.some(user),
         selectAllListsOwnedBy,
         addArticleToList,
@@ -77,7 +77,7 @@ describe('finish-save-article-command', () => {
     } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
     it('calls the add article to list command with the list id owned by the user', async () => {
-      await finishSaveArticleCommand({
+      await saveArticleHandler({
         selectAllListsOwnedBy,
         lookupUser: () => O.some(user),
         addArticleToList,

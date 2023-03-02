@@ -40,7 +40,7 @@ const constructCommand: ConstructCommand = (
   LOID.fromUserId,
   ports.selectAllListsOwnedBy,
   RA.head,
-  TE.fromOption(() => toErrorMessage('finishSaveArticleCommand: Cannot find list for user')),
+  TE.fromOption(() => toErrorMessage('saveArticleHandler: Cannot find list for user')),
   TE.map((list) => ({ articleId, listId: list.id })),
 );
 
@@ -52,7 +52,7 @@ const contextCodec = t.type({
   }),
 });
 
-export const finishSaveArticleCommand = (ports: Ports): Middleware => async (context, next) => {
+export const saveArticleHandler = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
     {
       articleId: pipe(
@@ -73,7 +73,7 @@ export const finishSaveArticleCommand = (ports: Ports): Middleware => async (con
         constructCommand(ports, userId, articleId),
         TE.chain(ports.addArticleToList),
         TE.getOrElseW((error) => {
-          ports.logger('error', 'finishSaveArticleCommand failed', { error });
+          ports.logger('error', 'saveArticleHandler failed', { error });
           return T.of(error);
         }),
         T.map(() => undefined),
