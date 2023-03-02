@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { saveArticleHandler } from '../../../src/write-side/save-article/save-article-handler';
+import { articleIdFieldName, saveArticleHandler } from '../../../src/write-side/save-article/save-article-handler';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
@@ -13,7 +13,6 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { SelectAllListsOwnedBy } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
-import { articleIdFieldName } from '../../../src/write-side/save-article/save-save-article-command';
 
 describe('save-article-handler', () => {
   const listId = arbitraryListId();

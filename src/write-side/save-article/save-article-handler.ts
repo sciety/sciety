@@ -17,7 +17,8 @@ import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { articleIdFieldName } from './save-save-article-command';
+
+export const articleIdFieldName = 'articleid';
 
 type Ports = GetLoggedInScietyUserPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,

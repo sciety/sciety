@@ -1,6 +1,6 @@
-import { articleIdFieldName } from './save-save-article-command';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { articleIdFieldName } from './save-article-handler';
 
 export const renderSaveForm = (doi: Doi): HtmlFragment => toHtmlFragment(`
   <form method="post" action="/save-article">
