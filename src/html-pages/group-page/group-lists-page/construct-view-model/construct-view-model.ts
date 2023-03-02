@@ -3,38 +3,15 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as RA from 'fp-ts/ReadonlyArray';
-import {
-  GetFollowers, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
-} from '../../../../shared-ports';
+import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
-import { TabsViewModel, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
-import { Group } from '../../../../types/group';
-import * as LOID from '../../../../types/list-owner-id';
+import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 
-type TabsViewModelPorts = {
-  getFollowers: GetFollowers,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-};
-
-const constructTabsViewModel = (ports: TabsViewModelPorts, group: Group): TabsViewModel => ({
-  groupSlug: group.slug,
-  listCount: pipe(
-    group.id,
-    LOID.fromGroupId,
-    ports.selectAllListsOwnedBy,
-    RA.size,
-  ),
-  followerCount: pipe(
-    ports.getFollowers(group.id),
-    RA.size,
-  ),
-});
-
-export type Ports = FindFollowersPorts & ConstructListCardsPorts & {
+export type Ports = FindFollowersPorts & ConstructListCardsPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
 };

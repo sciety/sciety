@@ -3,12 +3,7 @@ import { Group } from '../../../types/group';
 import { UserId } from '../../../types/user-id';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabListViewModel } from '../common-components/tab-list';
-
-export type TabsViewModel = {
-  groupSlug: string,
-  listCount: number,
-  followerCount: number,
-};
+import { TabsViewModel } from '../common-components/tabs-view-model';
 
 export type Follower = {
   userId: UserId,
