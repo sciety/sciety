@@ -9,11 +9,10 @@ import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { AboutTab, ViewModel } from '../view-model';
 import { ContentModel } from '../content-model';
-import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructAboutTab, Ports as AboutPorts } from './about';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 
-export type Ports = AboutPorts & FindFollowersPorts & TabsViewModelPorts & {
+export type Ports = AboutPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -50,7 +49,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         ),
       ),
       tabs: constructTabsViewModel(ports, group),
-      followers: findFollowers(ports)(group.id),
       lists: pipe(
         group.id,
         LOID.fromGroupId,

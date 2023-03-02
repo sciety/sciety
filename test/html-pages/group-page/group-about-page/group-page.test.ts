@@ -19,7 +19,6 @@ describe('group page', () => {
         constructAndRenderPage({
           fetchStaticFile: shouldNotBeCalled,
           getFollowers: () => [],
-          getGroupsFollowedBy: () => [],
           isFollowing: () => () => false,
           selectAllListsOwnedBy: shouldNotBeCalled,
           getGroupBySlug: () => O.none,
