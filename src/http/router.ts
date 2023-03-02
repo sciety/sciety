@@ -13,7 +13,7 @@ import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { handleScietyApiCommand } from './api/handle-sciety-api-command';
 import { editListDetails } from './forms/edit-list-details';
-import { removeArticleFromList } from './forms/remove-article-from-list';
+import { removeArticleFromListHandler } from './forms/remove-article-from-list-handler';
 import { loadStaticFile } from './load-static-file';
 import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
@@ -340,7 +340,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/forms/remove-article-from-list',
     bodyParser({ enableTypes: ['form'] }),
     requireLoggedInUser(adapters),
-    removeArticleFromList(adapters),
+    removeArticleFromListHandler(adapters),
     redirectBack,
   );
 

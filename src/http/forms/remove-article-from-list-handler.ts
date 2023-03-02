@@ -67,7 +67,7 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
   TE.chainW(removeArticleFromListCommandHandler(adapters)),
 );
 
-export const removeArticleFromList = (adapters: Ports): Middleware => async (context, next) => {
+export const removeArticleFromListHandler = (adapters: Ports): Middleware => async (context, next) => {
   const user = getLoggedInScietyUser(adapters, context);
   await pipe(
     context.request.body,
