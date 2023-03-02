@@ -1,13 +1,6 @@
 import { Tab } from '../../../shared-components/tabs';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { Group } from '../../../types/group';
 import { TabsViewModel } from './tabs-view-model';
-
-export type TabListViewModel = {
-  group: Group,
-  lists: ReadonlyArray<unknown>,
-  followers: ReadonlyArray<unknown>,
-};
 
 export const tabList = (viewmodel: TabsViewModel): [Tab, Tab, Tab] => [
   {
