@@ -1,2 +1,2 @@
-export { executeFollowCommandIfUserLoggedIn } from './execute-follow-command-if-user-logged-in';
+export { followHandler } from './follow-handler';
 export { unfollowHandler } from './unfollow-handler';
