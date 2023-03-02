@@ -7,7 +7,6 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { followCommand, Ports as FollowCommandPorts } from './follow-command';
-import { groupProperty } from './follow-handler';
 import { renderErrorPage } from '../../http/render-error-page';
 import { constructRedirectUrl } from '../../http/require-logged-in-user';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
@@ -15,6 +14,8 @@ import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
+
+export const groupProperty = 'groupid';
 
 type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
   logger: Logger,
