@@ -5,12 +5,11 @@ import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
+import { environmentVariablesCodec } from './environment-variables-codec';
 
 export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
   const app = new Koa();
@@ -60,9 +59,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
-  const environmentVariablesCodec = t.type({
-    APP_ORIGIN: tt.NonEmptyString,
-  });
   const environmentVariables = environmentVariablesCodec.decode(process.env);
   if (E.isLeft(environmentVariables)) {
     return E.left('Missing APP_ORIGIN environment variable');
