@@ -58,7 +58,11 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
-  const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
+  const appOrigin = process.env.APP_ORIGIN;
+  if (!appOrigin) {
+    return E.left('Missing APP_ORIGIN environment variable');
+  }
+  const isSecure = appOrigin.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {
       ctx.cookies.secure = true;
