@@ -11,6 +11,8 @@ import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 import { environmentVariablesCodec } from './environment-variables-codec';
 
+const environmentVariables = environmentVariablesCodec.decode(process.env);
+
 export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
   const app = new Koa();
   const { logger } = ports;
@@ -59,7 +61,6 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
-  const environmentVariables = environmentVariablesCodec.decode(process.env);
   if (E.isLeft(environmentVariables)) {
     return E.left('Missing APP_ORIGIN environment variable');
   }
