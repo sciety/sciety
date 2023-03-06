@@ -5,6 +5,26 @@ base: 'http://localhost:8080'
 iterations: 1
 
 plan:
+  - name: Add user
+    request:
+      url: /api/create-user
+      method: POST
+      body: >
+        {
+          "userId": "auth0|foo{{ item }}",
+          "handle": "foo{{item}}",
+          "avatarUrl": "http://localhost/avatar",
+          "displayName": "Foo the {{ item }}"
+        }
+      headers: 
+        Authorization: 'Bearer secret'
+        Content-Type: 'application/json'
+    with_items_range:
+      start: 1
+      step: 1
+      stop: 100000
+    shuffle: true
+    pick: 10
   - name: Record Evaluation
     request:
       url: /api/record-evaluation
