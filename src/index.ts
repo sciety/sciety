@@ -5,6 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } from './add-article-to-elife-subject-area-list';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
@@ -66,6 +67,7 @@ void pipe(
   )),
   TE.chainEitherKW(({ adapters, router }) => pipe(
     environmentVariablesCodec.decode(process.env),
+    E.mapLeft(formatValidationErrors),
     E.chainW((environmentVariables) => createApplicationServer(router, adapters, environmentVariables)),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
