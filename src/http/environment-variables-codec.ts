@@ -5,5 +5,4 @@ export const environmentVariablesCodec = t.type({
   APP_ORIGIN: tt.NonEmptyString,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type EnvironmentVariables = t.TypeOf<typeof environmentVariablesCodec>;
+export type EnvironmentVariables = t.TypeOf<typeof environmentVariablesCodec>;

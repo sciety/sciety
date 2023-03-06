@@ -9,11 +9,13 @@ import { auth0PassportStrategy } from './authentication/auth0-passport-strategy'
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
-import { environmentVariablesCodec } from './environment-variables-codec';
+import { EnvironmentVariables } from './environment-variables-codec';
 
-const environmentVariables = environmentVariablesCodec.decode(process.env);
-
-export const createApplicationServer = (router: Router, ports: CollectedPorts): E.Either<string, Server> => {
+export const createApplicationServer = (
+  router: Router,
+  ports: CollectedPorts,
+  environmentVariables: EnvironmentVariables,
+): E.Either<string, Server> => {
   const app = new Koa();
   const { logger } = ports;
 
@@ -61,10 +63,7 @@ export const createApplicationServer = (router: Router, ports: CollectedPorts): 
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
-  if (E.isLeft(environmentVariables)) {
-    return E.left('Missing APP_ORIGIN environment variable');
-  }
-  const appOrigin = process.env.APP_ORIGIN ?? '';
+  const appOrigin = environmentVariables.APP_ORIGIN;
   const isSecure = appOrigin.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {

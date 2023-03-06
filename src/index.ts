@@ -12,6 +12,7 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
+import { environmentVariablesCodec } from './http/environment-variables-codec';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -64,7 +65,8 @@ void pipe(
     (router) => ({ router, adapters }),
   )),
   TE.chainEitherKW(({ adapters, router }) => pipe(
-    createApplicationServer(router, adapters),
+    environmentVariablesCodec.decode(process.env),
+    E.chainW((environmentVariables) => createApplicationServer(router, adapters, environmentVariables)),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
       (server) => server.on('listening', () => adapters.logger('info', 'Server running')),
