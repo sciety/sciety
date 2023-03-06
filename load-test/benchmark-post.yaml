@@ -2,7 +2,7 @@
 
 concurrency: 1
 base: 'http://localhost:8080'
-iterations: 10 
+iterations: 1
 
 plan:
   - name: Record Evaluation
@@ -11,7 +11,7 @@ plan:
       method: POST
       body: >
         {
-          "evaluationLocator": "hypothesis:foo",
+          "evaluationLocator": "hypothesis:foo{{ item }}",
           "articleId": "10.1011/abc",
           "groupId": "b560187e-f2fb-4ff9-a861-a204f3fc0fb0",
           "publishedAt": "1970",
@@ -20,3 +20,9 @@ plan:
       headers: 
         Authorization: 'Bearer secret'
         Content-Type: 'application/json'
+    with_items_range:
+      start: 1
+      step: 1
+      stop: 100000
+    shuffle: true
+    pick: 10
