@@ -4,6 +4,7 @@ import Router from '@koa/router';
 import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import {
   logInAuth0,
   signUpAuth0,
