@@ -6,12 +6,14 @@ import { Middleware } from 'koa';
 import { Payload } from '../../infrastructure/logger';
 import { Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { CreateListCommand } from '../../write-side/commands';
+import * as LID from '../../types/list-id';
+import * as LOID from '../../types/list-owner-id';
 
 type Ports = GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createListHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(
     getLoggedInScietyUser(adapters, context),
@@ -22,6 +24,12 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
       errorType: 'codec-failed' as const,
     })),
     TE.fromEither,
+    TE.map((userId): CreateListCommand => ({
+      listId: LID.generate(),
+      ownerId: LOID.fromUserId(userId),
+      name: 'Second user list',
+      description: 'An additional list',
+    })),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
         adapters.logger('error', error.message, error.payload);
