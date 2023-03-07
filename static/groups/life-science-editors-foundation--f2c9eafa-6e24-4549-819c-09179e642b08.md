@@ -8,7 +8,7 @@ The scientific community, particularly at leadership levels, suffers from a lack
 
 [Linked In](https://www.linkedin.com/company/life-science-editors-foundation)
 
-[Twitter](https://twitter.com/LSEFoundation)
+[Twitter](https://twitter.com/_lsefoundation_)
 
 ## Our evaluation model
 
