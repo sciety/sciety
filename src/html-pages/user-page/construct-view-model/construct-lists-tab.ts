@@ -10,4 +10,5 @@ export const constructListsTab = (list: List): ListsTab => ({
   title: list.name,
   description: list.description,
   articleCountLabel: 'This list contains',
+  showCreateNewList: true,
 });

@@ -12,6 +12,7 @@ export type ListsTab = {
   title: string,
   description: string,
   articleCountLabel: string,
+  showCreateNewList: boolean,
 };
 
 export type FollowingTab = {

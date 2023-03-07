@@ -31,7 +31,7 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
 );
 
 const renderLists = (activeTab: ListsTab) => (
-  process.env.EXPERIMENT_ENABLED === 'true'
+  process.env.EXPERIMENT_ENABLED === 'true' && activeTab.showCreateNewList
     ? toHtmlFragment(`
       <div>
         <form action="/forms/create-list" method="post">
