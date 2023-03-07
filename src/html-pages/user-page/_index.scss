@@ -57,6 +57,8 @@
 
 .create-new-list-call-to-action {
   @include button.button();
+  @include layout.page-content-horizontal-margins();
+
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
