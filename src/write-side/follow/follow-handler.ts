@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -14,8 +15,7 @@ import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
-
-export const groupProperty = 'groupid';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 
 type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
   logger: Logger,
@@ -30,11 +30,21 @@ const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
   })),
 );
 
+export const groupProperty = 'groupid';
+
+const bodyCodec = t.type({
+  [groupProperty]: GroupIdFromString,
+});
+
 export const followHandler = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
-    context.request.body[groupProperty],
-    GroupId.fromNullable,
-    TE.fromOption(() => DE.notFound),
+    context.request.body,
+    bodyCodec.decode,
+    TE.fromEither,
+    TE.bimap(
+      () => DE.notFound,
+      (body) => body[groupProperty],
+    ),
     TE.chainEitherK(validate(ports)),
     TE.fold(
       () => {
