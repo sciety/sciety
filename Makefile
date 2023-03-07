@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch*
+.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
