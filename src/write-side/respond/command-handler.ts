@@ -17,7 +17,7 @@ const commands = {
   'revoke-response': revokeResponse,
 };
 
-const commandCodec = t.keyof(commands);
+export const commandCodec = t.keyof(commands);
 
 type Command = t.TypeOf<typeof commandCodec>;
 
