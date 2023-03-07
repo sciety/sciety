@@ -354,7 +354,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
   router.post(
     '/forms/create-list',
     bodyParser({ enableTypes: ['form'] }),
-    createListHandler(),
+    createListHandler(adapters),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
