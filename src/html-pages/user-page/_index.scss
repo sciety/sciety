@@ -1,4 +1,5 @@
 @use '../../sass/baseline';
+@use '../../sass/button';
 @use '../../sass/functions';
 @use '../../sass/list';
 @use '../../sass/settings';
@@ -52,4 +53,8 @@
     margin-left: 0;
     margin-right: 0;
   }
+}
+
+.create-new-list-call-to-action {
+  @include button.button();
 }

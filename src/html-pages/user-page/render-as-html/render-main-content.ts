@@ -35,7 +35,7 @@ const renderLists = (activeTab: ListsTab) => (
     ? toHtmlFragment(`
       <div>
         <form action="/forms/create-list" method="post">
-          <button>Create new list</button>
+          <button class="create-new-list-call-to-action">Create new list</button>
         </form>
         ${renderListCard(activeTab)}
       </div>
