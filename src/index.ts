@@ -60,15 +60,23 @@ void pipe(
     logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
   }),
-  TE.map((adapters) => pipe(
-    adapters,
-    createRouter,
-    (router) => ({ router, adapters }),
+  TE.chainEitherKW((adapters) => pipe(
+    process.env,
+    environmentVariablesCodec.decode,
+    E.bimap(
+      formatValidationErrors,
+      (config) => ({
+        adapters,
+        config,
+      }),
+    ),
   )),
-  TE.chainEitherKW(({ adapters, router }) => pipe(
-    environmentVariablesCodec.decode(process.env),
-    E.mapLeft(formatValidationErrors),
-    E.chainW((environmentVariables) => createApplicationServer(router, adapters, environmentVariables)),
+  TE.map(({ adapters, config }) => pipe(
+    createRouter(adapters, config),
+    (router) => ({ router, adapters, config }),
+  )),
+  TE.chainEitherKW(({ adapters, router, config }) => pipe(
+    createApplicationServer(router, adapters, config),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
       (server) => server.on('listening', () => adapters.logger('info', 'Server running')),

@@ -2,6 +2,7 @@ import { Middleware, ParameterizedContext } from 'koa';
 import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts, referringPage } from '../authentication-and-logging-in-of-sciety-users';
 
 const oAuthScope = 'openid profile';
@@ -31,11 +32,15 @@ export const logInAuth0: Middleware = koaPassport.authenticate('auth0', {
   scope: oAuthScope,
 });
 
-export const logOutAuth0: Middleware = async (context, next) => {
+export type Config = {
+  APP_ORIGIN: tt.NonEmptyString,
+};
+
+export const logOutAuth0 = (config: Config): Middleware => async (context, next) => {
   removeLocalBrowserSession(context);
   const domain = process.env.AUTH0_DOMAIN ?? '';
   const clientId = process.env.AUTH0_CLIENT_ID ?? '';
-  const app = process.env.APP_ORIGIN ?? '';
+  const app = config.APP_ORIGIN;
   const auth0logout = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${app}${targetPageAfterLogOut}`;
   context.redirect(auth0logout);
 

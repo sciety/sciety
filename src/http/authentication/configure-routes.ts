@@ -6,7 +6,7 @@ import {
   logInAuth0,
   signUpAuth0,
   completeAuthenticationJourney,
-  stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0,
+  stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
 import { createUserAccount } from '../forms/create-user-account';
@@ -16,6 +16,8 @@ import { createUserAccountFormPage, paramsCodec as createUserAccountFormPagePara
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
+
+export type Config = LoginMiddlewaresConfig;
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
@@ -28,7 +30,12 @@ const saveReferrerToSession: Middleware = async (context: ParameterizedContext, 
   await next();
 };
 
-const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUseStubAdapters: boolean) => {
+const configureAuth0Routes = (
+  router: Router,
+  adapters: CollectedPorts,
+  shouldUseStubAdapters: boolean,
+  config: Config,
+) => {
   router.get(
     '/create-account-form',
     pageHandler(
@@ -67,7 +74,7 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
     completeAuthenticationJourney(adapters),
   );
 
-  router.get(logOutRoute, shouldUseStubAdapters ? stubLogOutAuth0 : logOutAuth0);
+  router.get(logOutRoute, shouldUseStubAdapters ? stubLogOutAuth0 : logOutAuth0(config));
 
   if (shouldUseStubAdapters) {
     router.get(
@@ -94,8 +101,8 @@ const configureAuth0Routes = (router: Router, adapters: CollectedPorts, shouldUs
   }
 };
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
+export const configureRoutes = (router: Router, adapters: CollectedPorts, config: Config): void => {
   const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
 
-  configureAuth0Routes(router, adapters, shouldUseStubAdapters);
+  configureAuth0Routes(router, adapters, shouldUseStubAdapters, config);
 };

@@ -71,6 +71,7 @@ import { createUserAccountCommandCodec } from '../write-side/commands/create-use
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
+import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -87,7 +88,9 @@ const articlePageParams = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-export const createRouter = (adapters: CollectedPorts): Router => {
+type Config = AuthenticationRoutesConfig;
+
+export const createRouter = (adapters: CollectedPorts, config: Config): Router => {
   const router = new Router();
 
   // PAGES
@@ -378,7 +381,7 @@ export const createRouter = (adapters: CollectedPorts): Router => {
 
   // AUTHENTICATION
 
-  authentication.configureRoutes(router, adapters);
+  authentication.configureRoutes(router, adapters, config);
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
