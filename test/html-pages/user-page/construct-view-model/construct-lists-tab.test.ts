@@ -20,12 +20,22 @@ describe('construct-lists-tab', () => {
       });
 
       describe('and the logged in user does not own the page', () => {
-        it.todo('the button should not be shown');
+        const user = O.some(arbitraryUserId());
+
+        it.failing('the button should not be shown', () => {
+          const viewmodel = constructListsTab(list, pageOwner, user);
+
+          expect(viewmodel.showCreateNewList).toBe(false);
+        });
       });
     });
 
     describe('when there is no logged in user', () => {
-      it.todo('the button should not be shown');
+      it.failing('the button should not be shown', () => {
+        const viewmodel = constructListsTab(list, pageOwner, O.none);
+
+        expect(viewmodel.showCreateNewList).toBe(false);
+      });
     });
   });
 });
