@@ -53,6 +53,7 @@ describe('create user list', () => {
               page: 1,
             },
             constructGroupFollowersPage(queries),
+            TE.mapLeft((error) => { console.log('>>>', error); return error; }),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
