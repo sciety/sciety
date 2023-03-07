@@ -70,6 +70,7 @@ import { createUserAccountCommandHandler } from '../write-side/create-user-accou
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
+import { createListHandler } from './forms/create-list-handler';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -348,6 +349,12 @@ export const createRouter = (adapters: CollectedPorts): Router => {
     '/forms/edit-list-details',
     bodyParser({ enableTypes: ['form'] }),
     editListDetailsHandler(adapters),
+  );
+
+  router.post(
+    '/forms/create-list',
+    bodyParser({ enableTypes: ['form'] }),
+    createListHandler(),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
