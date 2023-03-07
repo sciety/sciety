@@ -1,8 +1,22 @@
+import * as O from 'fp-ts/Option';
+import { arbitraryList } from '../../../types/list-helper';
+import { constructListsTab } from '../../../../src/html-pages/user-page/construct-view-model/construct-lists-tab';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
+
 describe('construct-lists-tab', () => {
+  const list = arbitraryList();
+  const pageOwner = arbitraryUserDetails();
+
   describe('showCreateNewList', () => {
     describe('when there is a logged in user', () => {
       describe('and the logged in user also owns the page', () => {
-        it.todo('the button should be shown');
+        const user = O.some(pageOwner.id);
+
+        it('the button should be shown', () => {
+          const viewmodel = constructListsTab(list, pageOwner, user);
+
+          expect(viewmodel.showCreateNewList).toBe(true);
+        });
       });
 
       describe('and the logged in user does not own the page', () => {
