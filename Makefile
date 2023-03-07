@@ -194,7 +194,7 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
-replace-staging-database-with-snapshot-from-prod:
+replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
 	kubectl run psql \
 	--image=postgres:12.3 \
 	--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
