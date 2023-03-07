@@ -62,8 +62,8 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
         getLoggedInScietyUser(adapters, context),
         O.map((userDetails) => userDetails.id),
         E.fromOption(() => ({
-          message: 'Logged in user not found',
-          payload: { context },
+          message: 'No authenticated user',
+          payload: { formBody: context.request.body },
           errorType: 'codec-failed' as const,
         })),
       ),
