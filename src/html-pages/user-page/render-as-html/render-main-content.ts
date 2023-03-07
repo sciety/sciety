@@ -30,13 +30,17 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
   ),
 );
 
+const createNewListCallToAction = `
+  <form action="/forms/create-list" method="post">
+    <button class="create-new-list-call-to-action">Create new list</button>
+  </form>
+`;
+
 const renderLists = (activeTab: ListsTab) => (
   process.env.EXPERIMENT_ENABLED === 'true' && activeTab.showCreateNewList
     ? toHtmlFragment(`
       <div>
-        <form action="/forms/create-list" method="post">
-          <button class="create-new-list-call-to-action">Create new list</button>
-        </form>
+        ${createNewListCallToAction}
         ${renderListCard(activeTab)}
       </div>
     `)
