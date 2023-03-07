@@ -194,6 +194,17 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
+replace-staging-database-with-snapshot-from-prod:
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
+	--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	-- sleep 600
+	kubectl wait --for condition=Ready pod psql
+	kubectl delete --wait=false pod psql
+
 download-db-dump-staging:
 	kubectl run psql \
 	--image=postgres:12.3 \
