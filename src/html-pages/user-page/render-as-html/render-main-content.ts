@@ -31,7 +31,9 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
 );
 
 const renderLists = (activeTab: ListsTab) => (
-  renderListCard(activeTab)
+  process.env.EXPERIMENT_ENABLED === 'true'
+    ? renderListCard(activeTab)
+    : renderListCard(activeTab)
 );
 
 const renderActiveTabContents = (viewmodel: ViewModel) => (
