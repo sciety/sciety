@@ -4,7 +4,7 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { renderListCard } from '../../../shared-components/list-card/render-list-card';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { FollowingTab, ViewModel } from '../view-model';
+import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { renderGroupCard } from '../../../shared-components/group-card';
@@ -30,9 +30,13 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
   ),
 );
 
+const renderLists = (activeTab: ListsTab) => (
+  renderListCard(activeTab)
+);
+
 const renderActiveTabContents = (viewmodel: ViewModel) => (
   (viewmodel.activeTab.selector === 'lists')
-    ? renderListCard(viewmodel.activeTab)
+    ? renderLists(viewmodel.activeTab)
     : renderFollowedGroups(viewmodel.activeTab)
 );
 
