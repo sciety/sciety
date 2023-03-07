@@ -45,6 +45,8 @@ const defaultAdapters: Ports = {
   }],
 };
 
+const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
+
 describe('user-page', () => {
   describe.each([
     ['lists'],
@@ -59,9 +61,8 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(ports)(tabName),
       )();
 
@@ -69,9 +70,8 @@ describe('user-page', () => {
     });
 
     it('accepts handle as a string', async () => {
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(defaultAdapters)(tabName),
       )();
 
@@ -87,9 +87,8 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(ports)(tabName),
       )();
 
@@ -113,9 +112,8 @@ describe('user-page', () => {
         ]),
         getGroupsFollowedBy: () => [groupId1, groupId2],
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(ports)(tabName),
       )();
 
@@ -139,9 +137,8 @@ describe('user-page', () => {
           id: arbitraryUserId(),
         }),
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
 
-      const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
+      const pageHtml = await contentOf(userPage(ports)(tabName)(defaultParams))();
 
       expect(pageHtml).toContain(avatarUrl);
       expect(pageHtml).toContain(displayName);
@@ -155,9 +152,8 @@ describe('user-page', () => {
         lookupUserByHandle: () => O.some(user),
         getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(ports)(tabName),
         contentOf,
         T.map(JSDOM.fragment),
@@ -172,9 +168,8 @@ describe('user-page', () => {
 
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(defaultAdapters)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
@@ -216,9 +211,8 @@ describe('user-page', () => {
           getGroupsFollowedBy: () => [group1.id, group2.id],
           lookupUserByHandle: () => O.some(user),
         };
-        const params = { handle: arbitraryCandidateUserHandle() };
         const page = await pipe(
-          params,
+          defaultParams,
           userPage(ports)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
@@ -240,10 +234,9 @@ describe('user-page', () => {
             ]),
             lookupUserByHandle: () => O.some(user),
           };
-          const params = { handle: arbitraryCandidateUserHandle() };
 
           const content = await pipe(
-            params,
+            defaultParams,
             userPage(ports)('followed-groups'),
             contentOf,
             T.map(JSDOM.fragment),
@@ -260,13 +253,12 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const params = { handle: arbitraryCandidateUserHandle() };
         const adapters: Ports = {
           ...defaultAdapters,
           getGroupsFollowedBy: () => [],
         };
         page = await pipe(
-          params,
+          defaultParams,
           userPage(adapters)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
@@ -289,9 +281,8 @@ describe('user-page', () => {
 
   describe('lists tab', () => {
     it('shows lists as the active tab', async () => {
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(defaultAdapters)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
@@ -310,9 +301,8 @@ describe('user-page', () => {
           displayName: userDisplayName,
         }),
       };
-      const params = { handle: arbitraryCandidateUserHandle() };
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(ports)('lists'),
       )();
 
@@ -320,10 +310,8 @@ describe('user-page', () => {
     });
 
     it('shows a card linking to the saved-articles list page', async () => {
-      const params = { handle: arbitraryCandidateUserHandle() };
-
       const page = await pipe(
-        params,
+        defaultParams,
         userPage(defaultAdapters)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
