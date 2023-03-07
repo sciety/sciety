@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { renderListCard } from '../../../shared-components/list-card/render-list-card';
 import { renderTabs } from '../../../shared-components/tabs';
-import { HtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
@@ -32,7 +32,14 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
 
 const renderLists = (activeTab: ListsTab) => (
   process.env.EXPERIMENT_ENABLED === 'true'
-    ? renderListCard(activeTab)
+    ? toHtmlFragment(`
+      <div>
+        <form>
+          <button>Create new list</button>
+        </form>
+        ${renderListCard(activeTab)}
+      </div>
+    `)
     : renderListCard(activeTab)
 );
 
