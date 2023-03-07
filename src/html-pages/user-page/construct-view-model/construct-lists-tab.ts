@@ -1,13 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { ListsTab } from '../view-model';
 import { List } from '../../../types/list';
-import { UserDetails } from '../../../types/user-details';
 import { UserId } from '../../../types/user-id';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const showCreateNewList = (pageOwner: UserDetails, loggedInUserId: O.Option<UserId>) => true;
+const showCreateNewList = (pageOwner: UserId, loggedInUserId: O.Option<UserId>) => true;
 
-export const constructListsTab = (list: List, pageOwner: UserDetails, loggedInUserId: O.Option<UserId>): ListsTab => ({
+export const constructListsTab = (list: List, pageOwner: UserId, loggedInUserId: O.Option<UserId>): ListsTab => ({
   selector: 'lists',
   listId: list.id,
   articleCount: list.articleIds.length,
