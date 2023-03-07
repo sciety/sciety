@@ -203,7 +203,9 @@ replace-staging-database-with-snapshot-from-prod:
 	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- sleep 600
 	kubectl wait --for condition=Ready pod psql
+	kubectl exec psql -- psql -c "DELETE FROM events"
 	kubectl delete --wait=false pod psql
+	kubectl rollout restart deployment sciety--staging--frontend
 
 download-db-dump-staging:
 	kubectl run psql \
