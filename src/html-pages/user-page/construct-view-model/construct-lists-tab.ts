@@ -1,10 +1,14 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { ListsTab } from '../view-model';
 import { List } from '../../../types/list';
 import { UserId } from '../../../types/user-id';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const showCreateNewList = (pageOwner: UserId, loggedInUserId: O.Option<UserId>) => true;
+const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
+  loggedInUser,
+  O.filter((loggedInUserId) => loggedInUserId === pageOwner),
+  O.isSome,
+);
 
 export const constructListsTab = (list: List, pageOwner: UserId, loggedInUserId: O.Option<UserId>): ListsTab => ({
   selector: 'lists',
