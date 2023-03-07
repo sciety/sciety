@@ -54,7 +54,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
       groupIds: T.of(groupIds),
       userDetails: T.of(userDetails),
       list: T.of(list),
-      activeTab: (tab === 'lists' ? T.of(constructListsTab(list)) : constructFollowingTab(ports, groupIds)),
+      activeTab: (tab === 'lists' ? T.of(constructListsTab(list, userDetails)) : constructFollowingTab(ports, groupIds)),
     }),
     sequenceS(T.ApplyPar),
   )),
