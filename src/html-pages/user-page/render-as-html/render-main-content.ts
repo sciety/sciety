@@ -34,7 +34,7 @@ const renderLists = (activeTab: ListsTab) => (
   process.env.EXPERIMENT_ENABLED === 'true'
     ? toHtmlFragment(`
       <div>
-        <form>
+        <form action="/forms/create-list" method="post">
           <button>Create new list</button>
         </form>
         ${renderListCard(activeTab)}
