@@ -62,7 +62,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
       list: T.of(list),
       activeTab: (tab === 'lists' ? T.of(
         constructListsTab(
-          list,
+          [list],
           userDetails.id,
           pipe(
             params.user,

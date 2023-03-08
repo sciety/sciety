@@ -4,7 +4,7 @@ import { constructListsTab } from '../../../../src/html-pages/user-page/construc
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('construct-lists-tab', () => {
-  const list = arbitraryList();
+  const lists = [arbitraryList()];
   const pageOwner = arbitraryUserId();
 
   describe('showCreateNewList', () => {
@@ -13,7 +13,7 @@ describe('construct-lists-tab', () => {
         const user = O.some(pageOwner);
 
         it('the button should be shown', () => {
-          const viewmodel = constructListsTab(list, pageOwner, user);
+          const viewmodel = constructListsTab(lists, pageOwner, user);
 
           expect(viewmodel.showCreateNewList).toBe(true);
         });
@@ -23,7 +23,7 @@ describe('construct-lists-tab', () => {
         const user = O.some(arbitraryUserId());
 
         it('the button should not be shown', () => {
-          const viewmodel = constructListsTab(list, pageOwner, user);
+          const viewmodel = constructListsTab(lists, pageOwner, user);
 
           expect(viewmodel.showCreateNewList).toBe(false);
         });
@@ -32,7 +32,7 @@ describe('construct-lists-tab', () => {
 
     describe('when there is no logged in user', () => {
       it('the button should not be shown', () => {
-        const viewmodel = constructListsTab(list, pageOwner, O.none);
+        const viewmodel = constructListsTab(lists, pageOwner, O.none);
 
         expect(viewmodel.showCreateNewList).toBe(false);
       });
