@@ -36,8 +36,10 @@ export const service = (id: ReviewId): string => id.split(':')[0];
 
 export const key = (id: ReviewId): string => id.slice(id.indexOf(':') + 1);
 
+const parseZenodoId = (zenodoDoi: string) => zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/)?.[1] ?? '';
+
 const urlTemplates = ({
-  doi: (id: ReviewId) => `https://doi.org/${key(id)}`,
+  doi: (id: ReviewId) => `https://beta.prereview.org/reviews/${parseZenodoId(key(id))}`,
   hypothesis: (id: ReviewId) => `https://hypothes.is/a/${key(id)}`,
   prelights: (id: ReviewId) => key(id),
   rapidreviews: (id: ReviewId) => key(id),
