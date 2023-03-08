@@ -18,5 +18,6 @@ export type FollowingTab = {
 export type ViewModel = {
   userDetails: UserDetails,
   groupIds: ReadonlyArray<GroupId>,
+  listCount: number,
   activeTab: ListsTab | FollowingTab,
 };
