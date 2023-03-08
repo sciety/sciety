@@ -1,7 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -37,32 +36,26 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   params.handle,
   ports.lookupUserByHandle,
   E.fromOption(() => DE.notFound),
-  E.chain((user) => pipe(
-    {
-      groupIds: pipe(
-        ports.getGroupsFollowedBy(user.id),
-        E.right,
-      ),
-      userDetails: E.right(user),
-      list: pipe(
-        user.id,
-        LOID.fromUserId,
-        ports.selectAllListsOwnedBy,
-        RA.head,
-        E.fromOption(() => DE.notFound),
-      ),
-    },
-    sequenceS(E.Apply),
-  )),
+  E.map((user) => ({
+    groupIds: pipe(
+      ports.getGroupsFollowedBy(user.id),
+    ),
+    userDetails: user,
+    lists: pipe(
+      user.id,
+      LOID.fromUserId,
+      ports.selectAllListsOwnedBy,
+    ),
+  })),
   TE.fromEither,
-  TE.chainTaskK(({ groupIds, userDetails, list }) => pipe(
+  TE.chainTaskK(({ groupIds, userDetails, lists }) => pipe(
     ({
       groupIds: T.of(groupIds),
       userDetails: T.of(userDetails),
-      list: T.of(list),
+      list: T.of(lists[0]),
       activeTab: (tab === 'lists' ? T.of(
         constructListsTab(
-          [list],
+          lists,
           userDetails.id,
           pipe(
             params.user,
