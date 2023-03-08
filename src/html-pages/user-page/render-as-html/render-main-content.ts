@@ -55,10 +55,10 @@ const renderLists = (activeTab: ListsTab) => (
     ? toHtmlFragment(`
       <div>
         ${renderCallToAction(activeTab)}
-        ${renderMultipleListCards([activeTab])}
+        ${renderMultipleListCards([activeTab.listCard])}
       </div>
     `)
-    : renderListCard(activeTab)
+    : renderListCard(activeTab.listCard)
 );
 
 const renderActiveTabContents = (viewmodel: ViewModel) => (

@@ -1,17 +1,12 @@
 import * as O from 'fp-ts/Option';
+import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
 import { GroupViewModel } from '../../shared-components/group-card';
 import { GroupId } from '../../types/group-id';
-import { ListId } from '../../types/list-id';
 import { UserDetails } from '../../types/user-details';
 
 export type ListsTab = {
   selector: 'lists',
-  listId: ListId,
-  articleCount: number,
-  lastUpdated: O.Option<Date>,
-  title: string,
-  description: string,
-  articleCountLabel: string,
+  listCard: ListCardViewModel,
   showCreateNewList: boolean,
 };
 
