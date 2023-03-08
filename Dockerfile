@@ -7,17 +7,21 @@ COPY .npmrc \
   package-lock.json \
   ./
 
-
+FROM oven/bun as bun
+WORKDIR /app
+COPY package.json \
+  bun.lockb \
+  ./
 
 #
 # Stage: Development NPM install
 #
-FROM node AS npm-dev
+FROM bun AS npm-dev
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 
-RUN npm ci
+RUN bun install
 
 
 
@@ -68,9 +72,9 @@ RUN npm run build:css
 #
 # Stage: Production NPM install
 #
-FROM node AS npm-prod
+FROM bun AS npm-prod
 
-RUN npm ci --production
+RUN bun install --production
 
 
 
