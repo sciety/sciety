@@ -37,14 +37,20 @@ const createNewListCallToAction = `
   </form>
 `;
 
+const renderCallToAction = (activeTab: ListsTab) => (activeTab.showCreateNewList ? createNewListCallToAction : '');
+
+const renderMultipleListCards = (activeTab: ListsTab) => `
+  <ul class="group-list" role="list">
+    ${templateListItems([renderListCard(activeTab)], 'group-list__item')}
+  </ul>
+`;
+
 const renderLists = (activeTab: ListsTab) => (
   process.env.EXPERIMENT_ENABLED === 'true'
     ? toHtmlFragment(`
       <div>
-        ${activeTab.showCreateNewList ? createNewListCallToAction : ''}
-        <ul class="group-list" role="list">
-            ${templateListItems([renderListCard(activeTab)], 'group-list__item')}
-        </ul>
+        ${renderCallToAction(activeTab)}
+        ${renderMultipleListCards(activeTab)} 
       </div>
     `)
     : renderListCard(activeTab)
