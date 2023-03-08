@@ -10,7 +10,7 @@ import { arbitraryHtmlFragment } from '../helpers';
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';
 const unexpectedSuffixZenodoKeyMostComplex = '10.5281/somethingelse.123';
-const doiUrl = 'https://doi.org/10.5281/zenodo.6386692';
+const prereviewUrl = 'https://beta.prereview.org/reviews/6386692';
 const zenodoApiUrl = 'https://zenodo.org/api/records/6386692';
 
 describe('fetch-zenodo-record', () => {
@@ -66,7 +66,7 @@ describe('fetch-zenodo-record', () => {
         ).toStrictEqual(E.right(description));
       });
 
-      it('returns the Doi.org url as url', async () => {
+      it('returns the prereview.org url as url', async () => {
         const evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
 
         expect(
@@ -74,7 +74,7 @@ describe('fetch-zenodo-record', () => {
             evaluation,
             E.map((ev) => ev.url),
           ),
-        ).toStrictEqual(E.right(new URL(doiUrl)));
+        ).toStrictEqual(E.right(new URL(prereviewUrl)));
       });
     });
 

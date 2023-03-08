@@ -30,6 +30,22 @@ type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
 
+const getPrereviewEvaluation = (getJson: GetJson) => (zenodoId: string) => pipe(
+  TE.tryCatch(
+    async () => getJson(`https://zenodo.org/api/records/${zenodoId}`),
+    () => DE.unavailable,
+  ),
+  TE.chainEitherKW(zenodoRecordCodec.decode),
+  TE.bimap(
+    () => DE.unavailable,
+    (data) => data.metadata.description,
+  ),
+  TE.map((fullText) => ({
+    fullText,
+    url: new URL(`https://beta.prereview.org/reviews/${zenodoId}`),
+  })),
+);
+
 export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   key,
   E.fromPredicate(
@@ -38,17 +54,5 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   ),
   E.chainOptionK(() => DE.unavailable)(parseZenodoId),
   TE.fromEither,
-  TE.chain((zenodoId) => TE.tryCatch(
-    async () => getJson(`https://zenodo.org/api/records/${zenodoId}`),
-    () => DE.unavailable,
-  )),
-  TE.chainEitherKW(zenodoRecordCodec.decode),
-  TE.bimap(
-    () => DE.unavailable,
-    (data) => data.metadata.description,
-  ),
-  TE.map((fullText) => ({
-    fullText,
-    url: new URL(`https://doi.org/${key}`),
-  })),
+  TE.chain(getPrereviewEvaluation(getJson)),
 );
