@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { renderListCard } from '../../../shared-components/list-card/render-list-card';
+import { ListCardViewModel, renderListCard } from '../../../shared-components/list-card/render-list-card';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
@@ -39,9 +39,9 @@ const createNewListCallToAction = `
 
 const renderCallToAction = (activeTab: ListsTab) => (activeTab.showCreateNewList ? createNewListCallToAction : '');
 
-const renderMultipleListCards = (activeTab: ListsTab) => pipe(
-  activeTab,
-  (tab) => [renderListCard(tab)],
+const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel>) => pipe(
+  cardViewModels,
+  RA.map(renderListCard),
   (renderedCards) => templateListItems(renderedCards, 'group-list__item'),
   (templatedItems) => `
     <ul class="group-list" role="list">
@@ -55,7 +55,7 @@ const renderLists = (activeTab: ListsTab) => (
     ? toHtmlFragment(`
       <div>
         ${renderCallToAction(activeTab)}
-        ${renderMultipleListCards(activeTab)} 
+        ${renderMultipleListCards([activeTab])}
       </div>
     `)
     : renderListCard(activeTab)
