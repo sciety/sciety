@@ -14,7 +14,9 @@ export const requireLoggedInUser = (
     getLoggedInScietyUser(adapters, context),
     O.match(
       async () => {
-        context.session.successRedirect = constructRedirectUrl(context);
+        if (context.session) {
+          context.session.successRedirect = constructRedirectUrl(context);
+        }
         context.redirect('/log-in');
       },
       async () => { await next(); },

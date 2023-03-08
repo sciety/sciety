@@ -96,7 +96,8 @@ export const createApplicationServer = (
   });
 
   koaPassport.deserializeUser((user, done) => {
-    done(null, user);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    done(null, user as any);
   });
 
   app.use(router.middleware());

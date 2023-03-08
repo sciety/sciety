@@ -27,7 +27,7 @@ const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
-  if (!context.session.successRedirect) {
+  if (context.session && !context.session.successRedirect) {
     context.session.successRedirect = context.request.headers.referer ?? '/';
   }
   await next();

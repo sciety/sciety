@@ -61,7 +61,9 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
         getLoggedInScietyUser(ports, context),
         O.match(
           () => {
-            context.session.successRedirect = constructRedirectUrl(context);
+            if (context.session) {
+              context.session.successRedirect = constructRedirectUrl(context);
+            }
             context.redirect('/log-in');
             return T.of(undefined);
           },
