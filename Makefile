@@ -113,7 +113,7 @@ install: node_modules git-lfs
 node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = true
 node_modules: package.json package-lock.json
-	npm install
+	bun install --yarn
 	touch node_modules
 
 git-lfs:
