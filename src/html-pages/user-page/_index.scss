@@ -44,6 +44,14 @@
   @include card.list-item();
 }
 
+.owned-lists-list {
+  @include card.list();
+}
+
+.owned-lists-list__item {
+  @include card.list-item();
+}
+
 .static-message {
   padding-top: baseline.increments(2);
   margin-left: 1rem;
