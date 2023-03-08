@@ -27,12 +27,9 @@ jobs:
         with:
           node-version: '14'
 
-      - name: NPM Cache
-        uses: actions/cache@v2
+      - uses: oven-sh/setup-bun@v1
         with:
-          path: node_modules
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          bun-version: latest
 
       - name: Build Docker images
         run: |
