@@ -38,10 +38,10 @@ const createNewListCallToAction = `
 `;
 
 const renderLists = (activeTab: ListsTab) => (
-  process.env.EXPERIMENT_ENABLED === 'true' && activeTab.showCreateNewList
+  process.env.EXPERIMENT_ENABLED === 'true'
     ? toHtmlFragment(`
       <div>
-        ${createNewListCallToAction}
+        ${activeTab.showCreateNewList ? createNewListCallToAction : ''}
         <ul class="group-list" role="list">
             ${templateListItems([renderListCard(activeTab)], 'group-list__item')}
         </ul>
