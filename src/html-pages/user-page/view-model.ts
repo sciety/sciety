@@ -6,7 +6,7 @@ import { UserDetails } from '../../types/user-details';
 
 export type ListsTab = {
   selector: 'lists',
-  listCard: ListCardViewModel,
+  ownedLists: ReadonlyArray<ListCardViewModel>,
   showCreateNewList: boolean,
 };
 
