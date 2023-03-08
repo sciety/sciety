@@ -41,7 +41,11 @@ const renderLists = (activeTab: ListsTab) => (
     ? toHtmlFragment(`
       <div>
         ${createNewListCallToAction}
-        ${renderListCard(activeTab)}
+        <ul>
+          <li>
+            ${renderListCard(activeTab)}
+          </li>
+        </ul>
       </div>
     `)
     : renderListCard(activeTab)
