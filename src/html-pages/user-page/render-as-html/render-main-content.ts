@@ -9,6 +9,7 @@ import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { renderGroupCard } from '../../../shared-components/group-card';
 import { renderFollowList } from './render-follow-list';
+import { templateListItems } from '../../../shared-components/list-items';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.groupIds.length),
@@ -41,10 +42,8 @@ const renderLists = (activeTab: ListsTab) => (
     ? toHtmlFragment(`
       <div>
         ${createNewListCallToAction}
-        <ul>
-          <li>
-            ${renderListCard(activeTab)}
-          </li>
+        <ul class="group-list" role="list">
+            ${templateListItems([renderListCard(activeTab)], 'group-list__item')}
         </ul>
       </div>
     `)
