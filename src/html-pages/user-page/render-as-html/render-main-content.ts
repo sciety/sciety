@@ -39,11 +39,16 @@ const createNewListCallToAction = `
 
 const renderCallToAction = (activeTab: ListsTab) => (activeTab.showCreateNewList ? createNewListCallToAction : '');
 
-const renderMultipleListCards = (activeTab: ListsTab) => `
-  <ul class="group-list" role="list">
-    ${templateListItems([renderListCard(activeTab)], 'group-list__item')}
-  </ul>
-`;
+const renderMultipleListCards = (activeTab: ListsTab) => pipe(
+  activeTab,
+  (tab) => [renderListCard(tab)],
+  (renderedCards) => templateListItems(renderedCards, 'group-list__item'),
+  (templatedItems) => `
+    <ul class="group-list" role="list">
+      ${templatedItems}
+    </ul>
+  `,
+);
 
 const renderLists = (activeTab: ListsTab) => (
   process.env.EXPERIMENT_ENABLED === 'true'
