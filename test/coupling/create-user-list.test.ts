@@ -14,14 +14,32 @@ import { arbitraryUserDetails } from '../types/user-details.helper';
 import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
+import { UserDetails } from '../../src/types/user-details';
+
+const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']) => ({
+  createUserAccount: async (user: UserDetails) => pipe(
+    {
+      userId: user.id,
+      handle: user.handle,
+      avatarUrl: user.avatarUrl,
+      displayName: user.displayName,
+    },
+    commandHandlers.createUserAccount,
+    TE.getOrElse(shouldNotBeCalled),
+  )(),
+});
 
 describe('create user list', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
   let getAllEvents: ReadAndWriteSides['getAllEvents'];
   let queries: ReadAndWriteSides['queries'];
+  let commandHelpers: {
+    createUserAccount: (user: UserDetails) => Promise<unknown>,
+  };
 
   beforeEach(() => {
     ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
+    commandHelpers = createCommandHelpers(commandHandlers);
   });
 
   describe('given a user who is following a group', () => {
@@ -29,16 +47,7 @@ describe('create user list', () => {
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      await pipe(
-        {
-          userId: user.id,
-          handle: user.handle,
-          avatarUrl: user.avatarUrl,
-          displayName: user.displayName,
-        },
-        commandHandlers.createUserAccount,
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      await commandHelpers.createUserAccount(user);
       await commandHandlers.createGroup({
         groupId: group.id,
         name: group.name,
