@@ -18,6 +18,7 @@ describe('correct-language-semantics', () => {
       getAllEvents: T.of([]),
       isArticleOnTheListOwnedBy: () => () => O.none,
       getGroup: () => O.none,
+      selectAllListsOwnedBy: () => [],
     };
 
     describe('the article title', () => {
