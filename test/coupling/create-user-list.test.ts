@@ -2,17 +2,24 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import {
   constructViewModel as constructGroupFollowersPage,
   Ports as GroupFollowersPagePorts,
 } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model'; import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
 import { dispatcher } from '../../src/infrastructure/dispatcher';
+import { createGroup } from '../../src/write-side/add-group';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 
 describe('create user list', () => {
   let queries: GroupFollowersPagePorts;
+  const eventStore = {
+    getAllEvents: T.of([]),
+    commitEvents: () => T.of('no-events-created' as const),
+
+  };
 
   beforeEach(() => {
     ({ queries } = dispatcher());
@@ -23,9 +30,17 @@ describe('create user list', () => {
     const user = arbitraryUserDetails();
     const group = arbitraryGroup();
 
-    beforeEach(() => {
+    beforeEach(async () => {
       console.log('COMMAND: create user');
-      console.log('COMMAND: create group');
+      await createGroup(eventStore)({
+        groupId: group.id,
+        name: group.name,
+        shortDescription: group.shortDescription,
+        homepage: group.homepage,
+        avatarPath: group.avatarPath,
+        descriptionPath: group.descriptionPath,
+        slug: group.slug,
+      })();
       console.log('COMMAND: user follows group');
     });
 
