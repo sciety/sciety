@@ -17,7 +17,12 @@ import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-w
 import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
 
-const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']) => ({
+type CommandHelpers = {
+  createGroup: (group: Group) => Promise<unknown>,
+  createUserAccount: (user: UserDetails) => Promise<unknown>,
+};
+
+const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
   createGroup: async (group: Group) => commandHandlers.createGroup({
     groupId: group.id,
     name: group.name,
@@ -43,10 +48,7 @@ describe('create user list', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
   let getAllEvents: ReadAndWriteSides['getAllEvents'];
   let queries: ReadAndWriteSides['queries'];
-  let commandHelpers: {
-    createGroup: (group: Group) => Promise<unknown>,
-    createUserAccount: (user: UserDetails) => Promise<unknown>,
-  };
+  let commandHelpers: CommandHelpers;
 
   beforeEach(() => {
     ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
