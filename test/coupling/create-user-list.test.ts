@@ -23,11 +23,6 @@ import { createListCommandHandler } from '../../src/write-side/create-list';
 import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 
-type EventStore = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
-
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
@@ -61,19 +56,19 @@ const setup = () => {
     followGroup: followCommand(eventStore),
   };
   return {
-    eventStore,
-    queries,
     commandHandlers,
+    getAllEvents: eventStore.getAllEvents,
+    queries,
   };
 };
 
 describe('create user list', () => {
   let queries: Dispatcher['queries'];
-  let eventStore: EventStore;
+  let getAllEvents: GetAllEvents;
   let commandHandlers: ReturnType<typeof setup>['commandHandlers'];
 
   beforeEach(() => {
-    ({ queries, eventStore, commandHandlers } = setup());
+    ({ queries, getAllEvents, commandHandlers } = setup());
   });
 
   describe('given a user who is following a group', () => {
@@ -131,7 +126,7 @@ describe('create user list', () => {
               handle: user.handle as string as CandidateUserHandle,
               user: O.none,
             },
-            constructUserListsPage('lists', { ...queries, getAllEvents: eventStore.getAllEvents }),
+            constructUserListsPage('lists', { ...queries, getAllEvents }),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
