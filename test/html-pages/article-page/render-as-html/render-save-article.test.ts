@@ -11,6 +11,7 @@ describe('render-save-article', () => {
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
         userId: O.none,
+        listName: 'My list name',
       });
 
       expect(rendered).toContain('Log in to save this article');
@@ -23,6 +24,7 @@ describe('render-save-article', () => {
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
         userId: O.some(arbitraryUserId()),
+        listName: 'My list name',
       });
 
       expect(rendered).toContain('Saved to my list');
@@ -35,6 +37,7 @@ describe('render-save-article', () => {
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
         userId: O.some(arbitraryUserId()),
+        listName: 'My list name',
       });
 
       expect(rendered).toContain('Save to my list');

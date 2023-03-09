@@ -11,6 +11,7 @@ type ViewModel = {
   doi: Doi,
   isArticleInList: O.Option<ListId>,
   userId: O.Option<UserId>,
+  listName: string,
 };
 
 const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
@@ -31,7 +32,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
     () => pipe(
       viewmodel.isArticleInList,
       O.fold(
-        renderSaveArticleCapability(viewmodel.doi, 'My list name'),
+        renderSaveArticleCapability(viewmodel.doi, viewmodel.listName),
         renderLinkToOnlyList,
       ),
     ),

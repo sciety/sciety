@@ -57,4 +57,5 @@ export type ViewModel = {
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
+  listName: string,
 };

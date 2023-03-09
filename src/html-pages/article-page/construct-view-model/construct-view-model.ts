@@ -48,6 +48,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
+      listName: 'My list name',
     })),
   )),
 );
