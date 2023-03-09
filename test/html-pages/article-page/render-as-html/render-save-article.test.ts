@@ -6,14 +6,14 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
-    it('renders save-to-your-list-form', () => {
+    it('renders log in call to action', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
         userId: O.none,
       });
 
-      expect(rendered).toContain('Save to my list');
+      expect(rendered).toContain('Log in to save this article');
     });
   });
 

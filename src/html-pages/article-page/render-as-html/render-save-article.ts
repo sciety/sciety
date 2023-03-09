@@ -22,12 +22,12 @@ const renderLinkToOnlyList = (listId: ListId) => `
       </a>
     `;
 
-const renderLoggedOutCallToAction = (doi: Doi) => renderSaveArticleCapability(doi);
+const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userId,
   O.match(
-    renderLoggedOutCallToAction(viewmodel.doi),
+    renderLoggedOutCallToAction,
     () => pipe(
       viewmodel.isArticleInList,
       O.fold(

@@ -26,6 +26,25 @@
   margin-bottom: baseline.increments(2);
 }
 
+.logged-out-call-to-action {
+  @include button.button-link();
+  border-color: settings.$colour-teal;
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-teal;
+    color: settings.$colour-white;
+
+    &:active,
+    &:hover {
+      border-color: settings.$colour-teal;
+      background-color: settings.$colour-ui-default;
+      color: settings.$colour-white;
+      text-decoration: none;
+    }
+  }
+}
+
 .save-article-button {
   @include button.basics();
   display: flex;

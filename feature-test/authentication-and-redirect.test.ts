@@ -119,7 +119,7 @@ describe('authentication-and-redirect', () => {
       it.todo('clicking the back button doesn\'t result in an error');
     });
 
-    describe('after clicking save to my list', () => {
+    describe('after clicking Log in to save this article', () => {
       let newUserId: UserId;
       let userHandle: UserHandle;
       const articleId = '10.1101/2022.09.23.22280264';
@@ -127,7 +127,7 @@ describe('authentication-and-redirect', () => {
 
       beforeEach(async () => {
         await goto(articlePage);
-        await click('Save to my list');
+        await click('Log in to save this article');
         newUserId = arbitraryUserId();
         userHandle = arbitraryUserHandle();
         await goto('localhost:8080/groups');
