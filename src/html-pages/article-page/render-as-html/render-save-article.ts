@@ -13,7 +13,7 @@ type ViewModel = {
   userId: O.Option<UserId>,
 };
 
-const renderSaveArticleCapability = (doi: Doi) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi) : renderSaveForm(doi));
+const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
 
 const renderLinkToOnlyList = (listId: ListId) => `
       <a class="saved-to-list" href="/lists/${listId}">
@@ -31,7 +31,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
     () => pipe(
       viewmodel.isArticleInList,
       O.fold(
-        renderSaveArticleCapability(viewmodel.doi),
+        renderSaveArticleCapability(viewmodel.doi, 'My list name'),
         renderLinkToOnlyList,
       ),
     ),
