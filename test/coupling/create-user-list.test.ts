@@ -16,14 +16,19 @@ import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
+import { UserId } from '../../src/types/user-id';
+import { GroupId } from '../../src/types/group-id';
+import { List } from '../../src/types/list';
 
 type CommandHelpers = {
   createGroup: (group: Group) => Promise<unknown>,
+  createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
+  followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
 };
 
 const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
-  createGroup: async (group: Group) => commandHandlers.createGroup({
+  createGroup: async (group) => commandHandlers.createGroup({
     groupId: group.id,
     name: group.name,
     shortDescription: group.shortDescription,
@@ -32,7 +37,17 @@ const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandler
     descriptionPath: group.descriptionPath,
     slug: group.slug,
   })(),
-  createUserAccount: async (user: UserDetails) => pipe(
+  createList: async (list) => pipe(
+    {
+      listId: list.id,
+      ownerId: list.ownerId,
+      name: list.name,
+      description: list.description,
+    },
+    commandHandlers.createList,
+    TE.getOrElse(shouldNotBeCalled),
+  )(),
+  createUserAccount: async (user) => pipe(
     {
       userId: user.id,
       handle: user.handle,
@@ -42,6 +57,7 @@ const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandler
     commandHandlers.createUserAccount,
     TE.getOrElse(shouldNotBeCalled),
   )(),
+  followGroup: async (userId, groupId) => commandHandlers.followGroup(userId, groupId)(),
 });
 
 describe('create user list', () => {
@@ -62,7 +78,7 @@ describe('create user list', () => {
     beforeEach(async () => {
       await commandHelpers.createUserAccount(user);
       await commandHelpers.createGroup(group);
-      await commandHandlers.followGroup(user.id, group.id)();
+      await commandHelpers.followGroup(user.id, group.id);
     });
 
     describe('when the user creates a new list', () => {
@@ -72,16 +88,7 @@ describe('create user list', () => {
       };
 
       beforeEach(async () => {
-        await pipe(
-          {
-            listId: list.id,
-            ownerId: list.ownerId,
-            name: list.name,
-            description: list.description,
-          },
-          commandHandlers.createList,
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        await commandHelpers.createList(list);
       });
 
       describe('on the user-lists page', () => {
