@@ -42,7 +42,20 @@ const commitEvents = (
   T.of,
 );
 
-const setup = () => {
+type CommandHandlers = {
+  createGroup: ReturnType<typeof createGroup>,
+  createList: ReturnType<typeof createListCommandHandler>,
+  createUserAccount: ReturnType<typeof createUserAccountCommandHandler>,
+  followGroup: ReturnType<typeof followCommand>,
+};
+
+type ReadAndWriteSides = {
+  commandHandlers: CommandHandlers,
+  getAllEvents: GetAllEvents,
+  queries: Dispatcher['queries'],
+};
+
+const createReadAndWriteSides = (): ReadAndWriteSides => {
   const allEvents: Array<DomainEvent> = [];
   const { dispatchToAllReadModels, queries } = dispatcher();
   const eventStore = {
@@ -63,12 +76,12 @@ const setup = () => {
 };
 
 describe('create user list', () => {
-  let queries: Dispatcher['queries'];
-  let getAllEvents: GetAllEvents;
-  let commandHandlers: ReturnType<typeof setup>['commandHandlers'];
+  let commandHandlers: ReadAndWriteSides['commandHandlers'];
+  let getAllEvents: ReadAndWriteSides['getAllEvents'];
+  let queries: ReadAndWriteSides['queries'];
 
   beforeEach(() => {
-    ({ queries, getAllEvents, commandHandlers } = setup());
+    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
   });
 
   describe('given a user who is following a group', () => {
