@@ -55,6 +55,7 @@ const setup = () => {
     commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
   };
   const commandHandlers = {
+    createGroup: createGroup(eventStore),
     createUserAccount: createUserAccountCommandHandler(eventStore),
     followGroup: followCommand(eventStore),
   };
@@ -89,7 +90,7 @@ describe('create user list', () => {
         commandHandlers.createUserAccount,
         TE.getOrElse(shouldNotBeCalled),
       )();
-      await createGroup(eventStore)({
+      await commandHandlers.createGroup({
         groupId: group.id,
         name: group.name,
         shortDescription: group.shortDescription,
