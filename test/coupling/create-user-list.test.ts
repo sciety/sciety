@@ -56,6 +56,7 @@ const setup = () => {
   };
   const commandHandlers = {
     createUserAccount: createUserAccountCommandHandler(eventStore),
+    followGroup: followCommand(eventStore),
   };
   return {
     eventStore,
@@ -97,7 +98,7 @@ describe('create user list', () => {
         descriptionPath: group.descriptionPath,
         slug: group.slug,
       })();
-      await followCommand(eventStore)(user.id, group.id)();
+      await commandHandlers.followGroup(user.id, group.id)();
     });
 
     describe('when the user creates a new list', () => {
