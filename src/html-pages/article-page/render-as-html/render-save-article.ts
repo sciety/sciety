@@ -7,13 +7,15 @@ import { ListId } from '../../../types/list-id';
 import { renderSaveMultipleListsForm } from '../../../write-side/save-article/render-save-multiple-lists-form';
 import { UserId } from '../../../types/user-id';
 
-type LoggedInUserListManagement = { id: UserId };
+type LoggedInUserListManagement = {
+  id: UserId,
+  listName: string,
+};
 
 type ViewModel = {
   doi: Doi,
   isArticleInList: O.Option<ListId>,
   user: O.Option<LoggedInUserListManagement>,
-  listName: string,
 };
 
 const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
@@ -31,10 +33,10 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.user,
   O.match(
     renderLoggedOutCallToAction,
-    () => pipe(
+    (userManagement) => pipe(
       viewmodel.isArticleInList,
       O.fold(
-        renderSaveArticleCapability(viewmodel.doi, viewmodel.listName),
+        renderSaveArticleCapability(viewmodel.doi, userManagement.listName),
         renderLinkToOnlyList,
       ),
     ),

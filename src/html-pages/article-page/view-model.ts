@@ -49,7 +49,7 @@ export type ViewModel = {
   doi: Doi,
   title: string,
   isArticleInList: O.Option<ListId>,
-  user: O.Option<{ id: UserId }>,
+  user: O.Option<{ id: UserId, listName: string }>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,
@@ -57,5 +57,4 @@ export type ViewModel = {
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
-  listName: string,
 };
