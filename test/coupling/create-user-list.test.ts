@@ -17,6 +17,7 @@ import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
 import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
+import { followCommand } from '../../src/write-side/follow/follow-command';
 
 type EventStore = {
   getAllEvents: GetAllEvents,
@@ -81,7 +82,7 @@ describe('create user list', () => {
         descriptionPath: group.descriptionPath,
         slug: group.slug,
       })();
-      console.log('COMMAND: user follows group');
+      await followCommand(eventStore)(user.id, group.id)();
     });
 
     describe('when the user creates a new list', () => {
