@@ -4,6 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as LOID from '../../src/types/list-owner-id';
 import {
   constructViewModel as constructGroupFollowersPage,
   Ports as GroupFollowersPagePorts,
@@ -18,6 +19,8 @@ import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
 import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
 import { followCommand } from '../../src/write-side/follow/follow-command';
+import { createListCommandHandler } from '../../src/write-side/create-list';
+import { arbitraryList } from '../types/list-helper';
 
 type EventStore = {
   getAllEvents: GetAllEvents,
@@ -86,8 +89,22 @@ describe('create user list', () => {
     });
 
     describe('when the user creates a new list', () => {
-      beforeEach(() => {
-        console.log('COMMAND: create user list');
+      const list = {
+        ...arbitraryList(),
+        ownerId: LOID.fromUserId(user.id),
+      };
+
+      beforeEach(async () => {
+        await pipe(
+          {
+            listId: list.id,
+            ownerId: list.ownerId,
+            name: list.name,
+            description: list.description,
+          },
+          createListCommandHandler(eventStore),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
       });
 
       describe('on the user-lists page', () => {
