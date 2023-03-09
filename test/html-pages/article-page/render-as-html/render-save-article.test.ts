@@ -10,7 +10,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
-        user: O.none,
+        userListManagement: O.none,
       });
 
       expect(rendered).toContain('Log in to save this article');
@@ -22,7 +22,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
-        user: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
+        userListManagement: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
       });
 
       expect(rendered).toContain('Saved to my list');
@@ -34,7 +34,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
-        user: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
+        userListManagement: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
       });
 
       expect(rendered).toContain('Save to my list');

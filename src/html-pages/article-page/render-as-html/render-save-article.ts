@@ -15,7 +15,7 @@ type LoggedInUserListManagement = {
 export type ViewModel = {
   doi: Doi,
   isArticleInList: O.Option<ListId>,
-  user: O.Option<LoggedInUserListManagement>,
+  userListManagement: O.Option<LoggedInUserListManagement>,
 };
 
 const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
@@ -30,13 +30,13 @@ const renderLinkToOnlyList = (listId: ListId) => `
 const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
-  viewmodel.user,
+  viewmodel.userListManagement,
   O.match(
     renderLoggedOutCallToAction,
-    (userManagement) => pipe(
+    (userListManagement) => pipe(
       viewmodel.isArticleInList,
       O.fold(
-        renderSaveArticleCapability(viewmodel.doi, userManagement.listName),
+        renderSaveArticleCapability(viewmodel.doi, userListManagement.listName),
         renderLinkToOnlyList,
       ),
     ),
