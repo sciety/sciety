@@ -22,11 +22,19 @@ const renderLinkToOnlyList = (listId: ListId) => `
       </a>
     `;
 
+const renderLoggedOutCallToAction = (doi: Doi) => renderSaveArticleCapability(doi);
+
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
-  viewmodel.isArticleInList,
-  O.fold(
-    renderSaveArticleCapability(viewmodel.doi),
-    renderLinkToOnlyList,
+  viewmodel.userId,
+  O.match(
+    renderLoggedOutCallToAction(viewmodel.doi),
+    () => pipe(
+      viewmodel.isArticleInList,
+      O.fold(
+        renderSaveArticleCapability(viewmodel.doi),
+        renderLinkToOnlyList,
+      ),
+    ),
   ),
   toHtmlFragment,
 );
