@@ -13,7 +13,10 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-export const createGroup = (adapters: Ports) => (command: AddGroupCommand): TE.TaskEither<string, CommandResult> => pipe(
+// ts-unused-exports:disable-next-line
+export const createGroup = (
+  adapters: Ports,
+) => (command: AddGroupCommand): TE.TaskEither<string, CommandResult> => pipe(
   adapters.getAllEvents,
   T.map(executeCommand(command)),
   TE.chainTaskK(adapters.commitEvents),

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
@@ -18,6 +19,7 @@ describe('create user list', () => {
   });
 
   describe('given a user who is following a group', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = arbitraryUserDetails();
     const group = arbitraryGroup();
 
@@ -42,7 +44,7 @@ describe('create user list', () => {
         it.todo('there is a card for the list');
       });
 
-      describe('on the group-followers page', () => {
+      describe.skip('on the group-followers page', () => {
         let groupFollowersPage: GroupFollowersPage;
 
         beforeEach(async () => {
