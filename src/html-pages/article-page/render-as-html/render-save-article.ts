@@ -13,7 +13,7 @@ type ViewModel = {
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.isArticleInList,
   O.fold(
-    () => renderSaveForm(viewmodel.doi),
+    () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveForm(viewmodel.doi) : renderSaveForm(viewmodel.doi)),
     (listId) => `
       <a class="saved-to-list" href="/lists/${listId}">
         <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
