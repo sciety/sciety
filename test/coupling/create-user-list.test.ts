@@ -47,19 +47,22 @@ const commitEvents = (
   T.of,
 );
 
+const setup = () => {
+  const allEvents: Array<DomainEvent> = [];
+  const { dispatchToAllReadModels, queries } = dispatcher();
+  const eventStore = {
+    getAllEvents: T.of(allEvents),
+    commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
+  };
+  return { eventStore, queries };
+};
+
 describe('create user list', () => {
   let queries: Dispatcher['queries'];
-  let dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void;
-  let allEvents: Array<DomainEvent>;
   let eventStore: EventStore;
 
   beforeEach(() => {
-    allEvents = [];
-    ({ dispatchToAllReadModels, queries } = dispatcher());
-    eventStore = {
-      getAllEvents: T.of(allEvents),
-      commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
-    };
+    ({ queries, eventStore } = setup());
   });
 
   describe('given a user who is following a group', () => {
