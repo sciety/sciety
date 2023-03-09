@@ -13,16 +13,20 @@ type ViewModel = {
   userId: O.Option<UserId>,
 };
 
-export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
-  viewmodel.isArticleInList,
-  O.fold(
-    () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(viewmodel.doi) : renderSaveForm(viewmodel.doi)),
-    (listId) => `
+const renderSaveArticleCapability = (doi: Doi) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi) : renderSaveForm(doi));
+
+const renderLinkToOnlyList = (listId: ListId) => `
       <a class="saved-to-list" href="/lists/${listId}">
         <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
         Saved to my list
       </a>
-    `,
+    `;
+
+export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
+  viewmodel.isArticleInList,
+  O.fold(
+    renderSaveArticleCapability(viewmodel.doi),
+    renderLinkToOnlyList,
   ),
   toHtmlFragment,
 );
