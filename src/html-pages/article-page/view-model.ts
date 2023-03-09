@@ -8,6 +8,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import * as RI from '../../types/review-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { UserId } from '../../types/user-id';
 
 type Responses = {
   counts: { helpfulCount: number, notHelpfulCount: number },
@@ -48,6 +49,7 @@ export type ViewModel = {
   doi: Doi,
   title: string,
   isArticleInList: O.Option<ListId>,
+  userId: O.Option<UserId>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,

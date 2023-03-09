@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { renderSaveArticle } from '../../../../src/html-pages/article-page/render-as-html/render-save-article';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
@@ -9,6 +10,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
+        userId: O.none,
       });
 
       expect(rendered).toContain('Save to my list');
@@ -20,6 +22,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
+        userId: O.some(arbitraryUserId()),
       });
 
       expect(rendered).toContain('Saved to my list');
@@ -31,6 +34,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
+        userId: O.some(arbitraryUserId()),
       });
 
       expect(rendered).toContain('Save to my list');
