@@ -1,7 +1,4 @@
 @use '../../sass/card';
-@use '../../sass/list';
-@use '../../sass/settings';
-@use '../../sass/baseline';
 
 .group-list {
   @include card.list();
