@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/view-model';
+import { ListsTab, ViewModel as UserListsPage } from '../../src/html-pages/user-page/view-model';
 import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/construct-view-model';
 import * as LOID from '../../src/types/list-owner-id';
 import {
@@ -126,7 +126,17 @@ describe('create user list', () => {
           expect(userListsPage.listCount).toBe(2);
         });
 
-        it.todo('there is a card for the list');
+        it('there is a card for the list', () => {
+          const listIds = pipe(
+            userListsPage.activeTab,
+            O.fromPredicate((tab): tab is ListsTab => tab.selector === 'lists'),
+            O.getOrElseW(shouldNotBeCalled),
+            (tab) => tab.ownedLists,
+            RA.map((l) => l.listId),
+          );
+
+          expect(listIds).toContain(list.id);
+        });
       });
 
       describe('on the group-followers page', () => {
