@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { ListsTab, ViewModel as UserListsPage } from '../../src/html-pages/user-page/view-model';
 import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/construct-view-model';
@@ -9,71 +8,12 @@ import * as LOID from '../../src/types/list-owner-id';
 import {
   constructViewModel as constructGroupFollowersPage,
 } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model'; import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
-import { Dispatcher, dispatcher } from '../../src/infrastructure/dispatcher';
-import { createGroup } from '../../src/write-side/add-group';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
-import { DomainEvent } from '../../src/domain-events';
-import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { CommandResult } from '../../src/types/command-result';
-import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
-import { followCommand } from '../../src/write-side/follow/follow-command';
-import { createListCommandHandler } from '../../src/write-side/create-list';
 import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
-
-const commitEvents = (
-  inMemoryEvents: Array<DomainEvent>,
-  dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
-): CommitEvents => (events) => pipe(
-  events,
-  RA.match(
-    () => ('no-events-created' as CommandResult),
-    (es) => {
-      pipe(
-        es,
-        RA.map((event) => { inMemoryEvents.push(event); return event; }),
-      );
-      dispatchToAllReadModels(es);
-      return 'events-created' as CommandResult;
-    },
-  ),
-  T.of,
-);
-
-type CommandHandlers = {
-  createGroup: ReturnType<typeof createGroup>,
-  createList: ReturnType<typeof createListCommandHandler>,
-  createUserAccount: ReturnType<typeof createUserAccountCommandHandler>,
-  followGroup: ReturnType<typeof followCommand>,
-};
-
-type ReadAndWriteSides = {
-  commandHandlers: CommandHandlers,
-  getAllEvents: GetAllEvents,
-  queries: Dispatcher['queries'],
-};
-
-const createReadAndWriteSides = (): ReadAndWriteSides => {
-  const allEvents: Array<DomainEvent> = [];
-  const { dispatchToAllReadModels, queries } = dispatcher();
-  const eventStore = {
-    getAllEvents: T.of(allEvents),
-    commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
-  };
-  const commandHandlers = {
-    createGroup: createGroup(eventStore),
-    createList: createListCommandHandler(eventStore),
-    createUserAccount: createUserAccountCommandHandler(eventStore),
-    followGroup: followCommand(eventStore),
-  };
-  return {
-    commandHandlers,
-    getAllEvents: eventStore.getAllEvents,
-    queries,
-  };
-};
+import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 
 describe('create user list', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
