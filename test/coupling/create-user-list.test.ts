@@ -54,15 +54,23 @@ const setup = () => {
     getAllEvents: T.of(allEvents),
     commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
   };
-  return { eventStore, queries };
+  const commandHandlers = {
+    createUserAccount: createUserAccountCommandHandler(eventStore),
+  };
+  return {
+    eventStore,
+    queries,
+    commandHandlers,
+  };
 };
 
 describe('create user list', () => {
   let queries: Dispatcher['queries'];
   let eventStore: EventStore;
+  let commandHandlers: ReturnType<typeof setup>['commandHandlers'];
 
   beforeEach(() => {
-    ({ queries, eventStore } = setup());
+    ({ queries, eventStore, commandHandlers } = setup());
   });
 
   describe('given a user who is following a group', () => {
@@ -77,7 +85,7 @@ describe('create user list', () => {
           avatarUrl: user.avatarUrl,
           displayName: user.displayName,
         },
-        createUserAccountCommandHandler(eventStore),
+        commandHandlers.createUserAccount,
         TE.getOrElse(shouldNotBeCalled),
       )();
       await createGroup(eventStore)({
