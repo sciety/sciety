@@ -15,8 +15,18 @@ import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
+import { Group } from '../../src/types/group';
 
 const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']) => ({
+  createGroup: async (group: Group) => commandHandlers.createGroup({
+    groupId: group.id,
+    name: group.name,
+    shortDescription: group.shortDescription,
+    homepage: group.homepage,
+    avatarPath: group.avatarPath,
+    descriptionPath: group.descriptionPath,
+    slug: group.slug,
+  })(),
   createUserAccount: async (user: UserDetails) => pipe(
     {
       userId: user.id,
@@ -34,6 +44,7 @@ describe('create user list', () => {
   let getAllEvents: ReadAndWriteSides['getAllEvents'];
   let queries: ReadAndWriteSides['queries'];
   let commandHelpers: {
+    createGroup: (group: Group) => Promise<unknown>,
     createUserAccount: (user: UserDetails) => Promise<unknown>,
   };
 
@@ -48,15 +59,7 @@ describe('create user list', () => {
 
     beforeEach(async () => {
       await commandHelpers.createUserAccount(user);
-      await commandHandlers.createGroup({
-        groupId: group.id,
-        name: group.name,
-        shortDescription: group.shortDescription,
-        homepage: group.homepage,
-        avatarPath: group.avatarPath,
-        descriptionPath: group.descriptionPath,
-        slug: group.slug,
-      })();
+      await commandHelpers.createGroup(group);
       await commandHandlers.followGroup(user.id, group.id)();
     });
 
