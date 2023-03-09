@@ -12,16 +12,25 @@ import { createGroup } from '../../src/write-side/add-group';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
+import { DomainEvent } from '../../src/domain-events';
+import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
+
+type EventStore = {
+  getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
+};
 
 describe('create user list', () => {
   let queries: GroupFollowersPagePorts;
-  const eventStore = {
-    getAllEvents: T.of([]),
-    commitEvents: () => T.of('no-events-created' as const),
-
-  };
+  let allEvents: Array<DomainEvent>;
+  let eventStore: EventStore;
 
   beforeEach(() => {
+    allEvents = [];
+    eventStore = {
+      getAllEvents: T.of(allEvents),
+      commitEvents: () => T.of('no-events-created' as const),
+    };
     ({ queries } = dispatcher());
   });
 
