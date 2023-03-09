@@ -16,6 +16,7 @@ import { arbitraryUserDetails } from '../types/user-details.helper';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
+import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
 
 type EventStore = {
   getAllEvents: GetAllEvents,
@@ -57,12 +58,20 @@ describe('create user list', () => {
   });
 
   describe('given a user who is following a group', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = arbitraryUserDetails();
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      console.log('COMMAND: create user');
+      await pipe(
+        {
+          userId: user.id,
+          handle: user.handle,
+          avatarUrl: user.avatarUrl,
+          displayName: user.displayName,
+        },
+        createUserAccountCommandHandler(eventStore),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
       await createGroup(eventStore)({
         groupId: group.id,
         name: group.name,
