@@ -10,7 +10,8 @@ import * as articleActivity from '../shared-read-models/article-activity';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
-type Dispatcher = {
+// ts-unused-exports:disable-next-line
+export type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
   & lists.Queries
   & followings.Queries

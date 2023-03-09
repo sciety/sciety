@@ -1,15 +1,15 @@
-/* eslint-disable no-console */
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/view-model';
+import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/construct-view-model';
 import * as LOID from '../../src/types/list-owner-id';
 import {
   constructViewModel as constructGroupFollowersPage,
-  Ports as GroupFollowersPagePorts,
 } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model'; import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
-import { dispatcher } from '../../src/infrastructure/dispatcher';
+import { Dispatcher, dispatcher } from '../../src/infrastructure/dispatcher';
 import { createGroup } from '../../src/write-side/add-group';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
@@ -21,6 +21,7 @@ import { createUserAccountCommandHandler } from '../../src/write-side/create-use
 import { followCommand } from '../../src/write-side/follow/follow-command';
 import { createListCommandHandler } from '../../src/write-side/create-list';
 import { arbitraryList } from '../types/list-helper';
+import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 
 type EventStore = {
   getAllEvents: GetAllEvents,
@@ -47,7 +48,7 @@ const commitEvents = (
 );
 
 describe('create user list', () => {
-  let queries: GroupFollowersPagePorts;
+  let queries: Dispatcher['queries'];
   let dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void;
   let allEvents: Array<DomainEvent>;
   let eventStore: EventStore;
@@ -108,11 +109,22 @@ describe('create user list', () => {
       });
 
       describe('on the user-lists page', () => {
-        beforeEach(() => {
-          console.log('VIEWMODEL: user-lists page');
+        let userListsPage: UserListsPage;
+
+        beforeEach(async () => {
+          userListsPage = await pipe(
+            {
+              handle: user.handle as string as CandidateUserHandle,
+              user: O.none,
+            },
+            constructUserListsPage('lists', { ...queries, getAllEvents: eventStore.getAllEvents }),
+            TE.getOrElse(shouldNotBeCalled),
+          )();
         });
 
-        it.todo('the tabs count the list');
+        it('the tabs count the list', () => {
+          expect(userListsPage.listCount).toBe(2);
+        });
 
         it.todo('there is a card for the list');
       });
@@ -128,7 +140,6 @@ describe('create user list', () => {
               page: 1,
             },
             constructGroupFollowersPage(queries),
-            TE.mapLeft((error) => { console.log('>>>', error); return error; }),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
