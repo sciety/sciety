@@ -5,10 +5,9 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
 import * as RI from '../../types/review-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { UserId } from '../../types/user-id';
+import { ViewModel as SaveArticleViewModel } from './render-as-html/render-save-article';
 
 type Responses = {
   counts: { helpfulCount: number, notHelpfulCount: number },
@@ -45,11 +44,9 @@ export type FeedItem =
   | ArticleVersionFeedItem
   | ArticleVersionErrorFeedItem;
 
-export type ViewModel = {
+export type ViewModel = SaveArticleViewModel & {
   doi: Doi,
   title: string,
-  isArticleInList: O.Option<ListId>,
-  user: O.Option<{ id: UserId, listName: string }>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,

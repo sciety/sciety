@@ -12,7 +12,7 @@ type LoggedInUserListManagement = {
   listName: string,
 };
 
-type ViewModel = {
+export type ViewModel = {
   doi: Doi,
   isArticleInList: O.Option<ListId>,
   user: O.Option<LoggedInUserListManagement>,
