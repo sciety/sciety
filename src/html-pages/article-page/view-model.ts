@@ -49,7 +49,7 @@ export type ViewModel = {
   doi: Doi,
   title: string,
   isArticleInList: O.Option<ListId>,
-  userId: O.Option<UserId>,
+  user: O.Option<{ id: UserId }>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,

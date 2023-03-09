@@ -10,7 +10,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
-        userId: O.none,
+        user: O.none,
         listName: 'My list name',
       });
 
@@ -23,7 +23,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
-        userId: O.some(arbitraryUserId()),
+        user: O.some({ id: arbitraryUserId() }),
         listName: 'My list name',
       });
 
@@ -36,7 +36,7 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
-        userId: O.some(arbitraryUserId()),
+        user: O.some({ id: arbitraryUserId() }),
         listName: 'My list name',
       });
 
