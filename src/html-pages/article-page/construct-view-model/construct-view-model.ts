@@ -15,6 +15,7 @@ import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { SelectAllListsOwnedBy } from '../../../shared-ports';
+import * as LOID from '../../../types/list-owner-id';
 
 export type Params = {
   doi: Doi,
@@ -45,7 +46,20 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
-      userListManagement: pipe(params.user, O.map(({ id }) => ({ id, listName: 'My list name' }))),
+      userListManagement: pipe(
+        params.user,
+        O.map(
+          ({ id }) => ({
+            id,
+            listName: pipe(
+              id,
+              LOID.fromUserId,
+              ports.selectAllListsOwnedBy,
+              (lists) => lists[0].name,
+            ),
+          }),
+        ),
+      ),
       isArticleInList: checkIfArticleInList(ports)(params.doi, pipe(params.user, O.map(({ id }) => id))),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
