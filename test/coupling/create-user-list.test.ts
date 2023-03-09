@@ -56,6 +56,7 @@ const setup = () => {
   };
   const commandHandlers = {
     createGroup: createGroup(eventStore),
+    createList: createListCommandHandler(eventStore),
     createUserAccount: createUserAccountCommandHandler(eventStore),
     followGroup: followCommand(eventStore),
   };
@@ -116,7 +117,7 @@ describe('create user list', () => {
             name: list.name,
             description: list.description,
           },
-          createListCommandHandler(eventStore),
+          commandHandlers.createList,
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
