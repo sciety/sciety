@@ -87,7 +87,7 @@ describe('save-article-to-list', () => {
       const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
-      await click('Saved to my list');
+      await click('saved articles');
       expect(await currentURL()).toBe(userListPageUrl);
     });
   });
