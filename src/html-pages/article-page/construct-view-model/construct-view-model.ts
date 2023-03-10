@@ -50,7 +50,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         params.user,
         O.map(
           ({ id }) => ({
-            id,
             listName: pipe(
               id,
               LOID.fromUserId,

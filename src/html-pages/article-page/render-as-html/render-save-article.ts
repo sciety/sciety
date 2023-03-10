@@ -4,10 +4,8 @@ import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { renderSaveMultipleListsForm } from '../../../write-side/save-article/render-save-multiple-lists-form';
-import { UserId } from '../../../types/user-id';
 
 type LoggedInUserListManagement = {
-  id: UserId,
   listName: string,
 };
 
