@@ -35,7 +35,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
     renderLoggedOutCallToAction,
     (userListManagement) => pipe(
       viewmodel.isArticleInList,
-      O.fold(
+      O.match(
         renderSaveArticleCapability(viewmodel.doi, userListManagement.listName),
         (listId) => renderLinkToOnlyList(listId, userListManagement.listName),
       ),
