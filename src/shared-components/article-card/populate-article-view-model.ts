@@ -20,7 +20,6 @@ type ArticleItem = {
 
 type GetLatestArticleVersionDate = (articleId: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
-// ts-unused-exports:disable-next-line
 export type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
   getActivityForDoi: GetActivityForDoi,

@@ -12,5 +12,4 @@ export const userGeneratedInputCodec = (maxLength: number) => t.brand(
   'UserGeneratedInput',
 );
 
-// ts-unused-exports:disable-next-line
 export type UserGeneratedInput = t.TypeOf<ReturnType<typeof userGeneratedInputCodec>>;

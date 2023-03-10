@@ -10,5 +10,4 @@ export const userHandleCodec = t.brand(
   'UserHandle',
 );
 
-// ts-unused-exports:disable-next-line
 export type UserHandle = t.TypeOf<typeof userHandleCodec>;
