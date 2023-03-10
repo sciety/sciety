@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { checkIfArticleInList, Ports as ConstructUserListUrlPorts } from './check-if-article-in-list';
 import { feedSummary } from './feed-summary';
 import {
   getArticleFeedEventsByDateDescending,
@@ -14,7 +13,7 @@ import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { SelectAllListsOwnedBy } from '../../../shared-ports';
+import { IsArticleOnTheListOwnedBy, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 
 export type Params = {
@@ -30,12 +29,13 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = ConstructUserListUrlPorts & GetArticleFeedEventsPorts & {
+export type Ports = GetArticleFeedEventsPorts & {
+  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
   fetchArticle: GetArticleDetails,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-const constructUserListManagement = (user: Params['user'], ports: Ports, doi: Doi) => pipe(
+const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
   user,
   O.map(
     ({ id }) => ({
@@ -51,7 +51,9 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, doi: Do
         ports.selectAllListsOwnedBy,
         (lists) => lists[0].id,
       ),
-      isArticleInList: O.isSome(checkIfArticleInList(ports)(doi, O.some(id))),
+      isArticleInList: O.isSome(
+        ports.isArticleOnTheListOwnedBy(id)(articleId),
+      ),
     }),
   ),
 );
