@@ -5,7 +5,7 @@ import { articleIdFieldName } from './save-article-handler';
 export const renderSaveMultipleListsForm = (doi: Doi, listName: string): HtmlFragment => toHtmlFragment(`
   <form method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${doi.value}">
-      ${listName}
+    <div class="list-name">${listName}</div>
     <button type="submit" class="save-article-button">
       <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save article
     </button>

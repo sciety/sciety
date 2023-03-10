@@ -45,6 +45,10 @@
   }
 }
 
+.list-name {
+  margin-bottom: 0.5rem;
+}
+
 .save-article-button {
   @include button.basics();
   display: flex;
