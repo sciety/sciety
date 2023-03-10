@@ -7,7 +7,7 @@ export const renderSaveMultipleListsForm = (doi: Doi, listName: string): HtmlFra
     <input type="hidden" name="${articleIdFieldName}" value="${doi.value}">
     <div class="list-name">${listName}</div>
     <button type="submit" class="save-article-button">
-      <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save article
+      Save article
     </button>
   </form>
 `);

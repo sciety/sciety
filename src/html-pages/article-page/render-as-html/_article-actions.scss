@@ -57,20 +57,13 @@
   background-color: settings.$colour-teal;
   color: settings.$colour-white;
   padding-right: functions.px-to-rem(5px);
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
 
   &:hover,
   &:active {
     background-color: settings.$colour-ui-default;
     color: settings.$colour-white;
   }
-}
-
-.save-article-button__icon {
-  width: functions.px-to-rem(24px);
-  height: functions.px-to-rem(24px);
-  border-radius: 5px;
 }
 
 .saved-to-list {
