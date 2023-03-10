@@ -68,7 +68,6 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
-      isArticleInList: checkIfArticleInList(ports)(params.doi, pipe(params.user, O.map(({ id }) => id))),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),

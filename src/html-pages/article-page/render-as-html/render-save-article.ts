@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -13,7 +14,6 @@ type LoggedInUserListManagement = {
 
 export type ViewModel = {
   doi: Doi,
-  isArticleInList: O.Option<ListId>,
   userListManagement: O.Option<LoggedInUserListManagement>,
 };
 
@@ -34,10 +34,10 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   O.match(
     renderLoggedOutCallToAction,
     (userListManagement) => pipe(
-      viewmodel.isArticleInList,
-      O.match(
+      userListManagement.isArticleInList,
+      B.match(
         () => renderSaveMultipleListsForm(viewmodel.doi, userListManagement.listName),
-        (listId) => renderLinkToOnlyList(listId, userListManagement.listName),
+        () => renderLinkToOnlyList(userListManagement.listId, userListManagement.listName),
       ),
     ),
   ),

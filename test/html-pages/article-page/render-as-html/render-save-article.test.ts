@@ -10,7 +10,6 @@ describe('render-save-article', () => {
     it('renders log in call to action', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
-        isArticleInList: O.none,
         userListManagement: O.none,
       });
 
@@ -23,7 +22,6 @@ describe('render-save-article', () => {
       const listName = arbitraryString();
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
-        isArticleInList: O.some(arbitraryListId()),
         userListManagement: O.some({
           id: arbitraryUserId(),
           listName,
@@ -40,7 +38,6 @@ describe('render-save-article', () => {
     it('renders save-to-your-list-form', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
-        isArticleInList: O.none,
         userListManagement: O.some({
           id: arbitraryUserId(),
           listName: arbitraryString(),
