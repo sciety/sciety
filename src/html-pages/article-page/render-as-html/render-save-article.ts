@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderSaveForm } from '../../../write-side/save-article/render-save-form';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
@@ -18,7 +17,7 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
 };
 
-const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
+const renderSaveArticleCapability = (doi: Doi, listName: string) => () => renderSaveMultipleListsForm(doi, listName);
 
 const renderLinkToOnlyList = (listId: ListId, listName: string) => `
   <div>

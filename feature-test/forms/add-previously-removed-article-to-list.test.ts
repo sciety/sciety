@@ -18,7 +18,7 @@ describe('add-previously-removed-article-to-list', () => {
     await createUserAccountAndLogIn(testUserId);
 
     await goto(`localhost:8080/articles/${articleId}`);
-    await click('Save to my list');
+    await click('Save article');
     // check the save button has changed to indicate the article has been saved
     const contentSelector = '.article-actions';
     const content = await $(contentSelector).text();
@@ -38,7 +38,7 @@ describe('add-previously-removed-article-to-list', () => {
     // go to the specific article
     await goto(`localhost:8080/articles/${articleId}`);
     // click the save button
-    await click('Save to my list');
+    await click('Save article');
     // check the save button has changed to indicate the article has been saved
   });
 

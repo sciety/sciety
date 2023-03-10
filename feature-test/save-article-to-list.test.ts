@@ -27,7 +27,7 @@ describe('save-article-to-list', () => {
       await openBrowser();
       await createUserAccountAndLogIn(testUserId, userHandle);
       await goto(articlePage);
-      await click('Save to my list');
+      await click('Save article');
     });
 
     afterAll(async () => {

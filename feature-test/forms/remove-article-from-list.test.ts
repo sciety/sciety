@@ -32,7 +32,7 @@ describe('remove-article-from-list', () => {
 
       beforeAll(async () => {
         await goto(articlePage);
-        await click('Save to my list');
+        await click('Save article');
       });
 
       describe('and they click the trash can', () => {
