@@ -76,7 +76,7 @@ test-coverage: build
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
 jest-test:
-	npx jest ${TEST}
+	EXPERIMENT_ENABLED="true" npx jest ${TEST}
 
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
@@ -238,7 +238,7 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	@touch $@
 
 $(MK_TESTED_TS): node_modules $(TS_SOURCES)
-	npx jest --onlyChanged
+	EXPERIMENT_ENABLED="true" npx jest --onlyChanged
 	@touch $@
 
 $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
