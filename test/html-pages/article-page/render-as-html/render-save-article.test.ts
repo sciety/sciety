@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { renderSaveArticle } from '../../../../src/html-pages/article-page/render-as-html/render-save-article';
+import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
@@ -19,13 +20,14 @@ describe('render-save-article', () => {
 
   describe('logged in and article is saved', () => {
     it('renders is-saved-link', async () => {
+      const listName = arbitraryString();
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
-        userListManagement: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
+        userListManagement: O.some({ id: arbitraryUserId(), listName }),
       });
 
-      expect(rendered).toContain('Saved to my list');
+      expect(rendered).toContain(listName);
     });
   });
 

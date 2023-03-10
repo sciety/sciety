@@ -20,12 +20,15 @@ export type ViewModel = {
 
 const renderSaveArticleCapability = (doi: Doi, listName: string) => () => (process.env.EXPERIMENT_ENABLED === 'true' ? renderSaveMultipleListsForm(doi, listName) : renderSaveForm(doi));
 
-const renderLinkToOnlyList = (listId: ListId) => `
-      <a class="saved-to-list" href="/lists/${listId}">
-        <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
-        Saved to my list
-      </a>
-    `;
+const renderLinkToOnlyList = (listId: ListId, listName: string) => `
+  <div>
+    Saved to:
+    <a class="saved-to-list" href="/lists/${listId}">
+      <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
+      ${listName}
+    </a>
+  </div>
+`;
 
 const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
@@ -37,7 +40,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
       viewmodel.isArticleInList,
       O.fold(
         renderSaveArticleCapability(viewmodel.doi, userListManagement.listName),
-        renderLinkToOnlyList,
+        (listId) => renderLinkToOnlyList(listId, userListManagement.listName),
       ),
     ),
   ),
