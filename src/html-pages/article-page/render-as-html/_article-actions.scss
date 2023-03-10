@@ -35,17 +35,8 @@
 }
 
 .save-article-button {
-  @include button.basics();
+  @include button.button-teal();
   margin-right: 2em;
-  background-color: settings.$colour-teal;
-  color: settings.$colour-white;
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
-
-  &:hover,
-  &:active {
-    background-color: settings.$colour-ui-default;
-    color: settings.$colour-white;
-  }
 }
 
 .saved-to-list {

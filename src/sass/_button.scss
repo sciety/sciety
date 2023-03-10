@@ -71,6 +71,19 @@
   color: settings.$colour-accent;
 }
 
+@mixin button-teal() {
+  @include basics();
+  background-color: settings.$colour-teal;
+  color: settings.$colour-white;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+
+  &:hover,
+  &:active {
+    background-color: settings.$colour-ui-default;
+    color: settings.$colour-white;
+  }
+}
+
 @mixin button-link-secondary() {
   @include button-link();
 
