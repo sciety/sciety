@@ -37,7 +37,7 @@ describe('render-save-article', () => {
         userListManagement: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
       });
 
-      expect(rendered).toContain('Save to my list');
+      expect(rendered).toContain('Save article');
     });
   });
 });
