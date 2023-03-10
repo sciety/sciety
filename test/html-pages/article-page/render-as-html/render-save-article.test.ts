@@ -24,7 +24,12 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.some(arbitraryListId()),
-        userListManagement: O.some({ id: arbitraryUserId(), listName }),
+        userListManagement: O.some({
+          id: arbitraryUserId(),
+          listName,
+          listId: arbitraryListId(),
+          isArticleInList: true,
+        }),
       });
 
       expect(rendered).toContain(listName);
@@ -36,7 +41,12 @@ describe('render-save-article', () => {
       const rendered = renderSaveArticle({
         doi: arbitraryArticleId(),
         isArticleInList: O.none,
-        userListManagement: O.some({ id: arbitraryUserId(), listName: 'My list name' }),
+        userListManagement: O.some({
+          id: arbitraryUserId(),
+          listName: arbitraryString(),
+          listId: arbitraryListId(),
+          isArticleInList: false,
+        }),
       });
 
       expect(rendered).toContain('Save article');

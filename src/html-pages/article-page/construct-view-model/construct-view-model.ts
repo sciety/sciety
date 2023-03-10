@@ -35,7 +35,7 @@ export type Ports = ConstructUserListUrlPorts & GetArticleFeedEventsPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-const constructUserListManagement = (user: Params['user'], ports: Ports) => pipe(
+const constructUserListManagement = (user: Params['user'], ports: Ports, doi: Doi) => pipe(
   user,
   O.map(
     ({ id }) => ({
@@ -45,6 +45,13 @@ const constructUserListManagement = (user: Params['user'], ports: Ports) => pipe
         ports.selectAllListsOwnedBy,
         (lists) => lists[0].name,
       ),
+      listId: pipe(
+        id,
+        LOID.fromUserId,
+        ports.selectAllListsOwnedBy,
+        (lists) => lists[0].id,
+      ),
+      isArticleInList: O.isSome(checkIfArticleInList(ports)(doi, O.some(id))),
     }),
   ),
 );
@@ -60,7 +67,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
-      userListManagement: constructUserListManagement(params.user, ports),
+      userListManagement: constructUserListManagement(params.user, ports, params.doi),
       isArticleInList: checkIfArticleInList(ports)(params.doi, pipe(params.user, O.map(({ id }) => id))),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,

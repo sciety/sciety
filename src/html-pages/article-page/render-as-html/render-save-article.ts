@@ -7,6 +7,8 @@ import { renderSaveMultipleListsForm } from '../../../write-side/save-article/re
 
 type LoggedInUserListManagement = {
   listName: string,
+  listId: ListId,
+  isArticleInList: boolean,
 };
 
 export type ViewModel = {
