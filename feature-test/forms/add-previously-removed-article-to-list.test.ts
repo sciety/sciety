@@ -23,7 +23,7 @@ describe('add-previously-removed-article-to-list', () => {
     const contentSelector = '.article-actions';
     const content = await $(contentSelector).text();
 
-    expect(content).toContain('Saved to my list');
+    expect(content).toContain('Saved to:');
 
     // go to list page
     const listId = await getFirstListOwnedByUser(testUserId);
@@ -50,6 +50,6 @@ describe('add-previously-removed-article-to-list', () => {
     const contentSelector = '.article-actions';
     const content = await $(contentSelector).text();
 
-    expect(content).toContain('Saved to my list');
+    expect(content).toContain('Saved to:');
   });
 });
