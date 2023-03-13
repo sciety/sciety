@@ -1,27 +1,69 @@
 import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
+import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel, Ports } from '../../../../src/html-pages/article-page/construct-view-model';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { createReadAndWriteSides, ReadAndWriteSides } from '../../../create-read-and-write-sides';
+import { CommandHelpers, createCommandHelpers } from '../../../create-command-helpers';
+import { arbitraryList } from '../../../types/list-helper';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
+import { ArticleServer } from '../../../../src/types/article-server';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
+import { sanitise } from '../../../../src/types/sanitised-html-fragment';
+import { arbitraryString } from '../../../helpers';
 
 describe('construct-view-model', () => {
+  let commandHandlers: ReadAndWriteSides['commandHandlers'];
+  let getAllEvents: ReadAndWriteSides['getAllEvents'];
+  let queries: ReadAndWriteSides['queries'];
+  let commandHelpers: CommandHelpers;
+
+  beforeEach(() => {
+    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
+    commandHelpers = createCommandHelpers(commandHandlers);
+  });
+
   describe('when the article is saved to a list', () => {
+    const userDetails = arbitraryUserDetails();
+    const list = {
+      ...arbitraryList(),
+      ownerId: LOID.fromUserId(userDetails.id),
+    };
+    const articleId = arbitraryArticleId();
+
+    beforeEach(async () => {
+      await commandHelpers.createUserAccount(userDetails);
+      await commandHelpers.createList(list);
+      await commandHelpers.addArticleToList(articleId, list.id);
+    });
+
     it.failing('list management has access to list id', async () => {
-      const adapters = {} as Ports;
-      const listId = arbitraryListId();
+      const adapters: Ports = {
+        ...queries,
+        getAllEvents,
+        fetchReview: () => TE.left('not-found'),
+        findVersionsForArticleDoi: () => TO.none,
+        fetchArticle: () => TE.right({
+          doi: articleId,
+          authors: O.none,
+          title: sanitise(toHtmlFragment(arbitraryString())),
+          abstract: sanitise(toHtmlFragment(arbitraryString())),
+          server: 'biorxiv' as ArticleServer,
+        }),
+      };
       const viewModel = await pipe(
         {
-          doi: arbitraryArticleId(),
-          user: O.some({ id: arbitraryUserId() }),
+          doi: articleId,
+          user: O.some({ id: userDetails.id }),
         },
         constructViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId })));
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
     });
 
     it.todo('list management has access to list name');
