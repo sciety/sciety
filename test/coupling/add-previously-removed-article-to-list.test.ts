@@ -34,7 +34,7 @@ describe('add previously removed article to list', () => {
       await commandHelpers.createUserAccount(userDetails);
       await commandHelpers.createList(list);
       await commandHelpers.addArticleToList(articleId, list.id);
-      // command: remove article from list
+      await commandHelpers.removeArticleFromList(articleId, list.id);
     });
 
     describe('when that article is added to the list again', () => {
