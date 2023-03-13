@@ -1,6 +1,6 @@
 /* eslint-disable jest-formatting/padding-around-all */
 import {
-  $, click, closeBrowser, currentURL, goto, openBrowser,
+  $, click, closeBrowser, currentURL, goto, link, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
@@ -87,7 +87,7 @@ describe('save-article-to-list', () => {
       const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
-      await click('saved articles');
+      await click(link({ href: `/lists/${listId}` }));
       expect(await currentURL()).toBe(userListPageUrl);
     });
   });
