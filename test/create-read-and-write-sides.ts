@@ -9,6 +9,7 @@ import { CommandResult } from '../src/types/command-result';
 import { createUserAccountCommandHandler } from '../src/write-side/create-user-account';
 import { followCommand } from '../src/write-side/follow/follow-command';
 import { createListCommandHandler } from '../src/write-side/create-list';
+import { addArticleToListCommandHandler } from '../src/write-side/add-article-to-list';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
@@ -30,6 +31,7 @@ const commitEvents = (
 );
 
 type CommandHandlers = {
+  addArticleToList: ReturnType<typeof addArticleToListCommandHandler>,
   createGroup: ReturnType<typeof createGroup>,
   createList: ReturnType<typeof createListCommandHandler>,
   createUserAccount: ReturnType<typeof createUserAccountCommandHandler>,
@@ -50,6 +52,7 @@ export const createReadAndWriteSides = (): ReadAndWriteSides => {
     commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
   };
   const commandHandlers = {
+    addArticleToList: addArticleToListCommandHandler(eventStore),
     createGroup: createGroup(eventStore),
     createList: createListCommandHandler(eventStore),
     createUserAccount: createUserAccountCommandHandler(eventStore),
