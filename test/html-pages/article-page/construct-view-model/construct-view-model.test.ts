@@ -5,6 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel, Ports } from '../../../../src/html-pages/article-page/construct-view-model';
+import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../../../create-read-and-write-sides';
 import { CommandHelpers, createCommandHelpers } from '../../../create-command-helpers';
@@ -30,15 +31,13 @@ describe('construct-view-model', () => {
     const userDetails = arbitraryUserDetails();
     let list: List;
     const articleId = arbitraryArticleId();
+    let viewModel: ViewModel;
 
     beforeEach(async () => {
       await commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
       list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       await commandHelpers.addArticleToList(articleId, list.id);
-    });
-
-    it('list management has access to list id', async () => {
       const adapters: Ports = {
         ...queries,
         getAllEvents,
@@ -52,7 +51,7 @@ describe('construct-view-model', () => {
           server: 'biorxiv' as ArticleServer,
         }),
       };
-      const viewModel = await pipe(
+      viewModel = await pipe(
         {
           doi: articleId,
           user: O.some({ id: userDetails.id }),
@@ -60,11 +59,15 @@ describe('construct-view-model', () => {
         constructViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('list management has access to list id', async () => {
       expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
     });
 
-    it.todo('list management has access to list name');
+    it('list management has access to list name', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+    });
 
     it.todo('list management marks the article as being saved in the list');
   });
