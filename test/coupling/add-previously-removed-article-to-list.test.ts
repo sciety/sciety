@@ -7,7 +7,6 @@ import { constructViewModel as constructArticlePage, Ports } from '../../src/htm
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryList } from '../types/list-helper';
 import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
@@ -29,11 +28,12 @@ describe('add previously removed article to list', () => {
       ...arbitraryList(),
       ownerId: LOID.fromUserId(userDetails.id),
     };
+    const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
       // command: create user account
       await commandHelpers.createList(list);
-      // command: add article to list
+      await commandHelpers.addArticleToList(articleId, list.id);
       // command: remove article from list
     });
 
@@ -50,8 +50,8 @@ describe('add previously removed article to list', () => {
         };
         const articlePage = await pipe(
           {
-            doi: arbitraryArticleId(),
-            user: O.some({ id: arbitraryUserId() }),
+            doi: articleId,
+            user: O.some({ id: userDetails.id }),
           },
           constructArticlePage(adapters),
           TE.getOrElse(shouldNotBeCalled),
