@@ -10,6 +10,10 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryList } from '../types/list-helper';
 import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryString } from '../helpers';
+import { ArticleServer } from '../../src/types/article-server';
 
 describe('add previously removed article to list', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
@@ -42,13 +46,19 @@ describe('add previously removed article to list', () => {
         await commandHelpers.addArticleToList(articleId, list.id);
       });
 
-      it.failing('is marked as saved on the article page as seen by the list owner', async () => {
+      it('is marked as saved on the article page as seen by the list owner', async () => {
         const adapters: Ports = {
           ...queries,
           getAllEvents,
           fetchReview: () => TE.left('not-found'),
           findVersionsForArticleDoi: () => TO.none,
-          fetchArticle: () => TE.left('not-found'),
+          fetchArticle: () => TE.right({
+            doi: articleId,
+            authors: O.none,
+            title: sanitise(toHtmlFragment(arbitraryString())),
+            abstract: sanitise(toHtmlFragment(arbitraryString())),
+            server: 'biorxiv' as ArticleServer,
+          }),
         };
         const articlePage = await pipe(
           {
