@@ -7,8 +7,11 @@ import { Group } from '../src/types/group';
 import { UserId } from '../src/types/user-id';
 import { GroupId } from '../src/types/group-id';
 import { List } from '../src/types/list';
+import { ListId } from '../src/types/list-id';
+import { Doi } from '../src/types/doi';
 
 export type CommandHelpers = {
+  addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   createGroup: (group: Group) => Promise<unknown>,
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
@@ -16,6 +19,14 @@ export type CommandHelpers = {
 };
 
 export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
+  addArticleToList: async (articleId, listId) => pipe(
+    {
+      articleId,
+      listId,
+    },
+    commandHandlers.addArticleToList,
+    TE.getOrElse(shouldNotBeCalled),
+  )(),
   createGroup: async (group) => commandHandlers.createGroup({
     groupId: group.id,
     name: group.name,
