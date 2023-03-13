@@ -16,6 +16,7 @@ export type CommandHelpers = {
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
 };
 
 export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
@@ -57,4 +58,12 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     TE.getOrElse(shouldNotBeCalled),
   )(),
   followGroup: async (userId, groupId) => commandHandlers.followGroup(userId, groupId)(),
+  removeArticleFromList: async (articleId, listId) => pipe(
+    {
+      articleId,
+      listId,
+    },
+    commandHandlers.removeArticleFromList,
+    TE.getOrElse(shouldNotBeCalled),
+  )(),
 });
