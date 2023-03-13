@@ -28,12 +28,12 @@ describe('construct-view-model', () => {
   });
 
   describe('when the article is saved to a list', () => {
-    const userDetails = arbitraryUserDetails();
     let list: List;
-    const articleId = arbitraryArticleId();
     let viewModel: ViewModel;
 
     beforeEach(async () => {
+      const userDetails = arbitraryUserDetails();
+      const articleId = arbitraryArticleId();
       await commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
       list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
