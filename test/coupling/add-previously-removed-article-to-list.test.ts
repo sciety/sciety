@@ -31,7 +31,7 @@ describe('add previously removed article to list', () => {
     const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
-      // command: create user account
+      await commandHelpers.createUserAccount(userDetails);
       await commandHelpers.createList(list);
       await commandHelpers.addArticleToList(articleId, list.id);
       // command: remove article from list
