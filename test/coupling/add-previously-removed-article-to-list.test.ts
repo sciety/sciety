@@ -2,25 +2,40 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import { arbitraryUserDetails } from '../types/user-details.helper';
 import { constructViewModel as constructArticlePage, Ports } from '../../src/html-pages/article-page/construct-view-model';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
+import * as LOID from '../../src/types/list-owner-id';
+import { arbitraryList } from '../types/list-helper';
+import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
 
 describe('add previously removed article to list', () => {
+  let commandHandlers: ReadAndWriteSides['commandHandlers'];
   let getAllEvents: ReadAndWriteSides['getAllEvents'];
   let queries: ReadAndWriteSides['queries'];
+  let commandHelpers: CommandHelpers;
 
   beforeEach(() => {
-    ({ queries, getAllEvents } = createReadAndWriteSides());
+    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
+    commandHelpers = createCommandHelpers(commandHandlers);
   });
 
   describe('given an article that has been removed from a list', () => {
-    // command: create user account
-    // command: create list
-    // command: add article to list
-    // command: remove article from list
+    const userDetails = arbitraryUserDetails();
+    const list = {
+      ...arbitraryList(),
+      ownerId: LOID.fromUserId(userDetails.id),
+    };
+
+    beforeEach(async () => {
+      // command: create user account
+      await commandHelpers.createList(list);
+      // command: add article to list
+      // command: remove article from list
+    });
 
     describe('when that article is added to the list again', () => {
       // command: add article to list
