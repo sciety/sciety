@@ -2,13 +2,13 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import { List } from '../../src/types/list';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 import { constructViewModel as constructArticlePage, Ports } from '../../src/html-pages/article-page/construct-view-model';
 import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
-import { arbitraryList } from '../types/list-helper';
 import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
@@ -28,15 +28,13 @@ describe('add previously removed article to list', () => {
 
   describe('given an article that has been removed from a list', () => {
     const userDetails = arbitraryUserDetails();
-    const list = {
-      ...arbitraryList(),
-      ownerId: LOID.fromUserId(userDetails.id),
-    };
+    let list: List;
     const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
       await commandHelpers.createUserAccount(userDetails);
-      await commandHelpers.createList(list);
+      // eslint-disable-next-line prefer-destructuring
+      list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       await commandHelpers.addArticleToList(articleId, list.id);
       await commandHelpers.removeArticleFromList(articleId, list.id);
     });
