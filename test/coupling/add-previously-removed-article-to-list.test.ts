@@ -38,7 +38,9 @@ describe('add previously removed article to list', () => {
     });
 
     describe('when that article is added to the list again', () => {
-      // command: add article to list
+      beforeEach(async () => {
+        await commandHelpers.addArticleToList(articleId, list.id);
+      });
 
       it.failing('is marked as saved on the article page as seen by the list owner', async () => {
         const adapters: Ports = {
