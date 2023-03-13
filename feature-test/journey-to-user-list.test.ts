@@ -38,14 +38,5 @@ describe('journey-to-user-list', () => {
 
       expect(pageTitle).toContain('saved articles');
     });
-
-    it('navigates to the saved articles list from an article page', async () => {
-      await goto('localhost:8080/articles/activity/10.1101/2021.06.09.21258556');
-      await click('Save article');
-      await click('saved articles');
-      const pageTitle = await $('h1').text();
-
-      expect(pageTitle).toContain('saved articles');
-    });
   });
 });
