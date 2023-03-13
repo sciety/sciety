@@ -66,9 +66,11 @@ describe('construct-view-model', () => {
     });
 
     it('list management has access to list name', () => {
-      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
     });
 
-    it.todo('list management marks the article as being saved in the list');
+    it('list management marks the article as being saved in the list', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: true })));
+    });
   });
 });
