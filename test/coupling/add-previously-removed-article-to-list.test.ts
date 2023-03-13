@@ -17,7 +17,14 @@ describe('add previously removed article to list', () => {
   });
 
   describe('given an article that has been removed from a list', () => {
+    // command: create user account
+    // command: create list
+    // command: add article to list
+    // command: remove article from list
+
     describe('when that article is added to the list again', () => {
+      // command: add article to list
+
       it.failing('is marked as saved on the article page as seen by the list owner', async () => {
         const adapters: Ports = {
           ...queries,
