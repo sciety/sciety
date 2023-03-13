@@ -1,17 +1,31 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { constructViewModel as constructArticlePage, Ports } from '../../src/html-pages/article-page/construct-view-model';
+import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('add previously removed article to list', () => {
+  let getAllEvents: ReadAndWriteSides['getAllEvents'];
+  let queries: ReadAndWriteSides['queries'];
+
+  beforeEach(() => {
+    ({ queries, getAllEvents } = createReadAndWriteSides());
+  });
+
   describe('given an article that has been removed from a list', () => {
     describe('when that article is added to the list again', () => {
       it.failing('is marked as saved on the article page as seen by the list owner', async () => {
-        const adapters = {
-        } as Ports;
+        const adapters: Ports = {
+          ...queries,
+          getAllEvents,
+          fetchReview: () => TE.left('not-found'),
+          findVersionsForArticleDoi: () => TO.none,
+          fetchArticle: () => TE.left('not-found'),
+        };
         const articlePage = await pipe(
           {
             doi: arbitraryArticleId(),
