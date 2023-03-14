@@ -15,6 +15,7 @@ import { createTestFramework, TestFramework } from '../../../framework';
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let adapters: Ports;
+  const articleId = arbitraryArticleId();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -38,7 +39,6 @@ describe('construct-view-model', () => {
       let viewModel: ViewModel;
 
       beforeEach(async () => {
-        const articleId = arbitraryArticleId();
         // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         viewModel = await pipe(
@@ -69,7 +69,6 @@ describe('construct-view-model', () => {
       let viewModel: ViewModel;
 
       beforeEach(async () => {
-        const articleId = arbitraryArticleId();
         // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         await framework.commandHelpers.addArticleToList(articleId, list.id);
@@ -101,7 +100,6 @@ describe('construct-view-model', () => {
       let viewModel: ViewModel;
 
       beforeEach(async () => {
-        const articleId = arbitraryArticleId();
         list = { ...arbitraryList(), ownerId: LOID.fromUserId(userDetails.id) };
         await framework.commandHelpers.createList(list);
         await framework.commandHelpers.addArticleToList(articleId, list.id);
