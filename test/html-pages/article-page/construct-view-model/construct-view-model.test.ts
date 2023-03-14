@@ -29,11 +29,49 @@ describe('construct-view-model', () => {
   });
 
   describe('when the article is not saved to any user list', () => {
-    it.todo('list management has access to the default user list id');
+    let list: List;
+    let viewModel: ViewModel;
 
-    it.todo('list management has access to the default user list name');
+    beforeEach(async () => {
+      const userDetails = arbitraryUserDetails();
+      const articleId = arbitraryArticleId();
+      await commandHelpers.createUserAccount(userDetails);
+      // eslint-disable-next-line prefer-destructuring
+      list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      const adapters: Ports = {
+        ...queries,
+        getAllEvents,
+        fetchReview: () => TE.left('not-found'),
+        findVersionsForArticleDoi: () => TO.none,
+        fetchArticle: () => TE.right({
+          doi: articleId,
+          authors: O.none,
+          title: sanitise(toHtmlFragment(arbitraryString())),
+          abstract: sanitise(toHtmlFragment(arbitraryString())),
+          server: 'biorxiv' as ArticleServer,
+        }),
+      };
+      viewModel = await pipe(
+        {
+          doi: articleId,
+          user: O.some({ id: userDetails.id }),
+        },
+        constructViewModel(adapters),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
-    it.todo('list management marks the article as not being saved in the default user list');
+    it('list management has access to the default user list id', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+    });
+
+    it('list management has access to the default user list name', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
+    });
+
+    it('list management marks the article as not being saved in the default user list', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: false })));
+    });
   });
 
   describe('when the article is saved to the default user list', () => {
