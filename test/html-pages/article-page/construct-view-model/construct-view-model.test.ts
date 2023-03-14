@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel, Ports } from '../../../../src/html-pages/article-page/construct-view-model';
@@ -33,7 +32,6 @@ describe('construct-view-model', () => {
         ...framework.queries,
         ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        findVersionsForArticleDoi: () => TO.none,
       };
       viewModel = await pipe(
         {
@@ -73,7 +71,6 @@ describe('construct-view-model', () => {
         ...framework.queries,
         ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        findVersionsForArticleDoi: () => TO.none,
       };
       viewModel = await pipe(
         {
@@ -113,7 +110,6 @@ describe('construct-view-model', () => {
         ...framework.queries,
         ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        findVersionsForArticleDoi: () => TO.none,
       };
       viewModel = await pipe(
         {
