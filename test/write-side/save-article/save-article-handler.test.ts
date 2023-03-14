@@ -42,6 +42,7 @@ describe('save-article-handler', () => {
       request: {
         body: {
           [articleIdFieldName]: articleId.toString(),
+          listId,
         },
       },
       state: {
@@ -73,6 +74,7 @@ describe('save-article-handler', () => {
       request: {
         body: {
           [articleIdFieldName]: articleId.toString(),
+          listId,
         },
       },
       state: {
