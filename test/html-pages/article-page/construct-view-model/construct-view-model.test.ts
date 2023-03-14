@@ -13,9 +13,15 @@ import { createTestFramework, TestFramework } from '../../../framework';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
+  let adapters: Ports;
 
   beforeEach(() => {
     framework = createTestFramework();
+    adapters = {
+      ...framework.queries,
+      ...framework.happyPathThirdParties,
+      getAllEvents: framework.getAllEvents,
+    };
   });
 
   describe('when the article is not saved to any user list', () => {
@@ -28,11 +34,6 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
-      const adapters: Ports = {
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-        getAllEvents: framework.getAllEvents,
-      };
       viewModel = await pipe(
         {
           doi: articleId,
@@ -67,11 +68,6 @@ describe('construct-view-model', () => {
       // eslint-disable-next-line prefer-destructuring
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      const adapters: Ports = {
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-        getAllEvents: framework.getAllEvents,
-      };
       viewModel = await pipe(
         {
           doi: articleId,
@@ -106,11 +102,6 @@ describe('construct-view-model', () => {
       list = { ...arbitraryList(), ownerId: LOID.fromUserId(userDetails.id) };
       await framework.commandHelpers.createList(list);
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      const adapters: Ports = {
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-        getAllEvents: framework.getAllEvents,
-      };
       viewModel = await pipe(
         {
           doi: articleId,
