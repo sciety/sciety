@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { List } from '../../src/types/list';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 import { constructViewModel as constructArticlePage, Ports } from '../../src/html-pages/article-page/construct-view-model';
@@ -40,7 +39,6 @@ describe('add previously removed article to list', () => {
           ...framework.queries,
           ...framework.happyPathThirdParties,
           getAllEvents: framework.getAllEvents,
-          findVersionsForArticleDoi: () => TO.none,
         };
         const articlePage = await pipe(
           {
