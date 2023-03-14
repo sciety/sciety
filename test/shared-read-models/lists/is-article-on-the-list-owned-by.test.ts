@@ -27,7 +27,9 @@ describe('is-article-on-the-list-owned-by', () => {
     );
 
     it('the query returns the first list id', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(
+        O.some(expect.objectContaining({ id: listId })),
+      );
     });
   });
 
@@ -60,11 +62,15 @@ describe('is-article-on-the-list-owned-by', () => {
     );
 
     it('the query returns the first list id belonging to the first user', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(O.some(listId));
+      expect(isArticleOnTheListOwnedBy(readModel)(userId)(articleId)).toStrictEqual(
+        O.some(expect.objectContaining({ id: listId })),
+      );
     });
 
     it('the query returns the first list id belonging to the second user', () => {
-      expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toStrictEqual(O.some(listId2));
+      expect(isArticleOnTheListOwnedBy(readModel)(userId2)(articleId)).toStrictEqual(
+        O.some(expect.objectContaining({ id: listId2 })),
+      );
     });
   });
 });

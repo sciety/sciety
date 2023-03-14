@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
@@ -18,5 +17,4 @@ export const isArticleOnTheListOwnedBy = (
   R.filter((listState) => listState.articleIds.includes(articleId.value)),
   (result) => Object.values(result),
   RA.head,
-  O.map((list) => list.id),
 );
