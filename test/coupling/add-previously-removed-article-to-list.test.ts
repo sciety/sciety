@@ -15,15 +15,25 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
 
+type TestFramework = {
+  framework: ReadAndWriteSides,
+  commandHelpers: CommandHelpers,
+};
+
+const createTestFramework = (): TestFramework => {
+  const framework = createReadAndWriteSides();
+  return {
+    framework,
+    commandHelpers: createCommandHelpers(framework.commandHandlers),
+  };
+};
+
 describe('add previously removed article to list', () => {
-  let commandHandlers: ReadAndWriteSides['commandHandlers'];
-  let getAllEvents: ReadAndWriteSides['getAllEvents'];
-  let queries: ReadAndWriteSides['queries'];
-  let commandHelpers: CommandHelpers;
+  let commandHelpers: TestFramework['commandHelpers'];
+  let framework: TestFramework['framework'];
 
   beforeEach(() => {
-    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
-    commandHelpers = createCommandHelpers(commandHandlers);
+    ({ framework, commandHelpers } = createTestFramework());
   });
 
   describe('given an article that has been removed from a list', () => {
@@ -34,7 +44,7 @@ describe('add previously removed article to list', () => {
     beforeEach(async () => {
       await commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
-      list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       await commandHelpers.addArticleToList(articleId, list.id);
       await commandHelpers.removeArticleFromList(articleId, list.id);
     });
@@ -46,8 +56,8 @@ describe('add previously removed article to list', () => {
 
       it('is marked as saved on the article page as seen by the list owner', async () => {
         const adapters: Ports = {
-          ...queries,
-          getAllEvents,
+          ...framework.queries,
+          getAllEvents: framework.getAllEvents,
           fetchReview: () => TE.left('not-found'),
           findVersionsForArticleDoi: () => TO.none,
           fetchArticle: () => TE.right({
