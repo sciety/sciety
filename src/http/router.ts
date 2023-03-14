@@ -47,7 +47,7 @@ import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
-import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page/page';
+import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
 import { CollectedPorts } from '../infrastructure';
 import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../html-pages/legal-page';
