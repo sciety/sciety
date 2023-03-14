@@ -8,10 +8,6 @@ import { constructViewModel, Ports } from '../../../../src/html-pages/article-pa
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { ArticleServer } from '../../../../src/types/article-server';
-import { toHtmlFragment } from '../../../../src/types/html-fragment';
-import { sanitise } from '../../../../src/types/sanitised-html-fragment';
-import { arbitraryString } from '../../../helpers';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
@@ -35,16 +31,9 @@ describe('construct-view-model', () => {
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       const adapters: Ports = {
         ...framework.queries,
+        ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
-        fetchArticle: () => TE.right({
-          doi: articleId,
-          authors: O.none,
-          title: sanitise(toHtmlFragment(arbitraryString())),
-          abstract: sanitise(toHtmlFragment(arbitraryString())),
-          server: 'biorxiv' as ArticleServer,
-        }),
       };
       viewModel = await pipe(
         {
@@ -82,16 +71,9 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       const adapters: Ports = {
         ...framework.queries,
+        ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
-        fetchArticle: () => TE.right({
-          doi: articleId,
-          authors: O.none,
-          title: sanitise(toHtmlFragment(arbitraryString())),
-          abstract: sanitise(toHtmlFragment(arbitraryString())),
-          server: 'biorxiv' as ArticleServer,
-        }),
       };
       viewModel = await pipe(
         {
@@ -129,16 +111,9 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       const adapters: Ports = {
         ...framework.queries,
+        ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
-        fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
-        fetchArticle: () => TE.right({
-          doi: articleId,
-          authors: O.none,
-          title: sanitise(toHtmlFragment(arbitraryString())),
-          abstract: sanitise(toHtmlFragment(arbitraryString())),
-          server: 'biorxiv' as ArticleServer,
-        }),
       };
       viewModel = await pipe(
         {
