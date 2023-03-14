@@ -15,6 +15,7 @@ import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../../../helpers';
 import { List } from '../../../../src/types/list';
+import { arbitraryList } from '../../../types/list-helper';
 
 describe('construct-view-model', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
@@ -75,7 +76,42 @@ describe('construct-view-model', () => {
   });
 
   describe('when the article is saved to another user list', () => {
-    it.todo('list management has access to list id');
+    let list: List;
+    let viewModel: ViewModel;
+
+    beforeEach(async () => {
+      const userDetails = arbitraryUserDetails();
+      const articleId = arbitraryArticleId();
+      await commandHelpers.createUserAccount(userDetails);
+      list = arbitraryList();
+      await commandHelpers.createList(list);
+      await commandHelpers.addArticleToList(articleId, list.id);
+      const adapters: Ports = {
+        ...queries,
+        getAllEvents,
+        fetchReview: () => TE.left('not-found'),
+        findVersionsForArticleDoi: () => TO.none,
+        fetchArticle: () => TE.right({
+          doi: articleId,
+          authors: O.none,
+          title: sanitise(toHtmlFragment(arbitraryString())),
+          abstract: sanitise(toHtmlFragment(arbitraryString())),
+          server: 'biorxiv' as ArticleServer,
+        }),
+      };
+      viewModel = await pipe(
+        {
+          doi: articleId,
+          user: O.some({ id: userDetails.id }),
+        },
+        constructViewModel(adapters),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('list management has access to list id', () => {
+      expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+    });
 
     it.todo('list management has access to list name');
 
