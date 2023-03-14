@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import * as LOID from '../../../src/types/list-owner-id';
 import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { Page } from '../../../src/types/page';
@@ -18,6 +19,9 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
+import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryList } from '../../types/list-helper';
+import { CandidateUserHandle } from '../../../src/types/candidate-user-handle';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -99,29 +103,43 @@ describe('user-page', () => {
       })));
     });
 
-    it('includes the count of lists and followed groups in the opengraph description', async () => {
+    describe('opengraph description', () => {
       const user = arbitraryUserDetails();
+      const secondList = {
+        ...arbitraryList(),
+        ownerId: LOID.fromUserId(user.id),
+      };
       const groupId1 = arbitraryGroupId();
       const groupId2 = arbitraryGroupId();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some(user),
-        getAllEvents: T.of([
-          userFollowedEditorialCommunity(user.id, groupId1),
-          userFollowedEditorialCommunity(user.id, groupId2),
-        ]),
-        getGroupsFollowedBy: () => [groupId1, groupId2],
-      };
-      const page = await pipe(
-        defaultParams,
-        userPage(ports)(tabName),
-      )();
+      let framework: TestFramework;
 
-      expect(page).toStrictEqual(E.right(expect.objectContaining({
-        openGraph: expect.objectContaining({
-          description: '1 list | Following 2 groups',
-        }),
-      })));
+      beforeEach(async () => {
+        framework = createTestFramework();
+        await framework.commandHelpers.createUserAccount(user);
+        await framework.commandHelpers.createList(secondList);
+        await framework.commandHelpers.followGroup(user.id, groupId1);
+        await framework.commandHelpers.followGroup(user.id, groupId2);
+      });
+
+      it('includes the count of lists and followed groups', async () => {
+        const adapters: Ports = {
+          ...framework.queries,
+          getAllEvents: framework.getAllEvents,
+        };
+        const page = await pipe(
+          {
+            handle: user.handle as string as CandidateUserHandle,
+            user: O.some(user),
+          },
+          userPage(adapters)(tabName),
+        )();
+
+        expect(page).toStrictEqual(E.right(expect.objectContaining({
+          openGraph: expect.objectContaining({
+            description: '2 lists | Following 2 groups',
+          }),
+        })));
+      });
     });
 
     it('shows the user details', async () => {
