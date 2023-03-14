@@ -13,18 +13,13 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
-import { createReadAndWriteSides, ReadAndWriteSides } from '../framework/create-read-and-write-sides';
-import { CommandHelpers, createCommandHelpers } from '../framework/create-command-helpers';
+import { createTestFramework, TestFramework } from '../framework';
 
 describe('create user list', () => {
-  let commandHandlers: ReadAndWriteSides['commandHandlers'];
-  let getAllEvents: ReadAndWriteSides['getAllEvents'];
-  let queries: ReadAndWriteSides['queries'];
-  let commandHelpers: CommandHelpers;
+  let framework: TestFramework;
 
   beforeEach(() => {
-    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
-    commandHelpers = createCommandHelpers(commandHandlers);
+    framework = createTestFramework();
   });
 
   describe('given a user who is following a group', () => {
@@ -32,9 +27,9 @@ describe('create user list', () => {
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      await commandHelpers.createUserAccount(user);
-      await commandHelpers.createGroup(group);
-      await commandHelpers.followGroup(user.id, group.id);
+      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.followGroup(user.id, group.id);
     });
 
     describe('when the user creates a new list', () => {
@@ -44,7 +39,7 @@ describe('create user list', () => {
       };
 
       beforeEach(async () => {
-        await commandHelpers.createList(list);
+        await framework.commandHelpers.createList(list);
       });
 
       describe('on the user-lists page', () => {
@@ -56,7 +51,7 @@ describe('create user list', () => {
               handle: user.handle as string as CandidateUserHandle,
               user: O.none,
             },
-            constructUserListsPage('lists', { ...queries, getAllEvents }),
+            constructUserListsPage('lists', { ...framework.queries, getAllEvents: framework.getAllEvents }),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
@@ -88,7 +83,7 @@ describe('create user list', () => {
               user: O.none,
               page: 1,
             },
-            constructGroupFollowersPage(queries),
+            constructGroupFollowersPage(framework.queries),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
