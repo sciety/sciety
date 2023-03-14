@@ -1,7 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import { renderHeader } from './render-header';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { Page } from '../../../types/page';
 import { renderContentWithPagination } from '../articles-list/render-content-with-pagination';
 import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from '../articles-list/static-messages';
 import { ViewModel } from '../view-model';
@@ -17,19 +15,9 @@ const renderListOrMessage = (viewModel: ViewModel) => {
   }
 };
 
-const render = (viewModel: ViewModel) => toHtmlFragment(`
+export const renderPage = (viewModel: ViewModel) => toHtmlFragment(`
   ${renderHeader(viewModel)}
   <section>
     ${renderListOrMessage(viewModel)}
   </section>
 `);
-
-export const renderPage = (viewModel: ViewModel): Page => ({
-  title: viewModel.title,
-  openGraph: {
-    title: viewModel.title,
-    description: viewModel.description,
-  },
-  description: viewModel.description,
-  content: pipe(viewModel, render, toHtmlFragment),
-});

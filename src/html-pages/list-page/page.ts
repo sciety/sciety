@@ -6,7 +6,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './articles-list/construct-content-with-pagination-view-model';
 import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
-import { renderPage } from './render-as-html';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { GetList } from '../../shared-ports';
 import { ListIdFromString } from '../../types/codecs/ListIdFromString';
@@ -18,6 +17,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { ContentViewModel } from './view-model';
 import { renderErrorPage } from './render-as-html/render-error-page';
+import { renderAsHtml } from './render-as-html/render-as-html';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -104,5 +104,5 @@ export const page = (ports: Ports) => (params: Params): TE.TaskEither<RenderPage
       ...partialPageViewModel,
     })),
   )),
-  TE.bimap(renderErrorPage, renderPage),
+  TE.bimap(renderErrorPage, renderAsHtml),
 );
