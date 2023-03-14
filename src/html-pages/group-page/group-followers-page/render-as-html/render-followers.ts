@@ -5,12 +5,16 @@ import { FollowersTab, UserCardViewModel } from '../view-model';
 
 type RenderFollowers = (followerListViewModel: FollowersTab) => HtmlFragment;
 
+const renderListCount = (count: number) => (
+  `${count} list${count === 1 ? '' : 's'}`
+);
+
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">
     <div class="user-card__body">
       <h3 class="user-card__title"><a href="${userCard.link}" class="user-card__link">${userCard.title}</a></h3>
       <div class="user-card__handle">@${userCard.handle}</div>
-      <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${userCard.listCount} list</span><span>${userCard.followedGroupCount} groups followed</span></span>
+      <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${renderListCount(userCard.listCount)}</span><span>${userCard.followedGroupCount} groups followed</span></span>
     </div>
     <img class="user-card__avatar" src="${userCard.avatarUrl}" alt="">
   </article>
