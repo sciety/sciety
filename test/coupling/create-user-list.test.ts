@@ -33,10 +33,7 @@ describe('create user list', () => {
     });
 
     describe('when the user creates a new list', () => {
-      const list = {
-        ...arbitraryList(),
-        ownerId: LOID.fromUserId(user.id),
-      };
+      const list = arbitraryList(LOID.fromUserId(user.id));
 
       beforeEach(async () => {
         await framework.commandHelpers.createList(list);

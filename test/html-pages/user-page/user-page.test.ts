@@ -18,10 +18,7 @@ describe('user-page', () => {
 
   describe('when the user has multiple lists', () => {
     const user = arbitraryUserDetails();
-    const list = {
-      ...arbitraryList(),
-      ownerId: LOID.fromUserId(user.id),
-    };
+    const list = arbitraryList(LOID.fromUserId(user.id));
 
     it('the list count is correct', async () => {
       await framework.commandHelpers.createUserAccount(user);

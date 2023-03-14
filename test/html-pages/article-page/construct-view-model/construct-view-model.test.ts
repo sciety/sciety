@@ -100,7 +100,7 @@ describe('construct-view-model', () => {
       let viewModel: ViewModel;
 
       beforeEach(async () => {
-        list = { ...arbitraryList(), ownerId: LOID.fromUserId(userDetails.id) };
+        list = arbitraryList(LOID.fromUserId(userDetails.id));
         await framework.commandHelpers.createList(list);
         await framework.commandHelpers.addArticleToList(articleId, list.id);
         viewModel = await pipe(
