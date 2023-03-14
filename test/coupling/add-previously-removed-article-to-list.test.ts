@@ -40,7 +40,6 @@ describe('add previously removed article to list', () => {
           ...framework.queries,
           ...framework.happyPathThirdParties,
           getAllEvents: framework.getAllEvents,
-          fetchReview: () => TE.left('not-found'),
           findVersionsForArticleDoi: () => TO.none,
         };
         const articlePage = await pipe(
