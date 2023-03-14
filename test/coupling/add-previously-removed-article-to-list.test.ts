@@ -8,10 +8,6 @@ import { constructViewModel as constructArticlePage, Ports } from '../../src/htm
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryString } from '../helpers';
-import { ArticleServer } from '../../src/types/article-server';
 import { createTestFramework, TestFramework } from '../framework';
 
 describe('add previously removed article to list', () => {
@@ -42,16 +38,10 @@ describe('add previously removed article to list', () => {
       it('is marked as saved on the article page as seen by the list owner', async () => {
         const adapters: Ports = {
           ...framework.queries,
+          ...framework.happyPathThirdParties,
           getAllEvents: framework.getAllEvents,
           fetchReview: () => TE.left('not-found'),
           findVersionsForArticleDoi: () => TO.none,
-          fetchArticle: () => TE.right({
-            doi: articleId,
-            authors: O.none,
-            title: sanitise(toHtmlFragment(arbitraryString())),
-            abstract: sanitise(toHtmlFragment(arbitraryString())),
-            server: 'biorxiv' as ArticleServer,
-          }),
         };
         const articlePage = await pipe(
           {
