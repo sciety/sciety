@@ -1,14 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { shouldNotBeCalled } from './should-not-be-called';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { UserDetails } from '../src/types/user-details';
-import { Group } from '../src/types/group';
-import { UserId } from '../src/types/user-id';
-import { GroupId } from '../src/types/group-id';
-import { List } from '../src/types/list';
-import { ListId } from '../src/types/list-id';
-import { Doi } from '../src/types/doi';
+import { UserDetails } from '../../src/types/user-details';
+import { Group } from '../../src/types/group';
+import { UserId } from '../../src/types/user-id';
+import { GroupId } from '../../src/types/group-id';
+import { List } from '../../src/types/list';
+import { ListId } from '../../src/types/list-id';
+import { Doi } from '../../src/types/doi';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,

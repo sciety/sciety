@@ -1,16 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { Dispatcher, dispatcher } from '../src/infrastructure/dispatcher';
-import { createGroup } from '../src/write-side/add-group';
-import { DomainEvent } from '../src/domain-events';
-import { GetAllEvents, CommitEvents } from '../src/shared-ports';
-import { CommandResult } from '../src/types/command-result';
-import { createUserAccountCommandHandler } from '../src/write-side/create-user-account';
-import { followCommand } from '../src/write-side/follow/follow-command';
-import { createListCommandHandler } from '../src/write-side/create-list';
-import { addArticleToListCommandHandler } from '../src/write-side/add-article-to-list';
-import { removeArticleFromListCommandHandler } from '../src/write-side/remove-article-from-list';
+import { Dispatcher, dispatcher } from '../../src/infrastructure/dispatcher';
+import { createGroup } from '../../src/write-side/add-group';
+import { DomainEvent } from '../../src/domain-events';
+import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
+import { CommandResult } from '../../src/types/command-result';
+import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
+import { followCommand } from '../../src/write-side/follow/follow-command';
+import { createListCommandHandler } from '../../src/write-side/create-list';
+import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
+import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,

@@ -13,8 +13,8 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
-import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
-import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
+import { createReadAndWriteSides, ReadAndWriteSides } from '../framework/create-read-and-write-sides';
+import { CommandHelpers, createCommandHelpers } from '../framework/create-command-helpers';
 
 describe('create user list', () => {
   let commandHandlers: ReadAndWriteSides['commandHandlers'];
