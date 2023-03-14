@@ -15,7 +15,7 @@ describe('to-our-lists-view-model', () => {
         arbitraryList(),
         arbitraryList(),
         arbitraryList(),
-        arbitraryList(nameOfMostRecentlyUpdatedList),
+        { ...arbitraryList(), name: nameOfMostRecentlyUpdatedList },
       ],
       toOurListsViewModel(groupSlug),
     );
@@ -43,7 +43,7 @@ describe('to-our-lists-view-model', () => {
       [
         arbitraryList(),
         arbitraryList(),
-        arbitraryList(nameOfMostRecentlyUpdatedList),
+        { ...arbitraryList(), name: nameOfMostRecentlyUpdatedList },
       ],
       toOurListsViewModel(groupSlug),
     );

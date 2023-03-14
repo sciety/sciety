@@ -3,9 +3,9 @@ import { arbitraryListOwnerId } from './list-owner-id.helper';
 import { List } from '../../src/types/list';
 import { arbitraryDate, arbitraryString } from '../helpers';
 
-export const arbitraryList = (name?: string): List => ({
+export const arbitraryList = (): List => ({
   id: arbitraryListId(),
-  name: name ?? arbitraryString(),
+  name: arbitraryString(),
   description: arbitraryString(),
   articleIds: [],
   lastUpdated: arbitraryDate(),
