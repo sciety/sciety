@@ -2,13 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { populateArticleActivities, Ports as PopulateArticleActivitiesPorts } from './populate-article-activities';
-import { ContentWithPaginationViewModel } from './render-content-with-pagination';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ListId } from '../../../types/list-id';
 import { ListOwnerId } from '../../../types/list-owner-id';
+import { ContentWithPaginationViewModel } from '../view-model';
 
 export type Ports = PopulateArticleActivitiesPorts & ToPageOfCardsPorts;
 

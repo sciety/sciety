@@ -1,12 +1,10 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { ArticleCardWithControlsViewModel, renderArticlesList } from './render-articles-list';
-import { PageOfItems } from '../../../shared-components/paginate';
+import { renderArticlesList } from './render-articles-list';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
+import { ContentWithPaginationViewModel } from '../view-model';
 
 const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
   (pageOfContent: HtmlFragment) => `
@@ -25,13 +23,6 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
       </p>`
     : ''
 );
-
-export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;
-
-export type ContentWithPaginationViewModel = {
-  articles: ArticlesViewModel,
-  pagination: PageOfItems<unknown>,
-};
 
 export const renderContentWithPagination = (
   basePath: string,
