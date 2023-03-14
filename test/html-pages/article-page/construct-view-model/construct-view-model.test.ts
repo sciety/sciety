@@ -28,6 +28,14 @@ describe('construct-view-model', () => {
     commandHelpers = createCommandHelpers(commandHandlers);
   });
 
+  describe('when the article is not saved to any user list', () => {
+    it.todo('list management has access to the default user list id');
+
+    it.todo('list management has access to the default user list name');
+
+    it.todo('list management marks the article as not being saved in the default user list');
+  });
+
   describe('when the article is saved to the default user list', () => {
     let list: List;
     let viewModel: ViewModel;
