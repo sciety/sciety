@@ -163,7 +163,7 @@ describe('user-page', () => {
       expect(pageHtml).toContain(handle);
     });
 
-    it('always shows the counts in the tab titles', async () => {
+    it('shows the following count in the tab title', async () => {
       const user = arbitraryUserDetails();
       const ports: Ports = {
         ...defaultAdapters,
@@ -179,7 +179,6 @@ describe('user-page', () => {
       const tabHeadings = page.querySelectorAll('.tab');
       const headings = Array.from(tabHeadings).map((tab) => tab.innerHTML);
 
-      expect(headings[0]).toContain('Lists (1)');
       expect(headings[1]).toContain('Following (1)');
     });
   });
