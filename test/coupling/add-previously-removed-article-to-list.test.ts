@@ -15,25 +15,23 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
 
-type TestFramework = {
-  framework: ReadAndWriteSides,
+type TestFramework = ReadAndWriteSides & {
   commandHelpers: CommandHelpers,
 };
 
 const createTestFramework = (): TestFramework => {
   const framework = createReadAndWriteSides();
   return {
-    framework,
+    ...framework,
     commandHelpers: createCommandHelpers(framework.commandHandlers),
   };
 };
 
 describe('add previously removed article to list', () => {
-  let commandHelpers: TestFramework['commandHelpers'];
-  let framework: TestFramework['framework'];
+  let framework: TestFramework;
 
   beforeEach(() => {
-    ({ framework, commandHelpers } = createTestFramework());
+    framework = createTestFramework();
   });
 
   describe('given an article that has been removed from a list', () => {
@@ -42,16 +40,16 @@ describe('add previously removed article to list', () => {
     const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
-      await commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
-      await commandHelpers.addArticleToList(articleId, list.id);
-      await commandHelpers.removeArticleFromList(articleId, list.id);
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      await framework.commandHelpers.removeArticleFromList(articleId, list.id);
     });
 
     describe('when that article is added to the list again', () => {
       beforeEach(async () => {
-        await commandHelpers.addArticleToList(articleId, list.id);
+        await framework.commandHelpers.addArticleToList(articleId, list.id);
       });
 
       it('is marked as saved on the article page as seen by the list owner', async () => {
