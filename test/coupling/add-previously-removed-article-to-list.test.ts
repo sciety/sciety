@@ -5,27 +5,14 @@ import * as TO from 'fp-ts/TaskOption';
 import { List } from '../../src/types/list';
 import { arbitraryUserDetails } from '../types/user-details.helper';
 import { constructViewModel as constructArticlePage, Ports } from '../../src/html-pages/article-page/construct-view-model';
-import { createReadAndWriteSides, ReadAndWriteSides } from '../create-read-and-write-sides';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
-import { CommandHelpers, createCommandHelpers } from '../create-command-helpers';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
-
-type TestFramework = ReadAndWriteSides & {
-  commandHelpers: CommandHelpers,
-};
-
-const createTestFramework = (): TestFramework => {
-  const framework = createReadAndWriteSides();
-  return {
-    ...framework,
-    commandHelpers: createCommandHelpers(framework.commandHandlers),
-  };
-};
+import { createTestFramework, TestFramework } from '../framework/create-test-framework';
 
 describe('add previously removed article to list', () => {
   let framework: TestFramework;
