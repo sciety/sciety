@@ -16,7 +16,7 @@ describe('correct-language-semantics', () => {
       fetchReview: () => TE.left(DE.unavailable),
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),
-      isArticleOnTheListOwnedBy: () => () => O.none,
+      selectListContainingArticle: () => () => O.none,
       getGroup: () => O.none,
       selectAllListsOwnedBy: () => [],
     };

@@ -20,7 +20,7 @@ import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluat
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { LookupUser } from './lookup-user';
 import { LookupUserByHandle } from './lookup-user-by-handle';
-import { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
+import { SelectListContainingArticle } from './select-list-containing-article';
 import { IsFollowing } from './is-following';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
@@ -49,7 +49,7 @@ export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { GetArticleIdsByState, ArticleIdsByState } from './get-article-ids-by-state';
-export { IsArticleOnTheListOwnedBy } from './is-article-on-the-list-owned-by';
+export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
@@ -84,7 +84,7 @@ export type SharedPorts = {
   lookupUserByHandle: LookupUserByHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
-  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
+  selectListContainingArticle: SelectListContainingArticle,
   isFollowing: IsFollowing,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,

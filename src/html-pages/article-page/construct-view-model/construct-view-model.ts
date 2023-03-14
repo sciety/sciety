@@ -13,7 +13,7 @@ import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { IsArticleOnTheListOwnedBy, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 
 export type Params = {
@@ -30,7 +30,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 }>;
 
 export type Ports = GetArticleFeedEventsPorts & {
-  isArticleOnTheListOwnedBy: IsArticleOnTheListOwnedBy,
+  selectListContainingArticle: SelectListContainingArticle,
   fetchArticle: GetArticleDetails,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
@@ -39,7 +39,7 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
   user,
   O.map(
     ({ id }) => pipe(
-      ports.isArticleOnTheListOwnedBy(id)(articleId),
+      ports.selectListContainingArticle(id)(articleId),
       O.fold(
         () => pipe(
           id,

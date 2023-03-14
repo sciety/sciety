@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { IsArticleOnTheListOwnedBy } from '../../shared-ports';
+import { SelectListContainingArticle } from '../../shared-ports';
 import * as LOID from '../../types/list-owner-id';
 
-export const isArticleOnTheListOwnedBy = (
+export const selectListContainingArticle = (
   readModel: ReadModel,
-): IsArticleOnTheListOwnedBy => (
+): SelectListContainingArticle => (
   userId,
 ) => (
   articleId,

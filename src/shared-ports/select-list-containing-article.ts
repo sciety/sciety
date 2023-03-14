@@ -3,4 +3,4 @@ import { Doi } from '../types/doi';
 import { List } from '../types/list';
 import { UserId } from '../types/user-id';
 
-export type IsArticleOnTheListOwnedBy = (userId: UserId) => (articleId: Doi) => O.Option<List>;
+export type SelectListContainingArticle = (userId: UserId) => (articleId: Doi) => O.Option<List>;
