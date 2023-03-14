@@ -6,7 +6,6 @@ import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
-import { ListId } from '../../../types/list-id';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ContentWithPaginationViewModel } from '../view-model';
 
@@ -14,7 +13,6 @@ export type Ports = PopulateArticleActivitiesPorts & ToPageOfCardsPorts;
 
 export const constructContentWithPaginationViewModel = (
   ports: Ports,
-  listId: ListId,
   pageNumber: number,
   editCapability: boolean,
   listOwnerId: ListOwnerId,
@@ -25,7 +23,7 @@ export const constructContentWithPaginationViewModel = (
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
-    toPageOfCards(ports, editCapability, listId, listOwnerId),
+    toPageOfCards(ports, editCapability, listOwnerId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),
 );

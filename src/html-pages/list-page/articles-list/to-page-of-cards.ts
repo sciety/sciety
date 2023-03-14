@@ -10,7 +10,6 @@ import { PageOfItems } from '../../../shared-components/paginate';
 import { GetAllEvents } from '../../../shared-ports';
 import { getAnnotationContentByUserListTarget } from '../../../shared-read-models/annotations';
 import { ArticleActivity } from '../../../types/article-activity';
-import { ListId } from '../../../types/list-id';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ArticlesViewModel } from '../view-model';
 import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
@@ -21,7 +20,6 @@ export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 const toArticleCardWithControlsViewModel = (
   ports: Ports,
   editCapability: boolean,
-  listId: ListId,
   listOwnerId: ListOwnerId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
@@ -41,7 +39,6 @@ const toArticleCardWithControlsViewModel = (
 export const toPageOfCards = (
   ports: Ports,
   editCapability: boolean,
-  listId: ListId,
   listOwnerId: ListOwnerId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
@@ -53,7 +50,7 @@ export const toPageOfCards = (
     E.foldW(
       TE.left,
       flow(
-        toArticleCardWithControlsViewModel(ports, editCapability, listId, listOwnerId),
+        toArticleCardWithControlsViewModel(ports, editCapability, listOwnerId),
         T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),

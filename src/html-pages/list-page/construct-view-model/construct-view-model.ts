@@ -51,13 +51,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   TE.chainW(
     RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
       () => TE.right('no-articles' as const),
-      constructContentWithPaginationViewModel(
-        ports,
-        params.id,
-        params.page,
-        editCapability,
-        listOwnerId,
-      ),
+      constructContentWithPaginationViewModel(ports, params.page, editCapability, listOwnerId),
     ),
   ),
   TE.orElse((left) => {
