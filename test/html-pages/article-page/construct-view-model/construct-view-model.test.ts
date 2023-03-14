@@ -7,8 +7,6 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel, Ports } from '../../../../src/html-pages/article-page/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { createReadAndWriteSides, ReadAndWriteSides } from '../../../framework/create-read-and-write-sides';
-import { CommandHelpers, createCommandHelpers } from '../../../framework/create-command-helpers';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { ArticleServer } from '../../../../src/types/article-server';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
@@ -16,16 +14,13 @@ import { sanitise } from '../../../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../../../helpers';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
+import { createTestFramework, TestFramework } from '../../../framework';
 
 describe('construct-view-model', () => {
-  let commandHandlers: ReadAndWriteSides['commandHandlers'];
-  let getAllEvents: ReadAndWriteSides['getAllEvents'];
-  let queries: ReadAndWriteSides['queries'];
-  let commandHelpers: CommandHelpers;
+  let framework: TestFramework;
 
   beforeEach(() => {
-    ({ queries, getAllEvents, commandHandlers } = createReadAndWriteSides());
-    commandHelpers = createCommandHelpers(commandHandlers);
+    framework = createTestFramework();
   });
 
   describe('when the article is not saved to any user list', () => {
@@ -35,12 +30,12 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       const userDetails = arbitraryUserDetails();
       const articleId = arbitraryArticleId();
-      await commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
-      list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       const adapters: Ports = {
-        ...queries,
-        getAllEvents,
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
         fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.right({
@@ -81,13 +76,13 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       const userDetails = arbitraryUserDetails();
       const articleId = arbitraryArticleId();
-      await commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(userDetails);
       // eslint-disable-next-line prefer-destructuring
-      list = queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
-      await commandHelpers.addArticleToList(articleId, list.id);
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
       const adapters: Ports = {
-        ...queries,
-        getAllEvents,
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
         fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.right({
@@ -128,13 +123,13 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       const userDetails = arbitraryUserDetails();
       const articleId = arbitraryArticleId();
-      await commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(userDetails);
       list = arbitraryList();
-      await commandHelpers.createList(list);
-      await commandHelpers.addArticleToList(articleId, list.id);
+      await framework.commandHelpers.createList(list);
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
       const adapters: Ports = {
-        ...queries,
-        getAllEvents,
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
         fetchReview: () => TE.left('not-found'),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.right({
