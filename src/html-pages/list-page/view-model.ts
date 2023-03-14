@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { PageOfItems } from '../../shared-components/paginate';
 import { ListId } from '../../types/list-id';
-import { ArticleErrorCardViewModel } from './articles-list/render-article-error-card';
-import { ArticleCardWithControlsViewModel } from './articles-list/render-articles-list';
+import { ArticleErrorCardViewModel } from './render-as-html/render-article-error-card';
+import { ArticleCardWithControlsViewModel } from './render-as-html/render-articles-list';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 

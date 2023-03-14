@@ -1,8 +1,8 @@
 import { renderHeader } from './render-header';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { renderContentWithPagination } from '../articles-list/render-content-with-pagination';
 import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from '../articles-list/static-messages';
 import { ViewModel } from '../view-model';
+import { renderContentWithPagination } from './render-content-with-pagination';
 
 const renderListOrMessage = (viewModel: ViewModel) => {
   switch (viewModel.contentViewModel) {

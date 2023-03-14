@@ -4,8 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { ArticleCardWithControlsViewModel } from './render-articles-list';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
@@ -15,6 +13,8 @@ import { ArticleActivity } from '../../../types/article-activity';
 import { ListId } from '../../../types/list-id';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ArticlesViewModel } from '../view-model';
+import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
+import { ArticleCardWithControlsViewModel } from '../render-as-html/render-articles-list';
 
 export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 
