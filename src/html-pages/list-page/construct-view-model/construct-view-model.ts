@@ -78,7 +78,6 @@ export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEit
       ...list,
       listId: list.id,
       basePath: `/lists/${list.id}`,
-      title: list.name,
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),

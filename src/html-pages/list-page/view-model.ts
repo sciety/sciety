@@ -15,7 +15,6 @@ export type ViewModel = {
   lastUpdated: Date,
   editCapability: boolean,
   listId: ListId,
-  title: string,
   basePath: string,
   contentViewModel: ContentViewModel,
 };
