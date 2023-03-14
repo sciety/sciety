@@ -88,7 +88,7 @@ describe('create user list', () => {
           )();
         });
 
-        it.failing('the user card counts the extra list', () => {
+        it('the user card counts the extra list', () => {
           expect(groupFollowersPage.followers[0].listCount).toBe(2);
         });
       });
