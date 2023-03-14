@@ -17,7 +17,7 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
 };
 
-const renderLinkToOnlyList = (listId: ListId, listName: string) => `
+const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => `
   <div>
     Saved to:
     <a class="saved-to-list" href="/lists/${listId}">
@@ -37,7 +37,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
       userListManagement.isArticleInList,
       B.match(
         () => renderSaveMultipleListsForm(viewmodel.doi, userListManagement.listName),
-        () => renderLinkToOnlyList(userListManagement.listId, userListManagement.listName),
+        () => renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName),
       ),
     ),
   ),
