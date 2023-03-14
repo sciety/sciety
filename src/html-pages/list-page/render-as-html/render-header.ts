@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
+import { ViewModel } from '../view-model';
 
 const renderArticleCount = (articleCount: number) => pipe(
   articleCount === 1,
@@ -10,18 +11,6 @@ const renderArticleCount = (articleCount: number) => pipe(
 );
 
 const renderLastUpdated = (date: Date) => `<span>Last updated ${templateDate(date)}</span>`;
-
-export type ViewModel = {
-  name: string,
-  description: string,
-  ownerName: string,
-  ownerHref: string,
-  ownerAvatarPath: string,
-  articleCount: number,
-  lastUpdated: Date,
-  editCapability: boolean,
-  listId: ListId,
-};
 
 const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
   editCapability,
