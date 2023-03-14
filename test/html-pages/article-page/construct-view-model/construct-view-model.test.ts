@@ -27,7 +27,7 @@ describe('construct-view-model', () => {
     commandHelpers = createCommandHelpers(commandHandlers);
   });
 
-  describe('when the article is saved to a list', () => {
+  describe('when the article is saved to the default user list', () => {
     let list: List;
     let viewModel: ViewModel;
 
@@ -72,5 +72,13 @@ describe('construct-view-model', () => {
     it('list management marks the article as being saved in the list', () => {
       expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: true })));
     });
+  });
+
+  describe('when the article is saved to another user list', () => {
+    it.todo('list management has access to list id');
+
+    it.todo('list management has access to list name');
+
+    it.todo('list management marks the article as being saved in the list');
   });
 });
