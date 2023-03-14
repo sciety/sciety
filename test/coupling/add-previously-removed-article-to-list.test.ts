@@ -12,7 +12,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryString } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
-import { createTestFramework, TestFramework } from '../framework/create-test-framework';
+import { createTestFramework, TestFramework } from '../framework';
 
 describe('add previously removed article to list', () => {
   let framework: TestFramework;
