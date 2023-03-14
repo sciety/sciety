@@ -18,10 +18,7 @@ describe('construct-view-model', () => {
 
   describe('when the user owns two lists', () => {
     const user = arbitraryUserDetails();
-    const secondList = {
-      ...arbitraryList(),
-      ownerId: LOID.fromUserId(user.id),
-    };
+    const secondList = arbitraryList(LOID.fromUserId(user.id));
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);

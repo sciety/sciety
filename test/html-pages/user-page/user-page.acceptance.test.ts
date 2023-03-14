@@ -105,10 +105,7 @@ describe('user-page', () => {
 
     describe('opengraph description', () => {
       const user = arbitraryUserDetails();
-      const secondList = {
-        ...arbitraryList(),
-        ownerId: LOID.fromUserId(user.id),
-      };
+      const secondList = arbitraryList(LOID.fromUserId(user.id));
       const groupId1 = arbitraryGroupId();
       const groupId2 = arbitraryGroupId();
       let framework: TestFramework;
