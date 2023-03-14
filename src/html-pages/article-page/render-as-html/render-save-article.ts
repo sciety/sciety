@@ -36,7 +36,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
     (userListManagement) => pipe(
       userListManagement.isArticleInList,
       B.match(
-        () => renderSaveMultipleListsForm(viewmodel.doi, userListManagement.listName),
+        () => renderSaveMultipleListsForm(viewmodel.doi, userListManagement.listId, userListManagement.listName),
         () => renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName),
       ),
     ),
