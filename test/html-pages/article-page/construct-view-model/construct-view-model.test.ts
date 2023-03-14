@@ -124,7 +124,7 @@ describe('construct-view-model', () => {
       const userDetails = arbitraryUserDetails();
       const articleId = arbitraryArticleId();
       await framework.commandHelpers.createUserAccount(userDetails);
-      list = arbitraryList();
+      list = { ...arbitraryList(), ownerId: LOID.fromUserId(userDetails.id) };
       await framework.commandHelpers.createList(list);
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       const adapters: Ports = {
@@ -150,15 +150,15 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it.failing('list management has access to list id', () => {
+    it('list management has access to list id', () => {
       expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
     });
 
-    it.failing('list management has access to list name', () => {
+    it('list management has access to list name', () => {
       expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
     });
 
-    it.failing('list management marks the article as being saved in the list', () => {
+    it('list management marks the article as being saved in the list', () => {
       expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: true })));
     });
   });

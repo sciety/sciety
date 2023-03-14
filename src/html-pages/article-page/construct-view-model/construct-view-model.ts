@@ -38,23 +38,28 @@ export type Ports = GetArticleFeedEventsPorts & {
 const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
   user,
   O.map(
-    ({ id }) => ({
-      listName: pipe(
-        id,
-        LOID.fromUserId,
-        ports.selectAllListsOwnedBy,
-        (lists) => lists[0].name,
+    ({ id }) => pipe(
+      ports.isArticleOnTheListOwnedBy(id)(articleId),
+      O.fold(
+        () => pipe(
+          id,
+          LOID.fromUserId,
+          ports.selectAllListsOwnedBy,
+          (lists) => lists[0],
+          (list) => ({
+            listId: list.id,
+            listName: list.name,
+            isArticleInList: false,
+          }),
+
+        ),
+        (list) => ({
+          listId: list.id,
+          listName: list.name,
+          isArticleInList: true,
+        }),
       ),
-      listId: pipe(
-        id,
-        LOID.fromUserId,
-        ports.selectAllListsOwnedBy,
-        (lists) => lists[0].id,
-      ),
-      isArticleInList: O.isSome(
-        ports.isArticleOnTheListOwnedBy(id)(articleId),
-      ),
-    }),
+    ),
   ),
 );
 
