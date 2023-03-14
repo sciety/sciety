@@ -1,11 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
-import { GetAllEvents, GetGroup } from '../../shared-ports';
-import { ListOwnerId } from '../../types/list-owner-id';
+import { GetAllEvents, GetGroup } from '../../../shared-ports';
+import { ListOwnerId } from '../../../types/list-owner-id';
 
-export type Ports = GetUserOwnerInformationPorts
-& {
+export type Ports = GetUserOwnerInformationPorts & {
   getAllEvents: GetAllEvents,
   getGroup: GetGroup,
 };

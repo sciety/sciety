@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { LookupUser } from '../../shared-ports/lookup-user';
-import { UserId } from '../../types/user-id';
+import { LookupUser } from '../../../shared-ports/lookup-user';
+import { UserId } from '../../../types/user-id';
 
 type OwnerInfo = {
   ownerName: string,

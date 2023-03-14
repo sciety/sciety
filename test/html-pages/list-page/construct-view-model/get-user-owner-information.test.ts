@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation, Ports } from '../../../src/html-pages/list-page/get-user-owner-information';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { getUserOwnerInformation, Ports } from '../../../../src/html-pages/list-page/construct-view-model/get-user-owner-information';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
 describe('get-user-owner-information', () => {
   const userId = arbitraryUserId();
