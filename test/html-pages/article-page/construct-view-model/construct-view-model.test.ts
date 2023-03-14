@@ -30,6 +30,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       userDetails = arbitraryUserDetails();
+      await framework.commandHelpers.createUserAccount(userDetails);
     });
 
     describe('when the article is not saved to any user list', () => {
@@ -38,7 +39,6 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const articleId = arbitraryArticleId();
-        await framework.commandHelpers.createUserAccount(userDetails);
         // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         viewModel = await pipe(
@@ -70,7 +70,6 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const articleId = arbitraryArticleId();
-        await framework.commandHelpers.createUserAccount(userDetails);
         // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         await framework.commandHelpers.addArticleToList(articleId, list.id);
@@ -103,7 +102,6 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const articleId = arbitraryArticleId();
-        await framework.commandHelpers.createUserAccount(userDetails);
         list = { ...arbitraryList(), ownerId: LOID.fromUserId(userDetails.id) };
         await framework.commandHelpers.createList(list);
         await framework.commandHelpers.addArticleToList(articleId, list.id);
