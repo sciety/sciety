@@ -4,20 +4,19 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { checkUserOwnsList } from './check-user-owns-list';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../write-side/remove-article-from-list';
 import {
-  CommitEvents, GetAllEvents, GetList, Logger,
+  CommitEvents, GetAllEvents, Logger,
 } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../../types/user-details';
 
-type Ports = GetLoggedInScietyUserPorts & {
+type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
-  getList: GetList,
 };
 
 type FormBody = {
