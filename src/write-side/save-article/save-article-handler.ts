@@ -9,21 +9,20 @@ import { sequenceS } from 'fp-ts/Apply';
 import { ListIdFromString } from '../../types/codecs/ListIdFromString';
 import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
-  AddArticleToList, GetList, Logger, SelectAllListsOwnedBy,
+  AddArticleToList, Logger, SelectAllListsOwnedBy,
 } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as Doi from '../../types/doi';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList } from '../../http/forms/check-user-owns-list';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
 import { ListId } from '../../types/list-id';
 
 export const articleIdFieldName = 'articleid';
 
-type Ports = GetLoggedInScietyUserPorts & {
+type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
   logger: Logger,
-  getList: GetList,
 };
 
 type ConstructCommand = (

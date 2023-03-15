@@ -6,7 +6,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
-import { checkUserOwnsList, CheckUserOwnsListPorts } from './check-user-owns-list';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';

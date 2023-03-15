@@ -5,11 +5,11 @@ import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
-export type CheckUserOwnsListPorts = {
+export type Ports = {
   getList: GetList,
 };
 
-export const checkUserOwnsList = (adapters: CheckUserOwnsListPorts, listId: ListId, userId: UserId) => pipe(
+export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
   listId,
   adapters.getList,
   TE.fromOption(() => ({
