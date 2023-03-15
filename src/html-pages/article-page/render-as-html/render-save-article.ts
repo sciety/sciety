@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { renderSaveMultipleListsForm } from '../../../write-side/save-article/render-save-multiple-lists-form';
+import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
 
 type LoggedInUserListManagement = {
   listName: string,
@@ -36,7 +36,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
     (userListManagement) => pipe(
       userListManagement.isArticleInList,
       B.match(
-        () => renderSaveMultipleListsForm(viewmodel.doi, userListManagement.listId, userListManagement.listName),
+        () => renderSaveToListForm(viewmodel.doi, userListManagement.listId, userListManagement.listName),
         () => renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName),
       ),
     ),
