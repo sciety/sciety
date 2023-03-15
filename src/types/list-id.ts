@@ -15,8 +15,8 @@ export const generate = (): ListId => fromValidatedString(v4());
 
 export const eqListId: Eq.Eq<ListId> = S.Eq;
 
-export const ListIdFromString = new t.Type(
-  'ListIdFromString',
+export const listIdCodec = new t.Type(
+  'listIdCodec',
   isListId,
   (u, c) => pipe(
     t.string.validate(u, c),

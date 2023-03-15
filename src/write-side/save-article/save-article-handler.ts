@@ -14,7 +14,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as Doi from '../../types/doi';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
-import { ListId, ListIdFromString } from '../../types/list-id';
+import { ListId, listIdCodec } from '../../types/list-id';
 
 export const articleIdFieldName = 'articleid';
 
@@ -38,7 +38,7 @@ const contextCodec = t.type({
   request: t.type({
     body: t.type({
       [articleIdFieldName]: DoiFromString,
-      listId: ListIdFromString,
+      listId: listIdCodec,
     }),
   }),
 });

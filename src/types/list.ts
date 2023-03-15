@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ListIdFromString } from './list-id';
+import { listIdCodec } from './list-id';
 import * as LOID from './list-owner-id';
 
 export const listCodec = t.type({
-  id: ListIdFromString,
+  id: listIdCodec,
   name: t.string,
   description: t.string,
   articleIds: t.array(t.string),

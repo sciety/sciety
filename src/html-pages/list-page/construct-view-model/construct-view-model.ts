@@ -8,7 +8,7 @@ import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } f
 import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { LookupList } from '../../../shared-ports';
-import { ListIdFromString } from '../../../types/list-id';
+import { listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
@@ -17,7 +17,7 @@ import { ContentViewModel, ViewModel } from '../view-model';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
-  id: ListIdFromString,
+  id: listIdCodec,
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),

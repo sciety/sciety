@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
-import { ListIdFromString } from '../../types/list-id';
+import { listIdCodec } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 
 const createListCommandCodec = t.type({
-  listId: ListIdFromString,
+  listId: listIdCodec,
   ownerId: LOID.fromObjectOfStrings,
   name: t.string,
   description: t.string,
