@@ -19,6 +19,20 @@ describe('save-article-handler', () => {
   const listId = arbitraryListId();
   const user = arbitraryUserDetails();
   const userId = user.id;
+  const articleId = arbitraryArticleId();
+  const context = ({
+    request: {
+      body: {
+        [articleIdFieldName]: articleId.toString(),
+        listId,
+      },
+    },
+    state: {
+      user: {
+        id: userId,
+      },
+    },
+  } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
   describe('when the user is the owner of the list', () => {
     const lookupList: LookupList = () => O.some({
@@ -32,21 +46,6 @@ describe('save-article-handler', () => {
 
     describe('when the user tried to save an article and the command handler fails', () => {
       const addArticleToList = () => TE.left(arbitraryErrorMessage());
-      const articleId = arbitraryArticleId();
-      const context = ({
-        request: {
-          body: {
-            [articleIdFieldName]: articleId.toString(),
-            listId,
-          },
-        },
-        state: {
-          user: {
-            id: userId,
-          },
-        },
-      } as unknown) as RouterContext<{ user: { id: UserId } }>;
-
       const logger = jest.fn(dummyLogger);
 
       it('logs an error', async () => {
@@ -63,20 +62,6 @@ describe('save-article-handler', () => {
 
     describe('when the user tries to save an article', () => {
       const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
-      const articleId = arbitraryArticleId();
-      const context = ({
-        request: {
-          body: {
-            [articleIdFieldName]: articleId.toString(),
-            listId,
-          },
-        },
-        state: {
-          user: {
-            id: userId,
-          },
-        },
-      } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
       it('calls the add article to list command with the list id owned by the user', async () => {
         await saveArticleHandler({
@@ -92,30 +77,17 @@ describe('save-article-handler', () => {
   });
 
   describe('when the user is not the owner of the list', () => {
+    const lookupList: LookupList = () => O.some({
+      id: listId,
+      ownerId: arbitraryListOwnerId(),
+      articleIds: [arbitraryDoi().value],
+      lastUpdated: arbitraryDate(),
+      name: arbitraryWord(),
+      description: arbitraryString(),
+    });
+
     describe('when the user tries to save an article', () => {
-      const lookupList: LookupList = () => O.some({
-        id: listId,
-        ownerId: arbitraryListOwnerId(),
-        articleIds: [arbitraryDoi().value],
-        lastUpdated: arbitraryDate(),
-        name: arbitraryWord(),
-        description: arbitraryString(),
-      });
       const addArticleToList = () => TE.right(arbitraryCommandResult());
-      const articleId = arbitraryArticleId();
-      const context = ({
-        request: {
-          body: {
-            [articleIdFieldName]: articleId.toString(),
-            listId,
-          },
-        },
-        state: {
-          user: {
-            id: userId,
-          },
-        },
-      } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
       const logger = jest.fn(dummyLogger);
 
