@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
 import {
-  AddArticleToList, Logger, SelectAllListsOwnedBy,
+  AddArticleToList, Logger,
 } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
@@ -17,7 +17,6 @@ import { listIdCodec } from '../../types/list-id';
 export const articleIdFieldName = 'articleid';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
   addArticleToList: AddArticleToList,
   logger: Logger,
 };

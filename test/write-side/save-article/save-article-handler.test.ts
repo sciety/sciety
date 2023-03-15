@@ -10,7 +10,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { LookupList, SelectAllListsOwnedBy } from '../../../src/shared-ports';
+import { LookupList } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
 
@@ -18,14 +18,6 @@ describe('save-article-handler', () => {
   const listId = arbitraryListId();
   const user = arbitraryUserDetails();
   const userId = user.id;
-  const selectAllListsOwnedBy: SelectAllListsOwnedBy = () => [{
-    id: listId,
-    ownerId: LOID.fromUserId(userId),
-    articleIds: [arbitraryDoi().value],
-    lastUpdated: arbitraryDate(),
-    name: arbitraryWord(),
-    description: arbitraryString(),
-  }];
   const lookupList: LookupList = () => O.some({
     id: listId,
     ownerId: LOID.fromUserId(userId),
@@ -57,7 +49,6 @@ describe('save-article-handler', () => {
     it('logs an error', async () => {
       await saveArticleHandler({
         lookupUser: () => O.some(user),
-        selectAllListsOwnedBy,
         addArticleToList,
         logger,
         lookupList,
@@ -86,7 +77,6 @@ describe('save-article-handler', () => {
 
     it('calls the add article to list command with the list id owned by the user', async () => {
       await saveArticleHandler({
-        selectAllListsOwnedBy,
         lookupUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
