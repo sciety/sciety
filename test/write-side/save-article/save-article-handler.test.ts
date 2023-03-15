@@ -13,6 +13,7 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { LookupList } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 describe('save-article-handler', () => {
   const listId = arbitraryListId();
@@ -92,7 +93,42 @@ describe('save-article-handler', () => {
 
   describe('when the user is not the owner of the list', () => {
     describe('when the user tries to save an article', () => {
-      it.todo('logs an error');
+      const lookupList: LookupList = () => O.some({
+        id: listId,
+        ownerId: arbitraryListOwnerId(),
+        articleIds: [arbitraryDoi().value],
+        lastUpdated: arbitraryDate(),
+        name: arbitraryWord(),
+        description: arbitraryString(),
+      });
+      const addArticleToList = () => TE.right(arbitraryCommandResult());
+      const articleId = arbitraryArticleId();
+      const context = ({
+        request: {
+          body: {
+            [articleIdFieldName]: articleId.toString(),
+            listId,
+          },
+        },
+        state: {
+          user: {
+            id: userId,
+          },
+        },
+      } as unknown) as RouterContext<{ user: { id: UserId } }>;
+
+      const logger = jest.fn(dummyLogger);
+
+      it('logs an error', async () => {
+        await saveArticleHandler({
+          lookupUser: () => O.some(user),
+          addArticleToList,
+          logger,
+          lookupList,
+        })(context, jest.fn());
+
+        expect(logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
     });
   });
 });
