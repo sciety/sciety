@@ -34,7 +34,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(userDetails);
     });
 
-    describe('when the article is not saved to any user list', () => {
+    describe('when the article is not saved to the user\'s only list', () => {
       let list: List;
       let viewModel: ViewModel;
 
@@ -66,6 +66,14 @@ describe('construct-view-model', () => {
       it('list management marks the article as not being saved in the default user list', () => {
         expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: false })));
       });
+    });
+
+    describe('when the article is not saved to any of the user\'s multiple lists', () => {
+      it.todo('list management has access to the list ids of all the user\'s multiple lists');
+
+      it.todo('list management has access to the list names of all the user\'s multiple lists');
+
+      it.todo('list management marks the article as not being saved in any of the user\'s multiple lists');
     });
 
     describe('when the article is saved to the default user list', () => {
