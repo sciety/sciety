@@ -18,16 +18,17 @@ describe('save-article-handler', () => {
   const listId = arbitraryListId();
   const user = arbitraryUserDetails();
   const userId = user.id;
-  const lookupList: LookupList = () => O.some({
-    id: listId,
-    ownerId: LOID.fromUserId(userId),
-    articleIds: [arbitraryDoi().value],
-    lastUpdated: arbitraryDate(),
-    name: arbitraryWord(),
-    description: arbitraryString(),
-  });
 
   describe('when the user is the owner of the list', () => {
+    const lookupList: LookupList = () => O.some({
+      id: listId,
+      ownerId: LOID.fromUserId(userId),
+      articleIds: [arbitraryDoi().value],
+      lastUpdated: arbitraryDate(),
+      name: arbitraryWord(),
+      description: arbitraryString(),
+    });
+
     describe('when the user tried to save an article and the command handler fails', () => {
       const addArticleToList = () => TE.left(arbitraryErrorMessage());
       const articleId = arbitraryArticleId();
