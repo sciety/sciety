@@ -52,7 +52,10 @@ export const saveArticleHandler = (ports: Ports): Middleware => async (context, 
     },
     sequenceS(O.Apply),
     O.fold(
-      () => T.of(undefined),
+      () => pipe(
+        ports.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body }),
+        () => T.of(undefined),
+      ),
       ({ articleId, listId, userId }) => pipe(
         { articleId, listId },
         TE.of,
