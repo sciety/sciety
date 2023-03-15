@@ -6,15 +6,13 @@ import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
-import { AddArticleToListCommand } from '../commands/add-article-to-list';
 import {
   AddArticleToList, Logger, SelectAllListsOwnedBy,
 } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import * as Doi from '../../types/doi';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
-import { ListId, listIdCodec } from '../../types/list-id';
+import { listIdCodec } from '../../types/list-id';
 
 export const articleIdFieldName = 'articleid';
 
@@ -23,16 +21,6 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   addArticleToList: AddArticleToList,
   logger: Logger,
 };
-
-type ConstructCommand = (
-  articleId: Doi.Doi,
-  listId: ListId,
-) => AddArticleToListCommand;
-
-const constructCommand: ConstructCommand = (
-  articleId,
-  listId,
-) => ({ articleId, listId });
 
 const contextCodec = t.type({
   request: t.type({
@@ -67,7 +55,7 @@ export const saveArticleHandler = (ports: Ports): Middleware => async (context, 
     O.fold(
       () => T.of(undefined),
       ({ articleId, listId, userId }) => pipe(
-        constructCommand(articleId, listId),
+        { articleId, listId },
         TE.of,
         TE.chainFirst(flow(
           (command) => checkUserOwnsList(ports, command.listId, userId),
