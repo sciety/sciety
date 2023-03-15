@@ -3,11 +3,11 @@ import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
 import { ArticleAddedToListEvent } from '../../../domain-events';
-import { GetList } from '../../../shared-ports';
+import { LookupList } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
 
 export type Ports = {
-  getList: GetList,
+  lookupList: LookupList,
 } & AddListOwnershipInformationPorts;
 
 type ArticleAddedToListCard = (
@@ -16,7 +16,7 @@ type ArticleAddedToListCard = (
 
 export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event) => pipe(
   event.listId,
-  ports.getList,
+  ports.lookupList,
   O.map(addListOwnershipInformation(ports)),
   O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,

@@ -11,7 +11,7 @@ import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { GetList } from '../../../../src/shared-ports';
+import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
 describe('article-added-to-list-card', () => {
@@ -24,7 +24,7 @@ describe('article-added-to-list-card', () => {
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const getAllEvents = T.of([]);
-    const getList: GetList = () => O.some({
+    const lookupList: LookupList = () => O.some({
       ...arbitraryList(),
       id: listId,
     });
@@ -34,7 +34,7 @@ describe('article-added-to-list-card', () => {
       const handle = arbitraryUserHandle();
       const ports: Ports = {
         getAllEvents,
-        getList,
+        lookupList,
         lookupUser: () => O.some({
           handle,
           avatarUrl,
@@ -71,7 +71,7 @@ describe('article-added-to-list-card', () => {
     describe('when user details are not found', () => {
       const ports: Ports = {
         getAllEvents,
-        getList,
+        lookupList,
         lookupUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),
         logger: dummyLogger,

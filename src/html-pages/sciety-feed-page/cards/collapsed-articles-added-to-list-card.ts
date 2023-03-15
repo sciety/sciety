@@ -2,12 +2,12 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from './sciety-feed-card';
-import { GetList } from '../../../shared-ports';
+import { LookupList } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from '../feed-item';
 
 export type Ports = {
-  getList: GetList,
+  lookupList: LookupList,
 } & AddListOwnershipInformationPorts;
 
 type CollapsedArticlesAddedToListCard = (
@@ -16,7 +16,7 @@ type CollapsedArticlesAddedToListCard = (
 
 export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (collapsedEvents) => pipe(
   collapsedEvents.listId,
-  ports.getList,
+  ports.lookupList,
   O.map(addListOwnershipInformation(ports)),
   O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,

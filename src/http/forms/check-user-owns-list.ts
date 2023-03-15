@@ -1,17 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetList } from '../../shared-ports';
+import { LookupList } from '../../shared-ports';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 export type Ports = {
-  getList: GetList,
+  lookupList: LookupList,
 };
 
 export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
   listId,
-  adapters.getList,
+  adapters.lookupList,
   TE.fromOption(() => ({
     message: 'List id not found',
     payload: { listId, userId },

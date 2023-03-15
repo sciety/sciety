@@ -11,7 +11,7 @@ describe('construct-view-model', () => {
     const listId = arbitraryListId();
     const list = arbitraryList();
     const adapters = {
-      getList: () => O.some(list),
+      lookupList: () => O.some(list),
     };
     const viewModel = pipe(
       listId,
@@ -35,7 +35,7 @@ describe('construct-view-model', () => {
   describe('when the list does not exist', () => {
     const listId = arbitraryListId();
     const adapters = {
-      getList: () => O.none,
+      lookupList: () => O.none,
     };
     const result = pipe(
       listId,

@@ -15,7 +15,7 @@ import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
 import { GetGroupsFollowedBy } from './get-groups-followed-by';
-import { GetList } from './get-list';
+import { LookupList } from './lookup-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { LookupUser } from './lookup-user';
@@ -41,7 +41,7 @@ export { FetchStaticFile } from './fetch-static-file';
 export { GetGroup } from './get-group';
 export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
-export { GetList } from './get-list';
+export { LookupList } from './lookup-list';
 export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
 // ts-unused-exports:disable-next-line
@@ -79,7 +79,7 @@ export type SharedPorts = {
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
   getGroupsFollowedBy: GetGroupsFollowedBy,
-  getList: GetList,
+  lookupList: LookupList,
   lookupUser: LookupUser,
   lookupUserByHandle: LookupUserByHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,

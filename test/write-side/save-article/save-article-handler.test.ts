@@ -10,7 +10,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { GetList, SelectAllListsOwnedBy } from '../../../src/shared-ports';
+import { LookupList, SelectAllListsOwnedBy } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
 
@@ -26,7 +26,7 @@ describe('save-article-handler', () => {
     name: arbitraryWord(),
     description: arbitraryString(),
   }];
-  const getList: GetList = () => O.some({
+  const lookupList: LookupList = () => O.some({
     id: listId,
     ownerId: LOID.fromUserId(userId),
     articleIds: [arbitraryDoi().value],
@@ -60,7 +60,7 @@ describe('save-article-handler', () => {
         selectAllListsOwnedBy,
         addArticleToList,
         logger,
-        getList,
+        lookupList,
       })(context, jest.fn());
 
       expect(logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
@@ -90,7 +90,7 @@ describe('save-article-handler', () => {
         lookupUser: () => O.some(user),
         addArticleToList,
         logger: dummyLogger,
-        getList,
+        lookupList,
       })(context, jest.fn());
 
       expect(addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId, articleId }));

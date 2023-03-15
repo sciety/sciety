@@ -7,7 +7,7 @@ import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from '../articles-list/construct-content-with-pagination-view-model';
 import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
-import { GetList } from '../../../shared-ports';
+import { LookupList } from '../../../shared-ports';
 import { ListIdFromString } from '../../../types/codecs/ListIdFromString';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
@@ -24,7 +24,7 @@ export const paramsCodec = t.type({
 });
 
 export type Ports = ArticlesListPorts & HeadersPorts & {
-  getList: GetList,
+  lookupList: LookupList,
 };
 
 export type Params = t.TypeOf<typeof paramsCodec>;
@@ -64,7 +64,7 @@ const constructContentViewModel: ConstructContentViewModel = (
 
 export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   params.id,
-  ports.getList,
+  ports.lookupList,
   O.chain((list) => pipe(
     getOwnerInformation(ports)(list.ownerId),
     O.map((ownerInformation) => ({

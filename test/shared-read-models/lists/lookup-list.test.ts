@@ -5,13 +5,13 @@ import {
   articleAddedToList, listCreated, listDescriptionEdited, listNameEdited,
 } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
-import { getList } from '../../../src/shared-read-models/lists/get-list';
+import { lookupList } from '../../../src/shared-read-models/lists/lookup-list';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
-describe('get-list', () => {
+describe('lookup-list', () => {
   const listId = arbitraryListId();
 
   describe('when the list exists', () => {
@@ -30,19 +30,19 @@ describe('get-list', () => {
       );
 
       it('returns the list name', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           name,
         })));
       });
 
       it('returns the list description', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           description,
         })));
       });
 
       it('returns the articleIds, sorted by date added, descending', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           articleIds: [articleId2.value, articleId1.value],
         })));
       });
@@ -59,19 +59,19 @@ describe('get-list', () => {
       );
 
       it('returns articleIds as empty', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           articleIds: [],
         })));
       });
 
       it('returns the lists name', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           name,
         })));
       });
 
       it('returns the list description', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           description,
         })));
       });
@@ -90,19 +90,19 @@ describe('get-list', () => {
       );
 
       it('returns the latest name', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           name,
         })));
       });
 
       it('returns the same list description', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           description,
         })));
       });
 
       it('returns the date of the latest event as the lastUpdated', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           lastUpdated: dateOfLatestEvent,
         })));
       });
@@ -121,19 +121,19 @@ describe('get-list', () => {
       );
 
       it('returns the same list name', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           name,
         })));
       });
 
       it('returns the latest description', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           description,
         })));
       });
 
       it('returns the date of the latest event as the lastUpdated', () => {
-        expect(getList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
+        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
           lastUpdated: dateOfLatestEvent,
         })));
       });
@@ -147,7 +147,7 @@ describe('get-list', () => {
     );
 
     it('returns not found', () => {
-      expect(getList(readModel)(listId)).toStrictEqual(O.none);
+      expect(lookupList(readModel)(listId)).toStrictEqual(O.none);
     });
   });
 });

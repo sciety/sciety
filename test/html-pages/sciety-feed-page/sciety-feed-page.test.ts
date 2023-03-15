@@ -43,7 +43,7 @@ describe('sciety-feed-page', () => {
   const defaultPorts: Ports = {
     lookupUser: getUser,
     getGroup: () => O.some(arbitraryGroup()),
-    getList: () => O.some(arbitraryList()),
+    lookupList: () => O.some(arbitraryList()),
     logger: dummyLogger,
     getAllEvents: T.of([]),
   };
