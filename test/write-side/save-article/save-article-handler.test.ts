@@ -27,63 +27,71 @@ describe('save-article-handler', () => {
     description: arbitraryString(),
   });
 
-  describe('when the user tried to save an article and the command handler fails', () => {
-    const addArticleToList = () => TE.left(arbitraryErrorMessage());
-    const articleId = arbitraryArticleId();
-    const context = ({
-      request: {
-        body: {
-          [articleIdFieldName]: articleId.toString(),
-          listId,
+  describe('when the user is the owner of the list', () => {
+    describe('when the user tried to save an article and the command handler fails', () => {
+      const addArticleToList = () => TE.left(arbitraryErrorMessage());
+      const articleId = arbitraryArticleId();
+      const context = ({
+        request: {
+          body: {
+            [articleIdFieldName]: articleId.toString(),
+            listId,
+          },
         },
-      },
-      state: {
-        user: {
-          id: userId,
+        state: {
+          user: {
+            id: userId,
+          },
         },
-      },
-    } as unknown) as RouterContext<{ user: { id: UserId } }>;
+      } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
-    const logger = jest.fn(dummyLogger);
+      const logger = jest.fn(dummyLogger);
 
-    it('logs an error', async () => {
-      await saveArticleHandler({
-        lookupUser: () => O.some(user),
-        addArticleToList,
-        logger,
-        lookupList,
-      })(context, jest.fn());
+      it('logs an error', async () => {
+        await saveArticleHandler({
+          lookupUser: () => O.some(user),
+          addArticleToList,
+          logger,
+          lookupList,
+        })(context, jest.fn());
 
-      expect(logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+        expect(logger).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
+      });
+    });
+
+    describe('when the user tries to save an article', () => {
+      const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
+      const articleId = arbitraryArticleId();
+      const context = ({
+        request: {
+          body: {
+            [articleIdFieldName]: articleId.toString(),
+            listId,
+          },
+        },
+        state: {
+          user: {
+            id: userId,
+          },
+        },
+      } as unknown) as RouterContext<{ user: { id: UserId } }>;
+
+      it('calls the add article to list command with the list id owned by the user', async () => {
+        await saveArticleHandler({
+          lookupUser: () => O.some(user),
+          addArticleToList,
+          logger: dummyLogger,
+          lookupList,
+        })(context, jest.fn());
+
+        expect(addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId, articleId }));
+      });
     });
   });
 
-  describe('when the user tries to save an article', () => {
-    const addArticleToList = jest.fn(() => TE.right(arbitraryCommandResult()));
-    const articleId = arbitraryArticleId();
-    const context = ({
-      request: {
-        body: {
-          [articleIdFieldName]: articleId.toString(),
-          listId,
-        },
-      },
-      state: {
-        user: {
-          id: userId,
-        },
-      },
-    } as unknown) as RouterContext<{ user: { id: UserId } }>;
-
-    it('calls the add article to list command with the list id owned by the user', async () => {
-      await saveArticleHandler({
-        lookupUser: () => O.some(user),
-        addArticleToList,
-        logger: dummyLogger,
-        lookupList,
-      })(context, jest.fn());
-
-      expect(addArticleToList).toHaveBeenCalledWith(expect.objectContaining({ listId, articleId }));
+  describe('when the user is not the owner of the list', () => {
+    describe('when the user tries to save an article', () => {
+      it.todo('logs an error');
     });
   });
 });
