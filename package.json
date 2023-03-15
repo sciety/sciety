@@ -70,7 +70,7 @@
     "@types/rdfjs__fetch-lite": "^2.0.4",
     "@types/rdfjs__sink-map": "^1.0.2",
     "@types/redis": "2.8.32",
-    "@types/sanitize-html": "^2.8.1",
+    "@types/sanitize-html": "^2.9.0",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
