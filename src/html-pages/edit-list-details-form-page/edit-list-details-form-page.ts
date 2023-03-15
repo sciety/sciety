@@ -4,10 +4,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { constructViewModel, Ports } from './construct-view-model';
 import { renderEditListDetailsFormPage } from './render-edit-list-details-form-page';
-import { ListIdFromString } from '../../types/list-id';
+import { ListIdFromString, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 
