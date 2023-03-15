@@ -40,23 +40,24 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
   O.map(
     ({ id }) => pipe(
       ports.selectListContainingArticle(id)(articleId),
-      O.fold(
+      O.foldW(
         () => pipe(
           id,
           LOID.fromUserId,
           ports.selectAllListsOwnedBy,
           (lists) => lists[0],
           (list) => ({
-            listId: list.id,
-            listName: list.name,
-            isArticleInList: false,
+            lists: [{
+              listId: list.id,
+              listName: list.name,
+            }],
+            isArticleInList: false as const,
           }),
-
         ),
         (list) => ({
           listId: list.id,
           listName: list.name,
-          isArticleInList: true,
+          isArticleInList: true as const,
         }),
       ),
     ),

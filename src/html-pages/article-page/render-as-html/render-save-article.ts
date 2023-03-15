@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -8,8 +7,10 @@ import { renderSaveToListForm } from '../../../write-side/save-article/render-sa
 
 type LoggedInUserListManagement = {
   isArticleInList: false,
-  listName: string,
-  listId: ListId,
+  lists: ReadonlyArray<{
+    listName: string,
+    listId: ListId,
+  }>,
 } | {
   isArticleInList: true,
   listName: string,
@@ -37,13 +38,16 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userListManagement,
   O.match(
     renderLoggedOutCallToAction,
-    (userListManagement) => pipe(
-      userListManagement.isArticleInList,
-      B.match(
-        () => renderSaveToListForm(viewmodel.doi, userListManagement.listId, userListManagement.listName),
-        () => renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName),
-      ),
-    ),
+    (userListManagement) => {
+      if (userListManagement.isArticleInList) {
+        return renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName);
+      }
+      return renderSaveToListForm(
+        viewmodel.doi,
+        userListManagement.lists[0].listId,
+        userListManagement.lists[0].listName,
+      );
+    },
   ),
   toHtmlFragment,
 );

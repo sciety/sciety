@@ -52,11 +52,15 @@ describe('construct-view-model', () => {
       });
 
       it('list management has access to the default user list id', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({
+          lists: [expect.objectContaining({ listId: list.id })],
+        })));
       });
 
       it('list management has access to the default user list name', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({
+          lists: [expect.objectContaining({ listName: list.name })],
+        })));
       });
 
       it('list management marks the article as not being saved in the default user list', () => {
