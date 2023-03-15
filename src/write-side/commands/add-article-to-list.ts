@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { ListIdFromString } from '../../types/codecs/ListIdFromString';
+import { ListIdFromString } from '../../types/list-id';
 
 export const addArticleToListCommandCodec = t.type({
   articleId: DoiFromString,

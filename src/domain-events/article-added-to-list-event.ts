@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { ListIdFromString } from '../types/codecs/ListIdFromString';
+import { ListIdFromString } from '../types/list-id';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
 import { ListId } from '../types/list-id';

@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ListIdFromString } from './codecs/ListIdFromString';
+import { ListIdFromString } from './list-id';
 import * as LOID from './list-owner-id';
 
 export const listCodec = t.type({

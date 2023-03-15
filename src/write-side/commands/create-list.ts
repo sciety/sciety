@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { ListIdFromString } from '../../types/codecs/ListIdFromString';
+import { ListIdFromString } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 
 const createListCommandCodec = t.type({
