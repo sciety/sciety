@@ -7,9 +7,13 @@ import { ListId } from '../../../types/list-id';
 import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
 
 type LoggedInUserListManagement = {
+  isArticleInList: false,
   listName: string,
   listId: ListId,
-  isArticleInList: boolean,
+} | {
+  isArticleInList: true,
+  listName: string,
+  listId: ListId,
 };
 
 export type ViewModel = {
