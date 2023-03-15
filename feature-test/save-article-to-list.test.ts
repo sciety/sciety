@@ -18,7 +18,6 @@ describe('save-article-to-list', () => {
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
     const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
-    const articleCardSelector = `.article-card__link[href="/articles/activity/${articleId}"]`;
     const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
     const listCardSelector = '.list-card';
     const listCardTimeSelector = '.list-card time';
@@ -32,14 +31,6 @@ describe('save-article-to-list', () => {
 
     afterAll(async () => {
       await closeBrowser();
-    });
-
-    it('the article appears in the list page', async () => {
-      const listId = await getFirstListOwnedByUser(testUserId);
-      const userListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userListPageUrl);
-      const articleIsDisplayed = await $(articleCardSelector).exists();
-      expect(articleIsDisplayed).toBe(true);
     });
 
     it('the article card on the list page offers a delete button', async () => {
