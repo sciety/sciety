@@ -9,12 +9,11 @@ import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
 import { constructViewModel, Ports } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
+import * as LOID from '../../../../src/types/list-owner-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let adapters: Ports;
-  const listId = arbitraryListId();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -28,9 +27,15 @@ describe('construct-view-model', () => {
   describe('when a user saves an article that is not in any list', () => {
     let viewModel: ViewModel;
     let userDetails: UserDetails;
+    const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
       userDetails = arbitraryUserDetails();
+      await framework.commandHelpers.createUserAccount(userDetails);
+      // eslint-disable-next-line prefer-destructuring
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      const listId = list.id;
+      await framework.commandHelpers.addArticleToList(articleId, listId);
       viewModel = await pipe(
         {
           page: 1,
@@ -42,9 +47,7 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it.skip('the article details are included in the page content', () => {
-      const articleId = arbitraryArticleId();
-
+    it('the article details are included in the page content', () => {
       expect(viewModel.contentViewModel).toStrictEqual(expect.objectContaining({
         articles: [
           E.right(expect.objectContaining({
