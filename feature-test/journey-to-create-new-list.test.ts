@@ -1,6 +1,7 @@
 import {
-  click, goto, into, openBrowser, textBox, write, $,
+  click, goto, into, openBrowser, textBox, write, $, currentURL,
 } from 'taiko';
+import { UserHandle } from '../src/types/user-handle';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -12,12 +13,14 @@ import { UserId } from '../src/types/user-id';
 describe('journey-to-create-new-list', () => {
   describe('when the user is on their My Lists page', () => {
     let userId: UserId;
+    let userHandle: UserHandle;
 
     beforeEach(async () => {
       userId = arbitraryUserId();
+      userHandle = arbitraryUserHandle();
       await callApi('api/create-user', {
         userId,
-        handle: arbitraryUserHandle(),
+        handle: userHandle,
         avatarUrl: 'http://somethingthatproducesa404',
         displayName: arbitraryString(),
       });
@@ -43,7 +46,11 @@ describe('journey-to-create-new-list', () => {
         await click(saveButton);
       });
 
-      it.todo('they end up on the My Lists page with a new list, and a customized name and a description');
+      it.failing('they end up on the My Lists page with a new list, and a customized name and a description', async () => {
+        const finalPage = await currentURL();
+
+        expect(finalPage).toContain(`/users/${userHandle}/lists`);
+      });
     });
   });
 });
