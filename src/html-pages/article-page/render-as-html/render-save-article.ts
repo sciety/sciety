@@ -7,7 +7,6 @@ import { ListId } from '../../../types/list-id';
 import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
 
 type ArticleNotInAnyList = {
-  isArticleInList: false,
   lists: ReadonlyArray<{
     listName: string,
     listId: ListId,
@@ -15,7 +14,6 @@ type ArticleNotInAnyList = {
 };
 
 type ArticleSavedToThisList = {
-  isArticleInList: true,
   listName: string,
   listId: ListId,
 };
