@@ -5,17 +5,21 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
 
-type LoggedInUserListManagement = {
+type ArticleNotInAnyList = {
   isArticleInList: false,
   lists: ReadonlyArray<{
     listName: string,
     listId: ListId,
   }>,
-} | {
+};
+
+type ArticleSavedToThisList = {
   isArticleInList: true,
   listName: string,
   listId: ListId,
 };
+
+type LoggedInUserListManagement = ArticleNotInAnyList | ArticleSavedToThisList;
 
 export type ViewModel = {
   doi: Doi,
