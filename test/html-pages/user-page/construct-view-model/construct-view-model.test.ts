@@ -42,4 +42,8 @@ describe('construct-view-model', () => {
       expect(viewmodel.listCount).toBe(2);
     });
   });
+
+  describe('when the user saves an article to the default list for the first time', () => {
+    it.todo('the article count of the default list is 1');
+  });
 });
