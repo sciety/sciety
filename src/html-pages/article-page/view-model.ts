@@ -45,17 +45,16 @@ export type FeedItem =
   | ArticleVersionFeedItem
   | ArticleVersionErrorFeedItem;
 
-type ArticleNotInAnyList = {
-  lists: ReadonlyArray<{
-    listName: string,
-    listId: ListId,
-  }>,
-};
-
-type ArticleSavedToThisList = {
+type ListSummary = {
   listName: string,
   listId: ListId,
 };
+
+type ArticleNotInAnyList = {
+  lists: ReadonlyArray<ListSummary>,
+};
+
+type ArticleSavedToThisList = ListSummary;
 
 // ts-unused-exports:disable-next-line
 export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
