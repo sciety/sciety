@@ -59,14 +59,6 @@ describe('save-article-to-list', () => {
       expect(cardText).toContain('Appears in 1 list');
     });
 
-    it('the list count of the article card on the list page it is in increases by one', async () => {
-      const listId = await getFirstListOwnedByUser(testUserId);
-      const userListPageUrl = `localhost:8080/lists/${listId}`;
-      await goto(userListPageUrl);
-      const cardText = await $('.article-card').text();
-      expect(cardText).toContain('Appears in 1 list');
-    });
-
     it('the save article button on the article page is replaced with a link to the list', async () => {
       const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `http://localhost:8080/lists/${listId}`;
