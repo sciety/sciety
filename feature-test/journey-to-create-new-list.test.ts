@@ -35,11 +35,12 @@ describe('journey-to-create-new-list', () => {
 
     describe('when they create a new list', () => {
       let listName: string;
+      let listDescription: string;
 
       beforeEach(async () => {
         await click('Create new list');
         listName = arbitraryWord();
-        const listDescription = arbitraryString();
+        listDescription = arbitraryString();
         await write(listName, into(textBox('List name')));
         await write(listDescription, into(textBox('Description')));
 
@@ -54,6 +55,7 @@ describe('journey-to-create-new-list', () => {
 
         expect(finalPage).toContain(`/users/${userHandle}/lists`);
         expect(finalPageContent).toContain(listName);
+        expect(finalPageContent).toContain(listDescription);
       });
     });
   });
