@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
@@ -19,7 +20,7 @@ type ArticleSavedToThisList = {
   listId: ListId,
 };
 
-type LoggedInUserListManagement = ArticleNotInAnyList | ArticleSavedToThisList;
+type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
 
 export type ViewModel = {
   doi: Doi,
@@ -42,16 +43,14 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userListManagement,
   O.match(
     renderLoggedOutCallToAction,
-    (userListManagement) => {
-      if (userListManagement.isArticleInList) {
-        return renderLinkToUserListArticleIsInto(userListManagement.listId, userListManagement.listName);
-      }
-      return renderSaveToListForm(
+    E.match(
+      (notInAnyList) => renderSaveToListForm(
         viewmodel.doi,
-        userListManagement.lists[0].listId,
-        userListManagement.lists[0].listName,
-      );
-    },
+        notInAnyList.lists[0].listId,
+        notInAnyList.lists[0].listName,
+      ),
+      (savedToThisList) => renderLinkToUserListArticleIsInto(savedToThisList.listId, savedToThisList.listName),
+    ),
   ),
   toHtmlFragment,
 );

@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { UserDetails } from '../../../../src/types/user-details';
@@ -52,19 +53,24 @@ describe('construct-view-model', () => {
       });
 
       it('list management has access to the default user list id', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
           lists: [expect.objectContaining({ listId: list.id })],
-        })));
+        }))));
       });
 
       it('list management has access to the default user list name', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
           lists: [expect.objectContaining({ listName: list.name })],
-        })));
+        }))));
       });
 
       it('list management marks the article as not being saved in the default user list', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: false })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
+          lists: [{
+            listId: list.id,
+            listName: list.name,
+          }],
+        }))));
       });
     });
 
@@ -95,15 +101,21 @@ describe('construct-view-model', () => {
       });
 
       it('list management has access to list id', async () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          listId: list.id,
+        }))));
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          listName: list.name,
+        }))));
       });
 
       it('list management marks the article as being saved in the list', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: true })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          isArticleInList: true,
+        }))));
       });
     });
 
@@ -126,15 +138,21 @@ describe('construct-view-model', () => {
       });
 
       it('list management has access to list id', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listId: list.id })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          listId: list.id,
+        }))));
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ listName: list.name })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          listName: list.name,
+        }))));
       });
 
       it('list management marks the article as being saved in the list', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(expect.objectContaining({ isArticleInList: true })));
+        expect(viewModel.userListManagement).toStrictEqual(O.some(E.right(expect.objectContaining({
+          isArticleInList: true,
+        }))));
       });
     });
   });

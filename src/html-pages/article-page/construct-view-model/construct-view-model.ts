@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -46,7 +47,7 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
           LOID.fromUserId,
           ports.selectAllListsOwnedBy,
           (lists) => lists[0],
-          (list) => ({
+          (list) => E.left({
             lists: [{
               listId: list.id,
               listName: list.name,
@@ -54,7 +55,7 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
             isArticleInList: false as const,
           }),
         ),
-        (list) => ({
+        (list) => E.right({
           listId: list.id,
           listName: list.name,
           isArticleInList: true as const,
