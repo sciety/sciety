@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from '../articles-list/construct-content-with-pagination-view-model';
+import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { LookupList } from '../../../shared-ports';
