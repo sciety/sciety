@@ -20,7 +20,8 @@ type ArticleSavedToThisList = {
   listId: ListId,
 };
 
-type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
+// ts-unused-exports:disable-next-line
+export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
 
 export type ViewModel = {
   doi: Doi,

@@ -12,6 +12,9 @@ import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
+import {
+  LoggedInUserListManagement,
+} from '../../../../src/html-pages/article-page/render-as-html/render-save-article';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -37,7 +40,7 @@ describe('construct-view-model', () => {
 
     describe('when the article is not saved to the user\'s only list', () => {
       let list: List;
-      let viewModel: ViewModel;
+      let viewModel: LoggedInUserListManagement;
 
       beforeEach(async () => {
         // eslint-disable-next-line prefer-destructuring
@@ -48,29 +51,22 @@ describe('construct-view-model', () => {
             user: O.some({ id: userDetails.id }),
           },
           constructViewModel(adapters),
+          TE.map((v) => v.userListManagement),
+          TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
       it('list management has access to the default user list id', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
+        expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
           lists: [expect.objectContaining({ listId: list.id })],
-        }))));
+        })));
       });
 
       it('list management has access to the default user list name', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
+        expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
           lists: [expect.objectContaining({ listName: list.name })],
-        }))));
-      });
-
-      it('list management marks the article as not being saved in the default user list', () => {
-        expect(viewModel.userListManagement).toStrictEqual(O.some(E.left(expect.objectContaining({
-          lists: [{
-            listId: list.id,
-            listName: list.name,
-          }],
-        }))));
+        })));
       });
     });
 
