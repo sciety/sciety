@@ -58,7 +58,7 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
           (userDetails) => {
             context.redirect('back');
             return pipe(
-              followCommandHandler(ports)(userDetails.id, params.groupId),
+              followCommandHandler(ports)({ userId: userDetails.id, groupId: params.groupId }),
               T.chain(() => next),
             );
           },

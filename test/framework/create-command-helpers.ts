@@ -57,7 +57,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     commandHandlers.createUserAccount,
     TE.getOrElse(shouldNotBeCalled),
   )(),
-  followGroup: async (userId, groupId) => commandHandlers.followGroup(userId, groupId)(),
+  followGroup: async (userId, groupId) => commandHandlers.followGroup({ userId, groupId })(),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,

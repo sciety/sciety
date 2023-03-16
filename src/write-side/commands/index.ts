@@ -6,3 +6,4 @@ export { RecordEvaluationCommand, recordEvaluationCommandCodec } from './record-
 export { RecordSubjectAreaCommand } from './record-subject-area';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
 export { CreateUserAccountCommand } from './create-user-account';
+export { FollowCommand } from './follow';
