@@ -34,9 +34,11 @@ describe('journey-to-create-new-list', () => {
     afterEach(screenshotTeardown);
 
     describe('when they create a new list', () => {
+      let listName: string;
+
       beforeEach(async () => {
         await click('Create new list');
-        const listName = arbitraryWord();
+        listName = arbitraryWord();
         const listDescription = arbitraryString();
         await write(listName, into(textBox('List name')));
         await write(listDescription, into(textBox('Description')));
@@ -48,8 +50,10 @@ describe('journey-to-create-new-list', () => {
 
       it('they end up on the My Lists page with a new list, and a customized name and a description', async () => {
         const finalPage = await currentURL();
+        const finalPageContent = await $('main').text();
 
         expect(finalPage).toContain(`/users/${userHandle}/lists`);
+        expect(finalPageContent).toContain(listName);
       });
     });
   });
