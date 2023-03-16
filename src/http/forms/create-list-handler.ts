@@ -34,20 +34,23 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
     TE.chainW((command) => pipe(
       command,
       adapters.createList,
-      TE.mapLeft((errorMessage) => ({
-        message: 'Command handler failed',
-        payload: {
-          errorMessage,
-        },
-      })),
+      TE.bimap(
+        (errorMessage) => ({
+          message: 'Command handler failed',
+          payload: {
+            errorMessage,
+          },
+        }),
+        () => command.listId,
+      ),
     )),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
         adapters.logger('error', error.message, error.payload);
         context.redirect('back');
       },
-      () => {
-        context.redirect('/lists/:id/edit-details');
+      (listId) => {
+        context.redirect(`/lists/${listId}/edit-details`);
       },
     ),
   )();
