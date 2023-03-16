@@ -4,7 +4,7 @@ import { ListId } from '../../types/list-id';
 import { articleIdFieldName } from './save-article-handler';
 
 export const renderSaveToListForm = (doi: Doi, listId: ListId, listName: string): HtmlFragment => toHtmlFragment(`
-  <form method="post" action="/save-article">
+  <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${doi.value}">
     <input type="hidden" name="listId" value="${listId}">
     <div class="list-name">${listName}</div>

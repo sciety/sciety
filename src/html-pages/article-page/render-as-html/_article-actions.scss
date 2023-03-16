@@ -23,7 +23,11 @@
 
 .full-article-button {
   @include button.button-link();
-  margin-bottom: baseline.increments(2);
+  margin-bottom: baseline.increments(4);
+
+  @include breakpoints.two-column-display {
+    margin-bottom: baseline.increments(10);
+  }
 }
 
 .logged-out-call-to-action {
@@ -31,7 +35,12 @@
 }
 
 .list-name {
+  font-size: functions.px-to-rem(18px);
   margin-bottom: 0.5rem;
+}
+
+.save-article-form {
+  margin-bottom: baseline.increments(3);
 }
 
 .save-article-button {
