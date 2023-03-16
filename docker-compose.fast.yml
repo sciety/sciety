@@ -5,7 +5,7 @@ services:
     build:
       target: fast
     environment:
-      EXPERIMENT_ENABLED: "false"
+      EXPERIMENT_ENABLED: "true"
     image: ${IMAGE}:${IMAGE_TAG}
     volumes:
       - './.gcp-ncrc-key.json:/var/run/secrets/app/.gcp-ncrc-key.json'
