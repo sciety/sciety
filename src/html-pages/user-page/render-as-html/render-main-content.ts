@@ -50,16 +50,12 @@ const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel
   `,
 );
 
-const renderLists = (activeTab: ListsTab) => (
-  process.env.EXPERIMENT_ENABLED === 'true'
-    ? toHtmlFragment(`
-      <div>
-        ${renderCallToAction(activeTab)}
-        ${renderMultipleListCards(activeTab.ownedLists)}
-      </div>
-    `)
-    : renderListCard(activeTab.ownedLists[0])
-);
+const renderLists = (activeTab: ListsTab) => toHtmlFragment(`
+  <div>
+    ${renderCallToAction(activeTab)}
+    ${renderMultipleListCards(activeTab.ownedLists)}
+  </div>
+`);
 
 const renderActiveTabContents = (viewmodel: ViewModel) => (
   (viewmodel.activeTab.selector === 'lists')
