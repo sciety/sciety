@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -43,10 +44,10 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   O.match(
     renderLoggedOutCallToAction,
     E.match(
-      (notInAnyList) => renderSaveToListForm(
-        viewmodel.doi,
-        notInAnyList.lists[0].listId,
-        notInAnyList.lists[0].listName,
+      (notInAnyList) => pipe(
+        notInAnyList.lists,
+        RA.map((list) => renderSaveToListForm(viewmodel.doi, list.listId, list.listName)),
+        (forms) => forms.join(''),
       ),
       (savedToThisList) => renderLinkToUserListArticleIsInto(savedToThisList.listId, savedToThisList.listName),
     ),
