@@ -27,7 +27,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
       (notInAnyList) => pipe(
         notInAnyList.lists,
         RA.map((list) => renderSaveToListForm(viewmodel.doi, list.listId, list.listName)),
-        (forms) => forms.join(''),
+        (forms) => `<section><h3>Save to a list:</h3>${forms.join('')}</section>`,
       ),
       (savedToThisList) => renderLinkToUserListArticleIsInto(savedToThisList.listId, savedToThisList.listName),
     ),
