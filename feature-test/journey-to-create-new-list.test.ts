@@ -1,14 +1,20 @@
-import { openBrowser } from 'taiko';
+import {
+  click, goto, openBrowser,
+} from 'taiko';
 import { arbitraryString } from '../test/helpers';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
+import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
+import { UserId } from '../src/types/user-id';
 
 describe('journey-to-create-new-list', () => {
   describe('when the user is on their My Lists page', () => {
+    let userId: UserId;
+
     beforeEach(async () => {
-      const userId = arbitraryUserId();
+      userId = arbitraryUserId();
       await callApi('api/create-user', {
         userId,
         handle: arbitraryUserHandle(),
@@ -16,11 +22,19 @@ describe('journey-to-create-new-list', () => {
         displayName: arbitraryString(),
       });
       await openBrowser();
+      await goto('localhost:8080/');
+      await click('Log in');
+      await logInWithSpecifiedUserId(userId);
+      await click('My Lists');
     });
 
     afterEach(screenshotTeardown);
 
     describe('when they create a new list', () => {
+      beforeEach(async () => {
+        await click('Create new list');
+      });
+
       it.todo('they end up on the My Lists page with a new list, and a customized name and a description');
     });
   });
