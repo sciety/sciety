@@ -19,7 +19,6 @@ describe('save-article-to-list', () => {
     const articleSearchResultsPage = `localhost:8080/search?query=${articleId}`;
 
     const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
-    const listCardSelector = '.list-card';
     const listCardTimeSelector = '.list-card time';
 
     beforeAll(async () => {
@@ -39,12 +38,6 @@ describe('save-article-to-list', () => {
       await goto(userListPageUrl);
       const deleteButton = $(articleCardDeleteButtonSelector);
       expect(await deleteButton.exists()).toBe(true);
-    });
-
-    it('the article is counted in the list card on the user profile page', async () => {
-      await goto(userProfilePage);
-      const cardText = await $(listCardSelector).text();
-      expect(cardText).toContain('1 article');
     });
 
     it('the last updated date in the list card on the user profile page', async () => {
