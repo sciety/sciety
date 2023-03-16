@@ -29,7 +29,7 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
       listId: LID.generate(),
       ownerId: LOID.fromUserId(userId),
       name: 'Untitled',
-      description: 'An additional list',
+      description: '',
     })),
     TE.chainW((command) => pipe(
       command,
