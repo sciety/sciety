@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -58,9 +57,8 @@ const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
 export const editListDetailsHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(
     {
-      userId: pipe(
+      userDetails: pipe(
         getLoggedInScietyUser(adapters, context),
-        O.map((userDetails) => userDetails.id),
         E.fromOption(() => ({
           message: 'No authenticated user',
           payload: { formBody: context.request.body },
@@ -74,7 +72,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     },
     sequenceS(E.Apply),
     TE.fromEither,
-    TE.chainFirstW(({ command, userId }) => checkUserOwnsList(adapters, command.listId, userId)),
+    TE.chainFirstW(({ command, userDetails }) => checkUserOwnsList(adapters, command.listId, userDetails.id)),
     TE.map(({ command }) => command),
     TE.chainFirstW(handleCommand(adapters)),
     TE.match(
