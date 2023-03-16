@@ -58,5 +58,17 @@ describe('construct-view-model', () => {
         ],
       }));
     });
+
+    it('the list count is included in the article content', () => {
+      expect(viewModel.contentViewModel).toStrictEqual(expect.objectContaining({
+        articles: [
+          E.right(expect.objectContaining({
+            articleViewModel: expect.objectContaining({
+              listMembershipCount: 1,
+            }),
+          })),
+        ],
+      }));
+    });
   });
 });
