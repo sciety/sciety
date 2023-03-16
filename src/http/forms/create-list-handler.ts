@@ -28,7 +28,7 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
     TE.map((userId): CreateListCommand => ({
       listId: LID.generate(),
       ownerId: LOID.fromUserId(userId),
-      name: 'Untitled',
+      name: '',
       description: '',
     })),
     TE.chainW((command) => pipe(
