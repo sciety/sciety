@@ -2,30 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
-
-type ArticleNotInAnyList = {
-  lists: ReadonlyArray<{
-    listName: string,
-    listId: ListId,
-  }>,
-};
-
-type ArticleSavedToThisList = {
-  listName: string,
-  listId: ListId,
-};
-
-// ts-unused-exports:disable-next-line
-export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
-
-export type ViewModel = {
-  doi: Doi,
-  userListManagement: O.Option<LoggedInUserListManagement>,
-};
+import { ViewModel } from '../view-model';
 
 const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => `
   <div>

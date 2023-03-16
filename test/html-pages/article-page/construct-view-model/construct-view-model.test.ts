@@ -13,7 +13,7 @@ import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
 import {
   LoggedInUserListManagement,
-} from '../../../../src/html-pages/article-page/render-as-html/render-save-article';
+} from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
