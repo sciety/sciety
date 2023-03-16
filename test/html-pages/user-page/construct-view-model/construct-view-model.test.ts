@@ -11,13 +11,13 @@ import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
+  const user = arbitraryUserDetails();
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('when the user owns two lists', () => {
-    const user = arbitraryUserDetails();
     const secondList = arbitraryList(LOID.fromUserId(user.id));
 
     beforeEach(async () => {
@@ -44,6 +44,25 @@ describe('construct-view-model', () => {
   });
 
   describe('when the user saves an article to the default list for the first time', () => {
-    it.todo('the article count of the default list is 1');
+    it.failing('the article count of the default list is 1', async () => {
+      const adapters: Ports = {
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
+      };
+      const viewmodel = await pipe(
+        {
+          handle: user.handle as string as CandidateUserHandle,
+          user: O.some(user),
+        },
+        constructViewModel('lists', adapters),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+        ownedLists: [expect.objectContaining({
+          articleCount: 1,
+        })],
+      }));
+    });
   });
 });
