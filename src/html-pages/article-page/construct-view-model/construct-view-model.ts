@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { feedSummary } from './feed-summary';
 import {
@@ -36,6 +37,8 @@ export type Ports = GetArticleFeedEventsPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
+type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+
 const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
   user,
   O.map(
@@ -46,13 +49,11 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
           id,
           LOID.fromUserId,
           ports.selectAllListsOwnedBy,
-          (lists) => lists[0],
-          (list) => E.left({
-            lists: [{
-              listId: list.id,
-              listName: list.name,
-            }],
-          }),
+          RA.map((list) => ({
+            listId: list.id,
+            listName: list.name,
+          })),
+          (lists) => E.left({ lists }),
         ),
         (list) => E.right({
           listId: list.id,
@@ -62,8 +63,6 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
     ),
   ),
 );
-
-type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.fetchArticle(params.doi),

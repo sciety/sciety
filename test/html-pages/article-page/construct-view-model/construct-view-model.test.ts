@@ -90,7 +90,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it.failing('list management has access to all of the user\'s multiple lists', () => {
+      it('list management has access to all of the user\'s multiple lists', () => {
         expect(viewModel).toStrictEqual(E.left({
           lists: [
             { listId: usersLists[0].id, listName: usersLists[0].name },
