@@ -11,9 +11,8 @@ import { GetAllEvents } from '../../../shared-ports';
 import { getAnnotationContentByUserListTarget } from '../../../shared-read-models/annotations';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { ArticlesViewModel } from '../view-model';
+import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
 import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
-import { ArticleCardWithControlsViewModel } from '../render-as-html/render-articles-list';
 
 export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
 

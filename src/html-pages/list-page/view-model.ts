@@ -1,10 +1,17 @@
 import * as E from 'fp-ts/Either';
+import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
+import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleErrorCardViewModel } from './render-as-html/render-article-error-card';
-import { ArticleCardWithControlsViewModel } from './render-as-html/render-articles-list';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
+
+export type ArticleCardWithControlsViewModel = {
+  articleViewModel: ArticleViewModel,
+  controls: boolean,
+  annotationContent?: HtmlFragment,
+};
 
 export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;
 
