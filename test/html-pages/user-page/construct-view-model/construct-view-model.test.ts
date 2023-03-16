@@ -8,6 +8,7 @@ import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../src/html-pages/user-page/construct-view-model';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -44,7 +45,13 @@ describe('construct-view-model', () => {
   });
 
   describe('when the user saves an article to the default list for the first time', () => {
-    it.failing('the article count of the default list is 1', async () => {
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(user);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
+    });
+
+    it('the article count of the default list is 1', async () => {
       const adapters: Ports = {
         ...framework.queries,
         getAllEvents: framework.getAllEvents,
