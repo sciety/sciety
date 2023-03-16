@@ -19,6 +19,13 @@ const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => 
 
 const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
+const renderSaveToListSection = (forms: string) => `
+  <section>
+    <h2 class="article-actions-heading">Save to a list:</h2>
+    ${forms}
+  </section>
+`;
+
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userListManagement,
   O.match(
@@ -27,7 +34,7 @@ export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
       (notInAnyList) => pipe(
         notInAnyList.lists,
         RA.map((list) => renderSaveToListForm(viewmodel.doi, list.listId, list.listName)),
-        (forms) => `<section><h3>Save to a list:</h3>${forms.join('')}</section>`,
+        (forms) => renderSaveToListSection(forms.join('')),
       ),
       (savedToThisList) => renderLinkToUserListArticleIsInto(savedToThisList.listId, savedToThisList.listName),
     ),

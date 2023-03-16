@@ -21,6 +21,10 @@
   }
 }
 
+.article-actions-heading {
+  @include typography.heading-3();
+}
+
 .full-article-button {
   @include button.button-link();
   margin-bottom: baseline.increments(4);
