@@ -70,11 +70,34 @@ describe('construct-view-model', () => {
     });
 
     describe('when the article is not saved to any of the user\'s multiple lists', () => {
-      it.todo('list management has access to the list ids of all the user\'s multiple lists');
+      let list: List;
+      let viewModel: LoggedInUserListManagement;
+      let usersLists: ReadonlyArray<List>;
 
-      it.todo('list management has access to the list names of all the user\'s multiple lists');
+      beforeEach(async () => {
+        list = arbitraryList(LOID.fromUserId(userDetails.id));
+        await framework.commandHelpers.createList(list);
+        usersLists = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id));
+        viewModel = await pipe(
+          {
+            doi: articleId,
+            user: O.some({ id: userDetails.id }),
+          },
+          constructViewModel(adapters),
+          TE.map((v) => v.userListManagement),
+          TE.map(O.getOrElseW(shouldNotBeCalled)),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
 
-      it.todo('list management marks the article as not being saved in any of the user\'s multiple lists');
+      it.failing('list management has access to all of the user\'s multiple lists', () => {
+        expect(viewModel).toStrictEqual(E.left({
+          lists: [
+            { listId: usersLists[0].id, listName: usersLists[0].name },
+            { listId: usersLists[1].id, listName: usersLists[1].name },
+          ],
+        }));
+      });
     });
 
     describe('when the article is saved to the default user list', () => {
