@@ -52,13 +52,11 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
               listId: list.id,
               listName: list.name,
             }],
-            isArticleInList: false as const,
           }),
         ),
         (list) => E.right({
           listId: list.id,
           listName: list.name,
-          isArticleInList: true as const,
         }),
       ),
     ),
