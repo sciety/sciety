@@ -1,7 +1,7 @@
 import {
-  click, goto, openBrowser,
+  click, goto, into, openBrowser, textBox, write, $,
 } from 'taiko';
-import { arbitraryString } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { callApi } from './helpers/call-api.helper';
@@ -33,6 +33,14 @@ describe('journey-to-create-new-list', () => {
     describe('when they create a new list', () => {
       beforeEach(async () => {
         await click('Create new list');
+        const listName = arbitraryWord();
+        const listDescription = arbitraryString();
+        await write(listName, into(textBox('List name')));
+        await write(listDescription, into(textBox('Description')));
+
+        const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
+        const saveButton = $(editListDetailsButtonSelector);
+        await click(saveButton);
       });
 
       it.todo('they end up on the My Lists page with a new list, and a customized name and a description');
