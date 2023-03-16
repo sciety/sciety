@@ -46,7 +46,7 @@ describe('journey-to-create-new-list', () => {
         await click(saveButton);
       });
 
-      it.failing('they end up on the My Lists page with a new list, and a customized name and a description', async () => {
+      it('they end up on the My Lists page with a new list, and a customized name and a description', async () => {
         const finalPage = await currentURL();
 
         expect(finalPage).toContain(`/users/${userHandle}/lists`);

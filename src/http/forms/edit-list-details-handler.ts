@@ -73,15 +73,18 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     sequenceS(E.Apply),
     TE.fromEither,
     TE.chainFirstW(({ command, userDetails }) => checkUserOwnsList(adapters, command.listId, userDetails.id)),
-    TE.map(({ command }) => command),
-    TE.chainFirstW(handleCommand(adapters)),
+    TE.chainW(({ command, userDetails }) => pipe(
+      command,
+      handleCommand(adapters),
+      TE.map(() => userDetails),
+    )),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
         adapters.logger('error', error.message, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },
-      ({ listId }) => {
-        context.redirect(`/lists/${listId}`);
+      ({ handle }) => {
+        context.redirect(`/users/${handle}/lists`);
       },
     ),
   )();
