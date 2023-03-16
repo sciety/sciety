@@ -7,7 +7,7 @@ import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
 import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
-import { followCommand } from '../../src/write-side/follow/follow-command';
+import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
 import { createListCommandHandler } from '../../src/write-side/create-list';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
@@ -36,7 +36,7 @@ type CommandHandlers = {
   createGroup: ReturnType<typeof createGroup>,
   createList: ReturnType<typeof createListCommandHandler>,
   createUserAccount: ReturnType<typeof createUserAccountCommandHandler>,
-  followGroup: ReturnType<typeof followCommand>,
+  followGroup: ReturnType<typeof followCommandHandler>,
   removeArticleFromList: ReturnType<typeof removeArticleFromListCommandHandler>,
 };
 
@@ -58,7 +58,7 @@ export const createReadAndWriteSides = (): ReadAndWriteSides => {
     createGroup: createGroup(eventStore),
     createList: createListCommandHandler(eventStore),
     createUserAccount: createUserAccountCommandHandler(eventStore),
-    followGroup: followCommand(eventStore),
+    followGroup: followCommandHandler(eventStore),
     removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   };
   return {

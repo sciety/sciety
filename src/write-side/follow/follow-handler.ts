@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { followCommand, Ports as FollowCommandPorts } from './follow-command';
+import { followCommandHandler, Ports as FollowCommandPorts } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
 import { constructRedirectUrl } from '../../http/require-logged-in-user';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
@@ -58,7 +58,7 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
           (userDetails) => {
             context.redirect('back');
             return pipe(
-              followCommand(ports)(userDetails.id, params.groupId),
+              followCommandHandler(ports)(userDetails.id, params.groupId),
               T.chain(() => next),
             );
           },

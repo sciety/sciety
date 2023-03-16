@@ -13,7 +13,7 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-export const followCommand = (ports: Ports) => (userId: UserId, groupId: GroupId): T.Task<CommandResult> => pipe(
+export const followCommandHandler = (ports: Ports) => (userId: UserId, groupId: GroupId): T.Task<CommandResult> => pipe(
   ports.getAllEvents,
   T.map(isFollowing(userId, groupId)),
   T.map(B.fold(
