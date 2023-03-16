@@ -47,7 +47,7 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
         context.redirect('back');
       },
       () => {
-        context.redirect('back');
+        context.redirect('/lists/:id/edit-details');
       },
     ),
   )();
