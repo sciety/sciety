@@ -7,14 +7,18 @@ type UserGeneratedInputBrand = {
   readonly UserGeneratedInput: unique symbol,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const userGeneratedInputCodec = (maxLength: number, emptyInput = false) => t.brand(
+type Config = {
+  maxLength: number,
+  emptyInput?: boolean,
+};
+
+export const userGeneratedInputCodec = (config: Config) => t.brand(
   t.string,
   (input): input is t.Branded<string, UserGeneratedInputBrand> => (
     !!(
-      (emptyInput ? emptyRegex : notEmptyRegex).exec(input)
+      (config.emptyInput ? emptyRegex : notEmptyRegex).exec(input)
     )
-    && input.length <= maxLength
+    && input.length <= config.maxLength
   ),
   'UserGeneratedInput',
 );
