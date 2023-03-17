@@ -7,7 +7,6 @@ import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { FormHandlingError } from './form-handling-error';
 import { validateCommandShape } from './validate-command-shape';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
@@ -19,7 +18,7 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
   command,
   adapters.editListDetails,
   TE.mapLeft((errorMessage) => ({
-    errorType: 'command-handler-failed',
+    errorType: 'command-handler-failed' as const,
     payload: {
       errorMessage,
     },
@@ -31,7 +30,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     {
       userDetails: pipe(
         getLoggedInScietyUser(adapters, context),
-        E.fromOption((): FormHandlingError => ({
+        E.fromOption(() => ({
           payload: { formBody: context.request.body },
           errorType: 'codec-failed' as const,
         })),
@@ -50,7 +49,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
       TE.map(() => userDetails),
     )),
     TE.match(
-      (error: FormHandlingError) => {
+      (error) => {
         adapters.logger('error', `edit-list-details-handler: ${error.errorType}`, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },

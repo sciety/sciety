@@ -14,19 +14,17 @@ export const checkUserOwnsList = (
   adapters: Ports,
   listId: ListId,
   userId: UserId,
-): TE.TaskEither<FormHandlingError, unknown> => pipe(
+): TE.TaskEither<FormHandlingError<'list-id-not-found' | 'list-ownership-check-failed'>, unknown> => pipe(
   listId,
   adapters.lookupList,
   TE.fromOption(() => ({
-    errorType: 'list-id-not-found',
-    message: 'List id not found',
+    errorType: 'list-id-not-found' as const,
     payload: { listId, userId },
   })),
   TE.filterOrElseW(
     (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
     (list) => ({
-      errorType: 'list-ownership-check-failed',
-      message: 'List owner id does not match user id',
+      errorType: 'list-ownership-check-failed' as const,
       payload: {
         listId: list.id,
         listOwnerId: list.ownerId,

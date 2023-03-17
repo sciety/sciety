@@ -1,6 +1,6 @@
 import { Payload } from '../../infrastructure/logger';
 
-export type FormHandlingError = {
-  errorType: string,
+export type FormHandlingError<T> = {
+  errorType: T,
   payload: Payload,
 };

@@ -6,7 +6,7 @@ import { FormHandlingError } from './form-handling-error';
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
 
-type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<FormHandlingError, C>;
+type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<FormHandlingError<'codec-failed'>, C>;
 
 export const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   input,
