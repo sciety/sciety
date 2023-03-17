@@ -25,10 +25,12 @@ const areInputCharactersSafe = (
   ),
 );
 
+const isInputShortEnough = (config: Config, input: string) => input.length <= config.maxInputLength;
+
 export const userGeneratedInputCodec = (config: Config) => t.brand(
   t.string,
   (input): input is t.Branded<string, UserGeneratedInputBrand> => (
-    areInputCharactersSafe(config, input) && input.length <= config.maxInputLength
+    areInputCharactersSafe(config, input) && isInputShortEnough(config, input)
   ),
   'UserGeneratedInput',
 );
