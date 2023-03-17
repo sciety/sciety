@@ -7,9 +7,9 @@ import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { FormHandlingError } from './form-handling-error';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   editListDetails: EditListDetails,
@@ -29,7 +29,7 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
 
-type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<MyLocalError, C>;
+type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<FormHandlingError, C>;
 
 const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   input,
@@ -47,18 +47,12 @@ const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   ),
 );
 
-type MyLocalError = {
-  errorType?: string,
-  message: string,
-  payload: Payload,
-};
-
 export const editListDetailsHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(
     {
       userDetails: pipe(
         getLoggedInScietyUser(adapters, context),
-        E.fromOption((): MyLocalError => ({
+        E.fromOption((): FormHandlingError => ({
           message: 'No authenticated user',
           payload: { formBody: context.request.body },
           errorType: 'codec-failed' as const,
@@ -78,7 +72,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
       TE.map(() => userDetails),
     )),
     TE.match(
-      (error: MyLocalError) => {
+      (error: FormHandlingError) => {
         adapters.logger('error', error.message, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },

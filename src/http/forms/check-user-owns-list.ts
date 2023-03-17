@@ -4,12 +4,17 @@ import { LookupList } from '../../shared-ports';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
+import { FormHandlingError } from './form-handling-error';
 
 export type Ports = {
   lookupList: LookupList,
 };
 
-export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
+export const checkUserOwnsList = (
+  adapters: Ports,
+  listId: ListId,
+  userId: UserId,
+): TE.TaskEither<FormHandlingError, unknown> => pipe(
   listId,
   adapters.lookupList,
   TE.fromOption(() => ({
