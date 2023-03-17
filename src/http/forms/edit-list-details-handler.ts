@@ -1,8 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
@@ -10,6 +8,7 @@ import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write
 import { EditListDetails, Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { FormHandlingError } from './form-handling-error';
+import { validateCommandShape } from './validate-command-shape';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   editListDetails: EditListDetails,
@@ -25,26 +24,6 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
       errorMessage,
     },
   })),
-);
-
-type CommandCodec<C> = t.Decoder<unknown, C>;
-
-type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<FormHandlingError, C>;
-
-const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
-  input,
-  codec.decode,
-  E.mapLeft(
-    (errors) => pipe(
-      errors,
-      formatValidationErrors,
-      (fails) => ({
-        errorType: 'codec-failed' as const,
-        message: 'Submitted form can not be decoded into a command',
-        payload: { fails },
-      }),
-    ),
-  ),
 );
 
 export const editListDetailsHandler = (adapters: Ports): Middleware => async (context) => {
