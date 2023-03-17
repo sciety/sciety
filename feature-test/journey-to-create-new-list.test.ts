@@ -33,7 +33,7 @@ describe('journey-to-create-new-list', () => {
 
     afterEach(screenshotTeardown);
 
-    describe('when they create a new list', () => {
+    describe('when they create a new list and they provide list details', () => {
       let listName: string;
       let listDescription: string;
 
@@ -46,7 +46,7 @@ describe('journey-to-create-new-list', () => {
         await click('Save');
       });
 
-      it('they end up on the My Lists page with a new list, and a customized name and a description', async () => {
+      it('they end up on the My Lists page with a new list, and a customized name and description', async () => {
         const finalPage = await currentURL();
         const finalPageContent = await $('main').text();
 
@@ -57,11 +57,10 @@ describe('journey-to-create-new-list', () => {
     });
 
     describe('when they create a new list but choose not to edit list details', () => {
-      let listName: string;
+      const listName = 'Untitled';
 
       beforeEach(async () => {
         await click('Create new list');
-        listName = 'Untitled';
         await click('Cancel');
       });
 
