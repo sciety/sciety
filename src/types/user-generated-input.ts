@@ -1,4 +1,6 @@
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as B from 'fp-ts/boolean';
 
 const notEmptyRegex = /^[^<>"]+$/;
 const emptyRegex = /^[^<>"]*$/;
@@ -15,7 +17,13 @@ type Config = {
 const areInputCharactersSafe = (
   config: Config,
   input: string,
-) => !!((config.allowEmptyInput ? emptyRegex : notEmptyRegex).exec(input));
+) => pipe(
+  config.allowEmptyInput ?? false,
+  B.fold(
+    () => !!notEmptyRegex.exec(input),
+    () => !!emptyRegex.exec(input),
+  ),
+);
 
 export const userGeneratedInputCodec = (config: Config) => t.brand(
   t.string,
