@@ -54,12 +54,18 @@ const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   ),
 );
 
+type MyLocalError = {
+  errorType?: string,
+  message: string,
+  payload: Payload,
+};
+
 export const editListDetailsHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(
     {
       userDetails: pipe(
         getLoggedInScietyUser(adapters, context),
-        E.fromOption(() => ({
+        E.fromOption((): MyLocalError => ({
           message: 'No authenticated user',
           payload: { formBody: context.request.body },
           errorType: 'codec-failed' as const,
@@ -79,7 +85,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
       TE.map(() => userDetails),
     )),
     TE.match(
-      (error: { errorType?: string, message: string, payload: Payload }) => {
+      (error: MyLocalError) => {
         adapters.logger('error', error.message, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },
