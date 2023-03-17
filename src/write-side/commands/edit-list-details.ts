@@ -7,7 +7,7 @@ export const listDescriptionMaxLength = 250;
 
 export const editListDetailsCommandCodec = t.type({
   name: userGeneratedInputCodec(listNameMaxLength),
-  description: userGeneratedInputCodec(listDescriptionMaxLength),
+  description: userGeneratedInputCodec(listDescriptionMaxLength, true),
   listId: listIdCodec,
 });
 
