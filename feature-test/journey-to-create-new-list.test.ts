@@ -56,6 +56,25 @@ describe('journey-to-create-new-list', () => {
       });
     });
 
+    describe('when they create a new list and they only provide a list name', () => {
+      let listName: string;
+
+      beforeEach(async () => {
+        await click('Create new list');
+        listName = arbitraryWord();
+        await write(listName, into(textBox('List name')));
+        await click('Save');
+      });
+
+      it('they end up on the My Lists page with a new list, and a customized name', async () => {
+        const finalPage = await currentURL();
+        const finalPageContent = await $('main').text();
+
+        expect(finalPage).toContain(`/users/${userHandle}/lists`);
+        expect(finalPageContent).toContain(listName);
+      });
+    });
+
     describe('when they create a new list but choose not to edit list details', () => {
       const listName = 'Untitled';
 
