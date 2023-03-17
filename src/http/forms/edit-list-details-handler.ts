@@ -7,7 +7,6 @@ import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
@@ -30,13 +29,7 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
 
-type CommandValidationFailure = {
-  errorType: ActionFailedErrorType,
-  message: string,
-  payload: Payload,
-};
-
-type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<CommandValidationFailure, C>;
+type ValidateCommandShape = <C>(codec: CommandCodec<C>) => (input: unknown) => E.Either<MyLocalError, C>;
 
 const validateCommandShape: ValidateCommandShape = (codec) => (input) => pipe(
   input,
