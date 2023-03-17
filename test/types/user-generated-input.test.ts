@@ -36,7 +36,7 @@ describe('user-generated-input', () => {
   });
 
   describe('when an empty input is allowed', () => {
-    it.failing('does not fail when supplied with an empty string', () => {
+    it('does not fail when supplied with an empty string', () => {
       const result = userGeneratedInputCodec(100, true).decode('');
 
       expect(E.isRight(result)).toBe(true);
