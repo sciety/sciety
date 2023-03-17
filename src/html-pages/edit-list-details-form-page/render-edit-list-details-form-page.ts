@@ -25,7 +25,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
   <p class="edit-list-details-form__constraints">Max ${viewModel.listNameMaxLength} characters.</p>
   <label for="listDescription" class="edit-list-details-form__label">Description (optional)</label>
   <p class="edit-list-details-form__helper_text">Add further context to help readers understand your list</p>
-  <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" placeholder="This is a description of my list. It tells you about the lists I have made." maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
+  <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
   <p class="edit-list-details-form__constraints">Max ${viewModel.listDescriptionMaxLength} characters.</p>
   <button class="edit-list-details-form__save">Save</button><a href="/lists/${viewModel.listId}" class="edit-list-details-form__cancel">Cancel</a>
 </form>
