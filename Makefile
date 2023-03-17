@@ -20,7 +20,7 @@ dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 dev: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
-# This target is in development and experimental; does not restart on code changes
+# This target is in development and experimental
 dev-fast: export TARGET = fast
 dev-fast: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 dev-fast: .env install
