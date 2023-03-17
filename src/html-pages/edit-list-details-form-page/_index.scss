@@ -27,6 +27,10 @@
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
+.edit-list-details-form__helper_text {
+  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+}
+
 .edit-list-details-form__field {
   display: block;
   width: 100%;
