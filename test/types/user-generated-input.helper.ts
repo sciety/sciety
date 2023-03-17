@@ -6,6 +6,6 @@ import { arbitraryWord } from '../helpers';
 
 export const arbitraryUserGeneratedInput = (): UserGeneratedInput => pipe(
   arbitraryWord(12),
-  userGeneratedInputCodec({ maxLength: 12 }).decode,
+  userGeneratedInputCodec({ maxInputLength: 12 }).decode,
   E.getOrElseW((errors) => { throw new Error(PR.failure(errors).join('')); }),
 );

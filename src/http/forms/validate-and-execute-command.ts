@@ -19,13 +19,13 @@ const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 export type Ports = CreateUserAccountCommandHandlerPorts & { logger: Logger };
 
 const createUserAccountFormCodec = t.type({
-  fullName: userGeneratedInputCodec({ maxLength: 30 }),
+  fullName: userGeneratedInputCodec({ maxInputLength: 30 }),
   handle: userHandleCodec,
 });
 
 const unvalidatedFormDetailsCodec = t.type({
-  fullName: tt.withFallback(userGeneratedInputCodec({ maxLength: 1000 }), '' as UserGeneratedInput),
-  handle: tt.withFallback(userGeneratedInputCodec({ maxLength: 1000 }), '' as UserGeneratedInput),
+  fullName: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
+  handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
 });
 
 type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;

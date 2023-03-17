@@ -8,17 +8,17 @@ type UserGeneratedInputBrand = {
 };
 
 type Config = {
-  maxLength: number,
-  emptyInput?: boolean,
+  maxInputLength: number,
+  allowEmptyInput?: boolean,
 };
 
 export const userGeneratedInputCodec = (config: Config) => t.brand(
   t.string,
   (input): input is t.Branded<string, UserGeneratedInputBrand> => (
     !!(
-      (config.emptyInput ? emptyRegex : notEmptyRegex).exec(input)
+      (config.allowEmptyInput ? emptyRegex : notEmptyRegex).exec(input)
     )
-    && input.length <= config.maxLength
+    && input.length <= config.maxInputLength
   ),
   'UserGeneratedInput',
 );
