@@ -23,8 +23,12 @@ dev: .env install build
 # This target is in development and experimental; does not restart on code changes
 dev-fast: export TARGET = fast
 dev-fast: export SCIETY_TEAM_API_BEARER_TOKEN = secret
-dev-fast: .env install build
-	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
+dev-fast: .env install
+	while true; do \
+		${DOCKER_COMPOSE} up --build --detach; \
+		inotifywait -e modify -e move -e create -e delete -e attrib -r src/; \
+		$(DOCKER_COMPOSE) stop app; \
+	done
 
 prod: export TARGET = prod
 prod: .env build
