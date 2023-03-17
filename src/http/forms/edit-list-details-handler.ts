@@ -52,7 +52,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     )),
     TE.match(
       (error: FormHandlingError) => {
-        adapters.logger('error', error.message, error.payload);
+        adapters.logger('error', `edit-list-details-handler: ${error.message}`, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },
       ({ handle }) => {
