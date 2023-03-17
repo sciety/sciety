@@ -55,5 +55,23 @@ describe('journey-to-create-new-list', () => {
         expect(finalPageContent).toContain(listDescription);
       });
     });
+
+    describe('when they create a new list but choose not to edit list details', () => {
+      let listName: string;
+
+      beforeEach(async () => {
+        await click('Create new list');
+        listName = 'Untitled';
+        await click('Cancel');
+      });
+
+      it('they end up on the new list\'s page, and a default name and an empty description', async () => {
+        const finalPage = await currentURL();
+        const finalPageContent = await $('main').text();
+
+        expect(finalPage).toContain('/lists/');
+        expect(finalPageContent).toContain(listName);
+      });
+    });
   });
 });
