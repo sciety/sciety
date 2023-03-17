@@ -18,12 +18,14 @@ export const checkUserOwnsList = (
   listId,
   adapters.lookupList,
   TE.fromOption(() => ({
+    errorType: 'list-id-not-found',
     message: 'List id not found',
     payload: { listId, userId },
   })),
   TE.filterOrElseW(
     (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
     (list) => ({
+      errorType: 'list-ownership-check-failed',
       message: 'List owner id does not match user id',
       payload: {
         listId: list.id,

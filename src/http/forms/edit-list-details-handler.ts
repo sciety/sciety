@@ -19,6 +19,7 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
   command,
   adapters.editListDetails,
   TE.mapLeft((errorMessage) => ({
+    errorType: 'command-handler-failed',
     message: 'Command handler failed',
     payload: {
       errorMessage,
