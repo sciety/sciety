@@ -9,12 +9,6 @@ describe('user-generated-input', () => {
     expect(E.isLeft(result)).toBe(true);
   });
 
-  it('fails when supplied with an empty string', () => {
-    const result = userGeneratedInputCodec(100).decode('');
-
-    expect(E.isLeft(result)).toBe(true);
-  });
-
   it('passes when supplied with a permitted character é', () => {
     const result = userGeneratedInputCodec(100).decode('é');
 
@@ -31,5 +25,21 @@ describe('user-generated-input', () => {
     const result = userGeneratedInputCodec(10).decode(arbitraryWord(11));
 
     expect(E.isLeft(result)).toBe(true);
+  });
+
+  describe('when an empty input is not allowed', () => {
+    it('fails when supplied with an empty string', () => {
+      const result = userGeneratedInputCodec(100).decode('');
+
+      expect(E.isLeft(result)).toBe(true);
+    });
+  });
+
+  describe('when an empty input is allowed', () => {
+    it.failing('does not fail when supplied with an empty string', () => {
+      const result = userGeneratedInputCodec(100, true).decode('');
+
+      expect(E.isRight(result)).toBe(true);
+    });
   });
 });
