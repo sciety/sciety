@@ -62,7 +62,7 @@ export const saveArticleHandler = (ports: Ports): Middleware => async (context, 
         TE.chainFirst(flow(
           (command) => checkUserOwnsList(ports, command.listId, userId),
           TE.mapLeft((logEntry) => {
-            ports.logger('error', logEntry.message, logEntry.payload);
+            ports.logger('error', `save-article-handler: ${logEntry.errorType}`, logEntry.payload);
             return logEntry;
           }),
         )),

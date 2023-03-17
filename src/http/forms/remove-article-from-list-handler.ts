@@ -58,7 +58,7 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
   TE.chainFirstW(flow(
     ({ command, userId }) => checkUserOwnsList(adapters, command.listId, userId),
     TE.mapLeft((logEntry) => {
-      adapters.logger('error', logEntry.message, logEntry.payload);
+      adapters.logger('error', `remove-article-from-list-handler: ${logEntry.errorType}`, logEntry.payload);
       return logEntry;
     }),
   )),

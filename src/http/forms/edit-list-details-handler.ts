@@ -20,7 +20,6 @@ const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => 
   adapters.editListDetails,
   TE.mapLeft((errorMessage) => ({
     errorType: 'command-handler-failed',
-    message: 'Command handler failed',
     payload: {
       errorMessage,
     },
@@ -33,7 +32,6 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
       userDetails: pipe(
         getLoggedInScietyUser(adapters, context),
         E.fromOption((): FormHandlingError => ({
-          message: 'No authenticated user',
           payload: { formBody: context.request.body },
           errorType: 'codec-failed' as const,
         })),
@@ -53,7 +51,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     )),
     TE.match(
       (error: FormHandlingError) => {
-        adapters.logger('error', `edit-list-details-handler: ${error.message}`, error.payload);
+        adapters.logger('error', `edit-list-details-handler: ${error.errorType}`, error.payload);
         context.redirect(`/action-failed${error.errorType ? `?errorType=${error.errorType}` : ''}`);
       },
       ({ handle }) => {
