@@ -22,13 +22,17 @@ $_clear-button-inline-size: 48px;
   margin-bottom: 0;
 }
 
-.search-form__form {
+.search-form {
   @include form.form();
   margin-bottom: baseline.increments(6);
 }
 
 .search-form__section {
   @include form.section();
+}
+
+.search-form__helper_text {
+  @include form.helper-text();
 }
 
 .search-form__positioning_context {

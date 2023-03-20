@@ -2,13 +2,13 @@ import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFragment => toHtmlFragment(`
-  <form action="/search" method="get" class="search-form__form">
+  <form action="/search" method="get" class="search-form">
     <input type="hidden" name="category" value="articles">
     <label for="searchText" class="search-form__text-input-label">Find preprints and evaluating groups</label>
-    <p class="edit-list-details-form__helper_text">
+    <div class="search-form__helper_text">
       Search articles by DOI, author or keyword;
       search groups by keyword.
-    </p>
+    </div>
     <div class="search-form__positioning_context">
       ${htmlEscape`<input value="${query}" id="searchText" name="query" class="search-form__text">`}
       <section class="search-form__section">
