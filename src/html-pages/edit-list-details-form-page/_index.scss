@@ -21,9 +21,14 @@
   @include card.basics();
 }
 
+.edit-list-details-form__section {
+  margin-bottom: baseline.increments(6);
+}
+
 .edit-list-details-form__label {
   display: block;
   font-weight: bold;
+  font-size: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
@@ -43,7 +48,6 @@
 
 .edit-list-details-form__constraints {
   color: settings.$colour-text-secondary;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
 }
 
 .edit-list-details-form__save {

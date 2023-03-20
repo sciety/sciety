@@ -19,14 +19,18 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
 </header>
 <form action="/forms/edit-list-details" method="post" class="edit-list-details-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
-  <label for="listName" class="edit-list-details-form__label">List name</label>
-  <p class="edit-list-details-form__helper_text">Give the list a descriptive title.</p>
-  <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${viewModel.listName}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
-  <p class="edit-list-details-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
-  <label for="listDescription" class="edit-list-details-form__label">Description (optional)</label>
-  <p class="edit-list-details-form__helper_text">Add further context to help readers understand your list.</p>
-  <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
-  <p class="edit-list-details-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
+  <section class="edit-list-details-form__section">
+    <label for="listName" class="edit-list-details-form__label">List name</label>
+    <p class="edit-list-details-form__helper_text">Give the list a descriptive title.</p>
+    <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${viewModel.listName}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
+    <p class="edit-list-details-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
+  </section>
+  <section class="edit-list-details-form__section">
+    <label for="listDescription" class="edit-list-details-form__label">Description (optional)</label>
+    <p class="edit-list-details-form__helper_text">Add further context to help readers understand your list.</p>
+    <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
+    <p class="edit-list-details-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
+  </section>
   <button class="edit-list-details-form__save">Save</button><a href="/lists/${viewModel.listId}" class="edit-list-details-form__cancel">Cancel</a>
 </form>
 `),
