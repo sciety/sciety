@@ -28,6 +28,7 @@
 }
 
 .edit-list-details-form__helper_text {
+  color: settings.$colour-text-secondary;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
@@ -41,6 +42,7 @@
 }
 
 .edit-list-details-form__constraints {
+  color: settings.$colour-text-secondary;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
 }
 
