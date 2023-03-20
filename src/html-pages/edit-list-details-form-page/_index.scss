@@ -1,52 +1,6 @@
-@use '../../sass/functions';
-@use '../../sass/settings';
-@use '../../sass/typography';
 @use '../../sass/baseline';
-@use '../../sass/button';
-@use '../../sass/card';
 @use '../../sass/breakpoints';
-
-@mixin form {
-  @include card.basics();
-}
-
-@mixin form-section {
-  margin-bottom: baseline.increments(6);
-}
-
-@mixin form-label {
-  display: block;
-  font-weight: bold;
-  font-size: functions.px-to-rem(20px);
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
-}
-
-@mixin form-helper-text {
-  color: settings.$colour-text-secondary;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
-}
-
-@mixin form-field {
-  display: block;
-  width: 100%;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
-  padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-}
-
-@mixin form-constraints {
-  color: settings.$colour-text-secondary;
-}
-
-@mixin form-submit-button {
-  @include button.button();
-  margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
-}
-
-@mixin form-cancel-button {
-  @include button.button-link-secondary();
-}
+@use '../../sass/form';
 
 .page-header.page-header--edit-list-details-form-page {
   margin-bottom: baseline.increments(2);
@@ -60,33 +14,33 @@
 }
 
 .edit-list-details-form {
-  @include form();
+  @include form.form();
 }
 
 .edit-list-details-form__section {
-  @include form-section();
+  @include form.form-section();
 }
 
 .edit-list-details-form__label {
-  @include form-label();
+  @include form.form-label();
 }
 
 .edit-list-details-form__helper_text {
-  @include form-helper-text();
+  @include form.form-helper-text();
 }
 
 .edit-list-details-form__field {
-  @include form-field();
+  @include form.form-field();
 }
 
 .edit-list-details-form__constraints {
-  @include form-constraints();
+  @include form.form-constraints();
 }
 
 .edit-list-details-form__save {
-  @include form-submit-button();
+  @include form.form-submit-button();
 }
 
 .edit-list-details-form__cancel {
-  @include form-cancel-button();
+  @include form.form-cancel-button();
 }
