@@ -41,7 +41,6 @@
 }
 
 .edit-list-details-form__constraints {
-  @include typography.details();
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
 }
 
