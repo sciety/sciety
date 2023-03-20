@@ -1,0 +1,80 @@
+@use 'sass:math';
+
+@use '../../sass/baseline';
+@use '../../sass/button';
+@use '../../sass/form';
+@use '../../sass/functions';
+@use '../../sass/settings';
+@use '../../sass/typography';
+
+$_search-form-vertical-spacing: baseline.increments(1);
+$_search-form-text-height: baseline.increments(6);
+$_search-form-text-inline-padding: 12px;
+$_clear-button-inline-size: 48px;
+
+.search-form {
+  @include form.form();
+  margin-bottom: baseline.increments(6);
+}
+
+.search-form__section {
+  @include form.section();
+}
+
+.search-form__helper_text {
+  @include form.helper-text();
+}
+
+.search-form__positioning_context {
+  position: relative;
+}
+
+.search-form__text-input-label {
+  @include form.label();
+}
+
+.search-form__text {
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  height: $_search-form-text-height;
+  width: 100%;
+  padding-top: baseline.increments(math.div(17, 8));
+  padding-bottom: baseline.increments(math.div(17, 8));
+  padding-left: functions.px-to-rem($_search-form-text-inline-padding);
+  padding-right: functions.px-to-rem($_clear-button-inline-size);
+  margin-bottom: $_search-form-vertical-spacing;
+  color: settings.$colour-text-primary;
+}
+
+.search-form__text::placeholder {
+  color: inherit;
+  opacity: 0.6;
+}
+
+.search-form__label {
+  @include typography.body();
+  display: inline-block;
+  margin-bottom: $_search-form-vertical-spacing;
+}
+
+.search-form__clear {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0;
+  background-color: transparent;
+  border-width: 0;
+  cursor: pointer;
+  width: functions.px-to-rem($_clear-button-inline-size);
+  height: $_search-form-text-height;
+}
+
+.search-form__clear_icon {
+  display: block;
+  margin: 0 auto;
+}
+
+.search-form__submit {
+  @include button.button();
+  display: block;
+}
