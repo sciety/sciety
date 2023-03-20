@@ -1,4 +1,4 @@
-import { renderSearchForm } from '../../shared-components/render-search-form';
+import { renderSearchForm } from '../../shared-components/search-form';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 
