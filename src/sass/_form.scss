@@ -3,11 +3,21 @@
 @use 'typography';
 @use 'baseline';
 @use 'button';
-@use 'card';
 @use 'breakpoints';
 
 @mixin form {
-  @include card.basics();
+  background-color: settings.$colour-white;
+  padding: baseline.increments(2) functions.px-to-rem(settings.$sciety-default-gutter);
+
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-left-width: 0;
+  border-right-width: 0;
+
+  @include breakpoints.not-narrow {
+    border-radius: settings.$border-radius;
+    border-left-width: settings.$border-width;
+    border-right-width: settings.$border-width;
+  }
 }
 
 @mixin section {
