@@ -4,6 +4,7 @@
 @use '../../sass/breakpoints';
 @use '../../sass/button';
 @use '../../sass/card';
+@use '../../sass/form';
 @use '../../sass/functions';
 @use '../../sass/layout';
 @use '../../sass/list';
@@ -33,8 +34,20 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form__form {
+  @include form.form();
   margin-bottom: $_search-form-vertical-spacing;
+}
+
+.search-form__section {
+  @include form.section();
+}
+
+.search-form__positioning_context {
   position: relative;
+}
+
+.search-form__text-input-label {
+  @include form.label();
 }
 
 .search-form__text {

@@ -5,14 +5,22 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
   <div class="search-form">
     <form action="/search" method="get" class="search-form__form">
       <input type="hidden" name="category" value="articles">
-      <label for="searchText" class="visually-hidden">Search term</label>
-      ${htmlEscape`<input value="${query}" id="searchText" name="query" placeholder="Find articles and evaluating groups…" class="search-form__text">`}
-      <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
-      <label for="searchEvaluatedOnlyFilter" class="search-form__label">Search only evaluated articles</label>
-      <button type="submit" class="search-form__submit" aria-label="Run the search">Search</button>
-      <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
-        <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
-      </button>
+      <label for="searchText" class="search-form__text-input-label">Find preprints and evaluating groups</label>
+      <p class="edit-list-details-form__helper_text">
+        Search articles by DOI, author or keyword;
+        search groups by keyword.
+      </p>
+      <div class="search-form__positioning_context">
+        ${htmlEscape`<input value="${query}" id="searchText" name="query" class="search-form__text">`}
+        <section class="search-form__section">
+          <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
+          <label for="searchEvaluatedOnlyFilter" class="search-form__label">Search only evaluated articles</label>
+        </section>
+        <button type="submit" class="search-form__submit" aria-label="Run the search">Search</button>
+        <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
+          <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
+        </button>
+      </div>
     </form>
   </div>
 `);
