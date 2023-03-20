@@ -18,29 +18,29 @@
 }
 
 .edit-list-details-form__section {
-  @include form.form-section();
+  @include form.section();
 }
 
 .edit-list-details-form__label {
-  @include form.form-label();
+  @include form.label();
 }
 
 .edit-list-details-form__helper_text {
-  @include form.form-helper-text();
+  @include form.helper-text();
 }
 
 .edit-list-details-form__field {
-  @include form.form-field();
+  @include form.field();
 }
 
 .edit-list-details-form__constraints {
-  @include form.form-constraints();
+  @include form.constraints();
 }
 
 .edit-list-details-form__save {
-  @include form.form-submit-button();
+  @include form.submit-button();
 }
 
 .edit-list-details-form__cancel {
-  @include form.form-cancel-button();
+  @include form.cancel-button();
 }

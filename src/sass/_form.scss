@@ -10,23 +10,23 @@
   @include card.basics();
 }
 
-@mixin form-section {
+@mixin section {
   margin-bottom: baseline.increments(6);
 }
 
-@mixin form-label {
+@mixin label {
   display: block;
   font-weight: bold;
   font-size: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
-@mixin form-helper-text {
+@mixin helper-text {
   color: settings.$colour-text-secondary;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
-@mixin form-field {
+@mixin field {
   display: block;
   width: 100%;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
@@ -35,15 +35,15 @@
   border-radius: settings.$border-radius;
 }
 
-@mixin form-constraints {
+@mixin constraints {
   color: settings.$colour-text-secondary;
 }
 
-@mixin form-submit-button {
+@mixin submit-button {
   @include button.button();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
-@mixin form-cancel-button {
+@mixin cancel-button {
   @include button.button-link-secondary();
 }
