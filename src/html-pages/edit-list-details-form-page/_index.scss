@@ -6,38 +6,27 @@
 @use '../../sass/card';
 @use '../../sass/breakpoints';
 
-.page-header.page-header--edit-list-details-form-page {
-  margin-bottom: baseline.increments(2);
-  @include breakpoints.not-narrow {
-    margin-bottom: baseline.increments(3);
-  }
-  
-  h1 {
-    margin-bottom: 0;
-  }
-}
-
-.edit-list-details-form {
+@mixin form {
   @include card.basics();
 }
 
-.edit-list-details-form__section {
+@mixin form-section {
   margin-bottom: baseline.increments(6);
 }
 
-.edit-list-details-form__label {
+@mixin form-label {
   display: block;
   font-weight: bold;
   font-size: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
-.edit-list-details-form__helper_text {
+@mixin form-helper-text {
   color: settings.$colour-text-secondary;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
-.edit-list-details-form__field {
+@mixin form-field {
   display: block;
   width: 100%;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
@@ -46,15 +35,58 @@
   border-radius: settings.$border-radius;
 }
 
-.edit-list-details-form__constraints {
+@mixin form-constraints {
   color: settings.$colour-text-secondary;
 }
 
-.edit-list-details-form__save {
+@mixin form-submit-button {
   @include button.button();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
-.edit-list-details-form__cancel {
+@mixin form-cancel-button {
   @include button.button-link-secondary();
+}
+
+.page-header.page-header--edit-list-details-form-page {
+  margin-bottom: baseline.increments(2);
+  @include breakpoints.not-narrow {
+    margin-bottom: baseline.increments(3);
+  }
+
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
+.edit-list-details-form {
+  @include form();
+}
+
+.edit-list-details-form__section {
+  @include form-section();
+}
+
+.edit-list-details-form__label {
+  @include form-label();
+}
+
+.edit-list-details-form__helper_text {
+  @include form-helper-text();
+}
+
+.edit-list-details-form__field {
+  @include form-field();
+}
+
+.edit-list-details-form__constraints {
+  @include form-constraints();
+}
+
+.edit-list-details-form__save {
+  @include form-submit-button();
+}
+
+.edit-list-details-form__cancel {
+  @include form-cancel-button();
 }
