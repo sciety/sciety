@@ -7,9 +7,7 @@
 @use '../../sass/settings';
 @use '../../sass/typography';
 
-$_search-form-vertical-spacing: baseline.increments(1);
-$_search-form-text-height: baseline.increments(6);
-$_search-form-text-inline-padding: 12px;
+$_text-input-height: baseline.increments(6);
 $_clear-button-inline-size: 48px;
 
 .search-form {
@@ -36,13 +34,13 @@ $_clear-button-inline-size: 48px;
 .search-form__text {
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
-  height: $_search-form-text-height;
+  height: $_text-input-height;
   width: 100%;
   padding-top: baseline.increments(math.div(17, 8));
   padding-bottom: baseline.increments(math.div(17, 8));
-  padding-left: functions.px-to-rem($_search-form-text-inline-padding);
+  padding-left: functions.px-to-rem(12px);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
-  margin-bottom: $_search-form-vertical-spacing;
+  margin-bottom: baseline.increments(1);
   color: settings.$colour-text-primary;
 }
 
@@ -54,7 +52,7 @@ $_clear-button-inline-size: 48px;
 .search-form__checkbox_label {
   @include typography.body();
   display: inline-block;
-  margin-bottom: $_search-form-vertical-spacing;
+  margin-bottom: baseline.increments(1);
 }
 
 .search-form__clear {
@@ -66,7 +64,7 @@ $_clear-button-inline-size: 48px;
   border-width: 0;
   cursor: pointer;
   width: functions.px-to-rem($_clear-button-inline-size);
-  height: $_search-form-text-height;
+  height: $_text-input-height;
 }
 
 .search-form__clear_icon {
