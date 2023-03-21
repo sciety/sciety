@@ -69,6 +69,12 @@ describe('authentication-and-redirect', () => {
 
   afterEach(screenshotTeardown);
 
+  describe('when I am on the About page and I am not logged in', () => {
+    describe('when I log in successfully', () => {
+      it.todo('i am still on the About page');
+    });
+  });
+
   describe('when I am not logged in', () => {
     describe('on completing the sign up journey', () => {
       let newUserId: UserId;
