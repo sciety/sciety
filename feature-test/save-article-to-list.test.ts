@@ -32,6 +32,10 @@ describe('save-article-to-list', () => {
       await closeBrowser();
     });
 
+    it('i am returned to the same article page', async () => {
+      expect(await currentURL()).toContain(articlePage);
+    });
+
     it('the article card on the list page offers a delete button', async () => {
       const listId = await getFirstListOwnedByUser(testUserId);
       const userListPageUrl = `localhost:8080/lists/${listId}`;
