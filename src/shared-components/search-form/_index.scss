@@ -44,11 +44,6 @@ $_clear-button-inline-size: 48px;
   color: settings.$colour-text-primary;
 }
 
-.search-form__text::placeholder {
-  color: inherit;
-  opacity: 0.6;
-}
-
 .search-form__checkbox_label {
   @include typography.body();
   display: inline-block;
