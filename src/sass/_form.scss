@@ -5,6 +5,8 @@
 @use 'button';
 @use 'breakpoints';
 
+$_microcopy-colour: settings.$colour-text-secondary;
+
 @mixin form {
   background-color: settings.$colour-white;
   padding: baseline.increments(2) functions.px-to-rem(settings.$sciety-default-gutter);
@@ -32,7 +34,7 @@
 }
 
 @mixin helper-text {
-  color: settings.$colour-text-secondary;
+  color: $_microcopy-colour;
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
@@ -46,7 +48,7 @@
 }
 
 @mixin constraints {
-  color: settings.$colour-text-secondary;
+  color: $_microcopy-colour;
 }
 
 @mixin submit-button {
