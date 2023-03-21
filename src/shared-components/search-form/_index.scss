@@ -29,7 +29,7 @@ $_clear-button-inline-size: 48px;
   position: relative;
 }
 
-.search-form__text-input-label {
+.search-form__text_input_label {
   @include form.label();
 }
 
@@ -51,7 +51,7 @@ $_clear-button-inline-size: 48px;
   opacity: 0.6;
 }
 
-.search-form__label {
+.search-form__checkbox_label {
   @include typography.body();
   display: inline-block;
   margin-bottom: $_search-form-vertical-spacing;
