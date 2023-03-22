@@ -10,7 +10,7 @@ import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
+import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
 import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
@@ -93,7 +93,7 @@ describe('authentication-and-redirect', () => {
     describe('when I log in successfully', () => {
       beforeEach(async () => {
         await click('Log In');
-        await logInWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
       it(`i am still on the ${name}`, async () => {
@@ -115,7 +115,7 @@ describe('authentication-and-redirect', () => {
     describe('when I log in successfully', () => {
       beforeEach(async () => {
         await click('Log In');
-        await logInWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
       it('i am still on the List page', async () => {
@@ -133,7 +133,7 @@ describe('authentication-and-redirect', () => {
     beforeEach(async () => {
       await goto(articlePage);
       await click('Log In');
-      await logInWithSpecifiedUserId(userId);
+      await completeLoginViaStubWithSpecifiedUserId(userId);
     });
 
     describe('when I log out and go to the Sciety feed page', () => {
@@ -147,7 +147,7 @@ describe('authentication-and-redirect', () => {
       describe('when I log in successfully again', () => {
         beforeEach(async () => {
           await click('Log In');
-          await logInWithSpecifiedUserId(userId);
+          await completeLoginViaStubWithSpecifiedUserId(userId);
         });
 
         it('i am still on the Sciety feed page', async () => {
@@ -176,7 +176,7 @@ describe('authentication-and-redirect', () => {
 
         describe('when I log back in again', () => {
           beforeEach(async () => {
-            await logInWithSpecifiedUserId(userId);
+            await completeLoginViaStubWithSpecifiedUserId(userId);
           });
 
           it('i am still on the article page', async () => {
@@ -199,7 +199,7 @@ describe('authentication-and-redirect', () => {
         userHandle = arbitraryUserHandle();
         await goto('localhost:8080/groups');
         await click('Sign Up');
-        await logInWithSpecifiedUserId(newUserId);
+        await completeLoginViaStubWithSpecifiedUserId(newUserId);
         await write('Full Name', into(textBox('Full name')));
         await write(userHandle, into(textBox('Create a handle')));
         const createAccountButton = $('#createAccountButton');
@@ -252,7 +252,7 @@ describe('authentication-and-redirect', () => {
         userHandle = arbitraryUserHandle();
         await goto('localhost:8080/groups');
         await click('Sign Up');
-        await logInWithSpecifiedUserId(newUserId);
+        await completeLoginViaStubWithSpecifiedUserId(newUserId);
         await write('Full Name', into(textBox('Full name')));
         await write(userHandle, into(textBox('Create a handle')));
         const createAccountButton = $('#createAccountButton');

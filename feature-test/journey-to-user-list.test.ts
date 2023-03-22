@@ -1,7 +1,7 @@
 import {
   $, click, goto, openBrowser,
 } from 'taiko';
-import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
+import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryString } from '../test/helpers';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -27,7 +27,7 @@ describe('journey-to-user-list', () => {
       await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
-      await logInWithSpecifiedUserId(userId);
+      await completeLoginViaStubWithSpecifiedUserId(userId);
     });
 
     it('navigates to user list page via user page', async () => {

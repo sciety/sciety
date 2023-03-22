@@ -7,7 +7,7 @@ import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
-import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
+import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import { UserId } from '../src/types/user-id';
 
 describe('journey-to-create-new-list', () => {
@@ -27,7 +27,7 @@ describe('journey-to-create-new-list', () => {
       await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
-      await logInWithSpecifiedUserId(userId);
+      await completeLoginViaStubWithSpecifiedUserId(userId);
       await click('My Lists');
     });
 
