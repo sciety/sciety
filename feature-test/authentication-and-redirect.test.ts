@@ -90,16 +90,18 @@ describe('authentication-and-redirect', () => {
       await goto(`localhost:8080${page}`);
     });
 
-    describe('when I log in successfully', () => {
+    describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
         await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
-      it(`i am still on the ${name}`, async () => {
+      it(`i am still on the ${name} and I am logged in`, async () => {
         const result = await currentURL();
+        const buttonText = await $('.utility-bar__list_link_button').text();
 
         expect(result).toBe(`http://localhost:8080${page}`);
+        expect(buttonText).toBe('Log Out');
       });
     });
   });
@@ -108,20 +110,22 @@ describe('authentication-and-redirect', () => {
     let page: string;
 
     beforeEach(async () => {
-      page = `localhost:8080/lists/${await getFirstListOwnedByUser(userId)}`;
-      await goto(page);
+      page = `/lists/${await getFirstListOwnedByUser(userId)}`;
+      await goto(`localhost:8080${page}`);
     });
 
-    describe('when I log in successfully', () => {
+    describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
         await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
-      it('i am still on the List page', async () => {
+      it('i am still on the List page and I am logged in', async () => {
         const result = await currentURL();
+        const buttonText = await $('.utility-bar__list_link_button').text();
 
-        expect(result).toContain(page);
+        expect(result).toBe(`http://localhost:8080${page}`);
+        expect(buttonText).toBe('Log Out');
       });
     });
   });
