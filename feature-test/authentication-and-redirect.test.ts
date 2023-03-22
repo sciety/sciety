@@ -69,11 +69,11 @@ describe('authentication-and-redirect', () => {
 
   afterEach(screenshotTeardown);
 
-  describe('when I am on the About page and I am not logged in', () => {
-    const aboutPage = 'localhost:8080/about';
-
+  describe.each([
+    ['About page', 'localhost:8080/about'],
+  ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
-      await goto(aboutPage);
+      await goto(page);
     });
 
     describe('when I log in successfully', () => {
@@ -82,10 +82,10 @@ describe('authentication-and-redirect', () => {
         await logInWithSpecifiedUserId(userId);
       });
 
-      it('i am still on the About page', async () => {
+      it(`i am still on the ${name}`, async () => {
         const result = await currentURL();
 
-        expect(result).toContain(aboutPage);
+        expect(result).toContain(page);
       });
     });
   });
