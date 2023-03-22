@@ -126,6 +126,14 @@ describe('authentication-and-redirect', () => {
     });
   });
 
+  describe('when I am on the article page and I log in successfully', () => {
+    describe('when I log out and go to the Sciety feed page', () => {
+      describe('when I log in successfully again', () => {
+        it.todo('i am still on the Sciety feed page');
+      });
+    });
+  });
+
   describe('when I am not logged in', () => {
     describe('on completing the sign up journey', () => {
       let newUserId: UserId;
