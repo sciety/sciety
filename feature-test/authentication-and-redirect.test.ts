@@ -127,9 +127,34 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('when I am on the article page and I log in successfully', () => {
+    const articleId = '10.1101/2022.09.23.22280264';
+    const articlePage = `localhost:8080/articles/activity/${articleId}`;
+
+    beforeEach(async () => {
+      await goto(articlePage);
+      await click('Log In');
+      await logInWithSpecifiedUserId(userId);
+    });
+
     describe('when I log out and go to the Sciety feed page', () => {
+      const scietyFeedPage = 'localhost:8080/sciety-feed';
+
+      beforeEach(async () => {
+        await click('Log out');
+        await goto(scietyFeedPage);
+      });
+
       describe('when I log in successfully again', () => {
-        it.todo('i am still on the Sciety feed page');
+        beforeEach(async () => {
+          await click('Log In');
+          await logInWithSpecifiedUserId(userId);
+        });
+
+        it.failing('i am still on the Sciety feed page', async () => {
+          const result = await currentURL();
+
+          expect(result).toContain(scietyFeedPage);
+        });
       });
     });
   });
