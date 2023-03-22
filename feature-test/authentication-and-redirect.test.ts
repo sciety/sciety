@@ -13,6 +13,7 @@ import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { logInWithSpecifiedUserId } from './helpers/log-in-with-specified-user-id.helper';
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
+import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -96,6 +97,28 @@ describe('authentication-and-redirect', () => {
       });
 
       it(`i am still on the ${name}`, async () => {
+        const result = await currentURL();
+
+        expect(result).toContain(page);
+      });
+    });
+  });
+
+  describe('when I am on the List page and I am not logged in', () => {
+    let page: string;
+
+    beforeEach(async () => {
+      page = `localhost:8080/lists/${await getFirstListOwnedByUser(userId)}`;
+      await goto(page);
+    });
+
+    describe('when I log in successfully', () => {
+      beforeEach(async () => {
+        await click('Log In');
+        await logInWithSpecifiedUserId(userId);
+      });
+
+      it('i am still on the List page', async () => {
         const result = await currentURL();
 
         expect(result).toContain(page);
