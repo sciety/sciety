@@ -72,6 +72,11 @@ describe('authentication-and-redirect', () => {
   describe.each([
     ['About page', 'localhost:8080/about'],
     ['Article page', 'localhost:8080/articles/activity/10.1101/2023.02.09.527915'],
+    ['Groups page', 'localhost:8080/groups'],
+    ['Home page', 'localhost:8080/'],
+    ['Legal page', 'localhost:8080/legal'],
+    ['Search page', 'localhost:8080/search'],
+    ['Search results page', 'localhost:8080/search?category=articles&query=covid&evaluatedOnly=true'],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(page);
