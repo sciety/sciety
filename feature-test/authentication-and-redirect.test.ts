@@ -71,6 +71,7 @@ describe('authentication-and-redirect', () => {
 
   describe.each([
     ['About page', 'localhost:8080/about'],
+    ['Article page', 'localhost:8080/articles/activity/10.1101/2023.02.09.527915'],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(page);
