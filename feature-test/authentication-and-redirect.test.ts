@@ -162,11 +162,15 @@ describe('authentication-and-redirect', () => {
       beforeEach(async () => {
         await openTab('localhost:8080/');
         await click('Log out');
-        await closeTab();
+        await closeTab('http://localhost:8080/');
       });
 
       describe('when I go back to the original tab and I attempt to save the article', () => {
         beforeEach(async () => {
+          // eslint-disable-next-line no-console
+          console.log(await currentURL());
+          // eslint-disable-next-line no-console
+          console.log(await $('main').text());
           await click('Save article');
         });
 
