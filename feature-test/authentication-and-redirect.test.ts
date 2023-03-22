@@ -72,22 +72,22 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   describe.each([
-    ['About page', 'localhost:8080/about'],
-    ['Article page', 'localhost:8080/articles/activity/10.1101/2023.02.09.527915'],
-    ['Group page, about tab', `localhost:8080/groups/${groupASlug}/about`],
-    ['Group page, followers tab', `localhost:8080/groups/${groupASlug}/followers`],
-    ['Group page, lists tab', `localhost:8080/groups/${groupASlug}/lists`],
-    ['Groups page', 'localhost:8080/groups'],
-    ['Home page', 'localhost:8080/'],
-    ['Legal page', 'localhost:8080/legal'],
-    ['Sciety feed page', 'localhost:8080/sciety-feed'],
-    ['Search page', 'localhost:8080/search'],
-    ['Search results page', 'localhost:8080/search?category=articles&query=covid&evaluatedOnly=true'],
-    ['User page, lists tab', `localhost:8080/users/${anotherUserHandle}/lists`],
-    ['User page, following tab', `localhost:8080/users/${anotherUserHandle}/lists`],
+    ['About page', '/about'],
+    ['Article page', '/articles/activity/10.1101/2023.02.09.527915'],
+    ['Group page, about tab', `/groups/${groupASlug}/about`],
+    ['Group page, followers tab', `/groups/${groupASlug}/followers`],
+    ['Group page, lists tab', `/groups/${groupASlug}/lists`],
+    ['Groups page', '/groups'],
+    ['Home page', '/'],
+    ['Legal page', '/legal'],
+    ['Sciety feed page', '/sciety-feed'],
+    ['Search page', '/search'],
+    ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
+    ['User page, lists tab', `/users/${anotherUserHandle}/lists`],
+    ['User page, following tab', `/users/${anotherUserHandle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
-      await goto(page);
+      await goto(`localhost:8080${page}`);
     });
 
     describe('when I log in successfully', () => {
@@ -99,7 +99,7 @@ describe('authentication-and-redirect', () => {
       it(`i am still on the ${name}`, async () => {
         const result = await currentURL();
 
-        expect(result).toContain(page);
+        expect(result).toBe(`http://localhost:8080${page}`);
       });
     });
   });
