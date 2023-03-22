@@ -70,8 +70,23 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   describe('when I am on the About page and I am not logged in', () => {
+    const aboutPage = 'localhost:8080/about';
+
+    beforeEach(async () => {
+      await goto(aboutPage);
+    });
+
     describe('when I log in successfully', () => {
-      it.todo('i am still on the About page');
+      beforeEach(async () => {
+        await click('Log In');
+        await logInWithSpecifiedUserId(userId);
+      });
+
+      it('i am still on the About page', async () => {
+        const result = await currentURL();
+
+        expect(result).toContain(aboutPage);
+      });
     });
   });
 
