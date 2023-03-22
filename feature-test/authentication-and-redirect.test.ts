@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goto, openBrowser, into, write, textBox,
+  $, click, currentURL, goto, openBrowser, into, write, textBox, openTab, closeTab,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
@@ -159,6 +159,12 @@ describe('authentication-and-redirect', () => {
     });
 
     describe('when I log out from another tab', () => {
+      beforeEach(async () => {
+        await openTab('localhost:8080/');
+        await click('Log out');
+        await closeTab();
+      });
+
       describe('when I go back to the original tab and I attempt to save the article', () => {
         describe('when I log back in again', () => {
           it.todo('i am still on the article page');
