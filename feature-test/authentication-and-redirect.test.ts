@@ -72,6 +72,9 @@ describe('authentication-and-redirect', () => {
   describe.each([
     ['About page', 'localhost:8080/about'],
     ['Article page', 'localhost:8080/articles/activity/10.1101/2023.02.09.527915'],
+    ['Group page, about tab', `localhost:8080/groups/${groupASlug}/about`],
+    ['Group page, followers tab', `localhost:8080/groups/${groupASlug}/followers`],
+    ['Group page, lists tab', `localhost:8080/groups/${groupASlug}/lists`],
     ['Groups page', 'localhost:8080/groups'],
     ['Home page', 'localhost:8080/'],
     ['Legal page', 'localhost:8080/legal'],
