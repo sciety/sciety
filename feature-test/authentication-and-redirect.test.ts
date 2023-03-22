@@ -18,12 +18,13 @@ describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
   const groupBSlug = arbitraryWord();
   const userId = arbitraryUserId();
+  const anotherUserHandle = arbitraryUserHandle();
 
   beforeAll(async () => {
     const groupId = arbitraryGroupId();
     await callApi('api/create-user', {
       userId,
-      handle: arbitraryUserHandle(),
+      handle: anotherUserHandle,
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
     });
@@ -78,8 +79,11 @@ describe('authentication-and-redirect', () => {
     ['Groups page', 'localhost:8080/groups'],
     ['Home page', 'localhost:8080/'],
     ['Legal page', 'localhost:8080/legal'],
+    ['Sciety feed page', 'localhost:8080/sciety-feed'],
     ['Search page', 'localhost:8080/search'],
     ['Search results page', 'localhost:8080/search?category=articles&query=covid&evaluatedOnly=true'],
+    ['User page, lists tab', `localhost:8080/users/${anotherUserHandle}/lists`],
+    ['User page, following tab', `localhost:8080/users/${anotherUserHandle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(page);
