@@ -85,7 +85,7 @@ const configureAuth0Routes = (
             <form action="/local/submit-user-id" method="post">
               <label for="userId">User id</label>
               <input type="text" id="userId" name="userId">
-              <button>Log in</button>
+              <button>Log in as test user</button>
             </form>
           `;
       },
