@@ -150,7 +150,7 @@ describe('authentication-and-redirect', () => {
           await logInWithSpecifiedUserId(userId);
         });
 
-        it.failing('i am still on the Sciety feed page', async () => {
+        it('i am still on the Sciety feed page', async () => {
           const result = await currentURL();
 
           expect(result).toContain(scietyFeedPage);
