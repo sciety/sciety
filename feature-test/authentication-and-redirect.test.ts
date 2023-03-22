@@ -2,7 +2,7 @@ import {
   $, click, currentURL, goto, openBrowser, into, write, textBox, openTab, closeTab,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
 import { arbitraryGroupId } from '../test/types/group-id.helper';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
@@ -103,6 +103,8 @@ describe('authentication-and-redirect', () => {
         expect(result).toBe(`http://localhost:8080${page}`);
         expect(buttonText).toBe('Log Out');
       });
+
+      it.todo('clicking the back button doesn\'t result in an error');
     });
   });
 
@@ -127,6 +129,8 @@ describe('authentication-and-redirect', () => {
         expect(result).toBe(`http://localhost:8080${page}`);
         expect(buttonText).toBe('Log Out');
       });
+
+      it.todo('clicking the back button doesn\'t result in an error');
     });
   });
 
@@ -220,24 +224,6 @@ describe('authentication-and-redirect', () => {
         const utilityBar = await $('.utility-bar').text();
 
         expect(utilityBar).toContain(userHandle);
-      });
-
-      it.todo('clicking the back button doesn\'t result in an error');
-    });
-
-    describe('after clicking the Log In button', () => {
-      let userHandle: UserHandle;
-      const userAvatar = arbitraryUri();
-
-      beforeEach(async () => {
-        userHandle = arbitraryUserHandle();
-        await createUserAccountAndLogIn(arbitraryUserId(), userHandle, userAvatar);
-      });
-
-      it('i am logged in', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(buttonText).toBe('Log Out');
       });
 
       it.todo('clicking the back button doesn\'t result in an error');
