@@ -166,8 +166,20 @@ describe('authentication-and-redirect', () => {
       });
 
       describe('when I go back to the original tab and I attempt to save the article', () => {
+        beforeEach(async () => {
+          await click('Save article');
+        });
+
         describe('when I log back in again', () => {
-          it.todo('i am still on the article page');
+          beforeEach(async () => {
+            await logInWithSpecifiedUserId(userId);
+          });
+
+          it('i am still on the article page', async () => {
+            const result = await currentURL();
+
+            expect(result).toContain(articlePage);
+          });
         });
       });
     });
