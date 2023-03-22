@@ -159,10 +159,10 @@ describe('authentication-and-redirect', () => {
     });
 
     describe('when I log out from another tab', () => {
-      describe('when I go back to the original tab and I save the article', () => {
-        it.todo('i am asked to log in');
-
-        it.todo('after log in I am still on the article page');
+      describe('when I go back to the original tab and I attempt to save the article', () => {
+        describe('when I log back in again', () => {
+          it.todo('i am still on the article page');
+        });
       });
     });
   });
