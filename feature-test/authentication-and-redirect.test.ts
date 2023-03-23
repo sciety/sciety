@@ -134,6 +134,12 @@ describe('authentication-and-redirect', () => {
     });
   });
 
+  describe('when I start to log in from the article page, but don\'t complete the flow', () => {
+    describe('when I then complete a log in from the Sciety feed page', () => {
+      it.todo('i am still on the Sciety feed page and I am logged in');
+    });
+  });
+
   describe('when I am on the article page and I log in successfully', () => {
     const articleId = '10.1101/2022.09.23.22280264';
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
