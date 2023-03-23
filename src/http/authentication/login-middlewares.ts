@@ -4,7 +4,7 @@ import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { redirectToStartOfJourney } from '../start-of-journey';
+import { clearStartOfJourney, redirectToStartOfJourney } from '../start-of-journey';
 
 const oAuthScope = 'openid profile';
 
@@ -14,10 +14,6 @@ const takeUsersDirectlyToAuth0Signup = 'signup';
 
 const customSignUpParameters = {
   screen_hint: takeUsersDirectlyToAuth0Signup,
-};
-
-const clearStartOfJourney = (context: ParameterizedContext) => {
-  delete context.session.startOfJourney;
 };
 
 const removeLocalBrowserSession = (context: ParameterizedContext) => {

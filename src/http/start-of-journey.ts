@@ -37,3 +37,7 @@ export const redirectToStartOfJourney = (context: ParameterizedContext) => {
   );
   context.redirect(target);
 };
+
+export const clearStartOfJourney = (context: ParameterizedContext) => {
+  delete context.session.startOfJourney;
+};
