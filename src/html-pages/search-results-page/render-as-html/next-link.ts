@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { paginationControls } from '../../shared-components/pagination-controls';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { paginationControls } from '../../../shared-components/pagination-controls';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type SearchParameters = {
   query: string,

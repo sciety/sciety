@@ -3,10 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { pageTabs } from './page-tabs';
 import { pagination } from './pagination';
 import { renderSearchResultsList } from './render-search-results-list';
-import { renderArticleCard } from '../../shared-components/article-card';
-import { renderGroupCard } from '../../shared-components/group-card';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { isArticleViewModel, ItemViewModel, ViewModel } from './view-model';
+import { renderArticleCard } from '../../../shared-components/article-card';
+import { renderGroupCard } from '../../../shared-components/group-card';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { isArticleViewModel, ItemViewModel, ViewModel } from '../view-model';
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)

@@ -1,5 +1,5 @@
-import { PageTabsViewModel } from './page-tabs';
-import { PaginationViewModel } from './pagination';
+import { PageTabsViewModel } from './render-as-html/page-tabs';
+import { PaginationViewModel } from './render-as-html/pagination';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { GroupViewModel } from '../../shared-components/group-card';
 

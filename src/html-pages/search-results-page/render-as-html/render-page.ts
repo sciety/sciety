@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { renderSearchResults } from '../render-search-results';
+import { renderSearchResults } from './render-search-results';
 import { renderSearchForm } from '../../../shared-components/search-form';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { nextLink, SearchParameters } from './next-link';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type PaginationViewModel = SearchParameters & {
   pageNumber: number,

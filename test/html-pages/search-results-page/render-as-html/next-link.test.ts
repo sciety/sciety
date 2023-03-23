@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { JSDOM } from 'jsdom';
-import { nextLink } from '../../../src/html-pages/search-results-page/next-link';
+import { nextLink } from '../../../../src/html-pages/search-results-page/render-as-html/next-link';
 
 describe('next-link', () => {
   it('encodes the cursor for http', () => {
