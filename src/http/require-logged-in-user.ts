@@ -7,6 +7,10 @@ export const constructRedirectUrl = (context: ParameterizedContext): string => (
   context.request.headers.referer ?? '/'
 );
 
+const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
+  context.session.startOfJourney = constructRedirectUrl(context);
+};
+
 export const requireLoggedInUser = (
   adapters: GetLoggedInScietyUserPorts,
 ): Middleware => async (context, next) => {
@@ -14,7 +18,7 @@ export const requireLoggedInUser = (
     getLoggedInScietyUser(adapters, context),
     O.match(
       async () => {
-        context.session.startOfJourney = constructRedirectUrl(context);
+        rememberPreviousPageAsStartOfJourney(context);
         context.redirect('/log-in');
       },
       async () => { await next(); },
