@@ -52,9 +52,14 @@ const referringPageCodec = t.type({
   }),
 });
 
-export const referringPage = (context: ParameterizedContext): string => pipe(
+const getStartOfJourney = (context: ParameterizedContext) => pipe(
   context,
   referringPageCodec.decode,
   E.map((ctx) => ctx.session.startOfJourney),
+);
+
+export const referringPage = (context: ParameterizedContext): string => pipe(
+  context,
+  getStartOfJourney,
   E.getOrElse(() => '/'),
 );
