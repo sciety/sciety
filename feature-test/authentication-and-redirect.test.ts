@@ -135,6 +135,12 @@ describe('authentication-and-redirect', () => {
     });
   });
 
+  describe('when I am on the group page and I am not logged in', () => {
+    describe('when I attempt to follow the group and successfully log in', () => {
+      it.todo('i am still on the group page and I am logged in');
+    });
+  });
+
   describe('when I start to log in from the article page, but don\'t complete the flow', () => {
     const articleId = '10.1101/2022.09.23.22280264';
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
