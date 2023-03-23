@@ -1,25 +1,18 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { pageTabs, PageTabsViewModel } from './page-tabs';
-import { pagination, PaginationViewModel } from './pagination';
+import { pageTabs } from './page-tabs';
+import { pagination } from './pagination';
 import { renderSearchResultsList } from './render-search-results-list';
-import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
-import { GroupViewModel, renderGroupCard } from '../../shared-components/group-card';
+import { renderArticleCard } from '../../shared-components/article-card';
+import { renderGroupCard } from '../../shared-components/group-card';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-
-export type ItemViewModel = ArticleViewModel | GroupViewModel;
-
-const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'articleId' in viewModel;
-
-export type SearchResults = PaginationViewModel & PageTabsViewModel & {
-  itemsToDisplay: ReadonlyArray<ItemViewModel>,
-};
+import { isArticleViewModel, ItemViewModel, ViewModel } from './view-model';
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
-type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
+type RenderSearchResults = (rs: ViewModel) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   {
