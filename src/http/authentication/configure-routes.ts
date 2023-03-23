@@ -23,10 +23,14 @@ const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
 
-const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
+const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (context: ParameterizedContext) => {
   if (!context.session.startOfJourney) {
     context.session.startOfJourney = context.request.headers.referer ?? '/';
   }
+};
+
+const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
+  rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt(context);
   await next();
 };
 
