@@ -8,19 +8,19 @@ export type PaginationViewModel = SearchParameters & {
   numberOfPages: number,
 };
 
-type Pagination = (paginationViewModel: PaginationViewModel) => (content: O.Option<HtmlFragment>) => HtmlFragment;
+type Pagination = (viewModel: PaginationViewModel) => (content: O.Option<HtmlFragment>) => HtmlFragment;
 
-export const pagination: Pagination = (paginationViewModel) => (content) => pipe(
+export const pagination: Pagination = (viewModel) => (content) => pipe(
   content,
   O.fold(
     () => '',
-    (c: HtmlFragment) => (paginationViewModel.category === 'articles'
+    (c: HtmlFragment) => (viewModel.category === 'articles'
       ? `
       <h3 class="search-results__page_count">
-        Showing page <b>${paginationViewModel.pageNumber}</b> of <b>${paginationViewModel.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
+        Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
       </h3>
       ${c}
-      ${nextLink({ ...paginationViewModel, pageNumber: paginationViewModel.pageNumber + 1 })}
+      ${nextLink({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
     `
       : c),
   ),

@@ -1,35 +1,28 @@
 import { buildPageUrl } from './build-page-url';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ViewModel } from '../view-model';
 
-export type PageTabsViewModel = {
-  query: string,
-  evaluatedOnly: boolean,
-  availableArticleMatches: number,
-  availableGroupMatches: number,
-  category: string,
-};
+type PageTabs = (viewModel: ViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
-type PageTabs = (pageTabsViewModel: PageTabsViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
-
-export const pageTabs: PageTabs = (pageTabsViewModel) => renderTabs({
+export const pageTabs: PageTabs = (viewModel) => renderTabs({
   tabList: [
     {
-      label: toHtmlFragment(`Articles (${pageTabsViewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
+      label: toHtmlFragment(`Articles (${viewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
       url: buildPageUrl({
         category: 'articles',
-        query: pageTabsViewModel.query,
-        evaluatedOnly: pageTabsViewModel.evaluatedOnly,
+        query: viewModel.query,
+        evaluatedOnly: viewModel.evaluatedOnly,
       }),
     },
     {
-      label: toHtmlFragment(`Groups (${pageTabsViewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
+      label: toHtmlFragment(`Groups (${viewModel.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
       url: buildPageUrl({
         category: 'groups',
-        query: pageTabsViewModel.query,
-        evaluatedOnly: pageTabsViewModel.evaluatedOnly,
+        query: viewModel.query,
+        evaluatedOnly: viewModel.evaluatedOnly,
       }),
     },
   ],
-  activeTabIndex: pageTabsViewModel.category === 'groups' ? 1 : 0,
+  activeTabIndex: viewModel.category === 'groups' ? 1 : 0,
 });
