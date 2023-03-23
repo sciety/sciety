@@ -16,7 +16,7 @@ import { createUserAccountFormPage, paramsCodec as createUserAccountFormPagePara
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
-import { rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt } from '../start-of-journey';
+import { rememberPreviousPageAsStartOfJourney } from '../start-of-journey';
 
 export type Config = LoginMiddlewaresConfig;
 
@@ -25,7 +25,7 @@ const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
-  rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt(context);
+  rememberPreviousPageAsStartOfJourney(context);
   await next();
 };
 
