@@ -178,7 +178,7 @@ describe('authentication-and-redirect', () => {
           // eslint-disable-next-line no-console
           console.log(await currentURL());
           // eslint-disable-next-line no-console
-          console.log(await $('main').text());
+          console.log(await $('body').text());
           await click('Save article');
         });
 
