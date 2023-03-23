@@ -45,21 +45,3 @@ export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedCon
   getAuthenticatedUserIdFromContext,
   O.chain((id) => adapters.lookupUser(id)),
 );
-
-const referringPageCodec = t.type({
-  session: t.type({
-    startOfJourney: t.string,
-  }),
-});
-
-const getStartOfJourney = (context: ParameterizedContext) => pipe(
-  context,
-  referringPageCodec.decode,
-  E.map((ctx) => ctx.session.startOfJourney),
-);
-
-export const referringPage = (context: ParameterizedContext): string => pipe(
-  context,
-  getStartOfJourney,
-  E.getOrElse(() => '/'),
-);

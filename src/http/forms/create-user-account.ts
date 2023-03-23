@@ -4,12 +4,13 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import {
-  Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser, referringPage,
+  Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
 import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { toWebPage } from '../page-handler';
 import { validateAndExecuteCommand, Ports as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
+import { referringPage } from '../start-of-journey';
 
 type Ports = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
