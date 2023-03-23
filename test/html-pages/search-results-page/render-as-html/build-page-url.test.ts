@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { arbitraryBoolean, arbitraryString } from '../../../helpers';
 import { buildPageUrl } from '../../../../src/html-pages/search-results-page/render-as-html/build-page-url';
 
@@ -9,7 +8,6 @@ describe('build-page-url', () => {
     category: arbitraryCategory(),
     query: arbitraryString(),
     evaluatedOnly: arbitraryBoolean(),
-    cursor: O.none,
   };
 
   it('builds the URL with the correct category', () => {
@@ -60,28 +58,6 @@ describe('build-page-url', () => {
       });
 
       expect(result).not.toContain('evaluatedOnly');
-    });
-  });
-
-  describe('when there is a cursor', () => {
-    it('includes the encoded cursor as part of the URL', () => {
-      const result = buildPageUrl({
-        ...defaultParams,
-        cursor: O.some('12+34'),
-      });
-
-      expect(result).toContain('cursor=12%2B34');
-    });
-  });
-
-  describe('when there is no cursor', () => {
-    it('builds the URL without a cursor', () => {
-      const result = buildPageUrl({
-        ...defaultParams,
-        cursor: O.none,
-      });
-
-      expect(result).not.toContain('cursor');
     });
   });
 });

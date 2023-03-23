@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { buildPageUrl } from './build-page-url';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -21,7 +20,6 @@ export const pageTabs: PageTabs = (pageTabsViewModel) => renderTabs({
         category: 'articles',
         query: pageTabsViewModel.query,
         evaluatedOnly: pageTabsViewModel.evaluatedOnly,
-        cursor: O.none,
       }),
     },
     {
@@ -30,7 +28,6 @@ export const pageTabs: PageTabs = (pageTabsViewModel) => renderTabs({
         category: 'groups',
         query: pageTabsViewModel.query,
         evaluatedOnly: pageTabsViewModel.evaluatedOnly,
-        cursor: O.none,
       }),
     },
   ],
