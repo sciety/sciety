@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { groupJoined } from '../../../src/domain-events';
 import { searchResultsPage } from '../../../src/html-pages/search-results-page';
-import { Ports } from '../../../src/html-pages/search-results-page/search-results-page';
+import { Ports } from '../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import * as DE from '../../../src/types/data-error';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
