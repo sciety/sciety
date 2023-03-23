@@ -48,13 +48,13 @@ export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedCon
 
 const referringPageCodec = t.type({
   session: t.type({
-    successRedirect: t.string,
+    startOfJourney: t.string,
   }),
 });
 
 export const referringPage = (context: ParameterizedContext): string => pipe(
   context,
   referringPageCodec.decode,
-  E.map((ctx) => ctx.session.successRedirect),
+  E.map((ctx) => ctx.session.startOfJourney),
   E.getOrElse(() => '/'),
 );

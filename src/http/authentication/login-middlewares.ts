@@ -17,7 +17,7 @@ const customSignUpParameters = {
 
 const removeLocalBrowserSession = (context: ParameterizedContext) => {
   context.logout();
-  delete context.session.successRedirect;
+  delete context.session.startOfJourney;
 };
 
 const targetPageAfterLogOut = '/';
