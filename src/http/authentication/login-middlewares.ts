@@ -15,9 +15,13 @@ const customSignUpParameters = {
   screen_hint: takeUsersDirectlyToAuth0Signup,
 };
 
+const clearStartOfJourney = (context: ParameterizedContext) => {
+  delete context.session.startOfJourney;
+};
+
 const removeLocalBrowserSession = (context: ParameterizedContext) => {
   context.logout();
-  delete context.session.startOfJourney;
+  clearStartOfJourney(context);
 };
 
 const targetPageAfterLogOut = '/';
