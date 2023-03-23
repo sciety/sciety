@@ -15,14 +15,6 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   E.map((ctx) => ctx.session.startOfJourney),
 );
 
-const constructRedirectUrl = (context: ParameterizedContext): string => (
-  context.request.headers.referer ?? '/'
-);
-
-export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
-  context.session.startOfJourney = constructRedirectUrl(context);
-};
-
 export const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (context: ParameterizedContext) => {
   context.session.startOfJourney = context.request.headers.referer ?? '/';
 };

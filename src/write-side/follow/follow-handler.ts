@@ -8,7 +8,6 @@ import { Middleware } from 'koa';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler, Ports as FollowCommandPorts } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
-import { rememberPreviousPageAsStartOfJourney } from '../../http/start-of-journey';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
@@ -51,7 +50,6 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
         getLoggedInScietyUser(ports, context),
         O.match(
           () => {
-            rememberPreviousPageAsStartOfJourney(context);
             context.redirect('/log-in');
             return T.of(undefined);
           },
