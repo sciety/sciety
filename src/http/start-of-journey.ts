@@ -20,3 +20,11 @@ export const referringPage = (context: ParameterizedContext): string => pipe(
   getStartOfJourney,
   E.getOrElse(() => '/'),
 );
+
+const constructRedirectUrl = (context: ParameterizedContext): string => (
+  context.request.headers.referer ?? '/'
+);
+
+export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
+  context.session.startOfJourney = constructRedirectUrl(context);
+};

@@ -1,15 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { Middleware, ParameterizedContext } from 'koa';
+import { Middleware } from 'koa';
 import { pipe } from 'fp-ts/function';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
-
-const constructRedirectUrl = (context: ParameterizedContext): string => (
-  context.request.headers.referer ?? '/'
-);
-
-export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
-  context.session.startOfJourney = constructRedirectUrl(context);
-};
+import { rememberPreviousPageAsStartOfJourney } from './start-of-journey';
 
 export const requireLoggedInUser = (
   adapters: GetLoggedInScietyUserPorts,
