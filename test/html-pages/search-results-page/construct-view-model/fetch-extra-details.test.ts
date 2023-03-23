@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
-import { fetchExtraDetails, Ports } from '../../../src/html-pages/search-results-page/fetch-extra-details';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryNumber } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { evaluationRecorded, groupJoined } from '../../../../src/domain-events';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
+import { sanitise } from '../../../../src/types/sanitised-html-fragment';
+import { arbitraryDate, arbitraryNumber } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { Ports, fetchExtraDetails } from '../../../../src/html-pages/search-results-page/construct-view-model/fetch-extra-details';
 
 describe('fetch-extra-details', () => {
   const numberOfPages = arbitraryNumber(0, 10);

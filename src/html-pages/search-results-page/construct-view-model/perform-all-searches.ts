@@ -6,10 +6,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { SearchForArticles } from '../../shared-ports';
+import { SearchForArticles } from '../../../shared-ports';
 import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
-import * as DE from '../../types/data-error';
+import * as DE from '../../../types/data-error';
 
 export type Ports = FindGroupsPorts & {
   searchForArticles: SearchForArticles,

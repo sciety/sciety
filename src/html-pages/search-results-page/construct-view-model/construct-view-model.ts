@@ -4,9 +4,9 @@ import * as DE from '../../../types/data-error';
 import {
   fetchExtraDetails,
   Ports as FetchExtraDetailsPorts,
-} from '../fetch-extra-details';
-import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from '../perform-all-searches';
-import { selectSubsetToDisplay } from '../select-subset-to-display';
+} from './fetch-extra-details';
+import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './perform-all-searches';
+import { selectSubsetToDisplay } from './select-subset-to-display';
 import { Ports as GetArticleVersionDatePorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
 

@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { buildPageUrl } from '../build-page-url';
+import { buildPageUrl } from './build-page-url';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
