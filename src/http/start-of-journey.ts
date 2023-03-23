@@ -24,9 +24,7 @@ export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedConte
 };
 
 export const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (context: ParameterizedContext) => {
-  if (!context.session.startOfJourney) {
-    context.session.startOfJourney = context.request.headers.referer ?? '/';
-  }
+  context.session.startOfJourney = context.request.headers.referer ?? '/';
 };
 
 export const redirectToStartOfJourney = (context: ParameterizedContext) => {

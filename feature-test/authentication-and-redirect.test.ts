@@ -1,6 +1,7 @@
 import {
   $, click, currentURL, goto, openBrowser, into, write, textBox, openTab, closeTab,
 } from 'taiko';
+import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
@@ -151,7 +152,7 @@ describe('authentication-and-redirect', () => {
         await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
-      it.failing('i am still on the Sciety feed page and I am logged in', async () => {
+      it('i am still on the Sciety feed page and I am logged in', async () => {
         const result = await currentURL();
         const buttonText = await $('.utility-bar__list_link_button').text();
 
@@ -257,23 +258,13 @@ describe('authentication-and-redirect', () => {
     });
 
     describe('after clicking Log in to save this article', () => {
-      let newUserId: UserId;
-      let userHandle: UserHandle;
-      const articleId = '10.1101/2022.09.23.22280264';
-      const articlePage = `localhost:8080/articles/activity/${articleId}`;
+      const articleId = arbitraryArticleId();
+      const articlePage = `localhost:8080/articles/activity/${articleId.value}`;
 
       beforeEach(async () => {
         await goto(articlePage);
         await click('Log in to save this article');
-        newUserId = arbitraryUserId();
-        userHandle = arbitraryUserHandle();
-        await goto('localhost:8080/groups');
-        await click('Sign Up');
-        await completeLoginViaStubWithSpecifiedUserId(newUserId);
-        await write('Full Name', into(textBox('Full name')));
-        await write(userHandle, into(textBox('Create a handle')));
-        const createAccountButton = $('#createAccountButton');
-        await click(createAccountButton);
+        await completeLoginViaStubWithSpecifiedUserId(userId);
       });
 
       it('i am logged in', async () => {
