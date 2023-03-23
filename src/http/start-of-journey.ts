@@ -28,3 +28,9 @@ const constructRedirectUrl = (context: ParameterizedContext): string => (
 export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
   context.session.startOfJourney = constructRedirectUrl(context);
 };
+
+export const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (context: ParameterizedContext) => {
+  if (!context.session.startOfJourney) {
+    context.session.startOfJourney = context.request.headers.referer ?? '/';
+  }
+};

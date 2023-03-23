@@ -16,18 +16,13 @@ import { createUserAccountFormPage, paramsCodec as createUserAccountFormPagePara
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
+import { rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt } from '../start-of-journey';
 
 export type Config = LoginMiddlewaresConfig;
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
-
-const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (context: ParameterizedContext) => {
-  if (!context.session.startOfJourney) {
-    context.session.startOfJourney = context.request.headers.referer ?? '/';
-  }
-};
 
 const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
   rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt(context);
