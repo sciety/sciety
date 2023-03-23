@@ -12,13 +12,11 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
-type RenderSearchResults = (rs: ViewModel) => HtmlFragment;
-
-export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
-  searchResults.itemsToDisplay,
+export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
+  viewModel.itemsToDisplay,
   RA.map(renderSearchResult),
   renderSearchResultsList,
-  pagination(searchResults),
-  pageTabs(searchResults),
+  pagination(viewModel),
+  pageTabs(viewModel),
   toHtmlFragment,
 );
