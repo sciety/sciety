@@ -10,7 +10,7 @@ import { renderFormPage } from '../../html-pages/create-user-account-form-page/c
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { toWebPage } from '../page-handler';
 import { validateAndExecuteCommand, Ports as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
-import { referringPage } from '../start-of-journey';
+import { redirectToStartOfJourney } from '../start-of-journey';
 
 type Ports = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -31,7 +31,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
         context.response.type = 'html';
         context.response.body = page.body;
       },
-      () => context.redirect(referringPage(context)),
+      () => redirectToStartOfJourney(context),
     ),
   )();
   await next();

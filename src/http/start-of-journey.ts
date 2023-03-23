@@ -15,7 +15,7 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   E.map((ctx) => ctx.session.startOfJourney),
 );
 
-export const referringPage = (context: ParameterizedContext): string => pipe(
+const referringPage = (context: ParameterizedContext): string => pipe(
   context,
   getStartOfJourney,
   E.getOrElse(() => '/'),
@@ -33,4 +33,8 @@ export const rememberPreviousPageAsStartOfJourneyIfWeDontAlreadyKnowIt = (contex
   if (!context.session.startOfJourney) {
     context.session.startOfJourney = context.request.headers.referer ?? '/';
   }
+};
+
+export const redirectToStartOfJourney = (context: ParameterizedContext) => {
+  context.redirect(referringPage(context));
 };
