@@ -136,8 +136,26 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('when I am on the group page and I am not logged in', () => {
+    const groupPageAboutTab = `http://localhost:8080/groups/${groupASlug}/about`;
+
+    beforeEach(async () => {
+      await goto(groupPageAboutTab);
+    });
+
     describe('when I attempt to follow the group and successfully log in', () => {
-      it.todo('i am still on the group page and I am logged in');
+      beforeEach(async () => {
+        await click('Follow');
+        await completeLoginViaStubWithSpecifiedUserId(userId);
+      });
+
+      it('i am still on the group page and I am logged in', async () => {
+        const result = await currentURL();
+        const buttonText = await $('.utility-bar__list_link_button').text();
+
+        expect(result).toBe(groupPageAboutTab);
+
+        expect(buttonText).toBe('Log Out');
+      });
     });
   });
 
