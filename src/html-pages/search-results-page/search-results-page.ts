@@ -5,9 +5,12 @@ import {
   Ports as FetchExtraDetailsPorts,
 } from './fetch-extra-details';
 import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './perform-all-searches';
-import { renderErrorPage, RenderPage, renderPage } from './render-page';
+import { renderAsHtml } from './render-as-html/render-as-html';
 import { selectSubsetToDisplay } from './select-subset-to-display';
 import { Ports as GetArticleVersionDatePorts, getLatestArticleVersionDate } from '../../shared-components/article-card';
+import { RenderPageError } from '../../types/render-page-error';
+import { Page } from '../../types/page';
+import { renderErrorPage } from './render-as-html/render-error-page';
 
 // ts-unused-exports:disable-next-line
 export type Ports = PerformAllSearchesPorts
@@ -15,7 +18,9 @@ export type Ports = PerformAllSearchesPorts
 & Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>
 & GetArticleVersionDatePorts;
 
-type SearchResultsPage = (ports: Ports) => (pageSize: number) => (params: Params) => ReturnType<RenderPage>;
+type SearchResultsPage = (
+  ports: Ports,
+) => (pageSize: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (params) => pipe(
   params,
@@ -25,5 +30,5 @@ export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (pa
     ...ports,
     getLatestArticleVersionDate: getLatestArticleVersionDate(ports),
   })),
-  TE.bimap(renderErrorPage, renderPage),
+  TE.bimap(renderErrorPage, renderAsHtml),
 );
