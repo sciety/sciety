@@ -15,12 +15,8 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
 type RenderSearchResults = (rs: ViewModel) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
-  {
-    cardsToDisplay: pipe(
-      searchResults.itemsToDisplay,
-      RA.map(renderSearchResult),
-    ),
-  },
+  searchResults.itemsToDisplay,
+  RA.map(renderSearchResult),
   renderSearchResultsList,
   pagination(searchResults),
   pageTabs(searchResults),

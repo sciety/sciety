@@ -4,12 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { templateListItems } from '../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type PageOfResults = {
-  cardsToDisplay: ReadonlyArray<HtmlFragment>,
-};
-
-export const renderSearchResultsList = (page: PageOfResults): O.Option<HtmlFragment> => pipe(
-  page.cardsToDisplay,
+export const renderSearchResultsList = (cards: ReadonlyArray<HtmlFragment>): O.Option<HtmlFragment> => pipe(
+  cards,
   RNEA.fromReadonlyArray,
   O.map(
     (a) => `
