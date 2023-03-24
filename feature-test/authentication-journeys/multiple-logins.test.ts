@@ -2,16 +2,13 @@ import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { arbitraryString } from '../../test/helpers';
-import { arbitraryReviewId } from '../../test/types/review-id.helper';
 import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
-import { arbitraryGroup } from '../../test/types/group.helper';
 
 describe('multiple-logins', () => {
-  const groupA = arbitraryGroup();
   const userId = arbitraryUserId();
   const existingUserHandle = arbitraryUserHandle();
 
@@ -21,17 +18,6 @@ describe('multiple-logins', () => {
       handle: existingUserHandle,
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
-    });
-    await callApi('api/add-group', {
-      ...groupA,
-      groupId: groupA.id,
-    });
-    await callApi('api/record-evaluation', {
-      groupId: groupA.id,
-      publishedAt: new Date(),
-      evaluationLocator: arbitraryReviewId(),
-      articleId: 'doi:10.1101/2020.07.13.199174',
-      authors: [],
     });
   });
 
