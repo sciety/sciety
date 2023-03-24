@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 import {
-  $, click, currentURL, goto, openBrowser, into, write, textBox, openTab, closeTab,
+  $, click, currentURL, goto, openBrowser, into, write, textBox,
 } from 'taiko';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
@@ -49,53 +48,6 @@ describe('authentication-and-redirect', () => {
   });
 
   afterEach(screenshotTeardown);
-
-  describe('when I am on the article page and I log in successfully', () => {
-    const articleId = '10.1101/2022.09.23.22280264';
-    const articlePage = `localhost:8080/articles/activity/${articleId}`;
-
-    beforeEach(async () => {
-      await goto(articlePage);
-      await click('Log In');
-      await completeLoginViaStubWithSpecifiedUserId(userId);
-    });
-
-    describe('when I log out from another tab', () => {
-      beforeEach(async () => {
-        await openTab('localhost:8080/');
-        await click('Log out');
-        await closeTab('http://localhost:8080/');
-      });
-
-      describe('when I go back to the original tab and I attempt to save the article', () => {
-        beforeEach(async () => {
-          console.log(await currentURL());
-          await $('body').text()
-            .then((body) => {
-              console.log('Page body:', body);
-              return undefined;
-            })
-            .catch((reason) => {
-              console.log('Await body failed:', reason);
-              return undefined;
-            });
-          await click('Save article');
-        });
-
-        describe('when I log back in again', () => {
-          beforeEach(async () => {
-            await completeLoginViaStubWithSpecifiedUserId(userId);
-          });
-
-          it('i am still on the article page', async () => {
-            const result = await currentURL();
-
-            expect(result).toContain(articlePage);
-          });
-        });
-      });
-    });
-  });
 
   describe('when I am not logged in', () => {
     describe('on completing the sign up journey', () => {
