@@ -16,7 +16,7 @@ const customSignUpParameters = {
   screen_hint: takeUsersDirectlyToAuth0Signup,
 };
 
-const removeLocalBrowserSession = (context: ParameterizedContext) => {
+const removeKoaPassportDataFromSession = (context: ParameterizedContext) => {
   context.logout();
 };
 
@@ -38,7 +38,7 @@ export type Config = {
 };
 
 export const logOutAuth0 = (config: Config): Middleware => async (context, next) => {
-  removeLocalBrowserSession(context);
+  removeKoaPassportDataFromSession(context);
   const domain = process.env.AUTH0_DOMAIN ?? '';
   const clientId = process.env.AUTH0_CLIENT_ID ?? '';
   const app = config.APP_ORIGIN;
@@ -57,7 +57,7 @@ export const stubLogInAuth0 = koaPassport.authenticate('local', {
 });
 
 export const stubLogOutAuth0: Middleware = async (context, next) => {
-  removeLocalBrowserSession(context);
+  removeKoaPassportDataFromSession(context);
   context.redirect(targetPageAfterLogOut);
 
   await next();
