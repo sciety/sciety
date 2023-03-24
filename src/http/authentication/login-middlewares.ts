@@ -1,4 +1,6 @@
-import { Middleware, ParameterizedContext } from 'koa';
+import {
+  DefaultContext, DefaultState, Middleware,
+} from 'koa';
 import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
@@ -16,8 +18,14 @@ const customSignUpParameters = {
   screen_hint: takeUsersDirectlyToAuth0Signup,
 };
 
-const removeKoaPassportDataFromSession = (context: ParameterizedContext) => {
-  context.logout();
+// Workaround for out of date @types/koa-passport
+// https://github.com/DefinitelyTyped/DefinitelyTyped/pull/64621
+type FixedKoaPassportLogoutContext = Exclude<DefaultContext, 'logout'> & { logout: () => Promise<void> };
+
+type LogoutMiddleware = Middleware<DefaultState, FixedKoaPassportLogoutContext>;
+
+const removeKoaPassportDataFromSession = async (context: FixedKoaPassportLogoutContext) => {
+  await context.logout();
 };
 
 const targetPageAfterLogOut = '/';
@@ -37,8 +45,8 @@ export type Config = {
   APP_ORIGIN: tt.NonEmptyString,
 };
 
-export const logOutAuth0 = (config: Config): Middleware => async (context, next) => {
-  removeKoaPassportDataFromSession(context);
+export const logOutAuth0 = (config: Config): LogoutMiddleware => async (context, next) => {
+  await removeKoaPassportDataFromSession(context);
   const domain = process.env.AUTH0_DOMAIN ?? '';
   const clientId = process.env.AUTH0_CLIENT_ID ?? '';
   const app = config.APP_ORIGIN;
@@ -56,8 +64,8 @@ export const stubLogInAuth0 = koaPassport.authenticate('local', {
   failureRedirect: '/local/log-in-form',
 });
 
-export const stubLogOutAuth0: Middleware = async (context, next) => {
-  removeKoaPassportDataFromSession(context);
+export const stubLogOutAuth0: LogoutMiddleware = async (context, next) => {
+  await removeKoaPassportDataFromSession(context);
   context.redirect(targetPageAfterLogOut);
 
   await next();
