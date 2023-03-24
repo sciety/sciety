@@ -2,25 +2,10 @@ import {
   $, click, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
-import { arbitraryString } from '../../test/helpers';
-import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 
 describe('logout', () => {
-  const userId = arbitraryUserId();
-  const existingUserHandle = arbitraryUserHandle();
-
-  beforeAll(async () => {
-    await callApi('api/create-user', {
-      userId,
-      handle: existingUserHandle,
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
-  });
-
   beforeEach(async () => {
     await openBrowser();
   });

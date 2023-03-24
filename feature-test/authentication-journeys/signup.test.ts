@@ -1,8 +1,6 @@
 import {
   $, click, goto, openBrowser, into, write, textBox,
 } from 'taiko';
-import { arbitraryString } from '../../test/helpers';
-import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
@@ -10,18 +8,6 @@ import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-log
 import { UserHandle } from '../../src/types/user-handle';
 
 describe('signup', () => {
-  const userId = arbitraryUserId();
-  const existingUserHandle = arbitraryUserHandle();
-
-  beforeAll(async () => {
-    await callApi('api/create-user', {
-      userId,
-      handle: existingUserHandle,
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
-  });
-
   beforeEach(async () => {
     await openBrowser();
   });
