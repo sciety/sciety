@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import { collapseCloseListEvents } from './collapse-close-list-events';
 import { FeedItem } from './feed-item';
 import {
@@ -21,7 +22,18 @@ type IdentifyFeedItems = (pageSize: number, page: number)
 
 export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
   RA.filter(isFeedRelevantEvent),
-  collapseCloseListEvents,
-  RA.reverse,
-  paginate(pageSize, page),
+  RA.match(
+    () => E.right({
+      items: [],
+      nextPage: O.none,
+      pageNumber: 1,
+      numberOfPages: 1,
+      numberOfOriginalItems: 0,
+    }),
+    flow(
+      collapseCloseListEvents,
+      RA.reverse,
+      paginate(pageSize, page),
+    ),
+  ),
 );

@@ -44,8 +44,7 @@ describe('single-login', () => {
     ['Groups page', '/groups'],
     ['Home page', '/'],
     ['Legal page', '/legal'],
-    // the page has a bug: it does not work on a database without any evaluations
-    // ['Sciety feed page', '/sciety-feed'],
+    ['Sciety feed page', '/sciety-feed'],
     ['Search page', '/search'],
     ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
     ['User page, lists tab', `/users/${existingUserHandle}/lists`],
