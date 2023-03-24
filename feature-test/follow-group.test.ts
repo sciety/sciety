@@ -1,5 +1,5 @@
 import {
-  $, click, goto, openBrowser, text, within,
+  $, click, currentURL, goto, openBrowser, text, within,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -25,15 +25,25 @@ describe('follow a group', () => {
       await createUserAccountAndLogIn(arbitraryUserId());
     });
 
-    it('adds the group to the user page', async () => {
-      await goto('localhost:8080/groups');
-      await click(group.name);
-      await click('Follow');
-      await click('My lists');
-      await click('Following');
-      const groupExists = await text(group.name, within($('.followed-groups-list'))).exists();
+    describe('after clicking on the Follow button', () => {
+      beforeEach(async () => {
+        await goto(`localhost:8080/groups/${group.slug}`);
+        await click('Follow');
+      });
 
-      expect(groupExists).toBe(true);
+      it('returns to the group page', async () => {
+        const result = await currentURL();
+
+        expect(result).toContain(`/groups/${group.slug}`);
+      });
+
+      it('adds the group to the user page', async () => {
+        await click('My lists');
+        await click('Following');
+        const groupExists = await text(group.name, within($('.followed-groups-list'))).exists();
+
+        expect(groupExists).toBe(true);
+      });
     });
   });
 });

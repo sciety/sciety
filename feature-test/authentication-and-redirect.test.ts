@@ -64,18 +64,5 @@ describe('authentication-and-redirect', () => {
         expect(result).toMatch(/.*#[a-z]*:/);
       });
     });
-
-    describe('after clicking on the Follow button', () => {
-      beforeEach(async () => {
-        await goto(`localhost:8080/groups/${groupB.slug}`);
-        await click('Follow');
-      });
-
-      it('returns to the group page', async () => {
-        const result = await currentURL();
-
-        expect(result).toContain(`/groups/${groupB.slug}`);
-      });
-    });
   });
 });
