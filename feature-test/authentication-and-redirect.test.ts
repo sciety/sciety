@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   $, click, currentURL, goto, openBrowser, into, write, textBox, openTab, closeTab,
 } from 'taiko';
@@ -227,10 +228,16 @@ describe('authentication-and-redirect', () => {
 
       describe('when I go back to the original tab and I attempt to save the article', () => {
         beforeEach(async () => {
-          // eslint-disable-next-line no-console
           console.log(await currentURL());
-          // eslint-disable-next-line no-console
-          console.log(await $('body').text());
+          await $('body').text()
+            .then((body) => {
+              console.log('Page body:', body);
+              return undefined;
+            })
+            .catch((reason) => {
+              console.log('Await body failed:', reason);
+              return undefined;
+            });
           await click('Save article');
         });
 
