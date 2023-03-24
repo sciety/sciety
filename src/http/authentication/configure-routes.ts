@@ -2,6 +2,9 @@
 import Router from '@koa/router';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
+import * as t from 'io-ts';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import {
   logInAuth0,
   signUpAuth0,
@@ -85,11 +88,24 @@ const configureAuth0Routes = (
       },
     );
 
+    const submitUserIdRequestCodec = t.type({
+      body: t.type({
+        userId: t.string,
+      }),
+    });
+
     router.post(
       '/local/submit-user-id',
       bodyParser({ enableTypes: ['form'] }),
       async (context: ParameterizedContext) => {
-        context.redirect(`/auth0/callback?username=${context.request.body.userId as string}&password=anypassword`);
+        const userId = pipe(
+          context.request,
+          submitUserIdRequestCodec.decode,
+          E.getOrElseW(() => { throw new Error('/local/submit-user-id received bad request'); }),
+          (req) => req.body.userId,
+        );
+
+        context.redirect(`/auth0/callback?username=${userId}&password=anypassword`);
       },
     );
   }
