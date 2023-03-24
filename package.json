@@ -74,7 +74,7 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
-    "backstopjs": "^6.2.0",
+    "backstopjs": "^6.1.4",
     "browserslist": "^4.21.5",
     "dependency-cruiser": "12.11.0",
     "eslint": "^7.32.0",
