@@ -11,18 +11,12 @@ import { paginationControls } from '../../shared-components/pagination-controls'
 import { supplementaryCard } from '../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../shared-components/supplementary-info';
 import * as DE from '../../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { GetAllEvents } from '../../shared-ports';
 import { renderErrorPage } from './render-as-html/render-error-page';
-
-type ViewModel = {
-  cards: ReadonlyArray<HtmlFragment>,
-  nextPage: O.Option<number>,
-  numberOfPages: number,
-  pageNumber: number,
-};
+import { ViewModel } from './view-model';
 
 const supplementaryItems = [
   supplementaryCard(
