@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/sciety-feed-card';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -12,6 +11,7 @@ import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 
 describe('collapsed-articles-added-to-list-card', () => {
   describe('when a group owns the list', () => {

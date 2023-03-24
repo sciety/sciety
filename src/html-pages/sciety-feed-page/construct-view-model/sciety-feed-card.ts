@@ -1,19 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-
-type ScietyFeedCardDetails = {
-  title: HtmlFragment,
-  content: HtmlFragment,
-};
-
-export type ScietyFeedCard = {
-  titleText: string,
-  linkUrl: string,
-  avatarUrl: string,
-  date: Date,
-  details?: ScietyFeedCardDetails,
-};
+import { ScietyFeedCard } from '../view-model';
 
 export const scietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
   viewModel.details,
