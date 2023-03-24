@@ -57,7 +57,7 @@ import { recordEvaluationCommandHandler } from '../write-side/record-evaluation'
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { respondHandler } from '../write-side/respond';
 import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
-import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page/sciety-feed-page';
+import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
