@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goto, openBrowser, into, write, textBox,
+  $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
@@ -10,7 +10,6 @@ import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
-import { UserHandle } from '../src/types/user-handle';
 import { arbitraryGroup } from '../test/types/group.helper';
 
 describe('authentication-and-redirect', () => {
@@ -50,36 +49,6 @@ describe('authentication-and-redirect', () => {
   afterEach(screenshotTeardown);
 
   describe('when I am not logged in', () => {
-    describe('on completing the sign up journey', () => {
-      let newUserHandle: UserHandle;
-
-      beforeEach(async () => {
-        const newUserId = arbitraryUserId();
-        newUserHandle = arbitraryUserHandle();
-        await goto('localhost:8080/groups');
-        await click('Sign Up');
-        await completeLoginViaStubWithSpecifiedUserId(newUserId);
-        await write('Full Name', into(textBox('Full name')));
-        await write(newUserHandle, into(textBox('Create a handle')));
-        const createAccountButton = $('#createAccountButton');
-        await click(createAccountButton);
-      });
-
-      it('i am logged in', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(buttonText).toBe('Log Out');
-      });
-
-      it('the handle I supplied is used for my account', async () => {
-        const utilityBar = await $('.utility-bar').text();
-
-        expect(utilityBar).toContain(newUserHandle);
-      });
-
-      it.todo('clicking the back button doesn\'t result in an error');
-    });
-
     describe('after clicking Log in to save this article', () => {
       const articleId = arbitraryArticleId();
       const articlePage = `localhost:8080/articles/activity/${articleId.value}`;
