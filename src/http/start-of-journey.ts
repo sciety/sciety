@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { ParameterizedContext } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 
 const referringPageCodec = t.type({
@@ -15,8 +15,9 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   E.map((ctx) => ctx.session.startOfJourney),
 );
 
-export const rememberPreviousPageAsStartOfJourney = (context: ParameterizedContext) => {
+export const rememberPreviousPageAsStartOfJourney: Middleware = async (context: ParameterizedContext, next) => {
   context.session.startOfJourney = context.request.headers.referer ?? '/';
+  await next();
 };
 
 export const redirectToStartOfJourney = (context: ParameterizedContext) => {

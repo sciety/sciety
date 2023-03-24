@@ -1,6 +1,6 @@
 /* eslint-disable padded-blocks */
 import Router from '@koa/router';
-import { Middleware, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import {
   logInAuth0,
@@ -23,11 +23,6 @@ export type Config = LoginMiddlewaresConfig;
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
-
-const saveReferrerToSession: Middleware = async (context: ParameterizedContext, next) => {
-  rememberPreviousPageAsStartOfJourney(context);
-  await next();
-};
 
 const configureAuth0Routes = (
   router: Router,
@@ -52,13 +47,13 @@ const configureAuth0Routes = (
 
   router.get(
     signUpRoute,
-    saveReferrerToSession,
+    rememberPreviousPageAsStartOfJourney,
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    saveReferrerToSession,
+    rememberPreviousPageAsStartOfJourney,
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 
