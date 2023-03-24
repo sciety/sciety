@@ -11,7 +11,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { GetAllEvents } from '../../shared-ports';
 import { renderErrorPage } from './render-as-html/render-error-page';
-import { renderPage } from './render-as-html/render-page';
+import { renderAsHtml } from './render-as-html/render-as-html';
 
 export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -35,11 +35,5 @@ export const scietyFeedPage = (
     O.map((cards) => ({ cards, ...rest })),
     TE.fromOption(() => DE.notFound),
   )),
-  TE.bimap(
-    renderErrorPage,
-    (viewModel) => ({
-      title: 'Sciety Feed',
-      content: renderPage(viewModel),
-    }),
-  ),
+  TE.bimap(renderErrorPage, renderAsHtml),
 );
