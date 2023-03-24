@@ -6,7 +6,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { eventCard, Ports as EventCardPorts } from './event-card';
 import { identifyFeedItems } from './identify-feed-items';
-
 import { templateListItems } from '../../shared-components/list-items';
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { supplementaryCard } from '../../shared-components/supplementary-card';
@@ -16,6 +15,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { GetAllEvents } from '../../shared-ports';
+import { renderErrorPage } from './render-as-html/render-error-page';
 
 type ViewModel = {
   cards: ReadonlyArray<HtmlFragment>,
@@ -74,7 +74,7 @@ export const scietyFeedPage = (
     TE.fromOption(() => DE.notFound),
   )),
   TE.bimap(
-    (e) => ({ type: e, message: toHtmlFragment('We couldn\'t find that information.') }),
+    renderErrorPage,
     (viewModel) => ({
       title: 'Sciety Feed',
       content: renderContent(viewModel),
