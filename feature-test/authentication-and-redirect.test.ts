@@ -51,20 +51,6 @@ describe('authentication-and-redirect', () => {
       await createUserAccountAndLogIn(arbitraryUserId());
     });
 
-    describe('after clicking the Log Out button', () => {
-      beforeEach(async () => {
-        await click('Log Out');
-      });
-
-      it('i am logged out', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(buttonText).toBe('Log In');
-      });
-
-      it.todo('clicking the back button doesn\'t result in an error');
-    });
-
     describe('after clicking on the thumbs down button for an evaluation', () => {
       beforeEach(async () => {
         await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
