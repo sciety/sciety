@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -17,14 +16,9 @@ const commands = {
   'revoke-response': revokeResponse,
 };
 
-const commandCodec = t.keyof(commands);
+export const commandCodec = t.keyof(commands);
 
 type Command = t.TypeOf<typeof commandCodec>;
-
-export const toCommand = flow(
-  commandCodec.decode,
-  O.fromEither,
-);
 
 type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<CommandResult>;
 
