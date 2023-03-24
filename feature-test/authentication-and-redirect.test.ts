@@ -4,9 +4,7 @@ import {
 } from 'taiko';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
-import { arbitraryDescriptionPath } from '../test/types/description-path.helper';
-import { arbitraryGroupId } from '../test/types/group-id.helper';
+import { arbitraryString } from '../test/helpers';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
@@ -25,28 +23,11 @@ describe('authentication-and-redirect', () => {
   const anotherUserHandle = arbitraryUserHandle();
 
   beforeAll(async () => {
-    const groupId = arbitraryGroupId();
     await callApi('api/create-user', {
       userId,
       handle: anotherUserHandle,
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
-    });
-    await callApi('api/add-group', {
-      groupId,
-      name: arbitraryString(),
-      shortDescription: arbitraryString(),
-      homepage: arbitraryString(),
-      avatarPath: 'http://somethingthatproducesa404',
-      descriptionPath: arbitraryDescriptionPath(),
-      slug: arbitraryWord(),
-    });
-    await callApi('api/record-evaluation', {
-      groupId,
-      publishedAt: new Date(),
-      evaluationLocator: arbitraryReviewId(),
-      articleId: 'doi:10.1101/2020.07.13.199174',
-      authors: [],
     });
     await callApi('api/add-group', {
       ...groupA,
@@ -55,6 +36,13 @@ describe('authentication-and-redirect', () => {
     await callApi('api/add-group', {
       ...groupB,
       groupId: groupB.id,
+    });
+    await callApi('api/record-evaluation', {
+      groupId: groupA.id,
+      publishedAt: new Date(),
+      evaluationLocator: arbitraryReviewId(),
+      articleId: 'doi:10.1101/2020.07.13.199174',
+      authors: [],
     });
   });
 
