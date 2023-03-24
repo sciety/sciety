@@ -11,7 +11,7 @@ import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-log
 import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
 import { arbitraryGroup } from '../../test/types/group.helper';
 
-describe('login', () => {
+describe('single-login', () => {
   const groupA = arbitraryGroup();
   const userId = arbitraryUserId();
   const existingUserHandle = arbitraryUserHandle();
