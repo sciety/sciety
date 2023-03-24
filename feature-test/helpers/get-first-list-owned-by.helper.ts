@@ -39,7 +39,7 @@ export const getIdOfFirstListOwnedByUser = async (userId: UID.UserId): Promise<s
   fetchFirstListOwnedBy,
 );
 
-export const getFirstListOwnedByGroup = async (groupId: GID.GroupId): Promise<string> => pipe(
+export const getIdOfFirstListOwnedByGroup = async (groupId: GID.GroupId): Promise<string> => pipe(
   groupId,
   LOID.fromGroupId,
   LOID.toString,
