@@ -3,7 +3,7 @@ import {
   $, click, closeBrowser, currentURL, goto, link, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 
@@ -37,7 +37,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the article card on the list page offers a delete button', async () => {
-      const listId = await getFirstListOwnedByUser(testUserId);
+      const listId = await getIdOfFirstListOwnedByUser(testUserId);
       const userListPageUrl = `localhost:8080/lists/${listId}`;
       await goto(userListPageUrl);
       const deleteButton = $(articleCardDeleteButtonSelector);
@@ -64,7 +64,7 @@ describe('save-article-to-list', () => {
     });
 
     it('the save article button on the article page is replaced with a link to the list', async () => {
-      const listId = await getFirstListOwnedByUser(testUserId);
+      const listId = await getIdOfFirstListOwnedByUser(testUserId);
       const userListPageUrl = `http://localhost:8080/lists/${listId}`;
       await goto(articlePage);
       await click(link({ href: `/lists/${listId}` }));

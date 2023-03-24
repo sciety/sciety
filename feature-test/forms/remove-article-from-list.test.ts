@@ -8,7 +8,7 @@ import {
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
-import { getFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
+import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
 
 describe('remove-article-from-list', () => {
   beforeAll(async () => {
@@ -41,7 +41,7 @@ describe('remove-article-from-list', () => {
         let content: string;
 
         beforeAll(async () => {
-          const listId = await getFirstListOwnedByUser(testUserId);
+          const listId = await getIdOfFirstListOwnedByUser(testUserId);
           listPage = `localhost:8080/lists/${listId}`;
           await goto(listPage);
           const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';

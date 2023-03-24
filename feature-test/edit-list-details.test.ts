@@ -1,7 +1,7 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
-import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
@@ -13,7 +13,7 @@ describe('edit-list-details', () => {
     const testUserId = arbitraryUserId();
     await openBrowser();
     await createUserAccountAndLogIn(testUserId);
-    listId = await getFirstListOwnedByUser(testUserId);
+    listId = await getIdOfFirstListOwnedByUser(testUserId);
   });
 
   afterAll(async () => {

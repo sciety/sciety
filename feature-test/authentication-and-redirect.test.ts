@@ -14,7 +14,7 @@ import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
-import { getFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 
 describe('authentication-and-redirect', () => {
   const groupASlug = arbitraryWord();
@@ -113,7 +113,7 @@ describe('authentication-and-redirect', () => {
     let page: string;
 
     beforeEach(async () => {
-      page = `/lists/${await getFirstListOwnedByUser(userId)}`;
+      page = `/lists/${await getIdOfFirstListOwnedByUser(userId)}`;
       await goto(`localhost:8080${page}`);
     });
 
