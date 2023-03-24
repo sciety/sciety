@@ -12,6 +12,7 @@ import { RenderPageError } from '../../types/render-page-error';
 import { GetAllEvents } from '../../shared-ports';
 import { renderErrorPage } from './render-as-html/render-error-page';
 import { renderAsHtml } from './render-as-html/render-as-html';
+import { ViewModel } from './view-model';
 
 export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -24,9 +25,12 @@ export type Ports = EventCardPorts & {
 
 type Params = t.TypeOf<typeof scietyFeedCodec>;
 
-export const scietyFeedPage = (
+type ConstructViewModel = (
   ports: Ports,
-) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+  pageSize: number,
+) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+
+const constructViewModel: ConstructViewModel = (ports, pageSize) => (params) => pipe(
   ports.getAllEvents,
   T.map(identifyFeedItems(pageSize, params.page)),
   TE.chainW(({ items, ...rest }) => pipe(
@@ -35,5 +39,12 @@ export const scietyFeedPage = (
     O.map((cards) => ({ cards, ...rest })),
     TE.fromOption(() => DE.notFound),
   )),
+);
+
+export const scietyFeedPage = (
+  ports: Ports,
+) => (pageSize: number) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
+  params,
+  constructViewModel(ports, pageSize),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
