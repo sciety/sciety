@@ -142,4 +142,12 @@ describe('identify-feed-items', () => {
       expect(result[2].date).toStrictEqual(date1);
     });
   });
+
+  describe('given no relevant events', () => {
+    const result = identifyFeedItems(20, 1)([]);
+
+    it('does not fail', () => {
+      expect(E.isRight(result)).toBe(true);
+    });
+  });
 });
