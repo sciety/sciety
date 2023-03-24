@@ -8,6 +8,7 @@ import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryGroup } from '../../test/types/group.helper';
+import { arbitraryArticleId } from '../../test/types/article-id.helper';
 
 describe('login-via-call-to-action', () => {
   const groupA = arbitraryGroup();
@@ -51,7 +52,27 @@ describe('login-via-call-to-action', () => {
         const buttonText = await $('.utility-bar__list_link_button').text();
 
         expect(result).toBe(groupPageAboutTab);
+        expect(buttonText).toBe('Log Out');
+      });
+    });
+  });
 
+  describe('when I am on the article page and I am not logged in', () => {
+    describe('after clicking Log in to save this article', () => {
+      const articleId = arbitraryArticleId();
+      const articlePage = `localhost:8080/articles/activity/${articleId.value}`;
+
+      beforeEach(async () => {
+        await goto(articlePage);
+        await click('Log in to save this article');
+        await completeLoginViaStubWithSpecifiedUserId(userId);
+      });
+
+      it('i am still on the article page and I am logged in', async () => {
+        const buttonText = await $('.utility-bar__list_link_button').text();
+        const result = await currentURL();
+
+        expect(result).toContain(articlePage);
         expect(buttonText).toBe('Log Out');
       });
     });

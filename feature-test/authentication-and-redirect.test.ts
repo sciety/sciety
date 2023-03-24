@@ -1,7 +1,6 @@
 import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryString } from '../test/helpers';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
@@ -9,7 +8,6 @@ import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryGroup } from '../test/types/group.helper';
 
 describe('authentication-and-redirect', () => {
@@ -47,31 +45,6 @@ describe('authentication-and-redirect', () => {
   });
 
   afterEach(screenshotTeardown);
-
-  describe('when I am not logged in', () => {
-    describe('after clicking Log in to save this article', () => {
-      const articleId = arbitraryArticleId();
-      const articlePage = `localhost:8080/articles/activity/${articleId.value}`;
-
-      beforeEach(async () => {
-        await goto(articlePage);
-        await click('Log in to save this article');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
-      });
-
-      it('i am logged in', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(buttonText).toBe('Log Out');
-      });
-
-      it('i am returned to the article page', async () => {
-        const result = await currentURL();
-
-        expect(result).toContain(articlePage);
-      });
-    });
-  });
 
   describe('when I am logged in', () => {
     beforeEach(async () => {
