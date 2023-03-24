@@ -16,10 +16,11 @@ import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-logi
 import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { arbitraryGroup } from '../test/types/group.helper';
 
 describe('authentication-and-redirect', () => {
-  const groupASlug = arbitraryWord();
-  const groupBSlug = arbitraryWord();
+  const groupA = arbitraryGroup();
+  const groupB = arbitraryGroup();
   const userId = arbitraryUserId();
   const anotherUserHandle = arbitraryUserHandle();
 
@@ -48,22 +49,12 @@ describe('authentication-and-redirect', () => {
       authors: [],
     });
     await callApi('api/add-group', {
-      groupId: arbitraryGroupId(),
-      name: arbitraryString(),
-      shortDescription: arbitraryString(),
-      homepage: arbitraryString(),
-      avatarPath: 'http://somethingthatproducesa404',
-      descriptionPath: arbitraryDescriptionPath(),
-      slug: groupASlug,
+      ...groupA,
+      groupId: groupA.id,
     });
     await callApi('api/add-group', {
-      groupId: arbitraryGroupId(),
-      name: arbitraryString(),
-      shortDescription: arbitraryString(),
-      homepage: arbitraryString(),
-      avatarPath: 'http://somethingthatproducesa404',
-      descriptionPath: arbitraryDescriptionPath(),
-      slug: groupBSlug,
+      ...groupB,
+      groupId: groupB.id,
     });
   });
 
@@ -76,9 +67,9 @@ describe('authentication-and-redirect', () => {
   describe.each([
     ['About page', '/about'],
     ['Article page', '/articles/activity/10.1101/2023.02.09.527915'],
-    ['Group page, about tab', `/groups/${groupASlug}/about`],
-    ['Group page, followers tab', `/groups/${groupASlug}/followers`],
-    ['Group page, lists tab', `/groups/${groupASlug}/lists`],
+    ['Group page, about tab', `/groups/${groupA.slug}/about`],
+    ['Group page, followers tab', `/groups/${groupA.slug}/followers`],
+    ['Group page, lists tab', `/groups/${groupA.slug}/lists`],
     ['Groups page', '/groups'],
     ['Home page', '/'],
     ['Legal page', '/legal'],
@@ -137,7 +128,7 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('when I am on the group page and I am not logged in', () => {
-    const groupPageAboutTab = `http://localhost:8080/groups/${groupASlug}/about`;
+    const groupPageAboutTab = `http://localhost:8080/groups/${groupA.slug}/about`;
 
     beforeEach(async () => {
       await goto(groupPageAboutTab);
@@ -347,14 +338,14 @@ describe('authentication-and-redirect', () => {
 
     describe('after clicking on the Follow button', () => {
       beforeEach(async () => {
-        await goto(`localhost:8080/groups/${groupBSlug}`);
+        await goto(`localhost:8080/groups/${groupB.slug}`);
         await click('Follow');
       });
 
       it('returns to the group page', async () => {
         const result = await currentURL();
 
-        expect(result).toContain(`/groups/${groupBSlug}`);
+        expect(result).toContain(`/groups/${groupB.slug}`);
       });
     });
   });
