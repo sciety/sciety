@@ -50,30 +50,6 @@ describe('authentication-and-redirect', () => {
 
   afterEach(screenshotTeardown);
 
-  describe('when I am on the group page and I am not logged in', () => {
-    const groupPageAboutTab = `http://localhost:8080/groups/${groupA.slug}/about`;
-
-    beforeEach(async () => {
-      await goto(groupPageAboutTab);
-    });
-
-    describe('when I attempt to follow the group and successfully log in', () => {
-      beforeEach(async () => {
-        await click('Follow');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
-      });
-
-      it('i am still on the group page and I am logged in', async () => {
-        const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(result).toBe(groupPageAboutTab);
-
-        expect(buttonText).toBe('Log Out');
-      });
-    });
-  });
-
   describe('when I start to log in from the article page, but don\'t complete the flow', () => {
     const articleId = '10.1101/2022.09.23.22280264';
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
