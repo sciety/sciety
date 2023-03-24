@@ -10,6 +10,7 @@ const preReviewGroupId = GID.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d3
 const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
 const elifeGroupId = GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 const lifeScienceEditorsGroupId = GID.fromValidatedString('1480d2dd-463f-4834-8e81-d89c8ae2b86f');
+const lifeScienceEditorsFoundationGroupId = GID.fromValidatedString('f2c9eafa-6e24-4549-819c-09179e642b08');
 
 const supportedGroups = [
   arcadiaScienceGroupId,
@@ -21,6 +22,7 @@ const supportedGroups = [
   preReviewGroupId,
   rapidReviewsGroupId,
   lifeScienceEditorsGroupId,
+  lifeScienceEditorsFoundationGroupId,
 ];
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   supportedGroups.push(elifeGroupId);
