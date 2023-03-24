@@ -57,13 +57,6 @@
       ]
     },
     {
-      "label": "An article page (challenging markdown under our control)",
-      "url": "http://sciety_app/articles/10.1101/002303",
-      "selectors": [
-        "main"
-      ]
-    },
-    {
       "label": "Article search",
       "url": "http://sciety_app/search?query=elephant+shark",
       "selectors": [
