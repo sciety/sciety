@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { articleAddedToList } from '../../../src/domain-events';
-import { identifyFeedItems } from '../../../src/html-pages/sciety-feed-page/identify-feed-items';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
+import { articleAddedToList } from '../../../../src/domain-events';
+import { identifyFeedItems } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/identify-feed-items';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
 
 describe('identify-feed-items', () => {
   describe('when a single article is added to a list', () => {

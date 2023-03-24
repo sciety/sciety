@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { groupJoined, userFollowedEditorialCommunity } from '../../../../src/domain-events';
-import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from '../../../../src/html-pages/sciety-feed-page/cards/user-followed-a-group-card';
+import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
 import {
   arbitraryDate, arbitraryString, arbitraryUri,
 } from '../../../helpers';

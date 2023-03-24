@@ -1,21 +1,18 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToListCard, ArticleAddedToListCardPorts,
-  collapsedArticlesAddedToListCard,
-  CollapsedArticlesAddedToListCardPorts,
-  scietyFeedCard,
-  userFollowedAGroupCard, UserFollowedAGroupCardPorts,
-} from './cards';
-import {
   CollapsedArticlesAddedToList,
   isCollapsedArticlesAddedToList,
 } from './feed-item';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
-} from '../../domain-events';
-import { HtmlFragment } from '../../types/html-fragment';
+} from '../../../domain-events';
+import { HtmlFragment } from '../../../types/html-fragment';
+import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
+import { scietyFeedCard } from './sciety-feed-card';
+import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
+import { collapsedArticlesAddedToListCard, Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
 
 export type Ports =
   UserFollowedAGroupCardPorts

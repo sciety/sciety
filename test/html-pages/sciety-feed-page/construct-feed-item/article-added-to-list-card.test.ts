@@ -1,11 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/cards/collapsed-articles-added-to-list-card';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/cards/sciety-feed-card';
+import { articleAddedToList } from '../../../../src/domain-events';
+import { articleAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -13,7 +14,7 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
-describe('collapsed-articles-added-to-list-card', () => {
+describe('article-added-to-list-card', () => {
   describe('when a group owns the list', () => {
     it.todo('write tests');
   });
@@ -21,14 +22,7 @@ describe('collapsed-articles-added-to-list-card', () => {
   describe('when a user owns the list', () => {
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
-    const articleCount = arbitraryNumber(2, 10);
-    const event = {
-      type: 'CollapsedArticlesAddedToList' as const,
-      listId,
-      date,
-      articleCount,
-    };
-
+    const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const getAllEvents = T.of([]);
     const lookupList: LookupList = () => O.some({
       ...arbitraryList(),
@@ -51,9 +45,9 @@ describe('collapsed-articles-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      const viewModel: ScietyFeedCard = pipe(
+      const viewModel = pipe(
         event,
-        collapsedArticlesAddedToListCard(ports),
+        articleAddedToListCard(ports),
         O.getOrElseW(shouldNotBeCalled),
       );
 
@@ -72,10 +66,6 @@ describe('collapsed-articles-added-to-list-card', () => {
       it('includes the link to the list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
       });
-
-      it('includes the article count', async () => {
-        expect(viewModel.titleText).toContain(`${articleCount} articles`);
-      });
     });
 
     describe('when user details are not found', () => {
@@ -87,9 +77,9 @@ describe('collapsed-articles-added-to-list-card', () => {
         logger: dummyLogger,
       };
 
-      const viewModel: ScietyFeedCard = pipe(
+      const viewModel = pipe(
         event,
-        collapsedArticlesAddedToListCard(ports),
+        articleAddedToListCard(ports),
         O.getOrElseW(shouldNotBeCalled),
       );
 
@@ -105,12 +95,8 @@ describe('collapsed-articles-added-to-list-card', () => {
         expect(viewModel.date).toStrictEqual(date);
       });
 
-      it('includes the link to the list page', async () => {
+      it('includes the link to the generic list page', async () => {
         expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
-      });
-
-      it('includes the article count', async () => {
-        expect(viewModel.titleText).toContain(`${articleCount} articles`);
       });
     });
   });

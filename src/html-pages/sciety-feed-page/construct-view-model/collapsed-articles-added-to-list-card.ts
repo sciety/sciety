@@ -4,7 +4,7 @@ import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts 
 import { ScietyFeedCard } from './sciety-feed-card';
 import { LookupList } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { CollapsedArticlesAddedToList } from '../feed-item';
+import { CollapsedArticlesAddedToList } from './feed-item';
 
 export type Ports = {
   lookupList: LookupList,

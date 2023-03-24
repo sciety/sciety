@@ -4,7 +4,7 @@
 @use '../../sass/typography';
 @use '../../sass/breakpoints';
 @use '../../sass/feed-page-numbers';
-@use 'cards';
+@use 'construct-view-model';
 
 .sciety-feed-page-numbers {
   @include feed-page-numbers.feed-page-numbers();

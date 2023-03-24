@@ -6,9 +6,9 @@ import { FeedItem } from './feed-item';
 import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
-} from '../../domain-events';
-import { PageOfItems, paginate } from '../../shared-components/paginate';
-import * as DE from '../../types/data-error';
+} from '../../../domain-events';
+import { PageOfItems, paginate } from '../../../shared-components/paginate';
+import * as DE from '../../../types/data-error';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
   isUserFollowedEditorialCommunityEvent(event)
