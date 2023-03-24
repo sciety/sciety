@@ -14,7 +14,8 @@ import {
   userUnfollowedEditorialCommunity,
   userUnsavedArticle,
 } from '../../../src/domain-events';
-import { Ports, scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
+import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
+import { Ports } from '../../../src/html-pages/sciety-feed-page/construct-view-model/construct-view-model';
 import * as LOID from '../../../src/types/list-owner-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../helpers';
