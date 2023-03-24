@@ -56,18 +56,12 @@ jobs:
           .github/smoke-test.sh
 
       - name: Backstop test
-        if: github.ref == 'refs/heads/main'
         run: |
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
-        env:
-          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
 
       - name: Taiko
-        if: github.ref == 'refs/heads/main'
         run: |
           make taiko
-        env:
-          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
 
       - name: Push Image to Docker Hub
         if: github.ref == 'refs/heads/main'
