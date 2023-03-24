@@ -2,34 +2,19 @@ import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryString } from '../test/helpers';
 import { arbitraryReviewId } from '../test/types/review-id.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { arbitraryGroup } from '../test/types/group.helper';
 
-describe('authentication-and-redirect', () => {
+describe('respond', () => {
   const groupA = arbitraryGroup();
-  const groupB = arbitraryGroup();
-  const userId = arbitraryUserId();
-  const existingUserHandle = arbitraryUserHandle();
 
   beforeAll(async () => {
-    await callApi('api/create-user', {
-      userId,
-      handle: existingUserHandle,
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
     await callApi('api/add-group', {
       ...groupA,
       groupId: groupA.id,
-    });
-    await callApi('api/add-group', {
-      ...groupB,
-      groupId: groupB.id,
     });
     await callApi('api/record-evaluation', {
       groupId: groupA.id,
