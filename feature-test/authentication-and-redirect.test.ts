@@ -11,7 +11,6 @@ import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
-import { UserId } from '../src/types/user-id';
 import { UserHandle } from '../src/types/user-handle';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { arbitraryGroup } from '../test/types/group.helper';
@@ -20,12 +19,12 @@ describe('authentication-and-redirect', () => {
   const groupA = arbitraryGroup();
   const groupB = arbitraryGroup();
   const userId = arbitraryUserId();
-  const anotherUserHandle = arbitraryUserHandle();
+  const existingUserHandle = arbitraryUserHandle();
 
   beforeAll(async () => {
     await callApi('api/create-user', {
       userId,
-      handle: anotherUserHandle,
+      handle: existingUserHandle,
       avatarUrl: 'http://somethingthatproducesa404',
       displayName: arbitraryString(),
     });
@@ -64,8 +63,8 @@ describe('authentication-and-redirect', () => {
     ['Sciety feed page', '/sciety-feed'],
     ['Search page', '/search'],
     ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
-    ['User page, lists tab', `/users/${anotherUserHandle}/lists`],
-    ['User page, following tab', `/users/${anotherUserHandle}/lists`],
+    ['User page, lists tab', `/users/${existingUserHandle}/lists`],
+    ['User page, following tab', `/users/${existingUserHandle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(`localhost:8080${page}`);
@@ -237,17 +236,16 @@ describe('authentication-and-redirect', () => {
 
   describe('when I am not logged in', () => {
     describe('on completing the sign up journey', () => {
-      let newUserId: UserId;
-      let userHandle: UserHandle;
+      let newUserHandle: UserHandle;
 
       beforeEach(async () => {
-        newUserId = arbitraryUserId();
-        userHandle = arbitraryUserHandle();
+        const newUserId = arbitraryUserId();
+        newUserHandle = arbitraryUserHandle();
         await goto('localhost:8080/groups');
         await click('Sign Up');
         await completeLoginViaStubWithSpecifiedUserId(newUserId);
         await write('Full Name', into(textBox('Full name')));
-        await write(userHandle, into(textBox('Create a handle')));
+        await write(newUserHandle, into(textBox('Create a handle')));
         const createAccountButton = $('#createAccountButton');
         await click(createAccountButton);
       });
@@ -261,7 +259,7 @@ describe('authentication-and-redirect', () => {
       it('the handle I supplied is used for my account', async () => {
         const utilityBar = await $('.utility-bar').text();
 
-        expect(utilityBar).toContain(userHandle);
+        expect(utilityBar).toContain(newUserHandle);
       });
 
       it.todo('clicking the back button doesn\'t result in an error');
