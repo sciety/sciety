@@ -26,7 +26,7 @@ const toArticleCardWithControlsViewModel = (
     articleViewModel: T.of(articleViewModel),
     annotationContent: listOwnerId.tag === 'user-id' ? pipe(
       ports.getAllEvents,
-      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId.value)),
+      T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId)),
     ) : T.of(O.none),
     controls: pipe(
       editCapability,
