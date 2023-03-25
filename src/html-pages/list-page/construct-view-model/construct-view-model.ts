@@ -8,7 +8,7 @@ import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } f
 import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { LookupList } from '../../../shared-ports';
-import { listIdCodec } from '../../../types/list-id';
+import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
@@ -40,10 +40,11 @@ type ConstructContentViewModel = (
   params: Params,
   listOwnerId: ListOwnerId,
   editCapability: boolean,
+  listId: ListId,
 ) => TE.TaskEither<DE.DataError, ContentViewModel>;
 
 const constructContentViewModel: ConstructContentViewModel = (
-  articleIds, ports, params, listOwnerId, editCapability,
+  articleIds, ports, params, listOwnerId, editCapability, listId,
 ) => pipe(
   articleIds,
   RA.map((articleId) => new Doi(articleId)),
@@ -51,7 +52,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   TE.chainW(
     RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
       () => TE.right('no-articles' as const),
-      constructContentWithPaginationViewModel(ports, params.page, editCapability, listOwnerId),
+      constructContentWithPaginationViewModel(ports, params.page, editCapability, listId, listOwnerId),
     ),
   ),
   TE.orElse((left) => {
@@ -85,6 +86,7 @@ export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEit
       params,
       partialPageViewModel.listOwnerId,
       partialPageViewModel.editCapability,
+      partialPageViewModel.listId,
     ),
     TE.map((contentViewModel) => ({
       contentViewModel,

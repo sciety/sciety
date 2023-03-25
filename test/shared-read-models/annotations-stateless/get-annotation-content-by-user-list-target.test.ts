@@ -20,6 +20,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       const result = pipe(
         events,
         getAnnotationContentByUserListTarget(
+          listIdForAvasthiReadingUser,
           target.articleId,
         ),
       );
@@ -33,6 +34,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       const result = pipe(
         events,
         getAnnotationContentByUserListTarget(
+          listIdForAvasthiReadingUser,
           arbitraryArticleId(),
         ),
       );
