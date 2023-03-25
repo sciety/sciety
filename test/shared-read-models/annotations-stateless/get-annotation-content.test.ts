@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { annotationCreated } from '../../../src/domain-events';
-import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations-stateless';
+import { getAnnotationContent } from '../../../src/shared-read-models/annotations-stateless';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -19,7 +19,7 @@ describe('get-annotation-content-by-user-list-target', () => {
     describe('when an article in the AvasthiReading list has been annotated', () => {
       const result = pipe(
         events,
-        getAnnotationContentByUserListTarget(
+        getAnnotationContent(
           listIdForAvasthiReadingUser,
           target.articleId,
         ),
@@ -33,7 +33,7 @@ describe('get-annotation-content-by-user-list-target', () => {
     describe('when an article in the AvasthiReading list has not been annotated', () => {
       const result = pipe(
         events,
-        getAnnotationContentByUserListTarget(
+        getAnnotationContent(
           listIdForAvasthiReadingUser,
           arbitraryArticleId(),
         ),

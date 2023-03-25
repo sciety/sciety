@@ -9,7 +9,7 @@ import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-m
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { GetAllEvents } from '../../../shared-ports';
-import { getAnnotationContentByUserListTarget } from '../../../shared-read-models/annotations-stateless';
+import { getAnnotationContent } from '../../../shared-read-models/annotations-stateless';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
@@ -28,7 +28,7 @@ const toArticleCardWithControlsViewModel = (
     articleViewModel: T.of(articleViewModel),
     annotationContent: listOwnerId.tag === 'user-id' ? pipe(
       ports.getAllEvents,
-      T.map(getAnnotationContentByUserListTarget(listId, articleViewModel.articleId)),
+      T.map(getAnnotationContent(listId, articleViewModel.articleId)),
     ) : T.of(O.none),
     controls: pipe(
       editCapability,

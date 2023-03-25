@@ -1,1 +1,1 @@
-export { getAnnotationContentByUserListTarget } from './get-annotation-content-by-user-list-target';
+export { getAnnotationContent } from './get-annotation-content';
