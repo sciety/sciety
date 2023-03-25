@@ -15,7 +15,7 @@ export type ScietyFeedCard = {
 };
 
 export type ViewModel = {
-  cards: ReadonlyArray<HtmlFragment>,
+  cards: ReadonlyArray<ScietyFeedCard>,
   nextPage: O.Option<number>,
   numberOfPages: number,
   pageNumber: number,

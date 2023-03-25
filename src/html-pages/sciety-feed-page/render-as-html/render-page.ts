@@ -1,9 +1,12 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { templateListItems } from '../../../shared-components/list-items';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { supplementaryCard } from '../../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
+import { renderScietyFeedCard } from './render-sciety-feed-card';
 
 const supplementaryItems = [
   supplementaryCard(
@@ -16,18 +19,23 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderPage = (viewModel: ViewModel) => toHtmlFragment(`
-  <header class="page-header">
-    <h1>Sciety Feed</h1>
-  </header>
-  <section>
-    <p class="sciety-feed-page-numbers">
-      Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
-    </p>
-    <ol class="sciety-feed-list">
-      ${templateListItems(viewModel.cards, 'sciety-feed-list__item')}
-    </ol>
-    ${paginationControls('/sciety-feed?', viewModel.nextPage)}
-  </section>
-  ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
-`);
+export const renderPage = (viewModel: ViewModel) => pipe(
+  viewModel.cards,
+  RA.map(renderScietyFeedCard),
+  (cards) => `
+    <header class="page-header">
+      <h1>Sciety Feed</h1>
+    </header>
+    <section>
+      <p class="sciety-feed-page-numbers">
+        Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
+      </p>
+      <ol class="sciety-feed-list">
+        ${templateListItems(cards, 'sciety-feed-list__item')}
+      </ol>
+      ${paginationControls('/sciety-feed?', viewModel.nextPage)}
+    </section>
+    ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
+  `,
+  toHtmlFragment,
+);

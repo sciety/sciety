@@ -8,11 +8,10 @@ import {
   DomainEvent,
   isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
 } from '../../../domain-events';
-import { HtmlFragment } from '../../../types/html-fragment';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
-import { renderScietyFeedCard } from '../render-as-html/render-sciety-feed-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
 import { collapsedArticlesAddedToListCard, Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
+import { ScietyFeedCard } from '../view-model';
 
 export type Ports =
   UserFollowedAGroupCardPorts
@@ -23,12 +22,11 @@ export const eventCard = (
   ports: Ports,
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
-): O.Option<HtmlFragment> => {
+): O.Option<ScietyFeedCard> => {
   if (isUserFollowedEditorialCommunityEvent(event)) {
     return pipe(
       event,
       userFollowedAGroupCard(ports),
-      O.map(renderScietyFeedCard),
     );
   }
 
@@ -36,7 +34,6 @@ export const eventCard = (
     return pipe(
       event,
       articleAddedToListCard(ports),
-      O.map(renderScietyFeedCard),
     );
   }
 
@@ -44,7 +41,6 @@ export const eventCard = (
     return pipe(
       event,
       collapsedArticlesAddedToListCard(ports),
-      O.map(renderScietyFeedCard),
     );
   }
 
