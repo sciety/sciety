@@ -10,7 +10,7 @@ import {
 } from '../../../domain-events';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
-import { scietyFeedCard } from '../render-as-html/render-sciety-feed-card';
+import { renderScietyFeedCard } from '../render-as-html/render-sciety-feed-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
 import { collapsedArticlesAddedToListCard, Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
 
@@ -28,7 +28,7 @@ export const eventCard = (
     return pipe(
       event,
       userFollowedAGroupCard(ports),
-      O.map(scietyFeedCard),
+      O.map(renderScietyFeedCard),
     );
   }
 
@@ -36,7 +36,7 @@ export const eventCard = (
     return pipe(
       event,
       articleAddedToListCard(ports),
-      O.map(scietyFeedCard),
+      O.map(renderScietyFeedCard),
     );
   }
 
@@ -44,7 +44,7 @@ export const eventCard = (
     return pipe(
       event,
       collapsedArticlesAddedToListCard(ports),
-      O.map(scietyFeedCard),
+      O.map(renderScietyFeedCard),
     );
   }
 

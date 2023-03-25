@@ -1,11 +1,11 @@
-import { scietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/render-as-html/render-sciety-feed-card';
+import { renderScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/render-as-html/render-sciety-feed-card';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 
 describe('sciety-feed-card', () => {
   describe('when the view model doesn\'t contain details', () => {
     it('doesn\'t contain a details section', () => {
-      const rendered = scietyFeedCard({
+      const rendered = renderScietyFeedCard({
         titleText: arbitraryString(),
         avatarUrl: arbitraryUri(),
         date: arbitraryDate(),
@@ -18,7 +18,7 @@ describe('sciety-feed-card', () => {
 
   describe('when the view model contains details', () => {
     it('contains a details section', () => {
-      const rendered = scietyFeedCard({
+      const rendered = renderScietyFeedCard({
         titleText: arbitraryString(),
         avatarUrl: arbitraryUri(),
         date: arbitraryDate(),

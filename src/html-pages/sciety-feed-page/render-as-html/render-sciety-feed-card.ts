@@ -3,7 +3,7 @@ import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 
-export const scietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
+export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
   viewModel.details,
   (details) => (details
     ? `
