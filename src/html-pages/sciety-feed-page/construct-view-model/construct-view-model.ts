@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { eventCard, Ports as EventCardPorts } from './event-card';
+import { constructEventCard, Ports as EventCardPorts } from './construct-event-card';
 import { identifyFeedItems } from './identify-feed-items';
 import * as DE from '../../../types/data-error';
 import { GetAllEvents } from '../../../shared-ports';
@@ -31,7 +31,7 @@ export const constructViewModel: ConstructViewModel = (ports, pageSize) => (para
   T.map(identifyFeedItems(pageSize, params.page)),
   TE.chainW(({ items, ...rest }) => pipe(
     items,
-    O.traverseArray(eventCard(ports)),
+    O.traverseArray(constructEventCard(ports)),
     O.map((cards) => ({ cards, ...rest })),
     TE.fromOption(() => DE.notFound),
   )),

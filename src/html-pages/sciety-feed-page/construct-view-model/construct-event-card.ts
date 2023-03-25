@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import {
   CollapsedArticlesAddedToList,
   isCollapsedArticlesAddedToList,
@@ -18,30 +17,21 @@ export type Ports =
   & ArticleAddedToListCardPorts
   & CollapsedArticlesAddedToListCardPorts;
 
-export const eventCard = (
+export const constructEventCard = (
   ports: Ports,
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
 ): O.Option<ScietyFeedCard> => {
   if (isUserFollowedEditorialCommunityEvent(event)) {
-    return pipe(
-      event,
-      userFollowedAGroupCard(ports),
-    );
+    return userFollowedAGroupCard(ports)(event);
   }
 
   if (isArticleAddedToListEvent(event)) {
-    return pipe(
-      event,
-      articleAddedToListCard(ports),
-    );
+    return articleAddedToListCard(ports)(event);
   }
 
   if (isCollapsedArticlesAddedToList(event)) {
-    return pipe(
-      event,
-      collapsedArticlesAddedToListCard(ports),
-    );
+    return collapsedArticlesAddedToListCard(ports)(event);
   }
 
   return O.none;
