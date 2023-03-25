@@ -1,4 +1,4 @@
-import { scietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/sciety-feed-card';
+import { scietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/render-as-html/render-sciety-feed-card';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 

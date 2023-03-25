@@ -10,7 +10,7 @@ import {
 } from '../../../domain-events';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
-import { scietyFeedCard } from './sciety-feed-card';
+import { scietyFeedCard } from '../render-as-html/render-sciety-feed-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
 import { collapsedArticlesAddedToListCard, Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
 
