@@ -8,7 +8,7 @@ import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-m
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { GetAllEvents } from '../../../shared-ports';
-import { getAnnotationContentByUserListTarget } from '../../../shared-read-models/annotations';
+import { getAnnotationContentByUserListTarget } from '../../../shared-read-models/annotations-stateless';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';

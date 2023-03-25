@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { annotationCreated } from '../../../src/domain-events';
-import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations';
+import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations-stateless';
 import * as LID from '../../../src/types/list-id';
 import { userIdCodec } from '../../../src/types/user-id';
 import { arbitraryHtmlFragment } from '../../helpers';
