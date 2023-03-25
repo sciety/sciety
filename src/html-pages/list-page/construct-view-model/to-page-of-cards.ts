@@ -1,6 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -11,7 +10,6 @@ import { PageOfItems } from '../../../shared-components/paginate';
 import { GetAllEvents } from '../../../shared-ports';
 import { getAnnotationContent } from '../../../shared-read-models/annotations-stateless';
 import { ArticleActivity } from '../../../types/article-activity';
-import { ListOwnerId } from '../../../types/list-owner-id';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
 import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
 import { ListId } from '../../../types/list-id';
@@ -22,14 +20,13 @@ const toArticleCardWithControlsViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
-  listOwnerId: ListOwnerId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
     articleViewModel: T.of(articleViewModel),
-    annotationContent: listOwnerId.tag === 'user-id' ? pipe(
+    annotationContent: pipe(
       ports.getAllEvents,
       T.map(getAnnotationContent(listId, articleViewModel.articleId)),
-    ) : T.of(O.none),
+    ),
     controls: pipe(
       editCapability,
       T.of,
@@ -42,7 +39,6 @@ export const toPageOfCards = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
-  listOwnerId: ListOwnerId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
@@ -53,7 +49,7 @@ export const toPageOfCards = (
     E.foldW(
       TE.left,
       flow(
-        toArticleCardWithControlsViewModel(ports, editCapability, listId, listOwnerId),
+        toArticleCardWithControlsViewModel(ports, editCapability, listId),
         T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
       ),
     ),

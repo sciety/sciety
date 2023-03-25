@@ -6,7 +6,6 @@ import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
-import { ListOwnerId } from '../../../types/list-owner-id';
 import { ContentWithPaginationViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 
@@ -17,7 +16,6 @@ export const constructContentWithPaginationViewModel = (
   pageNumber: number,
   editCapability: boolean,
   listId: ListId,
-  listOwnerId: ListOwnerId,
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
   paginate(20, pageNumber),
@@ -25,7 +23,7 @@ export const constructContentWithPaginationViewModel = (
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
-    toPageOfCards(ports, editCapability, listId, listOwnerId),
+    toPageOfCards(ports, editCapability, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),
 );
