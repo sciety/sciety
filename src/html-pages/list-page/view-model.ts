@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -10,7 +11,7 @@ type Message = 'no-articles' | 'no-articles-can-be-fetched';
 export type ArticleCardWithControlsViewModel = {
   articleViewModel: ArticleViewModel,
   controls: boolean,
-  annotationContent?: HtmlFragment,
+  annotationContent: O.Option<HtmlFragment>,
 };
 
 export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;

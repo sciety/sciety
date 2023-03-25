@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -26,7 +27,7 @@ const toArticleCardWithControlsViewModel = (
     annotationContent: listOwnerId.tag === 'user-id' ? pipe(
       ports.getAllEvents,
       T.map(getAnnotationContentByUserListTarget(articleViewModel.articleId, listOwnerId.value)),
-    ) : T.of(undefined),
+    ) : T.of(O.none),
     controls: pipe(
       editCapability,
       T.of,

@@ -12,7 +12,7 @@ import { UserId, userIdCodec } from '../../types/user-id';
 
 type GetAnnotationContentByUserListTarget = (articleId: Doi, listOwnerId: UserId)
 => (events: ReadonlyArray<DomainEvent>)
-=> HtmlFragment | undefined;
+=> O.Option<HtmlFragment>;
 
 const listIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
 
@@ -29,7 +29,7 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
     E.isRight,
   );
   if (!isAuthorised) {
-    return undefined;
+    return O.none;
   }
 
   return pipe(
@@ -37,9 +37,6 @@ export const getAnnotationContentByUserListTarget: GetAnnotationContentByUserLis
     RA.filter(isAnnotationCreatedEvent),
     RA.filter((event) => eqAnnotationTarget.equals(event.target, queryTarget(articleId))),
     RA.head,
-    O.fold(
-      () => undefined,
-      (event) => toHtmlFragment(event.content),
-    ),
+    O.map((event) => toHtmlFragment(event.content)),
   );
 };

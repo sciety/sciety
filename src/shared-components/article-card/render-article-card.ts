@@ -56,15 +56,18 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderAnnotationContent = (content: undefined | HtmlFragment) => (
-  content !== undefined
-    ? `
+const renderAnnotationContent = (content: O.Option<HtmlFragment>) => pipe(
+  content,
+  O.match(
+    () => '',
+    (annotation) => `
       <section class="article-card-annotation">
         <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
-        <p>${content}</p>
+        <p>${annotation}</p>
       </section>
-    `
-    : '');
+    `,
+  ),
+);
 
 const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
@@ -82,7 +85,7 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent?: HtmlFragment): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent: O.Option<HtmlFragment>): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}

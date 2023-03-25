@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { annotationCreated } from '../../../src/domain-events';
 import { getAnnotationContentByUserListTarget } from '../../../src/shared-read-models/annotations-stateless';
 import * as LID from '../../../src/types/list-id';
@@ -35,7 +36,7 @@ describe('get-annotation-content-by-user-list-target', () => {
       );
 
       it('returns the annotation content as HTML', () => {
-        expect(result).toBe(annotationContent);
+        expect(result).toStrictEqual(O.some(annotationContent));
       });
     });
 
@@ -48,8 +49,8 @@ describe('get-annotation-content-by-user-list-target', () => {
         ),
       );
 
-      it('returns undefined', () => {
-        expect(result).toBeUndefined();
+      it('returns no annotation', () => {
+        expect(result).toStrictEqual(O.none);
       });
     });
 
@@ -62,8 +63,8 @@ describe('get-annotation-content-by-user-list-target', () => {
         ),
       );
 
-      it('returns undefined', () => {
-        expect(result).toBeUndefined();
+      it('returns no annotation', () => {
+        expect(result).toStrictEqual(O.none);
       });
     });
   });
