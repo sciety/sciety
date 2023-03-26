@@ -3,6 +3,7 @@
 import { DomainEvent } from '../../domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
+import { isAnnotationCreatedEvent } from '../../domain-events/annotation-created-event';
 
 type ListState = Record<string, HtmlFragment>;
 
@@ -12,4 +13,11 @@ export type ReadModel = Record<ListId, ListState>;
 export const initialState = (): ReadModel => ({});
 
 // ts-unused-exports:disable-next-line
-export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;
+export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+  if (isAnnotationCreatedEvent(event)) {
+    const listState = readmodel[event.target.listId] ?? {};
+    listState[event.target.articleId.value] = event.content;
+    readmodel[event.target.listId] = listState;
+  }
+  return readmodel;
+};
