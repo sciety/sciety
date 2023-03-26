@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -23,17 +22,10 @@ const toArticleCardWithControlsViewModel = (
   listId: ListId,
 ) => (articleViewModel: ArticleViewModel) => pipe(
   {
-    articleViewModel: T.of(articleViewModel),
-    annotationContent: pipe(
-      ports.getAnnotationContent(listId, articleViewModel.articleId),
-      T.of,
-    ),
-    controls: pipe(
-      editCapability,
-      T.of,
-    ),
+    articleViewModel,
+    annotationContent: ports.getAnnotationContent(listId, articleViewModel.articleId),
+    controls: editCapability,
   },
-  sequenceS(T.ApplyPar),
 );
 
 export const toPageOfCards = (
@@ -51,7 +43,7 @@ export const toPageOfCards = (
       TE.left,
       flow(
         toArticleCardWithControlsViewModel(ports, editCapability, listId),
-        T.map((card) => E.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card)),
+        (card) => TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card),
       ),
     ),
   )),
