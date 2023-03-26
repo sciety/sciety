@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { DomainEvent } from '../../domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -9,13 +8,11 @@ type ListState = Record<string, HtmlFragment>;
 
 export type ReadModel = Record<LID.ListId, ListState>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
 
 const targetListIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
 const actualListIdForAvasthiReadingUser = LID.fromValidatedString('dcc7c864-6630-40e7-8eeb-9fb6f012e92b');
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isAnnotationCreatedEvent(event)) {
     const listState = readmodel[event.target.listId] ?? {};
