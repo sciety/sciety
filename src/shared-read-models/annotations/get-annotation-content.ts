@@ -7,7 +7,7 @@ import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
 
-type GetAnnotationContent = (listId: ListId, articleId: Doi) => O.Option<HtmlFragment>;
+export type GetAnnotationContent = (listId: ListId, articleId: Doi) => O.Option<HtmlFragment>;
 
 // ts-unused-exports:disable-next-line
 export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, articleId) => pipe(
