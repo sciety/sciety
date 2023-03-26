@@ -2,15 +2,18 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent } from '../../domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
+import * as LID from '../../types/list-id';
 import { isAnnotationCreatedEvent } from '../../domain-events/annotation-created-event';
 
 type ListState = Record<string, HtmlFragment>;
 
-export type ReadModel = Record<ListId, ListState>;
+export type ReadModel = Record<LID.ListId, ListState>;
 
 // ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
+
+const targetListIdForAvasthiReadingUser = LID.fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7');
+const actualListIdForAvasthiReadingUser = LID.fromValidatedString('dcc7c864-6630-40e7-8eeb-9fb6f012e92b');
 
 // ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
@@ -18,6 +21,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     const listState = readmodel[event.target.listId] ?? {};
     listState[event.target.articleId.value] = event.content;
     readmodel[event.target.listId] = listState;
+    if (event.target.listId === targetListIdForAvasthiReadingUser) {
+      const actualListState = readmodel[actualListIdForAvasthiReadingUser] ?? {};
+      actualListState[event.target.articleId.value] = event.content;
+      readmodel[actualListIdForAvasthiReadingUser] = actualListState;
+    }
   }
   return readmodel;
 };
