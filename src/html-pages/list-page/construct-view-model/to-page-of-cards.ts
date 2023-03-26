@@ -7,14 +7,16 @@ import { flow, pipe } from 'fp-ts/function';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
-import { GetAllEvents } from '../../../shared-ports';
-import { getAnnotationContent } from '../../../shared-read-models/annotations-stateless';
+import { GetAllEvents, GetAnnotationContent } from '../../../shared-ports';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
 import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
 import { ListId } from '../../../types/list-id';
 
-export type Ports = ToCardViewModelPorts & { getAllEvents: GetAllEvents };
+export type Ports = ToCardViewModelPorts & {
+  getAllEvents: GetAllEvents,
+  getAnnotationContent: GetAnnotationContent,
+};
 
 const toArticleCardWithControlsViewModel = (
   ports: Ports,
@@ -24,8 +26,8 @@ const toArticleCardWithControlsViewModel = (
   {
     articleViewModel: T.of(articleViewModel),
     annotationContent: pipe(
-      ports.getAllEvents,
-      T.map(getAnnotationContent(listId, articleViewModel.articleId)),
+      ports.getAnnotationContent(listId, articleViewModel.articleId),
+      T.of,
     ),
     controls: pipe(
       editCapability,
