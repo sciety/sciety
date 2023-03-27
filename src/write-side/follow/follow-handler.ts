@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
+import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler, Ports as FollowCommandPorts } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
@@ -13,6 +14,7 @@ import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 
 export const groupProperty = 'groupid';
 
@@ -29,12 +31,19 @@ const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
   })),
 );
 
+const requestCodec = t.type({
+  body: t.type({
+    [groupProperty]: GroupIdFromString,
+  }),
+});
+
 export const followHandler = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
-    context.request.body[groupProperty],
-    GroupId.fromNullable,
-    TE.fromOption(() => DE.notFound),
-    TE.chainEitherK(validate(ports)),
+    context.request,
+    requestCodec.decode,
+    E.map((request) => request.body[groupProperty]),
+    TE.fromEither,
+    TE.chainEitherKW(validate(ports)),
     TE.fold(
       () => {
         ports.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
