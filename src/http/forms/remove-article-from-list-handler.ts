@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
@@ -66,11 +67,21 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
   TE.chainW(removeArticleFromListCommandHandler(adapters)),
 );
 
+const requestCodec = t.type({
+  body: t.type({
+    articleid: t.unknown,
+    listid: t.unknown,
+  }),
+});
+
 export const removeArticleFromListHandler = (adapters: Ports): Middleware => async (context, next) => {
   const user = getLoggedInScietyUser(adapters, context);
   await pipe(
-    context.request.body,
-    handleFormSubmission(adapters, user),
+    context.request,
+    requestCodec.decode,
+    TE.fromEither,
+    TE.map((request) => request.body),
+    TE.chainW(handleFormSubmission(adapters, user)),
     TE.mapLeft(() => {
       context.redirect('/action-failed');
     }),

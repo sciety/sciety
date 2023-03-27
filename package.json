@@ -56,7 +56,7 @@
     "@types/jest": "^29.5.0",
     "@types/jsdom": "^21.1.1",
     "@types/koa": "^2.13.5",
-    "@types/koa-bodyparser": "^4.3.9",
+    "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-compose": "^3.2.5",
     "@types/koa-passport": "^4.0.3",
     "@types/koa-send": "^4.1.3",
