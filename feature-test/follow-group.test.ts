@@ -6,11 +6,13 @@ import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 import { callApi } from './helpers/call-api.helper';
 import { arbitraryGroup } from '../test/types/group.helper';
+import { Group } from '../src/types/group';
 
 describe('follow a group', () => {
-  const group = arbitraryGroup();
+  let group: Group;
 
   beforeEach(async () => {
+    group = arbitraryGroup();
     await openBrowser();
     await callApi('api/add-group', {
       ...group,
