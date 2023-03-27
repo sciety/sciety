@@ -18,4 +18,5 @@ export const callApi = async (endpoint: string, payload: Record<string, unknown>
     data: reason.response.data,
     payload,
   });
+  throw reason;
 });
