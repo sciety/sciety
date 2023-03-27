@@ -9,6 +9,7 @@ import * as GID from '../../src/types/group-id';
 import * as UID from '../../src/types/user-id';
 import * as LOID from '../../src/types/list-owner-id';
 import { listCodec } from '../../src/types/list';
+import { ListId } from '../../src/types/list-id';
 
 const responseCodec = t.type({
   data: t.type({
@@ -16,7 +17,7 @@ const responseCodec = t.type({
   }),
 });
 
-const fetchFirstListOwnedBy = async (ownerId: string): Promise<string> => pipe(
+const fetchFirstListOwnedBy = async (ownerId: string): Promise<ListId> => pipe(
   TE.tryCatch(
     async () => axios.get(`http://localhost:8080/api/lists/owned-by/${ownerId}`),
     String,
@@ -32,14 +33,14 @@ const fetchFirstListOwnedBy = async (ownerId: string): Promise<string> => pipe(
   ),
 )();
 
-export const getIdOfFirstListOwnedByUser = async (userId: UID.UserId): Promise<string> => pipe(
+export const getIdOfFirstListOwnedByUser = async (userId: UID.UserId): Promise<ListId> => pipe(
   userId,
   LOID.fromUserId,
   LOID.toString,
   fetchFirstListOwnedBy,
 );
 
-export const getIdOfFirstListOwnedByGroup = async (groupId: GID.GroupId): Promise<string> => pipe(
+export const getIdOfFirstListOwnedByGroup = async (groupId: GID.GroupId): Promise<ListId> => pipe(
   groupId,
   LOID.fromGroupId,
   LOID.toString,
