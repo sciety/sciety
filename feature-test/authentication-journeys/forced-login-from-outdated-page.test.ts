@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  $, click, currentURL, goto, openBrowser, openTab, closeTab,
+  click, currentURL, goto, openBrowser, openTab, switchTo,
 } from 'taiko';
 import { arbitraryString } from '../../test/helpers';
 import { callApi } from '../helpers/call-api.helper';
@@ -42,21 +42,12 @@ describe('forced-login-from-outdated-page', () => {
       beforeEach(async () => {
         await openTab('localhost:8080/');
         await click('Log out');
-        await closeTab('http://localhost:8080/');
       });
 
       describe('when I go back to the original tab and I attempt to save the article', () => {
         beforeEach(async () => {
+          await switchTo(new RegExp(articlePage));
           console.log(await currentURL());
-          await $('body').text()
-            .then((body) => {
-              console.log('Page body:', body);
-              return undefined;
-            })
-            .catch((reason) => {
-              console.log('Await body failed:', reason);
-              return undefined;
-            });
           await click('Save article');
         });
 
