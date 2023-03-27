@@ -1,7 +1,6 @@
 import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryGroup } from '../../test/types/group.helper';
@@ -15,10 +14,7 @@ describe('login-via-call-to-action', () => {
 
   beforeAll(async () => {
     await api.createUser(userDetails);
-    await callApi('api/add-group', {
-      ...groupA,
-      groupId: groupA.id,
-    });
+    await api.addGroup(groupA);
   });
 
   beforeEach(async () => {
