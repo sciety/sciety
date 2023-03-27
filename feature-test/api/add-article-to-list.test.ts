@@ -2,11 +2,10 @@ import {
   $, goto, openBrowser,
 } from 'taiko';
 import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
-import { arbitraryString, arbitraryUri } from '../../test/helpers';
 import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
-import { arbitraryGroupId } from '../../test/types/group-id.helper';
-import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
+import { arbitraryGroup } from '../../test/types/group.helper';
+import * as api from '../helpers/api-helpers';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {
@@ -20,17 +19,9 @@ describe('add an article to a list', () => {
     let listId: string;
 
     beforeEach(async () => {
-      const groupId = arbitraryGroupId();
-      await callApi('api/add-group', {
-        groupId,
-        name: arbitraryString(),
-        shortDescription: arbitraryString(),
-        homepage: arbitraryString(),
-        avatarPath: arbitraryUri(),
-        descriptionPath: arbitraryDescriptionPath(),
-        slug: arbitraryString(),
-      });
-      listId = await getIdOfFirstListOwnedByGroup(groupId);
+      const group = arbitraryGroup();
+      await api.addGroup(group);
+      listId = await getIdOfFirstListOwnedByGroup(group.id);
       await callApi('api/add-article-to-list', { articleId, listId });
     });
 
