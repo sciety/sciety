@@ -1,27 +1,20 @@
 import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { arbitraryString } from '../../test/helpers';
 import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
-import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryGroup } from '../../test/types/group.helper';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import * as api from '../helpers/api-helpers';
+import { arbitraryUserDetails } from '../../test/types/user-details.helper';
 
 describe('login-via-call-to-action', () => {
   const groupA = arbitraryGroup();
-  const userId = arbitraryUserId();
-  const existingUserHandle = arbitraryUserHandle();
+  const userDetails = arbitraryUserDetails();
 
   beforeAll(async () => {
-    await callApi('api/create-user', {
-      userId,
-      handle: existingUserHandle,
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
+    await api.createUser(userDetails);
     await callApi('api/add-group', {
       ...groupA,
       groupId: groupA.id,
@@ -44,7 +37,7 @@ describe('login-via-call-to-action', () => {
     describe('when I attempt to follow the group and successfully log in', () => {
       beforeEach(async () => {
         await click('Follow');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
       });
 
       it('i am still on the group page and I am logged in', async () => {
@@ -65,7 +58,7 @@ describe('login-via-call-to-action', () => {
       beforeEach(async () => {
         await goto(articlePage);
         await click('Log in to save this article');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
       });
 
       it('i am still on the article page and I am logged in', async () => {
