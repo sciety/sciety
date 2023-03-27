@@ -1,5 +1,5 @@
 import {
-  $, click, goto, openBrowser, into, write, textBox,
+  $, click, goto, openBrowser, into, write, textBox, currentURL,
 } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
@@ -16,11 +16,12 @@ describe('signup', () => {
 
   describe('on completing the sign up journey', () => {
     let newUserHandle: UserHandle;
+    const startingPage = 'http://localhost:8080/groups';
 
     beforeEach(async () => {
       const newUserId = arbitraryUserId();
       newUserHandle = arbitraryUserHandle();
-      await goto('localhost:8080/groups');
+      await goto(startingPage);
       await click('Sign Up');
       await completeLoginViaStubWithSpecifiedUserId(newUserId);
       await write('Full Name', into(textBox('Full name')));
@@ -39,6 +40,12 @@ describe('signup', () => {
       const utilityBar = await $('.utility-bar').text();
 
       expect(utilityBar).toContain(newUserHandle);
+    });
+
+    it('i am back on my starting page', async () => {
+      const currentPage = await currentURL();
+
+      expect(currentPage).toBe(startingPage);
     });
 
     it.todo('clicking the back button doesn\'t result in an error');
