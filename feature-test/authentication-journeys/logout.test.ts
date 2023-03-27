@@ -1,9 +1,10 @@
 import {
-  $, click, openBrowser,
+  $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
+import { arbitraryArticleId } from '../../test/types/article-id.helper';
 
 describe('logout', () => {
   beforeEach(async () => {
@@ -19,6 +20,7 @@ describe('logout', () => {
 
     describe('after clicking the Log Out button', () => {
       beforeEach(async () => {
+        await goto(`localhost:8080/articles/${arbitraryArticleId().value}`);
         await click('Log Out');
       });
 
@@ -26,6 +28,12 @@ describe('logout', () => {
         const buttonText = await $('.utility-bar__list_link_button').text();
 
         expect(buttonText).toBe('Log In');
+      });
+
+      it('i am on the home page', async () => {
+        const currentPage = await currentURL();
+
+        expect(currentPage).toBe('http://localhost:8080/');
       });
 
       it.todo('clicking the back button doesn\'t result in an error');
