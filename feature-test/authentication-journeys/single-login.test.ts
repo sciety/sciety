@@ -2,31 +2,20 @@
 import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { arbitraryString } from '../../test/helpers';
-import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
-import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
 import { arbitraryGroup } from '../../test/types/group.helper';
+import * as api from '../helpers/api-helpers';
+import { arbitraryUserDetails } from '../../test/types/user-details.helper';
 
 describe('single-login', () => {
   const groupA = arbitraryGroup();
-  const userId = arbitraryUserId();
-  const existingUserHandle = arbitraryUserHandle();
+  const userDetails = arbitraryUserDetails();
 
   beforeAll(async () => {
-    await callApi('api/create-user', {
-      userId,
-      handle: existingUserHandle,
-      avatarUrl: 'http://somethingthatproducesa404',
-      displayName: arbitraryString(),
-    });
-    await callApi('api/add-group', {
-      ...groupA,
-      groupId: groupA.id,
-    });
+    await api.createUser(userDetails);
+    await api.addGroup(groupA);
   });
 
   beforeEach(async () => {
@@ -47,8 +36,8 @@ describe('single-login', () => {
     ['Sciety feed page', '/sciety-feed'],
     ['Search page', '/search'],
     ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
-    ['User page, lists tab', `/users/${existingUserHandle}/lists`],
-    ['User page, following tab', `/users/${existingUserHandle}/lists`],
+    ['User page, lists tab', `/users/${userDetails.handle}/lists`],
+    ['User page, following tab', `/users/${userDetails.handle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(`localhost:8080${page}`);
@@ -57,7 +46,7 @@ describe('single-login', () => {
     describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
       });
 
       it(`i am still on the ${name} and I am logged in`, async () => {
@@ -76,14 +65,14 @@ describe('single-login', () => {
     let page: string;
 
     beforeEach(async () => {
-      page = `/lists/${await getIdOfFirstListOwnedByUser(userId)}`;
+      page = `/lists/${await getIdOfFirstListOwnedByUser(userDetails.id)}`;
       await goto(`localhost:8080${page}`);
     });
 
     describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
-        await completeLoginViaStubWithSpecifiedUserId(userId);
+        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
       });
 
       it('i am still on the List page and I am logged in', async () => {
