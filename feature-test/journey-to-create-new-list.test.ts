@@ -1,33 +1,24 @@
 import {
   click, goto, into, openBrowser, textBox, write, $, currentURL,
 } from 'taiko';
-import { UserHandle } from '../src/types/user-handle';
 import { arbitraryString, arbitraryWord } from '../test/helpers';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
-import { UserId } from '../src/types/user-id';
+import { UserDetails } from '../src/types/user-details';
+import { arbitraryUserDetails } from '../test/types/user-details.helper';
+import * as apiHelpers from './helpers/api-helpers';
 
 describe('journey-to-create-new-list', () => {
   describe('when the user is on their My Lists page', () => {
-    let userId: UserId;
-    let userHandle: UserHandle;
+    let userDetails: UserDetails;
 
     beforeEach(async () => {
-      userId = arbitraryUserId();
-      userHandle = arbitraryUserHandle();
-      await callApi('api/create-user', {
-        userId,
-        handle: userHandle,
-        avatarUrl: 'http://somethingthatproducesa404',
-        displayName: arbitraryString(),
-      });
+      userDetails = arbitraryUserDetails();
+      await apiHelpers.createUser(userDetails);
       await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
-      await completeLoginViaStubWithSpecifiedUserId(userId);
+      await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
       await click('My Lists');
     });
 
@@ -50,7 +41,7 @@ describe('journey-to-create-new-list', () => {
         const finalPage = await currentURL();
         const finalPageContent = await $('main').text();
 
-        expect(finalPage).toContain(`/users/${userHandle}/lists`);
+        expect(finalPage).toContain(`/users/${userDetails.handle}/lists`);
         expect(finalPageContent).toContain(listName);
         expect(finalPageContent).toContain(listDescription);
       });
@@ -70,7 +61,7 @@ describe('journey-to-create-new-list', () => {
         const finalPage = await currentURL();
         const finalPageContent = await $('main').text();
 
-        expect(finalPage).toContain(`/users/${userHandle}/lists`);
+        expect(finalPage).toContain(`/users/${userDetails.handle}/lists`);
         expect(finalPageContent).toContain(listName);
       });
     });
