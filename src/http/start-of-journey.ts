@@ -16,6 +16,9 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
 );
 
 export const rememberPreviousPageAsStartOfJourney: Middleware = async (context: ParameterizedContext, next) => {
+  if (context.session === null) {
+    throw new Error('Session not found in context');
+  }
   context.session.startOfJourney = context.request.headers.referer ?? '/';
   await next();
 };
@@ -27,5 +30,7 @@ export const redirectToStartOfJourney = (context: ParameterizedContext) => {
     E.getOrElse(() => '/'),
   );
   context.redirect(target);
-  delete context.session.startOfJourney;
+  if (context.session) {
+    delete context.session.startOfJourney;
+  }
 };
