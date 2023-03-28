@@ -50,13 +50,13 @@ const configureAuth0Routes = (
 
   router.get(
     signUpRoute,
-    rememberPreviousPageAsStartOfJourney,
+    rememberPreviousPageAsStartOfJourney('sciety.org'),
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    rememberPreviousPageAsStartOfJourney,
+    rememberPreviousPageAsStartOfJourney('sciety.org'),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 

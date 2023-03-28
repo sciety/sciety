@@ -16,11 +16,13 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   E.map((ctx) => ctx.session.startOfJourney),
 );
 
-export const rememberPreviousPageAsStartOfJourney: Middleware = async (context: ParameterizedContext, next) => {
+export const rememberPreviousPageAsStartOfJourney = (
+  hostname: string,
+): Middleware => async (context: ParameterizedContext, next) => {
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
-  context.session.startOfJourney = checkReferer(context.request.headers.referer, 'sciety.org');
+  context.session.startOfJourney = checkReferer(context.request.headers.referer, hostname);
   await next();
 };
 
