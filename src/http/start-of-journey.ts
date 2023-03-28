@@ -20,7 +20,7 @@ export const rememberPreviousPageAsStartOfJourney: Middleware = async (context: 
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
-  context.session.startOfJourney = checkReferer(context.request.headers.referer);
+  context.session.startOfJourney = checkReferer(context.request.headers.referer, 'sciety.org');
   await next();
 };
 
