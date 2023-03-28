@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
+import { checkReferer } from './check-referer';
 
 const referringPageCodec = t.type({
   session: t.type({
@@ -14,8 +15,6 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   referringPageCodec.decode,
   E.map((ctx) => ctx.session.startOfJourney),
 );
-
-const checkReferer = (referer: string | undefined) => referer ?? '/';
 
 export const rememberPreviousPageAsStartOfJourney: Middleware = async (context: ParameterizedContext, next) => {
   if (context.session === null) {
