@@ -1,11 +1,17 @@
+import { checkReferer } from '../../src/http/check-referer';
+
 describe('check-referer', () => {
   describe('when a referer is not provided', () => {
-    it.todo('defaults to homepage');
+    it('defaults to homepage', () => {
+      expect(checkReferer(undefined)).toBe('/');
+    });
   });
 
   describe('when a referer is provided', () => {
     describe('and it matches the application hostname', () => {
-      it.todo('uses the provided referer');
+      it('uses the provided referer', () => {
+        expect(checkReferer('https://sciety.org/sciety-feed')).toBe('https://sciety.org/sciety-feed');
+      });
     });
 
     describe('and it does not match the application hostname', () => {
