@@ -15,7 +15,9 @@ describe('check-referer', () => {
     });
 
     describe('and it does not match the application hostname', () => {
-      it.todo('defaults to the homepage');
+      it.failing('defaults to the homepage', () => {
+        expect(checkReferer('https://t.co/j2ZLHZRBXb')).toBe('/');
+      });
     });
   });
 });
