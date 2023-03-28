@@ -1,5 +1,6 @@
 /* eslint-disable padded-blocks */
 import Router from '@koa/router';
+import { URL } from 'url';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import * as t from 'io-ts';
@@ -27,6 +28,12 @@ const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
 const logOutRoute = '/log-out';
 
+const retrieveApplicationHostname = (config: Config) => pipe(
+  config.APP_ORIGIN,
+  (url) => new URL(url),
+  (url) => url.hostname,
+);
+
 const configureAuth0Routes = (
   router: Router,
   adapters: CollectedPorts,
@@ -50,13 +57,13 @@ const configureAuth0Routes = (
 
   router.get(
     signUpRoute,
-    rememberPreviousPageAsStartOfJourney('sciety.org'),
+    rememberPreviousPageAsStartOfJourney(retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    rememberPreviousPageAsStartOfJourney('sciety.org'),
+    rememberPreviousPageAsStartOfJourney(retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 
