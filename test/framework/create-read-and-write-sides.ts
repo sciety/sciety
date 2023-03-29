@@ -7,6 +7,7 @@ import { createListCommandHandler } from '../../src/write-side/create-list';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 import { createInMemoryEventstore } from '../../src/eventstore/create-in-memory-eventstore';
+import { DomainEvent } from '../../src/domain-events';
 
 type CommandHandlers = {
   addArticleToList: ReturnType<typeof addArticleToListCommandHandler>,
@@ -25,7 +26,7 @@ export type ReadAndWriteSides = {
 
 export const createReadAndWriteSides = (): ReadAndWriteSides => {
   const { dispatchToAllReadModels, queries } = dispatcher();
-  const eventStore = createInMemoryEventstore(dispatchToAllReadModels);
+  const eventStore = createInMemoryEventstore<DomainEvent>(dispatchToAllReadModels);
   const commandHandlers = {
     addArticleToList: addArticleToListCommandHandler(eventStore),
     createGroup: createGroup(eventStore),

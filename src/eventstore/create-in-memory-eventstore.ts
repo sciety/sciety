@@ -1,40 +1,30 @@
-import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { DomainEvent } from '../../src/domain-events';
-import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { CommandResult } from '../../src/types/command-result';
 
-type DispatchToAllListeners = (events: ReadonlyArray<DomainEvent>) => void;
+type CommandResult = 'events-created' | 'no-events-created';
 
-const commitEvents = (
-  inMemoryEvents: Array<DomainEvent>,
-  dispatchToAllListeners: (events: ReadonlyArray<DomainEvent>) => void,
-): CommitEvents => (events) => pipe(
-  events,
-  RA.match(
-    () => ('no-events-created' as CommandResult),
-    (es) => {
-      pipe(
-        es,
-        RA.map((event) => { inMemoryEvents.push(event); return event; }),
-      );
-      dispatchToAllListeners(es);
-      return 'events-created' as CommandResult;
-    },
-  ),
-  T.of,
-);
+type DispatchToAllListeners<V> = (items: ReadonlyArray<V>) => void;
 
-type Eventstore = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
+const commitEvents = <V>(
+  store: Array<V>,
+  dispatchToAllListeners: DispatchToAllListeners<V>,
+) => (items: ReadonlyArray<V>) => {
+    if (items.length === 0) {
+      return T.of('no-events-created' as CommandResult);
+    }
+    store.push(...items);
+    dispatchToAllListeners(items);
+    return T.of('events-created' as CommandResult);
+  };
+
+type Eventstore<V> = {
+  getAllEvents: T.Task<ReadonlyArray<V>>,
+  commitEvents: (items: ReadonlyArray<V>) => T.Task<CommandResult>,
 };
 
-export const createInMemoryEventstore = (dispatchToAllListeners: DispatchToAllListeners): Eventstore => {
-  const allEvents: Array<DomainEvent> = [];
+export const createInMemoryEventstore = <V>(dispatchToAllListeners: DispatchToAllListeners<V>): Eventstore<V> => {
+  const allCurrentItems: Array<V> = [];
   return {
-    getAllEvents: T.of(allEvents),
-    commitEvents: commitEvents(allEvents, dispatchToAllListeners),
+    getAllEvents: T.of(allCurrentItems as ReadonlyArray<V>),
+    commitEvents: commitEvents<V>(allCurrentItems, dispatchToAllListeners),
   };
 };
