@@ -4,15 +4,15 @@ import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import { checkReferer } from './check-referer';
 
-const referringPageCodec = t.type({
+const contextCodec = t.type({
   session: t.type({
     authenticationDestination: t.string,
   }),
 });
 
-const getStartOfJourney = (context: ParameterizedContext) => pipe(
+const getAuthenticationDestination = (context: ParameterizedContext) => pipe(
   context,
-  referringPageCodec.decode,
+  contextCodec.decode,
   E.map((ctx) => ctx.session.authenticationDestination),
 );
 
@@ -29,7 +29,7 @@ export const saveAuthenticationDestination = (
 export const redirectToAuthenticationDestination = (context: ParameterizedContext) => {
   const target = pipe(
     context,
-    getStartOfJourney,
+    getAuthenticationDestination,
     E.getOrElse(() => '/'),
   );
   context.redirect(target);
