@@ -1,4 +1,4 @@
-import { calculateAuthenticationDestination } from '../../src/http/calculate-authentication-destination';
+import { calculateAuthenticationDestination } from '../../../src/http/authentication-destination/calculate-authentication-destination';
 
 describe('calculate-authentication-destination', () => {
   describe('when a referer is not provided', () => {
