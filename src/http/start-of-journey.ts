@@ -16,7 +16,7 @@ const getStartOfJourney = (context: ParameterizedContext) => pipe(
   E.map((ctx) => ctx.session.startOfJourney),
 );
 
-export const rememberPreviousPageAsStartOfJourney = (
+export const saveAuthenticationDestination = (
   hostname: string,
 ): Middleware => async (context: ParameterizedContext, next) => {
   if (context.session === null) {

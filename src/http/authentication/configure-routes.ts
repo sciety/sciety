@@ -20,7 +20,7 @@ import { createUserAccountFormPage, paramsCodec as createUserAccountFormPagePara
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
-import { rememberPreviousPageAsStartOfJourney } from '../start-of-journey';
+import { saveAuthenticationDestination } from '../start-of-journey';
 
 export type Config = LoginMiddlewaresConfig;
 
@@ -57,13 +57,13 @@ const configureAuth0Routes = (
 
   router.get(
     signUpRoute,
-    rememberPreviousPageAsStartOfJourney(retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    rememberPreviousPageAsStartOfJourney(retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 
