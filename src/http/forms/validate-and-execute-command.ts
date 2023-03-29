@@ -1,4 +1,4 @@
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import * as t from 'io-ts';
@@ -57,10 +57,11 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
     avatarUrl: defaultSignUpAvatarUrl,
   })),
   T.of,
-  TE.chainW(flow(
+  TE.chainW((command) => pipe(
+    command,
     createUserAccountCommandHandler(adapters),
     TE.mapLeft((error) => {
-      adapters.logger('error', 'createUserAccountCommandHandler failed', { error });
+      adapters.logger('error', 'createUserAccountCommandHandler failed', { error, command });
       return 'command-failed';
     }),
   )),
