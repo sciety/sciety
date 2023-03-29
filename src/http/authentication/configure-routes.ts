@@ -20,7 +20,7 @@ import { createUserAccountFormPage, paramsCodec as createUserAccountFormPagePara
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
-import { saveAuthenticationDestination } from '../start-of-journey';
+import { saveAuthenticationDestination } from '../authentication-destination';
 
 export type Config = LoginMiddlewaresConfig;
 

@@ -6,7 +6,7 @@ import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { redirectToStartOfJourney } from '../start-of-journey';
+import { redirectToAuthenticationDestination } from '../authentication-destination';
 
 const oAuthScope = 'openid profile';
 
@@ -78,7 +78,7 @@ export const completeAuthenticationJourney = (
     getLoggedInScietyUser(adapters, context),
     O.match(
       () => context.redirect('/create-account-form'),
-      () => redirectToStartOfJourney(context),
+      () => redirectToAuthenticationDestination(context),
     ),
   );
   await next();

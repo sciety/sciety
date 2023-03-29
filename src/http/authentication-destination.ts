@@ -26,7 +26,7 @@ export const saveAuthenticationDestination = (
   await next();
 };
 
-export const redirectToStartOfJourney = (context: ParameterizedContext) => {
+export const redirectToAuthenticationDestination = (context: ParameterizedContext) => {
   const target = pipe(
     context,
     getStartOfJourney,
