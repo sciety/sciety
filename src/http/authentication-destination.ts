@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
-import { checkReferer } from './check-referer';
+import { calculateAuthenticationDestination } from './calculate-authentication-destination';
 
 const contextCodec = t.type({
   session: t.type({
@@ -22,7 +22,10 @@ export const saveAuthenticationDestination = (
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
-  context.session.authenticationDestination = checkReferer(context.request.headers.referer, hostname);
+  context.session.authenticationDestination = calculateAuthenticationDestination(
+    context.request.headers.referer,
+    hostname,
+  );
   await next();
 };
 
