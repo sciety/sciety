@@ -9,6 +9,7 @@ export const calculateAuthenticationDestination = (referer: string | undefined, 
   referer,
   O.fromNullable,
   O.map((url) => new URL(url)),
-  O.map((url) => (url.hostname === applicationHostname ? url.toString() : defaultDestination)),
+  O.filter((url) => url.hostname === applicationHostname),
+  O.map((url) => url.toString()),
   O.getOrElse(() => defaultDestination),
 );
