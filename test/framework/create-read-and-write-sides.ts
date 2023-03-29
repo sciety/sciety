@@ -6,7 +6,7 @@ import { followCommandHandler } from '../../src/write-side/follow/follow-command
 import { createListCommandHandler } from '../../src/write-side/create-list';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
-import { createInMemoryEventstore } from './create-in-memory-eventstore';
+import { createInMemoryEventstore } from '../../src/eventstore/create-in-memory-eventstore';
 
 type CommandHandlers = {
   addArticleToList: ReturnType<typeof addArticleToListCommandHandler>,
