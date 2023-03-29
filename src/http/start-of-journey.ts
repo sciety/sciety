@@ -6,14 +6,14 @@ import { checkReferer } from './check-referer';
 
 const referringPageCodec = t.type({
   session: t.type({
-    startOfJourney: t.string,
+    authenticationDestination: t.string,
   }),
 });
 
 const getStartOfJourney = (context: ParameterizedContext) => pipe(
   context,
   referringPageCodec.decode,
-  E.map((ctx) => ctx.session.startOfJourney),
+  E.map((ctx) => ctx.session.authenticationDestination),
 );
 
 export const saveAuthenticationDestination = (
@@ -22,7 +22,7 @@ export const saveAuthenticationDestination = (
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
-  context.session.startOfJourney = checkReferer(context.request.headers.referer, hostname);
+  context.session.authenticationDestination = checkReferer(context.request.headers.referer, hostname);
   await next();
 };
 
@@ -34,6 +34,6 @@ export const redirectToStartOfJourney = (context: ParameterizedContext) => {
   );
   context.redirect(target);
   if (context.session) {
-    delete context.session.startOfJourney;
+    delete context.session.authenticationDestination;
   }
 };
