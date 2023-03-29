@@ -53,6 +53,7 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
             listId: list.id,
             listName: list.name,
           })),
+          RA.reverse,
           (lists) => E.left({ lists }),
         ),
         (list) => E.right({

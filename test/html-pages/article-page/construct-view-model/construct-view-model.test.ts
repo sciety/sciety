@@ -90,7 +90,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it.skip('the user\'s lists are ordered by descending of lastUpdated', () => {
+      it('the user\'s lists are ordered by descending of lastUpdated', () => {
         expect(viewModel).toStrictEqual(E.left({
           lists: [
             expect.objectContaining({ listId: usersLists[1].id }),
@@ -99,7 +99,7 @@ describe('construct-view-model', () => {
         }));
       });
 
-      it.skip('list management has access to all of the user\'s multiple lists', () => {
+      it('list management has access to all of the user\'s multiple lists', () => {
         expect(viewModel).toStrictEqual(E.left({
           lists: [
             { listId: usersLists[1].id, listName: usersLists[1].name },
