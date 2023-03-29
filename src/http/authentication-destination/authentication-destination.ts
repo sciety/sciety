@@ -17,14 +17,14 @@ const getAuthenticationDestination = (context: ParameterizedContext) => pipe(
 );
 
 export const saveAuthenticationDestination = (
-  hostname: string,
+  applicationHostname: string,
 ): Middleware => async (context: ParameterizedContext, next) => {
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
   context.session.authenticationDestination = calculateAuthenticationDestination(
     context.request.headers.referer,
-    hostname,
+    applicationHostname,
   );
   await next();
 };
