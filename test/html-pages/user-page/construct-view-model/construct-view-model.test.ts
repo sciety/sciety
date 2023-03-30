@@ -21,15 +21,17 @@ describe('construct-view-model', () => {
   });
 
   describe('when the user owns two lists', () => {
-    const secondList = arbitraryList(LOID.fromUserId(user.id));
-    let firstList: List;
+    let initialUserList: List;
+    const updatedList = arbitraryList(LOID.fromUserId(user.id));
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
       // eslint-disable-next-line prefer-destructuring
-      firstList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
-      await framework.commandHelpers.createList(secondList);
+      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      await framework.commandHelpers.createList(updatedList);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
+
       const adapters: Ports = {
         ...framework.queries,
         getAllEvents: framework.getAllEvents,
@@ -51,8 +53,8 @@ describe('construct-view-model', () => {
     it('the most recently updated list is shown first', async () => {
       expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
         ownedLists: [
-          expect.objectContaining({ listId: secondList.id }),
-          expect.objectContaining({ listId: firstList.id }),
+          expect.objectContaining({ listId: updatedList.id }),
+          expect.objectContaining({ listId: initialUserList.id }),
         ],
       }));
     });
