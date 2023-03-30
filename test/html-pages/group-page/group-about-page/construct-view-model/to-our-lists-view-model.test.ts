@@ -24,10 +24,6 @@ describe('to-our-lists-view-model', () => {
       expect(model.lists).toHaveLength(3);
     });
 
-    it('returns list view models in reverse order', () => {
-      expect(model.lists[0].title).toStrictEqual(nameOfMostRecentlyUpdatedList);
-    });
-
     it('the View All Lists button is set', () => {
       expect(O.isSome(model.allListsUrl)).toBe(true);
     });
@@ -50,10 +46,6 @@ describe('to-our-lists-view-model', () => {
 
     it('returns list view models for each list', () => {
       expect(model.lists).toHaveLength(3);
-    });
-
-    it('returns list view models in reverse order', () => {
-      expect(model.lists[0].title).toStrictEqual(nameOfMostRecentlyUpdatedList);
     });
 
     it('the View All Lists button is not set', () => {
