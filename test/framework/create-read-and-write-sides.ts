@@ -1,3 +1,5 @@
+import * as T from 'fp-ts/Task';
+import { flow } from 'fp-ts/function';
 import { Dispatcher, dispatcher } from '../../src/infrastructure/dispatcher';
 import { createGroup } from '../../src/write-side/add-group';
 import { GetAllEvents } from '../../src/shared-ports';
@@ -26,7 +28,7 @@ export type ReadAndWriteSides = {
 
 export const createReadAndWriteSides = (): ReadAndWriteSides => {
   const { dispatchToAllReadModels, queries } = dispatcher();
-  const eventStore = createInMemoryEventstore<DomainEvent>(dispatchToAllReadModels);
+  const eventStore = createInMemoryEventstore<DomainEvent>(flow(dispatchToAllReadModels, T.of));
   const commandHandlers = {
     addArticleToList: addArticleToListCommandHandler(eventStore),
     createGroup: createGroup(eventStore),

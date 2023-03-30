@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as T from 'fp-ts/Task';
+import { flow } from 'fp-ts/function';
 import { DomainEvent, articleAddedToList, userFollowedEditorialCommunity } from '../../src/domain-events';
 import { createInMemoryEventstore } from '../../src/eventstore/create-in-memory-eventstore';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -9,7 +11,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('in memory eventstore', () => {
   describe('a new eventstore', () => {
     const voidListener = () => undefined;
-    const eventstore = createInMemoryEventstore(voidListener);
+    const eventstore = createInMemoryEventstore(flow(voidListener, T.of));
 
     it('contains no events', async () => {
       const allEvents = await eventstore.getAllEvents();
@@ -20,7 +22,7 @@ describe('in memory eventstore', () => {
 
   describe('given an eventstore containing some events', () => {
     const mockListener = jest.fn((es: ReadonlyArray<DomainEvent>) => undefined);
-    const eventstore = createInMemoryEventstore(mockListener);
+    const eventstore = createInMemoryEventstore(flow(mockListener, T.of));
 
     beforeEach(async () => {
       await eventstore.commitEvents([
