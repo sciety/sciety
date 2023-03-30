@@ -21,6 +21,7 @@ type Eventstore<V> = {
   commitEvents: (items: ReadonlyArray<V>) => T.Task<CommandResult>,
 };
 
+// ts-unused-exports:disable-next-line
 export const createInMemoryEventstore = <V>(dispatchToAllListeners: DispatchToAllListeners<V>): Eventstore<V> => {
   const allCurrentItems: Array<V> = [];
   return {
