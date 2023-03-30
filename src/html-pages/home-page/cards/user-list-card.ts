@@ -20,7 +20,7 @@ export type Ports = {
 
 export const userListCard = (
   ports: Ports,
-) => ({ listId }: { listId: ListId }): O.Option<HtmlFragment> => pipe(
+) => (listId: ListId): O.Option<HtmlFragment> => pipe(
   listId,
   ports.lookupList,
   O.chain((list) => pipe(
