@@ -1,13 +1,11 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../../../domain-events';
-import {LookupList, LookupUser, SelectAllListsOwnedBy} from '../../../shared-ports';
+import { LookupList, LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
-import * as LOID from '../../../types/list-owner-id';
 import { UserId } from '../../../types/user-id';
 import { ListId } from '../../../types/list-id';
 
