@@ -3,8 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as Ord from 'fp-ts/Ord';
-import * as D from 'fp-ts/Date';
 import { feedSummary } from './feed-summary';
 import {
   getArticleFeedEventsByDateDescending,
@@ -19,7 +17,7 @@ import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
-import { List } from '../../../types/list';
+import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 
 export type Params = {
   doi: Doi,
@@ -41,17 +39,6 @@ export type Ports = GetArticleFeedEventsPorts & {
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
-
-const byDate: Ord.Ord<List> = pipe(
-  D.Ord,
-  Ord.contramap((listState) => listState.lastUpdated),
-);
-
-const sortByDefaultListOrdering = (lists: ReadonlyArray<List>) => pipe(
-  lists,
-  RA.sort(byDate),
-  RA.reverse,
-);
 
 const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
   user,
