@@ -7,6 +7,7 @@ import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../src/html-pages/user-page/construct-view-model';
+import { ViewModel } from '../../../../src/html-pages/user-page/view-model';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -22,20 +23,18 @@ describe('construct-view-model', () => {
   describe('when the user owns two lists', () => {
     const secondList = arbitraryList(LOID.fromUserId(user.id));
     let firstList: List;
+    let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
       // eslint-disable-next-line prefer-destructuring
       firstList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.createList(secondList);
-    });
-
-    it('the list count is 2', async () => {
       const adapters: Ports = {
         ...framework.queries,
         getAllEvents: framework.getAllEvents,
       };
-      const viewmodel = await pipe(
+      viewmodel = await pipe(
         {
           handle: user.handle as string as CandidateUserHandle,
           user: O.some(user),
@@ -43,24 +42,13 @@ describe('construct-view-model', () => {
         constructViewModel('lists', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('the list count is 2', async () => {
       expect(viewmodel.listCount).toBe(2);
     });
 
     it('the most recently updated list is shown first', async () => {
-      const adapters: Ports = {
-        ...framework.queries,
-        getAllEvents: framework.getAllEvents,
-      };
-      const viewmodel = await pipe(
-        {
-          handle: user.handle as string as CandidateUserHandle,
-          user: O.some(user),
-        },
-        constructViewModel('lists', adapters),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
       expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
         ownedLists: [
           expect.objectContaining({ listId: secondList.id }),
