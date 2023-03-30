@@ -4,7 +4,8 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
-import { DomainEvent, domainEventCodec } from '../domain-events';
+import { DomainEvent } from '../domain-events';
+import { writeEventToDatabase } from '../eventstore/write-event-to-database';
 import { CommandResult } from '../types/command-result';
 
 type Dependencies = {
@@ -13,19 +14,6 @@ type Dependencies = {
   pool: Pool,
   logger: L.Logger,
 };
-
-const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
-  event,
-  domainEventCodec.encode,
-  ({
-    id, type, date, ...payload
-  }) => [id, type, date, payload],
-  (values) => async () => pool.query(
-    'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-    values,
-  ),
-  T.map(() => undefined),
-);
 
 type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
