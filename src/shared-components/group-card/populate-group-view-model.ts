@@ -42,7 +42,7 @@ export const populateGroupViewModel = (
     groupId,
     LOID.fromGroupId,
     ports.selectAllListsOwnedBy,
-    ((lists) => lists.length),
+    RA.size,
     ((listCount) => ({
       ...partial,
       listCount,
