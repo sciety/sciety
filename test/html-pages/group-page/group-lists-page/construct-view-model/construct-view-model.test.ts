@@ -9,6 +9,7 @@ import { ViewModel } from '../../../../../src/html-pages/group-page/group-lists-
 import { constructViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { List } from '../../../../../src/types/list';
+import { arbitraryArticleId } from '../../../../types/article-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -19,17 +20,20 @@ describe('construct-view-model', () => {
   });
 
   describe('when the group has more than one list', () => {
-    let firstList: List;
-    const secondList = arbitraryList(LOID.fromGroupId(group.id));
-    const thirdList = arbitraryList(LOID.fromGroupId(group.id));
+    let initialGroupList: List;
+    const middleList = arbitraryList(LOID.fromGroupId(group.id));
+    const mostRecentlyUpdatedList = arbitraryList(LOID.fromGroupId(group.id));
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
       // eslint-disable-next-line prefer-destructuring
-      firstList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
-      await framework.commandHelpers.createList(secondList);
-      await framework.commandHelpers.createList(thirdList);
+      initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      await framework.commandHelpers.createList(middleList);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), middleList.id);
+      await framework.commandHelpers.createList(mostRecentlyUpdatedList);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), mostRecentlyUpdatedList.id);
+
       viewmodel = await pipe(
         {
           slug: group.slug,
@@ -43,13 +47,13 @@ describe('construct-view-model', () => {
     it('returns lists in descending order of updated date', () => {
       expect(viewmodel.listCards).toStrictEqual([
         expect.objectContaining({
-          listId: thirdList.id,
+          listId: mostRecentlyUpdatedList.id,
         }),
         expect.objectContaining({
-          listId: secondList.id,
+          listId: middleList.id,
         }),
         expect.objectContaining({
-          listId: firstList.id,
+          listId: initialGroupList.id,
         }),
       ]);
     });
