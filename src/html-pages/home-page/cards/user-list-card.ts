@@ -1,21 +1,15 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { renderUserListCard } from './render-user-list-card';
-import { DomainEvent } from '../../../domain-events';
-import { LookupList, LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { LookupList, LookupUser } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { userIdCodec } from '../../../types/user-id';
 import { ListId } from '../../../types/list-id';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-
 export type Ports = {
-  getAllEvents: GetAllEvents,
   lookupList: LookupList,
   lookupUser: LookupUser,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 export const userListCard = (
