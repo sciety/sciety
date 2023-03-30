@@ -9,6 +9,7 @@ import { LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
 import * as LOID from '../../../types/list-owner-id';
 import { UserId } from '../../../types/user-id';
+import { ListId } from '../../../types/list-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -20,7 +21,7 @@ export type Ports = {
 
 export const userListCard = (
   ports: Ports,
-) => (userId: UserId): O.Option<HtmlFragment> => pipe(
+) => ({ userId }: { userId: UserId, listId: ListId }): O.Option<HtmlFragment> => pipe(
   {
     list: pipe(
       userId,

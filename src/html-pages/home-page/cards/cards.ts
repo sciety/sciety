@@ -9,15 +9,27 @@ import { HtmlFragment } from '../../../types/html-fragment';
 export const cards = (ports: Ports): HtmlFragment => pipe(
   {
     first: pipe(
-      card1.userId,
+      {
+        userId: card1.userId,
+        listId: card1.listId,
+      },
+      sequenceS(O.Apply),
       O.chain(userListCard(ports)),
     ),
     second: pipe(
-      card2.userId,
+      {
+        userId: card2.userId,
+        listId: card2.listId,
+      },
+      sequenceS(O.Apply),
       O.chain(userListCard(ports)),
     ),
     third: pipe(
-      card3.userId,
+      {
+        userId: card3.userId,
+        listId: card3.listId,
+      },
+      sequenceS(O.Apply),
       O.chain(userListCard(ports)),
     ),
   },
