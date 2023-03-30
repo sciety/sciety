@@ -8,6 +8,7 @@ import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
 import { constructViewModel, Ports } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { List } from '../../../../../src/types/list';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -18,13 +19,15 @@ describe('construct-view-model', () => {
   });
 
   describe('when the group has more than one list', () => {
+    let firstList: List;
     const secondList = arbitraryList(LOID.fromGroupId(group.id));
     const thirdList = arbitraryList(LOID.fromGroupId(group.id));
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
+      // eslint-disable-next-line prefer-destructuring
+      firstList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.createList(secondList);
       await framework.commandHelpers.createList(thirdList);
       const adapters: Ports = {
@@ -49,7 +52,9 @@ describe('construct-view-model', () => {
         expect.objectContaining({
           listId: secondList.id,
         }),
-        expect.objectContaining({}),
+        expect.objectContaining({
+          listId: firstList.id,
+        }),
       ]);
     });
   });
