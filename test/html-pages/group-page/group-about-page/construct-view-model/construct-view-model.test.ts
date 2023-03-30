@@ -18,14 +18,15 @@ describe('construct-view-model', () => {
   });
 
   describe('when the group has more than one list', () => {
-    const firstList = arbitraryList(LOID.fromGroupId(group.id));
     const secondList = arbitraryList(LOID.fromGroupId(group.id));
+    const thirdList = arbitraryList(LOID.fromGroupId(group.id));
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createList(firstList);
+      await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.createList(secondList);
+      await framework.commandHelpers.createList(thirdList);
       const adapters: Ports = {
         ...framework.queries,
         fetchStaticFile: () => TE.right(''),
@@ -40,6 +41,16 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it.todo('returns lists in descending order of updated date');
+    it('returns lists in descending order of updated date', () => {
+      expect(viewmodel.activeTab.lists.lists).toStrictEqual([
+        expect.objectContaining({
+          listId: thirdList.id,
+        }),
+        expect.objectContaining({
+          listId: secondList.id,
+        }),
+        expect.objectContaining({}),
+      ]);
+    });
   });
 });
