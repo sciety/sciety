@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy } from '../../../../shared-ports';
+import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { FollowersTab, ViewModel } from '../view-model';
@@ -16,7 +16,6 @@ import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../commo
 export type Ports = FindFollowersPorts & FollowersPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 const constructActiveTabModel = (
