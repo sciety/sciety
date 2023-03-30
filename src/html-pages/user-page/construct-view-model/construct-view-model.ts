@@ -4,7 +4,6 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
@@ -38,16 +37,9 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   ports.lookupUserByHandle,
   E.fromOption(() => DE.notFound),
   E.map((user) => ({
-    groupIds: pipe(
-      ports.getGroupsFollowedBy(user.id),
-    ),
+    groupIds: ports.getGroupsFollowedBy(user.id),
     userDetails: user,
-    lists: pipe(
-      user.id,
-      LOID.fromUserId,
-      ports.selectAllListsOwnedBy,
-      RA.reverse,
-    ),
+    lists: ports.selectAllListsOwnedBy(LOID.fromUserId(user.id)),
   })),
   TE.fromEither,
   TE.chainTaskK(({ groupIds, userDetails, lists }) => pipe(

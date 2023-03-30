@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ListsTab } from '../view-model';
 import { List } from '../../../types/list';
 import { UserId } from '../../../types/user-id';
+import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 
 const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
   loggedInUser,
@@ -17,6 +18,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
   selector: 'lists',
   ownedLists: pipe(
     lists,
+    sortByDefaultListOrdering,
     RA.map((list) => ({
       listId: list.id,
       articleCount: list.articleIds.length,
