@@ -6,6 +6,7 @@ import { SelectAllListsOwnedBy } from '../../../../shared-ports';
 import { Group } from '../../../../types/group';
 import { List } from '../../../../types/list';
 import * as LOID from '../../../../types/list-owner-id';
+import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 
 export type Ports = {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -24,6 +25,6 @@ export const constructListCards = (ports: Ports, group: Group): ReadonlyArray<Li
   group.id,
   LOID.fromGroupId,
   ports.selectAllListsOwnedBy,
-  RA.reverse,
+  sortByDefaultListOrdering,
   RA.map(toListCardViewModel),
 );
