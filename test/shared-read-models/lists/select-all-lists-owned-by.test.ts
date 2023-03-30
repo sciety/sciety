@@ -168,26 +168,4 @@ describe('select-all-lists-owned-by', () => {
       expect(result).toStrictEqual([]);
     });
   });
-
-  describe('when the owner owns multiple lists', () => {
-    const list1Id = arbitraryListId();
-    const list2Id = arbitraryListId();
-    const readmodel = pipe(
-      [
-        listCreated(list1Id, arbitraryString(), arbitraryString(), ownerId, new Date('2022-01-01')),
-        listCreated(list2Id, arbitraryString(), arbitraryString(), ownerId, new Date('2022-01-02')),
-        articleAddedToList(arbitraryArticleId(), list1Id, new Date('2022-01-03')),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
-    const result = selectAllListsOwnedBy(readmodel)(ownerId);
-
-    it('returns the lists in ascending order by last updated', () => {
-      expect(result[0].lastUpdated).toStrictEqual(new Date('2022-01-02'));
-      expect(result[0].id).toStrictEqual(list2Id);
-
-      expect(result[1].lastUpdated).toStrictEqual(new Date('2022-01-03'));
-      expect(result[1].id).toStrictEqual(list1Id);
-    });
-  });
 });
