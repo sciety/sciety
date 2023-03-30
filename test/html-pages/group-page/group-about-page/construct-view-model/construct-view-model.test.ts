@@ -36,7 +36,7 @@ describe('construct-view-model', () => {
 
       const adapters: Ports = {
         ...framework.queries,
-        fetchStaticFile: () => TE.right(''),
+        ...framework.happyPathThirdParties,
       };
       viewmodel = await pipe(
         {
