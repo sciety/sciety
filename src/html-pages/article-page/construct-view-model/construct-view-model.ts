@@ -20,6 +20,7 @@ import { UserId } from '../../../types/user-id';
 import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { ListState } from '../../../shared-read-models/lists/handle-event';
+import { List } from '../../../types/list';
 
 export type Params = {
   doi: Doi,
@@ -47,6 +48,12 @@ const byDate: Ord.Ord<ListState> = pipe(
   Ord.contramap((listState) => listState.lastUpdated),
 );
 
+const sortByLastUpdatedDescending = (lists: ReadonlyArray<List>) => pipe(
+  lists,
+  RA.sort(byDate),
+  RA.reverse,
+);
+
 const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
   user,
   O.map(
@@ -57,12 +64,11 @@ const constructUserListManagement = (user: Params['user'], ports: Ports, article
           id,
           LOID.fromUserId,
           ports.selectAllListsOwnedBy,
-          RA.sort(byDate),
+          sortByLastUpdatedDescending,
           RA.map((list) => ({
             listId: list.id,
             listName: list.name,
           })),
-          RA.reverse,
           (lists) => E.left({ lists }),
         ),
         (list) => E.right({
