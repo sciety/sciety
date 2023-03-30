@@ -10,7 +10,6 @@ export const cards = (ports: Ports): HtmlFragment => pipe(
   {
     first: pipe(
       {
-        userId: card1.userId,
         listId: card1.listId,
       },
       sequenceS(O.Apply),
@@ -18,7 +17,6 @@ export const cards = (ports: Ports): HtmlFragment => pipe(
     ),
     second: pipe(
       {
-        userId: card2.userId,
         listId: card2.listId,
       },
       sequenceS(O.Apply),
@@ -26,7 +24,6 @@ export const cards = (ports: Ports): HtmlFragment => pipe(
     ),
     third: pipe(
       {
-        userId: card3.userId,
         listId: card3.listId,
       },
       sequenceS(O.Apply),

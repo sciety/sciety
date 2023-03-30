@@ -6,7 +6,7 @@ import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../../../domain-events';
 import { LookupList, LookupUser, SelectAllListsOwnedBy } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { UserId, userIdCodec } from '../../../types/user-id';
+import { userIdCodec } from '../../../types/user-id';
 import { ListId } from '../../../types/list-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -20,7 +20,7 @@ export type Ports = {
 
 export const userListCard = (
   ports: Ports,
-) => ({ listId }: { userId: UserId, listId: ListId }): O.Option<HtmlFragment> => pipe(
+) => ({ listId }: { listId: ListId }): O.Option<HtmlFragment> => pipe(
   listId,
   ports.lookupList,
   O.chain((list) => pipe(
