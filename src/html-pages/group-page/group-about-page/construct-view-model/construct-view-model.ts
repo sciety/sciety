@@ -50,6 +50,9 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
     {
+      group: TE.right(partial.group),
+      isFollowing: TE.right(partial.isFollowing),
+      tabs: TE.right(partial.tabs),
       ourLists: pipe(
         partial.group.id,
         LOID.fromGroupId,
@@ -60,9 +63,5 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       markdown: ports.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
     },
     sequenceS(TE.ApplyPar),
-    TE.map((activeTab) => ({
-      ...partial,
-      activeTab,
-    })),
   )),
 );

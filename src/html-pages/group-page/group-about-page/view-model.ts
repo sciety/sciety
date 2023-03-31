@@ -16,13 +16,9 @@ export type OurListsViewModel = {
   allListsUrl: O.Option<string>,
 };
 
-type AboutTab = {
+export type ViewModel = PageHeaderViewModel & {
   ourLists: OurListsViewModel,
   markdown: string,
-};
-
-export type ViewModel = PageHeaderViewModel & {
-  activeTab: AboutTab,
   group: Group,
   tabs: TabsViewModel,
 };

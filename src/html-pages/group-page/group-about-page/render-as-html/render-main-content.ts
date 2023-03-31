@@ -15,10 +15,10 @@ export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
     <div class="group-page-about">
       <section>
-        ${renderOurLists(viewmodel.activeTab.ourLists)}
+        ${renderOurLists(viewmodel.ourLists)}
       </section>
       <section>
-        ${renderDescription(viewmodel.activeTab.markdown)}
+        ${renderDescription(viewmodel.markdown)}
       </section>
     </div>
   `,
