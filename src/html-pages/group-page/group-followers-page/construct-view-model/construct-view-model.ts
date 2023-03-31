@@ -7,8 +7,7 @@ import * as tt from 'io-ts-types';
 import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
-import { FollowersTab, ViewModel } from '../view-model';
-import { ContentModel } from '../content-model';
+import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructFollowersTab, Ports as FollowersPorts } from './followers';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
@@ -17,13 +16,6 @@ export type Ports = FindFollowersPorts & FollowersPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
 };
-
-const constructActiveTabModel = (
-  ports: Ports,
-) => (contentModel: ContentModel): E.Either<DE.DataError, FollowersTab> => pipe(
-  contentModel,
-  constructFollowersTab(ports),
-);
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -57,7 +49,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   E.fromOption(() => DE.notFound),
   E.chain((partial) => pipe(
     partial,
-    constructActiveTabModel(ports),
+    constructFollowersTab(ports),
     E.map((activeTab) => ({
       ...partial,
       activeTab,
