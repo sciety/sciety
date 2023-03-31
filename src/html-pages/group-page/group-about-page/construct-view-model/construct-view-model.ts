@@ -3,16 +3,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { sequenceS } from 'fp-ts/Apply';
 import * as LOID from '../../../../types/list-owner-id';
-import { GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy } from '../../../../shared-ports';
+import {
+  FetchStaticFile, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
+} from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { AboutTab, ViewModel } from '../view-model';
 import { ContentModel } from '../content-model';
-import { constructAboutTab, Ports as AboutPorts } from './about';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { toOurListsViewModel } from './to-our-lists-view-model';
 
-export type Ports = AboutPorts & TabsViewModelPorts & {
+export type Ports = TabsViewModelPorts & {
+  fetchStaticFile: FetchStaticFile,
   getGroupBySlug: GetGroupBySlug,
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -21,8 +25,15 @@ export type Ports = AboutPorts & TabsViewModelPorts & {
 const constructActiveTabModel = (
   ports: Ports,
 ) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTab> => pipe(
-  contentModel,
-  constructAboutTab(ports),
+  {
+    ourLists: pipe(
+      contentModel.lists,
+      toOurListsViewModel(contentModel.group.slug),
+      TE.right,
+    ),
+    markdown: ports.fetchStaticFile(`groups/${contentModel.group.descriptionPath}`),
+  },
+  sequenceS(TE.ApplyPar),
 );
 
 export const paramsCodec = t.type({
