@@ -7,7 +7,7 @@ import { constant, pipe } from 'fp-ts/function';
 import { getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
-import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations-stateless';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';

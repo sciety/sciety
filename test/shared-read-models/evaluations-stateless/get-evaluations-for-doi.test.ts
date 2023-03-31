@@ -2,7 +2,7 @@ import { performance } from 'perf_hooks';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { evaluationRecorded } from '../../../src/domain-events';
-import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
+import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations-stateless/get-evaluations-for-doi';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';

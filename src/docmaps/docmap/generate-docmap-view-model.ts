@@ -9,7 +9,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import { GetAllEvents, GetGroup } from '../../shared-ports';
-import { getEvaluationsForDoi } from '../../shared-read-models/evaluations';
+import { getEvaluationsForDoi } from '../../shared-read-models/evaluations-stateless';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
