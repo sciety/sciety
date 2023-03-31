@@ -79,6 +79,7 @@ module.exports = {
     'node/prefer-global/text-encoder': ['error', 'never'],
     'node/prefer-global/url': ['error', 'never'],
     'node/prefer-global/url-search-params': ['error', 'never'],
+    'prefer-destructuring': 'off',
     'unused-imports/no-unused-imports-ts': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['feature-test/**/*.ts', 'test/**/*.ts'] }],
   },

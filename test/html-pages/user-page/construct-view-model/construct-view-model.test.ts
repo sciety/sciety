@@ -27,7 +27,6 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
-      // eslint-disable-next-line prefer-destructuring
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.createList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);

@@ -27,7 +27,6 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      // eslint-disable-next-line prefer-destructuring
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.createList(middleList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), middleList.id);

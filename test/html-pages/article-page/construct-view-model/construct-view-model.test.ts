@@ -42,7 +42,6 @@ describe('construct-view-model', () => {
       let viewModel: LoggedInUserListManagement;
 
       beforeEach(async () => {
-        // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         viewModel = await pipe(
           {
@@ -114,7 +113,6 @@ describe('construct-view-model', () => {
       let viewModel: LoggedInUserListManagement;
 
       beforeEach(async () => {
-        // eslint-disable-next-line prefer-destructuring
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
         await framework.commandHelpers.addArticleToList(articleId, list.id);
         viewModel = await pipe(
