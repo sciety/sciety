@@ -13,7 +13,7 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { LookupList } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { arbitraryList } from '../../types/list-helper';
 
 describe('save-article-handler', () => {
   const listId = arbitraryListId();
@@ -39,7 +39,7 @@ describe('save-article-handler', () => {
       id: listId,
       ownerId: LOID.fromUserId(userId),
       articleIds: [arbitraryDoi().value],
-      lastUpdated: arbitraryDate(),
+      updatedAt: arbitraryDate(),
       name: arbitraryWord(),
       description: arbitraryString(),
     });
@@ -77,14 +77,7 @@ describe('save-article-handler', () => {
   });
 
   describe('when the user is not the owner of the list', () => {
-    const lookupList: LookupList = () => O.some({
-      id: listId,
-      ownerId: arbitraryListOwnerId(),
-      articleIds: [arbitraryDoi().value],
-      lastUpdated: arbitraryDate(),
-      name: arbitraryWord(),
-      description: arbitraryString(),
-    });
+    const lookupList: LookupList = () => O.some(arbitraryList());
 
     describe('when the user tries to save an article', () => {
       const addArticleToList = () => TE.right(arbitraryCommandResult());

@@ -43,7 +43,7 @@ const defaultAdapters: Ports = {
     id: listId,
     ownerId,
     articleIds: [],
-    lastUpdated: arbitraryDate(),
+    updatedAt: arbitraryDate(),
     name: arbitraryString(),
     description: arbitraryString(),
   }],

@@ -14,7 +14,7 @@ type ListState = {
   id: ListId,
   ownerId: ListOwnerId,
   articleIds: Array<string>,
-  lastUpdated: Date,
+  updatedAt: Date,
   name: string,
   description: string,
 };
@@ -28,24 +28,24 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       id: event.listId,
       ownerId: event.ownerId,
       articleIds: [],
-      lastUpdated: event.date,
+      updatedAt: event.date,
       name: event.name,
       description: event.description,
     };
   } else if (isArticleAddedToListEvent(event)) {
     readmodel[event.listId].articleIds.push(event.articleId.value);
-    readmodel[event.listId].lastUpdated = event.date;
+    readmodel[event.listId].updatedAt = event.date;
   } else if (isArticleRemovedFromListEvent(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
       (id) => id !== event.articleId.value,
     );
-    readmodel[event.listId].lastUpdated = event.date;
+    readmodel[event.listId].updatedAt = event.date;
   } else if (isListNameEditedEvent(event)) {
     readmodel[event.listId].name = event.name;
-    readmodel[event.listId].lastUpdated = event.date;
+    readmodel[event.listId].updatedAt = event.date;
   } else if (isListDescriptionEditedEvent(event)) {
     readmodel[event.listId].description = event.description;
-    readmodel[event.listId].lastUpdated = event.date;
+    readmodel[event.listId].updatedAt = event.date;
   }
   return readmodel;
 };

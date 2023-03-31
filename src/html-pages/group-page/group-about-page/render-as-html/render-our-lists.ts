@@ -11,7 +11,7 @@ const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
     <tr>
       <td><a href="/lists/${viewModel.listId}">${viewModel.title}</a></td>
       <td class="our-lists__article_count">${viewModel.articleCount}<span aria-hidden="true"> articles</span></td>
-      <td><span aria-hidden="true" class="our-lists__updated_label">Updated </span>${templateDate(viewModel.lastUpdated)}</td>
+      <td><span aria-hidden="true" class="our-lists__updated_label">Updated </span>${templateDate(viewModel.updatedAt)}</td>
     </tr>
   `)),
   (listItems) => `

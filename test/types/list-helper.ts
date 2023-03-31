@@ -8,6 +8,6 @@ export const arbitraryList = (ownerId = arbitraryListOwnerId()): List => ({
   name: arbitraryString(),
   description: arbitraryString(),
   articleIds: [],
-  lastUpdated: arbitraryDate(),
+  updatedAt: arbitraryDate(),
   ownerId,
 });

@@ -6,7 +6,7 @@ import { TabsViewModel } from '../common-components/tabs-view-model';
 export type ListViewModel = {
   listId: ListId,
   articleCount: number,
-  lastUpdated: Date,
+  updatedAt: Date,
   title: string,
 };
 

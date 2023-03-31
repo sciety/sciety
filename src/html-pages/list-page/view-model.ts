@@ -30,7 +30,7 @@ export type ViewModel = {
   ownerHref: string,
   ownerAvatarPath: string,
   articleCount: number,
-  lastUpdated: Date,
+  updatedAt: Date,
   editCapability: boolean,
   listId: ListId,
   basePath: string,

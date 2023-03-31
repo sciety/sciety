@@ -6,7 +6,7 @@ import { List } from '../types/list';
 
 const byDate: Ord.Ord<List> = pipe(
   D.Ord,
-  Ord.contramap((listState) => listState.lastUpdated),
+  Ord.contramap((listState) => listState.updatedAt),
 );
 
 export const sortByDefaultListOrdering = (lists: ReadonlyArray<List>) => pipe(

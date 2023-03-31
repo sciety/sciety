@@ -32,7 +32,7 @@ export const userListCard = (
   O.map(({ list, listOwner }) => ({
     listId: list.id,
     articleCount: list.articleIds.length,
-    lastUpdated: O.some(list.lastUpdated),
+    updatedAt: O.some(list.updatedAt),
     description: list.description,
     handle: listOwner.handle,
     avatarUrl: listOwner.avatarUrl,

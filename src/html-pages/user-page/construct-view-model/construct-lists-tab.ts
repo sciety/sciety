@@ -22,7 +22,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
     RA.map((list) => ({
       listId: list.id,
       articleCount: list.articleIds.length,
-      lastUpdated: O.some(list.lastUpdated),
+      updatedAt: O.some(list.updatedAt),
       title: list.name,
       description: list.description,
       articleCountLabel: 'This list contains',

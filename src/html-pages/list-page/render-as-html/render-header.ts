@@ -28,7 +28,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       <span>A list by <a href="${viewModel.ownerHref}">${viewModel.ownerName}</a></span>
     </p>
     <p class="page-header__description">${viewModel.description}</p>
-    <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.lastUpdated)}</p>
+    <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
   </header>`,
   toHtmlFragment,

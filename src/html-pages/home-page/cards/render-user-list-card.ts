@@ -8,7 +8,7 @@ import { UserHandle } from '../../../types/user-handle';
 type UserListCardViewModel = {
   listId: ListId,
   articleCount: number,
-  lastUpdated: O.Option<Date>,
+  updatedAt: O.Option<Date>,
   handle: UserHandle,
   avatarUrl: string,
   description: string,
@@ -28,7 +28,7 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
           <p>${viewModel.description}</p>
         </div>
         <div class="user-list-card__meta">
-          <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
+          <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.updatedAt)}
         </div>
       </div>
       <img class="user-list-card__avatar" src="${viewModel.avatarUrl}" alt="" />

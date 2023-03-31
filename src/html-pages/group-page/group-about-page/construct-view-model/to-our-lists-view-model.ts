@@ -23,7 +23,7 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
     listId: list.id,
     articleCount: list.articleIds.length,
     title: list.name,
-    lastUpdated: list.lastUpdated,
+    updatedAt: list.updatedAt,
   })),
   (listViewModels) => (listViewModels.length > maxLists
     ? truncatedView(listViewModels, groupSlug)

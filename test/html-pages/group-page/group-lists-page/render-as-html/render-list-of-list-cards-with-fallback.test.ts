@@ -20,7 +20,7 @@ describe('render-list-of-list-cards-with-fallback', () => {
         listId: arbitraryListId(),
         description: arbitraryString(),
         articleCount: 0,
-        lastUpdated: O.some(arbitraryDate()),
+        updatedAt: O.some(arbitraryDate()),
         articleCountLabel: arbitraryString(),
       },
     ]);

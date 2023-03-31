@@ -101,9 +101,9 @@ describe('lookup-list', () => {
         })));
       });
 
-      it('returns the date of the latest event as the lastUpdated', () => {
+      it('returns the date of the latest event as the updatedAt', () => {
         expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
-          lastUpdated: dateOfLatestEvent,
+          updatedAt: dateOfLatestEvent,
         })));
       });
     });
@@ -132,9 +132,9 @@ describe('lookup-list', () => {
         })));
       });
 
-      it('returns the date of the latest event as the lastUpdated', () => {
+      it('returns the date of the latest event as the updatedAt', () => {
         expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
-          lastUpdated: dateOfLatestEvent,
+          updatedAt: dateOfLatestEvent,
         })));
       });
     });

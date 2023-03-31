@@ -18,7 +18,7 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   title: list.name,
   articleCount: list.articleIds.length,
   articleCountLabel: 'This list contains',
-  lastUpdated: O.some(list.lastUpdated),
+  updatedAt: O.some(list.updatedAt),
 });
 
 export const constructListCards = (ports: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
