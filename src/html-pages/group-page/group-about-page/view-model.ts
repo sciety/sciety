@@ -17,7 +17,7 @@ export type OurListsViewModel = {
   allListsUrl: O.Option<string>,
 };
 
-export type AboutTab = {
+type AboutTab = {
   ourLists: OurListsViewModel,
   markdown: string,
 };

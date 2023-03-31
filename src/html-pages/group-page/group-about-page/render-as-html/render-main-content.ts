@@ -1,9 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import { renderTabs } from '../../../../shared-components/tabs';
-import { HtmlFragment } from '../../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
-import { renderAboutTab } from './render-about-tab';
+import { renderOurLists } from './render-our-lists';
+import { renderDescription } from './render-description';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
@@ -11,6 +12,16 @@ const tabProps = (viewmodel: ViewModel) => ({
 });
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderAboutTab(viewmodel.activeTab),
+  `
+    <div class="group-page-about">
+      <section>
+        ${renderOurLists(viewmodel.activeTab.ourLists)}
+      </section>
+      <section>
+        ${renderDescription(viewmodel.activeTab.markdown)}
+      </section>
+    </div>
+  `,
+  toHtmlFragment,
   renderTabs(tabProps(viewmodel)),
 );
