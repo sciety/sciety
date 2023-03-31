@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { GroupId } from '../../../../types/group-id';
-import { Follower } from '../content-model';
+import { Follower } from '../view-model';
 import { GetFollowers, GetGroupsFollowedBy, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import * as LOID from '../../../../types/list-owner-id';
 

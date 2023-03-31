@@ -2,8 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { LookupUser } from '../../../../shared-ports';
-import { Follower } from '../content-model';
-import { UserCardViewModel } from '../view-model';
+import { Follower, UserCardViewModel } from '../view-model';
 
 export type Ports = {
   lookupUser: LookupUser,

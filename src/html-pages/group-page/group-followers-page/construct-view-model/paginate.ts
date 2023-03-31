@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { PageOfItems, paginate as sharedPaginate } from '../../../../shared-components/paginate';
 import * as DE from '../../../../types/data-error';
-import { Follower } from '../content-model';
+import { Follower } from '../view-model';
 
 export const paginate = (
   pageNumber: number,
