@@ -17,8 +17,8 @@ describe('get-evaluations-for-doi', () => {
   const reviewId3 = arbitraryReviewId();
 
   it.each([
-    // ['two evaluations', article1, [reviewId1, reviewId3]],
-    // ['one evaluation', article2, [reviewId2]],
+    ['two evaluations', article1, [reviewId1, reviewId3]],
+    ['one evaluation', article2, [reviewId2]],
     ['no evaluations', arbitraryDoi(), []],
   ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
     const readmodel = pipe(
