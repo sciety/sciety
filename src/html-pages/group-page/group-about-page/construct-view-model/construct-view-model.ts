@@ -10,8 +10,7 @@ import {
 } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
-import { AboutTab, ViewModel } from '../view-model';
-import { ContentModel } from '../content-model';
+import { ViewModel } from '../view-model';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 import { toOurListsViewModel } from './to-our-lists-view-model';
 
@@ -21,20 +20,6 @@ export type Ports = TabsViewModelPorts & {
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
-
-const constructActiveTabModel = (
-  ports: Ports,
-) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTab> => pipe(
-  {
-    ourLists: pipe(
-      contentModel.lists,
-      toOurListsViewModel(contentModel.group.slug),
-      TE.right,
-    ),
-    markdown: ports.fetchStaticFile(`groups/${contentModel.group.descriptionPath}`),
-  },
-  sequenceS(TE.ApplyPar),
-);
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -69,8 +54,15 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   )),
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
-    partial,
-    constructActiveTabModel(ports),
+    {
+      ourLists: pipe(
+        partial.lists,
+        toOurListsViewModel(partial.group.slug),
+        TE.right,
+      ),
+      markdown: ports.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
+    },
+    sequenceS(TE.ApplyPar),
     TE.map((activeTab) => ({
       ...partial,
       activeTab,
