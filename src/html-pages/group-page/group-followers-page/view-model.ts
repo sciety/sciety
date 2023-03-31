@@ -20,7 +20,7 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-export type FollowersTab = {
+type FollowersTab = {
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   nextLink: HtmlFragment,
