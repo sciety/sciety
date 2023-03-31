@@ -3,14 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ListId } from '../../../../types/list-id';
-
-type ListViewModel = {
-  listId: ListId,
-  articleCount: number,
-  lastUpdated: Date,
-  title: string,
-};
+import { ListViewModel, OurListsViewModel } from '../view-model';
 
 const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
   lists,
@@ -37,11 +30,6 @@ const renderButton = O.match(
   () => '',
   (url: string) => `<p><a href="${url}">View all lists</a></p>`,
 );
-
-export type OurListsViewModel = {
-  lists: ReadonlyArray<ListViewModel>,
-  allListsUrl: O.Option<string>,
-};
 
 export const renderOurLists = (ourListsViewModel: OurListsViewModel): HtmlFragment => toHtmlFragment(`
   <h2>Our lists</h2>
