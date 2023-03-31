@@ -57,3 +57,11 @@ $_inline-margin: settings.$base-font-measure;
 .search-results-list__item {
   @include card.list-item();
 }
+
+.search-results__footer {
+  margin-left: functions.px-to-rem($_inline-margin);
+
+  @include breakpoints.not-narrow() {
+    margin-left: 0;
+  }
+}

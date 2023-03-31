@@ -17,7 +17,7 @@ export const nextLink = ({
   nextCursor,
   O.map((cursor) => `/search?query=${encodeURIComponent(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}${evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
   O.fold(
-    () => '',
+    () => '<footer class="search-results__footer">Not what you were hoping for? Try our <a href="https://blog.sciety.org/sciety-search/">advanced search tips</a>, or <a href="/contact-us">leave us a suggestion</a>.</footer>',
     (basePath) => paginationControls(basePath, O.some(pageNumber)),
   ),
   toHtmlFragment,
