@@ -20,7 +20,7 @@ export const pagination: Pagination = (viewModel) => (content) => pipe(
         <h3 class="search-results__page_count">
           Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
         </h3>
-        <div>Results from bioRxiv, medRxiv</div>
+        <div>Results from <b>bioRxiv</b>, <b>medRxiv</b></div>
       </header>
       ${c}
       ${nextLink({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
