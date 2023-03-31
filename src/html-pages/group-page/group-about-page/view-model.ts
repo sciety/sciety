@@ -2,7 +2,8 @@ import * as O from 'fp-ts/Option';
 import { ListId } from '../../../types/list-id';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
-import { ContentModel } from './content-model';
+import { List } from '../../../types/list';
+import { Group } from '../../../types/group';
 
 export type ListViewModel = {
   listId: ListId,
@@ -21,7 +22,9 @@ export type AboutTab = {
   markdown: string,
 };
 
-export type ViewModel = PageHeaderViewModel & ContentModel & {
+export type ViewModel = PageHeaderViewModel & {
   activeTab: AboutTab,
+  group: Group,
+  lists: ReadonlyArray<List>,
   tabs: TabsViewModel,
 };
