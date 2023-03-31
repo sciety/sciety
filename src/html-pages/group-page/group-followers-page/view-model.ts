@@ -20,15 +20,11 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-type FollowersTab = {
-  followerCount: number,
-  followers: ReadonlyArray<UserCardViewModel>,
-  nextLink: HtmlFragment,
-};
-
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
   pageNumber: number,
-  activeTab: FollowersTab,
+  followerCount: number,
+  followers: ReadonlyArray<UserCardViewModel>,
+  nextLink: HtmlFragment,
   tabs: TabsViewModel,
 };

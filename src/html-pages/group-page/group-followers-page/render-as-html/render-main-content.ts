@@ -41,10 +41,10 @@ const tabProps = (viewmodel: ViewModel) => ({
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
     <p>
-      ${viewmodel.activeTab.followerCount} ${viewmodel.activeTab.followerCount === 1 ? 'user is' : 'users are'} following this group.
+      ${viewmodel.followerCount} ${viewmodel.followerCount === 1 ? 'user is' : 'users are'} following this group.
     </p>
-    ${renderFollowersList(viewmodel.activeTab.followers)}
-    ${viewmodel.activeTab.nextLink}
+    ${renderFollowersList(viewmodel.followers)}
+    ${viewmodel.nextLink}
   `,
   toHtmlFragment,
   renderTabs(tabProps(viewmodel)),

@@ -55,16 +55,13 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     findFollowers(ports),
     paginate(partial.pageNumber, pageSize),
     E.map((pageOfFollowers) => ({
+      ...partial,
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: pipe(
         pageOfFollowers.items,
         augmentWithUserDetails(ports),
       ),
       nextLink: paginationControls(`/groups/${partial.group.slug}/followers?`, pageOfFollowers.nextPage),
-    })),
-    E.map((activeTab) => ({
-      ...partial,
-      activeTab,
     })),
   )),
   TE.fromEither,
