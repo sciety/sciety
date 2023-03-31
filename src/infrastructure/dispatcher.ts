@@ -2,6 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import * as annotations from '../shared-read-models/annotations';
+import * as evaluations from '../shared-read-models/evaluations';
 import * as followings from '../shared-read-models/followings';
 import * as groups from '../shared-read-models/groups';
 import * as idsOfEvaluatedArticlesLists from '../shared-read-models/ids-of-evaluated-articles-lists';
@@ -15,12 +16,13 @@ type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 export type Dispatcher = {
   queries: addArticleToElifeSubjectAreaList.Queries
   & annotations.Queries
-  & lists.Queries
+  & articleActivity.Queries
+  & evaluations.Queries
   & followings.Queries
   & groups.Queries
   & idsOfEvaluatedArticlesLists.Queries
-  & users.Queries
-  & articleActivity.Queries,
+  & lists.Queries
+  & users.Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
@@ -28,12 +30,13 @@ export const dispatcher = (): Dispatcher => {
   const readModels = {
     addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
     annotationsReadModel: annotations.initialState(),
-    listsReadModel: lists.initialState(),
+    articleActivityReadModel: articleActivity.initialState(),
+    evaluationsReadModel: evaluations.initialState(),
     followingsReadModel: followings.initialState(),
     groupsReadModel: groups.initialState(),
     idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
+    listsReadModel: lists.initialState(),
     usersReadModel: users.initialState(),
-    articleActivityReadModel: articleActivity.initialState(),
   };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
@@ -49,9 +52,9 @@ export const dispatcher = (): Dispatcher => {
       readModels.articleActivityReadModel,
       articleActivity.handleEvent,
     )(events);
-    readModels.listsReadModel = RA.reduce(
-      readModels.listsReadModel,
-      lists.handleEvent,
+    readModels.evaluationsReadModel = RA.reduce(
+      readModels.evaluationsReadModel,
+      evaluations.handleEvent,
     )(events);
     readModels.followingsReadModel = RA.reduce(
       readModels.followingsReadModel,
@@ -65,6 +68,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.idsOfEvaluatedArticlesListsReadModel,
       idsOfEvaluatedArticlesLists.handleEvent,
     )(events);
+    readModels.listsReadModel = RA.reduce(
+      readModels.listsReadModel,
+      lists.handleEvent,
+    )(events);
     readModels.usersReadModel = RA.reduce(
       readModels.usersReadModel,
       users.handleEvent,
@@ -72,14 +79,15 @@ export const dispatcher = (): Dispatcher => {
   };
 
   const queries = {
-    ...annotations.queries(readModels.annotationsReadModel),
-    ...lists.queries(readModels.listsReadModel),
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
+    ...annotations.queries(readModels.annotationsReadModel),
+    ...articleActivity.queries(readModels.articleActivityReadModel),
+    ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groups.queries(readModels.groupsReadModel),
     ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
+    ...lists.queries(readModels.listsReadModel),
     ...users.queries(readModels.usersReadModel),
-    ...articleActivity.queries(readModels.articleActivityReadModel),
   };
 
   return {
