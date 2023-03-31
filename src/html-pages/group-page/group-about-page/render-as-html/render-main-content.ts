@@ -10,9 +10,7 @@ const tabProps = (viewmodel: ViewModel) => ({
   activeTabIndex: 1,
 });
 
-const renderActiveTabContents = (viewmodel: ViewModel) => renderAboutTab(viewmodel.activeTab);
-
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderActiveTabContents(viewmodel),
+  renderAboutTab(viewmodel.activeTab),
   renderTabs(tabProps(viewmodel)),
 );
