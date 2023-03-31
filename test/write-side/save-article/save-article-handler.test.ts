@@ -3,10 +3,8 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { articleIdFieldName, saveArticleHandler } from '../../../src/write-side/save-article/save-article-handler';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryCommandResult } from '../../types/command-result.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
@@ -36,12 +34,8 @@ describe('save-article-handler', () => {
 
   describe('when the user is the owner of the list', () => {
     const lookupList: LookupList = () => O.some({
+      ...arbitraryList(LOID.fromUserId(userId)),
       id: listId,
-      ownerId: LOID.fromUserId(userId),
-      articleIds: [arbitraryDoi().value],
-      updatedAt: arbitraryDate(),
-      name: arbitraryWord(),
-      description: arbitraryString(),
     });
 
     describe('when the user tried to save an article and the command handler fails', () => {
