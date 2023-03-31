@@ -45,18 +45,15 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         ),
       ),
       tabs: constructTabsViewModel(ports, group),
-      lists: pipe(
-        group.id,
-        LOID.fromGroupId,
-        ports.selectAllListsOwnedBy,
-      ),
     },
   )),
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
     {
       ourLists: pipe(
-        partial.lists,
+        partial.group.id,
+        LOID.fromGroupId,
+        ports.selectAllListsOwnedBy,
         toOurListsViewModel(partial.group.slug),
         TE.right,
       ),
