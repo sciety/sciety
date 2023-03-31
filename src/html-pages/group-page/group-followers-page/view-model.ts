@@ -27,7 +27,6 @@ type FollowersTab = {
 };
 
 export type ViewModel = PageHeaderViewModel & {
-  followers: ReadonlyArray<Follower>,
   group: Group,
   pageNumber: number,
   activeTab: FollowersTab,

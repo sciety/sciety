@@ -47,12 +47,12 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         ),
       ),
       tabs: constructTabsViewModel(ports, group),
-      followers: findFollowers(ports)(group.id),
     },
   )),
   E.fromOption(() => DE.notFound),
   E.chain((partial) => pipe(
-    partial.followers,
+    partial.group.id,
+    findFollowers(ports),
     paginate(partial.pageNumber, pageSize),
     E.map((pageOfFollowers) => ({
       followerCount: pageOfFollowers.numberOfOriginalItems,
