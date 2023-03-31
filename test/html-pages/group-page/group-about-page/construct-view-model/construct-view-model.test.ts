@@ -49,7 +49,7 @@ describe('construct-view-model', () => {
     });
 
     it('returns lists in descending order of updated date', () => {
-      expect(viewmodel.activeTab.lists.lists).toStrictEqual([
+      expect(viewmodel.activeTab.ourLists.lists).toStrictEqual([
         expect.objectContaining({
           listId: mostRecentlyUpdatedList.id,
         }),

@@ -17,7 +17,7 @@ export type OurListsViewModel = {
 };
 
 export type AboutTab = {
-  lists: OurListsViewModel,
+  ourLists: OurListsViewModel,
   markdown: string,
 };
 

@@ -6,7 +6,7 @@ import { AboutTab } from '../view-model';
 export const renderAboutTab = (viewmodel: AboutTab): HtmlFragment => toHtmlFragment(`
   <div class="group-page-about">
     <section>
-      ${renderOurLists(viewmodel.lists)}
+      ${renderOurLists(viewmodel.ourLists)}
     </section>
     <section>
       ${renderDescription(viewmodel.markdown)}

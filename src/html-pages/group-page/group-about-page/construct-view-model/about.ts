@@ -15,7 +15,7 @@ export const constructAboutTab = (
   ports: Ports,
 ) => (contentModel: ContentModel): TE.TaskEither<DE.DataError, AboutTab> => pipe(
   {
-    lists: pipe(
+    ourLists: pipe(
       contentModel.lists,
       toOurListsViewModel(contentModel.group.slug),
       TE.right,
