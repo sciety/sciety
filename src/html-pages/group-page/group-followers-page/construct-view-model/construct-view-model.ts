@@ -13,6 +13,7 @@ import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { GroupId } from '../../../../types/group-id';
 
 export type Ports = FindFollowersPorts & AugmentWithUserDetailsPorts & TabsViewModelPorts & {
   getGroupBySlug: GetGroupBySlug,
@@ -31,37 +32,31 @@ export type Params = t.TypeOf<typeof paramsCodec>;
 
 const pageSize = 10;
 
+const isFollowing = (ports: Ports) => (groupId: GroupId, user: Params['user']) => pipe(
+  user,
+  O.fold(
+    () => false,
+    (u) => ports.isFollowing(groupId)(u.id),
+  ),
+);
+
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.getGroupBySlug(params.slug),
-  O.map((group) => pipe(
-    {
-      pageNumber: params.page,
-      group,
-      isFollowing: pipe(
-        params.user,
-        O.fold(
-          () => false,
-          (u) => ports.isFollowing(group.id)(u.id),
-        ),
-      ),
-      tabs: constructTabsViewModel(ports, group),
-    },
-  )),
   E.fromOption(() => DE.notFound),
-  E.chain((partial) => pipe(
-    partial.group.id,
+  E.chain((group) => pipe(
+    group.id,
     findFollowers(ports),
-    paginate(partial.pageNumber, pageSize),
+    paginate(params.page, pageSize),
     E.map((pageOfFollowers) => ({
-      ...partial,
+      group,
+      pageNumber: params.page,
+      isFollowing: isFollowing(ports)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
-      followers: pipe(
-        pageOfFollowers.items,
-        augmentWithUserDetails(ports),
-      ),
-      nextLink: paginationControls(`/groups/${partial.group.slug}/followers?`, pageOfFollowers.nextPage),
+      followers: augmentWithUserDetails(ports)(pageOfFollowers.items),
+      nextLink: paginationControls(`/groups/${group.slug}/followers?`, pageOfFollowers.nextPage),
+      tabs: constructTabsViewModel(ports, group),
     })),
   )),
   TE.fromEither,
