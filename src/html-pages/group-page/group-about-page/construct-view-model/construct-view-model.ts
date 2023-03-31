@@ -34,33 +34,27 @@ type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.getGroupBySlug(params.slug),
-  O.map((group) => pipe(
+  TE.fromOption(() => DE.notFound),
+  TE.chain((group) => pipe(
     {
-      group,
+      group: TE.right(group),
       isFollowing: pipe(
         params.user,
         O.fold(
           () => false,
           (u) => ports.isFollowing(group.id)(u.id),
         ),
-      ),
-      tabs: constructTabsViewModel(ports, group),
-    },
-  )),
-  TE.fromOption(() => DE.notFound),
-  TE.chain((partial) => pipe(
-    {
-      group: TE.right(partial.group),
-      isFollowing: TE.right(partial.isFollowing),
-      tabs: TE.right(partial.tabs),
-      ourLists: pipe(
-        partial.group.id,
-        LOID.fromGroupId,
-        ports.selectAllListsOwnedBy,
-        toOurListsViewModel(partial.group.slug),
         TE.right,
       ),
-      markdown: ports.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
+      tabs: TE.right(constructTabsViewModel(ports, group)),
+      ourLists: pipe(
+        group.id,
+        LOID.fromGroupId,
+        ports.selectAllListsOwnedBy,
+        toOurListsViewModel(group.slug),
+        TE.right,
+      ),
+      markdown: ports.fetchStaticFile(`groups/${group.descriptionPath}`),
     },
     sequenceS(TE.ApplyPar),
   )),
