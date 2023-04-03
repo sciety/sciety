@@ -170,8 +170,7 @@ describe('search-europe-pmc adapter', () => {
 
     const queryString = (new URL(uri)).searchParams;
 
-    // Tests special character encoding, biorxiv publisher or medrxiv publisher, sort date, and parameter order.
-    expect(queryString.get('query')).toBe('(Structural basis of αE&) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y');
+    expect(queryString.get('query')).toBe('(Structural basis of αE&) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square") sort_date:y');
   });
 
   describe('when evaluatedOnly is set', () => {
