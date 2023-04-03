@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
@@ -10,6 +10,7 @@ import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
+import { CommandResult } from '../../src/types/command-result';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -21,14 +22,27 @@ export type CommandHelpers = {
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
 };
 
+type Outcome = TE.TaskEither<string, CommandResult>;
+
+const invoke = <C>(handler: (a: C) => Outcome, name: string) => (cmd: C) => {
+  if (process.env.TEST_DEBUG === 'true') {
+    // eslint-disable-next-line no-console
+    console.log(`${name}:`, cmd);
+  }
+  return pipe(
+    cmd,
+    handler,
+    TE.getOrElse(abortTest(`${name} helper`)),
+  );
+};
+
 export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
     {
       articleId,
       listId,
     },
-    commandHandlers.addArticleToList,
-    TE.getOrElse(abortTest('addArticleToList helper')),
+    invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   )(),
   createGroup: async (group) => pipe(
     {
@@ -40,8 +54,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       descriptionPath: group.descriptionPath,
       slug: group.slug,
     },
-    commandHandlers.createGroup,
-    TE.getOrElse(abortTest('createGroup helper')),
+    invoke(commandHandlers.createGroup, 'createGroup'),
   )(),
   createList: async (list) => pipe(
     {
@@ -50,8 +63,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       name: list.name,
       description: list.description,
     },
-    commandHandlers.createList,
-    TE.getOrElse(abortTest('createList helper')),
+    invoke(commandHandlers.createList, 'createList'),
   )(),
   createUserAccount: async (user) => pipe(
     {
@@ -60,24 +72,24 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       avatarUrl: user.avatarUrl,
       displayName: user.displayName,
     },
-    commandHandlers.createUserAccount,
-    TE.getOrElse(abortTest('createUserAccount helper')),
+    invoke(commandHandlers.createUserAccount, 'createUserAccount'),
   )(),
-  followGroup: async (userId, groupId) => commandHandlers.followGroup({ userId, groupId })(),
+  followGroup: async (userId, groupId) => pipe(
+    { userId, groupId },
+    invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
+  )(),
   recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
       ...evaluation,
       evaluationLocator: evaluation.reviewId,
     },
-    commandHandlers.recordEvaluation,
-    TE.getOrElse(abortTest('recordEvaluation helper')),
+    invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
   )(),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
       listId,
     },
-    commandHandlers.removeArticleFromList,
-    TE.getOrElse(abortTest('removeArticleFromList helper')),
+    invoke(commandHandlers.removeArticleFromList, 'removeArticleFromList'),
   )(),
 });
