@@ -41,7 +41,7 @@ const defaultPorts: Ports = {
 describe('generate-docmap-view-model', () => {
   it('includes the article id', async () => {
     const group = arbitraryGroup();
-    const ports = {
+    const ports: Ports = {
       ...defaultPorts,
       getAllEvents: T.of([
         groupJoined(
@@ -67,7 +67,7 @@ describe('generate-docmap-view-model', () => {
 
   it('includes the group', async () => {
     const group = arbitraryGroup();
-    const ports = {
+    const ports: Ports = {
       ...defaultPorts,
       getAllEvents: T.of([
         groupJoined(
@@ -101,7 +101,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         getAllEvents: T.of([
           groupJoined(
@@ -147,7 +147,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         fetchReview: shouldNotBeCalled,
         getAllEvents: T.of([
@@ -185,7 +185,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         fetchReview: () => TE.right({ url: sourceUrl }),
         getAllEvents: T.of([
@@ -218,11 +218,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are no evaluations by the selected group', () => {
     it('returns an E.left of not-found', async () => {
-      const ports = {
-        ...defaultPorts,
-        findReviewsForArticleDoi: () => TE.right([]),
-      };
-      const result = await generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId })();
+      const result = await generateDocmapViewModel(defaultPorts)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
@@ -232,7 +228,7 @@ describe('generate-docmap-view-model', () => {
     it('only uses the evaluation by the selected group', async () => {
       const group = arbitraryGroup();
       const idOfEvaluationByThisGroup = arbitraryReviewId();
-      const ports = {
+      const ports: Ports = {
         ...defaultPorts,
         getAllEvents: T.of([
           groupJoined(
@@ -265,7 +261,7 @@ describe('generate-docmap-view-model', () => {
   describe('when there is a single evaluation by the selected group', () => {
     let result: DocmapModel;
     const group = arbitraryGroup();
-    const ports = {
+    const ports: Ports = {
       ...defaultPorts,
       getAllEvents: T.of([
         groupJoined(
@@ -296,7 +292,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when the group cannot be retrieved', () => {
     let result: E.Either<DE.DataError, DocmapModel>;
-    const ports = {
+    const ports: Ports = {
       ...defaultPorts,
       getAllEvents: T.of([]),
     };
