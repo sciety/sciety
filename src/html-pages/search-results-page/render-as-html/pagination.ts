@@ -2,6 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderNextLinkOrCallsToAction, SearchParameters } from './render-next-link-or-calls-to-action';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { articleServers } from '../../../types/article-server';
+
+const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <b>${articleServers.medrxiv.name}</b>, <b>${articleServers.researchsquare.name}</b>, <b>${articleServers.scielopreprints.name}</b>`;
 
 type PaginationParameters = {
   pageNumber: number,
@@ -16,7 +19,7 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParam
       Showing page <b>${paginationParameters.pageNumber}</b> of <b>${paginationParameters.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
     </h3>
     <div class="search-results__header_details">
-      <div class="search-results__header_details_item">Results from <b>bioRxiv</b>, <b>medRxiv</b>, <b>Research Square</b>, <b>SciELO Preprints</b></div>
+      <div class="search-results__header_details_item">Results from ${articleServersSeparatedByComma}</div>
       <div class="search-results__header_details_item">Sorted by <b>publication date</b></div>
     </div>
   </header>
