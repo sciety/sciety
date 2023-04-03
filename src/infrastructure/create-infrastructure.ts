@@ -139,8 +139,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
         findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedAxiosRequest(logger),
-          logger,
+          getAllEvents,
         }),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
