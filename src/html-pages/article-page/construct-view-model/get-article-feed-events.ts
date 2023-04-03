@@ -7,16 +7,15 @@ import { constant, pipe } from 'fp-ts/function';
 import { getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
-import { getEvaluationsForDoi } from '../../../shared-read-models/evaluations-stateless';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { FindVersionsForArticleDoi, GetAllEvents } from '../../../shared-ports';
+import { FindVersionsForArticleDoi, GetEvaluationsForDoi } from '../../../shared-ports';
 
 export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  getAllEvents: GetAllEvents,
+  getEvaluationsForDoi: GetEvaluationsForDoi,
 };
 
 type GetArticleFeedEventsByDateDescending = (
@@ -34,8 +33,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   [
     pipe(
-      adapters.getAllEvents,
-      T.map(getEvaluationsForDoi(doi)),
+      adapters.getEvaluationsForDoi(doi),
+      T.of,
       T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
     pipe(
