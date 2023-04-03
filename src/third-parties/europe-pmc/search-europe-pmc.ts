@@ -25,7 +25,14 @@ type Dependencies = {
   logger: Logger,
 };
 
-const europePmcPublisher = t.union([t.literal('bioRxiv'), t.literal('medRxiv'), t.literal('Research Square')]);
+const europePmcPublisher = t.union(
+  [
+    t.literal('bioRxiv'),
+    t.literal('medRxiv'),
+    t.literal('Research Square'),
+    t.literal('SciELO Preprints'),
+  ],
+);
 
 const europePmcAuthor = t.union([
   t.type({ fullName: t.string }),
@@ -69,7 +76,7 @@ const constructQueryParams = (
   evaluatedOnly: boolean,
 ) => (
   new URLSearchParams({
-    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
+    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
     format: 'json',
     pageSize: pageSize.toString(),
     resultType: 'core',
@@ -86,6 +93,8 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
       return 'medrxiv';
     case 'Research Square':
       return 'researchsquare';
+    case 'SciELO Preprints':
+      return 'scielopreprints';
   }
 };
 

@@ -170,7 +170,7 @@ describe('search-europe-pmc adapter', () => {
 
     const queryString = (new URL(uri)).searchParams;
 
-    expect(queryString.get('query')).toBe('(Structural basis of αE&) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square") sort_date:y');
+    expect(queryString.get('query')).toBe('(Structural basis of αE&) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints") sort_date:y');
   });
 
   describe('when evaluatedOnly is set', () => {
