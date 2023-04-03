@@ -3,6 +3,7 @@ import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
 type RecordedEvaluation = {
+  articleId: Doi,
   reviewId: ReviewId,
   groupId: GroupId,
   recordedAt: Date,
