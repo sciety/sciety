@@ -2,6 +2,7 @@ import { renderVersionErrorFeedItem } from './render-article-version-error-feed-
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleVersionFeedItem } from '../view-model';
+import { articleServers } from '../../../types/article-server';
 
 type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
@@ -24,9 +25,17 @@ const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, a
 export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => {
   switch (feedItem.server) {
     case 'medrxiv':
-      return renderVersionFeedItem(feedItem, 'medRxiv', '/static/images/medrxiv.jpg');
+      return renderVersionFeedItem(
+        feedItem,
+        articleServers[feedItem.server].name,
+        articleServers[feedItem.server].avatarUrl,
+      );
     case 'biorxiv':
-      return renderVersionFeedItem(feedItem, 'bioRxiv', '/static/images/biorxiv.jpg');
+      return renderVersionFeedItem(
+        feedItem,
+        articleServers[feedItem.server].name,
+        articleServers[feedItem.server].avatarUrl,
+      );
     default:
       return renderVersionErrorFeedItem(feedItem.server);
   }
