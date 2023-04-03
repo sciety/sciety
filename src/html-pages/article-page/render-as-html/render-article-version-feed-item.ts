@@ -1,4 +1,3 @@
-import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleVersionFeedItem } from '../view-model';
@@ -22,21 +21,8 @@ const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, a
   </div>
 `);
 
-export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => {
-  switch (feedItem.server) {
-    case 'medrxiv':
-      return renderVersionFeedItem(
-        feedItem,
-        articleServers[feedItem.server].name,
-        articleServers[feedItem.server].avatarUrl,
-      );
-    case 'biorxiv':
-      return renderVersionFeedItem(
-        feedItem,
-        articleServers[feedItem.server].name,
-        articleServers[feedItem.server].avatarUrl,
-      );
-    default:
-      return renderVersionErrorFeedItem(feedItem.server);
-  }
-};
+export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => renderVersionFeedItem(
+  feedItem,
+  articleServers[feedItem.server].name,
+  articleServers[feedItem.server].avatarUrl,
+);
