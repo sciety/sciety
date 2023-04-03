@@ -20,13 +20,13 @@
   @include typography.body();
   display: flex;
   align-items: center;
-  margin-bottom: baseline.increments(2);
+  margin-bottom: 1rem;
   order: 1;
 }
 
 .evaluation-card__title {
   @include typography.card-title();
-  margin-bottom: baseline.increments(2);
+  margin-bottom: 1rem;
   order: 2;
 }
 

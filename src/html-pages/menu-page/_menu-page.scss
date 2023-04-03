@@ -47,7 +47,7 @@ $_menu-page-upper-inline-spacing: 26px;
   color: settings.$colour-white;
   background-color: settings.$colour-navigation-menu-background;
   width: 100%;
-  padding-top: baseline.increments(2);
+  padding-top: 1rem;
   @supports(display: flex) {
     display: flex;
   }

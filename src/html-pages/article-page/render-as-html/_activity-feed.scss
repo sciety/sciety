@@ -35,7 +35,7 @@
 }
 
 .activity-feed__item__contents {
-  padding: baseline.increments(2) functions.px-to-rem(16px) 0;
+  padding: 1rem functions.px-to-rem(16px) 0;
   margin-bottom: baseline.increments(3);
   @include breakpoints.not-narrow {
     grid-column: 1 / 9;
@@ -46,7 +46,7 @@
 .activity-feed__item__header {
   display: flex;
   align-items: center;
-  margin-bottom: baseline.increments(2);
+  margin-bottom: 1rem;
 }
 
 .activity-feed__item__avatar {
@@ -78,7 +78,7 @@ p.activity-feed__item__title {
   padding: 0;
   border: 0;
   color: settings.$colour-accent;
-  margin-bottom: baseline.increments(2);
+  margin-bottom: 1rem;
 
   @include states.link {
     text-decoration: underline;

@@ -36,37 +36,37 @@ p + ol {
 h1 {
   @include typography.heading-1();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 h2 {
   @include typography.heading-2();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 h3 {
   @include typography.heading-3();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 h4 {
   @include typography.heading-4();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 h5 {
   @include typography.heading-5();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 h6 {
   @include typography.heading-6();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 blockquote {
@@ -186,7 +186,7 @@ th {
 address {
   @include typography.body();
   font-style: normal;
-  margin-bottom: #{baseline.increments(2)};
+  margin-bottom: 1rem;
 }
 
 *,

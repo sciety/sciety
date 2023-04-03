@@ -9,7 +9,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin form {
   background-color: settings.$colour-white;
-  padding: baseline.increments(2) functions.px-to-rem(settings.$sciety-default-gutter);
+  padding: 1rem functions.px-to-rem(settings.$sciety-default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;

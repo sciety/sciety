@@ -3,7 +3,7 @@
 @use '../../sass/form';
 
 .page-header.page-header--edit-list-details-form-page {
-  margin-bottom: baseline.increments(2);
+  margin-bottom: 1rem;
   @include breakpoints.not-narrow {
     margin-bottom: baseline.increments(3);
   }

@@ -40,7 +40,7 @@
 }
 
 @mixin page-header-top-space() {
-  padding-top: baseline.increments(2);
+  padding-top: 1rem;
 
   @include breakpoints.not-narrow {
     padding-top: baseline.increments(5);
