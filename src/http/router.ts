@@ -28,7 +28,10 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import {
-  addArticleToListCommandCodec, editListDetailsCommandCodec, recordArticleVersionCommandCodec, removeArticleFromListCommandCodec,
+  addArticleToListCommandCodec,
+  editListDetailsCommandCodec,
+  recordArticleVersionCommandCodec,
+  removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
