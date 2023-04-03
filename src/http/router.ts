@@ -53,7 +53,7 @@ import { learnAboutPage } from '../html-pages/learn-about-page';
 import { legalPage } from '../html-pages/legal-page';
 import { menuPage, menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
-import { recordEvaluationCommandHandler } from '../write-side/record-evaluation';
+import { recordEvaluationHandler } from '../write-side/record-evaluation';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { respondHandler } from '../write-side/respond';
 import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
@@ -362,7 +362,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationCommandHandler(adapters)));
+  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationHandler(adapters)));
 
   router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
 
