@@ -42,6 +42,18 @@ const defaultPorts: Ports = {
 };
 
 describe('generate-docmap-view-model', () => {
+  let framework: TestFramework;
+  let defaultAdapters: Ports;
+
+  beforeEach(async () => {
+    framework = createTestFramework();
+    defaultAdapters = {
+      ...framework.queries,
+      ...framework.happyPathThirdParties,
+      getAllEvents: framework.getAllEvents,
+    };
+  });
+
   it('includes the article id', async () => {
     const group = arbitraryGroup();
     const ports: Ports = {
@@ -62,7 +74,7 @@ describe('generate-docmap-view-model', () => {
     const result = await pipe(
       { articleId, groupId: group.id },
       generateDocmapViewModel(ports),
-      TE.getOrElse(shouldNotBeCalled),
+      TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
     )();
 
     expect(result).toStrictEqual(expect.objectContaining({ articleId }));
@@ -89,7 +101,7 @@ describe('generate-docmap-view-model', () => {
     const result = await pipe(
       { articleId, groupId: group.id },
       generateDocmapViewModel(ports),
-      TE.getOrElse(shouldNotBeCalled),
+      TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
     )();
 
     expect(result).toStrictEqual(expect.objectContaining({ group }));
@@ -122,7 +134,7 @@ describe('generate-docmap-view-model', () => {
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
-        TE.getOrElse(shouldNotBeCalled),
+        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
 
@@ -168,7 +180,7 @@ describe('generate-docmap-view-model', () => {
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
-        TE.getOrElse(shouldNotBeCalled),
+        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
 
@@ -206,7 +218,7 @@ describe('generate-docmap-view-model', () => {
       };
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
-        TE.getOrElse(shouldNotBeCalled),
+        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
 
@@ -229,40 +241,43 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are evaluations by other groups', () => {
     it('only uses the evaluation by the selected group', async () => {
-      const group = arbitraryGroup();
-      const idOfEvaluationByThisGroup = arbitraryReviewId();
-      const ports: Ports = {
-        ...defaultPorts,
-        getAllEvents: T.of([
-          groupJoined(
-            indexedGroupId,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          evaluationRecorded(indexedGroupId, articleId, idOfEvaluationByThisGroup),
-        ]),
+      const group = {
+        ...arbitraryGroup(),
+        id: indexedGroupId,
       };
+      const otherGroup = arbitraryGroup();
+      const evaluationByThisGroup = {
+        ...arbitraryRecordedEvaluation(),
+        articleId,
+        groupId: indexedGroupId,
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.createGroup(otherGroup);
+      await framework.commandHelpers.recordEvaluation({
+        ...arbitraryRecordedEvaluation(),
+        groupId: otherGroup.id,
+        articleId,
+      });
+      await framework.commandHelpers.recordEvaluation(evaluationByThisGroup);
 
       const result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
-        TE.getOrElse(shouldNotBeCalled),
+        {
+          articleId,
+          groupId: indexedGroupId,
+        },
+        generateDocmapViewModel(defaultAdapters),
+        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
 
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
-          reviewId: idOfEvaluationByThisGroup,
+          reviewId: evaluationByThisGroup.reviewId,
         }),
       ]);
     });
   });
 
   describe('when there is a single evaluation by the selected group', () => {
-    let framework: TestFramework;
     const group = arbitraryGroup();
     const evaluation: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
@@ -272,13 +287,6 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      framework = createTestFramework();
-      const adapters: Ports = {
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-        getAllEvents: framework.getAllEvents,
-      };
-
       await framework.commandHelpers.createGroup({ ...group, id: indexedGroupId });
       await framework.commandHelpers.recordEvaluation(evaluation);
       result = await pipe(
@@ -286,7 +294,7 @@ describe('generate-docmap-view-model', () => {
           articleId,
           groupId: indexedGroupId,
         },
-        generateDocmapViewModel(adapters),
+        generateDocmapViewModel(defaultAdapters),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -298,15 +306,14 @@ describe('generate-docmap-view-model', () => {
 
   describe('when the group cannot be retrieved', () => {
     let result: E.Either<DE.DataError, DocmapModel>;
-    const ports: Ports = {
-      ...defaultPorts,
-      getAllEvents: T.of([]),
-    };
 
     beforeEach(async () => {
       result = await pipe(
-        { articleId, groupId: indexedGroupId },
-        generateDocmapViewModel(ports),
+        {
+          articleId,
+          groupId: indexedGroupId,
+        },
+        generateDocmapViewModel(defaultAdapters),
       )();
     });
 
