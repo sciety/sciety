@@ -200,24 +200,20 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      const ports: Ports = {
-        ...defaultPorts,
-        fetchReview: () => TE.right({ url: sourceUrl }),
-        getAllEvents: T.of([
-          groupJoined(
-            indexedGroupId,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
-          evaluationRecorded(indexedGroupId, articleId, reviewIdWithUninferrableSourceUrl),
-        ]),
+      const evaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        reviewId: reviewIdWithUninferrableSourceUrl,
+        articleId,
       };
+      const ports: Ports = {
+        ...defaultAdapters,
+        fetchReview: () => TE.right({ url: sourceUrl }),
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(evaluation);
       result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: indexedGroupId }),
+        generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -233,7 +229,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are no evaluations by the selected group', () => {
     it('returns an E.left of not-found', async () => {
-      const result = await generateDocmapViewModel(defaultPorts)({ articleId, groupId: indexedGroupId })();
+      const result = await generateDocmapViewModel(defaultAdapters)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
