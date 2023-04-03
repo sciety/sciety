@@ -19,7 +19,7 @@ $_desired-image-width-on-wide-screens: 396px;
   margin-bottom: baseline.increments(2.5);
 
   @include breakpoints.not-narrow() {
-    margin-bottom: baseline.increments(5);
+    margin-bottom: 2.5rem;
   }
 
 }
@@ -110,7 +110,7 @@ $_desired-image-width-on-wide-screens: 396px;
 }
 
 .home-page-hero__left_wrapper {
-  padding-bottom: baseline.increments(6);
+  padding-bottom: 3rem;
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-top: baseline.increments(2.5);

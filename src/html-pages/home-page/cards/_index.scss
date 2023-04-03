@@ -22,7 +22,7 @@
   }
 
   @media screen and (min-width: functions.px-to-em(484px)) {
-    padding-bottom: baseline.increments(6);
+    padding-bottom: 3rem;
   }
 }
 
@@ -34,7 +34,7 @@
 
 .home-page-cards__cards {
   @include list.basics();
-  padding-bottom: baseline.increments(5);
+  padding-bottom: 2.5rem;
   margin-bottom: 0;
 
   @media screen and (min-width: common.$home-page-breakpoint) {

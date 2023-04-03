@@ -10,7 +10,7 @@
 @use '../../sass/list';
 @use '../../sass/states';
 
-$_outer-vertical-spacing: baseline.increments(4);
+$_outer-vertical-spacing: 2rem;
 
 .pre-footer {
   @include layout.page-content-horizontal-margins();
@@ -48,7 +48,7 @@ $_outer-vertical-spacing: baseline.increments(4);
 .main-footer__navigation {
   @include list.basics();
 
-  margin-bottom: baseline.increments(6);
+  margin-bottom: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -4,5 +4,5 @@
 .article-abstract {
   @include card.basics();
 
-  margin-bottom: baseline.increments(6);
+  margin-bottom: 3rem;
 }

@@ -23,7 +23,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin section {
-  margin-bottom: baseline.increments(6);
+  margin-bottom: 3rem;
 }
 
 @mixin label {

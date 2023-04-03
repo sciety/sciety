@@ -7,7 +7,7 @@
 .page-header {
   @include layout.page-header-top-space();
   @include layout.page-content-horizontal-margins();
-  margin-bottom: #{baseline.increments(6)};
+  margin-bottom: 3rem;
 
   p {
     margin-bottom: 0.5rem;

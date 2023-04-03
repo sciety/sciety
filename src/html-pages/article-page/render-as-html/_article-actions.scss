@@ -27,10 +27,10 @@
 
 .full-article-button {
   @include button.button-link();
-  margin-bottom: baseline.increments(4);
+  margin-bottom: 2rem;
 
   @include breakpoints.two-column-display {
-    margin-bottom: baseline.increments(10);
+    margin-bottom: 5rem;
   }
 }
 

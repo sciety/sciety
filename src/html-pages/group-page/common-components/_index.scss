@@ -14,7 +14,7 @@
 
 .group-page-follow-toggle {
   @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(6);
+  margin-bottom: 3rem;
 }
 
 .page-header--group {

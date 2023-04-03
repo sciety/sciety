@@ -7,12 +7,12 @@
 @use '../../sass/settings';
 @use '../../sass/typography';
 
-$_text-input-height: baseline.increments(6);
+$_text-input-height: 3rem;
 $_clear-button-inline-size: 48px;
 
 .search-form {
   @include form.form();
-  margin-bottom: baseline.increments(6);
+  margin-bottom: 3rem;
 }
 
 .search-form__section {
