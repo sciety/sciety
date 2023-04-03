@@ -3,15 +3,17 @@ import { pipe } from 'fp-ts/function';
 import { renderNextLinkOrCallsToAction, SearchParameters } from './render-next-link-or-calls-to-action';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-export type PaginationViewModel = SearchParameters & {
+type PaginationParameters = {
   pageNumber: number,
   numberOfPages: number,
 };
 
-const renderArticlesSearchResultsHeader = (pageNumber: number, numberOfPages: number) => `
+export type PaginationViewModel = SearchParameters & PaginationParameters;
+
+const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParameters) => `
   <header class="search-results__header">
     <h3 class="search-results__page_count">
-      Showing page <b>${pageNumber}</b> of <b>${numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
+      Showing page <b>${paginationParameters.pageNumber}</b> of <b>${paginationParameters.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
     </h3>
     <div class="search-results__header_details">
       <div class="search-results__header_details_item">Results from <b>bioRxiv</b>, <b>medRxiv</b></div>
@@ -28,7 +30,7 @@ export const pagination: Pagination = (viewModel) => (content) => pipe(
     () => '',
     (c: HtmlFragment) => (viewModel.category === 'articles'
       ? `
-      ${renderArticlesSearchResultsHeader(viewModel.pageNumber, viewModel.numberOfPages)}
+      ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
       ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
     `
