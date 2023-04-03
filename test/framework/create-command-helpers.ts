@@ -9,6 +9,7 @@ import { GroupId } from '../../src/types/group-id';
 import { List } from '../../src/types/list';
 import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
+import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -16,6 +17,7 @@ export type CommandHelpers = {
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
 };
 
@@ -58,6 +60,14 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     TE.getOrElse(shouldNotBeCalled),
   )(),
   followGroup: async (userId, groupId) => commandHandlers.followGroup({ userId, groupId })(),
+  recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
+    {
+      ...evaluation,
+      evaluationLocator: evaluation.reviewId,
+    },
+    commandHandlers.recordEvaluation,
+    TE.getOrElse(shouldNotBeCalled),
+  )(),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,

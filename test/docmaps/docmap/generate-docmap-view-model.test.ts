@@ -20,6 +20,9 @@ import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewDoi, arbitraryReviewId } from '../../types/review-id.helper';
+import { TestFramework, createTestFramework } from '../../framework';
+import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
@@ -259,28 +262,31 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there is a single evaluation by the selected group', () => {
-    let result: DocmapModel;
+    let framework: TestFramework;
     const group = arbitraryGroup();
-    const ports: Ports = {
-      ...defaultPorts,
-      getAllEvents: T.of([
-        groupJoined(
-          indexedGroupId,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
-        evaluationRecorded(indexedGroupId, articleId, arbitraryReviewId()),
-      ]),
+    const evaluation: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: indexedGroupId,
+      articleId,
     };
+    let result: DocmapModel;
 
     beforeEach(async () => {
+      framework = createTestFramework();
+      const adapters: Ports = {
+        ...framework.queries,
+        ...framework.happyPathThirdParties,
+        getAllEvents: framework.getAllEvents,
+      };
+
+      await framework.commandHelpers.createGroup({ ...group, id: indexedGroupId });
+      await framework.commandHelpers.recordEvaluation(evaluation);
       result = await pipe(
-        { articleId, groupId: indexedGroupId },
-        generateDocmapViewModel(ports),
+        {
+          articleId,
+          groupId: indexedGroupId,
+        },
+        generateDocmapViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
