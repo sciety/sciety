@@ -142,6 +142,12 @@ ingest-evaluations: build
 	app \
 	npx ts-node src/ingest/update-event-data
 
+record-article-versions-for-day: export TARGET = dev
+record-article-versions-for-day: build
+	$(DOCKER_COMPOSE) run --name record-article-versions-for-day --rm \
+	app \
+	npx ts-node src/ingest/record-article-versions-for-day
+
 update-event-data: ingest-evaluations backstop-test
 
 dev-sql: export TARGET = dev
