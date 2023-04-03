@@ -12,7 +12,7 @@ axiosRetry(axios, {
   },
 });
 
-const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string>) => {
+export const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string>) => {
   const startTime = performance.now();
   const headers = {
     'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
