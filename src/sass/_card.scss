@@ -77,7 +77,7 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin list-item() {
-  margin-bottom: baseline.increments(1);
+  margin-bottom: 0.5rem;
 
   &:last-child {
     margin-bottom: 0;

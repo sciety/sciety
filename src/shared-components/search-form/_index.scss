@@ -40,14 +40,14 @@ $_clear-button-inline-size: 48px;
   padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem(12px);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
-  margin-bottom: baseline.increments(1);
+  margin-bottom: 0.5rem;
   color: settings.$colour-text-primary;
 }
 
 .search-form__checkbox_label {
   @include typography.body();
   display: inline-block;
-  margin-bottom: baseline.increments(1);
+  margin-bottom: 0.5rem;
 }
 
 .search-form__clear {

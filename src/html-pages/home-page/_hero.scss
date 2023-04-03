@@ -64,7 +64,7 @@ $_desired-image-width-on-wide-screens: 396px;
   @include typography.sizing(32px, 4.75);
   font-weight: normal;
   margin-top: baseline.increments(2.5);
-  margin-bottom: baseline.increments(1);
+  margin-bottom: 0.5rem;
 
   @include breakpoints.not-narrow() {
     @include typography.sizing(36px, 5.25);
@@ -173,7 +173,7 @@ $_desired-image-width-on-wide-screens: 396px;
 }
 
 .home-page-hero__above_button {
-  margin-bottom: baseline.increments(1);
+  margin-bottom: 0.5rem;
 }
 
 .home-page-hero__sign_up_button {

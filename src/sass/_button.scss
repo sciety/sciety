@@ -14,7 +14,7 @@
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
   display: inline-block;
 
   &:link,
@@ -52,7 +52,7 @@
   @include states.focus();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
 
   background-color: settings.$colour-accent;
   color: settings.$colour-white;
@@ -75,7 +75,7 @@
   @include basics();
   background-color: settings.$colour-teal;
   color: settings.$colour-white;
-  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
 
   &:hover,
   &:active {
