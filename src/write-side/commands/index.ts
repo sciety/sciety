@@ -3,6 +3,7 @@ export { addArticleToListCommandCodec, AddArticleToListCommand } from './add-art
 export { CreateListCommand } from './create-list';
 export { addGroupCommandCodec, AddGroupCommand } from './add-group';
 export { RecordEvaluationCommand, recordEvaluationCommandCodec } from './record-evaluation';
+export { RecordArticleVersionCommand, recordArticleVersionCommandCodec } from './record-article-version';
 export { RecordSubjectAreaCommand } from './record-subject-area';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
 export { CreateUserAccountCommand } from './create-user-account';

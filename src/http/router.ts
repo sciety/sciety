@@ -28,7 +28,7 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import {
-  addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
+  addArticleToListCommandCodec, editListDetailsCommandCodec, recordArticleVersionCommandCodec, removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -72,6 +72,7 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
+import { recordArticleVersionCommandHandler } from '../write-side/record-article-version';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -363,6 +364,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
   router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationHandler(adapters)));
+
+  router.post('/api/record-article-version', createApiRouteForCommand(adapters, recordArticleVersionCommandCodec, recordArticleVersionCommandHandler(adapters)));
 
   router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
 
