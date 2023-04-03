@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { nextLink, SearchParameters } from './next-link';
+import { renderNextLinkOrCallsToAction, SearchParameters } from './render-next-link-or-calls-to-action';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type PaginationViewModel = SearchParameters & {
@@ -26,7 +26,7 @@ export const pagination: Pagination = (viewModel) => (content) => pipe(
         </div>
       </header>
       ${c}
-      ${nextLink({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
+      ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
     `
       : c),
   ),

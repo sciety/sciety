@@ -11,7 +11,7 @@ export type SearchParameters = {
   pageNumber: number,
 };
 
-export const nextLink = ({
+export const renderNextLinkOrCallsToAction = ({
   category, query, evaluatedOnly, nextCursor, pageNumber,
 }: SearchParameters): HtmlFragment => pipe(
   nextCursor,

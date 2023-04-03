@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { JSDOM } from 'jsdom';
-import { nextLink } from '../../../../src/html-pages/search-results-page/render-as-html/next-link';
+import { renderNextLinkOrCallsToAction } from '../../../../src/html-pages/search-results-page/render-as-html/render-next-link-or-calls-to-action';
 
-describe('next-link', () => {
+describe('render-next-link-or-calls-to-action', () => {
   it('encodes the cursor for http', () => {
-    const nextLinkAnchor = nextLink({
+    const nextLinkAnchor = renderNextLinkOrCallsToAction({
       pageNumber: 2,
       category: 'articles',
       query: 'bats',
@@ -21,7 +21,7 @@ describe('next-link', () => {
   });
 
   it('encodes the query for http', () => {
-    const nextLinkAnchor = nextLink({
+    const nextLinkAnchor = renderNextLinkOrCallsToAction({
       pageNumber: 2,
       category: 'articles',
       query: 'bats+bugs',
@@ -38,7 +38,7 @@ describe('next-link', () => {
   });
 
   describe('when the evaluatedOnly filter is set', () => {
-    const nextLinkAnchor = nextLink({
+    const nextLinkAnchor = renderNextLinkOrCallsToAction({
       pageNumber: 2,
       category: 'articles',
       query: 'bats',
