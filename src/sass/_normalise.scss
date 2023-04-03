@@ -18,7 +18,7 @@ body {
 p {
   @include typography.body();
   margin-top: 0;
-  margin-bottom: #{baseline.increments(3)};
+  margin-bottom: 1.5rem;
 
 
   a:link {
@@ -158,7 +158,7 @@ p:last-child {
 table {
   border-top: settings.$border-width solid settings.$colour-furniture;
   border-bottom: settings.$border-width solid settings.$colour-furniture;
-  margin-bottom: baseline.increments(3);
+  margin-bottom: 1.5rem;
 }
 
 td,
