@@ -5,14 +5,14 @@ import { articleServers } from '../../../types/article-server';
 
 type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
-const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, avatarUrl: string) => toHtmlFragment(`
+export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
-      <img class="activity-feed__item__avatar" src="${avatarUrl}" alt="">
+      <img class="activity-feed__item__avatar" src="${articleServers[feedItem.server].avatarUrl}" alt="">
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version ${feedItem.version} published on ${name}
+            Version ${feedItem.version} published on ${articleServers[feedItem.server].name}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
@@ -20,9 +20,3 @@ const renderVersionFeedItem = (feedItem: ArticleVersionFeedItem, name: string, a
     </header>
   </div>
 `);
-
-export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => renderVersionFeedItem(
-  feedItem,
-  articleServers[feedItem.server].name,
-  articleServers[feedItem.server].avatarUrl,
-);
