@@ -9,10 +9,7 @@ import { List } from '../../src/types/list';
 import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
-
-const abortTest = (message: string) => (left: unknown) => {
-  throw new Error(`${message}: ${JSON.stringify(left)}`);
-};
+import { abortTest } from './abort-test';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,

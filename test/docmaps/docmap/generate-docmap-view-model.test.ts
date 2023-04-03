@@ -287,7 +287,7 @@ describe('generate-docmap-view-model', () => {
           groupId: indexedGroupId,
         },
         generateDocmapViewModel(adapters),
-        TE.getOrElse(shouldNotBeCalled),
+        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
 
