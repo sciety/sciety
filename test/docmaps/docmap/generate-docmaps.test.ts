@@ -11,7 +11,6 @@ import { Ports } from '../../../src/docmaps/docmap/generate-docmaps';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
-import { GroupId } from '../../../src/types/group-id';
 import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
 import {
@@ -29,13 +28,6 @@ describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
-  const review = (groupId: GroupId, recordedAt: Date, reviewId: ReviewId = arbitraryReviewId()) => ({
-    reviewId,
-    groupId,
-    recordedAt,
-    publishedAt: arbitraryDate(),
-    authors: [],
-  });
   const defaultPorts: Ports = {
     fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
     findVersionsForArticleDoi: () => TO.some([
@@ -181,10 +173,6 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       docmaps = await generateDocmapsTestHelper({
-        findReviewsForArticleDoi: () => TE.right([
-          review(ncrcGroupId, arbitraryDate()),
-          review(rapidReviewsGroupId, arbitraryDate()),
-        ]),
         getAllEvents: T.of([
           groupJoined(
             ncrcGroupId,
@@ -224,10 +212,6 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       const group = arbitraryGroup();
       docmaps = await generateDocmapsTestHelper({
-        findReviewsForArticleDoi: () => TE.right([
-          review(ncrcGroupId, arbitraryDate()),
-          review(ncrcGroupId, arbitraryDate()),
-        ]),
         getAllEvents: T.of([
           groupJoined(
             ncrcGroupId,
