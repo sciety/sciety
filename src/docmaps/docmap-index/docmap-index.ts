@@ -11,7 +11,8 @@ import { toDocmap } from '../docmap/to-docmap';
 import { supportedGroups } from '../supported-groups';
 import { GetAllEvents } from '../../shared-ports';
 
-type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts & {
+// ts-unused-exports:disable-next-line
+export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts & {
   getAllEvents: GetAllEvents,
 };
 
