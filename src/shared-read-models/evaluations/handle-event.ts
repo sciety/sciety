@@ -13,10 +13,8 @@ export type RecordedEvaluation = {
 
 export type ReadModel = Record<string, Array<RecordedEvaluation>>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
     const key = event.articleId.value;
