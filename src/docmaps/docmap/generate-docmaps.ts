@@ -43,7 +43,8 @@ const errorOnEmpty = E.fromPredicate(
   () => ({ status: StatusCodes.NOT_FOUND, message: 'No Docmaps available for requested DOI' }),
 );
 
-type Ports = {
+// ts-unused-exports:disable-next-line
+export type Ports = {
   getAllEvents: GetAllEvents,
 } & DocmapPorts;
 

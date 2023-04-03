@@ -7,8 +7,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
+import { Ports } from '../../../src/docmaps/docmap/generate-docmaps';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
-import { Ports as DocmapPorts } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import { GroupId } from '../../../src/types/group-id';
@@ -36,9 +36,9 @@ describe('generate-docmaps', () => {
     publishedAt: arbitraryDate(),
     authors: [],
   });
-  const defaultPorts = {
+  const defaultPorts: Ports = {
     fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
-    findVersionsForArticleDoi: (): ReturnType<DocmapPorts['findVersionsForArticleDoi']> => TO.some([
+    findVersionsForArticleDoi: () => TO.some([
       {
         source: new URL(arbitraryUri()),
         publishedAt: arbitraryDate(),
