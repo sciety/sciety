@@ -11,7 +11,6 @@
 @use '../../sass/settings';
 @use '../../sass/typography';
 
-$_inline-margin: settings.$base-font-measure;
 $_common-space-beneath: baseline.increments(1);
 
 .page-header.page-header--search-results {
@@ -21,13 +20,9 @@ $_common-space-beneath: baseline.increments(1);
 
 .search-results__header {
   @include typography.details();
+  @include layout.page-content-horizontal-margins();
   padding-top: 1rem;
   margin-bottom: $_common-space-beneath;
-  margin-left: functions.px-to-rem($_inline-margin);
-
-  @include breakpoints.not-narrow() {
-    margin-left: 0;
-  }
 }
 
 .search-results__page_count {
@@ -60,9 +55,5 @@ $_common-space-beneath: baseline.increments(1);
 }
 
 .search-results__footer {
-  margin-left: functions.px-to-rem($_inline-margin);
-
-  @include breakpoints.not-narrow() {
-    margin-left: 0;
-  }
+  @include layout.page-content-horizontal-margins();
 }
