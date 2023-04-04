@@ -23,6 +23,7 @@ import { userRevokedFindingReviewNotHelpfulEventCodec } from './user-revoked-fin
 import { userSavedArticleEventCodec } from './user-saved-article-event';
 import { userUnfollowedEditorialCommunityEventCodec } from './user-unfollowed-editorial-community-event';
 import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
+import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -56,6 +57,7 @@ export const domainEventCodec = t.union([
   userRevokedFindingReviewNotHelpfulEventCodec,
   userSavedArticleEventCodec,
   userUnsavedArticleEventCodec,
+  userDetailsUpdatedEventCodec,
 ], 'type');
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;

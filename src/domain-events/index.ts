@@ -130,4 +130,11 @@ export {
   evaluatedArticlesListSpecifiedEventCodec,
 } from './evaluated-articles-list-specified-event';
 
+export {
+  isUserDetailsUpdatedEvent,
+  userDetailsUpdated,
+  UserDetailsUpdatedEvent,
+  userDetailsUpdatedEventCodec,
+} from './user-details-updated-event';
+
 export { sort } from './domain-event';
