@@ -1,4 +1,4 @@
-import { PaginationViewModel } from './render-as-html/pagination';
+import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { GroupViewModel } from '../../shared-components/group-card';
 

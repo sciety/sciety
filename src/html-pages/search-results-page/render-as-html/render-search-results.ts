@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { pageTabs } from './page-tabs';
-import { pagination } from './pagination';
+import { wrapWithPaginationInformation } from './wrap-with-pagination-information';
 import { renderSearchResultsList } from './render-search-results-list';
 import { renderArticleCard } from '../../../shared-components/article-card';
 import { renderGroupCard } from '../../../shared-components/group-card';
@@ -16,7 +16,7 @@ export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.itemsToDisplay,
   RA.map(renderSearchResult),
   renderSearchResultsList,
-  pagination(viewModel),
+  wrapWithPaginationInformation(viewModel),
   pageTabs(viewModel),
   toHtmlFragment,
 );

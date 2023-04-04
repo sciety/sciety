@@ -39,9 +39,11 @@ const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragmen
     `
   : c);
 
-  type Pagination = (viewModel: PaginationViewModel) => (content: O.Option<HtmlFragment>) => HtmlFragment;
+type WrapWithPaginationInformation = (viewModel: PaginationViewModel)
+=> (content: O.Option<HtmlFragment>)
+=> HtmlFragment;
 
-export const pagination: Pagination = (viewModel) => (content) => pipe(
+export const wrapWithPaginationInformation: WrapWithPaginationInformation = (viewModel) => (content) => pipe(
   content,
   O.getOrElse(() => toHtmlFragment('')),
   applyHeaderAndFooter(viewModel),
