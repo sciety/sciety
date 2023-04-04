@@ -23,6 +23,8 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryDescriptionPath } from '../../types/description-path.helper';
+import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -41,6 +43,17 @@ describe('generate-docmaps', () => {
     getAllEvents: T.of([]),
     getGroup: () => O.some(arbitraryGroup()),
   };
+  let framework: TestFramework;
+  let defaultAdapters: Ports;
+
+  beforeEach(async () => {
+    framework = createTestFramework();
+    defaultAdapters = {
+      ...framework.queries,
+      ...framework.happyPathThirdParties,
+      getAllEvents: framework.getAllEvents,
+    };
+  });
 
   const generateDocmapsTestHelper = async (overridePorts: Record<string, unknown>) => pipe(
     generateDocmaps({ ...defaultPorts, ...overridePorts })(articleId.value),
@@ -53,10 +66,7 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       response = await pipe(
         arbitraryArticleId().value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([]),
-        }),
+        generateDocmaps(defaultAdapters),
       )();
     });
 
@@ -72,37 +82,25 @@ describe('generate-docmaps', () => {
   describe('when the article has been reviewed only by unsupported groups', () => {
     const group1 = arbitraryGroup();
     const group2 = arbitraryGroup();
+    const evaluation1 = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group1.id,
+    };
+    const evaluation2 = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group2.id,
+    };
 
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group1);
+      await framework.commandHelpers.createGroup(group2);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       response = await pipe(
         articleId.value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupJoined(
-              group1.id,
-              group1.name,
-              group1.avatarPath,
-              group1.descriptionPath,
-              group1.shortDescription,
-              group1.homepage,
-              group1.slug,
-            ),
-            groupJoined(
-              group2.id,
-              group2.name,
-              group2.avatarPath,
-              group2.descriptionPath,
-              group2.shortDescription,
-              group2.homepage,
-              group2.slug,
-            ),
-            evaluationRecorded(group1.id, articleId, arbitraryReviewId()),
-            evaluationRecorded(group2.id, articleId, arbitraryReviewId()),
-          ]),
-        }),
+        generateDocmaps(defaultAdapters),
       )();
     });
 
