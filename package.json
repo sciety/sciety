@@ -12,7 +12,7 @@
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
     "@types/passport-local": "^1.0.35",
-    "@xmldom/xmldom": "^0.8.6",
+    "@xmldom/xmldom": "^0.8.7",
     "axios": "^0.21.4",
     "axios-cache-adapter": "^2.7.3",
     "axios-retry": "3.4.0",
