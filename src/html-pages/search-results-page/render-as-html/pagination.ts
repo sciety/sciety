@@ -25,19 +25,19 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParam
   </header>
 `;
 
-type Pagination = (viewModel: PaginationViewModel) => (content: O.Option<HtmlFragment>) => HtmlFragment;
-
-export const pagination: Pagination = (viewModel) => (content) => pipe(
-  content,
-  O.fold(
-    () => '',
-    (c: HtmlFragment) => (viewModel.category === 'articles'
-      ? `
+const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => (viewModel.category === 'articles'
+  ? `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
       ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
     `
-      : c),
-  ),
+  : c);
+
+  type Pagination = (viewModel: PaginationViewModel) => (content: O.Option<HtmlFragment>) => HtmlFragment;
+
+export const pagination: Pagination = (viewModel) => (content) => pipe(
+  content,
+  O.getOrElse(() => toHtmlFragment('')),
+  applyHeaderAndFooter(viewModel),
   toHtmlFragment,
 );
