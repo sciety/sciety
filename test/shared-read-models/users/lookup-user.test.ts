@@ -32,6 +32,10 @@ describe('lookup-user', () => {
     });
   });
 
+  describe('when avatarUrl has been updated', () => {
+    it.todo('returns the updated avatarUrl');
+  });
+
   describe('when user does not exist', () => {
     const readModel = pipe(
       [],
