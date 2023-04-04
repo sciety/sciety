@@ -5,7 +5,7 @@ import { ViewModel } from '../view-model';
 
 type PageTabs = (viewModel: ViewModel) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
 
-export const pageTabs: PageTabs = (viewModel) => renderTabs({
+export const applyTabControls: PageTabs = (viewModel) => renderTabs({
   tabList: [
     {
       label: toHtmlFragment(`Articles (${viewModel.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
