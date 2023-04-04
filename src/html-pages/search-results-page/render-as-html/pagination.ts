@@ -13,10 +13,16 @@ type PaginationParameters = {
 
 export type PaginationViewModel = SearchParameters & PaginationParameters;
 
+const renderPageCount = (paginationParameters: PaginationParameters) => (
+  (paginationParameters.numberOfPages > 0)
+    ? `Showing page <b>${paginationParameters.pageNumber}</b> of <b>${paginationParameters.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>`
+    : 'No results found'
+);
+
 const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParameters) => `
   <header class="search-results__header">
     <h3 class="search-results__page_count">
-      Showing page <b>${paginationParameters.pageNumber}</b> of <b>${paginationParameters.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>
+      ${renderPageCount(paginationParameters)}
     </h3>
     <div class="search-results__header_details">
       <div class="search-results__header_details_item">Results from ${articleServersSeparatedByComma}</div>
