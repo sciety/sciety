@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { EditUserDetailsCommand } from '../commands';
+import { UpdateUserDetailsCommand } from '../commands';
 import { toErrorMessage } from '../../types/error-message';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
@@ -9,11 +9,11 @@ type Ports = {
   commitEvents: CommitEvents,
 };
 
-type EditUserDetailsCommandHandler = (
+type UpdateUserDetailsCommandHandler = (
   adapters: Ports
-) => CommandHandler<EditUserDetailsCommand>;
+) => CommandHandler<UpdateUserDetailsCommand>;
 
-export const editUserDetailsCommandHandler: EditUserDetailsCommandHandler = (
+export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = (
 
 ) => (
 

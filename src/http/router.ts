@@ -30,7 +30,7 @@ import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to
 import {
   addArticleToListCommandCodec,
   editListDetailsCommandCodec,
-  editUserDetailsCommandCodec,
+  updateUserDetailsCommandCodec,
   removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
@@ -75,7 +75,7 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
-import { editUserDetailsCommandHandler } from '../write-side/edit-user-details';
+import { updateUserDetailsCommandHandler } from '../write-side/update-user-details';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -378,7 +378,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 
-  router.post('/api/edit-user-details', createApiRouteForCommand(adapters, editUserDetailsCommandCodec, editUserDetailsCommandHandler(adapters)));
+  router.post('/api/update-user-details', createApiRouteForCommand(adapters, updateUserDetailsCommandCodec, updateUserDetailsCommandHandler(adapters)));
 
   router.post(
     '/annotations/create-annotation',
