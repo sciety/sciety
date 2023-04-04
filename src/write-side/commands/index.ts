@@ -7,3 +7,4 @@ export { RecordSubjectAreaCommand } from './record-subject-area';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
 export { CreateUserAccountCommand } from './create-user-account';
 export { FollowCommand } from './follow';
+export { editUserDetailsCommandCodec, EditUserDetailsCommand } from './edit-user-details';

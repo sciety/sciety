@@ -28,7 +28,10 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
 import {
-  addArticleToListCommandCodec, editListDetailsCommandCodec, removeArticleFromListCommandCodec,
+  addArticleToListCommandCodec,
+  editListDetailsCommandCodec,
+  editUserDetailsCommandCodec,
+  removeArticleFromListCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -72,6 +75,7 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
+import { editUserDetailsCommandHandler } from '../write-side/edit-user-details';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -373,6 +377,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
+
+  router.post('/api/edit-user-details', createApiRouteForCommand(adapters, editUserDetailsCommandCodec, editUserDetailsCommandHandler(adapters)));
 
   router.post(
     '/annotations/create-annotation',
