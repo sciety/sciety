@@ -1,23 +1,19 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
-import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
+import { evaluationRecorded } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
-import {
-  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
-} from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-import { arbitraryDescriptionPath } from '../../types/description-path.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
+import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -25,20 +21,24 @@ describe('docmap-index', () => {
     articles?: ReadonlyArray<unknown>,
     error?: string,
   };
+  let framework: TestFramework;
+  let defaultAdapters: Ports;
+
+  beforeEach(async () => {
+    framework = createTestFramework();
+    defaultAdapters = {
+      ...framework.queries,
+      ...framework.happyPathThirdParties,
+      getAllEvents: framework.getAllEvents,
+    };
+  });
 
   describe('when all ports work', () => {
     describe('and there are no docmaps', () => {
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
-        const ports: Ports = {
-          getAllEvents: T.of([]),
-          fetchReview: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
-          fetchArticle: shouldNotBeCalled,
-          getGroup: shouldNotBeCalled,
-        };
-        response = await docmapIndex(ports)({})();
+        response = await docmapIndex(defaultAdapters)({})();
       });
 
       it('return an empty list in the articles field', async () => {
@@ -51,37 +51,20 @@ describe('docmap-index', () => {
     });
 
     describe('when there are docmaps', () => {
+      const group = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const evaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      };
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
-        const ports: Ports = {
-          getGroup: () => O.some({
-            ...arbitraryGroup(),
-            id: ncrcGroupId,
-          }),
-          getAllEvents: T.of([
-            groupJoined(
-              ncrcGroupId,
-              arbitraryString(),
-              arbitraryWord(),
-              arbitraryDescriptionPath(),
-              arbitraryString(),
-              arbitraryUri(),
-              arbitraryWord(),
-            ),
-            evaluationRecorded(ncrcGroupId, arbitraryArticleId(), arbitraryReviewId()),
-          ]),
-          fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
-          findVersionsForArticleDoi: () => TO.some([
-            {
-              source: new URL(arbitraryUri()),
-              publishedAt: arbitraryDate(),
-              version: 1,
-            },
-          ]),
-          fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
-        };
-        response = await docmapIndex(ports)({})();
+        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.recordEvaluation(evaluation);
+        response = await docmapIndex(defaultAdapters)({})();
       });
 
       it('return them as a list in the articles field', () => {
