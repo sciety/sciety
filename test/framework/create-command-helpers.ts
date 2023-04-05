@@ -1,4 +1,5 @@
 import { flow, pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
@@ -20,6 +21,7 @@ export type CommandHelpers = {
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
+  updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
 
 type Outcome = TE.TaskEither<string, CommandResult>;
@@ -91,5 +93,13 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       listId,
     },
     invoke(commandHandlers.removeArticleFromList, 'removeArticleFromList'),
+  )(),
+  updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
+    {
+      id: userId,
+      avatarUrl: O.fromNullable(avatarUrl),
+      displayName: O.fromNullable(displayName),
+    },
+    invoke(commandHandlers.updateUserDetails, 'updateUserDetails'),
   )(),
 });
