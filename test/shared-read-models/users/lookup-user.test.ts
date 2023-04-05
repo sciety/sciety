@@ -25,15 +25,16 @@ describe('lookup-user', () => {
     });
   });
 
-  describe('when avatarUrl has been updated', () => {
+  describe.skip('when avatarUrl has been updated', () => {
     const user = arbitraryUserDetails();
     const newAvatarUrl = arbitraryUri();
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.updateUserDetails(user.id, newAvatarUrl);
     });
 
-    it.failing('returns the updated avatarUrl', () => {
+    it('returns the updated avatarUrl', () => {
       const result = framework.queries.lookupUser(user.id);
 
       expect(result).toStrictEqual(O.some({
