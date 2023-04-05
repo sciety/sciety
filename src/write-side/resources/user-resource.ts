@@ -31,6 +31,11 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
   RA.filter((event) => event.userId === userId),
   RA.reduce(
     E.left('userId not found' as ErrorMessage),
-    (resource, event) => E.right(resourceFromCreationEvent(event)),
+    (resource, event) => {
+      switch (event.type) {
+        case 'UserCreatedAccount':
+          return E.right(resourceFromCreationEvent(event));
+      }
+    },
   ),
 );
