@@ -2,7 +2,12 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import { UserHandle } from '../../types/user-handle';
-import { DomainEvent, isUserCreatedAccountEvent, UserCreatedAccountEvent } from '../../domain-events';
+import {
+  DomainEvent,
+  isUserCreatedAccountEvent, isUserDetailsUpdatedEvent,
+  UserCreatedAccountEvent,
+  UserDetailsUpdatedEvent,
+} from '../../domain-events';
 import { UserId } from '../../types/user-id';
 import { ErrorMessage } from '../../types/error-message';
 
@@ -25,9 +30,15 @@ type ReplayUserResource = (userId: UserId)
 
 const resourceFromCreationEvent = (event: UserCreatedAccountEvent) => ({ avatarUrl: event.avatarUrl });
 
+type RelevantEvent = UserCreatedAccountEvent | UserDetailsUpdatedEvent;
+
+const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
+  isUserCreatedAccountEvent(event) || isUserDetailsUpdatedEvent(event)
+);
+
 export const replayUserResource: ReplayUserResource = (userId) => (events) => pipe(
   events,
-  RA.filter(isUserCreatedAccountEvent),
+  RA.filter(isARelevantEventForTheWriteModel),
   RA.filter((event) => event.userId === userId),
   RA.reduce(
     E.left('userId not found' as ErrorMessage),
@@ -35,6 +46,8 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
       switch (event.type) {
         case 'UserCreatedAccount':
           return E.right(resourceFromCreationEvent(event));
+        case 'UserDetailsUpdated':
+          return resource;
       }
     },
   ),
