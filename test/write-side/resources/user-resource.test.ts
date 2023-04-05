@@ -1,5 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { userDetailsUpdated } from '../../../src/domain-events/user-details-updated-event';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
@@ -37,7 +39,24 @@ describe('user-resource', () => {
       });
 
       describe('and they have previously updated their user details', () => {
-        it.todo('their most recent avatar url is in the resource');
+        const mostRecentlyUpdatedAvatarUrl = arbitraryUri();
+
+        beforeEach(() => {
+          const events = [
+            userCreatedAccount(userDetails.id, userDetails.handle, userDetails.avatarUrl, userDetails.displayName),
+            userDetailsUpdated(userDetails.id, O.some(mostRecentlyUpdatedAvatarUrl), O.none),
+          ];
+
+          resource = pipe(
+            events,
+            replayUserResource(userDetails.id),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
+
+        it.failing('their most recent avatar url is in the resource', () => {
+          expect(resource.avatarUrl).toStrictEqual(mostRecentlyUpdatedAvatarUrl);
+        });
 
         it.todo('their most recent display name is in the resource');
       });
