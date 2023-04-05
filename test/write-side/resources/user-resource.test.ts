@@ -1,16 +1,37 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { UserHandle } from '../../../src/types/user-handle';
+import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { replayUserResource, UserResource } from '../../../src/write-side/resources/user-resource';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('user-resource', () => {
   describe('replay user resource', () => {
     describe('when the user exists', () => {
-      describe('and they have not previously updated their user details', () => {
-        it.todo('their original avatar url is in the resource');
+      const userDetails = arbitraryUserDetails();
+      let resource: UserResource;
+
+      describe.skip('and they have not previously updated their user details', () => {
+        beforeEach(() => {
+          const events = [
+            userCreatedAccount(userDetails.id, userDetails.handle, userDetails.avatarUrl, userDetails.displayName),
+          ];
+
+          resource = pipe(
+            events,
+            replayUserResource(userDetails.id),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
+
+        it('their original avatar url is in the resource', () => {
+          expect(resource.avatarUrl).toStrictEqual(userDetails.avatarUrl);
+        });
 
         it.todo('their original display name is in the resource');
       });
