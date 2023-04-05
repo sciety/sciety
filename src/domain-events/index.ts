@@ -52,6 +52,7 @@ export {
 export {
   isUserCreatedAccountEvent,
   userCreatedAccount,
+  UserCreatedAccountEvent,
   userCreatedAccountEventCodec,
 } from './user-created-account-event';
 
