@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
-import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUri } from '../../helpers';
 import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
 
 describe('execute-command', () => {
+  const originalUserDetails = arbitraryUserDetails();
+
   describe('when passed a new avatar url', () => {
-    const userId = arbitraryUserId();
     const newAvatarUrl = arbitraryUri();
-    const command = { id: userId, avatarUrl: O.some(newAvatarUrl), displayName: O.none };
+    const command = { id: originalUserDetails.id, avatarUrl: O.some(newAvatarUrl), displayName: O.none };
     const resource = {
-      avatarUrl: arbitraryUri(),
+      avatarUrl: originalUserDetails.avatarUrl,
     };
     let events: ReadonlyArray<DomainEvent>;
 
@@ -21,7 +21,11 @@ describe('execute-command', () => {
 
     it('raises an event to update avatar url', () => {
       expect(events).toStrictEqual([
-        expect.objectContaining({ userId, avatarUrl: O.some(newAvatarUrl), displayName: O.none }),
+        expect.objectContaining({
+          userId: originalUserDetails.id,
+          avatarUrl: O.some(newAvatarUrl),
+          displayName: O.none,
+        }),
       ]);
     });
   });
@@ -35,10 +39,13 @@ describe('execute-command', () => {
   });
 
   describe('when passed the existing avatar url', () => {
-    const userDetails = arbitraryUserDetails();
-    const command = { id: userDetails.id, avatarUrl: O.some(userDetails.avatarUrl), displayName: O.none };
+    const command = {
+      id: originalUserDetails.id,
+      avatarUrl: O.some(originalUserDetails.avatarUrl),
+      displayName: O.none,
+    };
     const resource = {
-      avatarUrl: userDetails.avatarUrl,
+      avatarUrl: originalUserDetails.avatarUrl,
     };
     let events: ReadonlyArray<DomainEvent>;
 
