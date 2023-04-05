@@ -18,7 +18,7 @@ describe('execute-command', () => {
       events = executeCommand(command)(resource);
     });
 
-    it.failing('raises an event to update avatar url', () => {
+    it('raises an event to update avatar url', () => {
       expect(events).toStrictEqual([
         expect.objectContaining({ userId, avatarUrl: O.some(newAvatarUrl), displayName: O.none }),
       ]);
