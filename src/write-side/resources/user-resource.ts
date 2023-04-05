@@ -17,7 +17,7 @@ export const exists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainE
   ),
 );
 
-export type UserResource = unknown;
+export type UserResource = { avatarUrl: string };
 
 type ReplayUserResource = (userId: UserId)
 => (events: ReadonlyArray<DomainEvent>)

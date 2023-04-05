@@ -49,7 +49,7 @@ describe('execute-command', () => {
       events = executeCommand(command)(resource);
     });
 
-    it.failing('raises no events', () => {
+    it('raises no events', () => {
       expect(events).toStrictEqual([]);
     });
   });
