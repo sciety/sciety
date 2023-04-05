@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { UpdateUserDetailsCommand } from '../commands';
-import { toErrorMessage } from '../../types/error-message';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 
@@ -17,4 +16,4 @@ export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = 
 
 ) => (
 
-) => TE.left(toErrorMessage('no-events-raised'));
+) => TE.right('no-events-created');
