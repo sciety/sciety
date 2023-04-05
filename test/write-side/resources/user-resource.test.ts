@@ -54,7 +54,7 @@ describe('user-resource', () => {
           );
         });
 
-        it.failing('their most recent avatar url is in the resource', () => {
+        it('their most recent avatar url is in the resource', () => {
           expect(resource.avatarUrl).toStrictEqual(mostRecentlyUpdatedAvatarUrl);
         });
 
