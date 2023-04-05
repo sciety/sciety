@@ -23,4 +23,15 @@ type ReplayUserResource = (userId: UserId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, UserResource>;
 
-export const replayUserResource: ReplayUserResource = () => () => E.left('nope' as ErrorMessage);
+export const replayUserResource: ReplayUserResource = (userId) => (events) => pipe(
+  events,
+  RA.filter(isUserCreatedAccountEvent),
+  RA.filter((event) => event.userId === userId),
+  RA.match(
+    () => E.left('userId not found' as ErrorMessage),
+    (relevantEvents) => pipe(
+      relevantEvents[0],
+      (event) => E.right({ avatarUrl: event.avatarUrl }),
+    ),
+  ),
+);

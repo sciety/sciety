@@ -16,7 +16,7 @@ describe('user-resource', () => {
       const userDetails = arbitraryUserDetails();
       let resource: UserResource;
 
-      describe.skip('and they have not previously updated their user details', () => {
+      describe('and they have not previously updated their user details', () => {
         beforeEach(() => {
           const events = [
             userCreatedAccount(userDetails.id, userDetails.handle, userDetails.avatarUrl, userDetails.displayName),
