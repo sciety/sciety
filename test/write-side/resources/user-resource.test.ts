@@ -7,6 +7,26 @@ import { arbitraryString, arbitraryUri } from '../../helpers';
 import { UserHandle } from '../../../src/types/user-handle';
 
 describe('user-resource', () => {
+  describe('replay user resource', () => {
+    describe('when the user exists', () => {
+      describe('and they have not previously updated their user details', () => {
+        it.todo('their original avatar url is in the resource');
+
+        it.todo('their original display name is in the resource');
+      });
+
+      describe('and they have previously updated their user details', () => {
+        it.todo('their most recent avatar url is in the resource');
+
+        it.todo('their most recent display name is in the resource');
+      });
+    });
+
+    describe('when the user does not exist', () => {
+      it.todo('fails');
+    });
+  });
+
   describe('exists', () => {
     describe('when the user exists', () => {
       describe('with an identical handle', () => {
