@@ -6,14 +6,14 @@ import { executeCommand } from '../../../src/write-side/update-user-details/exec
 
 describe('execute-command', () => {
   const originalUserDetails = arbitraryUserDetails();
+  const resource = {
+    avatarUrl: originalUserDetails.avatarUrl,
+  };
+  let events: ReadonlyArray<DomainEvent>;
 
   describe('when passed a new avatar url', () => {
     const newAvatarUrl = arbitraryUri();
     const command = { id: originalUserDetails.id, avatarUrl: O.some(newAvatarUrl), displayName: O.none };
-    const resource = {
-      avatarUrl: originalUserDetails.avatarUrl,
-    };
-    let events: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {
       events = executeCommand(command)(resource);
@@ -44,10 +44,6 @@ describe('execute-command', () => {
       avatarUrl: O.some(originalUserDetails.avatarUrl),
       displayName: O.none,
     };
-    const resource = {
-      avatarUrl: originalUserDetails.avatarUrl,
-    };
-    let events: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {
       events = executeCommand(command)(resource);
