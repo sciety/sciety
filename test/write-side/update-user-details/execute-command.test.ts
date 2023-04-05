@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUri } from '../../helpers';
-import { executeCommand } from '../../../src/write-side/update-user-details/update-user-details-command-handler';
+import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
 
 describe('execute-command', () => {
   describe('when passed a new avatar url', () => {
