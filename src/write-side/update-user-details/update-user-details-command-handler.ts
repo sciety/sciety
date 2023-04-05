@@ -26,7 +26,8 @@ type ExecuteCommand = (command: UpdateUserDetailsCommand)
 => (userResource: UserResource)
 => ReadonlyArray<DomainEvent>;
 
-const executeCommand: ExecuteCommand = () => () => [];
+// ts-unused-exports:disable-next-line
+export const executeCommand: ExecuteCommand = () => () => [];
 
 type UpdateUserDetailsCommandHandler = (
   adapters: Ports
