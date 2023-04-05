@@ -9,6 +9,7 @@ import {
 } from '../../framework';
 import { createUserAccountCommandHandler } from '../../../src/write-side/create-user-account';
 import { UserDetails } from '../../../src/types/user-details';
+import { arbitraryUri } from '../../helpers';
 
 describe('update user details command handler', () => {
   let eventStore: EventStore;
@@ -24,7 +25,32 @@ describe('update user details command handler', () => {
   });
 
   describe('given a new avatarUrl in the command', () => {
-    it.todo('raises an UpdateUserDetails event');
+    const userDetails = arbitraryUserDetails();
+
+    beforeEach(async () => {
+      await createUserAccount(userDetails);
+    });
+
+    it.failing('raises an UpdateUserDetails event', async () => {
+      const command = {
+        id: userDetails.id,
+        avatarUrl: O.some(arbitraryUri()),
+        displayName: O.none,
+      };
+      eventStore = { ...eventStore, commitEvents: jest.fn(eventStore.commitEvents) };
+      await pipe(
+        command,
+        updateUserDetailsCommandHandler(eventStore),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(eventStore.commitEvents).toHaveBeenCalledWith([expect.objectContaining({
+        type: 'UserDetailsUpdated',
+        userId: command.id,
+        avatarUrl: command.avatarUrl,
+        displayName: command.displayName,
+      })]);
+    });
   });
 
   describe('given an avatarUrl in the command that matches the current avatarUrl', () => {
