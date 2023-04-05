@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUri } from '../../helpers';
@@ -34,7 +35,20 @@ describe('execute-command', () => {
   });
 
   describe('when passed the existing avatar url', () => {
-    it.todo('raises no events');
+    const userDetails = arbitraryUserDetails();
+    const command = { id: userDetails.id, avatarUrl: O.some(userDetails.avatarUrl), displayName: O.none };
+    const resource = {
+      avatarUrl: userDetails.avatarUrl,
+    };
+    let events: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      events = executeCommand(command)(resource);
+    });
+
+    it.failing('raises no events', () => {
+      expect(events).toStrictEqual([]);
+    });
   });
 
   describe('when passed the existing display name', () => {
