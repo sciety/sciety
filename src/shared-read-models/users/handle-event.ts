@@ -18,18 +18,8 @@ export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isUserDetailsUpdatedEvent(event)) {
     const existingUserDetails = readModel[event.userId];
-    if (event.avatarUrl !== undefined) {
-      readModel[event.userId] = {
-        ...existingUserDetails,
-        avatarUrl: event.avatarUrl,
-      };
-    }
-    if (event.displayName !== undefined) {
-      readModel[event.userId] = {
-        ...existingUserDetails,
-        displayName: event.displayName,
-      };
-    }
+    readModel[event.userId].avatarUrl = event.avatarUrl ?? existingUserDetails.avatarUrl;
+    readModel[event.userId].displayName = event.displayName ?? existingUserDetails.displayName;
   }
   return readModel;
 };
