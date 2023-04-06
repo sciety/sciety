@@ -24,6 +24,12 @@ export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel
         avatarUrl: event.avatarUrl,
       };
     }
+    if (event.displayName !== undefined) {
+      readModel[event.userId] = {
+        ...existingUserDetails,
+        displayName: event.displayName,
+      };
+    }
   }
   return readModel;
 };

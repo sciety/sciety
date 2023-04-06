@@ -53,7 +53,7 @@ describe('lookup-user', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the updated displayName', () => {
+    it('returns the updated displayName', () => {
       expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
         ...user,
         displayName: newDisplayName,
