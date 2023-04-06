@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { userIdCodec } from '../../types/user-id';
 
 export const updateUserDetailsCommandCodec = t.type({
-  id: userIdCodec,
+  userId: userIdCodec,
   avatarUrl: tt.optionFromNullable(t.string),
   displayName: tt.optionFromNullable(t.string),
 });

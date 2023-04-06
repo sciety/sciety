@@ -96,7 +96,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   )(),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
-      id: userId,
+      userId,
       avatarUrl: O.fromNullable(avatarUrl),
       displayName: O.fromNullable(displayName),
     },

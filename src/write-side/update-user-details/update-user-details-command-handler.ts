@@ -20,7 +20,7 @@ export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = 
   adapters,
 ) => (command) => pipe(
   adapters.getAllEvents,
-  T.map(replayUserResource(command.id)),
+  T.map(replayUserResource(command.userId)),
   TE.map(executeCommand(command)),
   TE.chainTaskK(adapters.commitEvents),
 );

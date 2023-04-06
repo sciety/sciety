@@ -13,7 +13,7 @@ describe('execute-command', () => {
 
   describe('when passed a new avatar url', () => {
     const newAvatarUrl = arbitraryUri();
-    const command = { id: originalUserDetails.id, avatarUrl: O.some(newAvatarUrl), displayName: O.none };
+    const command = { userId: originalUserDetails.id, avatarUrl: O.some(newAvatarUrl), displayName: O.none };
 
     beforeEach(() => {
       events = executeCommand(command)(resource);
@@ -40,7 +40,7 @@ describe('execute-command', () => {
 
   describe('when passed the existing avatar url', () => {
     const command = {
-      id: originalUserDetails.id,
+      userId: originalUserDetails.id,
       avatarUrl: O.some(originalUserDetails.avatarUrl),
       displayName: O.none,
     };

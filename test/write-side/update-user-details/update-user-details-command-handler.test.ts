@@ -23,7 +23,7 @@ describe('update user details command handler', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(userDetails);
       const command = {
-        id: userDetails.id,
+        userId: userDetails.id,
         avatarUrl: O.some(userDetails.avatarUrl),
         displayName: O.none,
       };
