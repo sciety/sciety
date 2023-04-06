@@ -1,8 +1,12 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUri } from '../../helpers';
 import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
+import { updateUserDetailsCommandCodec } from '../../../src/write-side/commands';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('execute-command', () => {
   const originalUserDetails = arbitraryUserDetails();
@@ -13,11 +17,14 @@ describe('execute-command', () => {
 
   describe('when passed a new avatar url', () => {
     const newAvatarUrl = arbitraryUri();
-    const command = {
-      userId: originalUserDetails.id,
-      avatarUrl: newAvatarUrl,
-      displayName: undefined,
-    };
+    const command = pipe(
+      {
+        userId: originalUserDetails.id,
+        avatarUrl: newAvatarUrl,
+      },
+      updateUserDetailsCommandCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
     beforeEach(() => {
       events = executeCommand(command)(resource);
