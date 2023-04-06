@@ -55,11 +55,6 @@ describe('generate-docmaps', () => {
     };
   });
 
-  const generateDocmapsTestHelper = async (overridePorts: Record<string, unknown>) => pipe(
-    generateDocmaps({ ...defaultPorts, ...overridePorts })(articleId.value),
-    TE.getOrElse(shouldNotBeCalled),
-  )();
-
   describe('when the article hasn\'t been reviewed', () => {
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
@@ -118,20 +113,25 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      docmaps = await generateDocmapsTestHelper({
-        getAllEvents: T.of([
-          groupJoined(
-            ncrcGroupId,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
-          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-        ]),
-      });
+      docmaps = await pipe(
+        articleId.value,
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupJoined(
+              ncrcGroupId,
+              group.name,
+              group.avatarPath,
+              group.descriptionPath,
+              group.shortDescription,
+              group.homepage,
+              group.slug,
+            ),
+            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+          ]),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns an array containing one docmap', () => {
@@ -144,21 +144,26 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      docmaps = await generateDocmapsTestHelper({
-        getAllEvents: T.of([
-          groupJoined(
-            ncrcGroupId,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
-          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-        ]),
-      });
+      docmaps = await pipe(
+        articleId.value,
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupJoined(
+              ncrcGroupId,
+              group.name,
+              group.avatarPath,
+              group.descriptionPath,
+              group.shortDescription,
+              group.homepage,
+              group.slug,
+            ),
+            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          ]),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns an array containing one docmap from the supported group', () => {
@@ -170,30 +175,35 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      docmaps = await generateDocmapsTestHelper({
-        getAllEvents: T.of([
-          groupJoined(
-            ncrcGroupId,
-            arbitraryString(),
-            arbitraryWord(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryUri(),
-            arbitraryWord(),
-          ),
-          groupJoined(
-            rapidReviewsGroupId,
-            arbitraryString(),
-            arbitraryWord(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryUri(),
-            arbitraryWord(),
-          ),
-          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(rapidReviewsGroupId, articleId, arbitraryReviewId()),
-        ]),
-      });
+      docmaps = await pipe(
+        articleId.value,
+        generateDocmaps({
+          ...defaultPorts,
+          getAllEvents: T.of([
+            groupJoined(
+              ncrcGroupId,
+              arbitraryString(),
+              arbitraryWord(),
+              arbitraryDescriptionPath(),
+              arbitraryString(),
+              arbitraryUri(),
+              arbitraryWord(),
+            ),
+            groupJoined(
+              rapidReviewsGroupId,
+              arbitraryString(),
+              arbitraryWord(),
+              arbitraryDescriptionPath(),
+              arbitraryString(),
+              arbitraryUri(),
+              arbitraryWord(),
+            ),
+            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(rapidReviewsGroupId, articleId, arbitraryReviewId()),
+          ]),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns an array containing a docmap for each group', () => {
@@ -209,42 +219,10 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      docmaps = await generateDocmapsTestHelper({
-        getAllEvents: T.of([
-          groupJoined(
-            ncrcGroupId,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
-          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-          evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-        ]),
-      });
-    });
-
-    it('returns an array containing a single docmap for that group', () => {
-      expect(docmaps).toHaveLength(1);
-    });
-  });
-
-  describe('when any docmap fails', () => {
-    let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
-
-    beforeEach(async () => {
-      const group = arbitraryGroup();
-      const failingReviewId = arbitraryNcrcId();
-      response = await pipe(
+      docmaps = await pipe(
+        articleId.value,
         generateDocmaps({
           ...defaultPorts,
-          fetchReview: (id: ReviewId) => (
-            id === failingReviewId
-              ? TE.left(DE.notFound)
-              : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
-          ),
           getAllEvents: T.of([
             groupJoined(
               ncrcGroupId,
@@ -256,8 +234,49 @@ describe('generate-docmaps', () => {
               group.slug,
             ),
             evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-            evaluationRecorded(ncrcGroupId, articleId, failingReviewId),
+            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
           ]),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns an array containing a single docmap for that group', () => {
+      expect(docmaps).toHaveLength(1);
+    });
+  });
+
+  describe('when any docmap fails', () => {
+    let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
+
+    beforeEach(async () => {
+      const group = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const failingReviewId = arbitraryNcrcId();
+      const goodEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        articleId,
+      };
+      const badEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        articleId,
+        reviewId: failingReviewId,
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(goodEvaluation);
+      await framework.commandHelpers.recordEvaluation(badEvaluation);
+      response = await pipe(
+        generateDocmaps({
+          ...defaultAdapters,
+          fetchReview: (id: ReviewId) => (
+            id === failingReviewId
+              ? TE.left(DE.notFound)
+              : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+          ),
         })(articleId.value),
       )();
     });
@@ -276,7 +295,7 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       response = await pipe(
-        generateDocmaps(defaultPorts)('not-a-doi'),
+        generateDocmaps(defaultAdapters)('not-a-doi'),
       )();
     });
 
