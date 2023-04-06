@@ -25,7 +25,7 @@ describe('lookup-user', () => {
     });
   });
 
-  describe.skip('when avatarUrl has been updated', () => {
+  describe('when avatarUrl has been updated', () => {
     const user = arbitraryUserDetails();
     const newAvatarUrl = arbitraryUri();
 
