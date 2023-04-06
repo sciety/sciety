@@ -52,6 +52,7 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
             resource,
             E.map((userResource) => pipe(
               event.avatarUrl,
+              O.fromNullable,
               O.match(
                 () => userResource,
                 (updatedAvatarUrl) => ({ avatarUrl: updatedAvatarUrl }),

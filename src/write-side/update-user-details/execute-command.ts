@@ -15,6 +15,6 @@ export const executeCommand: ExecuteCommand = (command) => (userResource) => pip
     () => [],
     (avatarUrl) => ((userResource.avatarUrl === avatarUrl)
       ? []
-      : [userDetailsUpdated(command.userId, O.some(avatarUrl), O.none)]),
+      : [userDetailsUpdated(command.userId, avatarUrl)]),
   ),
 );

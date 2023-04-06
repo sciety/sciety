@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUri } from '../../helpers';
@@ -27,8 +26,8 @@ describe('execute-command', () => {
       expect(events).toStrictEqual([
         expect.objectContaining({
           userId: originalUserDetails.id,
-          avatarUrl: O.some(newAvatarUrl),
-          displayName: O.none,
+          avatarUrl: newAvatarUrl,
+          displayName: undefined,
         }),
       ]);
     });

@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { userDetailsUpdated } from '../../../src/domain-events/user-details-updated-event';
 import { userCreatedAccount } from '../../../src/domain-events';
 import * as User from '../../../src/write-side/resources/user-resource';
@@ -44,7 +43,7 @@ describe('user-resource', () => {
         beforeEach(() => {
           const events = [
             userCreatedAccount(userDetails.id, userDetails.handle, userDetails.avatarUrl, userDetails.displayName),
-            userDetailsUpdated(userDetails.id, O.some(mostRecentlyUpdatedAvatarUrl), O.none),
+            userDetailsUpdated(userDetails.id, mostRecentlyUpdatedAvatarUrl),
           ];
 
           resource = pipe(

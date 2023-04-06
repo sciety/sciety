@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import * as O from 'fp-ts/Option';
 import { DomainEvent, isUserCreatedAccountEvent, isUserDetailsUpdatedEvent } from '../../domain-events';
 import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
@@ -19,10 +18,10 @@ export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isUserDetailsUpdatedEvent(event)) {
     const existingUserDetails = readModel[event.userId];
-    if (O.isSome(event.avatarUrl)) {
+    if (event.avatarUrl !== undefined) {
       readModel[event.userId] = {
         ...existingUserDetails,
-        avatarUrl: event.avatarUrl.value,
+        avatarUrl: event.avatarUrl,
       };
     }
   }
