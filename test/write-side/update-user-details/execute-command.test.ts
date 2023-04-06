@@ -1,6 +1,6 @@
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
-import { arbitraryUri } from '../../helpers';
+import { arbitraryString, arbitraryUri } from '../../helpers';
 import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
 import { constructUpdateUserDetailsCommand } from '../commands/construct-update-user-details-command.helper';
 
@@ -8,6 +8,7 @@ describe('execute-command', () => {
   const originalUserDetails = arbitraryUserDetails();
   const resource = {
     avatarUrl: originalUserDetails.avatarUrl,
+    displayName: originalUserDetails.displayName,
   };
   let events: ReadonlyArray<DomainEvent>;
 
@@ -34,7 +35,25 @@ describe('execute-command', () => {
   });
 
   describe('when passed a new display name', () => {
-    it.todo('raises an event to update display name');
+    const newDisplayName = arbitraryString();
+    const command = constructUpdateUserDetailsCommand({
+      userId: originalUserDetails.id,
+      displayName: newDisplayName,
+    });
+
+    beforeEach(() => {
+      events = executeCommand(command)(resource);
+    });
+
+    it.failing('raises an event to update display name', () => {
+      expect(events).toStrictEqual([
+        expect.objectContaining({
+          userId: originalUserDetails.id,
+          avatarUrl: undefined,
+          displayName: newDisplayName,
+        }),
+      ]);
+    });
   });
 
   describe('when passed a new display name and a new avatar url', () => {
