@@ -5,8 +5,14 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUri } from '../../helpers';
 import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
-import { updateUserDetailsCommandCodec } from '../../../src/write-side/commands';
+import { UpdateUserDetailsCommand, updateUserDetailsCommandCodec } from '../../../src/write-side/commands';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+
+const constructUpdateUserDetailsCommand = (input: unknown): UpdateUserDetailsCommand => pipe(
+  input,
+  updateUserDetailsCommandCodec.decode,
+  E.getOrElseW(shouldNotBeCalled),
+);
 
 describe('execute-command', () => {
   const originalUserDetails = arbitraryUserDetails();
@@ -17,14 +23,10 @@ describe('execute-command', () => {
 
   describe('when passed a new avatar url', () => {
     const newAvatarUrl = arbitraryUri();
-    const command = pipe(
-      {
-        userId: originalUserDetails.id,
-        avatarUrl: newAvatarUrl,
-      },
-      updateUserDetailsCommandCodec.decode,
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    const command = constructUpdateUserDetailsCommand({
+      userId: originalUserDetails.id,
+      avatarUrl: newAvatarUrl,
+    });
 
     beforeEach(() => {
       events = executeCommand(command)(resource);
