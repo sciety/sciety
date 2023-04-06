@@ -61,6 +61,27 @@ describe('lookup-user', () => {
     });
   });
 
+  describe('when displayName and avatarUrl have been updated simultaneously', () => {
+    const user = arbitraryUserDetails();
+    const newDisplayName = arbitraryString();
+    const newAvatarUrl = arbitraryUri();
+    const readModel = pipe(
+      [
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        userDetailsUpdated(user.id, newAvatarUrl, newDisplayName),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('returns the updated displayName and avatarUrl', () => {
+      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
+        ...user,
+        displayName: newDisplayName,
+        avatarUrl: newAvatarUrl,
+      }));
+    });
+  });
+
   describe('when user does not exist', () => {
     const readModel = initialState();
 
