@@ -1,28 +1,18 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Ports } from '../../../src/docmaps/docmap/generate-docmaps';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
-import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { ReviewId } from '../../../src/types/review-id';
-import {
-  arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
-} from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryArticleServer } from '../../types/article-server.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryNcrcId, arbitraryReviewId } from '../../types/review-id.helper';
-import { arbitraryDescriptionPath } from '../../types/description-path.helper';
+import { arbitraryNcrcId } from '../../types/review-id.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
@@ -30,19 +20,6 @@ describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
-  const defaultPorts: Ports = {
-    fetchReview: (id: ReviewId) => TE.right({ url: new URL(`https://reviews.example.com/${id}`) }),
-    findVersionsForArticleDoi: () => TO.some([
-      {
-        source: new URL(arbitraryUri()),
-        publishedAt: arbitraryDate(),
-        version: 1,
-      },
-    ]),
-    fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
-    getAllEvents: T.of([]),
-    getGroup: () => O.some(arbitraryGroup()),
-  };
   let framework: TestFramework;
   let defaultAdapters: Ports;
 
@@ -112,24 +89,20 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
+      const group = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const evaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        articleId,
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(evaluation);
       docmaps = await pipe(
         articleId.value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupJoined(
-              ncrcGroupId,
-              group.name,
-              group.avatarPath,
-              group.descriptionPath,
-              group.shortDescription,
-              group.homepage,
-              group.slug,
-            ),
-            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-          ]),
-        }),
+        generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -143,25 +116,28 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
+      const group1 = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const group2 = arbitraryGroup();
+      const evaluation1 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group1.id,
+        articleId,
+      };
+      const evaluation2 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group2.id,
+        articleId,
+      };
+      await framework.commandHelpers.createGroup(group1);
+      await framework.commandHelpers.createGroup(group2);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupJoined(
-              ncrcGroupId,
-              group.name,
-              group.avatarPath,
-              group.descriptionPath,
-              group.shortDescription,
-              group.homepage,
-              group.slug,
-            ),
-            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-            evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
-          ]),
-        }),
+        generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -175,33 +151,31 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
+      const group1 = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const group2 = {
+        ...arbitraryGroup(),
+        id: rapidReviewsGroupId,
+      };
+      const evaluation1 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group1.id,
+        articleId,
+      };
+      const evaluation2 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group2.id,
+        articleId,
+      };
+      await framework.commandHelpers.createGroup(group1);
+      await framework.commandHelpers.createGroup(group2);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupJoined(
-              ncrcGroupId,
-              arbitraryString(),
-              arbitraryWord(),
-              arbitraryDescriptionPath(),
-              arbitraryString(),
-              arbitraryUri(),
-              arbitraryWord(),
-            ),
-            groupJoined(
-              rapidReviewsGroupId,
-              arbitraryString(),
-              arbitraryWord(),
-              arbitraryDescriptionPath(),
-              arbitraryString(),
-              arbitraryUri(),
-              arbitraryWord(),
-            ),
-            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-            evaluationRecorded(rapidReviewsGroupId, articleId, arbitraryReviewId()),
-          ]),
-        }),
+        generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -218,25 +192,26 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
+      const group = {
+        ...arbitraryGroup(),
+        id: ncrcGroupId,
+      };
+      const evaluation1 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        articleId,
+      };
+      const evaluation2 = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        articleId,
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
-        generateDocmaps({
-          ...defaultPorts,
-          getAllEvents: T.of([
-            groupJoined(
-              ncrcGroupId,
-              group.name,
-              group.avatarPath,
-              group.descriptionPath,
-              group.shortDescription,
-              group.homepage,
-              group.slug,
-            ),
-            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-            evaluationRecorded(ncrcGroupId, articleId, arbitraryReviewId()),
-          ]),
-        }),
+        generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
