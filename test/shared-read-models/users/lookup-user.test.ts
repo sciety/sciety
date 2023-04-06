@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUri } from '../../helpers';
 import { userCreatedAccount, userDetailsUpdated } from '../../../src/domain-events';
@@ -10,12 +9,6 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/users
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 
 describe('lookup-user', () => {
-  let framework: TestFramework;
-
-  beforeEach(() => {
-    framework = createTestFramework();
-  });
-
   describe('when user exists', () => {
     const user = arbitraryUserDetails();
     const readModel = pipe(
@@ -50,10 +43,10 @@ describe('lookup-user', () => {
   });
 
   describe('when user does not exist', () => {
-    it('returns None', () => {
-      const result = framework.queries.lookupUser(arbitraryUserId());
+    const readModel = initialState();
 
-      expect(result).toStrictEqual(O.none);
+    it('returns None', () => {
+      expect(lookupUser(readModel)(arbitraryUserId())).toStrictEqual(O.none);
     });
   });
 });
