@@ -10,10 +10,11 @@ type ExecuteCommand = (command: UpdateUserDetailsCommand)
 
 export const executeCommand: ExecuteCommand = (command) => (userResource) => pipe(
   command.avatarUrl,
+  O.fromNullable,
   O.match(
     () => [],
     (avatarUrl) => ((userResource.avatarUrl === avatarUrl)
       ? []
-      : [userDetailsUpdated(command.userId, command.avatarUrl, command.displayName)]),
+      : [userDetailsUpdated(command.userId, O.some(avatarUrl), O.none)]),
   ),
 );

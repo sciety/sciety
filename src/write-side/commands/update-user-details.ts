@@ -1,11 +1,10 @@
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { userIdCodec } from '../../types/user-id';
 
 export const updateUserDetailsCommandCodec = t.type({
   userId: userIdCodec,
-  avatarUrl: tt.optionFromNullable(t.string),
-  displayName: tt.optionFromNullable(t.string),
+  avatarUrl: t.union([t.string, t.undefined]),
+  displayName: t.union([t.string, t.undefined]),
 });
 
 export type UpdateUserDetailsCommand = t.TypeOf<typeof updateUserDetailsCommandCodec>;

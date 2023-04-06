@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { updateUserDetailsCommandHandler } from '../../../src/write-side/update-user-details/update-user-details-command-handler';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
@@ -24,8 +23,8 @@ describe('update user details command handler', () => {
       await framework.commandHelpers.createUserAccount(userDetails);
       const command = {
         userId: userDetails.id,
-        avatarUrl: O.some(userDetails.avatarUrl),
-        displayName: O.none,
+        avatarUrl: userDetails.avatarUrl,
+        displayName: undefined,
       };
       const adapters = {
         getAllEvents: framework.getAllEvents,

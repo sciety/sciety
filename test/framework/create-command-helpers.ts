@@ -1,5 +1,4 @@
 import { flow, pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
@@ -97,8 +96,8 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
       userId,
-      avatarUrl: O.fromNullable(avatarUrl),
-      displayName: O.fromNullable(displayName),
+      avatarUrl,
+      displayName,
     },
     invoke(commandHandlers.updateUserDetails, 'updateUserDetails'),
   )(),
