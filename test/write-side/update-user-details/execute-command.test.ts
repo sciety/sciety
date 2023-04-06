@@ -1,17 +1,19 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryUri } from '../../helpers';
 import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
 import { UpdateUserDetailsCommand, updateUserDetailsCommandCodec } from '../../../src/write-side/commands';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+import { abortTest } from '../../framework/abort-test';
 
 const constructUpdateUserDetailsCommand = (input: unknown): UpdateUserDetailsCommand => pipe(
   input,
   updateUserDetailsCommandCodec.decode,
-  E.getOrElseW(shouldNotBeCalled),
+  E.mapLeft(formatValidationErrors),
+  E.getOrElseW(abortTest('constructUpdateUserDetailsCommand')),
 );
 
 describe('execute-command', () => {
