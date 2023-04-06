@@ -88,6 +88,7 @@ describe('docmap-index', () => {
         fetchReview: () => TE.left(DE.unavailable),
         findVersionsForArticleDoi: () => TO.none,
         fetchArticle: () => TE.left(DE.unavailable),
+        getEvaluationsForDoi: () => [],
         getGroup: () => O.none,
       };
       response = await docmapIndex(ports)({})();
@@ -112,6 +113,7 @@ describe('docmap-index', () => {
         getAllEvents: T.of([]),
         fetchReview: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
+        getEvaluationsForDoi: shouldNotBeCalled,
         getGroup: shouldNotBeCalled,
         fetchArticle: shouldNotBeCalled,
       };

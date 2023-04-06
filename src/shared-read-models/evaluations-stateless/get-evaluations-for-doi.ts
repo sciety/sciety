@@ -13,6 +13,7 @@ type GetEvaluationsForDoi = (articleDoi: Doi) => (events: ReadonlyArray<DomainEv
   authors: ReadonlyArray<string>,
 }>;
 
+// ts-unused-exports:disable-next-line
 export const getEvaluationsForDoi: GetEvaluationsForDoi = (articleDoi) => (events) => pipe(
   events,
   RA.filter(isEvaluationRecordedEvent),

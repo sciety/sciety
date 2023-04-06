@@ -8,8 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
-import { GetAllEvents, GetGroup } from '../../shared-ports';
-import { getEvaluationsForDoi } from '../../shared-read-models/evaluations-stateless';
+import { GetEvaluationsForDoi, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -44,7 +43,7 @@ type ReviewForArticle = {
 
 export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
-  getAllEvents: GetAllEvents,
+  getEvaluationsForDoi: GetEvaluationsForDoi,
   getGroup: GetGroup,
 };
 
@@ -71,9 +70,8 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({
   {
     articleId: TE.right(articleId),
     evaluations: pipe(
-      adapters.getAllEvents,
-      TE.rightTask,
-      TE.map(getEvaluationsForDoi(articleId)),
+      adapters.getEvaluationsForDoi(articleId),
+      TE.right,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),
       TE.chainEitherKW(flow(
