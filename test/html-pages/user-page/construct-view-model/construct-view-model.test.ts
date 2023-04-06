@@ -1,6 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { arbitraryCandidateUserHandle } from '../../../types/candidate-user-handle.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
@@ -8,9 +11,9 @@ import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../src/html-pages/user-page/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/user-page/view-model';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryGroup } from '../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -84,6 +87,43 @@ describe('construct-view-model', () => {
         ownedLists: [expect.objectContaining({
           articleCount: 1,
         })],
+      }));
+    });
+  });
+
+  describe('when the user follows three groups', () => {
+    const group1 = arbitraryGroup();
+    const group2 = arbitraryGroup();
+    const group3 = arbitraryGroup();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group1);
+      await framework.commandHelpers.createGroup(group2);
+      await framework.commandHelpers.createGroup(group3);
+    });
+
+    it.failing('returns them in order of most recently followed first', async () => {
+      const ports = {
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
+      };
+      const viewmodel = await pipe(
+        {
+          handle: arbitraryCandidateUserHandle(),
+          user: O.some({
+            id: arbitraryUserId(),
+          }),
+        },
+        constructViewModel('followers', ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+        followedGroups: O.some([
+          expect.objectContaining({ id: group3.id }),
+          expect.objectContaining({ id: group2.id }),
+          expect.objectContaining({ id: group1.id }),
+        ]),
       }));
     });
   });
