@@ -1,8 +1,13 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUri } from '../../helpers';
+import { userCreatedAccount, userDetailsUpdated } from '../../../src/domain-events';
+import { handleEvent, initialState } from '../../../src/shared-read-models/users';
+import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 
 describe('lookup-user', () => {
   let framework: TestFramework;
@@ -28,16 +33,16 @@ describe('lookup-user', () => {
   describe('when avatarUrl has been updated', () => {
     const user = arbitraryUserDetails();
     const newAvatarUrl = arbitraryUri();
-
-    beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
-      await framework.commandHelpers.updateUserDetails(user.id, newAvatarUrl);
-    });
+    const readModel = pipe(
+      [
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        userDetailsUpdated(user.id, newAvatarUrl),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
 
     it('returns the updated avatarUrl', () => {
-      const result = framework.queries.lookupUser(user.id);
-
-      expect(result).toStrictEqual(O.some({
+      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
         ...user,
         avatarUrl: newAvatarUrl,
       }));
