@@ -6,6 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
@@ -43,7 +44,7 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
   })),
   TE.fromEither,
   TE.chainTaskK(({ groupIds, userDetails, lists }) => pipe(
-    ({
+    {
       groupIds: T.of(groupIds),
       userDetails: T.of(userDetails),
       listCount: T.of(lists.length),
@@ -56,9 +57,16 @@ export const constructViewModel: ConstructViewModel = (tab, ports) => (params) =
             O.map((user) => user.id),
           ),
         ),
-      ) : constructFollowingTab(ports, groupIds)
+      ) : pipe(
+        groupIds,
+        RA.map((groupId) => ({
+          groupId,
+          followedAt: new Date(),
+        })),
+        (followings) => constructFollowingTab(ports, followings),
+      )
       ),
-    }),
+    },
     sequenceS(T.ApplyPar),
   )),
 );
