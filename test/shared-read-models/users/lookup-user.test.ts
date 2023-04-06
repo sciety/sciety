@@ -18,15 +18,15 @@ describe('lookup-user', () => {
 
   describe('when user exists', () => {
     const user = arbitraryUserDetails();
-
-    beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
-    });
+    const readModel = pipe(
+      [
+        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
 
     it('returns the correct user details', () => {
-      const result = framework.queries.lookupUser(user.id);
-
-      expect(result).toStrictEqual(O.some(user));
+      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some(user));
     });
   });
 
