@@ -1,8 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { arbitraryCandidateUserHandle } from '../../../types/candidate-user-handle.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
@@ -100,6 +98,10 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createGroup(group1);
       await framework.commandHelpers.createGroup(group2);
       await framework.commandHelpers.createGroup(group3);
+      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.followGroup(user.id, group1.id);
+      await framework.commandHelpers.followGroup(user.id, group2.id);
+      await framework.commandHelpers.followGroup(user.id, group3.id);
     });
 
     it.failing('returns them in order of most recently followed first', async () => {
@@ -109,10 +111,8 @@ describe('construct-view-model', () => {
       };
       const viewmodel = await pipe(
         {
-          handle: arbitraryCandidateUserHandle(),
-          user: O.some({
-            id: arbitraryUserId(),
-          }),
+          handle: user.handle as string as CandidateUserHandle,
+          user: O.some(user),
         },
         constructViewModel('followers', ports),
         TE.getOrElse(shouldNotBeCalled),
