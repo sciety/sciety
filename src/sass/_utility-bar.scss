@@ -12,6 +12,8 @@
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
+$_navigation-text-top-spacing: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
+$_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-border-distance);
 
 .utility-bar {
   display: flex;
@@ -57,9 +59,9 @@ $_avatar-right-margin: 6px;
 
 .utility-bar__list_nav_link {
   @include typography.button();
-  padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
+  padding-top: $_navigation-text-top-spacing;
+  padding-bottom: $_navigation-text-bottom-spacing;
   border-bottom: settings.$navigation-link-border-width solid transparent;
-  padding-top: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
   display: block;
 
   &:link,
@@ -105,8 +107,8 @@ $_avatar-right-margin: 6px;
 }
 
 .utility-bar-user-profile__handle {
-  padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
-  padding-top: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
+  padding-top: $_navigation-text-top-spacing;
+  padding-bottom: $_navigation-text-bottom-spacing;
   max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
   overflow: hidden;
   text-overflow: ellipsis;
