@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { listCreated } from '../../../src/domain-events/list-created-event';
 import { executeCommand } from '../../../src/write-side/resources/list/edit-list-details/execute-command';
-import { replayListResource } from '../../../src/write-side/resources/replay-list-resource';
+import { replayListResource } from '../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryListId } from '../../types/list-id.helper';

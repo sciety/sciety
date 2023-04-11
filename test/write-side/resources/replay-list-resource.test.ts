@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, listCreated, listDescriptionEdited, listNameEdited,
 } from '../../../src/domain-events';
-import { replayListResource } from '../../../src/write-side/resources/replay-list-resource';
+import { replayListResource } from '../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';

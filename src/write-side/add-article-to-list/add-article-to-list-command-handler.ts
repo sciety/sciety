@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { AddArticleToListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { replayListResource } from '../resources/replay-list-resource';
+import { replayListResource } from '../resources/list/replay-list-resource';
 import { CommandHandler } from '../../types/command-handler';
 
 export type Ports = {
