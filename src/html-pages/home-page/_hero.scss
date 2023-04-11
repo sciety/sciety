@@ -138,7 +138,7 @@ $_desired-image-width-on-wide-screens: 396px;
 
 .home-page-hero__video_cta_text_wrapper {
   text-align: center;
-  margin-top: calc(#{baseline.increments(8)} * -1);
+  margin-top: functions.px-to-rem(-64px);
   margin-left: functions.px-to-rem(25.6px);
 }
 
