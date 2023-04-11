@@ -98,4 +98,20 @@ describe('execute-command', () => {
   describe('when passed the existing display name', () => {
     it.todo('raises no events');
   });
+
+  describe('when passed no avatarUrl and no displayName', () => {
+    const command = {
+      userId: originalUserDetails.id,
+      avatarUrl: undefined,
+      displayName: undefined,
+    };
+
+    beforeEach(() => {
+      events = executeCommand(command)(resource);
+    });
+
+    it('raises no events', () => {
+      expect(events).toStrictEqual([]);
+    });
+  });
 });
