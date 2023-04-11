@@ -83,6 +83,7 @@ $_avatar-right-margin: 6px;
 
 .utility-bar-user-profile {
   display: flex;
+  line-height: 1;
 
   &:link,
   &:visited {
@@ -104,6 +105,8 @@ $_avatar-right-margin: 6px;
 }
 
 .utility-bar-user-handle {
+  padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
+  padding-top: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
   max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
   overflow: hidden;
   text-overflow: ellipsis;
