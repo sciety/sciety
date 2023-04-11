@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { update } from '../resources/list/update';
+import * as listResource from '../resources/list';
 import { EditListDetailsCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
@@ -21,6 +21,6 @@ export const editListDetailsCommandHandler: EditListDetailsCommandHandler = (
   command,
 ) => pipe(
   adapters.getAllEvents,
-  T.map(update(command)),
+  T.map(listResource.update(command)),
   TE.chainTaskK(adapters.commitEvents),
 );
