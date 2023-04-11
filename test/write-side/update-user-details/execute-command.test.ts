@@ -61,6 +61,7 @@ describe('execute-command', () => {
     const newDisplayName = arbitraryString();
     const command = constructUpdateUserDetailsCommand({
       userId: originalUserDetails.id,
+      avatarUrl: newAvatarUrl,
       displayName: newDisplayName,
     });
 
@@ -68,7 +69,7 @@ describe('execute-command', () => {
       events = executeCommand(command)(resource);
     });
 
-    it.failing('raises an event to update display name and avatar url', () => {
+    it('raises an event to update display name and avatar url', () => {
       expect(events).toStrictEqual([
         expect.objectContaining({
           userId: originalUserDetails.id,
