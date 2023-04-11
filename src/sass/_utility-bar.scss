@@ -14,6 +14,7 @@ $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
 $_navigation-text-top-spacing: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
 $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-border-distance);
+$_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar {
   display: flex;
@@ -100,7 +101,7 @@ $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-
 
 .utility-bar-user-profile__avatar {
   @include avatar.border();
-  width: functions.px-to-rem(34px);
+  width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
   margin-right: functions.px-to-rem($_avatar-right-margin);
   display: inline-block;
