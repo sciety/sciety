@@ -84,7 +84,7 @@ $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-
 }
 
 .utility-bar__list_item--profile {
-  display: none;
+  display: flex;
 
   @include breakpoints.site-header() {
     display: flex;
@@ -108,18 +108,27 @@ $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-
 
 .utility-bar-user-profile__avatar {
   @include avatar.border();
-  width: functions.px-to-rem(avatar.$size--in-site-header);
+  width: functions.px-to-rem(34px);
   height: auto;
   margin-right: functions.px-to-rem($_avatar-right-margin);
   display: inline-block;
+
+  @include breakpoints.site-header() {
+    width: functions.px-to-rem(avatar.$size--in-site-header);
+  }
 }
 
 .utility-bar-user-profile__handle {
   padding-top: $_navigation-text-top-spacing;
   padding-bottom: $_navigation-text-bottom-spacing;
-  max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: none;
+
+  @include breakpoints.site-header() {
+    display: unset;
+    max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   @include breakpoints.site-header-show-full-user-handle($_space-allocated-to-avatar-and-handle) {
     max-width: none;
