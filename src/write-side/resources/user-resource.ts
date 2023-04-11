@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { UserHandle } from '../../types/user-handle';
 import {
   DomainEvent,
@@ -56,17 +55,11 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
         case 'UserDetailsUpdated':
           return pipe(
             resource,
-            E.map((userResource) => pipe(
-              event.avatarUrl,
-              O.fromNullable,
-              O.match(
-                () => userResource,
-                (updatedAvatarUrl) => ({
-                  ...userResource,
-                  avatarUrl: updatedAvatarUrl,
-                }),
-              ),
-            )),
+            E.map((userResource) => ({
+              ...userResource,
+              avatarUrl: event.avatarUrl ?? userResource.avatarUrl,
+              displayName: event.displayName ?? userResource.displayName,
+            })),
           );
       }
     },
