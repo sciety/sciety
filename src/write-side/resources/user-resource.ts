@@ -23,13 +23,19 @@ export const exists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainE
   ),
 );
 
-export type UserResource = { avatarUrl: string };
+export type UserResource = {
+  avatarUrl: string,
+  displayName: string,
+};
 
 type ReplayUserResource = (userId: UserId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, UserResource>;
 
-const resourceFromCreationEvent = (event: UserCreatedAccountEvent) => ({ avatarUrl: event.avatarUrl });
+const resourceFromCreationEvent = (event: UserCreatedAccountEvent) => ({
+  avatarUrl: event.avatarUrl,
+  displayName: event.displayName,
+});
 
 type RelevantEvent = UserCreatedAccountEvent | UserDetailsUpdatedEvent;
 
@@ -55,7 +61,10 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
               O.fromNullable,
               O.match(
                 () => userResource,
-                (updatedAvatarUrl) => ({ avatarUrl: updatedAvatarUrl }),
+                (updatedAvatarUrl) => ({
+                  ...userResource,
+                  avatarUrl: updatedAvatarUrl,
+                }),
               ),
             )),
           );
