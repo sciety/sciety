@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { listCreated } from '../../../src/domain-events/list-created-event';
-import { executeCommand } from '../../../src/write-side/resources/list/execute-command';
-import { replayListResource } from '../../../src/write-side/resources/list/replay-list-resource';
-import { arbitraryString } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
+import { listCreated } from '../../../../src/domain-events/list-created-event';
+import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
+import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
+import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
+import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();

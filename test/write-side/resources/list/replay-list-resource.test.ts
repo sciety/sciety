@@ -2,12 +2,12 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, listCreated, listDescriptionEdited, listNameEdited,
-} from '../../../src/domain-events';
-import { replayListResource } from '../../../src/write-side/resources/list/replay-list-resource';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+} from '../../../../src/domain-events';
+import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
 describe('replay-list-resource', () => {
   const listId = arbitraryListId();
