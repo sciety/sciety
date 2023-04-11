@@ -16,7 +16,7 @@ $_image-height: 722px;
 $_desired-image-width-on-wide-screens: 396px;
 
 @mixin vertical-spacing-in-left-wrapper() {
-  margin-bottom: baseline.increments(2.5);
+  margin-bottom: 1.25rem;
 
   @include breakpoints.not-narrow() {
     margin-bottom: 2.5rem;
@@ -63,12 +63,12 @@ $_desired-image-width-on-wide-screens: 396px;
 .home-page-hero__content_title {
   @include typography.sizing(32px, 4.75);
   font-weight: normal;
-  margin-top: baseline.increments(2.5);
+  margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 
   @include breakpoints.not-narrow() {
     @include typography.sizing(36px, 5.25);
-    margin-bottom: baseline.increments(1.5);
+    margin-bottom: 0.75rem;
   }
 }
 
@@ -90,7 +90,7 @@ $_desired-image-width-on-wide-screens: 396px;
 }
 
 .home-page-hero__subheading {
-  margin-bottom: baseline.increments(0.5);
+  margin-bottom: 0.25rem;
 }
 
 .home-page-hero__video_call_to_action {
@@ -113,11 +113,11 @@ $_desired-image-width-on-wide-screens: 396px;
   padding-bottom: 3rem;
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-  padding-top: baseline.increments(2.5);
+  padding-top: 1.25rem;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     grid-column: 1 / 8;
-    padding-top: baseline.increments(7.5);
+    padding-top: 3.75rem;
   }
 
 }

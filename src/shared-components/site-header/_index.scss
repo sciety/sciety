@@ -118,8 +118,8 @@ $_white-box-width-not-narrow: 280px;
 
   display: flex;
   align-items: center;
-  padding-top: baseline.increments(0.5);
-  padding-bottom: baseline.increments(0.5);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .site-header__search_icon {

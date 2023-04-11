@@ -29,7 +29,7 @@
 .home-page-cards__title {
   @include typography.section();
   @include layout.page-content-horizontal-margins();
-  margin-bottom: baseline.increments(2.5);
+  margin-bottom: 1.25rem;
 }
 
 .home-page-cards__cards {

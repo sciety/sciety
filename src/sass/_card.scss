@@ -28,7 +28,7 @@ $_card-border-radius: settings.$border-radius;
 
 @mixin title() {
   @include typography.card-title();
-  margin-bottom: baseline.increments(0.5);
+  margin-bottom: 0.25rem;
 }
 
 @mixin link () {
