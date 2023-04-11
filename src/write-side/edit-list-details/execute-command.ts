@@ -1,7 +1,7 @@
 import { EditListDetailsCommand } from '../commands';
 import { DomainEvent, listDescriptionEdited } from '../../domain-events';
 import { listNameEdited } from '../../domain-events/list-name-edited-event';
-import { ListResource } from '../resources/list-resource';
+import { ListResource } from '../resources/list/list-resource';
 
 type ExecuteCommand = (command: EditListDetailsCommand)
 => (listResource: ListResource)

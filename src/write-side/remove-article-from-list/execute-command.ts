@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { articleRemovedFromList, DomainEvent } from '../../domain-events';
-import { ListResource } from '../resources/list-resource';
+import { ListResource } from '../resources/list/list-resource';
 import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
 

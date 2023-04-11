@@ -1,4 +1,4 @@
-import { Doi } from '../../types/doi';
+import { Doi } from '../../../types/doi';
 
 export type ListResource = {
   articleIds: ReadonlyArray<Doi>,

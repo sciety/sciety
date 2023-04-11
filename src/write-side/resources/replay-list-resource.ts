@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ListResource } from './list-resource';
+import { ListResource } from './list/list-resource';
 import {
   ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent, isArticleAddedToListEvent,
   isArticleRemovedFromListEvent, isListCreatedEvent, isListDescriptionEditedEvent, isListNameEditedEvent,
