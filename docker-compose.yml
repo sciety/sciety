@@ -33,7 +33,6 @@ services:
       AUTH0_CALLBACK_URL: 'http://localhost:8080/auth0/callback'
     ports:
       - '8080:80'
-    restart: unless-stopped
 
   db:
     container_name: sciety_db
