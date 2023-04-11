@@ -10,7 +10,7 @@ type ResourceAction = (command: EditListDetailsCommand)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
 
-export const resourceAction: ResourceAction = (command) => (events) => pipe(
+export const update: ResourceAction = (command) => (events) => pipe(
   events,
   replayListResource(command.listId),
   E.map(executeCommand(command)),
