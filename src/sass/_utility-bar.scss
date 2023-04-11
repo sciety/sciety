@@ -81,6 +81,20 @@ $_avatar-right-margin: 6px;
   @include site-header.site-header-secondary-button-link();
 }
 
+.utility-bar-user-profile {
+  display: flex;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-primary;
+
+    &:hover,
+    &:active {
+      color: inherit;
+    }
+  }
+}
+
 .utility-bar-user-avatar {
   @include avatar.border();
   width: functions.px-to-rem(avatar.$size--in-site-header);
