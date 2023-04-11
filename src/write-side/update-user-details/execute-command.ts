@@ -4,11 +4,7 @@ import { DomainEvent, userDetailsUpdated } from '../../domain-events';
 import { UpdateUserDetailsCommand } from '../commands/update-user-details';
 import { UserResource } from '../resources/user-resource';
 
-type ExecuteCommand = (command: UpdateUserDetailsCommand)
-=> (userResource: UserResource)
-=> ReadonlyArray<DomainEvent>;
-
-export const executeCommand: ExecuteCommand = (command) => (userResource) => pipe(
+const updateAvatarUrl = (command: UpdateUserDetailsCommand, userResource: UserResource) => pipe(
   command.avatarUrl,
   O.fromNullable,
   O.match(
@@ -17,4 +13,12 @@ export const executeCommand: ExecuteCommand = (command) => (userResource) => pip
       ? []
       : [userDetailsUpdated(command.userId, avatarUrl)]),
   ),
+);
+
+type ExecuteCommand = (command: UpdateUserDetailsCommand)
+=> (userResource: UserResource)
+=> ReadonlyArray<DomainEvent>;
+
+export const executeCommand: ExecuteCommand = (command) => (userResource) => pipe(
+  updateAvatarUrl(command, userResource),
 );
