@@ -48,8 +48,8 @@ const myListsMenuItem = (handle: UserHandle) => `
 const myUsernameMenuItem = (handle: UserHandle, avatarUrl: string) => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/users/${handle}" class="utility-bar-user-profile">
-      <img src="${avatarUrl}" alt="" class="utility-bar-user-avatar">
-      <span class="utility-bar-user-handle">${handle}</span>
+      <img src="${avatarUrl}" alt="" class="utility-bar-user-profile__avatar">
+      <span class="utility-bar-user-profile__handle">${handle}</span>
     </a>
   </li>
 `;

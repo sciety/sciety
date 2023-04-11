@@ -96,7 +96,7 @@ $_avatar-right-margin: 6px;
   }
 }
 
-.utility-bar-user-avatar {
+.utility-bar-user-profile__avatar {
   @include avatar.border();
   width: functions.px-to-rem(avatar.$size--in-site-header);
   height: auto;
@@ -104,7 +104,7 @@ $_avatar-right-margin: 6px;
   display: inline-block;
 }
 
-.utility-bar-user-handle {
+.utility-bar-user-profile__handle {
   padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
   padding-top: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
   max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
