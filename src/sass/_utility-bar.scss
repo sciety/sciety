@@ -97,6 +97,11 @@ $_avatar-height-coupled-to-buttons: 34px;
       color: inherit;
     }
   }
+
+  &::before {
+    @include layout.visually-hidden();
+    content: 'Go to profile';
+  }
 }
 
 .utility-bar-user-profile__avatar {
