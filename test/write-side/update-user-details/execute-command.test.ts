@@ -45,7 +45,7 @@ describe('execute-command', () => {
       events = executeCommand(command)(resource);
     });
 
-    it.failing('raises an event to update display name', () => {
+    it('raises an event to update display name', () => {
       expect(events).toStrictEqual([
         expect.objectContaining({
           userId: originalUserDetails.id,
