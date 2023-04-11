@@ -83,14 +83,6 @@ $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-
   @include site-header.site-header-secondary-button-link();
 }
 
-.utility-bar__list_item--profile {
-  display: flex;
-
-  @include breakpoints.site-header() {
-    display: flex;
-  }
-}
-
 .utility-bar-user-profile {
   display: flex;
   line-height: 1;
