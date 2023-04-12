@@ -4,7 +4,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { userCreatedAccount } from '../../../../src/domain-events/user-created-account-event';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { DomainEvent } from '../../../../src/domain-events';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
 
@@ -41,6 +41,31 @@ describe('update', () => {
             userId: originalUserDetails.id,
             avatarUrl: newAvatarUrl,
             displayName: undefined,
+          }),
+        ]);
+      });
+    });
+
+    describe('when passed a new display name', () => {
+      const newDisplayName = arbitraryString();
+      const command = constructUpdateUserDetailsCommand({
+        userId: originalUserDetails.id,
+        displayName: newDisplayName,
+      });
+
+      beforeEach(() => {
+        events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('raises an event to update display name', () => {
+        expect(events).toStrictEqual([
+          expect.objectContaining({
+            userId: originalUserDetails.id,
+            avatarUrl: undefined,
+            displayName: newDisplayName,
           }),
         ]);
       });
