@@ -76,6 +76,7 @@ import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { updateUserDetailsCommandHandler } from '../write-side/command-handlers';
+import { listOfUserListsPage } from '../html-pages/list-of-user-lists-page/list-of-user-lists-page';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
@@ -276,6 +277,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       GFP.paramsCodec,
       GFP.constructAndRenderPage(adapters),
     )),
+  );
+
+  router.get(
+    '/list-of-user-lists',
+    pageHandler(adapters, () => listOfUserListsPage()),
   );
 
   router.get(
