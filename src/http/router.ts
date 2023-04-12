@@ -75,7 +75,7 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
-import { updateUserDetailsCommandHandler } from '../write-side/command-handlers/update-user-details-command-handler';
+import { updateUserDetailsCommandHandler } from '../write-side/command-handlers';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
