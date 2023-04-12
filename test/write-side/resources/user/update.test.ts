@@ -115,5 +115,24 @@ describe('update', () => {
         expect(events).toStrictEqual([]);
       });
     });
+
+    describe('when passed the existing display name', () => {
+      const command = {
+        userId: originalUserDetails.id,
+        avatarUrl: undefined,
+        displayName: originalUserDetails.displayName,
+      };
+
+      beforeEach(() => {
+        events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('raises no events', () => {
+        expect(events).toStrictEqual([]);
+      });
+    });
   });
 });
