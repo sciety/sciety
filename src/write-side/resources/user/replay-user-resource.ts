@@ -8,7 +8,7 @@ import {
   UserDetailsUpdatedEvent,
 } from '../../../domain-events';
 import { UserId } from '../../../types/user-id';
-import { ErrorMessage } from '../../../types/error-message';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 
 type RelevantEvent = UserCreatedAccountEvent | UserDetailsUpdatedEvent;
 
@@ -35,7 +35,7 @@ export const replayUserResource: ReplayUserResource = (userId) => (events) => pi
   RA.filter(isARelevantEventForTheWriteModel),
   RA.filter((event) => event.userId === userId),
   RA.reduce(
-    E.left('userId not found' as ErrorMessage),
+    E.left(toErrorMessage('userId not found')),
     (resource, event) => {
       switch (event.type) {
         case 'UserCreatedAccount':
