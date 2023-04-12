@@ -12,6 +12,9 @@ export const twitterPrefix = 'twitter';
 
 const isUserId = (value: unknown): value is UserId => typeof value === 'string' && value !== '';
 
+const isLegacyStyleUserId = (value: string) => !value.includes('|');
+const isCurrentStyleUserId = (value: string) => value.match(/^(auth0|twitter)\|[^|]+$/);
+
 export const userIdCodec = new t.Type(
   'UserIdFromString',
   isUserId,
@@ -19,10 +22,10 @@ export const userIdCodec = new t.Type(
     t.string.validate(u, c),
     E.chain((value) => {
       if (isUserId(value)) {
-        if (!value.includes('|')) {
+        if (isLegacyStyleUserId(value)) {
           return t.success(`${twitterPrefix}|${value}` as UserId);
         }
-        if (!value.match(/^(auth0|twitter)\|[^|]+$/)) {
+        if (!isCurrentStyleUserId(value)) {
           return t.failure(u, c);
         }
         return t.success(value);
