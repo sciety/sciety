@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { UpdateUserDetailsCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { update } from '../resources/user/update';
+import * as userResource from '../resources/user';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -19,6 +19,6 @@ export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = 
 ) => (command) => pipe(
   adapters.getAllEvents,
   TE.rightTask,
-  TE.chainEitherKW(update(command)),
+  TE.chainEitherKW(userResource.update(command)),
   TE.chainTaskK(adapters.commitEvents),
 );
