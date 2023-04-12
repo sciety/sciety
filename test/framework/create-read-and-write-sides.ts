@@ -12,7 +12,7 @@ import { createListCommandHandler } from '../../src/write-side/create-list';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 import { recordEvaluationCommandHandler } from '../../src/write-side/record-evaluation';
-import { updateUserDetailsCommandHandler } from '../../src/write-side/update-user-details';
+import { updateUserDetailsCommandHandler } from '../../src/write-side/command-handlers/update-user-details-command-handler';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
