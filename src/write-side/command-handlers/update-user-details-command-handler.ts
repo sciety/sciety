@@ -5,7 +5,7 @@ import { UpdateUserDetailsCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { replayUserResource } from '../resources/user/user-resource';
-import { executeCommand } from '../update-user-details/execute-command';
+import { executeCommand } from '../resources/user/execute-command';
 import { DomainEvent } from '../../domain-events';
 import { ErrorMessage } from '../../types/error-message';
 

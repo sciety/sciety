@@ -1,7 +1,7 @@
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { DomainEvent } from '../../../src/domain-events';
 import { arbitraryString, arbitraryUri } from '../../helpers';
-import { executeCommand } from '../../../src/write-side/update-user-details/execute-command';
+import { executeCommand } from '../../../src/write-side/resources/user/execute-command';
 import { constructUpdateUserDetailsCommand } from '../commands/construct-update-user-details-command.helper';
 
 describe('execute-command', () => {
