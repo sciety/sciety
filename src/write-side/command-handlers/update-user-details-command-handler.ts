@@ -1,28 +1,14 @@
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { UpdateUserDetailsCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { replayUserResource } from '../resources/user/user-resource';
-import { executeCommand } from '../resources/user/execute-command';
-import { DomainEvent } from '../../domain-events';
-import { ErrorMessage } from '../../types/error-message';
+import { update } from '../resources/user/update';
 
 type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
-
-type UpdateUserDetailsResourceAction = (command: UpdateUserDetailsCommand)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
-
-const updateUserDetailsResourceAction: UpdateUserDetailsResourceAction = (command) => (events) => pipe(
-  events,
-  replayUserResource(command.userId),
-  E.map(executeCommand(command)),
-);
 
 type UpdateUserDetailsCommandHandler = (
   adapters: Ports
@@ -33,6 +19,6 @@ export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = 
 ) => (command) => pipe(
   adapters.getAllEvents,
   TE.rightTask,
-  TE.chainEitherKW(updateUserDetailsResourceAction(command)),
+  TE.chainEitherKW(update(command)),
   TE.chainTaskK(adapters.commitEvents),
 );
