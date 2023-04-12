@@ -97,5 +97,23 @@ describe('update', () => {
         ]);
       });
     });
+
+    describe('when passed the existing avatar url', () => {
+      const command = constructUpdateUserDetailsCommand({
+        userId: originalUserDetails.id,
+        avatarUrl: originalUserDetails.avatarUrl,
+      });
+
+      beforeEach(() => {
+        events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('raises no events', () => {
+        expect(events).toStrictEqual([]);
+      });
+    });
   });
 });
