@@ -2,13 +2,13 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { userDetailsUpdated } from '../../../src/domain-events/user-details-updated-event';
 import { userCreatedAccount } from '../../../src/domain-events';
-import * as User from '../../../src/write-side/resources/user-resource';
+import * as User from '../../../src/write-side/resources/user/user-resource';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { UserHandle } from '../../../src/types/user-handle';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { replayUserResource, UserResource } from '../../../src/write-side/resources/user-resource';
+import { replayUserResource, UserResource } from '../../../src/write-side/resources/user/user-resource';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('user-resource', () => {

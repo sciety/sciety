@@ -1,6 +1,6 @@
 import { DomainEvent, userDetailsUpdated } from '../../domain-events';
 import { UpdateUserDetailsCommand } from '../commands/update-user-details';
-import { UserResource } from '../resources/user-resource';
+import { UserResource } from '../resources/user/user-resource';
 
 type ExecuteCommand = (command: UpdateUserDetailsCommand)
 => (userResource: UserResource)

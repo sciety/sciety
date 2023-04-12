@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
-import { UserHandle } from '../../types/user-handle';
+import { UserHandle } from '../../../types/user-handle';
 import {
   DomainEvent,
   isUserCreatedAccountEvent, isUserDetailsUpdatedEvent,
   UserCreatedAccountEvent,
   UserDetailsUpdatedEvent,
-} from '../../domain-events';
-import { UserId } from '../../types/user-id';
-import { ErrorMessage } from '../../types/error-message';
+} from '../../../domain-events';
+import { UserId } from '../../../types/user-id';
+import { ErrorMessage } from '../../../types/error-message';
 
 export const exists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,

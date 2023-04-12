@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { UpdateUserDetailsCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { replayUserResource } from '../resources/user-resource';
+import { replayUserResource } from '../resources/user/user-resource';
 import { executeCommand } from './execute-command';
 import { DomainEvent } from '../../domain-events';
 import { ErrorMessage } from '../../types/error-message';
