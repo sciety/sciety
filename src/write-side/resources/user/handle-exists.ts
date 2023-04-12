@@ -6,7 +6,7 @@ import {
   isUserCreatedAccountEvent,
 } from '../../../domain-events';
 
-export const exists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainEvent>) => pipe(
+export const handleExists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isUserCreatedAccountEvent),
   RA.map((event) => event.handle),

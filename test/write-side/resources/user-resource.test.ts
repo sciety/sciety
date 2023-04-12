@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { userDetailsUpdated } from '../../../src/domain-events/user-details-updated-event';
 import { userCreatedAccount } from '../../../src/domain-events';
-import * as User from '../../../src/write-side/resources/user/user-resource';
+import * as User from '../../../src/write-side/resources/user/handle-exists';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
@@ -80,7 +80,7 @@ describe('user-resource', () => {
                 arbitraryString(),
               ),
             ],
-            User.exists(handle),
+            User.handleExists(handle),
           );
 
           expect(result).toBe(true);
@@ -98,7 +98,7 @@ describe('user-resource', () => {
                 arbitraryString(),
               ),
             ],
-            User.exists('AHandle' as UserHandle),
+            User.handleExists('AHandle' as UserHandle),
           );
 
           expect(result).toBe(true);
@@ -110,7 +110,7 @@ describe('user-resource', () => {
       it('returns false', () => {
         const result = pipe(
           [],
-          User.exists(arbitraryUserHandle()),
+          User.handleExists(arbitraryUserHandle()),
         );
 
         expect(result).toBe(false);
