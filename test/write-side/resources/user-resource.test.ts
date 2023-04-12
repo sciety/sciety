@@ -2,11 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { userDetailsUpdated } from '../../../src/domain-events/user-details-updated-event';
 import { userCreatedAccount } from '../../../src/domain-events';
-import * as User from '../../../src/write-side/resources/user/handle-exists';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { UserHandle } from '../../../src/types/user-handle';
+import { arbitraryUri } from '../../helpers';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { replayUserResource, UserResource } from '../../../src/write-side/resources/user/replay-user-resource';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -63,58 +59,6 @@ describe('user-resource', () => {
 
     describe('when the user does not exist', () => {
       it.todo('fails');
-    });
-  });
-
-  describe('exists', () => {
-    describe('when the user exists', () => {
-      describe('with an identical handle', () => {
-        it('returns true', () => {
-          const handle = arbitraryUserHandle();
-          const result = pipe(
-            [
-              userCreatedAccount(
-                arbitraryUserId(),
-                handle,
-                arbitraryUri(),
-                arbitraryString(),
-              ),
-            ],
-            User.handleExists(handle),
-          );
-
-          expect(result).toBe(true);
-        });
-      });
-
-      describe('with a handle matching except for case', () => {
-        it('returns true', () => {
-          const result = pipe(
-            [
-              userCreatedAccount(
-                arbitraryUserId(),
-                'ahandle' as UserHandle,
-                arbitraryUri(),
-                arbitraryString(),
-              ),
-            ],
-            User.handleExists('AHandle' as UserHandle),
-          );
-
-          expect(result).toBe(true);
-        });
-      });
-    });
-
-    describe('when the user does not exist', () => {
-      it('returns false', () => {
-        const result = pipe(
-          [],
-          User.handleExists(arbitraryUserHandle()),
-        );
-
-        expect(result).toBe(false);
-      });
     });
   });
 });
