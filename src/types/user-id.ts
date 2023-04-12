@@ -14,6 +14,7 @@ const isUserId = (value: unknown): value is UserId => typeof value === 'string' 
 
 const isLegacyStyleUserId = (value: string) => !value.includes('|');
 const isCurrentStyleUserId = (value: string) => value.match(/^(auth0|twitter)\|[^|]+$/);
+const upgradeUserIdToCurrentStyle = (value: string) => `${twitterPrefix}|${value}`;
 
 export const userIdCodec = new t.Type(
   'UserIdFromString',
@@ -23,7 +24,7 @@ export const userIdCodec = new t.Type(
     E.chain((value) => {
       if (isUserId(value)) {
         if (isLegacyStyleUserId(value)) {
-          return t.success(`${twitterPrefix}|${value}` as UserId);
+          return t.success(upgradeUserIdToCurrentStyle((value)) as UserId);
         }
         if (!isCurrentStyleUserId(value)) {
           return t.failure(u, c);
