@@ -1,6 +1,5 @@
 @use 'sass:math';
 
-@use '../../sass/baseline';
 @use '../../sass/breakpoints';
 @use '../../sass/button';
 @use '../../sass/functions';
@@ -63,7 +62,7 @@ $_outer-vertical-spacing: 2rem;
 }
 
 .main-footer__link {
-  @include typography.sizing(18px, 2.5);
+  @include typography.sizing(18px, 20px);
   display: block;
   font-weight: bold;
   border-bottom: settings.$navigation-link-border-width solid settings.$colour-white;
@@ -81,7 +80,7 @@ $_outer-vertical-spacing: 2rem;
 }
 
 .main-footer__small_print {
-  @include typography.sizing(14px, 2);
+  @include typography.sizing(14px, 16px);
   color: settings.$colour-white;
 
   a:link {

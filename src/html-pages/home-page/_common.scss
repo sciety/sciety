@@ -2,7 +2,6 @@
 
 @use '../../sass/functions';
 @use '../../sass/settings';
-@use '../../sass/baseline';
 @use '../../sass/button';
 
 $home-page-breakpoint: functions.px-to-em(964px);

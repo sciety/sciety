@@ -1,6 +1,5 @@
 @use '../../sass/settings';
 @use '../../sass/functions';
-@use '../../sass/baseline';
 @use '../../sass/typography';
 @use '../../sass/breakpoints';
 @use '../../sass/button';
@@ -61,23 +60,23 @@ $_desired-image-width-on-wide-screens: 396px;
 }
 
 .home-page-hero__content_title {
-  @include typography.sizing(32px, 4.75);
+  @include typography.sizing(32px, 38px);
   font-weight: normal;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 
   @include breakpoints.not-narrow() {
-    @include typography.sizing(36px, 5.25);
+    @include typography.sizing(36px, 42px);
     margin-bottom: 0.75rem;
   }
 }
 
 .home-page-hero__content_byline {
   @include vertical-spacing-in-left-wrapper();
-  @include typography.sizing(20px, 2.75);
+  @include typography.sizing(20px, 22px);
 
   @include breakpoints.not-narrow() {
-    @include typography.sizing(24px, 3.5);
+    @include typography.sizing(24px, 28px);
   }
 }
 
