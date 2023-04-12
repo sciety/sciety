@@ -7,6 +7,7 @@ import { DomainEvent, userDetailsUpdated } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('update', () => {
   let events: ReadonlyArray<DomainEvent>;
@@ -226,6 +227,24 @@ describe('update', () => {
   });
 
   describe('when the user does not exist', () => {
-    it.todo('fails');
+    const existingEvents: ReadonlyArray<DomainEvent> = [];
+
+    describe('when passed any command', () => {
+      const command = constructUpdateUserDetailsCommand({
+        userId: arbitraryUserId(),
+        avatarUrl: arbitraryUri(),
+      });
+      let result: E.Either<unknown, unknown>;
+
+      beforeEach(() => {
+        result = pipe(
+          update(command)(existingEvents),
+        );
+      });
+
+      it('fails', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
   });
 });
