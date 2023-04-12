@@ -70,5 +70,32 @@ describe('update', () => {
         ]);
       });
     });
+
+    describe('when passed a new display name and a new avatar url', () => {
+      const newAvatarUrl = arbitraryUri();
+      const newDisplayName = arbitraryString();
+      const command = constructUpdateUserDetailsCommand({
+        userId: originalUserDetails.id,
+        avatarUrl: newAvatarUrl,
+        displayName: newDisplayName,
+      });
+
+      beforeEach(() => {
+        events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('raises an event to update display name and avatar url', () => {
+        expect(events).toStrictEqual([
+          expect.objectContaining({
+            userId: originalUserDetails.id,
+            avatarUrl: newAvatarUrl,
+            displayName: newDisplayName,
+          }),
+        ]);
+      });
+    });
   });
 });
