@@ -134,5 +134,24 @@ describe('update', () => {
         expect(events).toStrictEqual([]);
       });
     });
+
+    describe('when passed no avatarUrl and no displayName', () => {
+      const command = {
+        userId: originalUserDetails.id,
+        avatarUrl: undefined,
+        displayName: undefined,
+      };
+
+      beforeEach(() => {
+        events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('raises no events', () => {
+        expect(events).toStrictEqual([]);
+      });
+    });
   });
 });
