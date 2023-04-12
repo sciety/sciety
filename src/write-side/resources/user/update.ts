@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { UpdateUserDetailsCommand } from '../../commands';
-import { replayUserResource } from './user-resource';
+import { replayUserResource } from './replay-user-resource';
 import { executeCommand } from './execute-command';
 import { DomainEvent } from '../../../domain-events';
 import { ErrorMessage } from '../../../types/error-message';

@@ -8,7 +8,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { UserHandle } from '../../../src/types/user-handle';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { replayUserResource, UserResource } from '../../../src/write-side/resources/user/user-resource';
+import { replayUserResource, UserResource } from '../../../src/write-side/resources/user/replay-user-resource';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('user-resource', () => {
