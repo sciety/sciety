@@ -226,7 +226,7 @@ describe('update', () => {
     });
   });
 
-  describe('when the user does not exist', () => {
+  describe('when no users exist', () => {
     const existingEvents: ReadonlyArray<DomainEvent> = [];
 
     describe('when passed any command', () => {
