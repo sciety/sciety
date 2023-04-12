@@ -247,4 +247,34 @@ describe('update', () => {
       });
     });
   });
+
+  describe('when a different user exists', () => {
+    const differentUserDetails = arbitraryUserDetails();
+    const existingEvents: ReadonlyArray<DomainEvent> = [
+      userCreatedAccount(
+        differentUserDetails.id,
+        differentUserDetails.handle,
+        differentUserDetails.avatarUrl,
+        differentUserDetails.displayName,
+      ),
+    ];
+
+    describe('when passed any command', () => {
+      const command = constructUpdateUserDetailsCommand({
+        userId: arbitraryUserId(),
+        avatarUrl: arbitraryUri(),
+      });
+      let result: E.Either<unknown, unknown>;
+
+      beforeEach(() => {
+        result = pipe(
+          update(command)(existingEvents),
+        );
+      });
+
+      it('fails', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+  });
 });
