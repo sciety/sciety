@@ -15,6 +15,12 @@ const groupsMenuItem = () => `
   </li>
 `;
 
+const activeUserListsMenuItem = () => ((process.env.EXPERIMENT_ENABLED === 'true') ? `
+  <li class="utility-bar__list_item utility-bar__list_item--navigation">
+    <a href="/list-of-user-lists" class="utility-bar__list_nav_link">Lists</a>
+  </li>
+` : '');
+
 const logInMenuItem = () => `
   <li class="utility-bar__list_item">
     <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
@@ -69,6 +75,7 @@ const aboutScietyMenuItem = () => `
 const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
+  ${activeUserListsMenuItem()}
   ${scietyFeedMenuItem()}
   ${aboutScietyMenuItem()}
   ${logInMenuItem()}
@@ -78,6 +85,7 @@ const loggedOutMenuItems = () => `
 const loggedInMenuItems = (user: UserDetails) => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
+  ${activeUserListsMenuItem()}
   ${myFeedMenuItem()}
   ${myListsMenuItem(user.handle)}
   ${myUsernameMenuItem(user.handle, user.avatarUrl)}
