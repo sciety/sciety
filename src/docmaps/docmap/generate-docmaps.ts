@@ -14,8 +14,8 @@ import { supportedGroups } from '../supported-groups';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const getEvaluatingGroupIds = (getAllEvents: GetAllEvents) => (doi: Doi) => pipe(
-  getAllEvents,
+const getEvaluatingGroupIds = (ports: Ports) => (doi: Doi) => pipe(
+  ports.getAllEvents,
   T.map(flow(
     RA.filter(isEvaluationRecordedEvent),
     RA.filter(({ articleId }) => articleId.value === doi.value),
@@ -30,11 +30,11 @@ const validateDoi = flow(
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (adapters: Ports) => (articleId: Doi) => pipe(
+const getDocmapViewModels = (ports: Ports) => (articleId: Doi) => pipe(
   articleId,
-  getEvaluatingGroupIds(adapters.getAllEvents),
+  getEvaluatingGroupIds(ports),
   TE.rightTask,
-  TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(adapters)({ articleId, groupId }))),
+  TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(ports)({ articleId, groupId }))),
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
 );
 
@@ -49,14 +49,14 @@ export type Ports = {
 } & DocmapPorts;
 
 export const generateDocmaps = (
-  adapters: Ports,
+  ports: Ports,
 ) => (
   candidateDoi: string,
 ): TE.TaskEither<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>> => pipe(
   candidateDoi,
   validateDoi,
   TE.fromEither,
-  TE.chainW(getDocmapViewModels(adapters)),
+  TE.chainW(getDocmapViewModels(ports)),
   TE.map(RA.map(toDocmap)),
   TE.chainEitherKW(errorOnEmpty),
 );
