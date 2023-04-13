@@ -28,6 +28,7 @@ import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
+import { GetNonEmptyUserLists } from './get-non-empty-user-lists';
 import { GetActivityForDoi } from './get-activity-for-doi';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
@@ -67,6 +68,7 @@ export { GetGroupsFollowedBy } from './get-groups-followed-by';
 export { IsFollowing } from './is-following';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
+export { GetNonEmptyUserLists } from './get-non-empty-user-lists';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -98,6 +100,7 @@ export type SharedPorts = {
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  getNonEmptyUserLists: GetNonEmptyUserLists,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,
   getActivityForDoi: GetActivityForDoi,
