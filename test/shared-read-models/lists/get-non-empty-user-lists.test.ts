@@ -5,6 +5,8 @@ import { arbitraryList } from '../../types/list-helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import * as LOID from '../../../src/types/list-owner-id';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('get-non-empty-user-lists', () => {
   describe('when there are populated user lists', () => {
@@ -33,7 +35,18 @@ describe('get-non-empty-user-lists', () => {
   });
 
   describe('when there are only group lists', () => {
-    it.todo('returns an empty result');
+    const groupList = arbitraryList(LOID.fromGroupId(arbitraryGroupId()));
+    const readModel = pipe(
+      [
+        listCreated(groupList.id, groupList.name, groupList.description, groupList.ownerId),
+        articleAddedToList(arbitraryArticleId(), groupList.id),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('returns an empty result', () => {
+      expect(getNonEmptyUserLists(readModel)()).toStrictEqual([]);
+    });
   });
 
   describe('when there are no lists', () => {
