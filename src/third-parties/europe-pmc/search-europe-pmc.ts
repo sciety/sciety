@@ -100,7 +100,7 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
 
 const logIfNoAuthors = (logger: Logger, item: Item) => (authors: Authors): Authors => {
   if (O.isNone(authors)) {
-    logger('error', 'No authorList provided by EuropePMC', { articleId: item.doi.value });
+    logger('warn', 'No authorList provided by EuropePMC', { articleId: item.doi.value });
   }
   return authors;
 };
