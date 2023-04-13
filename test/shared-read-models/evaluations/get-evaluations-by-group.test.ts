@@ -7,7 +7,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations';
 import { getEvaluationsByGroup } from '../../../src/shared-read-models/evaluations/get-evaluations-by-group';
 
-describe.skip('get-evaluations-by-group', () => {
+describe('get-evaluations-by-group', () => {
   const article1 = arbitraryDoi();
   const article2 = arbitraryDoi();
   const group1 = arbitraryGroupId();

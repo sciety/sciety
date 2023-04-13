@@ -25,17 +25,20 @@ export const initialState = (): ReadModel => ({
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
-    const key = event.articleId.value;
-    const evaluations = readmodel.byArticleId[event.articleId.value] ?? [];
-    evaluations.push({
+    const recordedEvaluation: RecordedEvaluation = {
       articleId: event.articleId,
       reviewId: event.evaluationLocator,
       groupId: event.groupId,
       recordedAt: event.date,
       publishedAt: event.publishedAt,
       authors: event.authors,
-    });
-    readmodel.byArticleId[key] = evaluations;
+    };
+    const evaluationsForThisArticle = readmodel.byArticleId[event.articleId.value] ?? [];
+    const evaluationsByThisGroup = readmodel.byGroupId[event.groupId] ?? [];
+    evaluationsForThisArticle.push(recordedEvaluation);
+    evaluationsByThisGroup.push(recordedEvaluation);
+    readmodel.byArticleId[event.articleId.value] = evaluationsForThisArticle;
+    readmodel.byGroupId[event.groupId] = evaluationsByThisGroup;
   }
   return readmodel;
 };
