@@ -7,6 +7,7 @@ export const robots = (): Middleware => (
     response.body = `
 User-Agent: *
 ${process.env.ALLOW_SITE_CRAWLERS === 'true' ? 'Allow' : 'Disallow'}: /
+Disallow: /search?*
 `;
 
     await next();
