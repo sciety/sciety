@@ -20,7 +20,7 @@ describe('get-non-empty-user-lists', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns only the populated user lists', () => {
+    it('returns only the populated user lists', () => {
       expect(getNonEmptyUserLists(readModel)()).toStrictEqual([
         expect.objectContaining({ id: userList1.id }),
         expect.objectContaining({ id: userList2.id }),
