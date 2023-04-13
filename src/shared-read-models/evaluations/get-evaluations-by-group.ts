@@ -4,7 +4,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { ReadModel, RecordedEvaluation } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
-type GetEvaluationsByGroup = (groupId: GroupId) => ReadonlyArray<RecordedEvaluation>;
+export type GetEvaluationsByGroup = (groupId: GroupId) => ReadonlyArray<RecordedEvaluation>;
 
 // ts-unused-exports:disable-next-line
 export const getEvaluationsByGroup = (readmodel: ReadModel): GetEvaluationsByGroup => (groupId) => pipe(
