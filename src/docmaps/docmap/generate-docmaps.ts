@@ -7,17 +7,20 @@ import { StatusCodes } from 'http-status-codes';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, generateDocmapViewModel } from './generate-docmap-view-model';
 import { toDocmap } from './to-docmap';
-import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Doi } from '../../types/doi';
 import { supportedGroups } from '../supported-groups';
+import { GetEvaluationsForDoi } from '../../shared-ports';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+// ts-unused-exports:disable-next-line
+export type Ports = DocmapPorts & {
+  getEvaluationsForDoi: GetEvaluationsForDoi,
+};
 
 const getEvaluatingGroupIds = (ports: Ports) => (doi: Doi) => pipe(
-  ports.getAllEvents,
+  ports.getEvaluationsForDoi(doi),
+  T.of,
   T.map(flow(
-    RA.filter(isEvaluationRecordedEvent),
     RA.filter(({ articleId }) => articleId.value === doi.value),
     RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
     RA.map(({ groupId }) => groupId),
@@ -42,11 +45,6 @@ const errorOnEmpty = E.fromPredicate(
   RA.isNonEmpty,
   () => ({ status: StatusCodes.NOT_FOUND, message: 'No Docmaps available for requested DOI' }),
 );
-
-// ts-unused-exports:disable-next-line
-export type Ports = {
-  getAllEvents: GetAllEvents,
-} & DocmapPorts;
 
 export const generateDocmaps = (
   ports: Ports,

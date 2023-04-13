@@ -28,7 +28,6 @@ describe('generate-docmaps', () => {
     defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
-      getAllEvents: framework.getAllEvents,
     };
   });
 
