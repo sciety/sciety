@@ -44,7 +44,7 @@ describe('get-non-empty-user-lists', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns an empty result', () => {
+    it('returns an empty result', () => {
       expect(getNonEmptyUserLists(readModel)()).toStrictEqual([]);
     });
   });
