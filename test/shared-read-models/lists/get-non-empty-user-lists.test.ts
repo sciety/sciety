@@ -62,6 +62,13 @@ describe('get-non-empty-user-lists', () => {
   });
 
   describe('when there are no lists', () => {
-    it.todo('returns an empty result');
+    const readModel = pipe(
+      [],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('returns an empty result', () => {
+      expect(getNonEmptyUserLists(readModel)()).toStrictEqual([]);
+    });
   });
 });
