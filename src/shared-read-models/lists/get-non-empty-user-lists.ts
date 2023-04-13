@@ -9,4 +9,5 @@ export const getNonEmptyUserLists = (
 ): GetNonEmptyUserLists => () => pipe(
   Object.values(readModel),
   RA.filter((list) => !isGroupId(list.ownerId)),
+  RA.filter((list) => list.articleIds.length > 0),
 );
