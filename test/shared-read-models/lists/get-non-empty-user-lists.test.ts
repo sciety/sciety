@@ -31,7 +31,19 @@ describe('get-non-empty-user-lists', () => {
   });
 
   describe('when the only user lists are empty', () => {
-    it.todo('returns an empty result');
+    const userList1 = arbitraryList();
+    const userList2 = arbitraryList();
+    const readModel = pipe(
+      [
+        listCreated(userList1.id, userList1.name, userList1.description, userList1.ownerId),
+        listCreated(userList2.id, userList2.name, userList2.description, userList2.ownerId),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('returns an empty result', () => {
+      expect(getNonEmptyUserLists(readModel)()).toStrictEqual([]);
+    });
   });
 
   describe('when there are only group lists', () => {
