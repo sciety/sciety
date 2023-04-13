@@ -7,7 +7,7 @@ import { ReadModel, RecordedEvaluation } from './handle-event';
 export type GetEvaluationsForDoi = (articleDoi: Doi) => ReadonlyArray<RecordedEvaluation>;
 
 export const getEvaluationsForDoi = (readmodel: ReadModel): GetEvaluationsForDoi => (articleId) => pipe(
-  readmodel,
+  readmodel.byArticleId,
   R.lookup(articleId.value),
   O.match(
     () => [],

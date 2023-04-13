@@ -13,14 +13,20 @@ export type RecordedEvaluation = {
   authors: ReadonlyArray<string>,
 };
 
-export type ReadModel = Record<string, Array<RecordedEvaluation>>;
+export type ReadModel = {
+  byArticleId: Record<string, Array<RecordedEvaluation>>,
+  byGroupId: Record<string, Array<RecordedEvaluation>>,
+};
 
-export const initialState = (): ReadModel => ({});
+export const initialState = (): ReadModel => ({
+  byArticleId: {},
+  byGroupId: {},
+});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluationRecordedEvent(event)) {
     const key = event.articleId.value;
-    const evaluations = readmodel[event.articleId.value] ?? [];
+    const evaluations = readmodel.byArticleId[event.articleId.value] ?? [];
     evaluations.push({
       articleId: event.articleId,
       reviewId: event.evaluationLocator,
@@ -29,7 +35,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       publishedAt: event.publishedAt,
       authors: event.authors,
     });
-    readmodel[key] = evaluations;
+    readmodel.byArticleId[key] = evaluations;
   }
   return readmodel;
 };
