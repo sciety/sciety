@@ -2,7 +2,7 @@
 @use 'functions';
 
 $_breakpoint-not-narrow: 740px;
-$_breakpoint-site-header: 880px;
+$_breakpoint-site-header: 940px;
 $_breakpoint-two-column-display: 1100px;
 
 @mixin not-narrow() {
