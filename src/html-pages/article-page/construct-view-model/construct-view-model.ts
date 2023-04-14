@@ -15,10 +15,9 @@ import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { SelectListContainingArticle, SelectAllListsOwnedBy, SelectAllListsContainingArticle } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
-import { ListId } from '../../../types/list-id';
 
 export type Params = {
   doi: Doi,
@@ -37,6 +36,7 @@ export type Ports = GetArticleFeedEventsPorts & {
   selectListContainingArticle: SelectListContainingArticle,
   fetchArticle: GetArticleDetails,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  selectAllListsContainingArticle: SelectAllListsContainingArticle,
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
@@ -80,10 +80,14 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: [{
-        listId: 'list-id-placeholder' as ListId,
-        listName: 'List name placeholder',
-      }],
+      listedIn: pipe(
+        params.doi,
+        ports.selectAllListsContainingArticle,
+        RA.map((list) => ({
+          listId: list.id,
+          listName: list.name,
+        })),
+      ),
     })),
   )),
 );

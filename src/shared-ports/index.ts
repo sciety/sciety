@@ -1,3 +1,4 @@
+import { SelectAllListsContainingArticle } from './select-all-lists-containing-article';
 import { SearchForArticles } from './search-for-articles';
 import { AddArticleToList } from './add-article-to-list';
 import { CommitEvents } from './commit-events';
@@ -72,6 +73,7 @@ export { IsFollowing } from './is-following';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 export { GetNonEmptyUserLists } from './get-non-empty-user-lists';
+export { SelectAllListsContainingArticle } from './select-all-lists-containing-article';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -104,6 +106,7 @@ export type SharedPorts = {
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
+  selectAllListsContainingArticle: SelectAllListsContainingArticle,
   getNonEmptyUserLists: GetNonEmptyUserLists,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,

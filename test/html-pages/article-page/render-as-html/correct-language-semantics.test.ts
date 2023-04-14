@@ -18,6 +18,7 @@ describe('correct-language-semantics', () => {
       getAllEvents: T.of([]),
       getEvaluationsForDoi: () => [],
       selectListContainingArticle: () => () => O.none,
+      selectAllListsContainingArticle: () => [],
       getGroup: () => O.none,
       selectAllListsOwnedBy: () => [],
     };
