@@ -15,11 +15,11 @@ const groupsMenuItem = () => `
   </li>
 `;
 
-const activeUserListsMenuItem = () => ((process.env.EXPERIMENT_ENABLED === 'true') ? `
+const activeUserListsMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/lists" class="utility-bar__list_nav_link">Lists</a>
   </li>
-` : '');
+`;
 
 const logInMenuItem = () => `
   <li class="utility-bar__list_item">
