@@ -10,11 +10,6 @@
   @include feed-page-numbers.feed-page-numbers();
 }
 
-.sciety-feed-list {
-  @include card.list();
-  margin-bottom: 1.5rem;
-}
-
 .sciety-feed-list__item {
   @include card.list-item();
 }

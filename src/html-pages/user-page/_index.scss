@@ -35,16 +35,8 @@
   }
 }
 
-.followed-groups-list {
-  @include card.list();
-}
-
 .followed-groups-list__item {
   @include card.list-item();
-}
-
-.owned-lists-list {
-  @include card.list();
 }
 
 .owned-lists-list__item {

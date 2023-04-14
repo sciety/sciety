@@ -44,7 +44,7 @@ const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel
   RA.map(renderListCard),
   (renderedCards) => templateListItems(renderedCards, 'owned-lists-list__item'),
   (templatedItems) => `
-    <ul class="owned-lists-list" role="list">
+    <ul class="card-list" role="list">
       ${templatedItems}
     </ul>
   `,

@@ -21,7 +21,7 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
     <p>A group on Sciety represents a team of scientists who evaluate and curate preprint research articles.</p>
     <p>Select a group to follow their work.</p>
   </header>
-  <ol class="group-list" role="list">
+  <ol class="card-list" role="list">
     ${templateListItems(groups, 'group-list__item')}
   </ol>
   ${supplementaryInfo(supplementaryItems)}

@@ -1,10 +1,5 @@
 @use '../../sass/card';
 
-.group-list {
-  @include card.list();
-  margin-bottom: 1.5rem;
-}
-
 .group-list__item {
   @include card.list-item();
 }

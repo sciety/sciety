@@ -9,7 +9,7 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   (items) => templateListItems(items, 'group-page-followers-list__item'),
   (listContent) => `
     <section class="group-page-lists">
-      <ul class="group-page-followers-list" role="list">
+      <ul class="card-list" role="list">
         ${listContent}
       </ul>
     </section>

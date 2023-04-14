@@ -70,7 +70,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     <p class="my-feed-page-numbers">
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
-    <ol class="my-feed__list" role="list">${cards.join('')}</ol>
+    <ol class="card-list" role="list">${cards.join('')}</ol>
     ${paginationControls('/my-feed?', pageofItems.nextPage)}`,
 );
 

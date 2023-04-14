@@ -84,6 +84,10 @@ $_card-border-radius: settings.$border-radius;
   }
 }
 
+.card-list {
+  @include list();
+}
+
 @mixin avatar() {
   @include avatar.border();
   width: avatar.$size--small;

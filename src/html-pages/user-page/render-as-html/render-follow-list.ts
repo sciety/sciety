@@ -9,7 +9,7 @@ const templateListItems = (items: ReadonlyArray<HtmlFragment>, itemClass = 'item
 );
 
 export const renderFollowList = (list: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
-  <ol class="followed-groups-list" role="list">
+  <ol class="card-list" role="list">
     ${templateListItems(list, 'followed-groups-list__item')}
   </ol>
 `);

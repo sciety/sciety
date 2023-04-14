@@ -16,7 +16,7 @@ export const renderPage = (viewModel: ViewModel) => pipe(
       </h1>
       <p>Curated collections of preprints selected by Sciety users.</p>
     </header>
-    <ol role="list" class="group-list">${listCards}</ol>
+    <ol role="list" class="card-list">${listCards}</ol>
   `,
   toHtmlFragment,
 );

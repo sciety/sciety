@@ -12,10 +12,6 @@ $_remove-article-icon-size: 24px;
 $_edit-details-icon-size: 24px;
 $_edit-details-icon-offset: 8px;
 
-.articles-list {
-  @include card.list();
-}
-
 .articles-list__item {
   @include card.list-item();
 }

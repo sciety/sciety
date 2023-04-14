@@ -50,7 +50,7 @@ export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
   )),
   RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
   (renderedActivities) => `
-      <ul class="articles-list" role="list">${renderedActivities.join('')}</ul>
+    <ul class="card-list" role="list">${renderedActivities.join('')}</ul>
   `,
   toHtmlFragment,
 );

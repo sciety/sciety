@@ -30,7 +30,7 @@ export const renderPage = (viewModel: ViewModel) => pipe(
       <p class="sciety-feed-page-numbers">
         Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
       </p>
-      <ol class="sciety-feed-list">
+      <ol class="card-list">
         ${templateListItems(cards, 'sciety-feed-list__item')}
       </ol>
       ${paginationControls('/sciety-feed?', viewModel.nextPage)}
