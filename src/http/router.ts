@@ -76,7 +76,7 @@ import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { updateUserDetailsCommandHandler } from '../write-side/command-handlers';
-import { listsPage } from '../html-pages/lists-page/lists-page';
+import { listsPage } from '../html-pages/lists-page';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
   adapters: CollectedPorts,
