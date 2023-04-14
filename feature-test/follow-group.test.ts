@@ -42,7 +42,7 @@ describe('follow a group', () => {
       it('adds the group to the user page', async () => {
         await click('My lists');
         await click('Following');
-        const groupExists = await text(group.name, within($('.followed-groups-list'))).exists();
+        const groupExists = await text(group.name, within($('.card-list'))).exists();
 
         expect(groupExists).toBe(true);
       });

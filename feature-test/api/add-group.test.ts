@@ -28,7 +28,7 @@ describe('add-group', () => {
 
   it('the group appears in the list on the groups page', async () => {
     await goto('localhost:8080/groups');
-    const groupCardExists = await text(newGroup.name, within($('.group-list'))).exists();
+    const groupCardExists = await text(newGroup.name, within($('.card-list'))).exists();
 
     expect(groupCardExists).toBe(true);
   });
@@ -45,7 +45,7 @@ describe('add-group', () => {
   it('the group can be searched for', async () => {
     const encodedGroupName = encodeURIComponent(newGroup.name);
     await goto(`localhost:8080/search?query=${encodedGroupName}&category=groups`);
-    const groupWasFound = await text(newGroup.name, within($('.search-results-list'))).exists();
+    const groupWasFound = await text(newGroup.name, within($('.card-list'))).exists();
 
     expect(groupWasFound).toBe(true);
   });
