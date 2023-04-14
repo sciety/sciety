@@ -1,3 +1,4 @@
+import { ListId } from '../../../types/list-id';
 import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
@@ -22,5 +23,8 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
-  ${renderListedIn()}
+  ${renderListedIn([{
+    listId: '123' as ListId,
+    listName: 'List name placeholder',
+  }])}
 `);

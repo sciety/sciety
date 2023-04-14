@@ -1,14 +1,28 @@
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { templateListItems } from '../../../shared-components/list-items';
+import { ListId } from '../../../types/list-id';
 import { toHtmlFragment } from '../../../types/html-fragment';
 
-export const renderListedIn = () => toHtmlFragment(
+type ViewModel = ReadonlyArray<{
+  listId: ListId,
+  listName: string,
+}>;
+
+export const renderListedIn = (viewModel: ViewModel) => toHtmlFragment(
   process.env.EXPERIMENT_ENABLED === 'true'
-    ? `
+    ? pipe(
+      viewModel,
+      RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${item.listName}</a>`)),
+      templateListItems,
+      (listContent) => `
       <div>
         <h2>Listed in</h2>
         <ul role="list">
-          <li><a href="/lists/list-id-placeholder">List name placeholder</a></li>
+        ${listContent}
         </ul>
       </div>
-    `
+    `,
+    )
     : '',
 );
