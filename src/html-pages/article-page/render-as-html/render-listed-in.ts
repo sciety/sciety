@@ -4,7 +4,10 @@ export const renderListedIn = () => toHtmlFragment(
   process.env.EXPERIMENT_ENABLED === 'true'
     ? `
       <div>
-        <p>Listed in</p>
+        <h2>Listed in</h2>
+        <ul role="list">
+          <li><a href="/lists/list-id-placeholder">List name placeholder</a></li>
+        </ul>
       </div>
     `
     : '',
