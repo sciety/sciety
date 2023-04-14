@@ -127,6 +127,13 @@
       ]
     },
     {
+      "label": "Lists page",
+      "url": "http://sciety_app/lists",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "About",
       "url": "http://sciety_app/about",
       "selectors": [
