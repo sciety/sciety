@@ -4,6 +4,7 @@ import { renderSaveArticle } from './render-save-article';
 import { langAttributeFor } from '../../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
+import { renderListedIn } from './render-listed-in';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
@@ -21,9 +22,5 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
-  ${process.env.EXPERIMENT_ENABLED === 'true' ? `
-  <div>
-    <p>Listed in</p>
-  </div>
-  ` : ''}
+  ${renderListedIn()}
 `);
