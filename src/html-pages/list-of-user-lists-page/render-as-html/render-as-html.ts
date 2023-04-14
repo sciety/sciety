@@ -3,6 +3,6 @@ import { Page } from '../../../types/page';
 import { renderPage } from './render-page';
 
 export const renderAsHtml = (viewModel: ViewModel): Page => ({
-  title: 'Most active user lists',
+  title: 'Lists',
   content: renderPage(viewModel),
 });
