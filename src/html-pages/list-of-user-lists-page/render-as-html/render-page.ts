@@ -9,6 +9,14 @@ export const renderPage = (viewModel: ViewModel) => pipe(
   viewModel,
   RA.map(renderListCard),
   templateListItems,
-  (listCards) => `<ol role="list">${listCards}</ol>`,
+  (listCards) => `
+    <header class="page-header">
+      <h1>
+        Lists
+      </h1>
+      <p>Curated collections of preprints selected by Sciety users.</p>
+    </header>
+    <ol role="list">${listCards}</ol>
+  `,
   toHtmlFragment,
 );
