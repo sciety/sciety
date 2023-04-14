@@ -10,10 +10,6 @@
   @include feed-page-numbers.feed-page-numbers();
 }
 
-.sciety-feed-list__item {
-  @include card.list-item();
-}
-
 .supplementary-info--sciety-feed {
   @include breakpoints.not-narrow() {
     padding-top: functions.px-to-rem(30px);

@@ -42,7 +42,7 @@ const renderCallToAction = (activeTab: ListsTab) => (activeTab.showCreateNewList
 const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel>) => pipe(
   cardViewModels,
   RA.map(renderListCard),
-  (renderedCards) => templateListItems(renderedCards, 'owned-lists-list__item'),
+  (renderedCards) => templateListItems(renderedCards),
   (templatedItems) => `
     <ul class="card-list" role="list">
       ${templatedItems}

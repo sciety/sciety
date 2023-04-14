@@ -74,6 +74,14 @@ $_card-border-radius: settings.$border-radius;
   @include list.basics();
   margin-top: 0;
   margin-bottom: 1.5rem;
+
+  > li {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 @mixin list-item() {

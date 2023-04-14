@@ -8,7 +8,7 @@ import { templateListItems } from '../../../shared-components/list-items';
 export const renderPage = (viewModel: ViewModel) => pipe(
   viewModel,
   RA.map(renderListCard),
-  (cards) => templateListItems(cards, 'group-list__item'),
+  (cards) => templateListItems(cards),
   (listCards) => `
     <header class="page-header">
       <h1>

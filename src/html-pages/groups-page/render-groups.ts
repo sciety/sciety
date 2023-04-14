@@ -22,7 +22,7 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
     <p>Select a group to follow their work.</p>
   </header>
   <ol class="card-list" role="list">
-    ${templateListItems(groups, 'group-list__item')}
+    ${templateListItems(groups)}
   </ol>
   ${supplementaryInfo(supplementaryItems)}
 `);

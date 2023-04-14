@@ -44,10 +44,6 @@ $_common-space-beneath: 0.5rem;
   }
 }
 
-.search-results-list__item {
-  @include card.list-item();
-}
-
 .search-results__footer {
   @include layout.page-content-horizontal-margins();
 }

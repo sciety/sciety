@@ -48,7 +48,7 @@ export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
       viewModel.annotationContent,
     ),
   )),
-  RA.map((activity) => `<li class="articles-list__item">${activity}</li>`),
+  RA.map((activity) => `<li>${activity}</li>`),
   (renderedActivities) => `
     <ul class="card-list" role="list">${renderedActivities.join('')}</ul>
   `,

@@ -10,7 +10,7 @@ export const renderSearchResultsList = (cards: ReadonlyArray<HtmlFragment>): O.O
   O.map(
     (a) => `
       <ul class="card-list" role="list">
-        ${templateListItems(a, 'search-results-list__item')}
+        ${templateListItems(a)}
       </ul>
     `,
   ),

@@ -24,7 +24,7 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   userCards,
   RA.map(flow(
     renderUserCard,
-    (userCard) => `<li class="group-page-followers-list__item">${userCard}</li>`,
+    (userCard) => `<li>${userCard}</li>`,
   )),
   (items) => (items.length === 0 ? '' : `
     <ul class="card-list">

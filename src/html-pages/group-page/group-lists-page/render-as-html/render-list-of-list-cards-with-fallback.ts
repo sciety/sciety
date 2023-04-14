@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   cards,
-  (items) => templateListItems(items, 'group-page-followers-list__item'),
+  (items) => templateListItems(items),
   (listContent) => `
     <section class="group-page-lists">
       <ul class="card-list" role="list">

@@ -35,14 +35,6 @@
   }
 }
 
-.followed-groups-list__item {
-  @include card.list-item();
-}
-
-.owned-lists-list__item {
-  @include card.list-item();
-}
-
 .static-message {
   padding-top: 1rem;
   margin-left: 1rem;
