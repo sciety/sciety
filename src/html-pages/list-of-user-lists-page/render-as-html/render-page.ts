@@ -8,7 +8,7 @@ import { templateListItems } from '../../../shared-components/list-items';
 export const renderPage = (viewModel: ViewModel) => pipe(
   viewModel,
   RA.map(renderListCard),
-  templateListItems,
+  (cards) => templateListItems(cards, 'group-list__item'),
   (listCards) => `
     <header class="page-header">
       <h1>
@@ -16,7 +16,7 @@ export const renderPage = (viewModel: ViewModel) => pipe(
       </h1>
       <p>Curated collections of preprints selected by Sciety users.</p>
     </header>
-    <ol role="list">${listCards}</ol>
+    <ol role="list" class="group-list">${listCards}</ol>
   `,
   toHtmlFragment,
 );
