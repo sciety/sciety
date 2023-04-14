@@ -15,7 +15,7 @@ const groupsMenuItem = () => `
   </li>
 `;
 
-const activeUserListsMenuItem = () => `
+const listsMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/lists" class="utility-bar__list_nav_link">Lists</a>
   </li>
@@ -75,7 +75,7 @@ const aboutScietyMenuItem = () => `
 const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
-  ${activeUserListsMenuItem()}
+  ${listsMenuItem()}
   ${scietyFeedMenuItem()}
   ${aboutScietyMenuItem()}
   ${logInMenuItem()}
@@ -85,7 +85,7 @@ const loggedOutMenuItems = () => `
 const loggedInMenuItems = (user: UserDetails) => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
-  ${activeUserListsMenuItem()}
+  ${listsMenuItem()}
   ${myFeedMenuItem()}
   ${myListsMenuItem(user.handle)}
   ${myUsernameMenuItem(user.handle, user.avatarUrl)}
