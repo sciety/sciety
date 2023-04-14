@@ -18,6 +18,7 @@ import { UserId } from '../../../types/user-id';
 import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
+import { ListId } from '../../../types/list-id';
 
 export type Params = {
   doi: Doi,
@@ -79,6 +80,10 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
+      listedIn: [{
+        listId: 'list-id-placeholder' as ListId,
+        listName: 'List name placeholder',
+      }],
     })),
   )),
 );
