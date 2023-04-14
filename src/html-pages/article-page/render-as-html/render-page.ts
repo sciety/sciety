@@ -21,4 +21,9 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
+  ${process.env.EXPERIMENT_ENABLED === 'true' ? `
+  <div>
+    <p>Listed in</p>
+  </div>
+  ` : ''}
 `);
