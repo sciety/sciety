@@ -280,7 +280,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    '/list-of-user-lists',
+    '/lists',
     pageHandler(adapters, () => listOfUserListsPage(adapters)),
   );
 

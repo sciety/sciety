@@ -17,7 +17,7 @@ const groupsMenuItem = () => `
 
 const activeUserListsMenuItem = () => ((process.env.EXPERIMENT_ENABLED === 'true') ? `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/list-of-user-lists" class="utility-bar__list_nav_link">Lists</a>
+    <a href="/lists" class="utility-bar__list_nav_link">Lists</a>
   </li>
 ` : '');
 
