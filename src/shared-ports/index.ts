@@ -13,6 +13,7 @@ import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { GetEvaluationsForDoi } from './get-evaluations-for-doi';
+import { GetEvaluationsByGroup } from './get-evaluations-by-group';
 import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
@@ -48,6 +49,8 @@ export { GetAllGroups } from './get-all-groups';
 export { GetAnnotationContent } from './get-annotation-content';
 // ts-unused-exports:disable-next-line
 export { GetEvaluationsForDoi } from './get-evaluations-for-doi';
+// ts-unused-exports:disable-next-line
+export { GetEvaluationsByGroup } from './get-evaluations-by-group';
 export { LookupList } from './lookup-list';
 export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
@@ -85,6 +88,7 @@ export type SharedPorts = {
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
   getEvaluationsForDoi: GetEvaluationsForDoi,
+  getEvaluationsByGroup: GetEvaluationsByGroup,
   getFollowers: GetFollowers,
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
