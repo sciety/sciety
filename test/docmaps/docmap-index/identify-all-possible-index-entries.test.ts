@@ -1,17 +1,22 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
+  DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
   Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
+import { createTestFramework, TestFramework } from '../../framework';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
@@ -82,17 +87,32 @@ describe('identify-all-possible-index-entries', () => {
     });
   });
 
-  describe('when there are evaluated events by both supported and unsupported groups', () => {
-    const events = [
-      evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
-    ];
-    const result = pipe(
-      events,
-      identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
-    );
+  describe('when there is an evaluated event by an unsupported group', () => {
+    const group = arbitraryGroup();
+    const evaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group.id,
+    };
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+    let framework: TestFramework;
+    let defaultAdapters: Ports;
+
+    beforeEach(async () => {
+      framework = createTestFramework();
+      defaultAdapters = {
+        ...framework.queries,
+      };
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(evaluation);
+      result = await pipe(
+        framework.getAllEvents,
+        T.map(identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters)),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it('excludes articles evaluated by the unsupported group', () => {
-      expect(result).toStrictEqual(E.right([]));
+      expect(result).toStrictEqual([]);
     });
   });
 
