@@ -1,17 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { SelectAllListsContainingArticle } from '../../shared-ports';
-import * as LOID from '../../types/list-owner-id';
-import { ListId } from '../../types/list-id';
-import { UserId } from '../../types/user-id';
 
 export const selectAllListsContainingArticle = (
   readModel: ReadModel,
-): SelectAllListsContainingArticle => (articleId) => [{
-  id: 'list-id-placeholder' as ListId,
-  name: 'List name placeholder',
-  description: '',
-  articleIds: [],
-  updatedAt: new Date(),
-  ownerId: LOID.fromUserId('' as UserId),
-}];
+): SelectAllListsContainingArticle => (articleId) => pipe(
+  Object.values(readModel),
+  RA.filter((list) => list.articleIds.includes(articleId.value)),
+);

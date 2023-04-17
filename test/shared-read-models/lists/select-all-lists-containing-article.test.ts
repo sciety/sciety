@@ -22,7 +22,7 @@ describe('select-all-lists-containing-article', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns one list', () => {
+    it('returns one list', () => {
       expect(selectAllListsContainingArticle(readModel)(articleId)).toStrictEqual([
         expect.objectContaining({ id: list.id }),
       ]);
