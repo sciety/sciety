@@ -8,7 +8,11 @@ import { selectAllListsContainingArticle } from '../../../src/shared-read-models
 
 describe('select-all-lists-containing-article', () => {
   describe('when the article is not in any list', () => {
-    it.todo('returns an empty result');
+    const readModel = initialState();
+
+    it('returns an empty result', () => {
+      expect(selectAllListsContainingArticle(readModel)(arbitraryArticleId())).toStrictEqual([]);
+    });
   });
 
   describe('when the article appears in one list', () => {
