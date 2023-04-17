@@ -29,6 +29,6 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
         <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
-    ${viewModel.avatarUrl !== undefined ? `<img class="user-list-card__avatar" src="${viewModel.avatarUrl}" alt="" />` : ''}
+    ${viewModel.avatarUrl !== undefined ? `<img class="list-card__avatar" src="${viewModel.avatarUrl}" alt="" />` : ''}
   </article>
 `);

@@ -1,7 +1,0 @@
-@use '../../../sass/functions';
-@use '../../../sass/card';
-
-.user-list-card__avatar {
-  @include card.avatar();
-  margin-left: functions.px-to-rem(8px);
-}
