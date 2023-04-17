@@ -20,6 +20,7 @@ describe('correct-language-semantics', () => {
       selectListContainingArticle: () => () => O.none,
       selectAllListsContainingArticle: () => [],
       getGroup: () => O.none,
+      lookupUser: () => O.none,
       selectAllListsOwnedBy: () => [],
     };
 

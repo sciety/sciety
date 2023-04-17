@@ -18,7 +18,7 @@ import { UserId } from '../../../types/user-id';
 import { SelectListContainingArticle, SelectAllListsOwnedBy, SelectAllListsContainingArticle } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
-import { constructListedIn } from './construct-listed-in';
+import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
 
 export type Params = {
   doi: Doi,
@@ -33,7 +33,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = GetArticleFeedEventsPorts & {
+export type Ports = GetArticleFeedEventsPorts & ConstructListedInPorts & {
   selectListContainingArticle: SelectListContainingArticle,
   fetchArticle: GetArticleDetails,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
