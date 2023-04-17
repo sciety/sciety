@@ -18,6 +18,7 @@ import { UserId } from '../../../types/user-id';
 import { SelectListContainingArticle, SelectAllListsOwnedBy, SelectAllListsContainingArticle } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
+import { constructListedIn } from './construct-listed-in';
 
 export type Params = {
   doi: Doi,
@@ -80,15 +81,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: pipe(
-        params.doi,
-        ports.selectAllListsContainingArticle,
-        RA.map((list) => ({
-          listId: list.id,
-          listName: list.name,
-          listOwnerName: 'Hardcoded list owner name',
-        })),
-      ),
+      listedIn: constructListedIn(ports)(params.doi),
     })),
   )),
 );
