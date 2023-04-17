@@ -29,10 +29,10 @@ export const renderListedIn = (viewModel: ViewModel) => toHtmlFragment(
         ),
       ),
       (content) => `
-      <div>
+      <section class="listed-in">
         <h2>Listed in</h2>        
         ${content}
-      </div>
+      </section>
     `,
     )
     : '',

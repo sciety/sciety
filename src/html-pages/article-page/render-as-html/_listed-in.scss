@@ -1,0 +1,5 @@
+@use '../../../sass/layout';
+
+.listed-in {
+  @include layout.page-content-horizontal-margins();
+}
