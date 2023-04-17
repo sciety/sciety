@@ -1,8 +1,10 @@
 import { pipe } from 'fp-ts/function';
+import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { ViewModel } from '../../../../src/html-pages/article-page/render-as-html/render-listed-in';
 import { Ports, constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
+import * as LOID from '../../../../src/types/list-owner-id';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -40,10 +42,27 @@ describe('construct-listed-in', () => {
   });
 
   describe('when the article is in a list owned by a group', () => {
+    let viewModel: ViewModel;
+    const group = arbitraryGroup();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      viewModel = pipe(
+        articleId,
+        constructListedIn(adapters),
+      );
+    });
+
     it.todo('returns the list id');
 
     it.todo('returns the list name');
 
-    it.todo('returns the list owner name');
+    it.failing('returns the list owner name', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listOwnerName: group.name,
+      })]);
+    });
   });
 });
