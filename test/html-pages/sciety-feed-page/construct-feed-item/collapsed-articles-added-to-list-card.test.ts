@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
@@ -29,7 +28,6 @@ describe('collapsed-articles-added-to-list-card', () => {
       articleCount,
     };
 
-    const getAllEvents = T.of([]);
     const lookupList: LookupList = () => O.some({
       ...arbitraryList(),
       id: listId,
@@ -39,7 +37,6 @@ describe('collapsed-articles-added-to-list-card', () => {
       const avatarUrl = arbitraryUri();
       const handle = arbitraryUserHandle();
       const ports: Ports = {
-        getAllEvents,
         lookupList,
         lookupUser: () => O.some({
           handle,
@@ -80,7 +77,6 @@ describe('collapsed-articles-added-to-list-card', () => {
 
     describe('when user details are not found', () => {
       const ports: Ports = {
-        getAllEvents,
         lookupList,
         lookupUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),

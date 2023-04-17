@@ -4,19 +4,26 @@ import * as O from 'fp-ts/Option';
 import { GetNonEmptyUserLists } from '../../../shared-ports';
 import { List } from '../../../types/list';
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
+import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from '../../sciety-feed-page/construct-view-model/add-list-ownership-information';
 
-export type Ports = {
+export type Ports = AddListOwnershipInformationPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
 };
-const constructListCardViewModel = (list: List): ListCardViewModel => ({
-  listId: list.id,
-  articleCount: list.articleIds.length,
-  updatedAt: O.some(list.updatedAt),
-  title: list.name,
-  description: list.description,
-});
+
+const constructListCardViewModel = (ports: Ports) => (list: List): ListCardViewModel => pipe(
+  list,
+  addListOwnershipInformation(ports),
+  (ownershipInformation) => ({
+    listId: list.id,
+    articleCount: list.articleIds.length,
+    updatedAt: O.some(list.updatedAt),
+    title: list.name,
+    description: list.description,
+    avatarUrl: ownershipInformation.ownerAvatarUrl,
+  }),
+);
 
 export const constructViewModel = (ports: Ports) => pipe(
   ports.getNonEmptyUserLists(),
-  RA.map(constructListCardViewModel),
+  RA.map(constructListCardViewModel(ports)),
 );

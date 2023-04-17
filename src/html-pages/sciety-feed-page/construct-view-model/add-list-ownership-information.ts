@@ -1,13 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
-import {
-  GetAllEvents, GetGroup, LookupUser, Logger,
-} from '../../../shared-ports';
+import { GetGroup, LookupUser, Logger } from '../../../shared-ports';
 import { List } from '../../../types/list';
 
 export type Ports = {
-  getAllEvents: GetAllEvents,
   lookupUser: LookupUser,
   getGroup: GetGroup,
   logger: Logger,

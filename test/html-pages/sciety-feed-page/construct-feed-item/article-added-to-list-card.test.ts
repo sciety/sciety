@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { articleAddedToList } from '../../../../src/domain-events';
 import { articleAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
@@ -24,7 +23,6 @@ describe('article-added-to-list-card', () => {
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
-    const getAllEvents = T.of([]);
     const lookupList: LookupList = () => O.some({
       ...arbitraryList(),
       id: listId,
@@ -35,7 +33,6 @@ describe('article-added-to-list-card', () => {
       const avatarUrl = arbitraryUri();
       const handle = arbitraryUserHandle();
       const ports: Ports = {
-        getAllEvents,
         lookupList: () => O.some({
           ...arbitraryList(LOID.fromUserId(userId)),
           id: listId,
@@ -75,7 +72,6 @@ describe('article-added-to-list-card', () => {
 
     describe('when user details are not found', () => {
       const ports: Ports = {
-        getAllEvents,
         lookupList,
         lookupUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),

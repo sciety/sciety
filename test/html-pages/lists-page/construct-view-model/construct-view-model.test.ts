@@ -6,6 +6,7 @@ import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { dummyLogger } from '../../../dummy-logger';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -27,10 +28,10 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
 
-      viewmodel = constructViewModel(framework.queries);
+      viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
     });
 
-    it.failing('the user avatar is included in each card', () => {
+    it('the user avatar is included in each card', () => {
       expect(viewmodel).toStrictEqual([
         expect.objectContaining({ avatarUrl: user.avatarUrl }),
         expect.objectContaining({ avatarUrl: user.avatarUrl }),
