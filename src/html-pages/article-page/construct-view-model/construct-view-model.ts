@@ -86,6 +86,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         RA.map((list) => ({
           listId: list.id,
           listName: list.name,
+          listOwnerName: 'Hardcoded list owner name',
         })),
       ),
     })),
