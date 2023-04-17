@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -34,11 +35,28 @@ describe('construct-listed-in', () => {
   });
 
   describe('when the article is in a list owned by a user', () => {
+    let viewModel: ViewModel;
+    const user = arbitraryUserDetails();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(user);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      viewModel = pipe(
+        articleId,
+        constructListedIn(adapters),
+      );
+    });
+
     it.todo('returns the list id');
 
     it.todo('returns the list name');
 
-    it.todo('returns the list owner name');
+    it.failing('returns the list owner name', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listOwnerName: user.handle,
+      })]);
+    });
   });
 
   describe('when the article is in a list owned by a group', () => {
