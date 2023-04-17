@@ -15,7 +15,7 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe.skip('when there are two populated user lists', () => {
+  describe('when there are two populated user lists', () => {
     let initialUserList: List;
     const updatedList = arbitraryList(LOID.fromUserId(user.id));
     let viewmodel: ViewModel;
@@ -30,7 +30,14 @@ describe('construct-view-model', () => {
       viewmodel = constructViewModel(framework.queries);
     });
 
-    it('the most recently updated list is shown first', async () => {
+    it.failing('the user avatar is included in each card', () => {
+      expect(viewmodel).toStrictEqual([
+        expect.objectContaining({ avatarUrl: user.avatarUrl }),
+        expect.objectContaining({ avatarUrl: user.avatarUrl }),
+      ]);
+    });
+
+    it.skip('the most recently updated list is shown first', async () => {
       expect(viewmodel).toStrictEqual([
         expect.objectContaining({ listId: updatedList.id }),
         expect.objectContaining({ listId: initialUserList.id }),
