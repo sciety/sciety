@@ -9,9 +9,9 @@ export const renderSearchResultsList = (cards: ReadonlyArray<HtmlFragment>): O.O
   RNEA.fromReadonlyArray,
   O.map(
     (a) => `
-      <ul class="card-list" role="list">
+      <ol class="card-list" role="list">
         ${templateListItems(a)}
-      </ul>
+      </ol>
     `,
   ),
   O.map(toHtmlFragment),

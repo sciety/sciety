@@ -9,9 +9,9 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   (items) => templateListItems(items),
   (listContent) => `
     <section class="group-page-lists">
-      <ul class="card-list" role="list">
+      <ol class="card-list" role="list">
         ${listContent}
-      </ul>
+      </ol>
     </section>
   `,
   toHtmlFragment,

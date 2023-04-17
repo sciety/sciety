@@ -44,9 +44,9 @@ const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel
   RA.map(renderListCard),
   (renderedCards) => templateListItems(renderedCards),
   (templatedItems) => `
-    <ul class="card-list" role="list">
+    <ol class="card-list" role="list">
       ${templatedItems}
-    </ul>
+    </ol>
   `,
 );
 

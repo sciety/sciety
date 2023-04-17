@@ -27,9 +27,9 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
     (userCard) => `<li>${userCard}</li>`,
   )),
   (items) => (items.length === 0 ? '' : `
-    <ul class="card-list">
+    <ol class="card-list" role="list">
       ${items.join('')}
-    </ul>
+    </ol>
   `),
 );
 
