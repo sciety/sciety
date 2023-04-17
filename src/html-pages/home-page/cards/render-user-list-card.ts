@@ -3,14 +3,13 @@ import { templateDate } from '../../../shared-components/date';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { UserHandle } from '../../../types/user-handle';
 
 type UserListCardViewModel = {
   listId: ListId,
   articleCount: number,
   updatedAt: O.Option<Date>,
-  handle: UserHandle,
   avatarUrl: string,
+  listName: string,
   description: string,
 };
 
@@ -24,7 +23,7 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
     <article class="user-list-card">
       <div class="user-list-card__body">
         <div>
-          <h3 class="user-list-card__title">@${viewModel.handle}</h3>
+          <h3 class="user-list-card__title">${viewModel.listName}</h3>
           <p>${viewModel.description}</p>
         </div>
         <div class="user-list-card__meta">
