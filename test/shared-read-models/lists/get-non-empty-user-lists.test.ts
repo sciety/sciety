@@ -7,11 +7,12 @@ import { articleAddedToList, listCreated } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-non-empty-user-lists', () => {
   describe('when there are populated user lists', () => {
-    const userList1 = arbitraryList();
-    const userList2 = arbitraryList();
+    const userList1 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+    const userList2 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
     const readModel = pipe(
       [
         listCreated(userList1.id, userList1.name, userList1.description, userList1.ownerId),
@@ -31,8 +32,8 @@ describe('get-non-empty-user-lists', () => {
   });
 
   describe('when the only user lists are empty', () => {
-    const userList1 = arbitraryList();
-    const userList2 = arbitraryList();
+    const userList1 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+    const userList2 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
     const readModel = pipe(
       [
         listCreated(userList1.id, userList1.name, userList1.description, userList1.ownerId),

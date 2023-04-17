@@ -13,6 +13,7 @@ import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import * as LOID from '../../../../src/types/list-owner-id';
 
 describe('article-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -30,15 +31,19 @@ describe('article-added-to-list-card', () => {
     });
 
     describe('when user details are available', () => {
+      const userId = arbitraryUserId();
       const avatarUrl = arbitraryUri();
       const handle = arbitraryUserHandle();
       const ports: Ports = {
         getAllEvents,
-        lookupList,
+        lookupList: () => O.some({
+          ...arbitraryList(LOID.fromUserId(userId)),
+          id: listId,
+        }),
         lookupUser: () => O.some({
           handle,
           avatarUrl,
-          id: arbitraryUserId(),
+          id: userId,
           displayName: arbitraryString(),
         }),
         getGroup: () => O.some(arbitraryGroup()),
