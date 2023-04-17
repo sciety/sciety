@@ -5,10 +5,14 @@
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
   display: flex;
+  height: 100%;
 }
 
 .list-card__body {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .list-card__title {

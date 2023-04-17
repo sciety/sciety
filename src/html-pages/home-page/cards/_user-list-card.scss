@@ -14,24 +14,6 @@
   }
 }
 
-.user-list-card__title {
-  @include card.title();
-}
-
-.user-list-card__link {
-  @include card.link();
-}
-
-.user-list-card__meta {
-  @include card.meta();
-}
-
-.user-list-card__body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .user-list-card__avatar {
   @include card.avatar();
   margin-left: functions.px-to-rem(8px);

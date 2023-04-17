@@ -21,8 +21,10 @@ const lastUpdated = O.fold(
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <div class="list-card__body">
-      <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${viewModel.title}</a></h3>
-      <p>${viewModel.description}</p>
+      <div>
+        <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${viewModel.title}</a></h3>
+        <p>${viewModel.description}</p>
+      </div>
       <div class="list-card__meta">
         <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
