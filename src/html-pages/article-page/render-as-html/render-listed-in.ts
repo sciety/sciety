@@ -4,7 +4,8 @@ import { templateListItems } from '../../../shared-components/list-items';
 import { ListId } from '../../../types/list-id';
 import { toHtmlFragment } from '../../../types/html-fragment';
 
-type ViewModel = ReadonlyArray<{
+// ts-unused-exports:disable-next-line
+export type ViewModel = ReadonlyArray<{
   listId: ListId,
   listName: string,
   listOwnerName: string,
