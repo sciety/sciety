@@ -28,6 +28,12 @@ describe('identify-all-possible-index-entries', () => {
     }),
   };
 
+  let framework: TestFramework;
+
+  beforeEach(async () => {
+    framework = createTestFramework();
+  });
+
   describe('when there are evaluated events by a supported group', () => {
     const articleId1 = arbitraryArticleId();
     const articleId2 = arbitraryArticleId();
@@ -94,19 +100,14 @@ describe('identify-all-possible-index-entries', () => {
       groupId: group.id,
     };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
-    let framework: TestFramework;
-    let defaultAdapters: Ports;
 
     beforeEach(async () => {
       framework = createTestFramework();
-      defaultAdapters = {
-        ...framework.queries,
-      };
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation);
       result = await pipe(
         framework.getAllEvents,
-        T.map(identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters)),
+        T.map(identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries)),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
