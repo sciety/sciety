@@ -34,6 +34,19 @@ describe('select-all-lists-containing-article', () => {
   });
 
   describe('when only other articles appear in lists', () => {
-    it.todo('returns an empty result');
+    const list = arbitraryList();
+    const articleId = arbitraryArticleId();
+    const anotherArticleId = arbitraryArticleId();
+    const readModel = pipe(
+      [
+        listCreated(list.id, list.name, list.description, list.ownerId),
+        articleAddedToList(anotherArticleId, list.id),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('returns an empty result', () => {
+      expect(selectAllListsContainingArticle(readModel)(articleId)).toStrictEqual([]);
+    });
   });
 });
