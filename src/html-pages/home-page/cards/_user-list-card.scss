@@ -1,18 +1,5 @@
 @use '../../../sass/functions';
 @use '../../../sass/card';
-@use '../common';
-
-.user-list-card {
-  @include card.basics();
-  display: flex;
-  justify-content: space-between;
-
-  @media screen and (min-width: common.$home-page-breakpoint) {
-    @supports (display: flex) {
-      height: 100%;
-    }
-  }
-}
 
 .user-list-card__avatar {
   @include card.avatar();
