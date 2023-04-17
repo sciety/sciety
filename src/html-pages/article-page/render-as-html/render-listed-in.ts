@@ -20,7 +20,7 @@ export const renderListedIn = (viewModel: ViewModel) => toHtmlFragment(
   process.env.EXPERIMENT_ENABLED === 'true'
     ? pipe(
       viewModel,
-      RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${item.listName}${item.listOwnerName}</a>`)),
+      RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${item.listName}</a> (${item.listOwnerName})`)),
       RA.match(
         () => 'This article is not in any list yet, why not add it to one of your lists.',
         flow(
