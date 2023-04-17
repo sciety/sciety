@@ -15,6 +15,5 @@ export const constructViewModel = (ports: Ports) => pipe(
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    articleCountLabel: 'This list contains',
   })),
 );

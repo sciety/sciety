@@ -17,7 +17,6 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   listId: list.id,
   title: list.name,
   articleCount: list.articleIds.length,
-  articleCountLabel: 'This list contains',
   updatedAt: O.some(list.updatedAt),
 });
 
