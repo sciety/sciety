@@ -9,6 +9,11 @@ type ViewModel = ReadonlyArray<{
   listName: string,
 }>;
 
+const renderList = (listContent: string) => `
+  <ul role="list">
+    ${listContent}
+  </ul> 
+`;
 export const renderListedIn = (viewModel: ViewModel) => toHtmlFragment(
   process.env.EXPERIMENT_ENABLED === 'true'
     ? pipe(
@@ -17,10 +22,8 @@ export const renderListedIn = (viewModel: ViewModel) => toHtmlFragment(
       templateListItems,
       (listContent) => `
       <div>
-        <h2>Listed in</h2>
-        <ul role="list">
-        ${listContent}
-        </ul>
+        <h2>Listed in</h2>        
+        ${renderList(listContent)}        
       </div>
     `,
     )
