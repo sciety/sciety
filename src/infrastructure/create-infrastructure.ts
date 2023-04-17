@@ -72,6 +72,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     logger: createLogger(dependencies),
   },
   TE.right,
+  TE.map((deps) => {
+    deps.logger('info', 'Started createInfrastructure');
+    return deps;
+  }),
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
@@ -86,6 +90,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       }
     )),
   )),
+  TE.map((deps) => {
+    deps.logger('info', 'Events loaded');
+    return deps;
+  }),
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({
@@ -114,6 +122,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       } = dispatcher();
 
       dispatchToAllReadModels(events);
+
+      logger('info', 'Dispatched all events to read models');
 
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: events,
