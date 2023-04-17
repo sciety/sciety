@@ -1,13 +1,72 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { GetNonEmptyUserLists } from '../../../shared-ports';
+import {
+  GetNonEmptyUserLists, GetGroup, LookupUser, Logger,
+} from '../../../shared-ports';
 import { List } from '../../../types/list';
 import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
-import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from '../../sciety-feed-page/construct-view-model/add-list-ownership-information';
+
+type AddListOwnershipInformationPorts = {
+  lookupUser: LookupUser,
+  getGroup: GetGroup,
+  logger: Logger,
+};
 
 export type Ports = AddListOwnershipInformationPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
+};
+
+type ListWithAddedOwnershipInformation = {
+  ownerAvatarUrl: string,
+};
+
+const addListOwnershipInformation = (
+  ports: Ports,
+) => (
+  list: List,
+): ListWithAddedOwnershipInformation => {
+  switch (list.ownerId.tag) {
+    case 'group-id':
+      return pipe(
+        ports.getGroup(list.ownerId.value),
+        O.match(
+          () => {
+            ports.logger('error', 'Could not find group that owns list', {
+              listId: list.id,
+              ownerId: list.ownerId,
+            });
+            return {
+              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+            };
+          },
+          (group) => ({
+            ownerAvatarUrl: group.avatarPath,
+          }),
+        ),
+      );
+    case 'user-id':
+      return pipe(
+        list.ownerId.value,
+        ports.lookupUser,
+        O.match(
+          () => {
+            ports.logger('error', 'Could not find user who owns list', {
+              listId: list.id,
+              ownerId: list.ownerId,
+            });
+            return {
+              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+            };
+          },
+          (userDetails) => (
+            {
+              ownerAvatarUrl: userDetails.avatarUrl,
+            }
+          ),
+        ),
+      );
+  }
 };
 
 const constructListCardViewModel = (ports: Ports) => (list: List): ListCardViewModel => pipe(

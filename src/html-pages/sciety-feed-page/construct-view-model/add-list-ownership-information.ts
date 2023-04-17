@@ -71,7 +71,6 @@ export const addListOwnershipInformation = (
               ownerName: userDetails.handle,
               ownerAvatarUrl: userDetails.avatarUrl,
               linkUrl: renderListPageLinkHref(list.id),
-
             }
           ),
         ),
