@@ -35,7 +35,7 @@ export const userListCard = (
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    avatarUrl: listOwner.avatarUrl,
+    avatarUrl: O.some(listOwner.avatarUrl),
   })),
   O.map(renderListCard),
 );

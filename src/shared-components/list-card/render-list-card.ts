@@ -10,7 +10,7 @@ export type ListCardViewModel = {
   updatedAt: O.Option<Date>,
   title: string,
   description: string,
-  avatarUrl?: string,
+  avatarUrl: O.Option<string>,
 };
 
 const lastUpdated = O.fold(
@@ -18,8 +18,9 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-const renderAvatar = (avatarUrl?: string) => (
-  avatarUrl !== undefined ? `<img class="list-card__avatar" src="${avatarUrl}" alt="" />` : ''
+const renderAvatar = O.fold(
+  () => '',
+  (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`

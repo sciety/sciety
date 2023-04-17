@@ -18,6 +18,7 @@ const toListCardViewModel = (list: List): ListCardViewModel => ({
   title: list.name,
   articleCount: list.articleIds.length,
   updatedAt: O.some(list.updatedAt),
+  avatarUrl: O.none,
 });
 
 export const constructListCards = (ports: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(

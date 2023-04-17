@@ -25,6 +25,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
       updatedAt: O.some(list.updatedAt),
       title: list.name,
       description: list.description,
+      avatarUrl: O.none,
     })),
   ),
   showCreateNewList: showCreateNewList(pageOwner, loggedInUserId),

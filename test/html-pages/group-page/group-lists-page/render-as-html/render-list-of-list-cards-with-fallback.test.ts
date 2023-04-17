@@ -21,6 +21,7 @@ describe('render-list-of-list-cards-with-fallback', () => {
         description: arbitraryString(),
         articleCount: 0,
         updatedAt: O.some(arbitraryDate()),
+        avatarUrl: O.none,
       },
     ]);
 

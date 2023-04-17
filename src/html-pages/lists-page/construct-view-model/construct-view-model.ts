@@ -19,7 +19,7 @@ const constructListCardViewModel = (ports: Ports) => (list: List): ListCardViewM
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    avatarUrl: ownershipInformation.ownerAvatarUrl,
+    avatarUrl: O.some(ownershipInformation.ownerAvatarUrl),
   }),
 );
 

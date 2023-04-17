@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
@@ -33,8 +34,8 @@ describe('construct-view-model', () => {
 
     it('the user avatar is included in each card', () => {
       expect(viewmodel).toStrictEqual([
-        expect.objectContaining({ avatarUrl: user.avatarUrl }),
-        expect.objectContaining({ avatarUrl: user.avatarUrl }),
+        expect.objectContaining({ avatarUrl: O.some(user.avatarUrl) }),
+        expect.objectContaining({ avatarUrl: O.some(user.avatarUrl) }),
       ]);
     });
 
