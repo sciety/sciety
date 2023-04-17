@@ -52,7 +52,7 @@ describe('construct-listed-in', () => {
 
     it.todo('returns the list name');
 
-    it.failing('returns the list owner name', () => {
+    it('returns the list owner name', () => {
       expect(viewModel).toStrictEqual([expect.objectContaining({
         listOwnerName: user.handle,
       })]);
