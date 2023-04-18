@@ -1,7 +1,5 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { feedSummary } from './feed-summary';
 import {
@@ -15,10 +13,8 @@ import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { SelectListContainingArticle, SelectAllListsOwnedBy, SelectAllListsContainingArticle } from '../../../shared-ports';
-import * as LOID from '../../../types/list-owner-id';
-import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
+import { constructUserListManagement, Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 
 export type Params = {
   doi: Doi,
@@ -33,40 +29,11 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = GetArticleFeedEventsPorts & ConstructListedInPorts & {
-  selectListContainingArticle: SelectListContainingArticle,
+export type Ports = GetArticleFeedEventsPorts & ConstructListedInPorts & ConstructUserListManagementPorts & {
   fetchArticle: GetArticleDetails,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-  selectAllListsContainingArticle: SelectAllListsContainingArticle,
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
-
-const constructUserListManagement = (user: Params['user'], ports: Ports, articleId: Doi) => pipe(
-  user,
-  O.map(
-    ({ id }) => pipe(
-      ports.selectListContainingArticle(id)(articleId),
-      O.foldW(
-        () => pipe(
-          id,
-          LOID.fromUserId,
-          ports.selectAllListsOwnedBy,
-          sortByDefaultListOrdering,
-          RA.map((list) => ({
-            listId: list.id,
-            listName: list.name,
-          })),
-          (lists) => E.left({ lists }),
-        ),
-        (list) => E.right({
-          listId: list.id,
-          listName: list.name,
-        }),
-      ),
-    ),
-  ),
-);
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.fetchArticle(params.doi),
