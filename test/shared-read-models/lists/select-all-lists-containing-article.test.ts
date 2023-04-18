@@ -51,10 +51,11 @@ describe('select-all-lists-containing-article', () => {
     );
 
     it('returns two lists', () => {
-      expect(selectAllListsContainingArticle(readModel)(articleId)).toStrictEqual([
-        expect.objectContaining({ id: userList.id }),
-        expect.objectContaining({ id: groupList.id }),
-      ]);
+      const result = selectAllListsContainingArticle(readModel)(articleId);
+
+      expect(result).toHaveLength(2);
+      expect(result).toContainEqual(expect.objectContaining({ id: userList.id }));
+      expect(result).toContainEqual(expect.objectContaining({ id: groupList.id }));
     });
   });
 
