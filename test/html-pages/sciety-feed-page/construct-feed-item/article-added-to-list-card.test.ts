@@ -24,7 +24,7 @@ describe('article-added-to-list-card', () => {
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const lookupList: LookupList = () => O.some({
-      ...arbitraryList(),
+      ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
       id: listId,
     });
 
