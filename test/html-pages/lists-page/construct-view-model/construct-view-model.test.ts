@@ -4,10 +4,11 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
+import { constructViewModel, degradedAvatarUrl } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -49,7 +50,21 @@ describe('construct-view-model', () => {
 
   describe('when there is a populated user list', () => {
     describe('when the user information cannot be retrieved', () => {
-      it.todo('returns a degraded avatarUrl in place of the list owner avatarUrl');
+      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      let viewmodel: ViewModel;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
+
+        viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
+      });
+
+      it('returns a degraded avatarUrl in place of the list owner avatarUrl', () => {
+        expect(viewmodel).toStrictEqual([
+          expect.objectContaining({ avatarUrl: O.some(degradedAvatarUrl) }),
+        ]);
+      });
     });
   });
 });

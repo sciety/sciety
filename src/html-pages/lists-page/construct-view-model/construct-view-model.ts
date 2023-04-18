@@ -17,6 +17,9 @@ export type Ports = AddListOwnershipInformationPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
 };
 
+// ts-unused-exports:disable-next-line
+export const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
+
 const getOwnerAvatarUrl = (
   ports: Ports,
 ) => (
@@ -32,7 +35,7 @@ const getOwnerAvatarUrl = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return '/static/images/sciety-logo.jpg';
+            return degradedAvatarUrl;
           },
           (group) => (group.avatarPath),
         ),
@@ -47,7 +50,7 @@ const getOwnerAvatarUrl = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return '/static/images/sciety-logo.jpg';
+            return degradedAvatarUrl;
           },
           (userDetails) => (userDetails.avatarUrl),
         ),
