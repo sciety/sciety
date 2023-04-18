@@ -27,7 +27,7 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
         ownerId.value,
         ports.lookupUser,
         O.map((user) => user.handle),
-        O.getOrElseW(() => { throw new Error(`Failed to get user ${ownerId.value}`); }),
+        O.getOrElseW(() => 'A user'),
       );
   }
 };
