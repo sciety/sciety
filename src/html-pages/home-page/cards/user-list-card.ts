@@ -6,8 +6,9 @@ import { HtmlFragment } from '../../../types/html-fragment';
 import { userIdCodec } from '../../../types/user-id';
 import { ListId } from '../../../types/list-id';
 import { renderListCard } from '../../../shared-components/list-card/render-list-card';
+import { constructListCardViewModel, Ports as ConstructListCardViewModelPorts } from '../../../shared-components/list-card/construct-list-card-view-model';
 
-export type Ports = {
+export type Ports = ConstructListCardViewModelPorts & {
   lookupList: LookupList,
   lookupUser: LookupUser,
 };
@@ -29,13 +30,8 @@ export const userListCard = (
     },
     sequenceS(O.Apply),
   )),
-  O.map(({ list, listOwner }) => ({
-    listId: list.id,
-    articleCount: list.articleIds.length,
-    updatedAt: O.some(list.updatedAt),
-    title: list.name,
-    description: list.description,
-    avatarUrl: O.some(listOwner.avatarUrl),
-  })),
+  O.map(({ list }) => (
+    constructListCardViewModel(ports)(list)
+  )),
   O.map(renderListCard),
 );
