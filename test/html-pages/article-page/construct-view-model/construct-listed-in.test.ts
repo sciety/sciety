@@ -3,13 +3,13 @@ import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { ViewModel } from '../../../../src/html-pages/article-page/render-as-html/render-listed-in';
 import { Ports, constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { List } from '../../../../src/types/list';
+import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -25,22 +25,22 @@ describe('construct-listed-in', () => {
   });
 
   describe('when the article is not in any list', () => {
-    let viewModel: ViewModel;
+    let listedIn: ViewModel['listedIn'];
 
     beforeEach(() => {
-      viewModel = pipe(
+      listedIn = pipe(
         articleId,
         constructListedIn(adapters),
       );
     });
 
     it('returns empty', () => {
-      expect(viewModel).toStrictEqual([]);
+      expect(listedIn).toStrictEqual([]);
     });
   });
 
   describe('when the article is in a list owned by a user', () => {
-    let viewModel: ViewModel;
+    let listedIn: ViewModel['listedIn'];
     const user = arbitraryUserDetails();
     let list: List;
 
@@ -48,53 +48,53 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.createUserAccount(user);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      viewModel = pipe(
+      listedIn = pipe(
         articleId,
         constructListedIn(adapters),
       );
     });
 
     it('returns the list id', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listId: list.id,
       })]);
     });
 
     it('returns the list name', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listName: list.name,
       })]);
     });
 
     it('returns the list owner name', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listOwnerName: user.handle,
       })]);
     });
   });
 
   describe('when the article is in a list owned by a user that does not exist', () => {
-    let viewModel: ViewModel;
+    let listedIn: ViewModel['listedIn'];
 
     beforeEach(async () => {
       const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
       await framework.commandHelpers.createList(list);
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      viewModel = pipe(
+      listedIn = pipe(
         articleId,
         constructListedIn(adapters),
       );
     });
 
     it('returns a default value in place of the list owner name', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listOwnerName: 'A user',
       })]);
     });
   });
 
   describe('when the article is in a list owned by a group', () => {
-    let viewModel: ViewModel;
+    let listedIn: ViewModel['listedIn'];
     const group = arbitraryGroup();
     let list: List;
 
@@ -102,26 +102,26 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.createGroup(group);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      viewModel = pipe(
+      listedIn = pipe(
         articleId,
         constructListedIn(adapters),
       );
     });
 
     it('returns the list id', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listId: list.id,
       })]);
     });
 
     it('returns the list name', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listName: list.name,
       })]);
     });
 
     it('returns the list owner name', () => {
-      expect(viewModel).toStrictEqual([expect.objectContaining({
+      expect(listedIn).toStrictEqual([expect.objectContaining({
         listOwnerName: group.name,
       })]);
     });
