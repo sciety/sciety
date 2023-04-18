@@ -19,7 +19,7 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
         ownerId.value,
         ports.getGroup,
         O.map((group) => group.name),
-        O.getOrElseW(() => { throw new Error(`Failed to get group ${ownerId.value}`); }),
+        O.getOrElseW(() => 'A group'),
       );
 
     case 'user-id':
