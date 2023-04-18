@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import axios from 'axios';
 
 export const callApi = async (endpoint: string, payload: Record<string, unknown>): Promise<unknown> => axios.post(

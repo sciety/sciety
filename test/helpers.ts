@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../src/types/html-fragment';
