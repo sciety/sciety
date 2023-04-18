@@ -18,16 +18,20 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
       return pipe(
         ownerId.value,
         ports.getGroup,
-        O.map((group) => group.name),
-        O.getOrElseW(() => 'A group'),
+        O.match(
+          () => 'A group',
+          (group) => group.name,
+        ),
       );
 
     case 'user-id':
       return pipe(
         ownerId.value,
         ports.lookupUser,
-        O.map((user) => user.handle),
-        O.getOrElseW(() => 'A user'),
+        O.match(
+          () => 'A user',
+          (user) => user.handle,
+        ),
       );
   }
 };
