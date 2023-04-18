@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card/render-list-card';
+import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { templateListItems } from '../../../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 

@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { ListCardViewModel, renderListCard } from '../../../shared-components/list-card/render-list-card';
+import { ListCardViewModel, renderListCard } from '../../../shared-components/list-card';
 import { renderTabs } from '../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FollowingTab, ListsTab, ViewModel } from '../view-model';
