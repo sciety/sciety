@@ -4,11 +4,12 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { constructViewModel, degradedAvatarUrl } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
+import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
