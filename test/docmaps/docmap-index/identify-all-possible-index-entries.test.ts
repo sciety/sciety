@@ -39,20 +39,24 @@ describe('identify-all-possible-index-entries', () => {
     const articleId2 = arbitraryArticleId();
     const earlierDate = new Date('1990');
     const laterDate = new Date('2000');
-    const events = [
-      evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), [], new Date(), earlierDate),
-      evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
-    ];
-    const ports = {
-      getGroup: () => O.some(supportedGroups[0]),
-    };
-    const result = pipe(
-      events,
-      identifyAllPossibleIndexEntries(supportedGroupIds, ports),
-    );
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(() => {
+      const ports = {
+        getGroup: () => O.some(supportedGroups[0]),
+      };
+      result = pipe(
+        [
+          evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), [], new Date(), earlierDate),
+          evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
+        ],
+        identifyAllPossibleIndexEntries(supportedGroupIds, ports),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('returns a list of all the evaluated index entry models', () => {
-      expect(result).toStrictEqual(E.right([
+      expect(result).toStrictEqual([
         {
           articleId: articleId2,
           groupId: supportedGroupIds[0],
@@ -65,7 +69,7 @@ describe('identify-all-possible-index-entries', () => {
           updated: earlierDate,
           publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
-      ]));
+      ]);
     });
   });
 
@@ -74,22 +78,26 @@ describe('identify-all-possible-index-entries', () => {
     const middleDate = new Date('2012');
     const latestDate = new Date('2021');
     const articleId = arbitraryArticleId();
-    const events = [
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), earlierDate),
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), latestDate),
-      evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), middleDate),
-    ];
-    const result = pipe(
-      events,
-      identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
-    );
+    let result: ReadonlyArray<DocmapIndexEntryModel>;
+
+    beforeEach(() => {
+      result = pipe(
+        [
+          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), earlierDate),
+          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), latestDate),
+          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), middleDate),
+        ],
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('returns the latest updated date', () => {
-      expect(result).toStrictEqual(E.right([
+      expect(result).toStrictEqual([
         expect.objectContaining({
           updated: latestDate,
         }),
-      ]));
+      ]);
     });
   });
 
