@@ -46,4 +46,10 @@ describe('construct-view-model', () => {
       ]);
     });
   });
+
+  describe('when there is a populated user list', () => {
+    describe('when the user information cannot be retrieved', () => {
+      it.todo('returns a degraded avatarUrl in place of the list owner avatarUrl');
+    });
+  });
 });
