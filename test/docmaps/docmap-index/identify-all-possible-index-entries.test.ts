@@ -17,6 +17,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
@@ -34,11 +35,20 @@ describe('identify-all-possible-index-entries', () => {
     framework = createTestFramework();
   });
 
-  describe('when there are evaluated events by a supported group', () => {
-    const articleId1 = arbitraryArticleId();
-    const articleId2 = arbitraryArticleId();
+  describe('when a supported group has evaluated multiple articles', () => {
     const earlierDate = new Date('1990');
     const laterDate = new Date('2000');
+    const evaluation1: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroups[0].id,
+      recordedAt: earlierDate,
+    };
+    const evaluation2: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroups[0].id,
+      recordedAt: laterDate,
+    };
+
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(() => {
@@ -47,8 +57,22 @@ describe('identify-all-possible-index-entries', () => {
       };
       result = pipe(
         [
-          evaluationRecorded(supportedGroupIds[0], articleId1, arbitraryReviewId(), [], new Date(), earlierDate),
-          evaluationRecorded(supportedGroupIds[0], articleId2, arbitraryReviewId(), [], new Date(), laterDate),
+          evaluationRecorded(
+            evaluation1.groupId,
+            evaluation1.articleId,
+            evaluation1.reviewId,
+            evaluation1.authors,
+            evaluation1.publishedAt,
+            evaluation1.recordedAt,
+          ),
+          evaluationRecorded(
+            evaluation2.groupId,
+            evaluation2.articleId,
+            evaluation2.reviewId,
+            evaluation2.authors,
+            evaluation2.publishedAt,
+            evaluation2.recordedAt,
+          ),
         ],
         identifyAllPossibleIndexEntries(supportedGroupIds, ports),
         E.getOrElseW(shouldNotBeCalled),
@@ -58,15 +82,15 @@ describe('identify-all-possible-index-entries', () => {
     it('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
         {
-          articleId: articleId2,
-          groupId: supportedGroupIds[0],
-          updated: laterDate,
+          articleId: evaluation2.articleId,
+          groupId: evaluation2.groupId,
+          updated: evaluation2.recordedAt,
           publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
         {
-          articleId: articleId1,
-          groupId: supportedGroupIds[0],
-          updated: earlierDate,
+          articleId: evaluation1.articleId,
+          groupId: evaluation1.groupId,
+          updated: evaluation1.recordedAt,
           publisherAccountId: publisherAccountId(supportedGroups[0]),
         },
       ]);
@@ -78,14 +102,53 @@ describe('identify-all-possible-index-entries', () => {
     const middleDate = new Date('2012');
     const latestDate = new Date('2021');
     const articleId = arbitraryArticleId();
+    const evaluation1: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroups[0].id,
+      articleId,
+      recordedAt: earlierDate,
+    };
+    const evaluation2: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroups[0].id,
+      articleId,
+      recordedAt: latestDate,
+    };
+    const evaluation3: RecordedEvaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroups[0].id,
+      articleId,
+      recordedAt: middleDate,
+    };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(() => {
       result = pipe(
         [
-          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), earlierDate),
-          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), latestDate),
-          evaluationRecorded(supportedGroupIds[0], articleId, arbitraryReviewId(), [], new Date(), middleDate),
+          evaluationRecorded(
+            evaluation1.groupId,
+            evaluation1.articleId,
+            evaluation1.reviewId,
+            evaluation1.authors,
+            evaluation1.publishedAt,
+            evaluation1.recordedAt,
+          ),
+          evaluationRecorded(
+            evaluation2.groupId,
+            evaluation2.articleId,
+            evaluation2.reviewId,
+            evaluation2.authors,
+            evaluation2.publishedAt,
+            evaluation2.recordedAt,
+          ),
+          evaluationRecorded(
+            evaluation3.groupId,
+            evaluation3.articleId,
+            evaluation3.reviewId,
+            evaluation2.authors,
+            evaluation3.publishedAt,
+            evaluation3.recordedAt,
+          ),
         ],
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
         E.getOrElseW(shouldNotBeCalled),
