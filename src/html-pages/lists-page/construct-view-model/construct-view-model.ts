@@ -17,15 +17,11 @@ export type Ports = AddListOwnershipInformationPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
 };
 
-type ListWithAddedOwnershipInformation = {
-  ownerAvatarUrl: string,
-};
-
-const addListOwnershipInformation = (
+const getOwnerAvatarUrl = (
   ports: Ports,
 ) => (
   list: List,
-): ListWithAddedOwnershipInformation => {
+): string => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
@@ -36,13 +32,9 @@ const addListOwnershipInformation = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return {
-              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-            };
+            return '/static/images/sciety-logo.jpg';
           },
-          (group) => ({
-            ownerAvatarUrl: group.avatarPath,
-          }),
+          (group) => (group.avatarPath),
         ),
       );
     case 'user-id':
@@ -55,15 +47,9 @@ const addListOwnershipInformation = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return {
-              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
-            };
+            return '/static/images/sciety-logo.jpg';
           },
-          (userDetails) => (
-            {
-              ownerAvatarUrl: userDetails.avatarUrl,
-            }
-          ),
+          (userDetails) => (userDetails.avatarUrl),
         ),
       );
   }
@@ -71,14 +57,14 @@ const addListOwnershipInformation = (
 
 const constructListCardViewModel = (ports: Ports) => (list: List): ListCardViewModel => pipe(
   list,
-  addListOwnershipInformation(ports),
-  (ownershipInformation) => ({
+  getOwnerAvatarUrl(ports),
+  (ownerAvatarUrl) => ({
     listId: list.id,
     articleCount: list.articleIds.length,
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    avatarUrl: O.some(ownershipInformation.ownerAvatarUrl),
+    avatarUrl: O.some(ownerAvatarUrl),
   }),
 );
 
