@@ -14,6 +14,7 @@ import { createTestFramework, TestFramework } from '../../../framework';
 import {
   LoggedInUserListManagement,
 } from '../../../../src/html-pages/article-page/view-model';
+import { dummyLogger } from '../../../dummy-logger';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -26,6 +27,7 @@ describe('construct-view-model', () => {
       ...framework.queries,
       ...framework.happyPathThirdParties,
       getAllEvents: framework.getAllEvents,
+      logger: dummyLogger,
     };
   });
 

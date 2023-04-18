@@ -4,12 +4,13 @@ import * as O from 'fp-ts/Option';
 import { SelectAllListsContainingArticle } from '../../../shared-ports/select-all-lists-containing-article';
 import { Doi } from '../../../types/doi';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { GetGroup, LookupUser } from '../../../shared-ports';
+import { GetGroup, Logger, LookupUser } from '../../../shared-ports';
 
 export type Ports = {
   selectAllListsContainingArticle: SelectAllListsContainingArticle,
   getGroup: GetGroup,
   lookupUser: LookupUser,
+  logger: Logger,
 };
 
 const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
@@ -19,7 +20,10 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
         ownerId.value,
         ports.getGroup,
         O.match(
-          () => 'A group',
+          () => {
+            ports.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
+            return 'A group';
+          },
           (group) => group.name,
         ),
       );
@@ -29,7 +33,10 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
         ownerId.value,
         ports.lookupUser,
         O.match(
-          () => 'A user',
+          () => {
+            ports.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
+            return 'A user';
+          },
           (user) => user.handle,
         ),
       );

@@ -8,6 +8,7 @@ import { Ports, constructListedIn } from '../../../../src/html-pages/article-pag
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { dummyLogger } from '../../../dummy-logger';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -18,6 +19,7 @@ describe('construct-listed-in', () => {
     framework = createTestFramework();
     adapters = {
       ...framework.queries,
+      logger: dummyLogger,
     };
   });
 

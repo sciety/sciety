@@ -8,6 +8,7 @@ import { articlePage, Ports } from '../../../../src/html-pages/article-page';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
+import { dummyLogger } from '../../../dummy-logger';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {
@@ -22,6 +23,7 @@ describe('correct-language-semantics', () => {
       getGroup: () => O.none,
       lookupUser: () => O.none,
       selectAllListsOwnedBy: () => [],
+      logger: dummyLogger,
     };
 
     describe('the article title', () => {
