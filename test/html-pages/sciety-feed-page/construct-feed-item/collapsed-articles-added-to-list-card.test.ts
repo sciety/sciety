@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as LOID from '../../../../src/types/list-owner-id';
 import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryUri } from '../../../helpers';
@@ -29,7 +30,7 @@ describe('collapsed-articles-added-to-list-card', () => {
     };
 
     const lookupList: LookupList = () => O.some({
-      ...arbitraryList(),
+      ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
       id: listId,
     });
 
