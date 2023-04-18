@@ -9,6 +9,7 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
+import { List } from '../../../../src/types/list';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -41,10 +42,11 @@ describe('construct-listed-in', () => {
   describe('when the article is in a list owned by a user', () => {
     let viewModel: ViewModel;
     const user = arbitraryUserDetails();
+    let list: List;
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       viewModel = pipe(
         articleId,
@@ -52,9 +54,17 @@ describe('construct-listed-in', () => {
       );
     });
 
-    it.todo('returns the list id');
+    it('returns the list id', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listId: list.id,
+      })]);
+    });
 
-    it.todo('returns the list name');
+    it('returns the list name', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listName: list.name,
+      })]);
+    });
 
     it('returns the list owner name', () => {
       expect(viewModel).toStrictEqual([expect.objectContaining({
@@ -86,10 +96,11 @@ describe('construct-listed-in', () => {
   describe('when the article is in a list owned by a group', () => {
     let viewModel: ViewModel;
     const group = arbitraryGroup();
+    let list: List;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       viewModel = pipe(
         articleId,
@@ -97,9 +108,17 @@ describe('construct-listed-in', () => {
       );
     });
 
-    it.todo('returns the list id');
+    it('returns the list id', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listId: list.id,
+      })]);
+    });
 
-    it.todo('returns the list name');
+    it('returns the list name', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listName: list.name,
+      })]);
+    });
 
     it('returns the list owner name', () => {
       expect(viewModel).toStrictEqual([expect.objectContaining({
