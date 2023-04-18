@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import {
   GetNonEmptyUserLists,
 } from '../../../shared-ports';
-import { constructListCardViewModel, Ports as ConstructListCardViewModelPorts } from '../../../shared-components/list-card';
+import { constructListCardViewModelWithAvatar, Ports as ConstructListCardViewModelPorts } from '../../../shared-components/list-card';
 
 export type Ports = ConstructListCardViewModelPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
@@ -11,5 +11,5 @@ export type Ports = ConstructListCardViewModelPorts & {
 
 export const constructViewModel = (ports: Ports) => pipe(
   ports.getNonEmptyUserLists(),
-  RA.map(constructListCardViewModel(ports)),
+  RA.map(constructListCardViewModelWithAvatar(ports)),
 );

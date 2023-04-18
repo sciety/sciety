@@ -51,7 +51,7 @@ const getOwnerAvatarUrl = (
   }
 };
 
-export const constructListCardViewModel = (ports: Ports) => (list: List): ListCardViewModel => pipe(
+export const constructListCardViewModelWithAvatar = (ports: Ports) => (list: List): ListCardViewModel => pipe(
   list,
   getOwnerAvatarUrl(ports),
   (ownerAvatarUrl) => ({
