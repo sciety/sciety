@@ -5,6 +5,7 @@ import { ListsTab } from '../view-model';
 import { List } from '../../../types/list';
 import { UserId } from '../../../types/user-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
+import { constructListCardViewModelWithoutAvatar } from '../../../shared-components/list-card';
 
 const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
   loggedInUser,
@@ -19,14 +20,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
   ownedLists: pipe(
     lists,
     sortByDefaultListOrdering,
-    RA.map((list) => ({
-      listId: list.id,
-      articleCount: list.articleIds.length,
-      updatedAt: O.some(list.updatedAt),
-      title: list.name,
-      description: list.description,
-      avatarUrl: O.none,
-    })),
+    RA.map(constructListCardViewModelWithoutAvatar),
   ),
   showCreateNewList: showCreateNewList(pageOwner, loggedInUserId),
 });
