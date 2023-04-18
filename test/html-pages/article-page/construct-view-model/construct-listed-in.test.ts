@@ -6,6 +6,8 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { ViewModel } from '../../../../src/html-pages/article-page/render-as-html/render-listed-in';
 import { Ports, constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
 import * as LOID from '../../../../src/types/list-owner-id';
+import { arbitraryList } from '../../../types/list-helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -55,6 +57,26 @@ describe('construct-listed-in', () => {
     it('returns the list owner name', () => {
       expect(viewModel).toStrictEqual([expect.objectContaining({
         listOwnerName: user.handle,
+      })]);
+    });
+  });
+
+  describe('when the article is in a list owned by a user that does not exist', () => {
+    let viewModel: ViewModel;
+
+    beforeEach(async () => {
+      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      await framework.commandHelpers.createList(list);
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      viewModel = pipe(
+        articleId,
+        constructListedIn(adapters),
+      );
+    });
+
+    it('returns a default value in place of the list owner name', () => {
+      expect(viewModel).toStrictEqual([expect.objectContaining({
+        listOwnerName: 'A user',
       })]);
     });
   });
