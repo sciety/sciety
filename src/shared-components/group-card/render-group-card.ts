@@ -5,6 +5,7 @@ import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
 export type GroupViewModel = {
   id: GroupId,
@@ -20,15 +21,18 @@ export type GroupViewModel = {
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
-  followerCount === 1,
-  (singular) => `${followerCount} ${singular ? 'follower' : 'followers'}`,
+const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
+  renderCountWithDescriptor(evaluationCount, 'evaluation', 'evaluations'),
   wrapInSpan,
 );
 
-const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
-  evaluationCount === 1,
-  (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
+const renderListCount = (listCount: number) => pipe(
+  renderCountWithDescriptor(listCount, 'list', 'lists'),
+  wrapInSpan,
+);
+
+const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
+  renderCountWithDescriptor(followerCount, 'follower', 'followers'),
   wrapInSpan,
 );
 
@@ -42,11 +46,6 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
       wrapInSpan,
     ),
   ),
-);
-
-const renderListCount = flow(
-  (listCount: number) => (listCount === 1 ? `${listCount} list` : `${listCount} lists`),
-  wrapInSpan,
 );
 
 export const renderGroupCard = flow(
