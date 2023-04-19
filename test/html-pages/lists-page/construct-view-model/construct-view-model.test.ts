@@ -9,7 +9,7 @@ import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model';
+import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
