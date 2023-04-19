@@ -1,5 +1,4 @@
 import { ViewModel } from '../view-model';
+import { renderCountWithDescriptor } from '../../../shared-components/render-count-with-descriptor';
 
-const pluralise = (count: number) => (count === 1 ? '' : 's');
-
-export const renderDescription = (viewmodel: ViewModel): string => `${viewmodel.listCount} list${pluralise(viewmodel.listCount)} | Following ${viewmodel.groupIds.length} group${pluralise(viewmodel.groupIds.length)}`;
+export const renderDescription = (viewmodel: ViewModel): string => `${renderCountWithDescriptor(viewmodel.listCount, 'list', 'lists')} | Following ${renderCountWithDescriptor(viewmodel.groupIds.length, 'group', 'groups')}`;
