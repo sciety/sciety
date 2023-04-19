@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { LookupList } from '../../../shared-ports';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { constructListCardViewModelWithAvatar, Ports as ConstructListCardViewModelPorts, renderListCard } from '../../../shared-components/list-card';
+import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarPorts, renderListCard } from '../../../shared-components/list-card';
 
-export type Ports = ConstructListCardViewModelPorts & {
+export type Ports = ConstructListCardViewModelWithAvatarPorts & {
   lookupList: LookupList,
 };
 
