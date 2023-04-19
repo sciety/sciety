@@ -41,7 +41,7 @@ describe('construct-view-model', () => {
       ]);
     });
 
-    it.skip('the most recently updated list is shown first', async () => {
+    it('the most recently updated list is shown first', async () => {
       expect(viewmodel).toStrictEqual([
         expect.objectContaining({ listId: updatedList.id }),
         expect.objectContaining({ listId: initialUserList.id }),

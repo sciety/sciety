@@ -4,6 +4,7 @@ import {
   GetNonEmptyUserLists,
 } from '../../../shared-ports';
 import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarPorts } from '../../../shared-components/list-card';
+import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 
 export type Ports = ConstructListCardViewModelWithAvatarPorts & {
   getNonEmptyUserLists: GetNonEmptyUserLists,
@@ -11,5 +12,6 @@ export type Ports = ConstructListCardViewModelWithAvatarPorts & {
 
 export const constructViewModel = (ports: Ports) => pipe(
   ports.getNonEmptyUserLists(),
+  sortByDefaultListOrdering,
   RA.map(constructListCardViewModelWithAvatar(ports)),
 );
