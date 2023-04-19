@@ -3,6 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
 import { renderListPageLinkHref } from '../render-list-page-link-href';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
 export type ListCardViewModel = {
   listId: ListId,
@@ -22,8 +23,6 @@ const renderAvatar = O.fold(
   () => '',
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
-
-const renderCountWithDescriptor = (count: number, singularDescriptor: string, pluralDescriptor: string) => `${count} ${count === 1 ? singularDescriptor : pluralDescriptor}`;
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
