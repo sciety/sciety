@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { renderCardsSection } from './render-cards-section';
-import { Ports, userListCard } from './user-list-card';
+import { Ports, generateMostActiveListCard } from './generate-most-active-list-card';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { listIdCodec } from '../../../types/list-id';
 
@@ -17,19 +17,19 @@ export const cards = (ports: Ports): HtmlFragment => pipe(
       card1,
       listIdCodec.decode,
       E.getOrElseW((errors) => { throw new Error(JSON.stringify(errors)); }),
-      userListCard(ports),
+      generateMostActiveListCard(ports),
     ),
     second: pipe(
       card2,
       listIdCodec.decode,
       E.getOrElseW((errors) => { throw new Error(JSON.stringify(errors)); }),
-      userListCard(ports),
+      generateMostActiveListCard(ports),
     ),
     third: pipe(
       card3,
       listIdCodec.decode,
       E.getOrElseW((errors) => { throw new Error(JSON.stringify(errors)); }),
-      userListCard(ports),
+      generateMostActiveListCard(ports),
     ),
   },
   sequenceS(O.Apply),

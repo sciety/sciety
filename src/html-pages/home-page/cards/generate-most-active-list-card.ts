@@ -9,7 +9,7 @@ export type Ports = ConstructListCardViewModelWithAvatarPorts & {
   lookupList: LookupList,
 };
 
-export const userListCard = (
+export const generateMostActiveListCard = (
   ports: Ports,
 ) => (listId: ListId): O.Option<HtmlFragment> => pipe(
   listId,
