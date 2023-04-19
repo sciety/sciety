@@ -4,17 +4,14 @@ import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { tabList } from '../../common-components/tab-list';
-
-const renderListCount = (count: number) => (
-  `${count} list${count === 1 ? '' : 's'}`
-);
+import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">
     <div class="user-card__body">
       <h3 class="user-card__title"><a href="${userCard.link}" class="user-card__link">${userCard.title}</a></h3>
       <div class="user-card__handle">@${userCard.handle}</div>
-      <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${renderListCount(userCard.listCount)}</span><span>${userCard.followedGroupCount} groups followed</span></span>
+      <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${renderCountWithDescriptor(userCard.listCount, 'list', 'lists')}</span><span>${userCard.followedGroupCount} groups followed</span></span>
     </div>
     <img class="user-card__avatar" src="${userCard.avatarUrl}" alt="">
   </article>
@@ -41,7 +38,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
     <p>
-      ${viewmodel.followerCount} ${viewmodel.followerCount === 1 ? 'user is' : 'users are'} following this group.
+      ${renderCountWithDescriptor(viewmodel.followerCount, 'user is', 'users are')} following this group.
     </p>
     ${renderFollowersList(viewmodel.followers)}
     ${viewmodel.nextLink}
