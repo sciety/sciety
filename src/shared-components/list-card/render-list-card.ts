@@ -23,7 +23,7 @@ const renderAvatar = O.fold(
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
 
-const pluraliseArticleCount = (articleCount: number) => `${articleCount} article${articleCount === 1 ? '' : 's'}`;
+const renderCountWithDescriptor = (count: number, singularDescriptor: string, pluralDescriptor: string) => `${count} ${count === 1 ? singularDescriptor : pluralDescriptor}`;
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
@@ -33,7 +33,7 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
         <p>${viewModel.description}</p>
       </div>
       <div class="list-card__meta">
-        <span class="visually-hidden">This list contains </span><span>${pluraliseArticleCount(viewModel.articleCount)}</span>${lastUpdated(viewModel.updatedAt)}
+        <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
     ${renderAvatar(viewModel.avatarUrl)}
