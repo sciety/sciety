@@ -32,6 +32,7 @@ import {
   editListDetailsCommandCodec,
   updateUserDetailsCommandCodec,
   removeArticleFromListCommandCodec,
+  recordEvaluationCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -372,7 +373,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/record-evaluation', handleScietyApiCommand(adapters, recordEvaluationHandler(adapters)));
+  router.post('/api/record-evaluation', createApiRouteForCommand(adapters, recordEvaluationCommandCodec, recordEvaluationHandler(adapters)));
 
   router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
 

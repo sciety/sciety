@@ -1,15 +1,13 @@
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { recordEvaluationCommandCodec } from '../commands';
-import { validateInputShape } from '../commands/validate-input-shape';
-import { CommandResult } from '../../types/command-result';
+import { RecordEvaluationCommand } from '../commands';
 import { Ports, recordEvaluationCommandHandler } from './record-evaluation-command-handler';
+import { CommandHandler } from '../../types/command-handler';
 
-type RecordEvaluationHandler = (ports: Ports) => (input: unknown) => TE.TaskEither<string, CommandResult>;
+type RecordEvaluationHandler = (
+  adapters: Ports
+) => CommandHandler<RecordEvaluationCommand>;
 
-export const recordEvaluationHandler: RecordEvaluationHandler = (ports) => (input) => pipe(
-  input,
-  validateInputShape(recordEvaluationCommandCodec),
-  TE.fromEither,
-  TE.chain(recordEvaluationCommandHandler(ports)),
+export const recordEvaluationHandler: RecordEvaluationHandler = (ports) => (command) => pipe(
+  command,
+  recordEvaluationCommandHandler(ports),
 );

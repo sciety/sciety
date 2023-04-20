@@ -6,6 +6,7 @@ import { executeCommand } from './execute-command';
 import { RecordEvaluationCommand } from '../commands';
 import { CommitEvents, GetAllEvents, GetGroup } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
+import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
@@ -16,12 +17,12 @@ export type Ports = {
 const confirmGroupExists = (ports: Ports) => (command: RecordEvaluationCommand) => pipe(
   command.groupId,
   ports.getGroup,
-  E.fromOption(() => `Group "${command.groupId}" not found`),
+  E.fromOption(() => toErrorMessage(`Group "${command.groupId}" not found`)),
 );
 
 type RecordEvaluationCommandHandler = (ports: Ports)
 => (command: RecordEvaluationCommand)
-=> TE.TaskEither<string, CommandResult>;
+=> TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (ports) => (command) => pipe(
   command,
