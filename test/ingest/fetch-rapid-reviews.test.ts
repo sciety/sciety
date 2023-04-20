@@ -60,6 +60,35 @@ describe('fetch-rapid-reviews', () => {
     });
   });
 
+  describe('when there is a valid Crossref review that is not by Rapid Reviews Infectious Diseases', () => {
+    it('returns a skipped item', async () => {
+      const articleDoi = arbitraryDoi().value;
+      const date = arbitraryDate();
+      const reviewUrl = arbitraryUri();
+      const items = [
+        {
+          URL: reviewUrl,
+          created: { 'date-time': date.toString() },
+          relation: { 'is-review-of': [{ id: articleDoi }] },
+          resource: {
+            primary: {
+              URL: arbitraryUri(),
+            },
+          },
+        },
+      ];
+
+      expect(await ingest(items)()).toStrictEqual(E.right({
+        evaluations: [],
+        skippedItems: [
+          expect.objectContaining({
+            item: reviewUrl,
+          }),
+        ],
+      }));
+    });
+  });
+
   describe('when there is a valid Crossref review with multiple authors', () => {
     const items = [
       {
