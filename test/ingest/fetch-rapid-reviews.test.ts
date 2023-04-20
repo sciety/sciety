@@ -36,6 +36,11 @@ describe('fetch-rapid-reviews', () => {
           URL: reviewUrl,
           created: { 'date-time': date.toString() },
           relation: { 'is-review-of': [{ id: articleDoi }] },
+          resource: {
+            primary: {
+              URL: arbitraryUri(),
+            },
+          },
         },
       ];
 
@@ -63,6 +68,11 @@ describe('fetch-rapid-reviews', () => {
           { given: 'Fred', family: 'Blogs' },
           { given: 'Joe', family: 'Smith' },
         ],
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
       },
     ];
 
@@ -88,6 +98,11 @@ describe('fetch-rapid-reviews', () => {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
         relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
       },
     ];
 
@@ -113,6 +128,11 @@ describe('fetch-rapid-reviews', () => {
         created: { 'date-time': arbitraryDate().toString() },
         relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
         author: [],
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
       },
     ];
 
@@ -139,6 +159,11 @@ describe('fetch-rapid-reviews', () => {
         created: { 'date-time': arbitraryDate().toString() },
         relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
         author: [{ family: familyName }],
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
       },
     ];
 
@@ -171,6 +196,11 @@ describe('fetch-rapid-reviews', () => {
           given: givenName,
           family: familyName,
         }],
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
       },
     ];
 

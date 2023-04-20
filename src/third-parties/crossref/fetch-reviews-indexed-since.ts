@@ -20,6 +20,11 @@ const crossrefReviewFromJson = t.type({
     given: tt.optionFromNullable(t.string),
     family: t.string,
   }))),
+  resource: t.type({
+    primary: t.type({
+      URL: t.string,
+    }),
+  }),
 });
 
 export type CrossrefReview = t.TypeOf<typeof crossrefReviewFromJson>;

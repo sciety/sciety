@@ -26,6 +26,7 @@ describe('fetch-all-reviews-by', () => {
       const givenName2 = arbitraryWord();
       const familyName1 = arbitraryWord();
       const familyName2 = arbitraryWord();
+      const primaryUrl = arbitraryUri();
       const items = [
         {
           URL: reviewUrl,
@@ -35,6 +36,11 @@ describe('fetch-all-reviews-by', () => {
             { given: givenName1, family: familyName1 },
             { given: givenName2, family: familyName2 },
           ],
+          resource: {
+            primary: {
+              URL: primaryUrl,
+            },
+          },
         },
       ];
 
@@ -47,6 +53,11 @@ describe('fetch-all-reviews-by', () => {
             { given: O.some(givenName1), family: familyName1 },
             { given: O.some(givenName2), family: familyName2 },
           ]),
+          resource: {
+            primary: {
+              URL: primaryUrl,
+            },
+          },
         },
       ]));
     });
