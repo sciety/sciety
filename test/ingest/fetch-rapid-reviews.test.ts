@@ -17,6 +17,8 @@ const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
 );
 
 describe('fetch-rapid-reviews', () => {
+  const arbitraryPrimaryUrl = `https://rrid.${arbitraryWord()}`;
+
   describe('when there are no Crossref reviews', () => {
     it('returns no evaluations and no skipped items', async () => {
       expect(await ingest([])()).toStrictEqual(E.right({
@@ -38,7 +40,7 @@ describe('fetch-rapid-reviews', () => {
           relation: { 'is-review-of': [{ id: articleDoi }] },
           resource: {
             primary: {
-              URL: arbitraryUri(),
+              URL: arbitraryPrimaryUrl,
             },
           },
         },
@@ -70,7 +72,7 @@ describe('fetch-rapid-reviews', () => {
         ],
         resource: {
           primary: {
-            URL: arbitraryUri(),
+            URL: arbitraryPrimaryUrl,
           },
         },
       },
@@ -100,7 +102,7 @@ describe('fetch-rapid-reviews', () => {
         relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
         resource: {
           primary: {
-            URL: arbitraryUri(),
+            URL: arbitraryPrimaryUrl,
           },
         },
       },
@@ -130,7 +132,7 @@ describe('fetch-rapid-reviews', () => {
         author: [],
         resource: {
           primary: {
-            URL: arbitraryUri(),
+            URL: arbitraryPrimaryUrl,
           },
         },
       },
@@ -161,7 +163,7 @@ describe('fetch-rapid-reviews', () => {
         author: [{ family: familyName }],
         resource: {
           primary: {
-            URL: arbitraryUri(),
+            URL: arbitraryPrimaryUrl,
           },
         },
       },
@@ -198,7 +200,7 @@ describe('fetch-rapid-reviews', () => {
         }],
         resource: {
           primary: {
-            URL: arbitraryUri(),
+            URL: arbitraryPrimaryUrl,
           },
         },
       },

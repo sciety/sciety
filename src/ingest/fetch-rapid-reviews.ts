@@ -19,6 +19,10 @@ const identifyCandidates = (fetchData: FetchData) => (
 const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
   candidate,
   E.right,
+  E.filterOrElse(
+    (review) => review.resource.primary.URL.includes('rrid.'),
+    (review) => ({ item: review.URL, reason: 'Not a rrid evaluation' }),
+  ),
   E.map((review) => ({
     date: new Date(review.created['date-time']),
     articleDoi: review.relation['is-review-of'][0].id,
