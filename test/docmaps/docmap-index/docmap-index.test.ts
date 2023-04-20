@@ -7,7 +7,6 @@ import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import { evaluationRecorded } from '../../../src/domain-events';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -109,15 +108,7 @@ describe('docmap-index', () => {
     let response: { body: DocmapIndexBody, status: StatusCodes };
 
     beforeEach(async () => {
-      const ports: Ports = {
-        getAllEvents: T.of([]),
-        fetchReview: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-        getEvaluationsForDoi: shouldNotBeCalled,
-        getGroup: shouldNotBeCalled,
-        fetchArticle: shouldNotBeCalled,
-      };
-      response = await docmapIndex(ports)({
+      response = await docmapIndex(defaultAdapters)({
         updatedAfter: 'not-a-date',
       })();
     });
