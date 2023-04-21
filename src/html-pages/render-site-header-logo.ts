@@ -2,6 +2,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 export const renderSiteHeaderLogo = () => toHtmlFragment(`<?xml version="1.0" encoding="UTF-8"?>
 <svg width="119px" height="36px" viewBox="0 0 119 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <desc>Sciety</desc>
     <g id="Landing-page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="landing-page---draft-1" transform="translate(-40.000000, -26.000000)" fill-rule="nonzero">
             <g id="sciety-logo-full-colour" transform="translate(40.000000, 26.046233)">
