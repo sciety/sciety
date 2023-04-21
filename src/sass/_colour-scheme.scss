@@ -6,4 +6,6 @@
   --text-primary: var(--light-mode-text-primary);
 
   --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
+  --light-mode-background-colour: unset;
+  --background-colour: var(--light-mode-background-colour);
 }
