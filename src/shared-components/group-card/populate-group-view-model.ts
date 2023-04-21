@@ -13,6 +13,7 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { Group } from '../../types/group';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
@@ -20,6 +21,11 @@ export type Ports = {
   getFollowers: GetFollowers,
   getGroup: GetGroup,
 };
+
+const getActivityForGroup = (ports: Ports, group: Group) => pipe(
+  ports.getAllEvents,
+  T.map(RA.reduce({ evaluationCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),
+);
 
 export const populateGroupViewModel = (
   ports: Ports,
@@ -29,8 +35,7 @@ export const populateGroupViewModel = (
   ports.getGroup(groupId),
   TE.fromOption(() => DE.notFound),
   TE.chainTaskK((group) => pipe(
-    ports.getAllEvents,
-    T.map(RA.reduce({ evaluationCount: 0, latestActivity: O.none }, updateGroupMeta(group.id))),
+    getActivityForGroup(ports, group),
     T.map((meta) => ({
       ...group,
       ...meta,
