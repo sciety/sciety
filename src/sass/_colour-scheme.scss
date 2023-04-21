@@ -34,40 +34,17 @@
 }
 
 body {
-  color: var(--text-primary);
-  background-color: var(--background-colour);
-
-  @media (prefers-color-scheme: dark) {
-    @at-root body {
-      --text-primary: var(--dark-mode-text-primary);
-      --background-colour: var(--dark-mode-background-colour);
-    }
-  }
+  @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
+  @include set-colours(color, --text-primary, --dark-mode-text-primary);
 }
-
 // TODO: more normalise stuff in here
 
 // extracted and adapted from site-header/_index.scss
-
 .site-header {
-  background-color: var(--site-header-background-colour-1);
-
-  @media (prefers-color-scheme: dark) {
-    @at-root .site-header {
-      --text-primary: var(--dark-mode-text-primary);
-      --site-header-background-colour-1: var(--dark-mode-background-colour);
-    }
-  }
+  @include set-colours(background-color, --site-header-background-colour-1, --dark-mode-background-colour)
 }
 
 .site-header__white_box_padding,
 .site-header__white_box {
-  background-color: var(--site-header-background-colour-2);
-
-  @media (prefers-color-scheme: dark) {
-    @at-root .site-header__white_box_padding, .site-header__white_box {
-      --text-primary: var(--dark-mode-text-primary);
-      --site-header-background-colour-2: var(--dark-mode-background-colour);
-    }
-  }
+  @include set-colours(background-color, --site-header-background-colour-2, --dark-mode-background-colour);
 }
