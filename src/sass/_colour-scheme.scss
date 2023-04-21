@@ -1,14 +1,17 @@
 @use 'settings';
 
 :root {
+  // Text colours
   --light-mode-text-primary: #{settings.$colour-light-mode-text-primary};
   --dark-mode-text-primary: #{settings.$colour-dark-mode-text-primary};
   --text-primary: var(--light-mode-text-primary);
 
+
   --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
-  --light-mode-background-colour: unset;
+  --light-mode-background-colour: #{settings.$colour-light-mode-background};
   --background-colour: var(--light-mode-background-colour);
 
+  // Site header background colours
   --light-mode-site-header-background-colour-1: #{settings.$colour-site-header-background-darker};
   --light-mode-site-header-background-colour-2: #{settings.$colour-white};
   --site-header-background-colour-1: var(--light-mode-site-header-background-colour-1);
