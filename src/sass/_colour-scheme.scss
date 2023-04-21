@@ -9,3 +9,15 @@
   --light-mode-background-colour: unset;
   --background-colour: var(--light-mode-background-colour);
 }
+
+body {
+  color: var(--text-primary);
+  background-color: var(--background-colour);
+
+  @media (prefers-color-scheme: dark) {
+    @at-root body {
+      --text-primary: var(--dark-mode-text-primary);
+      --background-colour: var(--dark-mode-background-colour);
+    }
+  }
+}
