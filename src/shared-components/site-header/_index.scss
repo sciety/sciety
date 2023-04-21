@@ -122,6 +122,10 @@ $_white-box-width-not-narrow: 280px;
   height: $_search-icon-size;
 }
 
+.site-header__search_icon_path {
+  @include scheme.set-colours(fill, --icon-colour, --dark-mode-icon-colour);
+}
+
 .site-header__search_label {
   @include layout.visually-hidden();
 

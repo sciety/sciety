@@ -21,6 +21,11 @@
   --light-mode-furniture-colour: #{settings.$colour-furniture};
   --dark-mode-furniture-colour: #{settings.$colour-dark-furniture};
   --furniture-colour: var(--light-mode-furniture-colour);
+
+  // icons
+  --light-mode-icon-colour: #{settings.$colour-light-icon};
+  --dark-mode-icon-colour: #{settings.$colour-dark-icon};
+  --icon-colour: var(--light-mode-icon-colour)
 }
 
 @mixin set-colours($property, $colour-variable-to-use, $dark-mode-colour) {
