@@ -23,11 +23,11 @@
   --furniture-colour: var(--light-mode-furniture-colour);
 }
 
-@mixin set-colours($selector, $property, $colour-variable-to-use, $dark-mode-colour) {
+@mixin set-colours($property, $colour-variable-to-use, $dark-mode-colour) {
   #{$property}: var($colour-variable-to-use);
 
   @media (prefers-color-scheme: dark) {
-    @at-root #{$selector} {
+    @at-root & {
      #{$property}: var($dark-mode-colour);
     }
   }
@@ -48,6 +48,7 @@ body {
 // TODO: more normalise stuff in here
 
 // extracted and adapted from site-header/_index.scss
+
 .site-header {
   background-color: var(--site-header-background-colour-1);
 

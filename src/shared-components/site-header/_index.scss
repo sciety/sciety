@@ -14,7 +14,7 @@ $_white-box-width-not-narrow: 280px;
 
 @mixin site-header-secondary-button-link() {
   @include typography.button();
-  @include colour-scheme.set-colours(&, border-color, --furniture-colour, --dark-mode-furniture-colour);
+  @include colour-scheme.set-colours(border-color, --furniture-colour, --dark-mode-furniture-colour);
   border-radius: settings.$border-radius;
   border-width: settings.$border-width;
   border-style: solid;
