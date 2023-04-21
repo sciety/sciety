@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
-import { updateGroupMeta } from './update-group-meta';
+import { updateGroupActivity } from './update-group-activity';
 import {
   GetAllEvents, GetFollowers, GetGroup, SelectAllListsOwnedBy,
 } from '../../shared-ports';
@@ -23,7 +23,7 @@ export type Ports = {
 
 const getActivityForGroup = (ports: Ports) => (groupId: GroupId) => pipe(
   ports.getAllEvents,
-  T.map(RA.reduce({ evaluationCount: 0, latestActivity: O.none }, updateGroupMeta(groupId))),
+  T.map(RA.reduce({ evaluationCount: 0, latestActivity: O.none }, updateGroupActivity(groupId))),
 );
 
 export const populateGroupViewModel = (

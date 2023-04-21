@@ -3,31 +3,36 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 
-type GroupMeta = {
+type GroupActivity = {
   evaluationCount: number,
   latestActivity: O.Option<Date>,
 };
 
-export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => {
+export const updateGroupActivity = (
+  groupId: GroupId,
+) => (
+  activity: GroupActivity,
+  event: DomainEvent,
+): GroupActivity => {
   if (isEvaluationRecordedEvent(event) && event.groupId === groupId) {
     return pipe(
-      meta.latestActivity,
+      activity.latestActivity,
       O.fold(
         () => ({
-          ...meta,
-          evaluationCount: meta.evaluationCount + 1,
+          ...activity,
+          evaluationCount: activity.evaluationCount + 1,
           latestActivity: O.some(event.publishedAt),
         }),
         (date) => (event.publishedAt > date ? {
-          ...meta,
-          evaluationCount: meta.evaluationCount + 1,
+          ...activity,
+          evaluationCount: activity.evaluationCount + 1,
           latestActivity: O.some(event.publishedAt),
         } : {
-          ...meta,
-          evaluationCount: meta.evaluationCount + 1,
+          ...activity,
+          evaluationCount: activity.evaluationCount + 1,
         }),
       ),
     );
   }
-  return meta;
+  return activity;
 };

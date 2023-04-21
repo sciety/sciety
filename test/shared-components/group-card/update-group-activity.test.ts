@@ -4,27 +4,27 @@ import {
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
 } from '../../../src/domain-events';
-import { updateGroupMeta } from '../../../src/shared-components/group-card/update-group-meta';
+import { updateGroupActivity } from '../../../src/shared-components/group-card/update-group-activity';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-describe('update-group-meta', () => {
+describe('update-group-activity', () => {
   const groupId = arbitraryGroupId();
   const initial = { evaluationCount: 27, latestActivity: O.some(new Date('1970')) };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
-    const result = updateGroupMeta(groupId)(initial, event);
+    const result = updateGroupActivity(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial });
   });
 
   it('updates the meta when passed a UserUnfollowedEditorialCommunityEvent', () => {
     const event = userUnfollowedEditorialCommunity(arbitraryUserId(), groupId);
-    const result = updateGroupMeta(groupId)(initial, event);
+    const result = updateGroupActivity(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial });
   });
@@ -39,7 +39,7 @@ describe('update-group-meta', () => {
       newerDate,
       arbitraryDate(),
     );
-    const result = updateGroupMeta(groupId)({ ...initial, evaluationCount: 0, latestActivity: O.none }, event);
+    const result = updateGroupActivity(groupId)({ ...initial, evaluationCount: 0, latestActivity: O.none }, event);
 
     it('sets review count to 1', () => {
       expect(result.evaluationCount).toBe(1);
@@ -60,7 +60,7 @@ describe('update-group-meta', () => {
       newerDate,
       arbitraryDate(),
     );
-    const result = updateGroupMeta(groupId)(initial, event);
+    const result = updateGroupActivity(groupId)(initial, event);
 
     it('updates the review count', () => {
       expect(result.evaluationCount).toBe(28);
@@ -81,7 +81,7 @@ describe('update-group-meta', () => {
       olderDate,
       arbitraryDate(),
     );
-    const result = updateGroupMeta(groupId)(initial, event);
+    const result = updateGroupActivity(groupId)(initial, event);
 
     it('updates the review count', () => {
       expect(result.evaluationCount).toBe(28);
@@ -94,7 +94,7 @@ describe('update-group-meta', () => {
 
   it('does not update the meta when passed any other domain event', () => {
     const event = userSavedArticle(arbitraryUserId(), arbitraryArticleId());
-    const result = updateGroupMeta(groupId)(initial, event);
+    const result = updateGroupActivity(groupId)(initial, event);
 
     expect(result).toStrictEqual(initial);
   });
