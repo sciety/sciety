@@ -23,7 +23,7 @@ export type Ports = {
 
 const getActivityForGroup = (ports: Ports) => (groupId: GroupId) => pipe(
   ports.getAllEvents,
-  T.map(RA.reduce({ evaluationCount: 0, latestActivity: O.none }, updateGroupActivity(groupId))),
+  T.map(RA.reduce({ evaluationCount: 0, latestActivityAt: O.none }, updateGroupActivity(groupId))),
 );
 
 export const populateGroupViewModel = (
@@ -39,6 +39,7 @@ export const populateGroupViewModel = (
     T.map((meta) => ({
       ...group,
       ...meta,
+      latestActivity: meta.latestActivityAt,
       followerCount: ports.getFollowers(group.id).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),

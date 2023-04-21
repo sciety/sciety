@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import * as GID from '../../../src/types/group-id';
@@ -6,7 +5,6 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -77,15 +75,8 @@ describe('docmap-index', () => {
     };
 
     beforeEach(async () => {
-      const ports: Ports = {
-        fetchReview: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-        fetchArticle: shouldNotBeCalled,
-        getEvaluationsForDoi: () => [evaluation],
-        getGroup: () => O.none,
-        getEvaluationsByGroup: () => [evaluation],
-      };
-      response = await docmapIndex(ports)({})();
+      await framework.commandHelpers.recordEvaluation(evaluation);
+      response = await docmapIndex(defaultAdapters)({})();
     });
 
     it('returns a body containing an error object', () => {

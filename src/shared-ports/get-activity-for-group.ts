@@ -3,7 +3,7 @@ import { GroupId } from '../types/group-id';
 
 export type GroupActivity = {
   evaluationCount: number,
-  latestActivity: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
 };
 
 // ts-unused-exports:disable-next-line
