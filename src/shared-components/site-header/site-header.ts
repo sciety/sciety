@@ -4,6 +4,7 @@ import { UserDetails } from '../../types/user-details';
 import { utilityBar } from '../utility-bar';
 import { renderSearchIcon } from '../../html-pages/render-search-icon';
 import { renderSiteHeaderLogo } from '../../html-pages/render-site-header-logo';
+import { renderMenuIcon } from '../../html-pages/render-menu-icon';
 
 export const siteHeader = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`<header class="site-header">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
@@ -17,7 +18,7 @@ export const siteHeader = (user: O.Option<UserDetails>): HtmlFragment => toHtmlF
       </li>
       <li class="site-header__white_box_list_item--menu">
         <a href="/menu" class="site-header__menu_link">
-          <img src="/static/images/menu-icon.svg" alt="" />
+          ${renderMenuIcon()}
         </a>
       </li>
       <li>

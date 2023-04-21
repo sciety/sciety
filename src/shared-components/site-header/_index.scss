@@ -113,6 +113,11 @@ $_white-box-width-not-narrow: 280px;
   }
 }
 
+// SVG class
+.menu-icon-line {
+  @include scheme.set-colours(fill, --icon-colour, --dark-mode-icon-colour);
+}
+
 .site-header__search_link {
   @include site-header-secondary-button-link();
 
