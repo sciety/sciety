@@ -6,7 +6,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { DomainEvent } from '../../domain-events';
 import { GetEvaluationsByGroup, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
@@ -40,14 +39,11 @@ export type Ports = {
 type IdentifyAllPossibleIndexEntries = (
   supportedGroups: ReadonlyArray<GroupId>,
   adapters: Ports,
-) => (events: ReadonlyArray<DomainEvent>) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
+) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
 export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = (
   supportedGroups,
   adapters,
-) => (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  events,
 ) => pipe(
   supportedGroups,
   RA.chain(adapters.getEvaluationsByGroup),

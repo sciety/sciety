@@ -1,6 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -10,7 +8,6 @@ import {
   Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { createTestFramework, TestFramework } from '../../framework';
@@ -57,24 +54,6 @@ describe('identify-all-possible-index-entries', () => {
         getEvaluationsByGroup: () => [evaluation1, evaluation2],
       };
       result = pipe(
-        [
-          evaluationRecorded(
-            evaluation1.groupId,
-            evaluation1.articleId,
-            evaluation1.reviewId,
-            evaluation1.authors,
-            evaluation1.publishedAt,
-            evaluation1.recordedAt,
-          ),
-          evaluationRecorded(
-            evaluation2.groupId,
-            evaluation2.articleId,
-            evaluation2.reviewId,
-            evaluation2.authors,
-            evaluation2.publishedAt,
-            evaluation2.recordedAt,
-          ),
-        ],
         identifyAllPossibleIndexEntries(supportedGroupIds, ports),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -133,32 +112,6 @@ describe('identify-all-possible-index-entries', () => {
         ],
       };
       result = pipe(
-        [
-          evaluationRecorded(
-            evaluation1.groupId,
-            evaluation1.articleId,
-            evaluation1.reviewId,
-            evaluation1.authors,
-            evaluation1.publishedAt,
-            evaluation1.recordedAt,
-          ),
-          evaluationRecorded(
-            evaluation2.groupId,
-            evaluation2.articleId,
-            evaluation2.reviewId,
-            evaluation2.authors,
-            evaluation2.publishedAt,
-            evaluation2.recordedAt,
-          ),
-          evaluationRecorded(
-            evaluation3.groupId,
-            evaluation3.articleId,
-            evaluation3.reviewId,
-            evaluation2.authors,
-            evaluation3.publishedAt,
-            evaluation3.recordedAt,
-          ),
-        ],
         identifyAllPossibleIndexEntries(supportedGroupIds, ports),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -185,11 +138,10 @@ describe('identify-all-possible-index-entries', () => {
       framework = createTestFramework();
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation);
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries)),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      result = pipe(
+        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+        E.getOrElseW(shouldNotBeCalled),
+      );
     });
 
     it('excludes articles evaluated by the unsupported group', () => {
@@ -202,17 +154,11 @@ describe('identify-all-possible-index-entries', () => {
       ...arbitraryRecordedEvaluation(),
       groupId: supportedGroupIds[0],
     };
-    const events = [
-      evaluationRecorded(evaluation.groupId, evaluation.articleId, evaluation.reviewId),
-    ];
     const ports = {
       getGroup: () => O.none,
       getEvaluationsByGroup: () => [evaluation],
     };
-    const result = pipe(
-      events,
-      identifyAllPossibleIndexEntries(supportedGroupIds, ports),
-    );
+    const result = identifyAllPossibleIndexEntries(supportedGroupIds, ports);
 
     it('fails with an internal server error', () => {
       expect(result).toStrictEqual(E.left(expect.objectContaining({
