@@ -95,6 +95,7 @@ describe('docmap-index', () => {
         fetchArticle: shouldNotBeCalled,
         getEvaluationsForDoi: () => [evaluation],
         getGroup: () => O.none,
+        getEvaluationsByGroup: () => [evaluation],
       };
       response = await docmapIndex(ports)({})();
     });

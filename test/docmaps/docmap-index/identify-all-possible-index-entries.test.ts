@@ -13,7 +13,6 @@ import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-accoun
 import { evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
@@ -27,6 +26,7 @@ describe('identify-all-possible-index-entries', () => {
       ...arbitraryGroup(),
       id: groupId,
     }),
+    getEvaluationsByGroup: () => [],
   };
 
   let framework: TestFramework;
@@ -54,6 +54,7 @@ describe('identify-all-possible-index-entries', () => {
     beforeEach(() => {
       const ports = {
         getGroup: () => O.some(supportedGroups[0]),
+        getEvaluationsByGroup: () => [evaluation1, evaluation2],
       };
       result = pipe(
         [
@@ -123,6 +124,14 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(() => {
+      const ports = {
+        ...defaultPorts,
+        getEvaluationsByGroup: () => [
+          evaluation1,
+          evaluation2,
+          evaluation3,
+        ],
+      };
       result = pipe(
         [
           evaluationRecorded(
@@ -150,7 +159,7 @@ describe('identify-all-possible-index-entries', () => {
             evaluation3.recordedAt,
           ),
         ],
-        identifyAllPossibleIndexEntries(supportedGroupIds, defaultPorts),
+        identifyAllPossibleIndexEntries(supportedGroupIds, ports),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -189,11 +198,16 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group cannot be fetched', () => {
+    const evaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: supportedGroupIds[0],
+    };
     const events = [
-      evaluationRecorded(supportedGroupIds[0], arbitraryArticleId(), arbitraryReviewId()),
+      evaluationRecorded(evaluation.groupId, evaluation.articleId, evaluation.reviewId),
     ];
     const ports = {
       getGroup: () => O.none,
+      getEvaluationsByGroup: () => [evaluation],
     };
     const result = pipe(
       events,

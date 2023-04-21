@@ -6,8 +6,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { GetGroup } from '../../shared-ports';
+import { DomainEvent } from '../../domain-events';
+import { GetEvaluationsByGroup, GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
@@ -34,6 +34,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 
 export type Ports = {
   getGroup: GetGroup,
+  getEvaluationsByGroup: GetEvaluationsByGroup,
 };
 
 type IdentifyAllPossibleIndexEntries = (
@@ -45,18 +46,18 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   supportedGroups,
   adapters,
 ) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   events,
 ) => pipe(
-  events,
-  RA.filter(isEvaluationRecordedEvent),
-  RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
-  E.traverseArray(({ articleId, groupId, date }) => pipe(
+  supportedGroups,
+  RA.chain(adapters.getEvaluationsByGroup),
+  E.traverseArray(({ articleId, groupId, recordedAt }) => pipe(
     adapters.getGroup(groupId),
     E.fromOption(() => DE.notFound),
     E.map((group) => ({
       articleId,
       groupId,
-      updated: date,
+      updated: recordedAt,
       publisherAccountId: publisherAccountId(group),
     })),
   )),
