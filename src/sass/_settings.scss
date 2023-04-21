@@ -27,6 +27,11 @@ $colour-site-header-background-darker: rgb(243, 244, 246);
 $colour-accent-hover-on-dark-background: rgb(234, 122, 83);
 $colour-container-background: rgb(212 221 224);
 
+$colour-light-mode-text-primary: $colour-text-primary;
+$colour-light-mode-background: $colour-white;
+$colour-dark-mode-text-primary: $colour-white;
+$colour-dark-mode-background: $colour-navigation-menu-background;
+
 $sciety-default-gutter: 20px;
 $sciety-default-form-gutter: 8px;
 $sciety-default-form-vertical-spacing: 24px;

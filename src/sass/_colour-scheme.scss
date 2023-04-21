@@ -1,9 +1,9 @@
 @use 'settings';
 
 :root {
-  --light-mode-text-primary: #{settings.$colour-text-primary};
-  --dark-mode-text-primary: #{settings.$colour-white};
+  --light-mode-text-primary: #{settings.$colour-light-mode-text-primary};
+  --dark-mode-text-primary: #{settings.$colour-dark-mode-text-primary};
   --text-primary: var(--light-mode-text-primary);
 
-  --dark-mode-background-colour: #{settings.$colour-navigation-menu-background};
+  --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
 }
