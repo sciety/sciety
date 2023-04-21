@@ -33,12 +33,6 @@
   }
 }
 
-body {
-  @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  @include set-colours(color, --text-primary, --dark-mode-text-primary);
-}
-// TODO: more normalise stuff in here
-
 // extracted and adapted from site-header/_index.scss
 .site-header {
   --light-mode-site-header-background-colour-1: #{settings.$colour-light-mode-site-header-background-1};
