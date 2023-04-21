@@ -3,6 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { utilityBar } from '../utility-bar';
 import { renderSearchIcon } from '../../html-pages/render-search-icon';
+import { renderSiteHeaderLogo } from '../../html-pages/render-site-header-logo';
 
 export const siteHeader = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`<header class="site-header">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
@@ -11,7 +12,7 @@ export const siteHeader = (user: O.Option<UserDetails>): HtmlFragment => toHtmlF
     <ul class="site-header__white_box_list">
       <li class="site-header__white_box_list_item--logo">
         <a href="/" class="site-header__logo_link">
-          <img src="/static/images/sciety-logo-navigation-link-colour-text.svg " alt="Sciety" class="site-header__logo">
+          ${renderSiteHeaderLogo()}
         </a>
       </li>
       <li class="site-header__white_box_list_item--menu">
