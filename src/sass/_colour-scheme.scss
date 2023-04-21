@@ -8,6 +8,11 @@
   --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
   --light-mode-background-colour: unset;
   --background-colour: var(--light-mode-background-colour);
+
+  --light-mode-site-header-background-colour-1: #{settings.$colour-site-header-background-darker};
+  --light-mode-site-header-background-colour-2: #{settings.$colour-white};
+  --site-header-background-colour-1: var(--light-mode-site-header-background-colour-1);
+  --site-header-background-colour-2: var(--light-mode-site-header-background-colour-2);
 }
 
 body {
@@ -18,6 +23,32 @@ body {
     @at-root body {
       --text-primary: var(--dark-mode-text-primary);
       --background-colour: var(--dark-mode-background-colour);
+    }
+  }
+}
+
+// TODO: more normalise stuff in here
+
+// extracted and adapted from site-header/_index.scss
+.site-header {
+  background-color: var(--site-header-background-colour-1);
+
+  @media (prefers-color-scheme: dark) {
+    @at-root .site-header {
+      --text-primary: var(--dark-mode-text-primary);
+      --site-header-background-colour-1: var(--dark-mode-background-colour);
+    }
+  }
+}
+
+.site-header__white_box_padding,
+.site-header__white_box {
+  background-color: var(--site-header-background-colour-2);
+
+  @media (prefers-color-scheme: dark) {
+    @at-root .site-header__white_box_padding, .site-header__white_box {
+      --text-primary: var(--dark-mode-text-primary);
+      --site-header-background-colour-2: var(--dark-mode-background-colour);
     }
   }
 }

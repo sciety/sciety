@@ -31,7 +31,6 @@ $_white-box-width-not-narrow: 280px;
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
-  background-color: settings.$colour-site-header-background-darker;
   width: 100%;
 
   &:not(.site-header--menu) {
@@ -41,14 +40,9 @@ $_white-box-width-not-narrow: 280px;
   }
 }
 
-.site-header__white_box_padding {
-  background-color: settings.$colour-white;
-}
-
 .site-header__white_box {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
-  background-color: settings.$colour-white;
   @include breakpoints.site-header() {
     width: functions.px-to-rem($_white-box-width-not-narrow);
   }
