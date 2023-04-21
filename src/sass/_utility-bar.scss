@@ -8,6 +8,7 @@
 @use 'breakpoints';
 @use 'avatar';
 @use '../shared-components/site-header';
+@use 'scheme';
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
@@ -66,11 +67,11 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-navigation-link;
+    @include scheme.set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
 
     @include states.link() {
-      color: settings.$colour-text-primary;
-      border-color: settings.$colour-text-primary;
+      @include scheme.set-colours(color, --text-primary, --dark-mode-text-primary);
+      @include scheme.set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }
 }
@@ -89,7 +90,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-primary;
+    @include scheme.set-colours(color, --text-primary, --dark-mode-text-primary);
 
     &:hover,
     &:active {
