@@ -7,14 +7,17 @@
 @use '../../sass/states';
 @use '../../sass/typography';
 @use '../../sass/list';
+@use '../../sass/colour-scheme';
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
 
 @mixin site-header-secondary-button-link() {
   @include typography.button();
+  @include colour-scheme.set-colours(&, border-color, --furniture-colour, --dark-mode-furniture-colour);
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
+  border-width: settings.$border-width;
+  border-style: solid;
   padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
 
   &:link,

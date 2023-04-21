@@ -16,6 +16,21 @@
   --light-mode-site-header-background-colour-2: #{settings.$colour-white};
   --site-header-background-colour-1: var(--light-mode-site-header-background-colour-1);
   --site-header-background-colour-2: var(--light-mode-site-header-background-colour-2);
+
+  // furniture
+  --light-mode-furniture-colour: #{settings.$colour-furniture};
+  --dark-mode-furniture-colour: #{settings.$colour-dark-furniture};
+  --furniture-colour: var(--light-mode-furniture-colour);
+}
+
+@mixin set-colours($selector, $property, $colour-variable-to-use, $dark-mode-colour) {
+  #{$property}: var($colour-variable-to-use);
+
+  @media (prefers-color-scheme: dark) {
+    @at-root #{$selector} {
+     #{$property}: var($dark-mode-colour);
+    }
+  }
 }
 
 body {
