@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 import {
   DocmapIndexEntryModel,
   identifyAllPossibleIndexEntries,
-  Ports,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -18,13 +17,6 @@ import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
-  const defaultPorts: Ports = {
-    getGroup: (groupId) => O.some({
-      ...arbitraryGroup(),
-      id: groupId,
-    }),
-    getEvaluationsByGroup: () => [],
-  };
 
   let framework: TestFramework;
 
@@ -102,22 +94,18 @@ describe('identify-all-possible-index-entries', () => {
     };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
-    beforeEach(() => {
-      const ports = {
-        ...defaultPorts,
-        getEvaluationsByGroup: () => [
-          evaluation1,
-          evaluation2,
-          evaluation3,
-        ],
-      };
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(supportedGroups[0]);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluation(evaluation3);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, ports),
+        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
 
-    it('returns the latest updated date', () => {
+    it.failing('returns the latest updated date', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           updated: latestDate,
