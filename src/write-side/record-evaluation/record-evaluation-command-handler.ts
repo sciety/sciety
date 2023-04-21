@@ -3,14 +3,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { executeCommand } from './execute-command';
 import { RecordEvaluationCommand } from '../commands';
-import { CommitEvents, GetAllEvents, GetGroup } from '../../shared-ports';
+import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
 import { ErrorMessage } from '../../types/error-message';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
-  getGroup: GetGroup,
 };
 
 type RecordEvaluationCommandHandler = (ports: Ports)
@@ -18,11 +17,8 @@ type RecordEvaluationCommandHandler = (ports: Ports)
 => TE.TaskEither<ErrorMessage, CommandResult>;
 
 export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (ports) => (command) => pipe(
-  command,
-  TE.right,
-  TE.chainTaskK(() => pipe(
-    ports.getAllEvents,
-    T.map(executeCommand(command)),
-  )),
-  TE.chainTaskK(ports.commitEvents),
+  ports.getAllEvents,
+  T.map(executeCommand(command)),
+  T.chain(ports.commitEvents),
+  TE.rightTask,
 );
