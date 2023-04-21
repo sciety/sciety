@@ -33,6 +33,7 @@ import {
   updateUserDetailsCommandCodec,
   removeArticleFromListCommandCodec,
   recordEvaluationCommandCodec,
+  addGroupCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -381,7 +382,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
 
-  router.post('/api/add-group', handleScietyApiCommand(adapters, addGroupCommandHandler(adapters)));
+  router.post('/api/add-group', createApiRouteForCommand(adapters, addGroupCommandCodec, addGroupCommandHandler(adapters)));
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 
