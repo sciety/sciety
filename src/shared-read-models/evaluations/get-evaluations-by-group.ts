@@ -6,7 +6,6 @@ import { GroupId } from '../../types/group-id';
 
 export type GetEvaluationsByGroup = (groupId: GroupId) => ReadonlyArray<RecordedEvaluation>;
 
-// ts-unused-exports:disable-next-line
 export const getEvaluationsByGroup = (readmodel: ReadModel): GetEvaluationsByGroup => (groupId) => pipe(
   readmodel.byGroupId,
   R.lookup(groupId),

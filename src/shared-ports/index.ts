@@ -48,7 +48,6 @@ export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
 // ts-unused-exports:disable-next-line
 export { GetAnnotationContent } from './get-annotation-content';
-// ts-unused-exports:disable-next-line
 export { GetEvaluationsForDoi } from './get-evaluations-for-doi';
 // ts-unused-exports:disable-next-line
 export { GetEvaluationsByGroup } from './get-evaluations-by-group';
