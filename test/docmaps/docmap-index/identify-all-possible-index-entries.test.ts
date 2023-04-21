@@ -135,7 +135,6 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      framework = createTestFramework();
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation);
       result = pipe(
@@ -154,11 +153,14 @@ describe('identify-all-possible-index-entries', () => {
       ...arbitraryRecordedEvaluation(),
       groupId: supportedGroupIds[0],
     };
-    const ports = {
-      getGroup: () => O.none,
-      getEvaluationsByGroup: () => [evaluation],
-    };
-    const result = identifyAllPossibleIndexEntries(supportedGroupIds, ports);
+    let result: ReturnType<typeof identifyAllPossibleIndexEntries>;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluation(evaluation);
+      result = pipe(
+        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+      );
+    });
 
     it('fails with an internal server error', () => {
       expect(result).toStrictEqual(E.left(expect.objectContaining({
