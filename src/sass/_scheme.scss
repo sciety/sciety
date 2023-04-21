@@ -25,7 +25,12 @@
   // icons
   --light-mode-icon-colour: #{settings.$colour-light-icon};
   --dark-mode-icon-colour: #{settings.$colour-dark-icon};
-  --icon-colour: var(--light-mode-icon-colour)
+  --icon-colour: var(--light-mode-icon-colour);
+
+  // site header logo text
+  --light-mode-site-header-logo-text: #{settings.$colour-light-mode-site-header-logo-text};
+  --dark-mode-site-header-logo-text: #{settings.$colour-dark-mode-site-header-logo-text};
+  --site-header-logo-text: var(--light-mode-site-header-logo-text);
 }
 
 @mixin set-colours($property, $colour-variable-to-use, $dark-mode-colour) {

@@ -33,6 +33,8 @@ $colour-light-mode-site-header-background-1: $colour-site-header-background-dark
 $colour-light-mode-site-header-background-2: $colour-white;
 $colour-light-furniture: $colour-furniture;
 $colour-light-icon: #34434A;
+$colour-light-mode-site-header-logo-text: #34434A;
+$colour-dark-mode-site-header-logo-text: $colour-white; // should be coupled to a dark mode text colour sass variable
 $colour-dark-mode-text-primary: $colour-white;
 $colour-dark-mode-background: $colour-navigation-menu-background;
 $colour-dark-furniture: $colour-white;

@@ -73,7 +73,12 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header__logo {
-  height: functions.px-to-rem(34px);
+  height: functions.px-to-rem(34px); // not needed??
+}
+
+// SVG class
+.site-header__logo_text {
+  @include scheme.set-colours(fill, --site-header-logo-text, --dark-mode-site-header-logo-text);
 }
 
 .site-header__grey_box {
