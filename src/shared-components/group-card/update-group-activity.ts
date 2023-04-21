@@ -2,11 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
-
-type GroupActivity = {
-  evaluationCount: number,
-  latestActivity: O.Option<Date>,
-};
+import { GroupActivity } from '../../shared-ports/get-activity-for-group';
 
 export const updateGroupActivity = (
   groupId: GroupId,
