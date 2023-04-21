@@ -9,12 +9,9 @@ import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntri
 import { Ports as DocmapPorts, generateDocmapViewModel } from '../docmap/generate-docmap-view-model';
 import { toDocmap } from '../docmap/to-docmap';
 import { supportedGroups } from '../supported-groups';
-import { GetAllEvents } from '../../shared-ports';
 
 // ts-unused-exports:disable-next-line
-export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts & {
-  getAllEvents: GetAllEvents,
-};
+export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts;
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,

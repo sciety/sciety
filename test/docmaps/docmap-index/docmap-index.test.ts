@@ -1,8 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
-import { evaluationRecorded } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryGroup } from '../../types/group.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
@@ -24,7 +22,6 @@ describe('docmap-index', () => {
     defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
-      getAllEvents: framework.getAllEvents,
     };
   });
 
@@ -81,15 +78,6 @@ describe('docmap-index', () => {
 
     beforeEach(async () => {
       const ports: Ports = {
-        getAllEvents: T.of([
-          evaluationRecorded(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.reviewId,
-            evaluation.authors,
-            evaluation.publishedAt,
-          ),
-        ]),
         fetchReview: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
         fetchArticle: shouldNotBeCalled,
