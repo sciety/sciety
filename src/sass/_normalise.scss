@@ -1,6 +1,7 @@
 @use 'settings';
 @use 'states';
 @use 'typography';
+@use 'colour-scheme';
 
 html {
   font-size: unset;
@@ -11,7 +12,13 @@ body {
   font-size: settings.$base-font-measure;
   line-height: 1.5;
   margin: 0;
-  color: settings.$colour-text-primary;
+  color: var(--text-primary);
+
+  @media (prefers-color-scheme: dark) {
+    @at-root body {
+      --text-primary: var(--dark-mode-text-primary);
+    }
+  }
 }
 
 p {
