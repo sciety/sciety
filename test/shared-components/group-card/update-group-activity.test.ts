@@ -13,7 +13,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-activity', () => {
   const groupId = arbitraryGroupId();
-  const initial = { evaluationCount: 27, latestActivity: O.some(new Date('1970')) };
+  const initial = { evaluationCount: 27, latestActivityAt: O.some(new Date('1970')) };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
@@ -39,14 +39,14 @@ describe('update-group-activity', () => {
       newerDate,
       arbitraryDate(),
     );
-    const result = updateGroupActivity(groupId)({ ...initial, evaluationCount: 0, latestActivity: O.none }, event);
+    const result = updateGroupActivity(groupId)({ ...initial, evaluationCount: 0, latestActivityAt: O.none }, event);
 
     it('sets review count to 1', () => {
       expect(result.evaluationCount).toBe(1);
     });
 
     it('sets the latest activity', () => {
-      expect(result.latestActivity).toStrictEqual(O.some(newerDate));
+      expect(result.latestActivityAt).toStrictEqual(O.some(newerDate));
     });
   });
 
@@ -67,7 +67,7 @@ describe('update-group-activity', () => {
     });
 
     it('updates the latest activity', () => {
-      expect(result.latestActivity).toStrictEqual(O.some(newerDate));
+      expect(result.latestActivityAt).toStrictEqual(O.some(newerDate));
     });
   });
 
@@ -88,7 +88,7 @@ describe('update-group-activity', () => {
     });
 
     it('does not update the latest activity', () => {
-      expect(result.latestActivity).toStrictEqual(initial.latestActivity);
+      expect(result.latestActivityAt).toStrictEqual(initial.latestActivityAt);
     });
   });
 

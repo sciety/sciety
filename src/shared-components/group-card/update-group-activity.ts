@@ -5,7 +5,7 @@ import { GroupId } from '../../types/group-id';
 
 type GroupActivity = {
   evaluationCount: number,
-  latestActivity: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
 };
 
 export const updateGroupActivity = (
@@ -16,17 +16,17 @@ export const updateGroupActivity = (
 ): GroupActivity => {
   if (isEvaluationRecordedEvent(event) && event.groupId === groupId) {
     return pipe(
-      activity.latestActivity,
+      activity.latestActivityAt,
       O.fold(
         () => ({
           ...activity,
           evaluationCount: activity.evaluationCount + 1,
-          latestActivity: O.some(event.publishedAt),
+          latestActivityAt: O.some(event.publishedAt),
         }),
         (date) => (event.publishedAt > date ? {
           ...activity,
           evaluationCount: activity.evaluationCount + 1,
-          latestActivity: O.some(event.publishedAt),
+          latestActivityAt: O.some(event.publishedAt),
         } : {
           ...activity,
           evaluationCount: activity.evaluationCount + 1,
