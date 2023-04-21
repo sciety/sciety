@@ -11,7 +11,7 @@
   --light-mode-background-colour: #{settings.$colour-light-mode-background};
   --background-colour: var(--light-mode-background-colour);
 
-  // utility bar specific
+  // site header / utility bar specific
   --light-mode-colour-text-navigation-link: settings.$colour-text-navigation-link;
   --dark-mode-colour-text-navigation-link: var(--dark-mode-text-primary);
   --text-navigation-link: var(--light-mode-colour-text-navigation-link);
@@ -31,6 +31,15 @@
      #{$property}: var($dark-mode-colour);
     }
   }
+}
+
+@mixin set-standard-text-colours() {
+  @include set-colours(color, --text-primary, --dark-mode-text-primary);
+}
+
+@mixin set-site-header-link-colours() {
+  @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
+
 }
 
 // extracted and adapted from site-header/_index.scss

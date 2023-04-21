@@ -67,10 +67,9 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &:link,
   &:visited {
-    @include scheme.set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
-
+    @include scheme.set-site-header-link-colours();
     @include states.link() {
-      @include scheme.set-colours(color, --text-primary, --dark-mode-text-primary);
+      @include scheme.set-standard-text-colours();
       @include scheme.set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }

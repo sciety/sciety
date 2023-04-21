@@ -22,11 +22,10 @@ $_white-box-width-not-narrow: 280px;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-navigation-link;
-
+    @include scheme.set-site-header-link-colours();
     @include states.link() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-text-navigation-link;
+      @include scheme.set-standard-text-colours();
+      @include scheme.set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }
 }
