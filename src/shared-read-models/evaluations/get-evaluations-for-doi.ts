@@ -2,7 +2,8 @@ import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { identity, pipe } from 'fp-ts/function';
 import { Doi } from '../../types/doi';
-import { ReadModel, RecordedEvaluation } from './handle-event';
+import { ReadModel } from './handle-event';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type GetEvaluationsForDoi = (articleDoi: Doi) => ReadonlyArray<RecordedEvaluation>;
 

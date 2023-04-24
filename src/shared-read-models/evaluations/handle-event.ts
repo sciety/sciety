@@ -1,17 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
-import { Doi } from '../../types/doi';
-import { GroupId } from '../../types/group-id';
-import { ReviewId } from '../../types/review-id';
-
-export type RecordedEvaluation = {
-  articleId: Doi,
-  reviewId: ReviewId,
-  groupId: GroupId,
-  recordedAt: Date,
-  publishedAt: Date,
-  authors: ReadonlyArray<string>,
-};
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type ReadModel = {
   byArticleId: Record<string, Array<RecordedEvaluation>>,
