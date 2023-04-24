@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { GetEvaluationsByGroup, GetGroup } from '../../shared-ports';
+import { GetEvaluationsByGroup, GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
@@ -34,6 +34,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 export type Ports = {
   getGroup: GetGroup,
   getEvaluationsByGroup: GetEvaluationsByGroup,
+  logger: Logger,
 };
 
 type IdentifyAllPossibleIndexEntries = (
@@ -49,7 +50,10 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   RA.chain(adapters.getEvaluationsByGroup),
   E.traverseArray(({ articleId, groupId, recordedAt }) => pipe(
     adapters.getGroup(groupId),
-    E.fromOption(() => DE.notFound),
+    E.fromOption(() => {
+      adapters.logger('error', 'docmap-index: a recorded evaluation refers to a non-existent group', { articleId, groupId, recordedAt });
+      return DE.notFound;
+    }),
     E.map((group) => ({
       articleId,
       groupId,

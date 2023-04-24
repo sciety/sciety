@@ -5,6 +5,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { dummyLogger } from '../../dummy-logger';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -20,6 +21,7 @@ describe('docmap-index', () => {
     defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
+      logger: dummyLogger,
     };
   });
 

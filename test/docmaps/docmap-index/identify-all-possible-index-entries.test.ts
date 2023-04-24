@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
   DocmapIndexEntryModel,
+  Ports,
   identifyAllPossibleIndexEntries,
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
@@ -12,15 +13,21 @@ import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
+import { dummyLogger } from '../../dummy-logger';
 
 describe('identify-all-possible-index-entries', () => {
   const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
   const supportedGroupIds = supportedGroups.map((group) => group.id);
 
   let framework: TestFramework;
+  let defaultAdapters: Ports;
 
   beforeEach(async () => {
     framework = createTestFramework();
+    defaultAdapters = {
+      ...framework.queries,
+      logger: dummyLogger,
+    };
   });
 
   describe('when a supported group has evaluated multiple articles', () => {
@@ -44,7 +51,7 @@ describe('identify-all-possible-index-entries', () => {
       await framework.commandHelpers.recordEvaluation(evaluation1);
       await framework.commandHelpers.recordEvaluation(evaluation2);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -98,7 +105,7 @@ describe('identify-all-possible-index-entries', () => {
       await framework.commandHelpers.recordEvaluation(evaluation2);
       await framework.commandHelpers.recordEvaluation(evaluation3);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -124,7 +131,7 @@ describe('identify-all-possible-index-entries', () => {
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -144,7 +151,7 @@ describe('identify-all-possible-index-entries', () => {
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
+        identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
       );
     });
 
