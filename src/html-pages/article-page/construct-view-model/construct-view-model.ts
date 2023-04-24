@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { detect } from 'tinyld';
 import { feedSummary } from './feed-summary';
 import {
   getArticleFeedEventsByDateDescending,
@@ -44,6 +45,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.rightTask,
     TE.map((feedItemsByDateDescending) => ({
       ...articleDetails,
+      titleLanguageCode: detect(articleDetails.title, { only: ['en', 'es', 'pt'] }),
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
