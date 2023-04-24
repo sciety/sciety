@@ -12,7 +12,7 @@ import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 import { publisherAccountId } from '../docmap/publisher-account-id';
-import { Queries } from '../../shared-read-models/dispatcher';
+import { Queries } from '../../shared-read-models';
 
 export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
