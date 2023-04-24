@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -40,13 +39,12 @@ describe('identify-all-possible-index-entries', () => {
 
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
-    beforeEach(() => {
-      const ports = {
-        getGroup: () => O.some(supportedGroups[0]),
-        getEvaluationsByGroup: () => [evaluation1, evaluation2],
-      };
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(supportedGroups[0]);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       result = pipe(
-        identifyAllPossibleIndexEntries(supportedGroupIds, ports),
+        identifyAllPossibleIndexEntries(supportedGroupIds, framework.queries),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
