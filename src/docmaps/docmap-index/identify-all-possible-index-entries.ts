@@ -6,12 +6,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { GetEvaluationsByGroup, GetGroup, Logger } from '../../shared-ports';
+import { GetGroup, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 import { publisherAccountId } from '../docmap/publisher-account-id';
+import { Queries } from '../../shared-read-models/dispatcher';
 
 export type DocmapIndexEntryModel = {
   articleId: Doi.Doi,
@@ -33,7 +34,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
 
 export type Ports = {
   getGroup: GetGroup,
-  getEvaluationsByGroup: GetEvaluationsByGroup,
+  getEvaluationsByGroup: Queries['getEvaluationsByGroup'],
   logger: Logger,
 };
 
