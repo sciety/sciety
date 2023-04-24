@@ -12,7 +12,7 @@ import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { FindVersionsForArticleDoi } from '../../../shared-ports';
-import { Queries } from '../../../infrastructure/dispatcher';
+import { Queries } from '../../../shared-read-models/dispatcher';
 
 export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

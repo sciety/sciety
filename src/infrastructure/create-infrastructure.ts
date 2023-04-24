@@ -7,7 +7,7 @@ import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
-import { dispatcher } from './dispatcher';
+import { dispatcher } from '../shared-read-models/dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';

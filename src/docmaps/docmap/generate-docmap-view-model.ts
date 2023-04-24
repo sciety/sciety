@@ -14,7 +14,7 @@ import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, ReviewId } from '../../types/review-id';
-import { Queries } from '../../infrastructure/dispatcher';
+import { Queries } from '../../shared-read-models/dispatcher';
 
 export type DocmapModel = {
   articleId: Doi,

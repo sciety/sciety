@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { Dispatcher, dispatcher } from '../../src/infrastructure/dispatcher';
+import { Dispatcher, dispatcher } from '../../src/shared-read-models/dispatcher';
 import { createGroup } from '../../src/write-side/add-group';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
