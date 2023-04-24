@@ -1,8 +1,8 @@
 import { getAllGroups } from './get-all-groups';
-import { getGroup } from './get-group';
+import { GetGroup, getGroup } from './get-group';
 import { getGroupBySlug } from './get-group-by-slug';
 import { ReadModel } from './handle-event';
-import { GetAllGroups, GetGroup, GetGroupBySlug } from '../../shared-ports';
+import { GetAllGroups, GetGroupBySlug } from '../../shared-ports';
 
 export type Queries = {
   getAllGroups: GetAllGroups,

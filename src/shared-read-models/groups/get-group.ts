@@ -4,9 +4,9 @@ import { ReadModel } from './handle-event';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
-type GetGroup = (readModel: ReadModel) => (groupId: GroupId) => O.Option<Group>;
+export type GetGroup = (groupId: GroupId) => O.Option<Group>;
 
-export const getGroup: GetGroup = (readModel) => (groupId) => pipe(
+export const getGroup = (readModel: ReadModel): GetGroup => (groupId) => pipe(
   readModel[groupId],
   O.fromNullable,
 );
