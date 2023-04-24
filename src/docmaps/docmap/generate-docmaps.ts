@@ -13,9 +13,7 @@ import { supportedGroups } from '../supported-groups';
 import { Queries } from '../../shared-read-models';
 
 // ts-unused-exports:disable-next-line
-export type Ports = DocmapPorts & {
-  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
-};
+export type Ports = DocmapPorts & Queries;
 
 const getEvaluatingGroupIds = (ports: Ports) => (doi: Doi) => pipe(
   ports.getEvaluationsForDoi(doi),

@@ -8,7 +8,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
-import { GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
@@ -42,10 +41,8 @@ type ReviewForArticle = {
   authors: ReadonlyArray<string>,
 };
 
-export type Ports = GetDateOfMostRecentArticleVersionPorts & {
+export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
-  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
-  getGroup: GetGroup,
 };
 
 const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(
