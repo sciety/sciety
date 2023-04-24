@@ -12,17 +12,19 @@ import * as articleActivity from '../shared-read-models/article-activity';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
+export type Queries = addArticleToElifeSubjectAreaList.Queries
+& annotations.Queries
+& articleActivity.Queries
+& evaluations.Queries
+& followings.Queries
+& groups.Queries
+& idsOfEvaluatedArticlesLists.Queries
+& lists.Queries
+& users.Queries;
+
 // ts-unused-exports:disable-next-line
 export type Dispatcher = {
-  queries: addArticleToElifeSubjectAreaList.Queries
-  & annotations.Queries
-  & articleActivity.Queries
-  & evaluations.Queries
-  & followings.Queries
-  & groups.Queries
-  & idsOfEvaluatedArticlesLists.Queries
-  & lists.Queries
-  & users.Queries,
+  queries: Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 

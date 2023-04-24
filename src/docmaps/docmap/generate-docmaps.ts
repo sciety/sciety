@@ -10,11 +10,11 @@ import { toDocmap } from './to-docmap';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Doi } from '../../types/doi';
 import { supportedGroups } from '../supported-groups';
-import { GetEvaluationsForDoi } from '../../shared-ports';
+import { Queries } from '../../infrastructure/dispatcher';
 
 // ts-unused-exports:disable-next-line
 export type Ports = DocmapPorts & {
-  getEvaluationsForDoi: GetEvaluationsForDoi,
+  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
 };
 
 const getEvaluatingGroupIds = (ports: Ports) => (doi: Doi) => pipe(
