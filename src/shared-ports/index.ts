@@ -13,7 +13,6 @@ import { GetAnnotationContent } from './get-annotation-content';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetEvaluationsForDoi } from './get-evaluations-for-doi';
 import { GetEvaluationsByGroup } from './get-evaluations-by-group';
 import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
@@ -87,7 +86,6 @@ export type SharedPorts = {
   getAnnotationContent: GetAnnotationContent,
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getEvaluationsForDoi: GetEvaluationsForDoi,
   getEvaluationsByGroup: GetEvaluationsByGroup,
   getFollowers: GetFollowers,
   getGroup: GetGroup,
