@@ -14,7 +14,6 @@ describe('create-appropriate-events', () => {
     evaluationLocator,
     publishedAt: arbitraryDate(),
     authors: [arbitraryString(), arbitraryString()],
-    issuedAt: undefined,
   };
 
   describe('when the evaluation locator has NOT already been recorded', () => {

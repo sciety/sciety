@@ -4,13 +4,18 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { reviewIdCodec } from '../../types/review-id';
 
-export const recordEvaluationCommandCodec = t.type({
+const requiredFields = t.type({
   groupId: GroupIdFromString,
   publishedAt: tt.DateFromISOString,
   evaluationLocator: reviewIdCodec,
   articleId: DoiFromString,
   authors: t.readonlyArray(t.string),
-  issuedAt: t.union([tt.DateFromISOString, t.undefined]),
 });
+
+const optionalFields = t.partial({
+  issuedAt: tt.DateFromISOString,
+});
+
+export const recordEvaluationCommandCodec = t.intersection([requiredFields, optionalFields]);
 
 export type RecordEvaluationCommand = t.TypeOf<typeof recordEvaluationCommandCodec>;
