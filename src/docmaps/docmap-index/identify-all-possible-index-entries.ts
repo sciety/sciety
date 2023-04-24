@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
-import { GetGroup, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
@@ -32,9 +32,7 @@ const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
   groupId: S.Eq,
 });
 
-export type Ports = {
-  getGroup: GetGroup,
-  getEvaluationsByGroup: Queries['getEvaluationsByGroup'],
+export type Ports = Queries & {
   logger: Logger,
 };
 
