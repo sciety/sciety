@@ -175,4 +175,28 @@ describe('construct-view-model', () => {
       });
     });
   });
+
+  describe.skip('correct-language-semantics', () => {
+    describe('the article title', () => {
+      // eslint-disable-next-line jest/expect-expect
+      it.each([
+        ['en', 'Arbitrary title in English'],
+        ['es', 'Título arbitrario en español'],
+        ['pt', 'Título arbitrário em português'],
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ])('is correctly inferred as %s', async (code, title) => {
+      });
+    });
+
+    describe('the article abstract', () => {
+      // eslint-disable-next-line jest/expect-expect
+      it.each([
+        ['en', 'This text represents the abstract of this article in English.'],
+        ['es', 'Este texto representa el resumen de este artículo en español.'],
+        ['pt', 'Este texto representa o resumo deste artigo em português.'],
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ])('is correctly inferred as %s', async (code, articleAbstract) => {
+      });
+    });
+  });
 });
