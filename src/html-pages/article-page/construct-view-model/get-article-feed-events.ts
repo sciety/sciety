@@ -11,11 +11,12 @@ import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
 import { UserId } from '../../../types/user-id';
-import { FindVersionsForArticleDoi, GetEvaluationsForDoi } from '../../../shared-ports';
+import { FindVersionsForArticleDoi } from '../../../shared-ports';
+import { Queries } from '../../../infrastructure/dispatcher';
 
 export type Ports = GetFeedEventsContentPorts & {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  getEvaluationsForDoi: GetEvaluationsForDoi,
+  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
 };
 
 type GetArticleFeedEventsByDateDescending = (
