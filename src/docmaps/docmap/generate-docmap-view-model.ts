@@ -8,12 +8,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
-import { GetEvaluationsForDoi, GetGroup } from '../../shared-ports';
+import { GetGroup } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, ReviewId } from '../../types/review-id';
+import { Queries } from '../../infrastructure/dispatcher';
 
 export type DocmapModel = {
   articleId: Doi,
@@ -43,7 +44,7 @@ type ReviewForArticle = {
 
 export type Ports = GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
-  getEvaluationsForDoi: GetEvaluationsForDoi,
+  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
   getGroup: GetGroup,
 };
 
