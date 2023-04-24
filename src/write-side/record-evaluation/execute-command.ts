@@ -19,7 +19,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => eval
   command.evaluationLocator,
   command.authors,
   command.publishedAt,
-  new Date(),
+  command.issuedAt ? command.issuedAt : new Date(),
 );
 
 type ExecuteCommand = (command: RecordEvaluationCommand)

@@ -105,7 +105,7 @@ describe('identify-all-possible-index-entries', () => {
       );
     });
 
-    it.failing('returns the latest updated date', () => {
+    it('returns the latest updated date', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           updated: latestDate,

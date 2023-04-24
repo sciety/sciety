@@ -10,6 +10,7 @@ export const recordEvaluationCommandCodec = t.type({
   evaluationLocator: reviewIdCodec,
   articleId: DoiFromString,
   authors: t.readonlyArray(t.string),
+  issuedAt: t.union([tt.DateFromISOString, t.undefined]),
 });
 
 export type RecordEvaluationCommand = t.TypeOf<typeof recordEvaluationCommandCodec>;

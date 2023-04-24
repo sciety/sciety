@@ -83,6 +83,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     {
       ...evaluation,
       evaluationLocator: evaluation.reviewId,
+      issuedAt: evaluation.recordedAt,
     },
     invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
   )(),
