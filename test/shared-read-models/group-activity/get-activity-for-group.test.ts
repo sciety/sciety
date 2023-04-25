@@ -149,9 +149,54 @@ describe('get-activity-for-group', () => {
       });
 
       describe('and the most recently recorded is not the most recently published evaluation', () => {
-        it.todo('returns an evaluationCount of 2');
+        const mostRecentPublishedAt = new Date('2000');
+        const recordedEvaluation1 = {
+          ...arbitraryRecordedEvaluation(),
+          groupId: group.id,
+          publishedAt: mostRecentPublishedAt,
+        };
+        const recordedEvaluation2 = {
+          ...arbitraryRecordedEvaluation(),
+          groupId: group.id,
+          publishedAt: new Date('1970'),
+        };
+        const readModel = pipe(
+          [
+            groupJoinedEvent,
+            evaluationRecorded(
+              recordedEvaluation1.groupId,
+              recordedEvaluation1.articleId,
+              recordedEvaluation1.reviewId,
+              recordedEvaluation1.authors,
+              recordedEvaluation1.publishedAt,
+            ),
+            evaluationRecorded(
+              recordedEvaluation2.groupId,
+              recordedEvaluation2.articleId,
+              recordedEvaluation2.reviewId,
+              recordedEvaluation2.authors,
+              recordedEvaluation2.publishedAt,
+            ),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+        const result = getActivityForGroup(readModel)(group.id);
 
-        it.todo('returns the most recent publishedAt date as the latestActivityAt');
+        it('returns an evaluationCount of 2', () => {
+          expect(result).toStrictEqual(O.some(
+            expect.objectContaining({
+              evaluationCount: 2,
+            }),
+          ));
+        });
+
+        it.failing('returns the most recent publishedAt date as the latestActivityAt', () => {
+          expect(result).toStrictEqual(O.some(
+            expect.objectContaining({
+              latestActivityAt: O.some(mostRecentPublishedAt),
+            }),
+          ));
+        });
       });
     });
   });
