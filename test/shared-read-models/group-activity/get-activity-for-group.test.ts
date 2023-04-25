@@ -103,10 +103,11 @@ describe('get-activity-for-group', () => {
           groupId: group.id,
           publishedAt: new Date('1970'),
         };
+        const mostRecentPublishedAt = new Date('2000');
         const recordedEvaluation2 = {
           ...arbitraryRecordedEvaluation(),
           groupId: group.id,
-          publishedAt: new Date('2000'),
+          publishedAt: mostRecentPublishedAt,
         };
         const readModel = pipe(
           [
@@ -138,7 +139,13 @@ describe('get-activity-for-group', () => {
           ));
         });
 
-        it.todo('returns the most recent publishedAt date as the latestActivityAt');
+        it('returns the most recent publishedAt date as the latestActivityAt', () => {
+          expect(result).toStrictEqual(O.some(
+            expect.objectContaining({
+              latestActivityAt: O.some(mostRecentPublishedAt),
+            }),
+          ));
+        });
       });
 
       describe('and the most recently recorded is not the most recently published evaluation', () => {
