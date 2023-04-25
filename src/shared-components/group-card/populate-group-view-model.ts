@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupActivity } from './update-group-activity';
@@ -24,6 +25,7 @@ export type Ports = {
 const getActivityForGroup = (ports: Ports) => (groupId: GroupId) => pipe(
   ports.getAllEvents,
   T.map(RA.reduce({ evaluationCount: 0, latestActivityAt: O.none }, updateGroupActivity(groupId))),
+  T.map(O.some),
 );
 
 export const populateGroupViewModel = (
@@ -33,10 +35,10 @@ export const populateGroupViewModel = (
 ): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
   ports.getGroup(groupId),
   TE.fromOption(() => DE.notFound),
-  TE.chainTaskK((group) => pipe(
+  TE.chainTaskOptionK(() => DE.notFound)((group) => pipe(
     group.id,
     getActivityForGroup(ports),
-    T.map((meta) => ({
+    TO.map((meta) => ({
       ...group,
       ...meta,
       latestActivity: meta.latestActivityAt,
