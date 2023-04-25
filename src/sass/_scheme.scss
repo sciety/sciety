@@ -38,7 +38,7 @@
 
   @media (prefers-color-scheme: dark) {
     @at-root & {
-     #{$property}: var($dark-mode-colour);
+     #{$colour-variable-to-use}: var($dark-mode-colour);
     }
   }
 }
