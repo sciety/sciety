@@ -22,19 +22,21 @@ describe('get-activity-for-group', () => {
   });
 
   describe('when the group exists', () => {
+    const group = arbitraryGroup();
+    const groupJoinedEvent = groupJoined(
+      group.id,
+      group.name,
+      group.avatarPath,
+      group.descriptionPath,
+      group.shortDescription,
+      group.homepage,
+      group.slug,
+    );
+
     describe('when there are no recorded evaluations', () => {
-      const group = arbitraryGroup();
       const readModel = pipe(
         [
-          groupJoined(
-            group.id,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
+          groupJoinedEvent,
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -58,22 +60,13 @@ describe('get-activity-for-group', () => {
     });
 
     describe('when there is 1 recorded evaluation', () => {
-      const group = arbitraryGroup();
       const recordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
       };
       const readModel = pipe(
         [
-          groupJoined(
-            group.id,
-            group.name,
-            group.avatarPath,
-            group.descriptionPath,
-            group.shortDescription,
-            group.homepage,
-            group.slug,
-          ),
+          groupJoinedEvent,
           evaluationRecorded(
             recordedEvaluation.groupId,
             recordedEvaluation.articleId,
