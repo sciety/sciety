@@ -17,6 +17,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEvaluationRecordedEvent(event)) {
     readmodel[event.groupId].evaluationCount += 1;
+    readmodel[event.groupId].latestActivityAt = O.some(event.publishedAt);
   }
   return readmodel;
 };
