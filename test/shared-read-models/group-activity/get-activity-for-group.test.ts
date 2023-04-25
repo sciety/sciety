@@ -4,8 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
-import { groupJoined } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('get-activity-for-group', () => {
   describe('when the group does not exist', () => {
@@ -56,14 +58,32 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when there are N recorded evaluations', () => {
-      it.todo('returns an evaluationCount of N');
-
-      it.todo('returns the latest publishedAt date of the evaluations as the latestActivityAt');
-    });
-
     describe('when there is 1 recorded evaluation', () => {
-      it.todo('returns an evaluationCount of 1');
+      const group = arbitraryGroup();
+      const readModel = pipe(
+        [
+          groupJoined(
+            group.id,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
+          evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it.failing('returns an evaluationCount of 1', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 1,
+          }),
+        ));
+      });
 
       it.todo('returns the publishedAt date of the evaluation as the latestActivityAt');
     });
