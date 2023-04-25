@@ -4,6 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
+import { groupJoined } from '../../../src/domain-events';
+import { arbitraryGroup } from '../../types/group.helper';
 
 describe('get-activity-for-group', () => {
   describe('when the group does not exist', () => {
@@ -20,7 +22,30 @@ describe('get-activity-for-group', () => {
 
   describe('when the group exists', () => {
     describe('when there are no recorded evaluations', () => {
-      it.todo('returns an evaluationCount of 0');
+      const group = arbitraryGroup();
+      const readModel = pipe(
+        [
+          groupJoined(
+            group.id,
+            group.name,
+            group.avatarPath,
+            group.descriptionPath,
+            group.shortDescription,
+            group.homepage,
+            group.slug,
+          ),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it.failing('returns an evaluationCount of 0', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 0,
+          }),
+        ));
+      });
 
       it.todo('return a None for the latestActivityAt');
     });
