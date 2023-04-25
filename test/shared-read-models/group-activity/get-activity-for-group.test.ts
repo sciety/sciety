@@ -47,7 +47,13 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.todo('return a None for the latestActivityAt');
+      it.failing('return a O.none for the latestActivityAt', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.none,
+          }),
+        ));
+      });
     });
 
     describe('when there are N recorded evaluations', () => {
