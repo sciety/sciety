@@ -11,5 +11,4 @@ type GetActivityForGroup = (groupId: GroupId) => O.Option<{ evaluationCount: num
 export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup => (groupId) => pipe(
   readModel,
   R.lookup(groupId),
-  O.map((evaluationCount) => ({ evaluationCount })),
 );
