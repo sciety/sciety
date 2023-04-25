@@ -1,6 +1,21 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
+import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
+
 describe('get-activity-for-group', () => {
   describe('when the group does not exist', () => {
-    it.todo('returns None');
+    const readModel = pipe(
+      [],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = getActivityForGroup(readModel)(arbitraryGroupId());
+
+    it('returns O.none', () => {
+      expect(result).toStrictEqual(O.none);
+    });
   });
 
   describe('when the group exists', () => {
