@@ -6,8 +6,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
 import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('get-activity-for-group', () => {
   describe('when the group does not exist', () => {
@@ -60,6 +59,10 @@ describe('get-activity-for-group', () => {
 
     describe('when there is 1 recorded evaluation', () => {
       const group = arbitraryGroup();
+      const recordedEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      };
       const readModel = pipe(
         [
           groupJoined(
@@ -71,7 +74,13 @@ describe('get-activity-for-group', () => {
             group.homepage,
             group.slug,
           ),
-          evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId()),
+          evaluationRecorded(
+            recordedEvaluation.groupId,
+            recordedEvaluation.articleId,
+            recordedEvaluation.reviewId,
+            recordedEvaluation.authors,
+            recordedEvaluation.publishedAt,
+          ),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -85,7 +94,13 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.todo('returns the publishedAt date of the evaluation as the latestActivityAt');
+      it.failing('returns the publishedAt date of the evaluation as the latestActivityAt', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.some(recordedEvaluation.publishedAt),
+          }),
+        ));
+      });
     });
 
     describe('when there are 2 evaluations', () => {
