@@ -2,10 +2,10 @@
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
+import { GroupActivity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
-type GetActivityForGroup = (groupId: GroupId) => O.Option<{ evaluationCount: number }>;
+type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
 
 // ts-unused-exports:disable-next-line
 export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup => (groupId) => pipe(
