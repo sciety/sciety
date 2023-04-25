@@ -12,7 +12,7 @@
   --background-colour: var(--light-mode-background-colour);
 
   // site header / utility bar specific
-  --light-mode-colour-text-navigation-link: settings.$colour-text-navigation-link;
+  --light-mode-colour-text-navigation-link: #{settings.$colour-text-navigation-link};
   --dark-mode-colour-text-navigation-link: var(--dark-mode-text-primary);
   --text-navigation-link: var(--light-mode-colour-text-navigation-link);
 
