@@ -77,7 +77,7 @@ describe('get-activity-for-group', () => {
       );
       const result = getActivityForGroup(readModel)(group.id);
 
-      it.failing('returns an evaluationCount of 1', () => {
+      it('returns an evaluationCount of 1', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             evaluationCount: 1,
