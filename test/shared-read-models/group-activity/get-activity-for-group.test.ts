@@ -190,7 +190,7 @@ describe('get-activity-for-group', () => {
           ));
         });
 
-        it.failing('returns the most recent publishedAt date as the latestActivityAt', () => {
+        it('returns the most recent publishedAt date as the latestActivityAt', () => {
           expect(result).toStrictEqual(O.some(
             expect.objectContaining({
               latestActivityAt: O.some(mostRecentPublishedAt),

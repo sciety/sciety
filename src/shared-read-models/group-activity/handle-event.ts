@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 
@@ -17,7 +18,16 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEvaluationRecordedEvent(event)) {
     readmodel[event.groupId].evaluationCount += 1;
-    readmodel[event.groupId].latestActivityAt = O.some(event.publishedAt);
+    const newPublishedAt = pipe(
+      readmodel[event.groupId].latestActivityAt,
+      O.map((previousPublishedAt) => (
+        event.publishedAt > previousPublishedAt
+          ? event.publishedAt
+          : previousPublishedAt
+      )),
+      O.alt(() => O.some(event.publishedAt)),
+    );
+    readmodel[event.groupId].latestActivityAt = newPublishedAt;
   }
   return readmodel;
 };
