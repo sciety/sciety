@@ -49,7 +49,6 @@
 
 @mixin set-site-header-link-colours() {
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
-
 }
 
 // extracted and adapted from site-header/_index.scss
