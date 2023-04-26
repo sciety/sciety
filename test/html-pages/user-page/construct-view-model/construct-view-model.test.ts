@@ -18,6 +18,10 @@ describe('construct-view-model', () => {
   let adapters: Ports;
   let viewmodel: ViewModel;
   const user = arbitraryUserDetails();
+  const pageParams = {
+    handle: user.handle as string as CandidateUserHandle,
+    user: O.none,
+  };
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -38,10 +42,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
 
       viewmodel = await pipe(
-        {
-          handle: user.handle as string as CandidateUserHandle,
-          user: O.some(user),
-        },
+        pageParams,
         constructViewModel('lists', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -69,10 +70,7 @@ describe('construct-view-model', () => {
 
     it('the article count of the default list is 1', async () => {
       viewmodel = await pipe(
-        {
-          handle: user.handle as string as CandidateUserHandle,
-          user: O.some(user),
-        },
+        pageParams,
         constructViewModel('lists', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -101,10 +99,7 @@ describe('construct-view-model', () => {
 
     it.failing('returns them in order of most recently followed first', async () => {
       viewmodel = await pipe(
-        {
-          handle: user.handle as string as CandidateUserHandle,
-          user: O.some(user),
-        },
+        pageParams,
         constructViewModel('followers', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -125,10 +120,8 @@ describe('construct-view-model', () => {
     const userDisplayName = user.displayName;
 
     beforeEach(async () => {
-      const defaultParams = { handle: user.handle as string as CandidateUserHandle, user: O.none };
-
       viewmodel = await pipe(
-        defaultParams,
+        pageParams,
         constructViewModel(tabName, adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
