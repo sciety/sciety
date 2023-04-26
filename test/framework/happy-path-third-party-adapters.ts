@@ -2,6 +2,7 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import * as O from 'fp-ts/Option';
+import { SearchForArticles } from '../../src/shared-ports/search-for-articles';
 import {
   FetchArticle, FetchReview, FetchStaticFile, FindVersionsForArticleDoi,
 } from '../../src/shared-ports';
@@ -15,6 +16,7 @@ export type HappyPathThirdPartyAdapters = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  searchForArticles: SearchForArticles,
 };
 
 export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters => ({
@@ -37,4 +39,9 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
       version: 1,
     },
   ]),
+  searchForArticles: () => () => TE.right({
+    items: [],
+    total: 0,
+    nextCursor: O.none,
+  }),
 });
