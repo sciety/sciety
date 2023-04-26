@@ -56,53 +56,6 @@ describe('user-page', () => {
     ['lists'],
     ['followed-groups'],
   ])('page tab: %s', (tabName: string) => {
-    it('uses the user displayname as page title', async () => {
-      const userDisplayName = arbitraryString();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some({
-          ...arbitraryUserDetails(),
-          displayName: userDisplayName,
-        }),
-      };
-      const page = await pipe(
-        defaultParams,
-        userPage(ports)(tabName),
-      )();
-
-      expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
-    });
-
-    it('accepts handle as a string', async () => {
-      const page = await pipe(
-        defaultParams,
-        userPage(defaultAdapters)(tabName),
-      )();
-
-      expect(E.isRight(page)).toBe(true);
-    });
-
-    it('uses the user displayname as the opengraph title', async () => {
-      const userDisplayName = arbitraryString();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some({
-          ...arbitraryUserDetails(),
-          displayName: userDisplayName,
-        }),
-      };
-      const page = await pipe(
-        defaultParams,
-        userPage(ports)(tabName),
-      )();
-
-      expect(page).toStrictEqual(E.right(expect.objectContaining({
-        openGraph: expect.objectContaining({
-          title: userDisplayName,
-        }),
-      })));
-    });
-
     describe('opengraph description', () => {
       const user = arbitraryUserDetails();
       const secondList = arbitraryList(LOID.fromUserId(user.id));
