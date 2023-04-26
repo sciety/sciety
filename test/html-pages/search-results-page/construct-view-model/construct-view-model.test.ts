@@ -12,6 +12,7 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let adapters: Ports;
+  const articleId = arbitraryDoi();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -21,7 +22,7 @@ describe('construct-view-model', () => {
       searchForArticles: () => () => TE.right({
         items: [
           {
-            articleId: arbitraryDoi(),
+            articleId,
             server: arbitraryArticleServer(),
             title: arbitrarySanitisedHtmlFragment(),
             authors: O.none,
@@ -54,7 +55,15 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it.todo('article cards are included in the view model');
+      it('article cards are included in the view model', () => {
+        expect(result.itemsToDisplay).toStrictEqual(
+          [
+            expect.objectContaining({
+              articleId,
+            }),
+          ],
+        );
+      });
 
       it.todo('the articles tab is active');
 
