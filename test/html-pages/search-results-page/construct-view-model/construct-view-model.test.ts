@@ -65,7 +65,9 @@ describe('construct-view-model', () => {
         );
       });
 
-      it.todo('the articles tab is active');
+      it('the articles tab is active', () => {
+        expect(result.category).toBe('articles');
+      });
 
       it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(1);
