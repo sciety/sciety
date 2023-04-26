@@ -160,7 +160,25 @@ describe('construct-view-model', () => {
     });
 
     describe('but there are no results', () => {
-      it.todo('write many of these');
+      const query = arbitraryString();
+
+      beforeEach(async () => {
+        result = await pipe(
+          {
+            query, category, cursor, page, evaluatedOnly,
+          },
+          constructViewModel(defaultAdapters, 1),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('there are no group cards included in the view model', () => {
+        expect(result.itemsToDisplay).toStrictEqual([]);
+      });
+
+      it('the number of groups found is displayed', () => {
+        expect(result.availableGroupMatches).toBe(0);
+      });
     });
   });
 
