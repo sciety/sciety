@@ -62,7 +62,9 @@ describe('construct-view-model', () => {
         expect(result.availableArticleMatches).toBe(1);
       });
 
-      it.todo('the number of groups found is displayed');
+      it('the number of groups found is displayed', () => {
+        expect(result.availableGroupMatches).toBe(0);
+      });
     });
 
     describe('but there are no results', () => {
