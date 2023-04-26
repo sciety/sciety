@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
@@ -9,11 +10,8 @@ import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../src/html-pages/user-page/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/user-page/view-model';
-import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { arbitraryString } from '../../../helpers';
-import { arbitraryCandidateUserHandle } from '../../../types/candidate-user-handle.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -133,22 +131,19 @@ describe('construct-view-model', () => {
   describe.each([
     ['lists'],
   ])('page tab: %s', (tabName: string) => {
-    const userDisplayName = arbitraryString();
+    const userDisplayName = user.displayName;
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(user);
       const adapters: Ports = {
         ...framework.queries,
         getAllEvents: framework.getAllEvents,
       };
       const ports: Ports = {
         ...adapters,
-        lookupUserByHandle: () => O.some({
-          ...arbitraryUserDetails(),
-          displayName: userDisplayName,
-        }),
       };
-      const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
+      const defaultParams = { handle: user.handle as string as CandidateUserHandle, user: O.none };
 
       viewmodel = await pipe(
         defaultParams,
