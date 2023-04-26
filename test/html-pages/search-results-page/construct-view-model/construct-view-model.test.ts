@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel, Ports } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
@@ -31,7 +31,7 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
 
-    describe('and there are results', () => {
+    describe('and there is only one page of results', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
@@ -77,6 +77,60 @@ describe('construct-view-model', () => {
 
       it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(1);
+      });
+
+      it('the number of groups found is displayed', () => {
+        expect(result.availableGroupMatches).toBe(0);
+      });
+    });
+
+    describe('and there is more than one page of results', () => {
+      const articleId = arbitraryDoi();
+      const itemsPerPage = 1;
+
+      beforeEach(async () => {
+        result = await pipe(
+          {
+            query, category, cursor, page, evaluatedOnly,
+          },
+          constructViewModel(
+            {
+              ...defaultAdapters,
+              searchForArticles: () => () => TE.right({
+                items: [
+                  {
+                    articleId,
+                    server: arbitraryArticleServer(),
+                    title: arbitrarySanitisedHtmlFragment(),
+                    authors: O.none,
+                  },
+                ],
+                total: 2,
+                nextCursor: O.some(arbitraryWord()),
+              }),
+            },
+            itemsPerPage,
+          ),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('no more than itemsPerPage article cards are included in the view model', () => {
+        expect(result.itemsToDisplay).toStrictEqual(
+          [
+            expect.objectContaining({
+              articleId,
+            }),
+          ],
+        );
+      });
+
+      it('the articles tab is active', () => {
+        expect(result.category).toBe('articles');
+      });
+
+      it('the number of articles found is displayed', () => {
+        expect(result.availableArticleMatches).toBe(2);
       });
 
       it('the number of groups found is displayed', () => {
