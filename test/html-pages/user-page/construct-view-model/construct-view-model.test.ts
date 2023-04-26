@@ -95,15 +95,20 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.followGroup(user.id, group1.id);
       await framework.commandHelpers.followGroup(user.id, group2.id);
       await framework.commandHelpers.followGroup(user.id, group3.id);
-    });
 
-    it.failing('returns them in order of most recently followed first', async () => {
       viewmodel = await pipe(
         pageParams,
         constructViewModel('followers', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('the group count is 3', () => {
+      // eslint-disable-next-line jest/prefer-to-have-length
+      expect(viewmodel.groupIds.length).toBe(3);
+    });
+
+    it.failing('returns them in order of most recently followed first', async () => {
       expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
         followedGroups: O.some([
           expect.objectContaining({ id: group3.id }),
