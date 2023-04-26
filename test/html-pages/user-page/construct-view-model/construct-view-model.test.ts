@@ -15,27 +15,28 @@ import { arbitraryGroup } from '../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
+  let adapters: Ports;
+  let viewmodel: ViewModel;
   const user = arbitraryUserDetails();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     framework = createTestFramework();
+    adapters = {
+      ...framework.queries,
+      getAllEvents: framework.getAllEvents,
+    };
+    await framework.commandHelpers.createUserAccount(user);
   });
 
   describe('when the user owns two lists', () => {
     let initialUserList: List;
     const updatedList = arbitraryList(LOID.fromUserId(user.id));
-    let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.createList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
 
-      const adapters: Ports = {
-        ...framework.queries,
-        getAllEvents: framework.getAllEvents,
-      };
       viewmodel = await pipe(
         {
           handle: user.handle as string as CandidateUserHandle,
@@ -62,17 +63,12 @@ describe('construct-view-model', () => {
 
   describe('when the user saves an article to the default list for the first time', () => {
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
     });
 
     it('the article count of the default list is 1', async () => {
-      const adapters: Ports = {
-        ...framework.queries,
-        getAllEvents: framework.getAllEvents,
-      };
-      const viewmodel = await pipe(
+      viewmodel = await pipe(
         {
           handle: user.handle as string as CandidateUserHandle,
           user: O.some(user),
@@ -98,23 +94,18 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createGroup(group1);
       await framework.commandHelpers.createGroup(group2);
       await framework.commandHelpers.createGroup(group3);
-      await framework.commandHelpers.createUserAccount(user);
       await framework.commandHelpers.followGroup(user.id, group1.id);
       await framework.commandHelpers.followGroup(user.id, group2.id);
       await framework.commandHelpers.followGroup(user.id, group3.id);
     });
 
     it.failing('returns them in order of most recently followed first', async () => {
-      const ports = {
-        ...framework.queries,
-        getAllEvents: framework.getAllEvents,
-      };
-      const viewmodel = await pipe(
+      viewmodel = await pipe(
         {
           handle: user.handle as string as CandidateUserHandle,
           user: O.some(user),
         },
-        constructViewModel('followers', ports),
+        constructViewModel('followers', adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -132,22 +123,13 @@ describe('construct-view-model', () => {
     ['lists'],
   ])('page tab: %s', (tabName: string) => {
     const userDisplayName = user.displayName;
-    let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
-      const adapters: Ports = {
-        ...framework.queries,
-        getAllEvents: framework.getAllEvents,
-      };
-      const ports: Ports = {
-        ...adapters,
-      };
       const defaultParams = { handle: user.handle as string as CandidateUserHandle, user: O.none };
 
       viewmodel = await pipe(
         defaultParams,
-        constructViewModel(tabName, ports),
+        constructViewModel(tabName, adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
