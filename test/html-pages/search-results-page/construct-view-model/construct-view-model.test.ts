@@ -11,26 +11,14 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
+  let defaultAdapters: Ports;
   const articleId = arbitraryDoi();
 
   beforeEach(() => {
     framework = createTestFramework();
-    adapters = {
+    defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
-      searchForArticles: () => () => TE.right({
-        items: [
-          {
-            articleId,
-            server: arbitraryArticleServer(),
-            title: arbitrarySanitisedHtmlFragment(),
-            authors: O.none,
-          },
-        ],
-        total: 1,
-        nextCursor: O.none,
-      }),
       getAllEvents: framework.getAllEvents,
     };
   });
@@ -50,7 +38,24 @@ describe('construct-view-model', () => {
           {
             query, category, cursor, page, evaluatedOnly,
           },
-          constructViewModel(adapters, 1),
+          constructViewModel(
+            {
+              ...defaultAdapters,
+              searchForArticles: () => () => TE.right({
+                items: [
+                  {
+                    articleId,
+                    server: arbitraryArticleServer(),
+                    title: arbitrarySanitisedHtmlFragment(),
+                    authors: O.none,
+                  },
+                ],
+                total: 1,
+                nextCursor: O.none,
+              }),
+            },
+            1,
+          ),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -79,7 +84,35 @@ describe('construct-view-model', () => {
     });
 
     describe('but there are no results', () => {
-      it.todo('write many of these');
+      let result: ViewModel;
+
+      beforeEach(async () => {
+        result = await pipe(
+          {
+            query, category, cursor, page, evaluatedOnly,
+          },
+          constructViewModel(
+            {
+              ...defaultAdapters,
+              searchForArticles: () => () => TE.right({
+                items: [],
+                total: 0,
+                nextCursor: O.none,
+              }),
+            },
+            1,
+          ),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('there are no article cards included in the view model', () => {
+        expect(result.itemsToDisplay).toStrictEqual([]);
+      });
+
+      it('the number of articles found is displayed', () => {
+        expect(result.availableArticleMatches).toBe(0);
+      });
     });
   });
 
