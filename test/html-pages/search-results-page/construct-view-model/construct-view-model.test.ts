@@ -29,7 +29,7 @@ describe('construct-view-model', () => {
     const category = O.some('articles' as const);
     const cursor = O.none;
     const page = O.none;
-    const evaluatedOnly = O.none;
+    const evaluatedOnly = O.some(arbitraryString());
 
     describe('and there is only one page of results', () => {
       const articleId = arbitraryDoi();
@@ -85,6 +85,10 @@ describe('construct-view-model', () => {
 
       it('the query is displayed', () => {
         expect(result.query).toBe(query);
+      });
+
+      it('the state of the filter for evaluated articles is displayed', () => {
+        expect(result.evaluatedOnly).toBe(true);
       });
     });
 
