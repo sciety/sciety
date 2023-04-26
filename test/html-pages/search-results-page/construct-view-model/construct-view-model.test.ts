@@ -140,6 +140,10 @@ describe('construct-view-model', () => {
       it('the current page number is displayed', () => {
         expect(result.pageNumber).toBe(1);
       });
+
+      it('the total number of pages is displayed', () => {
+        expect(result.numberOfPages).toBe(2);
+      });
     });
 
     describe('but there are no results', () => {
