@@ -4,8 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel, Ports } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryString } from '../../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryArticleServer } from '../../../types/article-server.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -16,6 +18,18 @@ describe('construct-view-model', () => {
     adapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
+      searchForArticles: () => () => TE.right({
+        items: [
+          {
+            articleId: arbitraryDoi(),
+            server: arbitraryArticleServer(),
+            title: arbitrarySanitisedHtmlFragment(),
+            authors: O.none,
+          },
+        ],
+        total: 1,
+        nextCursor: O.none,
+      }),
       getAllEvents: framework.getAllEvents,
     };
   });
@@ -44,7 +58,7 @@ describe('construct-view-model', () => {
 
       it.todo('the articles tab is active');
 
-      it.failing('the number of articles found is displayed', () => {
+      it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(1);
       });
 
