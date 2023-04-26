@@ -136,6 +136,10 @@ describe('construct-view-model', () => {
       it('the number of groups found is displayed', () => {
         expect(result.availableGroupMatches).toBe(0);
       });
+
+      it('the current page number is displayed', () => {
+        expect(result.pageNumber).toBe(1);
+      });
     });
 
     describe('but there are no results', () => {
