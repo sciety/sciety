@@ -87,6 +87,7 @@ describe('construct-view-model', () => {
     describe('and there is more than one page of results', () => {
       const articleId = arbitraryDoi();
       const itemsPerPage = 1;
+      const cursorValue = arbitraryWord();
 
       beforeEach(async () => {
         result = await pipe(
@@ -106,7 +107,7 @@ describe('construct-view-model', () => {
                   },
                 ],
                 total: 2,
-                nextCursor: O.some(arbitraryWord()),
+                nextCursor: O.some(cursorValue),
               }),
             },
             itemsPerPage,
@@ -143,6 +144,10 @@ describe('construct-view-model', () => {
 
       it('the total number of pages is displayed', () => {
         expect(result.numberOfPages).toBe(2);
+      });
+
+      it('the link to the next page of results is provided', () => {
+        expect(result.nextCursor).toStrictEqual(O.some(cursorValue));
       });
     });
 
