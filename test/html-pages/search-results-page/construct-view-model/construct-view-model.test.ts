@@ -8,11 +8,12 @@ import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../../helper
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
+import { arbitraryGroup } from '../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let defaultAdapters: Ports;
-  const articleId = arbitraryDoi();
+  let result: ViewModel;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -31,7 +32,7 @@ describe('construct-view-model', () => {
     const evaluatedOnly = O.none;
 
     describe('and there are results', () => {
-      let result: ViewModel;
+      const articleId = arbitraryDoi();
 
       beforeEach(async () => {
         result = await pipe(
@@ -84,8 +85,6 @@ describe('construct-view-model', () => {
     });
 
     describe('but there are no results', () => {
-      let result: ViewModel;
-
       beforeEach(async () => {
         result = await pipe(
           {
@@ -117,8 +116,47 @@ describe('construct-view-model', () => {
   });
 
   describe('when the category is "groups"', () => {
+    const category = O.some('groups' as const);
+    const cursor = O.none;
+    const page = O.none;
+    const evaluatedOnly = O.none;
+
     describe('and there are results', () => {
-      it.todo('write many of these');
+      const group = arbitraryGroup();
+      const query = group.name;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createGroup(group);
+        result = await pipe(
+          {
+            query, category, cursor, page, evaluatedOnly,
+          },
+          constructViewModel(defaultAdapters, 1),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('group cards are included in the view model', () => {
+        expect(result.itemsToDisplay).toStrictEqual(
+          [
+            expect.objectContaining({
+              name: group.name,
+            }),
+          ],
+        );
+      });
+
+      it('the groups tab is active', () => {
+        expect(result.category).toBe('groups');
+      });
+
+      it('the number of groups found is displayed', () => {
+        expect(result.availableGroupMatches).toBe(1);
+      });
+
+      it('the number of articles found is displayed', () => {
+        expect(result.availableArticleMatches).toBe(0);
+      });
     });
 
     describe('but there are no results', () => {
