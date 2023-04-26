@@ -61,7 +61,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('article cards are included in the view model', () => {
+      it('all article cards are included in the view model', () => {
         expect(result.itemsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
@@ -146,6 +146,14 @@ describe('construct-view-model', () => {
         expect(result.availableGroupMatches).toBe(0);
       });
 
+      it('the query is displayed', () => {
+        expect(result.query).toBe(query);
+      });
+
+      it('the state of the filter for evaluated articles is displayed', () => {
+        expect(result.evaluatedOnly).toBe(true);
+      });
+
       it('the current page number is displayed', () => {
         expect(result.pageNumber).toBe(1);
       });
@@ -187,6 +195,14 @@ describe('construct-view-model', () => {
       it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(0);
       });
+
+      it('the query is displayed', () => {
+        expect(result.query).toBe(query);
+      });
+
+      it('the state of the filter for evaluated articles is displayed', () => {
+        expect(result.evaluatedOnly).toBe(true);
+      });
     });
   });
 
@@ -211,7 +227,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('group cards are included in the view model', () => {
+      it('all group cards are included in the view model', () => {
         expect(result.itemsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
@@ -231,6 +247,10 @@ describe('construct-view-model', () => {
 
       it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(0);
+      });
+
+      it('the query is displayed', () => {
+        expect(result.query).toBe(query);
       });
     });
 
@@ -253,6 +273,10 @@ describe('construct-view-model', () => {
 
       it('the number of groups found is displayed', () => {
         expect(result.availableGroupMatches).toBe(0);
+      });
+
+      it('the query is displayed', () => {
+        expect(result.query).toBe(query);
       });
     });
   });
