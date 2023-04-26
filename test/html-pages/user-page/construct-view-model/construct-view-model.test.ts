@@ -12,6 +12,8 @@ import { ViewModel } from '../../../../src/html-pages/user-page/view-model';
 import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryCandidateUserHandle } from '../../../types/candidate-user-handle.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -125,6 +127,38 @@ describe('construct-view-model', () => {
           expect.objectContaining({ id: group1.id }),
         ]),
       }));
+    });
+  });
+
+  describe.each([
+    ['lists'],
+  ])('page tab: %s', (tabName: string) => {
+    const userDisplayName = arbitraryString();
+    let viewmodel: ViewModel;
+
+    beforeEach(async () => {
+      const adapters: Ports = {
+        ...framework.queries,
+        getAllEvents: framework.getAllEvents,
+      };
+      const ports: Ports = {
+        ...adapters,
+        lookupUserByHandle: () => O.some({
+          ...arbitraryUserDetails(),
+          displayName: userDisplayName,
+        }),
+      };
+      const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
+
+      viewmodel = await pipe(
+        defaultParams,
+        constructViewModel(tabName, ports),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('exposes the user display name', async () => {
+      expect(viewmodel.userDetails.displayName).toBe(userDisplayName);
     });
   });
 });
