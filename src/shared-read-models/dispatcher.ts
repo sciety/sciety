@@ -4,6 +4,7 @@ import { DomainEvent } from '../domain-events';
 import * as annotations from './annotations';
 import * as evaluations from './evaluations';
 import * as followings from './followings';
+import * as groupActivity from './group-activity';
 import * as groups from './groups';
 import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists';
 import * as lists from './lists';
@@ -17,6 +18,7 @@ export type Queries = addArticleToElifeSubjectAreaList.Queries
 & articleActivity.Queries
 & evaluations.Queries
 & followings.Queries
+& groupActivity.Queries
 & groups.Queries
 & idsOfEvaluatedArticlesLists.Queries
 & lists.Queries
@@ -35,6 +37,7 @@ export const dispatcher = (): Dispatcher => {
     articleActivityReadModel: articleActivity.initialState(),
     evaluationsReadModel: evaluations.initialState(),
     followingsReadModel: followings.initialState(),
+    groupActivityReadModel: groupActivity.initialState(),
     groupsReadModel: groups.initialState(),
     idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
     listsReadModel: lists.initialState(),
@@ -62,6 +65,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.followingsReadModel,
       followings.handleEvent,
     )(events);
+    // readModels.groupActivityReadModel = RA.reduce(
+    //   readModels.groupActivityReadModel,
+    //   groupActivity.handleEvent,
+    // )(events);
     readModels.groupsReadModel = RA.reduce(
       readModels.groupsReadModel,
       groups.handleEvent,
@@ -86,6 +93,7 @@ export const dispatcher = (): Dispatcher => {
     ...articleActivity.queries(readModels.articleActivityReadModel),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
+    ...groupActivity.queries(readModels.groupActivityReadModel),
     ...groups.queries(readModels.groupsReadModel),
     ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
     ...lists.queries(readModels.listsReadModel),
