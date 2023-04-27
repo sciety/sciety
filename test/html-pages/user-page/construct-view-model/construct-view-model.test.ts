@@ -40,25 +40,29 @@ describe('construct-view-model', () => {
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.createList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
-
-      viewmodel = await pipe(
-        pageParams,
-        constructViewModel('lists', adapters),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
     });
 
-    it('the list count is 2', async () => {
-      expect(viewmodel.listCount).toBe(2);
-    });
+    describe('in the lists tab', () => {
+      beforeEach(async () => {
+        viewmodel = await pipe(
+          pageParams,
+          constructViewModel('lists', adapters),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
 
-    it('the most recently updated list is shown first', async () => {
-      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
-        ownedLists: [
-          expect.objectContaining({ listId: updatedList.id }),
-          expect.objectContaining({ listId: initialUserList.id }),
-        ],
-      }));
+      it('the list count is 2', async () => {
+        expect(viewmodel.listCount).toBe(2);
+      });
+
+      it('the most recently updated list is shown first', async () => {
+        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+          ownedLists: [
+            expect.objectContaining({ listId: updatedList.id }),
+            expect.objectContaining({ listId: initialUserList.id }),
+          ],
+        }));
+      });
     });
   });
 
