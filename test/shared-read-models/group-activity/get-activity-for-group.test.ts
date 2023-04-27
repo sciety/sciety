@@ -9,20 +9,51 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('get-activity-for-group', () => {
-  describe('when the group does not exist', () => {
-    const readModel = pipe(
-      [],
-      RA.reduce(initialState(), handleEvent),
-    );
-    const result = getActivityForGroup(readModel)(arbitraryGroupId());
+  const group = arbitraryGroup();
 
-    it('returns O.none', () => {
-      expect(result).toStrictEqual(O.none);
+  describe('when the group has not joined', () => {
+    describe('and no evaluation has been recorded for it', () => {
+      const readModel = pipe(
+        [],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(arbitraryGroupId());
+
+      it('returns O.none', () => {
+        expect(result).toStrictEqual(O.none);
+      });
+    });
+
+    describe.skip('and an evaluation has been recorded for it', () => {
+      const recordedEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      };
+      let result: O.Option<unknown>;
+
+      beforeEach(() => {
+        const readModel = pipe(
+          [
+            evaluationRecorded(
+              recordedEvaluation.groupId,
+              recordedEvaluation.articleId,
+              recordedEvaluation.reviewId,
+              recordedEvaluation.authors,
+              recordedEvaluation.publishedAt,
+            ),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+        result = getActivityForGroup(readModel)(group.id);
+      });
+
+      it('returns O.none', () => {
+        expect(result).toStrictEqual(O.none);
+      });
     });
   });
 
-  describe('when the group exists', () => {
-    const group = arbitraryGroup();
+  describe('when the group has joined', () => {
     const groupJoinedEvent = groupJoined(
       group.id,
       group.name,
