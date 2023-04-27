@@ -46,30 +46,6 @@ const defaultAdapters: Ports = {
 const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
 
 describe('user-page', () => {
-  describe.each([
-    ['lists'],
-    ['followed-groups'],
-  ])('page tab: %s', (tabName: string) => {
-    it('shows the following count in the tab title', async () => {
-      const user = arbitraryUserDetails();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some(user),
-        getAllEvents: T.of([userFollowedEditorialCommunity(user.id, arbitraryGroupId())]),
-      };
-      const page = await pipe(
-        defaultParams,
-        userPage(ports)(tabName),
-        contentOf,
-        T.map(JSDOM.fragment),
-      )();
-      const tabHeadings = page.querySelectorAll('.tab');
-      const headings = Array.from(tabHeadings).map((tab) => tab.innerHTML);
-
-      expect(headings[1]).toContain('Following (1)');
-    });
-  });
-
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
       const page = await pipe(

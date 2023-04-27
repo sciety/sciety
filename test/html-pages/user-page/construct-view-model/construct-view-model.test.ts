@@ -103,7 +103,7 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('the group count is 3', () => {
+    it('the following count is 3', () => {
       // eslint-disable-next-line jest/prefer-to-have-length
       expect(viewmodel.groupIds.length).toBe(3);
     });
