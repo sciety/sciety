@@ -14,8 +14,9 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { Queries } from '../../shared-read-models';
 
-export type Ports = {
+export type Ports = Queries & {
   getAllEvents: GetAllEvents,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   getFollowers: GetFollowers,
