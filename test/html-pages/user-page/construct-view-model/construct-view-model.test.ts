@@ -103,33 +103,41 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.followGroup(user.id, group1.id);
       await framework.commandHelpers.followGroup(user.id, group2.id);
       await framework.commandHelpers.followGroup(user.id, group3.id);
-
-      viewmodel = await pipe(
-        pageParams,
-        constructViewModel('followers', adapters),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
     });
 
-    it('the following count is 3', () => {
-      // eslint-disable-next-line jest/prefer-to-have-length
-      expect(viewmodel.groupIds.length).toBe(3);
-    });
+    describe('when the followed groups tab is selected', () => {
+      beforeEach(async () => {
+        viewmodel = await pipe(
+          pageParams,
+          constructViewModel('followed-groups', adapters),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
 
-    it.failing('returns them in order of most recently followed first', async () => {
-      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
-        followedGroups: O.some([
-          expect.objectContaining({ id: group3.id }),
-          expect.objectContaining({ id: group2.id }),
-          expect.objectContaining({ id: group1.id }),
-        ]),
-      }));
+      it('the followed groups tab is the active tab', () => {
+        expect(viewmodel.activeTab.selector).toBe('followed-groups');
+      });
+
+      it('the following count is 3', () => {
+        // eslint-disable-next-line jest/prefer-to-have-length
+        expect(viewmodel.groupIds.length).toBe(3);
+      });
+
+      it.failing('returns them in order of most recently followed first', async () => {
+        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+          followedGroups: O.some([
+            expect.objectContaining({ id: group3.id }),
+            expect.objectContaining({ id: group2.id }),
+            expect.objectContaining({ id: group1.id }),
+          ]),
+        }));
+      });
     });
   });
 
   describe.each([
     ['lists'],
-    ['following'],
+    ['followed-groups'],
   ])('page tab: %s', (tabName: string) => {
     beforeEach(async () => {
       viewmodel = await pipe(
