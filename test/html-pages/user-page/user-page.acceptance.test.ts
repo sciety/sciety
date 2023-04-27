@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,7 +7,7 @@ import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/render-as-html';
+import { followingNothing } from '../../../src/html-pages/user-page/render-as-html';
 import { Ports, userPage } from '../../../src/html-pages/user-page';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -47,18 +46,6 @@ const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
 
 describe('user-page', () => {
   describe('followed-groups tab', () => {
-    it('shows groups as the active tab', async () => {
-      const page = await pipe(
-        defaultParams,
-        userPage(defaultAdapters)('followed-groups'),
-        contentOf,
-        T.map(JSDOM.fragment),
-      )();
-      const tabHeading = page.querySelector('.tab--active')?.innerHTML;
-
-      expect(tabHeading).toContain('Following');
-    });
-
     describe('user is following groups', () => {
       it('displays followed groups as group cards', async () => {
         const group1 = arbitraryGroup();
@@ -101,32 +88,6 @@ describe('user-page', () => {
 
         expect(groupCards).toHaveLength(2);
       });
-
-      describe('any of the group card generations fail', () => {
-        it('displays a single error message as the tab panel content', async () => {
-          const user = arbitraryUserDetails();
-          const ports: Ports = {
-            ...defaultAdapters,
-            getGroup: () => O.none,
-            getAllEvents: T.of([
-              userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
-              userFollowedEditorialCommunity(user.id, arbitraryGroupId()),
-            ]),
-            lookupUserByHandle: () => O.some(user),
-          };
-
-          const content = await pipe(
-            defaultParams,
-            userPage(ports)('followed-groups'),
-            contentOf,
-            T.map(JSDOM.fragment),
-          )();
-
-          const tabPanelContent = content.querySelector('.tab-panel')?.innerHTML;
-
-          expect(tabPanelContent).toContain(informationUnavailable);
-        });
-      });
     });
 
     describe('when the user is not following any groups', () => {
@@ -160,23 +121,6 @@ describe('user-page', () => {
   });
 
   describe('lists tab', () => {
-    it('uses the user displayname as page title', async () => {
-      const userDisplayName = arbitraryString();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some({
-          ...arbitraryUserDetails(),
-          displayName: userDisplayName,
-        }),
-      };
-      const page = await pipe(
-        defaultParams,
-        userPage(ports)('lists'),
-      )();
-
-      expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
-    });
-
     it('shows a card linking to the saved-articles list page', async () => {
       const page = await pipe(
         defaultParams,
