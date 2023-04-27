@@ -24,7 +24,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe.skip('and an evaluation has been recorded for it', () => {
+    describe('and an evaluation has been recorded for it', () => {
       const recordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,

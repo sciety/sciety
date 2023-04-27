@@ -17,6 +17,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.groupId] = { evaluationCount: 0, latestActivityAt: O.none };
   }
   if (isEvaluationRecordedEvent(event)) {
+    if (readmodel[event.groupId] === undefined) {
+      return readmodel;
+    }
     readmodel[event.groupId].evaluationCount += 1;
     const newPublishedAt = pipe(
       readmodel[event.groupId].latestActivityAt,
