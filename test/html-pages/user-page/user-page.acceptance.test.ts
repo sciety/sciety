@@ -6,7 +6,6 @@ import { JSDOM } from 'jsdom';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { followingNothing } from '../../../src/html-pages/user-page/render-as-html';
 import { Ports, userPage } from '../../../src/html-pages/user-page';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -44,37 +43,6 @@ const defaultAdapters: Ports = {
 const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
 
 describe('user-page', () => {
-  describe('followed-groups tab', () => {
-    describe('when the user is not following any groups', () => {
-      let page: DocumentFragment;
-
-      beforeAll(async () => {
-        const adapters: Ports = {
-          ...defaultAdapters,
-          getGroupsFollowedBy: () => [],
-        };
-        page = await pipe(
-          defaultParams,
-          userPage(adapters)('followed-groups'),
-          contentOf,
-          T.map(JSDOM.fragment),
-        )();
-      });
-
-      it('shows no list of followed groups', async () => {
-        const groupCards = page.querySelectorAll('.group-card');
-
-        expect(groupCards).toHaveLength(0);
-      });
-
-      it('shows a message saying the user is not following any groups', async () => {
-        const message = page.querySelector('.tab-panel')?.innerHTML;
-
-        expect(message).toContain(followingNothing);
-      });
-    });
-  });
-
   describe('lists tab', () => {
     it('shows a card linking to the saved-articles list page', async () => {
       const page = await pipe(
