@@ -160,18 +160,6 @@ describe('user-page', () => {
   });
 
   describe('lists tab', () => {
-    it('shows lists as the active tab', async () => {
-      const page = await pipe(
-        defaultParams,
-        userPage(defaultAdapters)('lists'),
-        contentOf,
-        T.map(JSDOM.fragment),
-      )();
-      const tabHeading = page.querySelector('.tab--active')?.innerHTML;
-
-      expect(tabHeading).toContain('Lists (1)');
-    });
-
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports: Ports = {

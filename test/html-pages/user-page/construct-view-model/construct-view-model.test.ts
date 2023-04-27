@@ -42,13 +42,17 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
     });
 
-    describe('in the lists tab', () => {
+    describe('and the lists tab is selected', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
           constructViewModel('lists', adapters),
           TE.getOrElse(shouldNotBeCalled),
         )();
+      });
+
+      it('the lists tab is the active tab', () => {
+        expect(viewmodel.activeTab.selector).toBe('lists');
       });
 
       it('the list count is 2', async () => {
