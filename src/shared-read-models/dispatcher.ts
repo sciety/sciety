@@ -65,10 +65,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.followingsReadModel,
       followings.handleEvent,
     )(events);
-    // readModels.groupActivityReadModel = RA.reduce(
-    //   readModels.groupActivityReadModel,
-    //   groupActivity.handleEvent,
-    // )(events);
+    readModels.groupActivityReadModel = RA.reduce(
+      readModels.groupActivityReadModel,
+      groupActivity.handleEvent,
+    )(events);
     readModels.groupsReadModel = RA.reduce(
       readModels.groupsReadModel,
       groups.handleEvent,
