@@ -59,6 +59,14 @@ describe('construct-view-model', () => {
         expect(viewmodel.listCount).toBe(2);
       });
 
+      it('two list cards are displayed', () => {
+        if (viewmodel.activeTab.selector !== 'lists') {
+          throw new Error('the wrong tab is selected');
+        }
+
+        expect(viewmodel.activeTab.ownedLists).toHaveLength(2);
+      });
+
       it('the most recently updated list is shown first', async () => {
         expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
           ownedLists: [
