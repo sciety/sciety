@@ -3,7 +3,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { groupJoined, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { ListOwnerId } from '../../../src/types/list-owner-id';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
@@ -46,50 +45,6 @@ const defaultParams = { handle: arbitraryCandidateUserHandle(), user: O.none };
 
 describe('user-page', () => {
   describe('followed-groups tab', () => {
-    describe('user is following groups', () => {
-      it('displays followed groups as group cards', async () => {
-        const group1 = arbitraryGroup();
-        const group2 = arbitraryGroup();
-        const user = arbitraryUserDetails();
-        const ports: Ports = {
-          ...defaultAdapters,
-          getAllEvents: T.of([
-            groupJoined(
-              group1.id,
-              group1.name,
-              group1.avatarPath,
-              group1.descriptionPath,
-              group1.shortDescription,
-              group1.homepage,
-              group1.slug,
-            ),
-            groupJoined(
-              group2.id,
-              group2.name,
-              group2.avatarPath,
-              group2.descriptionPath,
-              group2.shortDescription,
-              group2.homepage,
-              group2.slug,
-            ),
-            userFollowedEditorialCommunity(user.id, group1.id),
-            userFollowedEditorialCommunity(user.id, group2.id),
-          ]),
-          getGroupsFollowedBy: () => [group1.id, group2.id],
-          lookupUserByHandle: () => O.some(user),
-        };
-        const page = await pipe(
-          defaultParams,
-          userPage(ports)('followed-groups'),
-          contentOf,
-          T.map(JSDOM.fragment),
-        )();
-        const groupCards = page.querySelectorAll('.group-card');
-
-        expect(groupCards).toHaveLength(2);
-      });
-    });
-
     describe('when the user is not following any groups', () => {
       let page: DocumentFragment;
 

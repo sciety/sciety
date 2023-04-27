@@ -123,6 +123,17 @@ describe('construct-view-model', () => {
         expect(viewmodel.groupIds.length).toBe(3);
       });
 
+      it('three group cards are displayed', () => {
+        if (viewmodel.activeTab.selector !== 'followed-groups') {
+          throw new Error('the wrong tab is selected');
+        }
+        if (O.isNone(viewmodel.activeTab.followedGroups)) {
+          throw new Error('None received, should have been Some');
+        }
+
+        expect(viewmodel.activeTab.followedGroups.value).toHaveLength(3);
+      });
+
       it.failing('returns them in order of most recently followed first', async () => {
         expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
           followedGroups: O.some([
