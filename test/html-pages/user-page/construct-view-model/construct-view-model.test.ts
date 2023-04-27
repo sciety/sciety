@@ -121,6 +121,7 @@ describe('construct-view-model', () => {
 
   describe.each([
     ['lists'],
+    ['following'],
   ])('page tab: %s', (tabName: string) => {
     beforeEach(async () => {
       viewmodel = await pipe(

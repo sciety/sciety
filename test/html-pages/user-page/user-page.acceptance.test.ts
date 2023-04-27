@@ -10,13 +10,11 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../../src/html-pages/user-page/render-as-html';
 import { Ports, userPage } from '../../../src/html-pages/user-page';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { arbitraryCandidateUserHandle } from '../../types/candidate-user-handle.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -52,27 +50,6 @@ describe('user-page', () => {
     ['lists'],
     ['followed-groups'],
   ])('page tab: %s', (tabName: string) => {
-    it('shows the user details', async () => {
-      const avatarUrl = arbitraryUri();
-      const displayName = arbitraryString();
-      const handle = arbitraryUserHandle();
-      const ports: Ports = {
-        ...defaultAdapters,
-        lookupUserByHandle: () => O.some({
-          avatarUrl,
-          displayName,
-          handle,
-          id: arbitraryUserId(),
-        }),
-      };
-
-      const pageHtml = await contentOf(userPage(ports)(tabName)(defaultParams))();
-
-      expect(pageHtml).toContain(avatarUrl);
-      expect(pageHtml).toContain(displayName);
-      expect(pageHtml).toContain(handle);
-    });
-
     it('shows the following count in the tab title', async () => {
       const user = arbitraryUserDetails();
       const ports: Ports = {
