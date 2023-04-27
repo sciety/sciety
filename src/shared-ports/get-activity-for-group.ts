@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { GroupId } from '../types/group-id';
 
-export type GroupActivity = {
+type GroupActivity = {
   evaluationCount: number,
   latestActivityAt: O.Option<Date>,
 };
