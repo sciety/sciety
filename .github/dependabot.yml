@@ -12,9 +12,6 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 25
     rebase-strategy: "disabled"
-    ignore:
-      - dependency-name: "node"
-        versions: ["^15"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
