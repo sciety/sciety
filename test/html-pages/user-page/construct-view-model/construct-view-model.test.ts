@@ -122,8 +122,6 @@ describe('construct-view-model', () => {
   describe.each([
     ['lists'],
   ])('page tab: %s', (tabName: string) => {
-    const userDisplayName = user.displayName;
-
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
@@ -132,8 +130,10 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('exposes the user display name', async () => {
-      expect(viewmodel.userDetails.displayName).toBe(userDisplayName);
+    it('exposes the user details', async () => {
+      expect(viewmodel.userDetails.handle).toBe(user.handle);
+      expect(viewmodel.userDetails.displayName).toBe(user.displayName);
+      expect(viewmodel.userDetails.avatarUrl).toBe(user.avatarUrl);
     });
   });
 });
