@@ -1,11 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryGroup } from '../../types/group.helper';
 import { constructGroupCardViewModel, GroupViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('construct-group-card-view-model', () => {
   let framework: TestFramework;
@@ -69,7 +71,18 @@ describe('construct-group-card-view-model', () => {
   });
 
   describe('when the group data cannot be retrieved', () => {
-    it.todo('returns not found');
+    let viewModel: E.Either<DE.DataError, unknown>;
+
+    beforeEach(() => {
+      viewModel = pipe(
+        arbitraryGroupId(),
+        constructGroupCardViewModel(framework.queries),
+      );
+    });
+
+    it('returns not found', () => {
+      expect(viewModel).toStrictEqual(E.left(DE.notFound));
+    });
   });
 
   describe('when the group activity data cannot be retrieved', () => {
