@@ -5,6 +5,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { constructGroupCardViewModel, GroupViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('construct-group-card-view-model', () => {
   let framework: TestFramework;
@@ -19,6 +20,10 @@ describe('construct-group-card-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation({
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      });
       viewModel = pipe(
         group.id,
         constructGroupCardViewModel(framework.queries),
@@ -55,11 +60,11 @@ describe('construct-group-card-view-model', () => {
     });
 
     it('contains the evaluation count', () => {
-      expect(viewModel.evaluationCount).toBe(0);
+      expect(viewModel.evaluationCount).toBeGreaterThan(0);
     });
 
     it('contains the date of the latest activity', () => {
-      expect(O.isNone(viewModel.latestActivity)).toBe(true);
+      expect(O.isSome(viewModel.latestActivity)).toBe(true);
     });
   });
 
