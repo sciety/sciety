@@ -3,9 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
-import {
-  GetAllEvents, GetFollowers, GetGroup, SelectAllListsOwnedBy,
-} from '../../shared-ports';
+import { GetFollowers, GetGroup, SelectAllListsOwnedBy } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -14,7 +12,6 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
 export type Ports = Queries & {
-  getAllEvents: GetAllEvents,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
   getFollowers: GetFollowers,
   getGroup: GetGroup,

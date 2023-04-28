@@ -18,7 +18,6 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
     defaultAdapters = {
       ...framework.queries,
-      getAllEvents: framework.getAllEvents,
     };
   });
 

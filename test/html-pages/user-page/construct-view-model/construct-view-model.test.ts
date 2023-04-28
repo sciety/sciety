@@ -27,7 +27,6 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
     adapters = {
       ...framework.queries,
-      getAllEvents: framework.getAllEvents,
     };
     await framework.commandHelpers.createUserAccount(user);
   });

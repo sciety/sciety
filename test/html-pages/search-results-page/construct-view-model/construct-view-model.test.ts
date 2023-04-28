@@ -20,7 +20,6 @@ describe('construct-view-model', () => {
     defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
-      getAllEvents: framework.getAllEvents,
     };
   });
 
