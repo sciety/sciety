@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
-import { GetFollowers, GetGroup, SelectAllListsOwnedBy } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -11,11 +10,7 @@ import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
-export type Ports = Queries & {
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-  getFollowers: GetFollowers,
-  getGroup: GetGroup,
-};
+export type Ports = Queries;
 
 export const populateGroupViewModel = (
   ports: Ports,
