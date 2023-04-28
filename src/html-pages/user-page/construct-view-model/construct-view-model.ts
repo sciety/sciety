@@ -10,7 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import * as LOID from '../../../types/list-owner-id';
-import { ViewModel } from '../view-model';
+import { TabSelector, ViewModel } from '../view-model';
 import { constructListsTab } from './construct-lists-tab';
 import { constructFollowingTab, Ports as ConstructFollowingTabPorts } from './construct-following-tab';
 import { candidateUserHandleCodec } from '../../../types/candidate-user-handle';
@@ -31,7 +31,9 @@ export const userPageParams = t.type({
 
 export type Params = t.TypeOf<typeof userPageParams>;
 
-type ConstructViewModel = (tab: string, ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (tabSelector: TabSelector, ports: Ports)
+=> (params: Params)
+=> TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (tab, ports) => (params) => pipe(
   params.handle,

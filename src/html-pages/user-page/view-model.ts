@@ -1,8 +1,10 @@
 import * as O from 'fp-ts/Option';
-import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
+import { ListCardViewModel } from '../../shared-components/list-card';
 import { GroupCardViewModel } from '../../shared-components/group-card';
 import { GroupId } from '../../types/group-id';
 import { UserDetails } from '../../types/user-details';
+
+export type TabSelector = 'lists' | 'followed-groups';
 
 export type ListsTab = {
   selector: 'lists',

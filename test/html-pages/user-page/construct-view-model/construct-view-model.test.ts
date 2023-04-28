@@ -154,13 +154,13 @@ describe('construct-view-model', () => {
   });
 
   describe.each([
-    ['lists'],
-    ['followed-groups'],
-  ])('page tab: %s', (tabName: string) => {
+    ['lists' as const],
+    ['followed-groups' as const],
+  ])('page tab: %s', (tabSelector) => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(tabName, adapters),
+        constructViewModel(tabSelector, adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
