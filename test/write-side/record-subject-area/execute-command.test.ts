@@ -8,6 +8,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
+import { arbitraryDate } from '../../helpers';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();
@@ -46,7 +47,7 @@ describe('execute-command', () => {
   describe('when an evaluation was recorded', () => {
     const result = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), [], arbitraryDate()),
       ],
       executeCommand(command),
       E.getOrElseW(shouldNotBeCalled),

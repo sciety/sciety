@@ -37,7 +37,7 @@ describe('create-appropriate-events', () => {
   describe('when the evaluation locator has already been recorded', () => {
     const events = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator),
+        evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator, [], arbitraryDate()),
       ],
       executeCommand(input),
     );

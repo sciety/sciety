@@ -10,6 +10,7 @@ import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-rec
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
+import { arbitraryDate } from '../../helpers';
 
 describe('get-article-ids-by-state', () => {
   describe('given a bunch of events', () => {
@@ -20,10 +21,10 @@ describe('get-article-ids-by-state', () => {
 
     const readModel = pipe(
       [
-        evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId()),
+        evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId(), [], arbitraryDate()),
         articleAddedToList(articleIdB, elifeSubjectAreaLists[0]),
         subjectAreaRecorded(articleIdC, arbitrarySubjectArea()),
-        evaluationRecorded(elifeGroupId, articleIdD, arbitraryReviewId()),
+        evaluationRecorded(elifeGroupId, articleIdD, arbitraryReviewId(), [], arbitraryDate()),
         subjectAreaRecorded(articleIdD, arbitrarySubjectArea()),
       ],
       RA.reduce(initialState(), handleEvent),

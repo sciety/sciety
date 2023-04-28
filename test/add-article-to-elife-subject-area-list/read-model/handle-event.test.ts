@@ -14,6 +14,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
+import { arbitraryDate } from '../../helpers';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {
@@ -46,12 +47,12 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded (eLife) -> evaluated',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           'evaluated' as const,
         ],
         [
           'EvaluationRecorded (not eLife) -> unknown',
-          evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
           undefined,
         ],
         [
@@ -85,7 +86,7 @@ describe('handle-event', () => {
         ],
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -100,7 +101,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -109,7 +110,7 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> evaluated',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           'evaluated' as const,
         ],
         [
@@ -129,7 +130,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
             subjectAreaRecorded(articleId, subjectArea),
           ],
           RA.reduce(initialState(), handleEvent),
@@ -139,7 +140,7 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -159,7 +160,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
             articleAddedToList(articleId, elifeListId),
           ],
           RA.reduce(initialState(), handleEvent),
@@ -171,7 +172,7 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> listed',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
+          evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
           'listed' as const,
         ],
         [
@@ -195,8 +196,8 @@ describe('handle-event', () => {
         const articleId2 = arbitraryArticleId();
         const readModel = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId()),
-            evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId()),
+            evaluationRecorded(elifeGroupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(elifeGroupId, articleId2, arbitraryReviewId(), [], arbitraryDate()),
           ],
           RA.reduce(initialState(), handleEvent),
         );

@@ -28,8 +28,8 @@ export const evaluationRecorded = (
   groupId: GroupId,
   doi: Doi,
   evaluationLocator: ReviewId,
-  authors: ReadonlyArray<string> = [],
-  publishedAt: Date = new Date(),
+  authors: ReadonlyArray<string>,
+  publishedAt: Date,
   date: Date = new Date(),
 ): EvaluationRecordedEvent => ({
   id: generate(),

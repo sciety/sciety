@@ -17,7 +17,7 @@ import * as DE from '../../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../../src/types/doi';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
-import { arbitraryNumber, arbitraryUri } from '../../../helpers';
+import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
@@ -92,7 +92,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -113,9 +113,9 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -145,7 +145,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -171,8 +171,8 @@ describe('my-feed acceptance', () => {
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              evaluationRecorded(groupId, failingDoi, arbitraryReviewId()),
-              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+              evaluationRecorded(groupId, failingDoi, arbitraryReviewId(), [], arbitraryDate()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };
@@ -193,7 +193,7 @@ describe('my-feed acceptance', () => {
             fetchArticle: () => TE.left(DE.unavailable),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };

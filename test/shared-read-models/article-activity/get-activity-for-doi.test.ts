@@ -165,7 +165,7 @@ describe('get-activity-for-doi', () => {
     describe('added to a list, after being evaluated', () => {
       const readmodel = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId()),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), [], arbitraryDate()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
         RA.reduce(initialState(), handleEvent),

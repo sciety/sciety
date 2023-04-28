@@ -11,6 +11,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
+import { arbitraryDate } from '../../helpers';
 
 describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {
@@ -21,7 +22,7 @@ describe('get-one-article-ready-to-be-listed', () => {
 
     const readModel = pipe(
       [
-        evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId()),
+        evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId(), [], arbitraryDate()),
         subjectAreaRecorded(articleIdA, subjectArea),
       ],
       RA.reduce(initialState(), handleEvent),
