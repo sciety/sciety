@@ -18,4 +18,12 @@ describe('construct-group-card-view-model', () => {
 
     it.todo('contains the latest activity');
   });
+
+  describe('when the group data cannot be retrieved', () => {
+    it.todo('returns not found');
+  });
+
+  describe('when the group activity data cannot be retrieved', () => {
+    it.todo('returns not found');
+  });
 });
