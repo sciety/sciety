@@ -25,7 +25,6 @@ export const constructGroupCardViewModel = (
     O.map((meta) => ({
       ...group,
       ...meta,
-      latestActivity: meta.latestActivityAt,
       followerCount: ports.getFollowers(group.id).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),

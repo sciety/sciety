@@ -16,7 +16,7 @@ export type GroupViewModel = {
   listCount: number,
   followerCount: number,
   evaluationCount: number,
-  latestActivity: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -59,7 +59,7 @@ export const renderGroupCard = flow(
             ${viewModel.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivity)}
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
           </span>
         </div>
         <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />

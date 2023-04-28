@@ -66,7 +66,7 @@ describe('construct-group-card-view-model', () => {
     });
 
     it('contains the date of the latest activity', () => {
-      expect(O.isSome(viewModel.latestActivity)).toBe(true);
+      expect(O.isSome(viewModel.latestActivityAt)).toBe(true);
     });
   });
 

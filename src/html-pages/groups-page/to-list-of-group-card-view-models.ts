@@ -13,7 +13,7 @@ import { Group } from '../../types/group';
 const byLatestActivity: Ord.Ord<GroupViewModel> = pipe(
   O.getOrd(D.Ord),
   Ord.reverse,
-  Ord.contramap((group) => (group.latestActivity)),
+  Ord.contramap((group) => (group.latestActivityAt)),
 );
 
 export type Ports = ViewModelPorts;
