@@ -153,14 +153,14 @@ jobs:
 
       - name: Archive Taiko screenshots
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: feature-test-screenshots
           path: feature-test/screenshots
 
       - name: Archive Backstop screenshots
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: backstop_data
           path: backstop_data
