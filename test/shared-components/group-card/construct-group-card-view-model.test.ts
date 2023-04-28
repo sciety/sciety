@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { arbitraryGroup } from '../../types/group.helper';
 import { constructGroupCardViewModel, GroupViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
@@ -29,21 +30,37 @@ describe('construct-group-card-view-model', () => {
       expect(viewModel.id).toStrictEqual(group.id);
     });
 
-    it.todo('contains the group name');
+    it('contains the group name', () => {
+      expect(viewModel.name).toStrictEqual(group.name);
+    });
 
-    it.todo('contains the group description');
+    it('contains the group description', () => {
+      expect(viewModel.description).toStrictEqual(group.shortDescription);
+    });
 
-    it.todo('contains the group avatar path');
+    it('contains the group avatar path', () => {
+      expect(viewModel.avatarPath).toStrictEqual(group.avatarPath);
+    });
 
-    it.todo('contains the group slug');
+    it('contains the group slug', () => {
+      expect(viewModel.slug).toStrictEqual(group.slug);
+    });
 
-    it.todo('contains the list count');
+    it('contains the list count', () => {
+      expect(viewModel.listCount).toBe(1);
+    });
 
-    it.todo('contains the follower count');
+    it('contains the follower count', () => {
+      expect(viewModel.followerCount).toBe(0);
+    });
 
-    it.todo('contains the evaluation count');
+    it('contains the evaluation count', () => {
+      expect(viewModel.evaluationCount).toBe(0);
+    });
 
-    it.todo('contains the latest activity');
+    it('contains the date of the latest activity', () => {
+      expect(O.isNone(viewModel.latestActivity)).toBe(true);
+    });
   });
 
   describe('when the group data cannot be retrieved', () => {
