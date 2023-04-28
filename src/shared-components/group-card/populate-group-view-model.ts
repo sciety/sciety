@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { GetFollowers, GetGroup, SelectAllListsOwnedBy } from '../../shared-ports';
@@ -21,10 +21,10 @@ export const populateGroupViewModel = (
   ports: Ports,
 ) => (
   groupId: GroupId,
-): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
+): E.Either<DE.DataError, GroupViewModel> => pipe(
   ports.getGroup(groupId),
-  TE.fromOption(() => DE.notFound),
-  TE.chainOptionK(() => DE.notFound)((group) => pipe(
+  E.fromOption(() => DE.notFound),
+  E.chainOptionK(() => DE.notFound)((group) => pipe(
     group.id,
     ports.getActivityForGroup,
     O.map((meta) => ({
@@ -35,7 +35,7 @@ export const populateGroupViewModel = (
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
   )),
-  TE.map((partial) => pipe(
+  E.map((partial) => pipe(
     groupId,
     LOID.fromGroupId,
     ports.selectAllListsOwnedBy,

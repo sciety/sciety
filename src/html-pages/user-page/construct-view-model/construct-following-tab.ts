@@ -1,6 +1,6 @@
-import * as TO from 'fp-ts/TaskOption';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { FollowingTab } from '../view-model';
@@ -17,10 +17,11 @@ type Following = {
 export const constructFollowingTab = (ports: Ports, followings: ReadonlyArray<Following>): T.Task<FollowingTab> => pipe(
   followings,
   RA.map((following) => following.groupId),
-  TE.traverseArray(populateGroupViewModel(ports)),
-  TO.fromTaskEither,
-  T.map((f) => ({
-    selector: 'followed-groups',
+  E.traverseArray(populateGroupViewModel(ports)),
+  O.fromEither,
+  (f) => ({
+    selector: 'followed-groups' as const,
     followedGroups: f,
-  })),
+  }),
+  T.of,
 );

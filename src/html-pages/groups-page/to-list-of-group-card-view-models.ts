@@ -2,7 +2,9 @@ import * as D from 'fp-ts/Date';
 import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { flow, pipe } from 'fp-ts/function';
 import { populateGroupViewModel, Ports as ViewModelPorts, GroupViewModel } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
@@ -22,6 +24,7 @@ type ToListOfGroupCardViewModels = (ports: Ports)
 
 export const toListOfGroupCardViewModels: ToListOfGroupCardViewModels = (ports) => flow(
   RA.map((group) => group.id),
-  TE.traverseArray(populateGroupViewModel(ports)),
-  TE.map(RA.sort(byLatestActivity)),
+  E.traverseArray(populateGroupViewModel(ports)),
+  E.map(RA.sort(byLatestActivity)),
+  T.of,
 );
