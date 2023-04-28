@@ -12,7 +12,7 @@ import { Queries } from '../../shared-read-models';
 
 export type Ports = Queries;
 
-export const populateGroupViewModel = (
+export const constructGroupCardViewModel = (
   ports: Ports,
 ) => (
   groupId: GroupId,
