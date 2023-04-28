@@ -8,10 +8,8 @@ export type GroupActivity = { evaluationCount: number, latestActivityAt: O.Optio
 
 export type ReadModel = Record<GroupId, GroupActivity>;
 
-// ts-unused-exports:disable-next-line
 export const initialState = (): ReadModel => ({});
 
-// ts-unused-exports:disable-next-line
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isGroupJoinedEvent(event)) {
     readmodel[event.groupId] = { evaluationCount: 0, latestActivityAt: O.none };

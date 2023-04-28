@@ -10,7 +10,6 @@ import { selectSubsetToDisplay } from './select-subset-to-display';
 import { Ports as GetArticleVersionDatePorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
 
-// ts-unused-exports:disable-next-line
 export type Ports = PerformAllSearchesPorts
 // The next two lines are necessary as getLatestVersionDate is not in CollectedPorts and is constructed locally
 & Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>

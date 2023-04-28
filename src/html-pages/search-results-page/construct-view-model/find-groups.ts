@@ -35,8 +35,7 @@ export type Ports = {
   getAllGroups: GetAllGroups,
 };
 
-// ts-unused-exports:disable-next-line
-export type FindGroups = (ports: Ports, query: string)
+type FindGroups = (ports: Ports, query: string)
 => T.Task<ReadonlyArray<GroupId>>;
 
 export const findGroups: FindGroups = (ports, query) => pipe(

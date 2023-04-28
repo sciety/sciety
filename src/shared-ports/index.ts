@@ -44,13 +44,10 @@ export { FetchStaticFile } from './fetch-static-file';
 export { GetGroup } from './get-group';
 export { GetGroupBySlug } from './get-group-by-slug';
 export { GetAllGroups } from './get-all-groups';
-// ts-unused-exports:disable-next-line
 export { GetAnnotationContent } from './get-annotation-content';
 export { LookupList } from './lookup-list';
 export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
-// ts-unused-exports:disable-next-line
-export { RemoveArticleFromList } from './remove-article-from-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { GetArticleIdsByState, ArticleIdsByState } from './get-article-ids-by-state';
@@ -58,7 +55,6 @@ export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
-// ts-unused-exports:disable-next-line
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { GetFollowers } from './get-followers';

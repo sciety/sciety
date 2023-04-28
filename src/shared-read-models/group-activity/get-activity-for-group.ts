@@ -7,7 +7,6 @@ import { GroupId } from '../../types/group-id';
 
 export type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
 
-// ts-unused-exports:disable-next-line
 export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup => (groupId) => pipe(
   readModel,
   R.lookup(groupId),

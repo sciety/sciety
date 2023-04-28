@@ -14,7 +14,6 @@ export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
-// ts-unused-exports:disable-next-line
 export type Ports = EventCardPorts & {
   getAllEvents: GetAllEvents,
 };
