@@ -1,6 +1,33 @@
+import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
+import { arbitraryGroup } from '../../types/group.helper';
+import { constructGroupCardViewModel, GroupViewModel } from '../../../src/shared-components/group-card';
+import { createTestFramework, TestFramework } from '../../framework';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+
 describe('construct-group-card-view-model', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
   describe('when all data is available', () => {
-    it.todo('contains the group id');
+    const group = arbitraryGroup();
+    let viewModel: GroupViewModel;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group);
+      viewModel = pipe(
+        group.id,
+        constructGroupCardViewModel(framework.queries),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('contains the group id', () => {
+      expect(viewModel.id).toStrictEqual(group.id);
+    });
 
     it.todo('contains the group name');
 
