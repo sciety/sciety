@@ -16,7 +16,7 @@ describe('construct-group-card-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when all data is available', () => {
+  describe('when a group has joined and performed an evaluation', () => {
     const group = arbitraryGroup();
     let viewModel: GroupViewModel;
 
@@ -70,7 +70,7 @@ describe('construct-group-card-view-model', () => {
     });
   });
 
-  describe('when the group data cannot be retrieved', () => {
+  describe('when no group with the specified group id has joined', () => {
     let viewModel: E.Either<DE.DataError, unknown>;
 
     beforeEach(() => {
@@ -83,9 +83,5 @@ describe('construct-group-card-view-model', () => {
     it('returns not found', () => {
       expect(viewModel).toStrictEqual(E.left(DE.notFound));
     });
-  });
-
-  describe('when the group activity data cannot be retrieved', () => {
-    it.todo('returns not found');
   });
 });

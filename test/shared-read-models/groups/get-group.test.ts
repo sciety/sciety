@@ -10,7 +10,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 const group = arbitraryGroup();
 
 describe('getGroup', () => {
-  describe('when the group exists', () => {
+  describe('when the group has joined', () => {
     const readModel = pipe(
       [
         ...arbitraryUninterestingEvents,
@@ -33,7 +33,7 @@ describe('getGroup', () => {
     });
   });
 
-  describe('when the group does not exist', () => {
+  describe('when the group has not joined', () => {
     const readModel = pipe(
       [
         ...arbitraryUninterestingEvents,
@@ -41,7 +41,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('returns not-found', () => {
+    it('returns none', () => {
       expect(getGroup(readModel)(arbitraryGroupId())).toStrictEqual(O.none);
     });
   });
