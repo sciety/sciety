@@ -6,11 +6,11 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { flow, pipe } from 'fp-ts/function';
-import { constructGroupCardViewModel, Ports as ViewModelPorts, GroupViewModel } from '../../shared-components/group-card';
+import { constructGroupCardViewModel, Ports as ViewModelPorts, GroupCardViewModel } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 
-const byLatestActivity: Ord.Ord<GroupViewModel> = pipe(
+const byLatestActivity: Ord.Ord<GroupCardViewModel> = pipe(
   O.getOrd(D.Ord),
   Ord.reverse,
   Ord.contramap((group) => (group.latestActivityAt)),
@@ -20,7 +20,7 @@ export type Ports = ViewModelPorts;
 
 type ToListOfGroupCardViewModels = (ports: Ports)
 => (groups: ReadonlyArray<Group>)
-=> TE.TaskEither<DE.DataError, ReadonlyArray<GroupViewModel>>;
+=> TE.TaskEither<DE.DataError, ReadonlyArray<GroupCardViewModel>>;
 
 export const toListOfGroupCardViewModels: ToListOfGroupCardViewModels = (ports) => flow(
   RA.map((group) => group.id),

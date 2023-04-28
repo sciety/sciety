@@ -7,7 +7,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
-export type GroupViewModel = {
+export type GroupCardViewModel = {
   id: GroupId,
   name: string,
   description: SanitisedHtmlFragment,
@@ -49,7 +49,7 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
 );
 
 export const renderGroupCard = flow(
-  (viewModel: GroupViewModel) => `
+  (viewModel: GroupCardViewModel) => `
     <article class="group-card">
         <div class="group-card__body">
           <h3 class="group-card__title">

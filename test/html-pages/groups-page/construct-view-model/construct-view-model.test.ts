@@ -1,13 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel, Ports } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
-import { GroupViewModel } from '../../../../src/shared-components/group-card';
+import { GroupCardViewModel } from '../../../../src/shared-components/group-card';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
 
-type ViewModel = ReadonlyArray<GroupViewModel>;
+type ViewModel = ReadonlyArray<GroupCardViewModel>;
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

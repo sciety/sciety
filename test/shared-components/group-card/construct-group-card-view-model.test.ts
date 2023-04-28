@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryGroup } from '../../types/group.helper';
-import { constructGroupCardViewModel, GroupViewModel } from '../../../src/shared-components/group-card';
+import { constructGroupCardViewModel, GroupCardViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
@@ -18,7 +18,7 @@ describe('construct-group-card-view-model', () => {
 
   describe('when a group has joined and performed an evaluation', () => {
     const group = arbitraryGroup();
-    let viewModel: GroupViewModel;
+    let viewModel: GroupCardViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
