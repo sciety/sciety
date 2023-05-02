@@ -4,22 +4,17 @@ import { GroupCardViewModel } from '../../../shared-components/group-card';
 import { GroupId } from '../../../types/group-id';
 import { UserDetails } from '../../../types/user-details';
 
-export type TabSelector = 'lists' | 'followed-groups';
-
-// ts-unused-exports:disable-next-line
 export type ListsTab = {
   selector: 'lists',
   ownedLists: ReadonlyArray<ListCardViewModel>,
   showCreateNewList: boolean,
 };
 
-// ts-unused-exports:disable-next-line
 export type FollowingTab = {
   selector: 'followed-groups',
   followedGroups: O.Option<ReadonlyArray<GroupCardViewModel>>,
 };
 
-// ts-unused-exports:disable-next-line
 export type ViewModel = {
   userDetails: UserDetails,
   groupIds: ReadonlyArray<GroupId>,

@@ -4,13 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
-import * as LOID from '../../../../../src/types/list-owner-id';
-import { List } from '../../../../../src/types/list';
-import { arbitraryList } from '../../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-following-page/view-model';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryGroup } from '../../../../types/group.helper';
 
 describe('construct-view-model', () => {
@@ -31,73 +27,6 @@ describe('construct-view-model', () => {
     await framework.commandHelpers.createUserAccount(user);
   });
 
-  describe('when the user owns two lists', () => {
-    let initialUserList: List;
-    const updatedList = arbitraryList(LOID.fromUserId(user.id));
-
-    beforeEach(async () => {
-      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
-      await framework.commandHelpers.createList(updatedList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
-    });
-
-    describe('and the lists tab is selected', () => {
-      beforeEach(async () => {
-        viewmodel = await pipe(
-          pageParams,
-          constructViewModel('lists', adapters),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('the lists tab is the active tab', () => {
-        expect(viewmodel.activeTab.selector).toBe('lists');
-      });
-
-      it('the list count is 2', async () => {
-        expect(viewmodel.listCount).toBe(2);
-      });
-
-      it('two list cards are displayed', () => {
-        if (viewmodel.activeTab.selector !== 'lists') {
-          throw new Error('the wrong tab is selected');
-        }
-
-        expect(viewmodel.activeTab.ownedLists).toHaveLength(2);
-      });
-
-      it('the most recently updated list is shown first', async () => {
-        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
-          ownedLists: [
-            expect.objectContaining({ listId: updatedList.id }),
-            expect.objectContaining({ listId: initialUserList.id }),
-          ],
-        }));
-      });
-    });
-  });
-
-  describe('when the user saves an article to the default list for the first time', () => {
-    beforeEach(async () => {
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
-    });
-
-    it('the article count of the default list is 1', async () => {
-      viewmodel = await pipe(
-        pageParams,
-        constructViewModel('lists', adapters),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
-      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
-        ownedLists: [expect.objectContaining({
-          articleCount: 1,
-        })],
-      }));
-    });
-  });
-
   describe('when the user follows three groups', () => {
     const group1 = arbitraryGroup();
     const group2 = arbitraryGroup();
@@ -116,7 +45,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
-          constructViewModel('followed-groups', adapters),
+          constructViewModel(adapters),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -153,14 +82,11 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe.each([
-    ['lists' as const],
-    ['followed-groups' as const],
-  ])('page tab: %s', (tabSelector) => {
+  describe('user details', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(tabSelector, adapters),
+        constructViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

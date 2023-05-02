@@ -9,6 +9,6 @@ type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => (params) => pipe(
   params,
-  constructViewModel('followed-groups', ports),
+  constructViewModel(ports),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
