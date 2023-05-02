@@ -70,10 +70,6 @@
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
 }
 
-@mixin use-group-page-about-background-colours() {
-  @include use-standard-background-colours();
-}
-
 @mixin use-primary-text-and-standard-background-colours() {
   @include use-primary-text-colours();
   @include use-standard-background-colours();
@@ -108,8 +104,7 @@
 
 // extracted from normalise.scss
 body {
-  @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  @include use-primary-text-colours();
+  @include use-primary-text-and-standard-background-colours();
 }
 
 // extracted and adapted from site-header/_index.scss
