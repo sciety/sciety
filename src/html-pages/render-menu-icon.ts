@@ -14,5 +14,4 @@ export const renderMenuIcon = () => toHtmlFragment(`<svg width="26px" height="26
             </g>
         </g>
     </g>
-</svg>`
-);
+</svg>`);
