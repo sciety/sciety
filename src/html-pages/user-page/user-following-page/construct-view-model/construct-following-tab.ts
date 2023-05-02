@@ -20,7 +20,6 @@ export const constructFollowingTab = (ports: Ports, followings: ReadonlyArray<Fo
   E.traverseArray(constructGroupCardViewModel(ports)),
   O.fromEither,
   (f) => ({
-    selector: 'followed-groups' as const,
     followedGroups: f,
   }),
   T.of,

@@ -4,7 +4,6 @@ import { GroupId } from '../../../types/group-id';
 import { UserDetails } from '../../../types/user-details';
 
 export type FollowingTab = {
-  selector: 'followed-groups',
   followedGroups: O.Option<ReadonlyArray<GroupCardViewModel>>,
 };
 

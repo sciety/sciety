@@ -50,19 +50,12 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('the followed groups tab is the active tab', () => {
-        expect(viewmodel.activeTab.selector).toBe('followed-groups');
-      });
-
       it('the following count is 3', () => {
         // eslint-disable-next-line jest/prefer-to-have-length
         expect(viewmodel.groupIds.length).toBe(3);
       });
 
       it('three group cards are displayed', () => {
-        if (viewmodel.activeTab.selector !== 'followed-groups') {
-          throw new Error('the wrong tab is selected');
-        }
         if (O.isNone(viewmodel.activeTab.followedGroups)) {
           throw new Error('None received, should have been Some');
         }
