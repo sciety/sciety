@@ -6,17 +6,18 @@ import * as tt from 'io-ts-types';
 import { sequenceS } from 'fp-ts/Apply';
 import * as LOID from '../../../../types/list-owner-id';
 import {
-  FetchStaticFile, GetGroupBySlug, IsFollowing, SelectAllListsOwnedBy,
+  FetchStaticFile, IsFollowing, SelectAllListsOwnedBy,
 } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 import { toOurListsViewModel } from './to-our-lists-view-model';
+import { Queries } from '../../../../shared-read-models';
 
 export type Ports = TabsViewModelPorts & {
   fetchStaticFile: FetchStaticFile,
-  getGroupBySlug: GetGroupBySlug,
+  getGroupBySlug: Queries['getGroupBySlug'],
   isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };

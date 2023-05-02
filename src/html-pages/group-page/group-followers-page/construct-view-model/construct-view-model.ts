@@ -7,16 +7,17 @@ import * as tt from 'io-ts-types';
 import { paginationControls } from '../../../../shared-components/pagination-controls';
 import { paginate } from './paginate';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
-import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
+import { IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 import { GroupId } from '../../../../types/group-id';
+import { Queries } from '../../../../shared-read-models';
 
 export type Ports = FindFollowersPorts & AugmentWithUserDetailsPorts & TabsViewModelPorts & {
-  getGroupBySlug: GetGroupBySlug,
+  getGroupBySlug: Queries['getGroupBySlug'],
   isFollowing: IsFollowing,
 };
 

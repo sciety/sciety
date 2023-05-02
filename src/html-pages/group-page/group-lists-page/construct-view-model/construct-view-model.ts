@@ -3,15 +3,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { GetGroupBySlug, IsFollowing } from '../../../../shared-ports';
+import { IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
 import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { Queries } from '../../../../shared-read-models';
 
 export type Ports = ConstructListCardsPorts & TabsViewModelPorts & {
-  getGroupBySlug: GetGroupBySlug,
+  getGroupBySlug: Queries['getGroupBySlug'],
   isFollowing: IsFollowing,
 };
 
