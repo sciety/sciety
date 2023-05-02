@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, evaluationRecorded,
+  articleAddedToList, articleRemovedFromList, evaluationRecorded, incorrectlyRecordedEvaluationErased,
 } from '../../../src/domain-events';
 import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
 import { arbitraryDate } from '../../helpers';
@@ -13,6 +13,7 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
@@ -50,7 +51,24 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('because it has had an evaluation recorded and erased', () => {
-      it.todo('article has no activity');
+      const evaluation = arbitraryRecordedEvaluation();
+      const readmodel = pipe(
+        [
+          evaluationRecorded(
+            evaluation.groupId,
+            evaluation.articleId,
+            evaluation.reviewId,
+            evaluation.authors,
+            evaluation.publishedAt,
+          ),
+          incorrectlyRecordedEvaluationErased(evaluation.reviewId),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+
+      it.failing('article has no activity', () => {
+        expect(getActivityForDoi(readmodel)(evaluation.articleId).evaluationCount).toBe(0);
+      });
     });
   });
 
