@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment } from '../../../../types/html-fragment';
-import { FollowingTab, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { renderGroupCard } from '../../../../shared-components/group-card';
@@ -14,7 +14,7 @@ const tabProps = (viewmodel: ViewModel) => ({
   activeTabIndex: 1,
 });
 
-const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
+const renderFollowedGroups = (viewmodel: ViewModel) => pipe(
   viewmodel.followedGroups,
   O.map(RA.match(
     () => followingNothing,
@@ -30,6 +30,6 @@ const renderFollowedGroups = (viewmodel: FollowingTab) => pipe(
 );
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderFollowedGroups(viewmodel.activeTab),
+  renderFollowedGroups(viewmodel),
   renderTabs(tabProps(viewmodel)),
 );

@@ -56,15 +56,15 @@ describe('construct-view-model', () => {
       });
 
       it('three group cards are displayed', () => {
-        if (O.isNone(viewmodel.activeTab.followedGroups)) {
+        if (O.isNone(viewmodel.followedGroups)) {
           throw new Error('None received, should have been Some');
         }
 
-        expect(viewmodel.activeTab.followedGroups.value).toHaveLength(3);
+        expect(viewmodel.followedGroups.value).toHaveLength(3);
       });
 
       it.failing('returns them in order of most recently followed first', async () => {
-        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+        expect(viewmodel).toStrictEqual(expect.objectContaining({
           followedGroups: O.some([
             expect.objectContaining({ id: group3.id }),
             expect.objectContaining({ id: group2.id }),

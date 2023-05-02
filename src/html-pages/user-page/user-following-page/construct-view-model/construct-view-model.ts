@@ -1,16 +1,16 @@
+import * as O from 'fp-ts/Option';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
-import { constructFollowingTab, Ports as ConstructFollowingTabPorts } from './construct-following-tab';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
+import { constructGroupCardViewModel, Ports as ConstructGroupCardViewModelPorts } from '../../../../shared-components/group-card';
 
-export type Ports = ConstructFollowingTabPorts & {
+export type Ports = ConstructGroupCardViewModelPorts & {
   getGroupsFollowedBy: GetGroupsFollowedBy,
   lookupUserByHandle: LookupUserByHandle,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
@@ -39,13 +39,10 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     groupIds,
     userDetails,
     listCount: lists.length,
-    activeTab: pipe(
+    followedGroups: pipe(
       groupIds,
-      RA.map((groupId) => ({
-        groupId,
-        followedAt: new Date(),
-      })),
-      (followings) => constructFollowingTab(ports, followings),
+      E.traverseArray(constructGroupCardViewModel(ports)),
+      O.fromEither,
     ),
   })),
   TE.fromEither,
