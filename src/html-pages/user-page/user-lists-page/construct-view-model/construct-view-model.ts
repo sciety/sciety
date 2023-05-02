@@ -22,7 +22,6 @@ export type Ports = ConstructFollowingTabPorts & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
-// ts-unused-exports:disable-next-line
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,
   user: tt.optionFromNullable(t.type({

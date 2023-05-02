@@ -7,7 +7,6 @@ import { constructViewModel, Params, Ports } from './construct-view-model';
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-// ts-unused-exports:disable-next-line
 export const userPage = (ports: Ports): UserPage => (params) => pipe(
   params,
   constructViewModel('followed-groups', ports),
