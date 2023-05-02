@@ -1,12 +1,18 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleActivity } from '../../types/article-activity';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 import { DomainEvent } from '../../domain-events';
+import { Doi } from '../../types/doi';
+import { ReviewId } from '../../types/review-id';
 
-type ArticleState = ArticleActivity & {
+type ArticleState = {
+  articleId: Doi,
+  latestActivityDate: O.Option<Date>,
+  evaluationLocators: Array<ReviewId>,
+  evaluationCount: number,
+  listMembershipCount: number,
   evaluatingGroups: Set<GroupId>,
   lists: Set<ListId>,
 };
@@ -32,6 +38,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
             latestActivityDate: O.none,
+            evaluationLocators: [],
             evaluationCount: 0,
             evaluatingGroups: new Set(),
             lists: new Set([event.listId]),
@@ -53,6 +60,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
             latestActivityDate: O.some(event.publishedAt),
+            evaluationLocators: [event.evaluationLocator],
             evaluationCount: 1,
             evaluatingGroups: new Set([event.groupId]),
             lists: new Set(),
@@ -64,6 +72,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
               entry.latestActivityDate,
               O.map(mostRecentDate(event.publishedAt)),
             ),
+            evaluationLocators: [...entry.evaluationLocators, event.evaluationLocator],
             evaluationCount: entry.evaluationCount + 1,
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
           }),
