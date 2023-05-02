@@ -66,7 +66,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('article has no activity', () => {
+      it.failing('the article has no evaluations', () => {
         expect(getActivityForDoi(readmodel)(evaluation.articleId).evaluationCount).toBe(0);
       });
     });
