@@ -34,7 +34,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin helper-text {
-  @include scheme.set-secondary-text-colours();
+  @include scheme.use-primary-text-and-standard-background-colours();
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 

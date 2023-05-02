@@ -74,13 +74,7 @@
   @include set-standard-background-colours();
 }
 
-// Looks generic - candidate for extraction etc
-@mixin set-search-form-colours() {
-  @include set-primary-text-colours();
-  @include set-standard-background-colours();
-}
-
-@mixin card-colours() {
+@mixin use-primary-text-and-standard-background-colours() {
   @include set-primary-text-colours();
   @include set-standard-background-colours();
 }

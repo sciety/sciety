@@ -9,7 +9,7 @@
 $_card-border-radius: settings.$border-radius;
 
 @mixin basics ($is-entire-card-linked: false) {
-  @include scheme.card-colours();
+  @include scheme.use-primary-text-and-standard-background-colours();
 
   @if ($is-entire-card-linked == true) {
     position: relative;
