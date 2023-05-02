@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetFollowers } from './get-followers';
 import { GetGroup } from './get-group';
 import { GetGroupBySlug } from './get-group-by-slug';
 import { GetGroupsFollowedBy } from './get-groups-followed-by';
@@ -51,7 +50,6 @@ export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
-export { GetFollowers } from './get-followers';
 export { GetGroupsFollowedBy } from './get-groups-followed-by';
 export { IsFollowing } from './is-following';
 export { GetActivityForDoi } from './get-activity-for-doi';
@@ -70,7 +68,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getFollowers: GetFollowers,
   getGroup: GetGroup,
   getGroupBySlug: GetGroupBySlug,
   getGroupsFollowedBy: GetGroupsFollowedBy,

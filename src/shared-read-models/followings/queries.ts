@@ -1,6 +1,6 @@
-import { getFollowers } from './get-followers';
+import { GetFollowers, getFollowers } from './get-followers';
 import { ReadModel } from './handle-event';
-import { GetFollowers, GetGroupsFollowedBy, IsFollowing } from '../../shared-ports';
+import { GetGroupsFollowedBy, IsFollowing } from '../../shared-ports';
 import { getGroupsFollowedBy } from './get-groups-followed-by';
 import { isFollowing } from './is-following';
 
