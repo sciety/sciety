@@ -1,4 +1,6 @@
 import { ReadModel } from './handle-event';
 import { Group } from '../../types/group';
 
-export const getAllGroups = (readmodel: ReadModel) => (): ReadonlyArray<Group> => Object.values(readmodel);
+export type GetAllGroups = () => ReadonlyArray<Group>;
+
+export const getAllGroups = (readmodel: ReadModel): GetAllGroups => () => Object.values(readmodel);

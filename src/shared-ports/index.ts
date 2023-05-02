@@ -8,7 +8,6 @@ import { FetchArticle } from './fetch-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
-import { GetAllGroups } from './get-all-groups';
 import { GetAnnotationContent } from './get-annotation-content';
 import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
@@ -43,7 +42,6 @@ export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { GetGroup } from './get-group';
 export { GetGroupBySlug } from './get-group-by-slug';
-export { GetAllGroups } from './get-all-groups';
 export { GetAnnotationContent } from './get-annotation-content';
 export { LookupList } from './lookup-list';
 export { LookupUser } from './lookup-user';
@@ -75,7 +73,6 @@ export type SharedPorts = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
-  getAllGroups: GetAllGroups,
   getAnnotationContent: GetAnnotationContent,
   getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
