@@ -230,5 +230,35 @@ describe('get-activity-for-group', () => {
         });
       });
     });
+
+    describe('when an evaluation has been recorded and erased', () => {
+      const recordedEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      };
+      const readModel = pipe(
+        [
+          groupJoinedEvent,
+          evaluationRecorded(
+            recordedEvaluation.groupId,
+            recordedEvaluation.articleId,
+            recordedEvaluation.reviewId,
+            recordedEvaluation.authors,
+            recordedEvaluation.publishedAt,
+          ),
+          // incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it.skip('returns an evaluationCount of 0', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 0,
+          }),
+        ));
+      });
+    });
   });
 });
