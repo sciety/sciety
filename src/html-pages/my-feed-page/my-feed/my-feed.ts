@@ -22,12 +22,13 @@ import { paginationControls } from '../../../shared-components/pagination-contro
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
-import { GetAllEvents, GetGroupsFollowedBy } from '../../../shared-ports';
+import { GetAllEvents } from '../../../shared-ports';
+import { Queries } from '../../../shared-read-models';
 
 export type Ports = ArticleCardPorts & {
   fetchArticle: GetArticle,
   getAllEvents: GetAllEvents,
-  getGroupsFollowedBy: GetGroupsFollowedBy,
+  getGroupsFollowedBy: Queries['getGroupsFollowedBy'],
 };
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`

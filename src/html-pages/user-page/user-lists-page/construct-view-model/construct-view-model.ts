@@ -4,19 +4,15 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
-import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { constructListsTab } from './construct-lists-tab';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
 import { userIdCodec } from '../../../../types/user-id';
+import { Queries } from '../../../../shared-read-models';
 
-export type Ports = {
-  getGroupsFollowedBy: GetGroupsFollowedBy,
-  lookupUserByHandle: LookupUserByHandle,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-};
+export type Ports = Queries;
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,

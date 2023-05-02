@@ -3,18 +3,14 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
-import { constructGroupCardViewModel, Ports as ConstructGroupCardViewModelPorts } from '../../../../shared-components/group-card';
+import { constructGroupCardViewModel } from '../../../../shared-components/group-card';
+import { Queries } from '../../../../shared-read-models';
 
-export type Ports = ConstructGroupCardViewModelPorts & {
-  getGroupsFollowedBy: GetGroupsFollowedBy,
-  lookupUserByHandle: LookupUserByHandle,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-};
+export type Ports = Queries;
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,
