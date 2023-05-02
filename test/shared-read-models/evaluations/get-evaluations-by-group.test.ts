@@ -38,7 +38,7 @@ describe('get-evaluations-by-group', () => {
     expect(actualEvaluations).toStrictEqual(expectedEvaluations);
   });
 
-  it.failing('does not return erased evaluations', () => {
+  it('does not return erased evaluations', () => {
     const readmodel = pipe(
       [
         evaluationRecorded(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),

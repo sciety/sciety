@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
+import { DomainEvent, isEvaluationRecordedEvent, isIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type ReadModel = {
@@ -28,6 +28,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     evaluationsByThisGroup.push(recordedEvaluation);
     readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
     readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
+  }
+  if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+    readmodel.byGroupId.forEach((state) => {
+      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      if (i > -1) {
+        state.splice(i, 1);
+      }
+    });
   }
   return readmodel;
 };
