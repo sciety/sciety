@@ -139,7 +139,33 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and one of the evaluations has been erased', () => {
-      it.todo('the evaluation count reflects the erasure');
+      const evaluationLocator = arbitraryReviewId();
+      const readmodel = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            evaluationLocator,
+            [],
+            earlierPublishedDate,
+            arbitraryDate(),
+          ),
+          evaluationRecorded(
+            arbitraryGroupId(),
+            articleId,
+            arbitraryReviewId(),
+            [],
+            laterPublishedDate,
+            arbitraryDate(),
+          ),
+          incorrectlyRecordedEvaluationErased(evaluationLocator),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+
+      it.failing('the evaluation count reflects the erasure', () => {
+        expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
+      });
     });
   });
 
