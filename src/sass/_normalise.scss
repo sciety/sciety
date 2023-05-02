@@ -1,4 +1,3 @@
-@use 'scheme';
 @use 'settings';
 @use 'states';
 @use 'typography';
@@ -8,9 +7,6 @@ html {
 }
 
 body {
-  @include scheme.set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  @include scheme.set-colours(color, --text-primary, --dark-mode-text-primary);
-
   font-family: settings.$font-family;
   font-size: settings.$base-font-measure;
   line-height: 1.5;

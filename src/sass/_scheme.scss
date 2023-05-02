@@ -1,4 +1,5 @@
 @use 'settings';
+@use 'states';
 
 :root {
   // Text colours
@@ -51,6 +52,13 @@
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
 }
 
+// extracted from normalise.scss
+body {
+  @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
+  //@include set-colours(color, --text-primary, --dark-mode-text-primary);
+  @include set-standard-text-colours();
+}
+
 // extracted and adapted from site-header/_index.scss
 .site-header {
   --light-mode-site-header-background-colour-1: #{settings.$colour-light-mode-site-header-background-1};
@@ -63,4 +71,29 @@
   --light-mode-site-header-background-colour-2: #{settings.$colour-light-mode-site-header-background-2};
   --site-header-background-colour-2: var(--light-mode-site-header-background-colour-2);
   @include set-colours(background-color, --site-header-background-colour-2, --dark-mode-background-colour);
+}
+
+// extracted from utility-bar.scss
+.utility-bar-user-profile {
+  &:link,
+  &:visited {
+    @include set-colours(color, --text-primary, --dark-mode-text-primary);
+
+    &:hover,
+    &:active {
+      color: inherit;
+    }
+  }
+}
+
+.utility-bar__list_nav_link {
+  &:link,
+  &:visited {
+    @include set-site-header-link-colours();
+    @include states.link() {
+      @include set-standard-text-colours();
+      @include set-colours(border-color, --text-primary, --dark-mode-text-primary);
+    }
+  }
+
 }
