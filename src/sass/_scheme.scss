@@ -2,14 +2,14 @@
 @use 'states';
 
 :root {
-  // Text colours
+  // text colours
   --light-mode-text-primary: #{settings.$colour-light-mode-text-primary};
   --dark-mode-text-primary: #{settings.$colour-dark-mode-text-primary};
   --text-primary: var(--light-mode-text-primary);
 
-
-  --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
+  // backgrounds
   --light-mode-background-colour: #{settings.$colour-light-mode-background};
+  --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
   --background-colour: var(--light-mode-background-colour);
 
   // site header / utility bar specific
@@ -55,7 +55,6 @@
 // extracted from normalise.scss
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  //@include set-colours(color, --text-primary, --dark-mode-text-primary);
   @include set-standard-text-colours();
 }
 
