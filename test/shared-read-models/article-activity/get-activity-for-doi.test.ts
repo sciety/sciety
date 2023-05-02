@@ -66,7 +66,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('the article has no evaluations', () => {
+      it('the article has no evaluations', () => {
         expect(getActivityForDoi(readmodel)(evaluation.articleId).evaluationCount).toBe(0);
       });
     });
@@ -163,7 +163,7 @@ describe('get-activity-for-doi', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it.failing('the evaluation count reflects the erasure', () => {
+      it('the evaluation count reflects the erasure', () => {
         expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
       });
     });

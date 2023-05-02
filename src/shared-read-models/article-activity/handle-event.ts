@@ -75,6 +75,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         ),
       );
 
+    case 'IncorrectlyRecordedEvaluationErased':
+      readmodel.forEach((articleState) => {
+        const i = articleState.evaluationLocators.indexOf(event.evaluationLocator);
+        if (i > -1) {
+          articleState.evaluationLocators.splice(i, 1);
+        }
+      });
+      return readmodel;
+
     case 'ArticleRemovedFromList':
       return pipe(
         readmodel.get(event.articleId.value),
