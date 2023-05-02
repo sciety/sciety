@@ -4,11 +4,12 @@ import * as O from 'fp-ts/Option';
 import { SelectAllListsContainingArticle } from '../../../shared-ports/select-all-lists-containing-article';
 import { Doi } from '../../../types/doi';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { GetGroup, Logger, LookupUser } from '../../../shared-ports';
+import { Logger, LookupUser } from '../../../shared-ports';
+import { Queries } from '../../../shared-read-models';
 
 export type Ports = {
   selectAllListsContainingArticle: SelectAllListsContainingArticle,
-  getGroup: GetGroup,
+  getGroup: Queries['getGroup'],
   lookupUser: LookupUser,
   logger: Logger,
 };

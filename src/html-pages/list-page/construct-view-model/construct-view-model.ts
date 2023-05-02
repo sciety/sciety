@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
-import { getOwnerInformation, Ports as HeadersPorts } from './get-owner-information';
+import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { LookupList } from '../../../shared-ports';
 import { ListId, listIdCodec } from '../../../types/list-id';
@@ -13,6 +13,7 @@ import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ContentViewModel, ViewModel } from '../view-model';
+import { Queries } from '../../../shared-read-models';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -22,7 +23,7 @@ export const paramsCodec = t.type({
   })),
 });
 
-export type Ports = ArticlesListPorts & HeadersPorts & {
+export type Ports = ArticlesListPorts & Queries & {
   lookupList: LookupList,
 };
 

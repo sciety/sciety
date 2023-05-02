@@ -10,12 +10,13 @@ import { projectUserReviewResponse } from './project-user-review-response';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { ReviewId } from '../../../types/review-id';
-import { FetchReview, GetAllEvents, GetGroup } from '../../../shared-ports';
+import { FetchReview, GetAllEvents } from '../../../shared-ports';
+import { Queries } from '../../../shared-read-models';
 
 export type Ports = {
   fetchReview: FetchReview,
   getAllEvents: GetAllEvents,
-  getGroup: GetGroup,
+  getGroup: Queries['getGroup'],
 };
 
 export type ReviewEvent = {

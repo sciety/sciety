@@ -1,12 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation, Ports as GetUserOwnerInformationPorts } from './get-user-owner-information';
-import { GetGroup } from '../../../shared-ports';
+import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
-
-export type Ports = GetUserOwnerInformationPorts & {
-  getGroup: GetGroup,
-};
+import { Queries } from '../../../shared-read-models';
 
 type OwnerInformation = {
   ownerName: string,
@@ -14,7 +10,7 @@ type OwnerInformation = {
   ownerAvatarPath: string,
 };
 
-type GetOwnerInformation = (ports: Ports) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
+type GetOwnerInformation = (queries: Queries) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
 export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => {
   switch (ownerId.tag) {
