@@ -51,6 +51,35 @@ describe('get-activity-for-group', () => {
         expect(result).toStrictEqual(O.none);
       });
     });
+
+    describe('and an evaluation has been recorded for it and erased', () => {
+      const recordedEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+      };
+      let result: O.Option<unknown>;
+
+      beforeEach(() => {
+        const readModel = pipe(
+          [
+            evaluationRecorded(
+              recordedEvaluation.groupId,
+              recordedEvaluation.articleId,
+              recordedEvaluation.reviewId,
+              recordedEvaluation.authors,
+              recordedEvaluation.publishedAt,
+            ),
+            incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+        result = getActivityForGroup(readModel)(group.id);
+      });
+
+      it('returns O.none', () => {
+        expect(result).toStrictEqual(O.none);
+      });
+    });
   });
 
   describe('when the group has joined', () => {
