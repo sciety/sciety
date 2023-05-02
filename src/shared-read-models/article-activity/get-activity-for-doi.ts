@@ -21,7 +21,7 @@ export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (a
     (act) => ({
       articleId: act.articleId,
       latestActivityDate: act.latestActivityDate,
-      evaluationCount: act.evaluationCount,
+      evaluationCount: act.evaluationLocators.length,
       listMembershipCount: act.listMembershipCount,
     }),
   ),
