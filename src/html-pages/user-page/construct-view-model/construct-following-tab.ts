@@ -7,8 +7,6 @@ import { FollowingTab } from '../view-model';
 import { constructGroupCardViewModel, Ports } from '../../../shared-components/group-card';
 import { GroupId } from '../../../types/group-id';
 
-export { Ports } from '../../../shared-components/group-card';
-
 type Following = {
   groupId: GroupId,
   followedAt: Date,
