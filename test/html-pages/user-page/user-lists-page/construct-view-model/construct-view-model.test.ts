@@ -11,7 +11,6 @@ import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { constructViewModel, Ports } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { arbitraryGroup } from '../../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -45,7 +44,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
-          constructViewModel('lists', adapters),
+          constructViewModel(adapters),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -86,7 +85,7 @@ describe('construct-view-model', () => {
     it('the article count of the default list is 1', async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel('lists', adapters),
+        constructViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -98,69 +97,11 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the user follows three groups', () => {
-    const group1 = arbitraryGroup();
-    const group2 = arbitraryGroup();
-    const group3 = arbitraryGroup();
-
-    beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
-      await framework.commandHelpers.createGroup(group3);
-      await framework.commandHelpers.followGroup(user.id, group1.id);
-      await framework.commandHelpers.followGroup(user.id, group2.id);
-      await framework.commandHelpers.followGroup(user.id, group3.id);
-    });
-
-    describe('when the followed groups tab is selected', () => {
-      beforeEach(async () => {
-        viewmodel = await pipe(
-          pageParams,
-          constructViewModel('followed-groups', adapters),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('the followed groups tab is the active tab', () => {
-        expect(viewmodel.activeTab.selector).toBe('followed-groups');
-      });
-
-      it('the following count is 3', () => {
-        // eslint-disable-next-line jest/prefer-to-have-length
-        expect(viewmodel.groupIds.length).toBe(3);
-      });
-
-      it('three group cards are displayed', () => {
-        if (viewmodel.activeTab.selector !== 'followed-groups') {
-          throw new Error('the wrong tab is selected');
-        }
-        if (O.isNone(viewmodel.activeTab.followedGroups)) {
-          throw new Error('None received, should have been Some');
-        }
-
-        expect(viewmodel.activeTab.followedGroups.value).toHaveLength(3);
-      });
-
-      it.failing('returns them in order of most recently followed first', async () => {
-        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
-          followedGroups: O.some([
-            expect.objectContaining({ id: group3.id }),
-            expect.objectContaining({ id: group2.id }),
-            expect.objectContaining({ id: group1.id }),
-          ]),
-        }));
-      });
-    });
-  });
-
-  describe.each([
-    ['lists' as const],
-    ['followed-groups' as const],
-  ])('page tab: %s', (tabSelector) => {
+  describe('use details', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(tabSelector, adapters),
+        constructViewModel(adapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

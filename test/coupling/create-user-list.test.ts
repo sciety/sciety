@@ -48,7 +48,7 @@ describe('create user list', () => {
               handle: user.handle as string as CandidateUserHandle,
               user: O.none,
             },
-            constructUserListsPage('lists', { ...framework.queries }),
+            constructUserListsPage({ ...framework.queries }),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
