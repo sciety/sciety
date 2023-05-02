@@ -26,7 +26,7 @@
 @mixin tab-link() {
   &:link,
   &:visited {
-    @include scheme.set-primary-text-colours();
+    @include scheme.use-primary-text-colours();
 
     &:hover,
     &:active {

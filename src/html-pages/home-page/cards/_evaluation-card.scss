@@ -31,7 +31,7 @@
 }
 
 .evaluation-card__link {
-  @include scheme.card-link-colours();
+  @include scheme.use-card-link-colours();
 }
 
 .evaluation-card__meta {

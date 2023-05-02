@@ -48,7 +48,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin constraints {
-  @include scheme.set-secondary-text-colours();
+  @include scheme.use-secondary-text-colours();
 }
 
 @mixin submit-button {

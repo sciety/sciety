@@ -62,7 +62,7 @@
 }
 
 .activity-feed__item__date {
-  @include scheme.set-secondary-text-colours();
+  @include scheme.use-secondary-text-colours();
   flex-shrink: 0;
 }
 
@@ -113,7 +113,7 @@ p.activity-feed__item__title {
 }
 
 .responses {
-  @include scheme.responses-colours();
+  @include scheme.use-responses-colours();
   display: flex;
   align-items: center;
   padding: 0.75rem functions.px-to-rem(16px);

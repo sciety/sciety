@@ -5,7 +5,7 @@
 @use '../../../sass/scheme';
 
 .group-page-about {
-  @include scheme.set-standard-background-colours();
+  @include scheme.use-standard-background-colours();
   margin-bottom: 1.5rem;
   padding: 1rem;
 

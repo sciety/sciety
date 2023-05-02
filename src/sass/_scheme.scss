@@ -54,15 +54,15 @@
   }
 }
 
-@mixin set-standard-background-colours() {
+@mixin use-standard-background-colours() {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
 }
 
-@mixin set-primary-text-colours() {
+@mixin use-primary-text-colours() {
   @include set-colours(color, --text-primary, --dark-mode-text-primary);
 }
 
-@mixin set-secondary-text-colours() {
+@mixin use-secondary-text-colours() {
   @include set-colours(color, --text-secondary, --dark-mode-text-primary);
 }
 
@@ -70,50 +70,46 @@
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
 }
 
-@mixin set-group-page-about-background-colours() {
-  @include set-standard-background-colours();
+@mixin use-group-page-about-background-colours() {
+  @include use-standard-background-colours();
 }
 
 @mixin use-primary-text-and-standard-background-colours() {
-  @include set-primary-text-colours();
-  @include set-standard-background-colours();
+  @include use-primary-text-colours();
+  @include use-standard-background-colours();
 }
 
-@mixin card-link-colours() {
-  @include set-primary-text-colours();
+@mixin use-card-link-colours() {
+  @include use-primary-text-colours();
 
   &:link,
   &:visited {
-    @include set-primary-text-colours();
+    @include use-primary-text-colours();
 
     &:active,
     &:hover {
-      @include set-primary-text-colours();
+      @include use-primary-text-colours();
     }
   }
 }
 
-@mixin card-meta-colours() {
-  @include set-secondary-text-colours();
+@mixin use-card-meta-colours() {
+  @include use-secondary-text-colours();
 }
 
-@mixin responses-colours() {
+@mixin use-responses-colours() {
   @include set-colours(background-color, --background-responses, --dark-mode-background-colour);
-  @include set-primary-text-colours();
+  @include use-primary-text-colours();
 }
 
-@mixin set-standard-page-container-background-colour() {
+@mixin use-standard-page-container-background-colours() {
   @include set-colours(background-color, --background-colour-standard-page, --dark-mode-background-colour);
 }
 
 // extracted from normalise.scss
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  @include set-primary-text-colours();
-}
-
-.standard-page-container {
-  @include set-standard-page-container-background-colour();
+  @include use-primary-text-colours();
 }
 
 // extracted and adapted from site-header/_index.scss
@@ -148,7 +144,7 @@ body {
   &:visited {
     @include set-site-header-link-colours();
     @include states.link() {
-      @include set-primary-text-colours();
+      @include use-primary-text-colours();
       @include set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }

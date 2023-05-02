@@ -2,9 +2,11 @@
 @use '../sass/functions';
 @use '../sass/layout';
 @use '../sass/settings';
+@use '../sass/scheme';
 
 .standard-page-container {
   @include layout.page-container();
+  @include scheme.use-standard-page-container-background-colours();
 }
 
 .page-content {

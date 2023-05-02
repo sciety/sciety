@@ -24,7 +24,7 @@ $_white-box-width-not-narrow: 280px;
   &:visited {
     @include scheme.set-site-header-link-colours();
     @include states.link() {
-      @include scheme.set-primary-text-colours();
+      @include scheme.use-primary-text-colours();
       @include scheme.set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }

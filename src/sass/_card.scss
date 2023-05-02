@@ -33,7 +33,7 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin entire-card-link() {
-  @include scheme.card-link-colours();
+  @include scheme.use-card-link-colours();
 
   &:hover {
     &::after {
@@ -55,7 +55,7 @@ $_card-border-radius: settings.$border-radius;
 @mixin meta() {
   @include typography.details();
   @include typography.list-separator();
-  @include scheme.card-meta-colours();
+  @include scheme.use-card-meta-colours();
 }
 
 @mixin list() {
