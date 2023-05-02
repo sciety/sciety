@@ -10,17 +10,18 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../.
 import { followCommandHandler, Ports as FollowCommandPorts } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
-import { GetGroup, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
+import { Queries } from '../../shared-read-models';
 
 export const groupProperty = 'groupid';
 
 type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
   logger: Logger,
-  getGroup: GetGroup,
+  getGroup: Queries['getGroup'],
 };
 
 const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
