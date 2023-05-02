@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { ListsTab, ViewModel as UserListsPage } from '../../src/html-pages/user-page/view-model';
-import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/construct-view-model';
+import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import * as LOID from '../../src/types/list-owner-id';
 import {
   constructViewModel as constructGroupFollowersPage,
