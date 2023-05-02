@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel, Ports } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
+import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
 import { GroupCardViewModel } from '../../../../src/shared-components/group-card';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -11,14 +11,10 @@ type ViewModel = ReadonlyArray<GroupCardViewModel>;
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let defaultAdapters: Ports;
   let result: ViewModel;
 
   beforeEach(() => {
     framework = createTestFramework();
-    defaultAdapters = {
-      ...framework.queries,
-    };
   });
 
   describe('when there is more than one group', () => {
@@ -39,7 +35,7 @@ describe('construct-view-model', () => {
         publishedAt: new Date('1970'),
       });
       result = await pipe(
-        defaultAdapters,
+        framework.queries,
         constructViewModel,
         TE.getOrElse(shouldNotBeCalled),
       )();

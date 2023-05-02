@@ -1,17 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Ports as ViewModelPorts, toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
-import { GetAllGroups } from '../../../shared-ports';
+import { toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
 import * as DE from '../../../types/data-error';
 import { GroupCardViewModel } from '../../../shared-components/group-card';
-
-export type Ports = ViewModelPorts & {
-  getAllGroups: GetAllGroups,
-};
+import { Queries } from '../../../shared-read-models';
 
 export const constructViewModel = (
-  ports: Ports,
+  queries: Queries,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<GroupCardViewModel>> => pipe(
-  ports.getAllGroups(),
-  toListOfGroupCardViewModels(ports),
+  queries.getAllGroups(),
+  toListOfGroupCardViewModels(queries),
 );

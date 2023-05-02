@@ -7,7 +7,8 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
-import { constructViewModel, Ports } from './construct-view-model/construct-view-model';
+import { constructViewModel } from './construct-view-model/construct-view-model';
+import { Queries } from '../../shared-read-models';
 
 const renderErrorPage = (error: DE.DataError): RenderPageError => ({
   type: error,
@@ -16,8 +17,8 @@ const renderErrorPage = (error: DE.DataError): RenderPageError => ({
 
 type GroupsPage = TE.TaskEither<RenderPageError, Page>;
 
-export const groupsPage = (ports: Ports): GroupsPage => pipe(
-  constructViewModel(ports),
+export const groupsPage = (queries: Queries): GroupsPage => pipe(
+  constructViewModel(queries),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
   TE.bimap(
