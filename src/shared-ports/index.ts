@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetGroupsFollowedBy } from './get-groups-followed-by';
 import { LookupList } from './lookup-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
@@ -46,7 +45,6 @@ export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-
 export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
-export { GetGroupsFollowedBy } from './get-groups-followed-by';
 export { IsFollowing } from './is-following';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
@@ -64,7 +62,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getGroupsFollowedBy: GetGroupsFollowedBy,
   lookupList: LookupList,
   lookupUser: LookupUser,
   lookupUserByHandle: LookupUserByHandle,
