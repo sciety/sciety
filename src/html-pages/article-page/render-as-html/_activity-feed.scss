@@ -7,6 +7,7 @@
 @use '../../../sass/settings';
 @use '../../../sass/states';
 @use '../../../sass/typography';
+@use '../../../sass/scheme';
 
 .activity-feed__header {
   @include layout.page-content-horizontal-margins();
@@ -61,7 +62,7 @@
 }
 
 .activity-feed__item__date {
-  color: settings.$colour-text-secondary;
+  @include scheme.set-secondary-text-colours();
   flex-shrink: 0;
 }
 
@@ -112,10 +113,10 @@ p.activity-feed__item__title {
 }
 
 .responses {
+  @include scheme.responses-colours();
   display: flex;
   align-items: center;
   padding: 0.75rem functions.px-to-rem(16px);
-  background-color: settings.$colour-component-background;
   border-top: settings.$border-width solid settings.$colour-furniture;
   @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(24px);

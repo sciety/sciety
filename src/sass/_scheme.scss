@@ -24,6 +24,9 @@
   --dark-mode-colour-text-navigation-link: var(--dark-mode-text-primary);
   --text-navigation-link: var(--light-mode-colour-text-navigation-link);
 
+  // responses specific
+  --light-mode-background-colour-responses: #{settings.$colour-light-mode-component-background};
+  --background-colour-responses: var(--light-mode-background-colour-responses);
 
   // furniture
   --light-mode-furniture-colour: #{settings.$colour-furniture};
@@ -88,6 +91,11 @@
 
 @mixin card-meta-colours() {
   @include set-secondary-text-colours();
+}
+
+@mixin responses-colours() {
+  @include set-colours(background-color, --background-responses, --dark-mode-background-colour);
+  @include set-primary-text-colours();
 }
 
 // extracted from normalise.scss
