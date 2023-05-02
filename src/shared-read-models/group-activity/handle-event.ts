@@ -3,21 +3,30 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
+import { ReviewId } from '../../types/review-id';
 
-export type GroupActivity = { evaluationCount: number, latestActivityAt: O.Option<Date> };
+export type GroupActivity = {
+  evaluationCount: number,
+  latestActivityAt: O.Option<Date>,
+};
 
-export type ReadModel = Record<GroupId, GroupActivity>;
+export type ReadModel = Record<GroupId, GroupActivity & { evaluationLocators: Array<ReviewId> }>;
 
 export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isGroupJoinedEvent(event)) {
-    readmodel[event.groupId] = { evaluationCount: 0, latestActivityAt: O.none };
+    readmodel[event.groupId] = {
+      evaluationCount: 0,
+      latestActivityAt: O.none,
+      evaluationLocators: [],
+    };
   }
   if (isEvaluationRecordedEvent(event)) {
     if (readmodel[event.groupId] === undefined) {
       return readmodel;
     }
+    readmodel[event.groupId].evaluationLocators.push(event.evaluationLocator);
     readmodel[event.groupId].evaluationCount += 1;
     const newPublishedAt = pipe(
       readmodel[event.groupId].latestActivityAt,
