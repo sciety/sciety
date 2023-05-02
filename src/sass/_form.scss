@@ -3,11 +3,12 @@
 @use 'typography';
 @use 'button';
 @use 'breakpoints';
+@use 'scheme';
 
 $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin form {
-  background-color: settings.$colour-white;
+  @include scheme.set-search-form-colours();
   padding: 1rem functions.px-to-rem(settings.$sciety-default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
@@ -33,7 +34,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin helper-text {
-  color: $_microcopy-colour;
+  @include scheme.set-secondary-text-colours();
   margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
 }
 
