@@ -10,7 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { GetGroupsFollowedBy, LookupUserByHandle, SelectAllListsOwnedBy } from '../../../../shared-ports';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
-import { TabSelector, ViewModel } from '../../view-model';
+import { TabSelector, ViewModel } from '../view-model';
 import { constructListsTab } from './construct-lists-tab';
 import { constructFollowingTab, Ports as ConstructFollowingTabPorts } from './construct-following-tab';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';

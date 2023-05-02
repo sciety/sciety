@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { FollowingTab } from '../../view-model';
+import { FollowingTab } from '../view-model';
 import { constructGroupCardViewModel, Ports } from '../../../../shared-components/group-card';
 import { GroupId } from '../../../../types/group-id';
 

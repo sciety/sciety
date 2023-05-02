@@ -4,7 +4,7 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { FollowingTab, ListsTab, ViewModel } from '../../view-model';
+import { FollowingTab, ListsTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { renderGroupCard } from '../../../../shared-components/group-card';

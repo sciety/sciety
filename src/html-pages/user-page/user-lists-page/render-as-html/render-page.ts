@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel } from '../../view-model';
+import { ViewModel } from '../view-model';
 import { renderMainContent } from './render-main-content';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
