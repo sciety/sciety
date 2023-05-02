@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
-import { evaluationRecorded, groupJoined } from '../../../src/domain-events';
+import { evaluationRecorded, groupJoined, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
@@ -246,13 +246,13 @@ describe('get-activity-for-group', () => {
             recordedEvaluation.authors,
             recordedEvaluation.publishedAt,
           ),
-          // incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
+          incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
         ],
         RA.reduce(initialState(), handleEvent),
       );
       const result = getActivityForGroup(readModel)(group.id);
 
-      it.skip('returns an evaluationCount of 0', () => {
+      it.failing('returns an evaluationCount of 0', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             evaluationCount: 0,
