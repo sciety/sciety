@@ -12,6 +12,9 @@
   --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
   --background-colour: var(--light-mode-background-colour);
 
+  --light-mode-background-colour-standard-page: #{settings.$colour-page-background};
+  --background-colour-standard-page: var(--light-mode-page-background-colour);
+
   // site header / utility bar specific
   --light-mode-colour-text-navigation-link: #{settings.$colour-text-navigation-link};
   --dark-mode-colour-text-navigation-link: var(--dark-mode-text-primary);
@@ -56,6 +59,10 @@
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
   @include set-standard-text-colours();
+}
+
+.standard-page-container {
+  @include set-colours(background-color, --background-colour-standard-page, --dark-mode-background-colour);
 }
 
 // extracted and adapted from site-header/_index.scss

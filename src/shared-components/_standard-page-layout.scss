@@ -5,7 +5,6 @@
 
 .standard-page-container {
   @include layout.page-container();
-  background-color: settings.$colour-page-background;
 }
 
 .page-content {
