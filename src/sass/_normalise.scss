@@ -1,12 +1,14 @@
 @use 'settings';
 @use 'states';
 @use 'typography';
+@use 'scheme';
 
 html {
   font-size: unset;
 }
 
 body {
+  @include scheme.use-primary-text-and-standard-background-colours();
   font-family: settings.$font-family;
   font-size: settings.$base-font-measure;
   line-height: 1.5;

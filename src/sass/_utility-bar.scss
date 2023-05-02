@@ -7,6 +7,7 @@
 @use 'layout';
 @use 'breakpoints';
 @use 'avatar';
+@use 'scheme';
 @use '../shared-components/site-header';
 
 $_space-allocated-to-avatar-and-handle: 120px;
@@ -63,6 +64,15 @@ $_avatar-height-coupled-to-buttons: 34px;
   padding-bottom: $_navigation-text-bottom-spacing;
   border-bottom: settings.$navigation-link-border-width solid transparent;
   display: block;
+
+  &:link,
+  &:visited {
+    @include scheme.set-site-header-link-colours();
+    @include states.link() {
+      @include scheme.use-primary-text-colours();
+      @include scheme.set-colours(border-color, --text-primary, --dark-mode-text-primary);
+    }
+  }
 }
 
 .utility-bar__list_link_button {
@@ -76,6 +86,16 @@ $_avatar-height-coupled-to-buttons: 34px;
 .utility-bar-user-profile {
   display: flex;
   line-height: 1;
+
+  &:link,
+  &:visited {
+    @include scheme.use-primary-text-colours();
+
+    &:hover,
+    &:active {
+      color: inherit;
+    }
+  }
 
   &::before {
     @include layout.visually-hidden();
