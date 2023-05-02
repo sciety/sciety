@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent } from '../../domain-events';
+import {
+  DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
+} from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
@@ -36,6 +38,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       O.alt(() => O.some(event.publishedAt)),
     );
     readmodel[event.groupId].latestActivityAt = newPublishedAt;
+  }
+  if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+    const groupIds = Object.keys(readmodel) as unknown as ReadonlyArray<GroupId>;
+    groupIds.forEach((groupId) => {
+      const i = readmodel[groupId].evaluationLocators.indexOf(event.evaluationLocator);
+      if (i > -1) {
+        readmodel[groupId].evaluationLocators.splice(i, 1);
+      }
+    });
   }
   return readmodel;
 };
