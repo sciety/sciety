@@ -1,7 +1,10 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ArticleStateName, ReadModel } from './handle-event';
-import { GetArticleIdsByState } from '../../shared-ports';
+
+export type ArticleIdsByState = Record<string, ReadonlyArray<string>>;
+
+export type GetArticleIdsByState = () => ArticleIdsByState;
 
 const getArticleIds = (readModel: ReadModel,
   selectedState: ArticleStateName): ReadonlyArray<string> => pipe(

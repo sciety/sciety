@@ -8,7 +8,6 @@ import { FetchArticle } from './fetch-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
-import { GetArticleIdsByState } from './get-article-ids-by-state';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { GetFollowers } from './get-followers';
@@ -46,7 +45,6 @@ export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
-export { GetArticleIdsByState, ArticleIdsByState } from './get-article-ids-by-state';
 export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
@@ -71,7 +69,6 @@ export type SharedPorts = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
-  getArticleIdsByState: GetArticleIdsByState,
   getArticleSubjectArea: GetArticleSubjectArea,
   getFollowers: GetFollowers,
   getGroup: GetGroup,
