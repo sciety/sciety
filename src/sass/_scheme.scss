@@ -70,6 +70,11 @@
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
 }
 
+@mixin set-group-page-about-background-colours() {
+  @include set-standard-background-colours();
+}
+
+// Looks generic - candidate for extraction etc
 @mixin card-colours() {
   @include set-primary-text-colours();
   @include set-standard-background-colours();
@@ -98,6 +103,10 @@
   @include set-primary-text-colours();
 }
 
+@mixin set-standard-page-container-background-colour() {
+  @include set-colours(background-color, --background-colour-standard-page, --dark-mode-background-colour);
+}
+
 // extracted from normalise.scss
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
@@ -105,7 +114,7 @@ body {
 }
 
 .standard-page-container {
-  @include set-colours(background-color, --background-colour-standard-page, --dark-mode-background-colour);
+  @include set-standard-page-container-background-colour();
 }
 
 // extracted and adapted from site-header/_index.scss
