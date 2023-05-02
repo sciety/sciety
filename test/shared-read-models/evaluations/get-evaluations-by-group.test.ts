@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../../src/domain-events';
+import { evaluationRecorded, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -36,5 +36,23 @@ describe('get-evaluations-by-group', () => {
     );
 
     expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+  });
+
+  it.failing('does not return erased evaluations', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecorded(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecorded(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+        incorrectlyRecordedEvaluationErased(reviewId1),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const actualEvaluations = pipe(
+      group1,
+      getEvaluationsByGroup(readmodel),
+      RA.map((evaluation) => evaluation.reviewId),
+    );
+
+    expect(actualEvaluations).toStrictEqual([reviewId2]);
   });
 });
