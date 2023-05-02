@@ -47,12 +47,21 @@
   }
 }
 
+@mixin set-standard-background-colours() {
+  @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
+}
+
 @mixin set-standard-text-colours() {
   @include set-colours(color, --text-primary, --dark-mode-text-primary);
 }
 
 @mixin set-site-header-link-colours() {
   @include set-colours(color, --text-navigation-link, --dark-mode-colour-text-navigation-link);
+}
+
+@mixin card-colours() {
+  @include set-standard-text-colours();
+  @include set-standard-background-colours();
 }
 
 // extracted from normalise.scss

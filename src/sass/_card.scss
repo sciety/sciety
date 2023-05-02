@@ -4,14 +4,16 @@
 @use 'settings';
 @use 'typography';
 @use 'avatar';
+@use 'scheme';
 
 $_card-border-radius: settings.$border-radius;
 
 @mixin basics ($is-entire-card-linked: false) {
+  @include scheme.card-colours();
+
   @if ($is-entire-card-linked == true) {
     position: relative;
   }
-  background-color: settings.$colour-white;
   padding: 1rem functions.px-to-rem(settings.$sciety-default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
