@@ -30,6 +30,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
   }
   if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+    readmodel.byArticleId.forEach((state) => {
+      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      if (i > -1) {
+        state.splice(i, 1);
+      }
+    });
     readmodel.byGroupId.forEach((state) => {
       const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
       if (i > -1) {
