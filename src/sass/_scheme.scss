@@ -64,6 +64,21 @@
   @include set-standard-background-colours();
 }
 
+@mixin card-link-colours() {
+  @include set-standard-text-colours();
+
+  &:link,
+  &:visited {
+    @include set-standard-text-colours();
+
+    &:active,
+    &:hover {
+      @include set-standard-text-colours();
+    }
+  }
+
+}
+
 // extracted from normalise.scss
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);

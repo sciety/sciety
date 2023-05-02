@@ -32,22 +32,8 @@ $_card-border-radius: settings.$border-radius;
   margin-bottom: 0.25rem;
 }
 
-@mixin link () {
-  color: settings.$colour-text-primary;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:active,
-    &:hover {
-      color: settings.$colour-text-primary;
-    }
-  }
-}
-
 @mixin entire-card-link() {
-  @include link();
+  @include scheme.card-link-colours();
 
   &:hover {
     &::after {

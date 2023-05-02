@@ -2,6 +2,7 @@
 @use '../../../sass/typography';
 @use '../../../sass/card';
 @use '../common';
+@use '../../../sass/scheme';
 
 .evaluation-card {
   @include card.basics();
@@ -30,7 +31,7 @@
 }
 
 .evaluation-card__link {
-  @include card.link();
+  @include scheme.card-link-colours();
 }
 
 .evaluation-card__meta {
