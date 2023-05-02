@@ -1,7 +1,5 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
@@ -42,21 +40,18 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     userDetails: user,
     lists: ports.selectAllListsOwnedBy(LOID.fromUserId(user.id)),
   })),
+  E.map(({ groupIds, userDetails, lists }) => ({
+    groupIds,
+    userDetails,
+    listCount: lists.length,
+    activeTab: pipe(
+      groupIds,
+      RA.map((groupId) => ({
+        groupId,
+        followedAt: new Date(),
+      })),
+      (followings) => constructFollowingTab(ports, followings),
+    ),
+  })),
   TE.fromEither,
-  TE.chainTaskK(({ groupIds, userDetails, lists }) => pipe(
-    {
-      groupIds: T.of(groupIds),
-      userDetails: T.of(userDetails),
-      listCount: T.of(lists.length),
-      activeTab: pipe(
-        groupIds,
-        RA.map((groupId) => ({
-          groupId,
-          followedAt: new Date(),
-        })),
-        (followings) => constructFollowingTab(ports, followings),
-      ),
-    },
-    sequenceS(T.ApplyPar),
-  )),
 );

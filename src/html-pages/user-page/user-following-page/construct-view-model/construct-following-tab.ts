@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -14,7 +13,7 @@ type Following = {
   followedAt: Date,
 };
 
-export const constructFollowingTab = (ports: Ports, followings: ReadonlyArray<Following>): T.Task<FollowingTab> => pipe(
+export const constructFollowingTab = (ports: Ports, followings: ReadonlyArray<Following>): FollowingTab => pipe(
   followings,
   RA.map((following) => following.groupId),
   E.traverseArray(constructGroupCardViewModel(ports)),
@@ -22,5 +21,4 @@ export const constructFollowingTab = (ports: Ports, followings: ReadonlyArray<Fo
   (f) => ({
     followedGroups: f,
   }),
-  T.of,
 );
