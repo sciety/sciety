@@ -3,7 +3,6 @@ import { GroupId } from '../../../types/group-id';
 import { UserDetails } from '../../../types/user-details';
 
 export type ListsTab = {
-  selector: 'lists',
   ownedLists: ReadonlyArray<ListCardViewModel>,
   showCreateNewList: boolean,
 };

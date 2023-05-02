@@ -16,7 +16,6 @@ const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) =>
 type ConstructListsTab = (lists: ReadonlyArray<List>, pageOwner: UserId, loggedInUserId: O.Option<UserId>) => ListsTab;
 
 export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInUserId) => ({
-  selector: 'lists',
   ownedLists: pipe(
     lists,
     sortByDefaultListOrdering,

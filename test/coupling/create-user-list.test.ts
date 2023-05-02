@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ListsTab, ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
+import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
 import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import * as LOID from '../../src/types/list-owner-id';
 import {
@@ -60,8 +60,6 @@ describe('create user list', () => {
         it('there is a card for the list', () => {
           const listIds = pipe(
             userListsPage.activeTab,
-            O.fromPredicate((tab): tab is ListsTab => tab.selector === 'lists'),
-            O.getOrElseW(shouldNotBeCalled),
             (tab) => tab.ownedLists,
             RA.map((l) => l.listId),
           );

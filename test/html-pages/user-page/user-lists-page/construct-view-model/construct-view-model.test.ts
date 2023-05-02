@@ -49,19 +49,11 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('the lists tab is the active tab', () => {
-        expect(viewmodel.activeTab.selector).toBe('lists');
-      });
-
       it('the list count is 2', async () => {
         expect(viewmodel.listCount).toBe(2);
       });
 
       it('two list cards are displayed', () => {
-        if (viewmodel.activeTab.selector !== 'lists') {
-          throw new Error('the wrong tab is selected');
-        }
-
         expect(viewmodel.activeTab.ownedLists).toHaveLength(2);
       });
 
