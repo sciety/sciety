@@ -54,11 +54,11 @@ describe('construct-view-model', () => {
       });
 
       it('two list cards are displayed', () => {
-        expect(viewmodel.activeTab.ownedLists).toHaveLength(2);
+        expect(viewmodel.ownedLists).toHaveLength(2);
       });
 
       it('the most recently updated list is shown first', async () => {
-        expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+        expect(viewmodel).toStrictEqual(expect.objectContaining({
           ownedLists: [
             expect.objectContaining({ listId: updatedList.id }),
             expect.objectContaining({ listId: initialUserList.id }),
@@ -81,7 +81,7 @@ describe('construct-view-model', () => {
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(viewmodel.activeTab).toStrictEqual(expect.objectContaining({
+      expect(viewmodel).toStrictEqual(expect.objectContaining({
         ownedLists: [expect.objectContaining({
           articleCount: 1,
         })],

@@ -59,8 +59,7 @@ describe('create user list', () => {
 
         it('there is a card for the list', () => {
           const listIds = pipe(
-            userListsPage.activeTab,
-            (tab) => tab.ownedLists,
+            userListsPage.ownedLists,
             RA.map((l) => l.listId),
           );
 

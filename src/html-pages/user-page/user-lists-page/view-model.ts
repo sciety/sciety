@@ -7,9 +7,8 @@ export type ListsTab = {
   showCreateNewList: boolean,
 };
 
-export type ViewModel = {
+export type ViewModel = ListsTab & {
   userDetails: UserDetails,
   groupIds: ReadonlyArray<GroupId>,
   listCount: number,
-  activeTab: ListsTab,
 };

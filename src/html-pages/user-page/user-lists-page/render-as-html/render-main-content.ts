@@ -39,6 +39,6 @@ const renderLists = (activeTab: ListsTab) => toHtmlFragment(`
 `);
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderLists(viewmodel.activeTab),
+  renderLists(viewmodel),
   renderTabs(tabProps(viewmodel)),
 );

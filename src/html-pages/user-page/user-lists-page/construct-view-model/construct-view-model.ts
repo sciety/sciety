@@ -44,7 +44,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     groupIds,
     userDetails,
     listCount: lists.length,
-    activeTab: constructListsTab(
+    ...constructListsTab(
       lists,
       userDetails.id,
       pipe(
