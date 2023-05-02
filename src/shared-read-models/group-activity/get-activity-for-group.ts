@@ -10,4 +10,8 @@ export type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
 export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup => (groupId) => pipe(
   readModel,
   R.lookup(groupId),
+  O.map((state) => ({
+    evaluationCount: state.evaluationLocators.length,
+    latestActivityAt: state.latestActivityAt,
+  })),
 );

@@ -10,14 +10,13 @@ export type GroupActivity = {
   latestActivityAt: O.Option<Date>,
 };
 
-export type ReadModel = Record<GroupId, GroupActivity & { evaluationLocators: Array<ReviewId> }>;
+export type ReadModel = Record<GroupId, { evaluationLocators: Array<ReviewId>, latestActivityAt: O.Option<Date> }>;
 
 export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isGroupJoinedEvent(event)) {
     readmodel[event.groupId] = {
-      evaluationCount: 0,
       latestActivityAt: O.none,
       evaluationLocators: [],
     };
@@ -27,7 +26,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       return readmodel;
     }
     readmodel[event.groupId].evaluationLocators.push(event.evaluationLocator);
-    readmodel[event.groupId].evaluationCount += 1;
     const newPublishedAt = pipe(
       readmodel[event.groupId].latestActivityAt,
       O.map((previousPublishedAt) => (
