@@ -174,7 +174,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     '/users/:handle/lists',
     pageHandler(adapters, createPageFromParams(
       userListsPageParams,
-      userListsPage(adapters)('lists'),
+      userListsPage(adapters),
     )),
   );
 
@@ -182,7 +182,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     '/users/:handle/following',
     pageHandler(adapters, createPageFromParams(
       userFollowingPageParams,
-      userFollowingPage(adapters)('followed-groups'),
+      userFollowingPage(adapters),
     )),
   );
 

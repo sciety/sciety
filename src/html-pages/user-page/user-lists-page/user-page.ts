@@ -4,13 +4,12 @@ import { renderErrorPage, renderAsHtml } from './render-as-html';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
 import { constructViewModel, Params, Ports } from './construct-view-model';
-import { TabSelector } from './view-model';
 
-type UserPage = (tabSelector: TabSelector) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 // ts-unused-exports:disable-next-line
-export const userPage = (ports: Ports): UserPage => (tabSelector) => (params) => pipe(
+export const userPage = (ports: Ports): UserPage => (params) => pipe(
   params,
-  constructViewModel(tabSelector, ports),
+  constructViewModel('lists', ports),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
