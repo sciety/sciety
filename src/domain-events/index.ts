@@ -43,6 +43,13 @@ export {
 } from './evaluation-recorded-event';
 
 export {
+  isIncorrectlyRecordedEvaluationErasedEvent,
+  IncorrectlyRecordedEvaluationErasedEvent,
+  incorrectlyRecordedEvaluationErased,
+  incorrectlyRecordedEvaluationErasedEventCodec,
+} from './incorrectly-recorded-evaluation-erased-event';
+
+export {
   isListCreatedEvent,
   listCreated,
   ListCreatedEvent,
