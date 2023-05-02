@@ -68,7 +68,8 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../ht
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { userIdCodec } from '../types/user-id';
 import { CommandHandler, GenericCommand } from '../types/command-handler';
-import { userPage, userPageParams } from '../html-pages/user-page';
+import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
+import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
@@ -172,16 +173,16 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/users/:handle/lists',
     pageHandler(adapters, createPageFromParams(
-      userPageParams,
-      userPage(adapters)('lists'),
+      userListsPageParams,
+      userListsPage(adapters)('lists'),
     )),
   );
 
   router.get(
     '/users/:handle/following',
     pageHandler(adapters, createPageFromParams(
-      userPageParams,
-      userPage(adapters)('followed-groups'),
+      userFollowingPageParams,
+      userFollowingPage(adapters)('followed-groups'),
     )),
   );
 

@@ -18,6 +18,7 @@ import { Queries } from '../../../shared-read-models';
 
 export type Ports = Queries;
 
+// ts-unused-exports:disable-next-line
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,
   user: tt.optionFromNullable(t.type({

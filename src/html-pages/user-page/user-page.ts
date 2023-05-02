@@ -8,6 +8,7 @@ import { TabSelector } from './view-model';
 
 type UserPage = (tabSelector: TabSelector) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+// ts-unused-exports:disable-next-line
 export const userPage = (ports: Ports): UserPage => (tabSelector) => (params) => pipe(
   params,
   constructViewModel(tabSelector, ports),
