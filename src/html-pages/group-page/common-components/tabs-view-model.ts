@@ -1,8 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { GetFollowers, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { SelectAllListsOwnedBy } from '../../../shared-ports';
 import { Group } from '../../../types/group';
 import * as LOID from '../../../types/list-owner-id';
+import { Queries } from '../../../shared-read-models';
 
 export type TabsViewModel = {
   groupSlug: string,
@@ -11,7 +12,7 @@ export type TabsViewModel = {
 };
 
 export type Ports = {
-  getFollowers: GetFollowers,
+  getFollowers: Queries['getFollowers'],
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
