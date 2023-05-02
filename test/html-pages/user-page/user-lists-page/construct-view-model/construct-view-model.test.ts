@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CandidateUserHandle } from '../../../../src/types/candidate-user-handle';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { TestFramework, createTestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/types/list';
-import { arbitraryList } from '../../../types/list-helper';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { constructViewModel, Ports } from '../../../../src/html-pages/user-page/construct-view-model';
-import { ViewModel } from '../../../../src/html-pages/user-page/view-model';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryGroup } from '../../../types/group.helper';
+import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import * as LOID from '../../../../../src/types/list-owner-id';
+import { List } from '../../../../../src/types/list';
+import { arbitraryList } from '../../../../types/list-helper';
+import { arbitraryUserDetails } from '../../../../types/user-details.helper';
+import { constructViewModel, Ports } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
+import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
+import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryGroup } from '../../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

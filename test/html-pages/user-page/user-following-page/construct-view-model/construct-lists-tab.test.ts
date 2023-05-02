@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { arbitraryList } from '../../../types/list-helper';
-import { constructListsTab } from '../../../../src/html-pages/user-page/construct-view-model/construct-lists-tab';
-import { arbitraryUserId } from '../../../types/user-id.helper';
+import { arbitraryList } from '../../../../types/list-helper';
+import { constructListsTab } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model/construct-lists-tab';
+import { arbitraryUserId } from '../../../../types/user-id.helper';
 
 describe('construct-lists-tab', () => {
   const pageOwner = arbitraryUserId();
