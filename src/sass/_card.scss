@@ -55,7 +55,7 @@ $_card-border-radius: settings.$border-radius;
 @mixin meta() {
   @include typography.details();
   @include typography.list-separator();
-  color: settings.$colour-text-secondary;
+  @include scheme.card-meta-colours();
 }
 
 @mixin list() {

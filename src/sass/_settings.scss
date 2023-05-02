@@ -28,6 +28,7 @@ $colour-accent-hover-on-dark-background: rgb(234, 122, 83);
 $colour-container-background: rgb(212 221 224);
 
 $colour-light-mode-text-primary: $colour-text-primary;
+$colour-light-mode-text-secondary: $colour-text-secondary;
 $colour-light-mode-background: $colour-white;
 $colour-light-mode-site-header-background-1: $colour-site-header-background-darker;
 $colour-light-mode-site-header-background-2: $colour-white;
@@ -36,6 +37,7 @@ $colour-light-icon: #34434A;
 $colour-light-mode-site-header-logo-text: #34434A;
 $colour-dark-mode-site-header-logo-text: $colour-white; // should be coupled to a dark mode text colour sass variable
 $colour-dark-mode-text-primary: $colour-white;
+$colour-dark-mode-text-secondary: $colour-white;
 $colour-dark-mode-background: $colour-navigation-menu-background;
 $colour-dark-furniture: $colour-white;
 $colour-dark-icon: $colour-white;

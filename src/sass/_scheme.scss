@@ -7,6 +7,10 @@
   --dark-mode-text-primary: #{settings.$colour-dark-mode-text-primary};
   --text-primary: var(--light-mode-text-primary);
 
+  --light-mode-text-secondary: #{settings.$colour-light-mode-text-secondary};
+  --dark-mode-text-secondary: #{settings.$colour-dark-mode-text-secondary};
+  --text-secondary: var(--light-mode-text-secondary);
+
   // backgrounds
   --light-mode-background-colour: #{settings.$colour-light-mode-background};
   --dark-mode-background-colour: #{settings.$colour-dark-mode-background};
@@ -51,8 +55,12 @@
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
 }
 
-@mixin set-standard-text-colours() {
+@mixin set-primary-text-colours() {
   @include set-colours(color, --text-primary, --dark-mode-text-primary);
+}
+
+@mixin set-secondary-text-colours() {
+  @include set-colours(color, --text-secondary, --dark-mode-text-primary);
 }
 
 @mixin set-site-header-link-colours() {
@@ -60,29 +68,32 @@
 }
 
 @mixin card-colours() {
-  @include set-standard-text-colours();
+  @include set-primary-text-colours();
   @include set-standard-background-colours();
 }
 
 @mixin card-link-colours() {
-  @include set-standard-text-colours();
+  @include set-primary-text-colours();
 
   &:link,
   &:visited {
-    @include set-standard-text-colours();
+    @include set-primary-text-colours();
 
     &:active,
     &:hover {
-      @include set-standard-text-colours();
+      @include set-primary-text-colours();
     }
   }
+}
 
+@mixin card-meta-colours() {
+  @include set-secondary-text-colours();
 }
 
 // extracted from normalise.scss
 body {
   @include set-colours(background-color, --background-colour, --dark-mode-background-colour);
-  @include set-standard-text-colours();
+  @include set-primary-text-colours();
 }
 
 .standard-page-container {
@@ -121,7 +132,7 @@ body {
   &:visited {
     @include set-site-header-link-colours();
     @include states.link() {
-      @include set-standard-text-colours();
+      @include set-primary-text-colours();
       @include set-colours(border-color, --text-primary, --dark-mode-text-primary);
     }
   }
