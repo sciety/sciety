@@ -3,13 +3,13 @@ import { DomainEvent, isEvaluationRecordedEvent } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type ReadModel = {
-  byArticleId: Record<string, Array<RecordedEvaluation>>,
-  byGroupId: Record<string, Array<RecordedEvaluation>>,
+  byArticleId: Map<string, Array<RecordedEvaluation>>,
+  byGroupId: Map<string, Array<RecordedEvaluation>>,
 };
 
 export const initialState = (): ReadModel => ({
-  byArticleId: {},
-  byGroupId: {},
+  byArticleId: new Map(),
+  byGroupId: new Map(),
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
@@ -22,12 +22,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       publishedAt: event.publishedAt,
       authors: event.authors,
     };
-    const evaluationsForThisArticle = readmodel.byArticleId[event.articleId.value] ?? [];
-    const evaluationsByThisGroup = readmodel.byGroupId[event.groupId] ?? [];
+    const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
+    const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? [];
     evaluationsForThisArticle.push(recordedEvaluation);
     evaluationsByThisGroup.push(recordedEvaluation);
-    readmodel.byArticleId[event.articleId.value] = evaluationsForThisArticle;
-    readmodel.byGroupId[event.groupId] = evaluationsByThisGroup;
+    readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
+    readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
   }
   return readmodel;
 };
