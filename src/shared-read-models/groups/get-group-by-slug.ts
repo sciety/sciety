@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { Group } from '../../types/group';
 
-type GetGroupBySlug = (slug: string) => O.Option<Group>;
+export type GetGroupBySlug = (slug: string) => O.Option<Group>;
 
 export const getGroupBySlug = (readmodel: ReadModel): GetGroupBySlug => (slug) => pipe(
   Object.values(readmodel),

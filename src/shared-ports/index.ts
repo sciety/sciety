@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetGroupBySlug } from './get-group-by-slug';
 import { GetGroupsFollowedBy } from './get-groups-followed-by';
 import { LookupList } from './lookup-list';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
@@ -36,7 +35,6 @@ export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
-export { GetGroupBySlug } from './get-group-by-slug';
 export { LookupList } from './lookup-list';
 export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
@@ -66,7 +64,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getGroupBySlug: GetGroupBySlug,
   getGroupsFollowedBy: GetGroupsFollowedBy,
   lookupList: LookupList,
   lookupUser: LookupUser,
