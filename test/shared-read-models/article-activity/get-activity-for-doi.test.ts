@@ -48,6 +48,10 @@ describe('get-activity-for-doi', () => {
         expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(0);
       });
     });
+
+    describe('because it has had an evaluation recorded and erased', () => {
+      it.todo('article has no activity');
+    });
   });
 
   describe('when an article has one or more evaluations', () => {
@@ -114,6 +118,10 @@ describe('get-activity-for-doi', () => {
           evaluationCount: 2,
         }));
       });
+    });
+
+    describe('and one of the evaluations has been erased', () => {
+      it.todo('the evaluation count reflects the erasure');
     });
   });
 
