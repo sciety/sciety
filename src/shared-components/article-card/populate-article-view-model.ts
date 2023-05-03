@@ -39,7 +39,7 @@ export const populateArticleViewModel = (
   T.map(({ latestVersionDate, articleActivity }) => ({
     ...item,
     latestVersionDate,
-    latestActivityDate: articleActivity.latestActivityDate,
+    latestActivityAt: articleActivity.latestActivityAt,
     evaluationCount: articleActivity.evaluationCount,
     listMembershipCount: articleActivity.listMembershipCount,
   })),

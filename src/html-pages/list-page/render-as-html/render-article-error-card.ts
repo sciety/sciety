@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 export type ArticleErrorCardViewModel = {
   evaluationCount: number,
   href: string,
-  latestActivityDate: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
   error: DE.DataError,
   articleId: Doi,
 };
@@ -45,7 +45,7 @@ export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): Ht
         </p>
         <footer class="article-card__footer">
           <div class="article-card__meta">
-            <span class="visually-hidden">This article has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderArticleLatestActivityDate(viewModel.latestActivityDate)}
+            <span class="visually-hidden">This article has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderArticleLatestActivityDate(viewModel.latestActivityAt)}
           </div>
         </footer>
       </a>

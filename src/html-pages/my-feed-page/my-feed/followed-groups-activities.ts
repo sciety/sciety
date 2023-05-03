@@ -93,7 +93,7 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
   RM.values(byMostRecentRecordedEvaluationByFollowedGroups),
   RA.map((activity) => ({
     ...activity,
-    latestActivityDate: O.some(activity.latestArticleActivityDate),
+    latestActivityAt: O.some(activity.latestArticleActivityDate),
     listMembershipCount: 0,
   })),
 );

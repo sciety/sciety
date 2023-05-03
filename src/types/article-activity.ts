@@ -3,7 +3,7 @@ import { Doi } from './doi';
 
 export type ArticleActivity = {
   articleId: Doi,
-  latestActivityDate: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
   evaluationCount: number,
   listMembershipCount: number,
 };

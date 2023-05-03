@@ -18,7 +18,7 @@ describe('populate-article-view-model', () => {
       getLatestArticleVersionDate: () => TO.some(latestVersionDate),
       getActivityForDoi: (a) => ({
         articleId: a,
-        latestActivityDate: O.some(laterPublicationDate),
+        latestActivityAt: O.some(laterPublicationDate),
         evaluationCount: 2,
         listMembershipCount: 0,
       }),
@@ -39,7 +39,7 @@ describe('populate-article-view-model', () => {
     expect(viewModel).toStrictEqual(expect.objectContaining({
       evaluationCount: 2,
       latestVersionDate: O.some(latestVersionDate),
-      latestActivityDate: O.some(laterPublicationDate),
+      latestActivityAt: O.some(laterPublicationDate),
     }));
   });
 });

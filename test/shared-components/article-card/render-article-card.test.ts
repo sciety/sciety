@@ -19,7 +19,7 @@ const generateArticleViewModel = ({
   articleId,
   title,
   authors,
-  latestActivityDate,
+  latestActivityAt: latestActivityDate,
   latestVersionDate,
   evaluationCount,
   listMembershipCount,

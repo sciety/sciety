@@ -16,13 +16,13 @@ describe('populate-article-view-models', () => {
         {
           articleId: new Doi('10.1101/11111'),
           evaluationCount: 1,
-          latestActivityDate: O.some(new Date()),
+          latestActivityAt: O.some(new Date()),
           listMembershipCount: 0,
         },
         {
           articleId: arbitraryArticleId(),
           evaluationCount: 1,
-          latestActivityDate: O.some(new Date()),
+          latestActivityAt: O.some(new Date()),
           listMembershipCount: 0,
         },
       ];
@@ -48,7 +48,7 @@ describe('populate-article-view-models', () => {
         {
           articleId: arbitraryArticleId(),
           evaluationCount: 1,
-          latestActivityDate: O.some(new Date()),
+          latestActivityAt: O.some(new Date()),
           listMembershipCount: 0,
         },
       ];
@@ -74,13 +74,13 @@ describe('populate-article-view-models', () => {
       {
         articleId: successDoi,
         evaluationCount: 1,
-        latestActivityDate: O.some(new Date()),
+        latestActivityAt: O.some(new Date()),
         listMembershipCount: 0,
       },
       {
         articleId: failingDoi,
         evaluationCount: 1,
-        latestActivityDate: O.some(new Date()),
+        latestActivityAt: O.some(new Date()),
         listMembershipCount: 0,
       },
     ];

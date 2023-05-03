@@ -48,7 +48,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(latestEvaluationPublishedDate),
+          latestActivityAt: O.some(latestEvaluationPublishedDate),
         }),
       ]);
     });
@@ -102,7 +102,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(latestEvaluationPublishedDate),
+          latestActivityAt: O.some(latestEvaluationPublishedDate),
         }),
       ]);
     });
@@ -135,7 +135,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: O.some(new Date('2021-03-10T00:00:00.000Z')),
+          latestActivityAt: O.some(new Date('2021-03-10T00:00:00.000Z')),
         }),
       ]);
     });

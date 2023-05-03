@@ -13,7 +13,7 @@ export type ArticleViewModel = {
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
-  latestActivityDate: O.Option<Date>,
+  latestActivityAt: O.Option<Date>,
   evaluationCount: number,
   listMembershipCount: number,
 };
@@ -74,7 +74,7 @@ const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toH
   ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
-      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
+      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
     </div>
   </footer>
 `);

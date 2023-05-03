@@ -16,13 +16,13 @@ export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (a
   O.match(
     () => ({
       articleId,
-      latestActivityDate: O.none,
+      latestActivityAt: O.none,
       evaluationCount: 0,
       listMembershipCount: 0,
     }),
     (act) => ({
       articleId: act.articleId,
-      latestActivityDate: pipe(
+      latestActivityAt: pipe(
         act.evaluationStates,
         RA.map((evaluationState) => evaluationState.publishedAt),
         RA.sort(D.Ord),

@@ -28,7 +28,7 @@ describe('get-activity-for-doi', () => {
       it('article has no activity', () => {
         expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual({
           articleId,
-          latestActivityDate: O.none,
+          latestActivityAt: O.none,
           evaluationCount: 0,
           listMembershipCount: 0,
         });
@@ -101,7 +101,7 @@ describe('get-activity-for-doi', () => {
 
       it('returns the activity for that article', () => {
         expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityDate: O.some(laterPublishedDate),
+          latestActivityAt: O.some(laterPublishedDate),
           evaluationCount: 2,
         }));
       });
@@ -132,7 +132,7 @@ describe('get-activity-for-doi', () => {
 
       it('returns the activity for that article', () => {
         expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityDate: O.some(laterPublishedDate),
+          latestActivityAt: O.some(laterPublishedDate),
           evaluationCount: 2,
         }));
       });
@@ -168,7 +168,7 @@ describe('get-activity-for-doi', () => {
       });
 
       it('the latest activity reflects the erasure', () => {
-        expect(getActivityForDoi(readmodel)(articleId).latestActivityDate).toStrictEqual(O.some(earlierPublishedDate));
+        expect(getActivityForDoi(readmodel)(articleId).latestActivityAt).toStrictEqual(O.some(earlierPublishedDate));
       });
     });
   });
