@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 import { DomainEvent } from '../../domain-events';
 import { Doi } from '../../types/doi';
@@ -16,7 +15,6 @@ type ArticleState = {
   articleId: Doi,
   evaluationStates: Array<EvaluationState>,
   listMembershipCount: number,
-  evaluatingGroups: Set<GroupId>,
   lists: Set<ListId>,
 };
 
@@ -39,7 +37,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
             evaluationStates: [],
-            evaluatingGroups: new Set(),
             lists: new Set([event.listId]),
             listMembershipCount: 1,
           }),
@@ -62,7 +59,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
               evaluationLocator: event.evaluationLocator,
               publishedAt: event.publishedAt,
             }],
-            evaluatingGroups: new Set([event.groupId]),
             lists: new Set(),
             listMembershipCount: 0,
           }),
@@ -72,7 +68,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
               evaluationLocator: event.evaluationLocator,
               publishedAt: event.publishedAt,
             }],
-            evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
           }),
         ),
       );
