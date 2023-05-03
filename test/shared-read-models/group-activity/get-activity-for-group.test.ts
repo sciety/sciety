@@ -289,7 +289,7 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.failing('returns a O.none for the latestActivityAt', () => {
+      it('returns a O.none for the latestActivityAt', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             latestActivityAt: O.none,
@@ -340,7 +340,7 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.failing('returns the latestActivityAt for the remaining evaluation', () => {
+      it('returns the latestActivityAt for the remaining evaluation', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             latestActivityAt: O.some(goodEvaluation.publishedAt),

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as D from 'fp-ts/date';
 import { GroupActivity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
@@ -11,6 +13,11 @@ export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup =
   O.fromNullable,
   O.map((state) => ({
     evaluationCount: state.evaluationStates.length,
-    latestActivityAt: state.latestActivityAt,
+    latestActivityAt: pipe(
+      state.evaluationStates,
+      RA.map((evaluationState) => evaluationState.publishedAt),
+      RA.sort(D.Ord),
+      RA.last,
+    ),
   })),
 );
