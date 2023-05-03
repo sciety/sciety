@@ -20,15 +20,15 @@ const isEvaluationLocator = (candidate: unknown): candidate is EvaluationLocator
   typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
 );
 
-const toReviewId = (serialization: string): EvaluationLocator => {
+const toEvaluationLocator = (serialization: string): EvaluationLocator => {
   if (isEvaluationLocator(serialization)) {
     return serialization as unknown as EvaluationLocator;
   }
 
-  throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
+  throw new Error(`Unable to unserialize EvaluationLocator: "${serialization}"`);
 };
 
-export const deserialize = (value: string): O.Option<EvaluationLocator> => O.tryCatch(() => toReviewId(value));
+export const deserialize = (value: string): O.Option<EvaluationLocator> => O.tryCatch(() => toEvaluationLocator(value));
 
 export const serialize = (id: EvaluationLocator): string => id;
 
