@@ -14,14 +14,11 @@ type EvaluationState = {
 
 type ArticleState = {
   articleId: Doi,
-  latestActivityDate: O.Option<Date>,
   evaluationStates: Array<EvaluationState>,
   listMembershipCount: number,
   evaluatingGroups: Set<GroupId>,
   lists: Set<ListId>,
 };
-
-const mostRecentDate = (a: Date) => (b: Date) => (a.getTime() > b.getTime() ? a : b);
 
 const deleteFromSet = (set: Set<ListId>, element: ListId) => {
   set.delete(element);
@@ -41,7 +38,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         O.fold(
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
-            latestActivityDate: O.none,
             evaluationStates: [],
             evaluatingGroups: new Set(),
             lists: new Set([event.listId]),
@@ -62,7 +58,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         O.fold(
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
-            latestActivityDate: O.some(event.publishedAt),
             evaluationStates: [{
               evaluationLocator: event.evaluationLocator,
               publishedAt: event.publishedAt,
@@ -73,10 +68,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           }),
           (entry) => readmodel.set(event.articleId.value, {
             ...entry,
-            latestActivityDate: pipe(
-              entry.latestActivityDate,
-              O.map(mostRecentDate(event.publishedAt)),
-            ),
             evaluationStates: [...entry.evaluationStates, {
               evaluationLocator: event.evaluationLocator,
               publishedAt: event.publishedAt,
