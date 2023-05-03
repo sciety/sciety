@@ -29,13 +29,13 @@ export const renderReviewResponses = (
       <div class="responses__actions">
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(evaluationLocator)}">
+            <input type="hidden" name="reviewid" value="${RI.evaluationLocatorCodec.encode(evaluationLocator)}">
             ${helpfulButton(counts.helpfulCount)}
           </form>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(evaluationLocator)}">
+            <input type="hidden" name="reviewid" value="${RI.evaluationLocatorCodec.encode(evaluationLocator)}">
             ${notHelpfulButton(counts.notHelpfulCount)}
           </form>
         </div>

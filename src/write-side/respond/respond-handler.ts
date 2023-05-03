@@ -16,7 +16,7 @@ export type Ports = GetLoggedInScietyUserPorts & {
 
 const respondRequestCodec = t.type({
   body: t.type({
-    reviewid: RI.reviewIdCodec,
+    reviewid: RI.evaluationLocatorCodec,
     command: commandCodec,
   }),
 });

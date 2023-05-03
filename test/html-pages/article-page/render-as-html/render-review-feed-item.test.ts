@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { renderReviewFeedItem } from '../../../../src/html-pages/article-page/render-as-html/render-review-feed-item';
 import { missingFullTextAndSourceLink } from '../../../../src/html-pages/article-page/render-as-html/static-messages';
-import { reviewIdCodec } from '../../../../src/types/evaluation-locator';
+import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
 import { arbitraryNumber } from '../../../helpers';
 import * as RFI from '../review-feed-item.helper';
 
@@ -34,7 +34,7 @@ describe('render-review-feed-item', () => {
       });
 
       it('renders an id tag with the correct value', async () => {
-        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+        expect(rendered.getElementById(evaluationLocatorCodec.encode(item.id))).not.toBeNull();
       });
 
       it('infers the language of the full text', () => {
@@ -71,7 +71,7 @@ describe('render-review-feed-item', () => {
       });
 
       it('renders an id tag with the correct value', async () => {
-        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+        expect(rendered.getElementById(evaluationLocatorCodec.encode(item.id))).not.toBeNull();
       });
 
       it('infers the language of the full text', () => {
@@ -106,7 +106,7 @@ describe('render-review-feed-item', () => {
       });
 
       it('renders an id tag with the correct value', async () => {
-        expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
+        expect(rendered.getElementById(evaluationLocatorCodec.encode(item.id))).not.toBeNull();
       });
     });
 

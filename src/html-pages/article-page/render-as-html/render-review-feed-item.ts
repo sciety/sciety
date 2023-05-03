@@ -66,7 +66,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
     `;
   }
   return `
-    <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
+    <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(review.id)}">
       <header class="activity-feed__item__header">
         ${avatar(review)}
         ${eventMetadata(review)}
@@ -87,7 +87,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
   review.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item__contents" id="${RI.reviewIdCodec.encode(review.id)}">
+      <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(review.id)}">
         <header class="activity-feed__item__header">
           ${avatar(review)}
           ${eventMetadata(review)}

@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryReviewId } from './review-id.helper';
 import * as RI from '../../src/types/evaluation-locator';
-import { reviewIdCodec } from '../../src/types/evaluation-locator';
+import { evaluationLocatorCodec } from '../../src/types/evaluation-locator';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
 describe('review-id', () => {
@@ -14,7 +14,7 @@ describe('review-id', () => {
     it('identifies the service as doi', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('doi'));
     });
@@ -22,7 +22,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -35,7 +35,7 @@ describe('review-id', () => {
     it('identifies the service as hypothesis', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('hypothesis'));
     });
@@ -43,7 +43,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -56,7 +56,7 @@ describe('review-id', () => {
     it('identifies the service as ncrc', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('ncrc'));
     });
@@ -64,7 +64,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -77,7 +77,7 @@ describe('review-id', () => {
     it('identifies the service as rapidreviews', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('rapidreviews'));
     });
@@ -85,7 +85,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -93,7 +93,7 @@ describe('review-id', () => {
     it('infers the original URL', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         O.fromEither,
         O.chain(RI.inferredSourceUrl),
         O.map((url) => url.toString()),
@@ -103,8 +103,8 @@ describe('review-id', () => {
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
-        E.map(RI.reviewIdCodec.encode),
+        RI.evaluationLocatorCodec.decode,
+        E.map(RI.evaluationLocatorCodec.encode),
       )).toStrictEqual(E.right(ingestedReviewId));
     });
   });
@@ -116,7 +116,7 @@ describe('review-id', () => {
     it('identifies the service as prelights', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('prelights'));
     });
@@ -124,7 +124,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -132,7 +132,7 @@ describe('review-id', () => {
     it('infers the original URL', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
+        RI.evaluationLocatorCodec.decode,
         O.fromEither,
         O.chain(RI.inferredSourceUrl),
         O.map((url) => url.toString()),
@@ -142,8 +142,8 @@ describe('review-id', () => {
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,
-        RI.reviewIdCodec.decode,
-        E.map(RI.reviewIdCodec.encode),
+        RI.evaluationLocatorCodec.decode,
+        E.map(RI.evaluationLocatorCodec.encode),
       )).toStrictEqual(E.right(ingestedReviewId));
     });
   });
@@ -152,7 +152,7 @@ describe('review-id', () => {
     it('cannot be deserialized', () => {
       const unrecognisedFormat = 'foo';
 
-      expect(RI.reviewIdCodec.decode(unrecognisedFormat)._tag).toBe('Left');
+      expect(RI.evaluationLocatorCodec.decode(unrecognisedFormat)._tag).toBe('Left');
     });
   });
 
@@ -162,8 +162,8 @@ describe('review-id', () => {
 
       expect(pipe(
         id,
-        reviewIdCodec.encode,
-        reviewIdCodec.decode,
+        evaluationLocatorCodec.encode,
+        evaluationLocatorCodec.decode,
       )).toStrictEqual(E.right(id));
     });
   });

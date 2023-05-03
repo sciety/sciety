@@ -10,7 +10,7 @@ import { FetchReview } from '../shared-ports';
 type EvaluationContent = TE.TaskEither<RenderPageError, Page>;
 
 export const paramsCodec = t.type({
-  reviewid: RID.reviewIdCodec,
+  reviewid: RID.evaluationLocatorCodec,
 });
 
 type Ports = {

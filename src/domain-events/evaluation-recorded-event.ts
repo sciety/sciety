@@ -6,14 +6,14 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
-import { EvaluationLocator, reviewIdCodec } from '../types/evaluation-locator';
+import { EvaluationLocator, evaluationLocatorCodec } from '../types/evaluation-locator';
 
 export const evaluationRecordedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('EvaluationRecorded'),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
-  evaluationLocator: reviewIdCodec,
+  evaluationLocator: evaluationLocatorCodec,
   articleId: DoiFromString,
   publishedAt: tt.DateFromISOString,
   authors: t.readonlyArray(t.string),

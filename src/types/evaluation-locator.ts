@@ -57,8 +57,8 @@ const eq: Eq.Eq<EvaluationLocator> = pipe(
 
 export const { equals } = eq;
 
-export const reviewIdCodec = new t.Type(
-  'reviewIdCodec',
+export const evaluationLocatorCodec = new t.Type(
+  'evaluationLocatorCodec',
   isEvaluationLocator,
   (input, context) => pipe(
     t.string.validate(input, context),
