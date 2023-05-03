@@ -2,7 +2,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as D from 'fp-ts/date';
+import * as D from 'fp-ts/Date';
 import { GroupActivity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
