@@ -288,6 +288,14 @@ describe('get-activity-for-group', () => {
           }),
         ));
       });
+
+      it.failing('returns a O.none for the latestActivityAt', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.none,
+          }),
+        ));
+      });
     });
   });
 });
