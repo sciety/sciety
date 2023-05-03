@@ -73,8 +73,8 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article has one or more evaluations', () => {
-    const earlierPublishedDate = new Date(1900);
-    const laterPublishedDate = new Date(2000);
+    const earlierPublishedDate = new Date('1900');
+    const laterPublishedDate = new Date('2000');
 
     describe('and the evaluations are recorded in order of publication', () => {
       const readmodel = pipe(
