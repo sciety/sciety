@@ -6,11 +6,6 @@ import {
 import { GroupId } from '../../types/group-id';
 import { ReviewId } from '../../types/review-id';
 
-export type GroupActivity = {
-  evaluationCount: number,
-  latestActivityAt: O.Option<Date>,
-};
-
 type EvaluationState = {
   evaluationLocator: ReviewId,
   publishedAt: Date,
