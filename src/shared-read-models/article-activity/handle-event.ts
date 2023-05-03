@@ -7,10 +7,15 @@ import { DomainEvent } from '../../domain-events';
 import { Doi } from '../../types/doi';
 import { ReviewId } from '../../types/review-id';
 
+type EvaluationState = {
+  evaluationLocator: ReviewId,
+  publishedAt: Date,
+};
+
 type ArticleState = {
   articleId: Doi,
   latestActivityDate: O.Option<Date>,
-  evaluationLocators: Array<ReviewId>,
+  evaluationStates: Array<EvaluationState>,
   listMembershipCount: number,
   evaluatingGroups: Set<GroupId>,
   lists: Set<ListId>,
@@ -37,7 +42,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
             latestActivityDate: O.none,
-            evaluationLocators: [],
+            evaluationStates: [],
             evaluatingGroups: new Set(),
             lists: new Set([event.listId]),
             listMembershipCount: 1,
@@ -58,7 +63,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           () => readmodel.set(event.articleId.value, {
             articleId: event.articleId,
             latestActivityDate: O.some(event.publishedAt),
-            evaluationLocators: [event.evaluationLocator],
+            evaluationStates: [{
+              evaluationLocator: event.evaluationLocator,
+              publishedAt: event.publishedAt,
+            }],
             evaluatingGroups: new Set([event.groupId]),
             lists: new Set(),
             listMembershipCount: 0,
@@ -69,7 +77,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
               entry.latestActivityDate,
               O.map(mostRecentDate(event.publishedAt)),
             ),
-            evaluationLocators: [...entry.evaluationLocators, event.evaluationLocator],
+            evaluationStates: [...entry.evaluationStates, {
+              evaluationLocator: event.evaluationLocator,
+              publishedAt: event.publishedAt,
+            }],
             evaluatingGroups: entry.evaluatingGroups.add(event.groupId),
           }),
         ),
@@ -77,9 +88,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
 
     case 'IncorrectlyRecordedEvaluationErased':
       readmodel.forEach((articleState) => {
-        const i = articleState.evaluationLocators.indexOf(event.evaluationLocator);
+        const i = articleState.evaluationStates.findIndex(
+          (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
+        );
         if (i > -1) {
-          articleState.evaluationLocators.splice(i, 1);
+          articleState.evaluationStates.splice(i, 1);
         }
       });
       return readmodel;
