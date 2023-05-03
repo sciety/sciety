@@ -57,11 +57,12 @@ const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<stri
 );
 
 const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
-  const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+  const startDate = new Date(Date.now() - (600 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(baseUrl, 0),
+    TE.map((data) => { console.log('>>>>', data.length); return []; }),
     TE.chain(TE.traverseArray(getReviews(reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
