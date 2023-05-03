@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import {
   DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../domain-events';
@@ -35,16 +34,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       return readmodel;
     }
     state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
-    const newPublishedAt = pipe(
-      state.latestActivityAt,
-      O.map((previousPublishedAt) => (
-        event.publishedAt > previousPublishedAt
-          ? event.publishedAt
-          : previousPublishedAt
-      )),
-      O.alt(() => O.some(event.publishedAt)),
-    );
-    state.latestActivityAt = newPublishedAt;
   }
   if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
     readmodel.forEach((state) => {
