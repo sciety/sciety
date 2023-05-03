@@ -44,15 +44,15 @@ const toEvaluation = (review: CrossrefReview) => {
   };
 };
 
-const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
-  fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
+const fetchPaginatedData = (
+  baseUrl: string,
+  items: ReadonlyArray<BiorxivItem> = [],
+): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
+  fetchData<BiorxivResponse>(`${baseUrl}/${items.length}`),
   TE.map((response) => response.collection),
   TE.chain(RA.match(
-    () => TE.right([]),
-    (items) => pipe(
-      fetchPaginatedData(baseUrl, offset + items.length),
-      TE.map((next) => [...items, ...next]),
-    ),
+    () => TE.right(items),
+    (newItems) => fetchPaginatedData(baseUrl, [...items, ...newItems]),
   )),
 );
 
@@ -61,7 +61,7 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
-    fetchPaginatedData(baseUrl, 0),
+    fetchPaginatedData(baseUrl),
     TE.map((data) => { console.log('>>>>', data.length); return []; }),
     TE.chain(TE.traverseArray(getReviews(reviewDoiPrefix))),
     TE.map(RA.flatten),
