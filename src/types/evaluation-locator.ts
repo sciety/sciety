@@ -16,12 +16,12 @@ const extractService = (candidate: string) => {
 
 const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
 
-export const isReviewId = (candidate: unknown): candidate is EvaluationLocator => (
+const isEvaluationLocator = (candidate: unknown): candidate is EvaluationLocator => (
   typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
 );
 
 const toReviewId = (serialization: string): EvaluationLocator => {
-  if (isReviewId(serialization)) {
+  if (isEvaluationLocator(serialization)) {
     return serialization as unknown as EvaluationLocator;
   }
 
@@ -59,7 +59,7 @@ export const { equals } = eq;
 
 export const reviewIdCodec = new t.Type(
   'reviewIdCodec',
-  isReviewId,
+  isEvaluationLocator,
   (input, context) => pipe(
     t.string.validate(input, context),
     E.chain(flow(
