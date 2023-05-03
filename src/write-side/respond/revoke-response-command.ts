@@ -5,10 +5,10 @@ import {
   userRevokedFindingReviewNotHelpful,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../domain-events';
-import { ReviewId } from '../../types/review-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 import { UserId } from '../../types/user-id';
 
-type RevokeResponse = (currentResponse: ReviewResponse, userId: UserId, reviewId: ReviewId) =>
+type RevokeResponse = (currentResponse: ReviewResponse, userId: UserId, reviewId: EvaluationLocator) =>
 ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>;
 
 export const revokeResponse: RevokeResponse = (currentResponse, userId, reviewId) => {

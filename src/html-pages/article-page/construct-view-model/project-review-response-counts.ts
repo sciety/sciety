@@ -7,9 +7,9 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../../domain-events';
-import * as ReviewId from '../../../types/review-id';
+import * as ReviewId from '../../../types/evaluation-locator';
 
-const projectHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
+const projectHelpfulCount = (reviewId: ReviewId.EvaluationLocator) => flow(
   RA.filter((event: DomainEvent): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
     event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
   )),
@@ -19,7 +19,7 @@ const projectHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
   )),
 );
 
-const projectNotHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
+const projectNotHelpfulCount = (reviewId: ReviewId.EvaluationLocator) => flow(
   RA.filter((event: DomainEvent): event is UserFoundReviewNotHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent => (
     event.type === 'UserFoundReviewNotHelpful' || event.type === 'UserRevokedFindingReviewNotHelpful'
   )),
@@ -29,13 +29,13 @@ const projectNotHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
   )),
 );
 
-const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<DomainEvent>) => ({
+const projection = (reviewId: ReviewId.EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => ({
   helpfulCount: pipe(events, projectHelpfulCount(reviewId)),
   notHelpfulCount: pipe(events, projectNotHelpfulCount(reviewId)),
 });
 
 type ProjectReviewResponseCounts = (
-  reviewId: ReviewId.ReviewId,
+  reviewId: ReviewId.EvaluationLocator,
 ) => (events: ReadonlyArray<DomainEvent>,
 ) => { helpfulCount: number, notHelpfulCount: number };
 

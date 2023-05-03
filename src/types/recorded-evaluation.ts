@@ -1,10 +1,10 @@
 import { Doi } from './doi';
 import { GroupId } from './group-id';
-import { ReviewId } from './review-id';
+import { EvaluationLocator } from './evaluation-locator';
 
 export type RecordedEvaluation = {
   articleId: Doi,
-  reviewId: ReviewId,
+  reviewId: EvaluationLocator,
   groupId: GroupId,
   recordedAt: Date,
   publishedAt: Date,

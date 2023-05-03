@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { reviewIdCodec } from '../../types/review-id';
+import { reviewIdCodec } from '../../types/evaluation-locator';
 
 const requiredFields = t.type({
   groupId: GroupIdFromString,

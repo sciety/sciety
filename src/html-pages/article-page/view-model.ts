@@ -6,7 +6,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
-import * as RI from '../../types/review-id';
+import * as RI from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 
@@ -17,7 +17,7 @@ type Responses = {
 
 export type ReviewFeedItem = {
   type: 'review',
-  id: RI.ReviewId,
+  id: RI.EvaluationLocator,
   source: O.Option<URL>,
   publishedAt: Date,
   groupName: string,

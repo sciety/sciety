@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import * as DE from '../../src/types/data-error';
-import * as RI from '../../src/types/review-id';
+import * as RI from '../../src/types/evaluation-locator';
 import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryReviewId } from '../types/review-id.helper';

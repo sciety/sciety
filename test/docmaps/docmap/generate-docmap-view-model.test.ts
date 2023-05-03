@@ -9,7 +9,7 @@ import {
   Ports,
 } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
-import { inferredSourceUrl } from '../../../src/types/review-id';
+import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';

@@ -4,12 +4,12 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { UserId } from '../../../types/user-id';
-import * as RI from '../../../types/review-id';
+import * as RI from '../../../types/evaluation-locator';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
-import { ReviewId } from '../../../types/review-id';
+import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { FetchReview, GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 
@@ -22,7 +22,7 @@ export type Ports = {
 export type ReviewEvent = {
   type: 'review',
   groupId: GroupId,
-  reviewId: ReviewId,
+  reviewId: EvaluationLocator,
   publishedAt: Date,
 };
 

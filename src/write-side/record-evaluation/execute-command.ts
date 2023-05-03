@@ -5,9 +5,11 @@ import { RecordEvaluationCommand } from '../commands';
 import {
   DomainEvent, evaluationRecorded, isEvaluationRecordedEvent,
 } from '../../domain-events';
-import { ReviewId } from '../../types/review-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 
-const hasEvaluationAlreadyBeenRecorded = (evaluationLocator: ReviewId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+const hasEvaluationAlreadyBeenRecorded = (
+  evaluationLocator: EvaluationLocator,
+) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isEvaluationRecordedEvent),
   RA.some((event) => event.evaluationLocator === evaluationLocator),

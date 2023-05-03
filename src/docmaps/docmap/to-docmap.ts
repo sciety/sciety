@@ -8,7 +8,7 @@ import { DocmapModel } from './generate-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
-import * as RI from '../../types/review-id';
+import * as RI from '../../types/evaluation-locator';
 
 const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
   participants: pipe(

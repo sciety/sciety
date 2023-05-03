@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { userIdCodec, UserId } from '../types/user-id';
 import { generate } from '../types/event-id';
-import { ReviewId, reviewIdCodec } from '../types/review-id';
+import { EvaluationLocator, reviewIdCodec } from '../types/evaluation-locator';
 
 export const userFoundReviewHelpfulEventCodec = t.type({
   id: EventIdFromString,
@@ -20,7 +20,7 @@ export const isUserFoundReviewHelpfulEvent = (event: { type: string }):
 
 export const userFoundReviewHelpful = (
   userId: UserId,
-  reviewId: ReviewId,
+  reviewId: EvaluationLocator,
 ): UserFoundReviewHelpfulEvent => ({
   id: generate(),
   type: 'UserFoundReviewHelpful',

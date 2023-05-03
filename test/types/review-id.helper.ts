@@ -1,17 +1,17 @@
 import { v4 } from 'uuid';
-import { ReviewId } from '../../src/types/review-id';
+import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../helpers';
 
-export const arbitraryReviewDoi = (): ReviewId => (
-  `doi:${arbitraryWord(20)}` as ReviewId
+export const arbitraryReviewDoi = (): EvaluationLocator => (
+  `doi:${arbitraryWord(20)}` as EvaluationLocator
 );
 
-const arbitraryHypothesisAnnotationId = (): ReviewId => (
-  `hypothesis:${arbitraryWord(20)}` as ReviewId
+const arbitraryHypothesisAnnotationId = (): EvaluationLocator => (
+  `hypothesis:${arbitraryWord(20)}` as EvaluationLocator
 );
 
-export const arbitraryNcrcId = (): ReviewId => (
-  `ncrc:${v4()}` as ReviewId
+export const arbitraryNcrcId = (): EvaluationLocator => (
+  `ncrc:${v4()}` as EvaluationLocator
 );
 
 const constructors = [
@@ -20,4 +20,4 @@ const constructors = [
   arbitraryNcrcId,
 ];
 
-export const arbitraryReviewId = (): ReviewId => constructors[arbitraryNumber(0, constructors.length - 1)]();
+export const arbitraryReviewId = (): EvaluationLocator => constructors[arbitraryNumber(0, constructors.length - 1)]();

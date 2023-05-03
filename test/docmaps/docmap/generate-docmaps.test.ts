@@ -8,7 +8,7 @@ import { Ports } from '../../../src/docmaps/docmap/generate-docmaps';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
 import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
-import { ReviewId } from '../../../src/types/review-id';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -246,7 +246,7 @@ describe('generate-docmaps', () => {
       response = await pipe(
         generateDocmaps({
           ...defaultAdapters,
-          fetchReview: (id: ReviewId) => (
+          fetchReview: (id: EvaluationLocator) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
               : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })

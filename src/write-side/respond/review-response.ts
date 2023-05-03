@@ -6,7 +6,7 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../domain-events';
-import * as ReviewId from '../../types/review-id';
+import * as ReviewId from '../../types/evaluation-locator';
 import { UserId } from '../../types/user-id';
 
 export type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
@@ -31,7 +31,7 @@ const filterEventType = (events: ReadonlyArray<DomainEvent>) => (
 
 const filterUserAndReview = (
   userId: UserId,
-  reviewId: ReviewId.ReviewId,
+  reviewId: ReviewId.EvaluationLocator,
 ) => (events: ReadonlyArray<InterestingEvent>) => (
   events.filter((event) => event.userId === userId && ReviewId.equals(event.reviewId, reviewId))
 );
@@ -55,7 +55,7 @@ const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>) => {
   }
 };
 
-export const reviewResponse = (userId: UserId, reviewId: ReviewId.ReviewId): ReviewResponseType => flow(
+export const reviewResponse = (userId: UserId, reviewId: ReviewId.EvaluationLocator): ReviewResponseType => flow(
   filterEventType,
   filterUserAndReview(userId, reviewId),
   calculateCurrentState,

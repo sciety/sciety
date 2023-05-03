@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { generate } from '../types/event-id';
-import { ReviewId, reviewIdCodec } from '../types/review-id';
+import { EvaluationLocator, reviewIdCodec } from '../types/evaluation-locator';
 
 const eventType = 'IncorrectlyRecordedEvaluationErased';
 
@@ -19,7 +19,7 @@ export const isIncorrectlyRecordedEvaluationErasedEvent = (event: { type: string
   event is IncorrectlyRecordedEvaluationErasedEvent => event.type === eventType;
 
 export const incorrectlyRecordedEvaluationErased = (
-  evaluationLocator: ReviewId,
+  evaluationLocator: EvaluationLocator,
   date: Date = new Date(),
 ): IncorrectlyRecordedEvaluationErasedEvent => ({
   id: generate(),

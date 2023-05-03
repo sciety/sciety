@@ -2,7 +2,7 @@ import {
   $, goto, openBrowser,
 } from 'taiko';
 import { arbitraryGroupId } from '../../test/types/group-id.helper';
-import * as RI from '../../src/types/review-id';
+import * as RI from '../../src/types/evaluation-locator';
 import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../../test/helpers';

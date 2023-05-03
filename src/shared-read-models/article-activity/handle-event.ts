@@ -9,10 +9,10 @@ import {
   isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../domain-events';
 import { Doi } from '../../types/doi';
-import { ReviewId } from '../../types/review-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 
 type EvaluationState = {
-  evaluationLocator: ReviewId,
+  evaluationLocator: EvaluationLocator,
   publishedAt: Date,
 };
 

@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 
-export type ReviewId = string & { readonly ReviewId: unique symbol };
+export type EvaluationLocator = string & { readonly EvaluationLocator: unique symbol };
 
 const extractService = (candidate: string) => {
   const [, service] = /^(.+?):(.+)$/.exec(candidate) ?? [];
@@ -16,41 +16,41 @@ const extractService = (candidate: string) => {
 
 const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
 
-export const isReviewId = (candidate: unknown): candidate is ReviewId => (
+export const isReviewId = (candidate: unknown): candidate is EvaluationLocator => (
   typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
 );
 
-const toReviewId = (serialization: string): ReviewId => {
+const toReviewId = (serialization: string): EvaluationLocator => {
   if (isReviewId(serialization)) {
-    return serialization as unknown as ReviewId;
+    return serialization as unknown as EvaluationLocator;
   }
 
   throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
 };
 
-export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
+export const deserialize = (value: string): O.Option<EvaluationLocator> => O.tryCatch(() => toReviewId(value));
 
-export const serialize = (id: ReviewId): string => id;
+export const serialize = (id: EvaluationLocator): string => id;
 
-export const service = (id: ReviewId): string => id.split(':')[0];
+export const service = (id: EvaluationLocator): string => id.split(':')[0];
 
-export const key = (id: ReviewId): string => id.slice(id.indexOf(':') + 1);
+export const key = (id: EvaluationLocator): string => id.slice(id.indexOf(':') + 1);
 
 const urlTemplates = ({
-  doi: (id: ReviewId) => `https://doi.org/${key(id)}`,
-  hypothesis: (id: ReviewId) => `https://hypothes.is/a/${key(id)}`,
-  prelights: (id: ReviewId) => key(id),
-  rapidreviews: (id: ReviewId) => key(id),
+  doi: (id: EvaluationLocator) => `https://doi.org/${key(id)}`,
+  hypothesis: (id: EvaluationLocator) => `https://hypothes.is/a/${key(id)}`,
+  prelights: (id: EvaluationLocator) => key(id),
+  rapidreviews: (id: EvaluationLocator) => key(id),
 });
 
-export const inferredSourceUrl = (id: ReviewId): O.Option<URL> => pipe(
+export const inferredSourceUrl = (id: EvaluationLocator): O.Option<URL> => pipe(
   urlTemplates,
   R.lookup(service(id)),
   O.map((template) => template(id)),
   O.map((u) => new URL(u)),
 );
 
-const eq: Eq.Eq<ReviewId> = pipe(
+const eq: Eq.Eq<EvaluationLocator> = pipe(
   S.Eq,
   Eq.contramap(serialize),
 );

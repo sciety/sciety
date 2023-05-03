@@ -4,10 +4,10 @@ import {
   DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
-import { ReviewId } from '../../types/review-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 
 type EvaluationState = {
-  evaluationLocator: ReviewId,
+  evaluationLocator: EvaluationLocator,
   publishedAt: Date,
 };
 

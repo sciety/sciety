@@ -11,12 +11,12 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../../domain-events';
-import * as RI from '../../../types/review-id';
+import * as RI from '../../../types/evaluation-locator';
 import { UserId } from '../../../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => (reviewId: RI.ReviewId, userId: UserId) => pipe(
+const projectResponse = (getEvents: GetEvents) => (reviewId: RI.EvaluationLocator, userId: UserId) => pipe(
   getEvents,
   T.map(flow(
     RA.filter((event): event is
@@ -51,7 +51,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: RI.ReviewId, userId
 type ProjectUserReviewResponse = (
   getEvents: GetEvents
 ) => (
-  reviewId: RI.ReviewId,
+  reviewId: RI.EvaluationLocator,
   userId: O.Option<UserId>,
 ) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 

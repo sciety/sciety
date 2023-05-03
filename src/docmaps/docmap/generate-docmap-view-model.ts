@@ -12,7 +12,7 @@ import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
-import { inferredSourceUrl, ReviewId } from '../../types/review-id';
+import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../shared-read-models';
 
 export type DocmapModel = {
@@ -34,7 +34,7 @@ type GenerateDocmapViewModel = (
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
 
 type ReviewForArticle = {
-  reviewId: ReviewId,
+  reviewId: EvaluationLocator,
   groupId: GroupId,
   recordedAt: Date,
   publishedAt: Date,
@@ -42,7 +42,7 @@ type ReviewForArticle = {
 };
 
 export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
-  fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
+  fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
 };
 
 const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(

@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryReviewId } from './review-id.helper';
-import * as RI from '../../src/types/review-id';
-import { reviewIdCodec } from '../../src/types/review-id';
+import * as RI from '../../src/types/evaluation-locator';
+import { reviewIdCodec } from '../../src/types/evaluation-locator';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
 describe('review-id', () => {

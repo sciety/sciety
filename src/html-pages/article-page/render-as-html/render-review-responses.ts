@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as RI from '../../../types/review-id';
+import * as RI from '../../../types/evaluation-locator';
 
 type Counts = { helpfulCount: number, notHelpfulCount: number };
 
 export const renderReviewResponses = (
-  evaluationLocator: RI.ReviewId,
+  evaluationLocator: RI.EvaluationLocator,
   counts: Counts,
   current: O.Option<'helpful' | 'not-helpful'>,
 ): HtmlFragment => {

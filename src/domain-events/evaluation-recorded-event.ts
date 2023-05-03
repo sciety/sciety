@@ -6,7 +6,7 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { Doi } from '../types/doi';
 import { generate } from '../types/event-id';
 import { GroupId } from '../types/group-id';
-import { ReviewId, reviewIdCodec } from '../types/review-id';
+import { EvaluationLocator, reviewIdCodec } from '../types/evaluation-locator';
 
 export const evaluationRecordedEventCodec = t.type({
   id: EventIdFromString,
@@ -27,7 +27,7 @@ export const isEvaluationRecordedEvent = (event: { type: string }):
 export const evaluationRecorded = (
   groupId: GroupId,
   doi: Doi,
-  evaluationLocator: ReviewId,
+  evaluationLocator: EvaluationLocator,
   authors: ReadonlyArray<string>,
   publishedAt: Date,
   date: Date = new Date(),

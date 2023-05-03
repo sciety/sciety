@@ -7,7 +7,7 @@ import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
 import { langAttributeFor } from '../../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as RI from '../../../types/review-id';
+import * as RI from '../../../types/evaluation-locator';
 import { ReviewFeedItem } from '../view-model';
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`

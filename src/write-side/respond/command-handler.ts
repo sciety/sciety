@@ -6,7 +6,7 @@ import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
 import { CommandResult } from '../../types/command-result';
-import { ReviewId } from '../../types/review-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 import { UserId } from '../../types/user-id';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 
@@ -20,7 +20,7 @@ export const commandCodec = t.keyof(commands);
 
 type Command = t.TypeOf<typeof commandCodec>;
 
-type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<CommandResult>;
+type CommandHandler = (input: { command: Command, reviewId: EvaluationLocator }) => T.Task<CommandResult>;
 
 export const commandHandler = (
   commitEvents: CommitEvents,
