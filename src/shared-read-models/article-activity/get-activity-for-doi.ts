@@ -2,6 +2,8 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as D from 'fp-ts/Date';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { ReadModel } from './handle-event';
@@ -20,7 +22,12 @@ export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (a
     }),
     (act) => ({
       articleId: act.articleId,
-      latestActivityDate: act.latestActivityDate,
+      latestActivityDate: pipe(
+        act.evaluationStates,
+        RA.map((evaluationState) => evaluationState.publishedAt),
+        RA.sort(D.Ord),
+        RA.last,
+      ),
       evaluationCount: act.evaluationStates.length,
       listMembershipCount: act.listMembershipCount,
     }),

@@ -167,7 +167,7 @@ describe('get-activity-for-doi', () => {
         expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
       });
 
-      it.failing('the latest activity reflects the erasure', () => {
+      it('the latest activity reflects the erasure', () => {
         expect(getActivityForDoi(readmodel)(articleId).latestActivityDate).toStrictEqual(O.some(earlierPublishedDate));
       });
     });
