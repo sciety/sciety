@@ -147,7 +147,7 @@ describe('get-activity-for-doi', () => {
             articleId,
             evaluationLocator,
             [],
-            earlierPublishedDate,
+            laterPublishedDate,
             arbitraryDate(),
           ),
           evaluationRecorded(
@@ -155,7 +155,7 @@ describe('get-activity-for-doi', () => {
             articleId,
             arbitraryReviewId(),
             [],
-            laterPublishedDate,
+            earlierPublishedDate,
             arbitraryDate(),
           ),
           incorrectlyRecordedEvaluationErased(evaluationLocator),
@@ -165,6 +165,10 @@ describe('get-activity-for-doi', () => {
 
       it('the evaluation count reflects the erasure', () => {
         expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
+      });
+
+      it.failing('the latest activity reflects the erasure', () => {
+        expect(getActivityForDoi(readmodel)(articleId).latestActivityDate).toStrictEqual(O.some(earlierPublishedDate));
       });
     });
   });
