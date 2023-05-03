@@ -14,7 +14,6 @@ type EvaluationState = {
 type ArticleState = {
   articleId: Doi,
   evaluationStates: Array<EvaluationState>,
-  listMembershipCount: number,
   lists: Set<ListId>,
 };
 
@@ -38,12 +37,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
             articleId: event.articleId,
             evaluationStates: [],
             lists: new Set([event.listId]),
-            listMembershipCount: 1,
           }),
           (entry) => readmodel.set(event.articleId.value, {
             ...entry,
             lists: entry.lists.add(event.listId),
-            listMembershipCount: entry.lists.add(event.listId).size,
           }),
         ),
       );
@@ -60,7 +57,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
               publishedAt: event.publishedAt,
             }],
             lists: new Set(),
-            listMembershipCount: 0,
           }),
           (entry) => readmodel.set(event.articleId.value, {
             ...entry,
@@ -92,7 +88,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
           (entry) => readmodel.set(event.articleId.value, {
             ...entry,
             lists: deleteFromSet(entry.lists, event.listId),
-            listMembershipCount: deleteFromSet(entry.lists, event.listId).size,
           }),
         ),
       );

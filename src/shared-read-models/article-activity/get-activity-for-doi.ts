@@ -29,7 +29,7 @@ export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (a
         RA.last,
       ),
       evaluationCount: act.evaluationStates.length,
-      listMembershipCount: act.listMembershipCount,
+      listMembershipCount: act.lists.size,
     }),
   ),
 );
