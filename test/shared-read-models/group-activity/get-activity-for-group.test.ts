@@ -260,7 +260,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when an evaluation has been recorded and erased', () => {
+    describe('when one evaluation has been recorded and erased', () => {
       const recordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
@@ -293,6 +293,57 @@ describe('get-activity-for-group', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             latestActivityAt: O.none,
+          }),
+        ));
+      });
+    });
+
+    describe('when two evaluations have been recorded and one erased', () => {
+      const goodEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        publishedAt: new Date('1999'),
+      };
+      const badEvaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        publishedAt: new Date('2023'),
+      };
+      const readModel = pipe(
+        [
+          groupJoinedEvent,
+          evaluationRecorded(
+            goodEvaluation.groupId,
+            goodEvaluation.articleId,
+            goodEvaluation.reviewId,
+            goodEvaluation.authors,
+            goodEvaluation.publishedAt,
+          ),
+          evaluationRecorded(
+            badEvaluation.groupId,
+            badEvaluation.articleId,
+            badEvaluation.reviewId,
+            badEvaluation.authors,
+            badEvaluation.publishedAt,
+          ),
+          incorrectlyRecordedEvaluationErased(badEvaluation.reviewId),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it('returns an evaluationCount of 1', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 1,
+          }),
+        ));
+      });
+
+      it.failing('returns the latestActivityAt for the remaining evaluation', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.some(goodEvaluation.publishedAt),
           }),
         ));
       });
