@@ -10,7 +10,7 @@ export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup =
   readModel.get(groupId),
   O.fromNullable,
   O.map((state) => ({
-    evaluationCount: state.evaluationLocators.length,
+    evaluationCount: state.evaluationStates.length,
     latestActivityAt: state.latestActivityAt,
   })),
 );
