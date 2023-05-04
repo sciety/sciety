@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { erase } from '../../../../src/write-side/resources/evaluation';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryReviewId } from '../../../types/review-id.helper';
@@ -10,6 +11,12 @@ import {
 } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
+
+const expectIncorrectlyRecordedEvaluationErasedEvent = (evaluationLocator: EvaluationLocator): unknown => (
+  expect.objectContaining({
+    evaluationLocator,
+  })
+);
 
 describe('erase', () => {
   describe('when an evaluation has been incorrectly recorded', () => {
@@ -34,9 +41,7 @@ describe('erase', () => {
 
     it('raises an IncorrectlyRecordedEvaluationErased event', () => {
       expect(eventsRaised).toStrictEqual([
-        expect.objectContaining({
-          evaluationLocator,
-        }),
+        expectIncorrectlyRecordedEvaluationErasedEvent(evaluationLocator),
       ]);
     });
   });
@@ -113,9 +118,7 @@ describe('erase', () => {
 
     it('raises one IncorrectlyRecordedEvaluationErased event', () => {
       expect(eventsRaised).toStrictEqual([
-        expect.objectContaining({
-          evaluationLocator,
-        }),
+        expectIncorrectlyRecordedEvaluationErasedEvent(evaluationLocator),
       ]);
     });
   });
