@@ -10,26 +10,24 @@ import { candidateUserHandleCodec } from '../../../../types/candidate-user-handl
 import { constructGroupCardViewModel } from '../../../../shared-components/group-card';
 import { Queries } from '../../../../shared-read-models';
 
-export type Ports = Queries;
-
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,
 });
 
 export type Params = t.TypeOf<typeof userPageParams>;
 
-type ConstructViewModel = (ports: Ports)
+type ConstructViewModel = (queries: Queries)
 => (params: Params)
 => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
+export const constructViewModel: ConstructViewModel = (queries) => (params) => pipe(
   params.handle,
-  ports.lookupUserByHandle,
+  queries.lookupUserByHandle,
   E.fromOption(() => DE.notFound),
   E.map((user) => ({
-    groupIds: ports.getGroupsFollowedBy(user.id),
+    groupIds: queries.getGroupsFollowedBy(user.id),
     userDetails: user,
-    lists: ports.selectAllListsOwnedBy(LOID.fromUserId(user.id)),
+    lists: queries.selectAllListsOwnedBy(LOID.fromUserId(user.id)),
   })),
   E.map(({ groupIds, userDetails, lists }) => ({
     groupIds,
@@ -37,7 +35,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     listCount: lists.length,
     followedGroups: pipe(
       groupIds,
-      E.traverseArray(constructGroupCardViewModel(ports)),
+      E.traverseArray(constructGroupCardViewModel(queries)),
       O.fromEither,
     ),
   })),

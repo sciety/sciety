@@ -5,13 +5,12 @@ import { CandidateUserHandle } from '../../../../../src/types/candidate-user-han
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryUserDetails } from '../../../../types/user-details.helper';
-import { constructViewModel, Ports } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
+import { constructViewModel } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-following-page/view-model';
 import { arbitraryGroup } from '../../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
   let viewmodel: ViewModel;
   const user = arbitraryUserDetails();
   const pageParams = {
@@ -21,9 +20,6 @@ describe('construct-view-model', () => {
 
   beforeEach(async () => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-    };
     await framework.commandHelpers.createUserAccount(user);
   });
 
@@ -45,7 +41,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
-          constructViewModel(adapters),
+          constructViewModel(framework.queries),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -79,7 +75,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(adapters),
+        constructViewModel(framework.queries),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

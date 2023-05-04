@@ -3,12 +3,13 @@ import { pipe } from 'fp-ts/function';
 import { renderErrorPage, renderAsHtml } from './render-as-html';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
-import { constructViewModel, Params, Ports } from './construct-view-model';
+import { constructViewModel, Params } from './construct-view-model';
+import { Queries } from '../../../shared-read-models';
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const userPage = (ports: Ports): UserPage => (params) => pipe(
+export const userPage = (queries: Queries): UserPage => (params) => pipe(
   params,
-  constructViewModel(ports),
+  constructViewModel(queries),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
