@@ -39,7 +39,7 @@ describe('erase', () => {
     });
   });
 
-  describe('when evaluation has not been recorded', () => {
+  describe('when the evaluation has not been recorded', () => {
     describe('and the action is executed', () => {
       let eventsRaised: ReadonlyArray<DomainEvent>;
 
@@ -55,5 +55,13 @@ describe('erase', () => {
         expect(eventsRaised).toStrictEqual([]);
       });
     });
+  });
+
+  describe('when the evaluation has been recorded and erased', () => {
+    it.todo('raises no event');
+  });
+
+  describe('when the evaluation has been recorded, erased and recorded again', () => {
+    it.todo('raises one IncorrectlyRecordedEvaluationErased event');
   });
 });
