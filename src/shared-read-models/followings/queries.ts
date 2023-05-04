@@ -1,8 +1,7 @@
 import { GetFollowers, getFollowers } from './get-followers';
 import { ReadModel } from './handle-event';
-import { IsFollowing } from '../../shared-ports';
 import { GetGroupsFollowedBy, getGroupsFollowedBy } from './get-groups-followed-by';
-import { isFollowing } from './is-following';
+import { isFollowing, IsFollowing } from './is-following';
 
 export type Queries = {
   getFollowers: GetFollowers,

@@ -6,7 +6,7 @@ import * as tt from 'io-ts-types';
 import { sequenceS } from 'fp-ts/Apply';
 import * as LOID from '../../../../types/list-owner-id';
 import {
-  FetchStaticFile, IsFollowing, SelectAllListsOwnedBy,
+  FetchStaticFile, SelectAllListsOwnedBy,
 } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
@@ -15,10 +15,8 @@ import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../commo
 import { toOurListsViewModel } from './to-our-lists-view-model';
 import { Queries } from '../../../../shared-read-models';
 
-export type Ports = TabsViewModelPorts & {
+export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'> & TabsViewModelPorts & {
   fetchStaticFile: FetchStaticFile,
-  getGroupBySlug: Queries['getGroupBySlug'],
-  isFollowing: IsFollowing,
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 

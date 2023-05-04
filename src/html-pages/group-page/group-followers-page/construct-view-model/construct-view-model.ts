@@ -7,7 +7,6 @@ import * as tt from 'io-ts-types';
 import { paginationControls } from '../../../../shared-components/pagination-controls';
 import { paginate } from './paginate';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
-import { IsFollowing } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
@@ -16,10 +15,10 @@ import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../commo
 import { GroupId } from '../../../../types/group-id';
 import { Queries } from '../../../../shared-read-models';
 
-export type Ports = FindFollowersPorts & AugmentWithUserDetailsPorts & TabsViewModelPorts & {
-  getGroupBySlug: Queries['getGroupBySlug'],
-  isFollowing: IsFollowing,
-};
+export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'>
+& FindFollowersPorts
+& AugmentWithUserDetailsPorts
+& TabsViewModelPorts;
 
 export const paramsCodec = t.type({
   slug: t.string,
