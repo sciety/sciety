@@ -8,13 +8,12 @@ import * as LOID from '../../../../../src/types/list-owner-id';
 import { List } from '../../../../../src/types/list';
 import { arbitraryList } from '../../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../../types/user-details.helper';
-import { constructViewModel, Ports } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
+import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
   let viewmodel: ViewModel;
   const user = arbitraryUserDetails();
   const pageParams = {
@@ -24,9 +23,6 @@ describe('construct-view-model', () => {
 
   beforeEach(async () => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-    };
     await framework.commandHelpers.createUserAccount(user);
   });
 
@@ -44,7 +40,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
-          constructViewModel(adapters),
+          constructViewModel(framework.queries),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -77,7 +73,7 @@ describe('construct-view-model', () => {
     it('the article count of the default list is 1', async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(adapters),
+        constructViewModel(framework.queries),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -93,7 +89,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(adapters),
+        constructViewModel(framework.queries),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
