@@ -2,6 +2,7 @@
 @use '../../../sass/button';
 @use '../../../sass/functions';
 @use '../../../sass/layout';
+@use '../../../sass/list';
 @use '../../../sass/settings';
 @use '../../../sass/typography';
 
@@ -67,4 +68,12 @@
 
 .saved-to-list__icon {
   margin-right: functions.px-to-rem(3px);
+}
+
+.listed-in-list {
+  @include list.basics();
+
+  li {
+    margin-bottom: 0.5rem;
+  }
 }

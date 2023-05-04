@@ -5,7 +5,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 const renderList = (listContent: string) => `
-  <ul role="list">
+  <ul role="list" class="listed-in-list">
     ${listContent}
   </ul>
 `;
