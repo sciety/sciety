@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { SelectListContainingArticle } from './select-list-containing-article';
 import { IsFollowing } from './is-following';
@@ -36,7 +35,6 @@ export { RecordSubjectArea } from './record-subject-area';
 export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
-export { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { IsFollowing } from './is-following';
@@ -56,7 +54,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
   selectListContainingArticle: SelectListContainingArticle,
   isFollowing: IsFollowing,

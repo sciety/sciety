@@ -5,7 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { Doi, fromString as doiFromString } from '../../types/doi';
 
-export const getOneArticleIdInEvaluatedState = (readModel: ReadModel) => (): O.Option<Doi> => pipe(
+export type GetOneArticleIdInEvaluatedState = () => O.Option<Doi>;
+
+export const getOneArticleIdInEvaluatedState = (readModel: ReadModel): GetOneArticleIdInEvaluatedState => () => pipe(
   readModel,
   R.filter((item) => item.name === 'evaluated'),
   R.keys,

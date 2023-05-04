@@ -1,8 +1,8 @@
 import { GetArticleIdsByState, getArticleIdsByState } from './get-article-ids-by-state';
-import { getOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
+import { GetOneArticleIdInEvaluatedState, getOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { getOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { ReadModel } from './handle-event';
-import { GetOneArticleIdInEvaluatedState, GetOneArticleReadyToBeListed } from '../../shared-ports';
+import { GetOneArticleReadyToBeListed } from '../../shared-ports';
 
 export type Queries = {
   getArticleIdsByState: GetArticleIdsByState,
