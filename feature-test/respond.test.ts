@@ -2,7 +2,7 @@ import {
   $, click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryReviewId } from '../test/types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../test/types/evaluation-locator.helper';
 import { callApi } from './helpers/call-api.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -19,7 +19,7 @@ describe('respond', () => {
     await callApi('api/record-evaluation', {
       groupId: groupA.id,
       publishedAt: new Date(),
-      evaluationLocator: arbitraryReviewId(),
+      evaluationLocator: arbitraryEvaluationLocator(),
       articleId: 'doi:10.1101/2020.07.13.199174',
       authors: [],
     });

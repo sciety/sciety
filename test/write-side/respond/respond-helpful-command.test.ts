@@ -1,9 +1,9 @@
 import { respondHelpful } from '../../../src/write-side/respond/respond-helpful-command';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 const userId = arbitraryUserId();
-const reviewId = arbitraryReviewId();
+const reviewId = arbitraryEvaluationLocator();
 
 describe('respond-helpful-command', () => {
   describe('none state for this review and user', () => {

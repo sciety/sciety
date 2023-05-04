@@ -6,14 +6,16 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../../../src/domain-events';
 import { projectUserReviewResponse } from '../../../../src/html-pages/article-page/construct-view-model/project-user-review-response';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('project-user-review-response', () => {
   describe('no response events', () => {
     it('returns nothing', async () => {
       const events = async () => [];
-      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(arbitraryUserId()))();
+      const userResponse = await (
+        projectUserReviewResponse(events)(arbitraryEvaluationLocator(), O.some(arbitraryUserId()))
+      )();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -22,7 +24,7 @@ describe('project-user-review-response', () => {
   describe('one helpful response event', () => {
     it('returns `helpful`', async () => {
       const userId = arbitraryUserId();
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
       ];
@@ -34,7 +36,7 @@ describe('project-user-review-response', () => {
 
   describe('one helpful response event from another user', () => {
     it('returns nothing', async () => {
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
@@ -48,9 +50,9 @@ describe('project-user-review-response', () => {
     it('returns nothing', async () => {
       const userId = arbitraryUserId();
       const events = async () => [
-        userFoundReviewHelpful(userId, arbitraryReviewId()),
+        userFoundReviewHelpful(userId, arbitraryEvaluationLocator()),
       ];
-      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(userId))();
+      const userResponse = await projectUserReviewResponse(events)(arbitraryEvaluationLocator(), O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -58,7 +60,7 @@ describe('project-user-review-response', () => {
 
   describe('there is no user', () => {
     it('return nothing', async () => {
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
@@ -71,12 +73,12 @@ describe('project-user-review-response', () => {
   describe('one revoked helpful response', () => {
     it('returns no-response', async () => {
       const userId = arbitraryUserId();
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
         userRevokedFindingReviewHelpful(userId, reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(userId))();
+      const userResponse = await projectUserReviewResponse(events)(arbitraryEvaluationLocator(), O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -85,8 +87,8 @@ describe('project-user-review-response', () => {
   describe('one revoked helpful response on a different review', () => {
     it('doesn\'t change the state of the current review', async () => {
       const userId = arbitraryUserId();
-      const reviewId = arbitraryReviewId();
-      const otherReviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
+      const otherReviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
         userFoundReviewHelpful(userId, otherReviewId),
@@ -101,7 +103,7 @@ describe('project-user-review-response', () => {
   describe('one not helpful response event', () => {
     it('returns `not helpful`', async () => {
       const userId = arbitraryUserId();
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewNotHelpful(userId, reviewId),
       ];
@@ -114,7 +116,7 @@ describe('project-user-review-response', () => {
   describe('one revoked not-helpful response', () => {
     it('returns nothing', async () => {
       const userId = arbitraryUserId();
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const events = async () => [
         userFoundReviewNotHelpful(userId, reviewId),
         userRevokedFindingReviewNotHelpful(userId, reviewId),

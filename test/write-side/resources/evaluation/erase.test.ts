@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { erase } from '../../../../src/write-side/resources/evaluation';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import {
   DomainEvent,
   evaluationRecorded,
@@ -20,7 +20,7 @@ const expectIncorrectlyRecordedEvaluationErasedEvent = (evaluationLocator: Evalu
 
 describe('erase', () => {
   describe('when an evaluation has been incorrectly recorded', () => {
-    const evaluationLocator = arbitraryReviewId();
+    const evaluationLocator = arbitraryEvaluationLocator();
     let eventsRaised: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {
@@ -52,7 +52,7 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [],
-        erase({ evaluationLocator: arbitraryReviewId() }),
+        erase({ evaluationLocator: arbitraryEvaluationLocator() }),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -63,7 +63,7 @@ describe('erase', () => {
   });
 
   describe('when the evaluation has been recorded and erased', () => {
-    const evaluationLocator = arbitraryReviewId();
+    const evaluationLocator = arbitraryEvaluationLocator();
     let eventsRaised: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {
@@ -89,7 +89,7 @@ describe('erase', () => {
   });
 
   describe('when the evaluation has been recorded, erased and recorded again', () => {
-    const evaluationLocator = arbitraryReviewId();
+    const evaluationLocator = arbitraryEvaluationLocator();
     let eventsRaised: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {

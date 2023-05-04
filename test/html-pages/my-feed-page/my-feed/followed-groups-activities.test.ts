@@ -5,7 +5,7 @@ import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-pag
 import { arbitraryDate } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
@@ -16,7 +16,7 @@ describe('followed-groups-activities', () => {
       evaluationRecorded(
         groupIdFromString(groupId),
         articleId,
-        arbitraryReviewId(),
+        arbitraryEvaluationLocator(),
         [],
         latestEvaluationPublishedDate,
         arbitraryDate(),
@@ -59,7 +59,7 @@ describe('followed-groups-activities', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
-        evaluationRecorded(notFollowedGroupId, arbitraryArticleId(), arbitraryReviewId(), [], new Date(), new Date('2021-03-10T00:00:00.000Z')),
+        evaluationRecorded(notFollowedGroupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], new Date(), new Date('2021-03-10T00:00:00.000Z')),
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
@@ -73,8 +73,15 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryArticleId();
     const latestEvaluationPublishedDate = new Date('2020-01-01');
     const events = [
-      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('1980-01-01'), arbitraryDate()),
-      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], latestEvaluationPublishedDate, arbitraryDate()),
+      evaluationRecorded(groupId, articleId, arbitraryEvaluationLocator(), [], new Date('1980-01-01'), arbitraryDate()),
+      evaluationRecorded(
+        groupId,
+        articleId,
+        arbitraryEvaluationLocator(),
+        [],
+        latestEvaluationPublishedDate,
+        arbitraryDate(),
+      ),
     ];
 
     it('has a single entry for the article', () => {
@@ -113,10 +120,10 @@ describe('followed-groups-activities', () => {
     const otherGroupId = arbitraryGroupId();
     const articleId = arbitraryArticleId();
     const events = [
-      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecorded(otherGroupId, articleId, arbitraryReviewId(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
+      evaluationRecorded(groupId, articleId, arbitraryEvaluationLocator(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
+      evaluationRecorded(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
     ];
 
     it('has an evaluation count of the number of evaluations by all groups', () => {
@@ -150,8 +157,8 @@ describe('followed-groups-activities', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        evaluationRecorded(groupId, earlierArticle, arbitraryReviewId(), [], new Date(), earlierDate),
-        evaluationRecorded(groupId, laterArticle, arbitraryReviewId(), [], new Date(), laterDate),
+        evaluationRecorded(groupId, earlierArticle, arbitraryEvaluationLocator(), [], new Date(), earlierDate),
+        evaluationRecorded(groupId, laterArticle, arbitraryEvaluationLocator(), [], new Date(), laterDate),
       ];
       const activities = followedGroupsActivities(events)([groupId]);
 
@@ -173,9 +180,9 @@ describe('followed-groups-activities', () => {
       const articleA = arbitraryArticleId();
       const articleB = arbitraryArticleId();
       const events = [
-        evaluationRecorded(followedGroupId, articleB, arbitraryReviewId(), [], new Date(), new Date('1980-01-01')),
-        evaluationRecorded(followedGroupId, articleA, arbitraryReviewId(), [], new Date(), new Date('2000-01-01')),
-        evaluationRecorded(notFollowedGroupId, articleB, arbitraryReviewId(), [], new Date(), new Date('2020-01-01')),
+        evaluationRecorded(followedGroupId, articleB, arbitraryEvaluationLocator(), [], new Date(), new Date('1980-01-01')),
+        evaluationRecorded(followedGroupId, articleA, arbitraryEvaluationLocator(), [], new Date(), new Date('2000-01-01')),
+        evaluationRecorded(notFollowedGroupId, articleB, arbitraryEvaluationLocator(), [], new Date(), new Date('2020-01-01')),
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
@@ -198,7 +205,7 @@ describe('followed-groups-activities', () => {
       [...Array(numberOfEvents)].map(() => evaluationRecorded(
         arbitraryGroupId(),
         arbitraryArticleId(),
-        arbitraryReviewId(),
+        arbitraryEvaluationLocator(),
         [],
         new Date(),
         arbitraryDate(),

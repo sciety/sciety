@@ -12,7 +12,7 @@ import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryNcrcId } from '../../types/review-id.helper';
+import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 

@@ -10,7 +10,7 @@ import {
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
@@ -20,13 +20,13 @@ describe('get-feed-events-content', () => {
         {
           type: 'review',
           groupId,
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           publishedAt: new Date(),
         },
         {
           type: 'review',
           groupId,
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           publishedAt: new Date(),
         },
       ];

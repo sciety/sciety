@@ -6,7 +6,7 @@ import * as RI from '../../src/types/evaluation-locator';
 import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../../test/helpers';
-import { arbitraryReviewId } from '../../test/types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../test/types/evaluation-locator.helper';
 import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
@@ -20,7 +20,7 @@ describe('record an evaluation', () => {
 
   describe('when a new evaluation is successfully recorded', () => {
     const articleId = '10.1101/2021.07.23.453070';
-    const evaluationLocator = RI.serialize(arbitraryReviewId());
+    const evaluationLocator = RI.serialize(arbitraryEvaluationLocator());
     const groupId = arbitraryGroupId();
 
     beforeEach(async () => {

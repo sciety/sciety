@@ -5,11 +5,11 @@ import { ReviewFeedItem } from '../../../src/html-pages/article-page/view-model'
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 export const arbitrary = (): ReviewFeedItem => ({
   type: 'review',
-  id: arbitraryReviewId(),
+  id: arbitraryEvaluationLocator(),
   source: O.some(new URL(arbitraryUri())),
   publishedAt: new Date(),
   groupHref: arbitraryWord(),

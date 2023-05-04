@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import { renderReviewResponses } from '../../../../src/html-pages/article-page/render-as-html/render-review-responses';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 describe('render-review-responses', () => {
   it('displays the response counts by type', () => {
     const rendered = renderReviewResponses(
-      arbitraryReviewId(),
+      arbitraryEvaluationLocator(),
       {
         helpfulCount: 35,
         notHelpfulCount: 17,
@@ -19,7 +19,7 @@ describe('render-review-responses', () => {
 
   describe('when there is no current user response', () => {
     const rendered = renderReviewResponses(
-      arbitraryReviewId(),
+      arbitraryEvaluationLocator(),
       {
         helpfulCount: 35,
         notHelpfulCount: 17,
@@ -38,7 +38,7 @@ describe('render-review-responses', () => {
 
   describe('when the user response is `helpful`', () => {
     const rendered = renderReviewResponses(
-      arbitraryReviewId(),
+      arbitraryEvaluationLocator(),
       {
         helpfulCount: 1,
         notHelpfulCount: 0,
@@ -57,7 +57,7 @@ describe('render-review-responses', () => {
 
   describe('when the user response is `not helpful`', () => {
     const rendered = renderReviewResponses(
-      arbitraryReviewId(),
+      arbitraryEvaluationLocator(),
       {
         helpfulCount: 1,
         notHelpfulCount: 0,

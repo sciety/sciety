@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { evaluationRecorded, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations';
 import { getEvaluationsByGroup } from '../../../src/shared-read-models/evaluations/get-evaluations-by-group';
 
@@ -12,9 +12,9 @@ describe('get-evaluations-by-group', () => {
   const article2 = arbitraryDoi();
   const group1 = arbitraryGroupId();
   const group2 = arbitraryGroupId();
-  const reviewId1 = arbitraryReviewId();
-  const reviewId2 = arbitraryReviewId();
-  const reviewId3 = arbitraryReviewId();
+  const reviewId1 = arbitraryEvaluationLocator();
+  const reviewId2 = arbitraryEvaluationLocator();
+  const reviewId3 = arbitraryEvaluationLocator();
 
   it.each([
     ['two evaluations', group1, [reviewId1, reviewId2]],

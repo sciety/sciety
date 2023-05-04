@@ -4,10 +4,10 @@ import { executeCommand } from '../../../src/write-side/record-evaluation/execut
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 describe('create-appropriate-events', () => {
-  const evaluationLocator = arbitraryReviewId();
+  const evaluationLocator = arbitraryEvaluationLocator();
   const input = {
     groupId: arbitraryGroupId(),
     articleId: arbitraryArticleId(),

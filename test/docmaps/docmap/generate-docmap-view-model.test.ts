@@ -15,7 +15,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryNcrcId, arbitraryReviewDoi } from '../../types/review-id.helper';
+import { arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';

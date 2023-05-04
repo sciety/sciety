@@ -5,7 +5,7 @@ import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 const group = arbitraryGroup();
@@ -21,6 +21,6 @@ export const arbitraryUninterestingEvents = [
     group.slug,
   ),
   userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
-  evaluationRecorded(group.id, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+  evaluationRecorded(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
   userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
 ];

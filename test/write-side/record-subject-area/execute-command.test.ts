@@ -6,7 +6,7 @@ import { executeCommand } from '../../../src/write-side/record-subject-area/exec
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
 
@@ -47,7 +47,7 @@ describe('execute-command', () => {
   describe('when an evaluation was recorded', () => {
     const result = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), [], arbitraryDate()),
+        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
       ],
       executeCommand(command),
       E.getOrElseW(shouldNotBeCalled),

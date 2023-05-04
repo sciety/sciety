@@ -8,7 +8,7 @@ import { articleAddedToList } from '../../../src/domain-events/article-added-to-
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
 
@@ -21,10 +21,10 @@ describe('get-article-ids-by-state', () => {
 
     const readModel = pipe(
       [
-        evaluationRecorded(elifeGroupId, articleIdA, arbitraryReviewId(), [], arbitraryDate()),
+        evaluationRecorded(elifeGroupId, articleIdA, arbitraryEvaluationLocator(), [], arbitraryDate()),
         articleAddedToList(articleIdB, elifeSubjectAreaLists[0]),
         subjectAreaRecorded(articleIdC, arbitrarySubjectArea()),
-        evaluationRecorded(elifeGroupId, articleIdD, arbitraryReviewId(), [], arbitraryDate()),
+        evaluationRecorded(elifeGroupId, articleIdD, arbitraryEvaluationLocator(), [], arbitraryDate()),
         subjectAreaRecorded(articleIdD, arbitrarySubjectArea()),
       ],
       RA.reduce(initialState(), handleEvent),

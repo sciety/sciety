@@ -9,7 +9,7 @@ import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
@@ -82,7 +82,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(
             arbitraryGroupId(),
             articleId,
-            arbitraryReviewId(),
+            arbitraryEvaluationLocator(),
             [],
             earlierPublishedDate,
             arbitraryDate(),
@@ -90,7 +90,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(
             arbitraryGroupId(),
             articleId,
-            arbitraryReviewId(),
+            arbitraryEvaluationLocator(),
             [],
             laterPublishedDate,
             arbitraryDate(),
@@ -113,7 +113,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(
             arbitraryGroupId(),
             articleId,
-            arbitraryReviewId(),
+            arbitraryEvaluationLocator(),
             [],
             laterPublishedDate,
             arbitraryDate(),
@@ -121,7 +121,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(
             arbitraryGroupId(),
             articleId,
-            arbitraryReviewId(),
+            arbitraryEvaluationLocator(),
             [],
             earlierPublishedDate,
             arbitraryDate(),
@@ -139,7 +139,7 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('and one of the evaluations has been erased', () => {
-      const evaluationLocator = arbitraryReviewId();
+      const evaluationLocator = arbitraryEvaluationLocator();
       const readmodel = pipe(
         [
           evaluationRecorded(
@@ -153,7 +153,7 @@ describe('get-activity-for-doi', () => {
           evaluationRecorded(
             arbitraryGroupId(),
             articleId,
-            arbitraryReviewId(),
+            arbitraryEvaluationLocator(),
             [],
             earlierPublishedDate,
             arbitraryDate(),
@@ -221,7 +221,7 @@ describe('get-activity-for-doi', () => {
     describe('added to a list, after being evaluated', () => {
       const readmodel = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryReviewId(), [], arbitraryDate()),
+          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
           articleAddedToList(articleId, arbitraryListId()),
         ],
         RA.reduce(initialState(), handleEvent),

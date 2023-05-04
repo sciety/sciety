@@ -26,7 +26,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryList } from '../../types/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { Queries } from '../../../src/shared-read-models';
@@ -141,10 +141,10 @@ describe('sciety-feed-page', () => {
         articleAddedToList(arbitraryArticleId(), listId),
         userUnsavedArticle(arbitraryUserId(), arbitraryArticleId()),
         userUnfollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
-        userFoundReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
-        userFoundReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
-        userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryReviewId()),
-        userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryReviewId()),
+        userFoundReviewHelpful(arbitraryUserId(), arbitraryEvaluationLocator()),
+        userFoundReviewNotHelpful(arbitraryUserId(), arbitraryEvaluationLocator()),
+        userRevokedFindingReviewHelpful(arbitraryUserId(), arbitraryEvaluationLocator()),
+        userRevokedFindingReviewNotHelpful(arbitraryUserId(), arbitraryEvaluationLocator()),
         userSavedArticle(arbitraryUserId(), arbitraryArticleId()),
       ]),
     };

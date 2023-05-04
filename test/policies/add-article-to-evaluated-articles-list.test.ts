@@ -7,7 +7,7 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { arbitraryDate } from '../helpers';
 
 describe('add-article-to-evaluated-articles-list', () => {
@@ -21,7 +21,7 @@ describe('add-article-to-evaluated-articles-list', () => {
     const groupId = arbitraryGroupId();
 
     const command = pipe(
-      evaluationRecorded(groupId, articleId, arbitraryReviewId(), [], arbitraryDate()),
+      evaluationRecorded(groupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.some(listId),
@@ -38,7 +38,7 @@ describe('add-article-to-evaluated-articles-list', () => {
 
   describe('when the group does not have an evaluated articles list', () => {
     const command = pipe(
-      evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+      evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.none,

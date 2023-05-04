@@ -5,17 +5,17 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../../src/domain-events';
 import { reviewResponse } from '../../../src/write-side/respond/review-response';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('review-response', () => {
   const userId = arbitraryUserId();
-  const reviewId = arbitraryReviewId();
+  const reviewId = arbitraryEvaluationLocator();
 
   it.each([
     ['no events', [], 'none'],
     ['event for other review', [
-      userFoundReviewHelpful(userId, arbitraryReviewId()),
+      userFoundReviewHelpful(userId, arbitraryEvaluationLocator()),
     ], 'none'],
     ['helpful', [
       userFoundReviewHelpful(userId, reviewId),

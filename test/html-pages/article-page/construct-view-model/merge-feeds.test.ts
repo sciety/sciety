@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { mergeFeeds } from '../../../../src/html-pages/article-page/construct-view-model/merge-feeds';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 describe('merge-feeds', () => {
   const firstDate = new Date('2020-09-03');
@@ -13,7 +13,7 @@ describe('merge-feeds', () => {
     {
       type: 'review',
       groupId: arbitraryGroupId(),
-      reviewId: arbitraryReviewId(),
+      reviewId: arbitraryEvaluationLocator(),
       publishedAt: secondDate,
     },
   ] as const);

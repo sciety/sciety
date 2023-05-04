@@ -20,4 +20,6 @@ const constructors = [
   arbitraryNcrcId,
 ];
 
-export const arbitraryReviewId = (): EvaluationLocator => constructors[arbitraryNumber(0, constructors.length - 1)]();
+export const arbitraryEvaluationLocator = (): EvaluationLocator => (
+  constructors[arbitraryNumber(0, constructors.length - 1)]()
+);

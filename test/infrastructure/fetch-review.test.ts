@@ -8,12 +8,12 @@ import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/evaluation-locator';
 import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 
 describe('fetch-review', () => {
   describe('when a service is supported', () => {
     it('returns the fetched evaluation', async () => {
-      const reviewId = arbitraryReviewId();
+      const reviewId = arbitraryEvaluationLocator();
       const evaluation = {
         fullText: arbitraryHtmlFragment(),
         url: new URL(arbitraryUri()),
@@ -32,7 +32,7 @@ describe('fetch-review', () => {
     it('returns not found', async () => {
       const fetchers = {};
 
-      const id = arbitraryReviewId();
+      const id = arbitraryEvaluationLocator();
       const result = await pipe(
         id,
         fetchReview(fetchers),

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { FeedEvent } from '../../../../src/html-pages/article-page/construct-view-model/get-feed-events-content';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -16,7 +16,7 @@ describe('review-to-feed-item', () => {
   const feedEvent: FeedEvent = {
     type: 'review',
     groupId,
-    reviewId: arbitraryReviewId(),
+    reviewId: arbitraryEvaluationLocator(),
     publishedAt: new Date(),
   };
 

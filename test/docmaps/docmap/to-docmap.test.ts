@@ -8,7 +8,7 @@ import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 const articleId = arbitraryArticleId();
 
@@ -24,14 +24,14 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           recordedAt: earlierEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           recordedAt: laterEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
@@ -47,7 +47,7 @@ describe('to-docmap', () => {
         evaluations: [
           {
             sourceUrl: new URL(arbitraryUri()),
-            reviewId: arbitraryReviewId(),
+            reviewId: arbitraryEvaluationLocator(),
             recordedAt: arbitraryDate(),
             publishedAt: arbitraryDate(),
             authors: [],
@@ -103,7 +103,7 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           recordedAt: arbitraryDate(),
           publishedAt: arbitraryDate(),
           authors: [],
@@ -126,7 +126,7 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryReviewId(),
+          reviewId: arbitraryEvaluationLocator(),
           recordedAt: arbitraryDate(),
           publishedAt: arbitraryDate(),
           authors: [],
@@ -144,8 +144,8 @@ describe('to-docmap', () => {
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierEvaluationPublishedDate = new Date('1900');
     const laterEvaluationPublishedDate = new Date('2000');
-    const earlierReviewId = arbitraryReviewId();
-    const laterReviewId = arbitraryReviewId();
+    const earlierReviewId = arbitraryEvaluationLocator();
+    const laterReviewId = arbitraryEvaluationLocator();
     const firstStep = '_:b0';
     const authorName = arbitraryString();
     const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [

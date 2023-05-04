@@ -5,10 +5,10 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../../../src/domain-events';
 import { projectReviewResponseCounts } from '../../../../src/html-pages/article-page/construct-view-model/project-review-response-counts';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
-const reviewId = arbitraryReviewId();
+const reviewId = arbitraryEvaluationLocator();
 
 describe('project-review-response-counts', () => {
   describe('given no events', () => {
@@ -21,7 +21,7 @@ describe('project-review-response-counts', () => {
 
   describe('given a user responded to a different review', () => {
     it('returns 0 `helpful` and 0 `not helpful`', () => {
-      const differentReviewId = arbitraryReviewId();
+      const differentReviewId = arbitraryEvaluationLocator();
       const projected = projectReviewResponseCounts(reviewId)([
         userFoundReviewHelpful(arbitraryUserId(), differentReviewId),
       ]);

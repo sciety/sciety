@@ -22,7 +22,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryReviewId } from '../../../types/review-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
 const defaultAdapters: Ports = {
@@ -92,7 +92,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -113,9 +113,9 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -145,7 +145,7 @@ describe('my-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+            evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
@@ -171,8 +171,8 @@ describe('my-feed acceptance', () => {
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              evaluationRecorded(groupId, failingDoi, arbitraryReviewId(), [], arbitraryDate()),
-              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+              evaluationRecorded(groupId, failingDoi, arbitraryEvaluationLocator(), [], arbitraryDate()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };
@@ -193,7 +193,7 @@ describe('my-feed acceptance', () => {
             fetchArticle: () => TE.left(DE.unavailable),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryReviewId(), [], arbitraryDate()),
+              evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };

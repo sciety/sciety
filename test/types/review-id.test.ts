@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { arbitraryReviewId } from './review-id.helper';
+import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
 import * as RI from '../../src/types/evaluation-locator';
 import { evaluationLocatorCodec } from '../../src/types/evaluation-locator';
 import { arbitraryUri, arbitraryWord } from '../helpers';
@@ -158,7 +158,7 @@ describe('review-id', () => {
 
   describe('codec ReviewIdFromString', () => {
     it('encodes and decodes back to the same value %s', () => {
-      const id = arbitraryReviewId();
+      const id = arbitraryEvaluationLocator();
 
       expect(pipe(
         id,
