@@ -14,6 +14,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="article-actions">
     <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
     ${renderSaveArticle(viewmodel)}
+    ${renderListedIn(viewmodel.listedIn)}
   </div>
   <section role="doc-abstract" class="article-abstract">
     <h2>Abstract</h2>
@@ -22,5 +23,4 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
-  ${renderListedIn(viewmodel.listedIn)}
 `);

@@ -35,6 +35,8 @@
 
 .logged-out-call-to-action {
   @include button.button-link-teal();
+
+  margin-bottom: 1.5rem;
 }
 
 .list-name {
