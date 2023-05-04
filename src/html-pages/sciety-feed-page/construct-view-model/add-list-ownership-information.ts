@@ -1,13 +1,11 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
-import { LookupUser, Logger } from '../../../shared-ports';
+import { Logger } from '../../../shared-ports';
 import { List } from '../../../types/list';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  lookupUser: LookupUser,
-  getGroup: Queries['getGroup'],
+export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'> & {
   logger: Logger,
 };
 

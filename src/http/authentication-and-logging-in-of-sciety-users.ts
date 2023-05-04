@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { LookupUser } from '../shared-ports';
 import { userIdCodec, UserId } from '../types/user-id';
 import { UserDetails } from '../types/user-details';
+import { Queries } from '../shared-read-models';
 
 const passportUserCodec = t.type({
   state: t.type({
@@ -27,9 +27,7 @@ export const authenticateWithUserId = (
   );
 };
 
-export type Ports = {
-  lookupUser: LookupUser,
-};
+export type Ports = Pick<Queries, 'lookupUser'>;
 
 export const getAuthenticatedUserIdFromContext = (
   context: ParameterizedContext,

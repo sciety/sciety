@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { LookupUser } from '../../../../shared-ports';
 import { Follower, UserCardViewModel } from '../view-model';
+import { Queries } from '../../../../shared-read-models';
 
 export type Ports = {
-  lookupUser: LookupUser,
+  lookupUser: Queries['lookupUser'],
 };
 
 export const augmentWithUserDetails = (

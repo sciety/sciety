@@ -1,16 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { SelectAllListsContainingArticle } from '../../../shared-ports/select-all-lists-containing-article';
 import { Doi } from '../../../types/doi';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { Logger, LookupUser } from '../../../shared-ports';
+import { Logger } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  selectAllListsContainingArticle: SelectAllListsContainingArticle,
-  getGroup: Queries['getGroup'],
-  lookupUser: LookupUser,
+export type Ports = Pick<Queries, 'getGroup' | 'lookupUser' | 'selectAllListsContainingArticle'> & {
   logger: Logger,
 };
 

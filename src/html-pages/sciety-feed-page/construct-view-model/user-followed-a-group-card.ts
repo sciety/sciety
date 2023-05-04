@@ -2,15 +2,11 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { UserFollowedEditorialCommunityEvent } from '../../../domain-events';
-import { LookupUser } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  getGroup: Queries['getGroup'],
-  lookupUser: LookupUser,
-};
+export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'>;
 
 type UserFollowedAGroupCard = (
   ports: Ports

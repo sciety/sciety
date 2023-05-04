@@ -28,11 +28,11 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { LookupUser } from '../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { Queries } from '../../../src/shared-read-models';
 
 describe('sciety-feed-page', () => {
-  const getUser: LookupUser = () => O.some({
+  const getUser: Queries['lookupUser'] = () => O.some({
     handle: arbitraryUserHandle(),
     avatarUrl: arbitraryUri(),
     id: arbitraryUserId(),

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { LookupUser } from '../../../shared-ports/lookup-user';
 import { UserId } from '../../../types/user-id';
+import { Queries } from '../../../shared-read-models';
 
 type OwnerInfo = {
   ownerName: string,
@@ -11,7 +11,7 @@ type OwnerInfo = {
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
-  lookupUser: LookupUser,
+  lookupUser: Queries['lookupUser'],
 };
 
 type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => O.Option<OwnerInfo>;
