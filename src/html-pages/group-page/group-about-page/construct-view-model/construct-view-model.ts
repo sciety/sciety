@@ -6,7 +6,7 @@ import * as tt from 'io-ts-types';
 import { sequenceS } from 'fp-ts/Apply';
 import * as LOID from '../../../../types/list-owner-id';
 import {
-  FetchStaticFile, SelectAllListsOwnedBy,
+  FetchStaticFile,
 } from '../../../../shared-ports';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
@@ -15,9 +15,10 @@ import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../commo
 import { toOurListsViewModel } from './to-our-lists-view-model';
 import { Queries } from '../../../../shared-read-models';
 
-export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'> & TabsViewModelPorts & {
+export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing' | 'selectAllListsOwnedBy'>
+& TabsViewModelPorts
+& {
   fetchStaticFile: FetchStaticFile,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 
 export const paramsCodec = t.type({

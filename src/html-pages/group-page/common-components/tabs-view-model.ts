@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { SelectAllListsOwnedBy } from '../../../shared-ports';
 import { Group } from '../../../types/group';
 import * as LOID from '../../../types/list-owner-id';
 import { Queries } from '../../../shared-read-models';
@@ -11,10 +10,7 @@ export type TabsViewModel = {
   followerCount: number,
 };
 
-export type Ports = {
-  getFollowers: Queries['getFollowers'],
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
-};
+export type Ports = Pick<Queries, 'getFollowers' | 'selectAllListsOwnedBy'>;
 
 export const constructTabsViewModel = (ports: Ports, group: Group): TabsViewModel => ({
   groupSlug: group.slug,

@@ -13,7 +13,6 @@ import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-lis
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
-import { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { GetNonEmptyUserLists } from './get-non-empty-user-lists';
 import { GetActivityForDoi } from './get-activity-for-doi';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
@@ -29,7 +28,6 @@ export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
-export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { GetActivityForDoi } from './get-activity-for-doi';
@@ -51,7 +49,6 @@ export type SharedPorts = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
-  selectAllListsOwnedBy: SelectAllListsOwnedBy,
   selectAllListsContainingArticle: SelectAllListsContainingArticle,
   getNonEmptyUserLists: GetNonEmptyUserLists,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
