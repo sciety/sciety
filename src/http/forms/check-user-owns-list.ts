@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { LookupList } from '../../shared-ports';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
+import { Queries } from '../../shared-read-models';
 
 export type Ports = {
-  lookupList: LookupList,
+  lookupList: Queries['lookupList'],
 };
 
 export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(

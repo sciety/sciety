@@ -8,10 +8,10 @@ import { arbitraryCommandResult } from '../../types/command-result.helper';
 import { arbitraryErrorMessage } from '../../types/error-message.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { LookupList } from '../../../src/shared-ports';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryList } from '../../types/list-helper';
+import { Queries } from '../../../src/shared-read-models';
 
 describe('save-article-handler', () => {
   const listId = arbitraryListId();
@@ -33,7 +33,7 @@ describe('save-article-handler', () => {
   } as unknown) as RouterContext<{ user: { id: UserId } }>;
 
   describe('when the user is the owner of the list', () => {
-    const lookupList: LookupList = () => O.some({
+    const lookupList: Queries['lookupList'] = () => O.some({
       ...arbitraryList(LOID.fromUserId(userId)),
       id: listId,
     });
@@ -71,7 +71,7 @@ describe('save-article-handler', () => {
   });
 
   describe('when the user is not the owner of the list', () => {
-    const lookupList: LookupList = () => O.some(arbitraryList());
+    const lookupList: Queries['lookupList'] = () => O.some(arbitraryList());
 
     describe('when the user tries to save an article', () => {
       const addArticleToList = () => TE.right(arbitraryCommandResult());
