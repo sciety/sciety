@@ -1,7 +1,7 @@
-import { lookupUser } from './lookup-user';
+import { LookupUser, lookupUser } from './lookup-user';
 import { lookupUserByHandle } from './lookup-user-by-handle';
 import { ReadModel } from './handle-event';
-import { LookupUser, LookupUserByHandle } from '../../shared-ports';
+import { LookupUserByHandle } from '../../shared-ports';
 
 export type Queries = {
   lookupUser: LookupUser,

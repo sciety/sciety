@@ -12,7 +12,6 @@ import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { GetOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
 import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
-import { LookupUser } from './lookup-user';
 import { LookupUserByHandle } from './lookup-user-by-handle';
 import { SelectListContainingArticle } from './select-list-containing-article';
 import { IsFollowing } from './is-following';
@@ -33,7 +32,6 @@ export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
-export { LookupUser } from './lookup-user';
 export { LookupUserByHandle } from './lookup-user-by-handle';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
@@ -60,7 +58,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  lookupUser: LookupUser,
   lookupUserByHandle: LookupUserByHandle,
   getOneArticleIdInEvaluatedState: GetOneArticleIdInEvaluatedState,
   getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
