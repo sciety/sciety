@@ -4,12 +4,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../types/doi';
 import { UserId } from '../../../types/user-id';
-import { SelectListContainingArticle, SelectAllListsOwnedBy } from '../../../shared-ports';
+import { SelectAllListsOwnedBy } from '../../../shared-ports';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
+import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  selectListContainingArticle: SelectListContainingArticle,
+export type Ports = Pick<Queries, 'selectListContainingArticle'> & {
   selectAllListsOwnedBy: SelectAllListsOwnedBy,
 };
 

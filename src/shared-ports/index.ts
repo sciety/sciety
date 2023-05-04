@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { SelectListContainingArticle } from './select-list-containing-article';
 import { IsFollowing } from './is-following';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
@@ -31,7 +30,6 @@ export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
-export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
@@ -52,7 +50,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  selectListContainingArticle: SelectListContainingArticle,
   isFollowing: IsFollowing,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
