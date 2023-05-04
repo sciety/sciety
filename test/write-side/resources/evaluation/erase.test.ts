@@ -41,7 +41,19 @@ describe('erase', () => {
 
   describe('when evaluation has not been recorded', () => {
     describe('and the action is executed', () => {
-      it.todo('raises no event');
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          [],
+          erase({ evaluationLocator: arbitraryReviewId() }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it.failing('raises no event', () => {
+        expect(eventsRaised).toStrictEqual([]);
+      });
     });
   });
 });
