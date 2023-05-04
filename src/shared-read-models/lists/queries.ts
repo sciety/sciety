@@ -4,10 +4,9 @@ import { SelectListContainingArticle, selectListContainingArticle } from './sele
 import { SelectAllListsOwnedBy, selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import {
   GetNonEmptyUserLists,
-  SelectAllListsContainingArticle,
 } from '../../shared-ports';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
-import { selectAllListsContainingArticle } from './select-all-lists-containing-article';
+import { SelectAllListsContainingArticle, selectAllListsContainingArticle } from './select-all-lists-containing-article';
 
 export type Queries = {
   selectListContainingArticle: SelectListContainingArticle,

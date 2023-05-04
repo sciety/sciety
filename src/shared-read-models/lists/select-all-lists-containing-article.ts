@@ -2,7 +2,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { SelectAllListsContainingArticle } from '../../shared-ports';
+import { Doi } from '../../types/doi';
+import { List } from '../../types/list';
+
+export type SelectAllListsContainingArticle = (articleId: Doi) => ReadonlyArray<List>;
 
 export const selectAllListsContainingArticle = (
   readModel: ReadModel,

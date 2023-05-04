@@ -1,4 +1,3 @@
-import { SelectAllListsContainingArticle } from './select-all-lists-containing-article';
 import { SearchForArticles } from './search-for-articles';
 import { AddArticleToList } from './add-article-to-list';
 import { CommitEvents } from './commit-events';
@@ -33,7 +32,6 @@ export { SearchForArticles } from './search-for-articles';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 export { GetNonEmptyUserLists } from './get-non-empty-user-lists';
-export { SelectAllListsContainingArticle } from './select-all-lists-containing-article';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -49,7 +47,6 @@ export type SharedPorts = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
-  selectAllListsContainingArticle: SelectAllListsContainingArticle,
   getNonEmptyUserLists: GetNonEmptyUserLists,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,
