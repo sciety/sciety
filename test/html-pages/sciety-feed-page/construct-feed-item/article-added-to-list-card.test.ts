@@ -1,18 +1,19 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { articleAddedToList } from '../../../../src/domain-events';
 import { articleAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { Queries } from '../../../../src/shared-read-models';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
+import { createTestFramework, TestFramework } from '../../../framework';
+import { List } from '../../../../src/types/list';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 
 describe('article-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -20,45 +21,42 @@ describe('article-added-to-list-card', () => {
   });
 
   describe('when a user owns the list', () => {
+    let framework: TestFramework;
+    const user = arbitraryUserDetails();
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
     const lookupList: Queries['lookupList'] = () => O.some({
-      ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
+      ...arbitraryList(LOID.fromUserId(user.id)),
       id: listId,
     });
 
-    describe('when user details are available', () => {
-      const userId = arbitraryUserId();
-      const avatarUrl = arbitraryUri();
-      const handle = arbitraryUserHandle();
-      const ports: Ports = {
-        lookupList: () => O.some({
-          ...arbitraryList(LOID.fromUserId(userId)),
-          id: listId,
-        }),
-        lookupUser: () => O.some({
-          handle,
-          avatarUrl,
-          id: userId,
-          displayName: arbitraryString(),
-        }),
-        getGroup: () => O.some(arbitraryGroup()),
-        logger: dummyLogger,
-      };
+    beforeEach(() => {
+      framework = createTestFramework();
+    });
 
-      const viewModel = pipe(
-        event,
-        articleAddedToListCard(ports),
-        O.getOrElseW(shouldNotBeCalled),
-      );
+    describe('when user details are available', () => {
+      let userList: List;
+      let viewModel: ScietyFeedCard;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createUserAccount(user);
+        userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userList.id);
+
+        viewModel = pipe(
+          articleAddedToList(arbitraryArticleId(), userList.id, date),
+          articleAddedToListCard({ ...framework.queries, logger: dummyLogger }),
+          O.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('includes the user\'s handle in the title text', async () => {
-        expect(viewModel.titleText).toContain(handle);
+        expect(viewModel.titleText).toContain(user.handle);
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
+        expect(viewModel.avatarUrl).toStrictEqual(user.avatarUrl);
       });
 
       it('includes the event date', async () => {
@@ -66,7 +64,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the link to the list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
+        expect(viewModel.linkUrl).toBe(`/lists/${userList.id}`);
       });
     });
 
