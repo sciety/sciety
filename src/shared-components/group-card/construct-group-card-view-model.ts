@@ -10,29 +10,27 @@ import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
-export type Ports = Queries;
-
 export const constructGroupCardViewModel = (
-  ports: Ports,
+  queries: Queries,
 ) => (
   groupId: GroupId,
 ): E.Either<DE.DataError, GroupCardViewModel> => pipe(
-  ports.getGroup(groupId),
+  queries.getGroup(groupId),
   E.fromOption(() => DE.notFound),
   E.chainOptionK(() => DE.notFound)((group) => pipe(
     group.id,
-    ports.getActivityForGroup,
+    queries.getActivityForGroup,
     O.map((meta) => ({
       ...group,
       ...meta,
-      followerCount: ports.getFollowers(group.id).length,
+      followerCount: queries.getFollowers(group.id).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
   )),
   E.map((partial) => pipe(
     groupId,
     LOID.fromGroupId,
-    ports.selectAllListsOwnedBy,
+    queries.selectAllListsOwnedBy,
     RA.size,
     ((listCount) => ({
       ...partial,
