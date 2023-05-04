@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { UpdateUserDetailsCommand } from '../../commands';
 import { UserResource, replayUserResource } from './replay-user-resource';
-import { ErrorMessage } from '../../../types/error-message';
 import { DomainEvent, userDetailsUpdated } from '../../../domain-events';
+import { ResourceAction } from '../resource-action';
 
 type ExecuteCommand = (command: UpdateUserDetailsCommand)
 => (userResource: UserResource)
@@ -17,11 +17,7 @@ const executeCommand: ExecuteCommand = (command) => (userResource) => {
     : [userDetailsUpdated(command.userId, avatarUrl, displayName)];
 };
 
-type Update = (command: UpdateUserDetailsCommand)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
-
-export const update: Update = (command) => (events) => pipe(
+export const update: ResourceAction<UpdateUserDetailsCommand> = (command) => (events) => pipe(
   events,
   replayUserResource(command.userId),
   E.map(executeCommand(command)),
