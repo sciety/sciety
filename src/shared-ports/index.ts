@@ -12,7 +12,6 @@ import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-lis
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
-import { GetNonEmptyUserLists } from './get-non-empty-user-lists';
 import { GetActivityForDoi } from './get-activity-for-doi';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
@@ -31,7 +30,6 @@ export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-lis
 export { SearchForArticles } from './search-for-articles';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
-export { GetNonEmptyUserLists } from './get-non-empty-user-lists';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -47,7 +45,6 @@ export type SharedPorts = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
-  getNonEmptyUserLists: GetNonEmptyUserLists,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,
   getActivityForDoi: GetActivityForDoi,
