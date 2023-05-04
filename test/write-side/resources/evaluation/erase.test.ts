@@ -3,7 +3,11 @@ import * as E from 'fp-ts/Either';
 import { erase } from '../../../../src/write-side/resources/evaluation';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryReviewId } from '../../../types/review-id.helper';
-import { DomainEvent, evaluationRecorded } from '../../../../src/domain-events';
+import {
+  DomainEvent,
+  evaluationRecorded,
+  incorrectlyRecordedEvaluationErased,
+} from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
 
@@ -58,7 +62,29 @@ describe('erase', () => {
   });
 
   describe('when the evaluation has been recorded and erased', () => {
-    it.todo('raises no event');
+    const evaluationLocator = arbitraryReviewId();
+    let eventsRaised: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      eventsRaised = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            arbitraryDoi(),
+            evaluationLocator,
+            [],
+            new Date(),
+          ),
+          incorrectlyRecordedEvaluationErased(evaluationLocator),
+        ],
+        erase({ evaluationLocator }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('raises no event', () => {
+      expect(eventsRaised).toStrictEqual([]);
+    });
   });
 
   describe('when the evaluation has been recorded, erased and recorded again', () => {
