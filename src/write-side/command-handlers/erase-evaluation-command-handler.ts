@@ -1,11 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
 import { EraseEvaluationCommand } from '../commands';
-import { toErrorMessage } from '../../types/error-message';
+import * as evaluationResource from '../resources/evaluation';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -19,10 +18,9 @@ type EraseEvaluationCommandHandler = (
 export const eraseEvaluationCommandHandler: EraseEvaluationCommandHandler = (
   adapters,
 ) => (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   command,
 ) => pipe(
   adapters.getAllEvents,
-  T.map(() => E.left(toErrorMessage('not implemented'))),
+  T.map(evaluationResource.erase(command)),
   TE.chainTaskK(adapters.commitEvents),
 );
