@@ -1,10 +1,10 @@
-import { lookupList } from './lookup-list';
+import { LookupList, lookupList } from './lookup-list';
 import { ReadModel } from './handle-event';
 import { selectListContainingArticle } from './select-list-containing-article';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import {
   GetNonEmptyUserLists,
-  LookupList, SelectListContainingArticle, SelectAllListsOwnedBy,
+  SelectListContainingArticle, SelectAllListsOwnedBy,
   SelectAllListsContainingArticle,
 } from '../../shared-ports';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
