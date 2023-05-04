@@ -9,9 +9,9 @@ import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
+import { Queries } from '../../../../src/shared-read-models';
 
 describe('collapsed-articles-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -29,7 +29,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       articleCount,
     };
 
-    const lookupList: LookupList = () => O.some({
+    const lookupList: Queries['lookupList'] = () => O.some({
       ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
       id: listId,
     });

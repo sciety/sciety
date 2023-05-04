@@ -10,9 +10,9 @@ import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { LookupList } from '../../../../src/shared-ports';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
+import { Queries } from '../../../../src/shared-read-models';
 
 describe('article-added-to-list-card', () => {
   describe('when a group owns the list', () => {
@@ -23,7 +23,7 @@ describe('article-added-to-list-card', () => {
     const date = new Date('2021-09-15');
     const listId = arbitraryListId();
     const event = articleAddedToList(arbitraryArticleId(), listId, date);
-    const lookupList: LookupList = () => O.some({
+    const lookupList: Queries['lookupList'] = () => O.some({
       ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
       id: listId,
     });
