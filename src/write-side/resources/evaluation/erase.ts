@@ -9,7 +9,7 @@ import {
   EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
-import { ErrorMessage } from '../../../types/error-message';
+import { ResourceAction } from '../resource-action';
 
 type RelevantEvent = EvaluationRecordedEvent | IncorrectlyRecordedEvaluationErasedEvent;
 
@@ -17,11 +17,7 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
   isEvaluationRecordedEvent(event) || isIncorrectlyRecordedEvaluationErasedEvent(event)
 );
 
-type Erase = (command: EraseEvaluationCommand)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
-
-export const erase: Erase = (command) => (events) => pipe(
+export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
