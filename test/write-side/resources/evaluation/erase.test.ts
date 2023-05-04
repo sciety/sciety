@@ -13,51 +13,47 @@ import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('erase', () => {
   describe('when an evaluation has been incorrectly recorded', () => {
-    describe('and the action is executed', () => {
-      const evaluationLocator = arbitraryReviewId();
-      let eventsRaised: ReadonlyArray<DomainEvent>;
+    const evaluationLocator = arbitraryReviewId();
+    let eventsRaised: ReadonlyArray<DomainEvent>;
 
-      beforeEach(() => {
-        eventsRaised = pipe(
-          [
-            evaluationRecorded(
-              arbitraryGroupId(),
-              arbitraryDoi(),
-              evaluationLocator,
-              [],
-              new Date(),
-            ),
-          ],
-          erase({ evaluationLocator }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
-      });
-
-      it('raises an IncorrectlyRecordedEvaluationErased event', () => {
-        expect(eventsRaised).toStrictEqual([
-          expect.objectContaining({
+    beforeEach(() => {
+      eventsRaised = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            arbitraryDoi(),
             evaluationLocator,
-          }),
-        ]);
-      });
+            [],
+            new Date(),
+          ),
+        ],
+        erase({ evaluationLocator }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('raises an IncorrectlyRecordedEvaluationErased event', () => {
+      expect(eventsRaised).toStrictEqual([
+        expect.objectContaining({
+          evaluationLocator,
+        }),
+      ]);
     });
   });
 
   describe('when the evaluation has not been recorded', () => {
-    describe('and the action is executed', () => {
-      let eventsRaised: ReadonlyArray<DomainEvent>;
+    let eventsRaised: ReadonlyArray<DomainEvent>;
 
-      beforeEach(() => {
-        eventsRaised = pipe(
-          [],
-          erase({ evaluationLocator: arbitraryReviewId() }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
-      });
+    beforeEach(() => {
+      eventsRaised = pipe(
+        [],
+        erase({ evaluationLocator: arbitraryReviewId() }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
-      it('raises no event', () => {
-        expect(eventsRaised).toStrictEqual([]);
-      });
+    it('raises no event', () => {
+      expect(eventsRaised).toStrictEqual([]);
     });
   });
 
