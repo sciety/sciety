@@ -7,7 +7,6 @@ import * as tt from 'io-ts-types';
 import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
-import { LookupList } from '../../../shared-ports';
 import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
@@ -23,9 +22,7 @@ export const paramsCodec = t.type({
   })),
 });
 
-export type Ports = ArticlesListPorts & Queries & {
-  lookupList: LookupList,
-};
+export type Ports = ArticlesListPorts & Queries;
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 

@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from '../view-model';
-import { LookupList } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from './feed-item';
+import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  lookupList: LookupList,
-} & AddListOwnershipInformationPorts;
+export type Ports = AddListOwnershipInformationPorts & {
+  lookupList: Queries['lookupList'],
+};
 
 type CollapsedArticlesAddedToListCard = (
   ports: Ports,

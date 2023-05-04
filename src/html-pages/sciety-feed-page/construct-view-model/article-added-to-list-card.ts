@@ -3,12 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from '../view-model';
 import { ArticleAddedToListEvent } from '../../../domain-events';
-import { LookupList } from '../../../shared-ports';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  lookupList: LookupList,
-} & AddListOwnershipInformationPorts;
+export type Ports = AddListOwnershipInformationPorts & {
+  lookupList: Queries['lookupList'],
+};
 
 type ArticleAddedToListCard = (
   ports: Ports,
