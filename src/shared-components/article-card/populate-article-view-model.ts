@@ -3,13 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { GetActivityForDoi } from '../../shared-ports';
 import { ArticleViewModel } from '.';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { Queries } from '../../shared-read-models';
 
 type ArticleItem = {
   articleId: Doi,
@@ -20,9 +20,9 @@ type ArticleItem = {
 
 type GetLatestArticleVersionDate = (articleId: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
-export type Ports = {
+export type Ports = Pick<Queries, 'getActivityForDoi'>
+& {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
-  getActivityForDoi: GetActivityForDoi,
 };
 
 export const populateArticleViewModel = (

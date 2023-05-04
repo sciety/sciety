@@ -3,20 +3,16 @@ import { pipe } from 'fp-ts/function';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
-import { GetActivityForDoi } from '../../../shared-ports';
+import { Queries } from '../../../shared-read-models';
 
-export type Ports = {
-  getActivityForDoi: GetActivityForDoi,
-};
-
-type PopulateArticleActivities = (ports: Ports)
+type PopulateArticleActivities = (queries: Queries)
 => (pageOfItems: PageOfItems<Doi>)
 => PageOfItems<ArticleActivity>;
 
-export const populateArticleActivities: PopulateArticleActivities = (ports) => (pageOfItems) => ({
+export const populateArticleActivities: PopulateArticleActivities = (queries) => (pageOfItems) => ({
   ...pageOfItems,
   items: pipe(
     pageOfItems.items,
-    RA.map(ports.getActivityForDoi),
+    RA.map(queries.getActivityForDoi),
   ),
 });

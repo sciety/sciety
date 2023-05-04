@@ -11,7 +11,6 @@ import { GetArticleSubjectArea } from './get-article-subject-area';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
-import { GetActivityForDoi } from './get-activity-for-doi';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
 export { GetAllEvents } from './get-all-events';
@@ -26,7 +25,6 @@ export { FetchStaticFile } from './fetch-static-file';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { SearchForArticles } from './search-for-articles';
-export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 
 export type SharedPorts = {
@@ -44,5 +42,4 @@ export type SharedPorts = {
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
   searchForArticles: SearchForArticles,
-  getActivityForDoi: GetActivityForDoi,
 };

@@ -1,15 +1,16 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { populateArticleActivities, Ports as PopulateArticleActivitiesPorts } from './populate-article-activities';
+import { populateArticleActivities } from './populate-article-activities';
 import { toPageOfCards, Ports as ToPageOfCardsPorts } from './to-page-of-cards';
 import { paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ContentWithPaginationViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
+import { Queries } from '../../../shared-read-models';
 
-export type Ports = PopulateArticleActivitiesPorts & ToPageOfCardsPorts;
+export type Ports = Queries & ToPageOfCardsPorts;
 
 export const constructContentWithPaginationViewModel = (
   ports: Ports,
