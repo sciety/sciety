@@ -10,7 +10,6 @@ import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
-import { GetOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { SelectListContainingArticle } from './select-list-containing-article';
 import { IsFollowing } from './is-following';
 import { Logger } from './logger';
@@ -34,7 +33,6 @@ export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { SelectListContainingArticle } from './select-list-containing-article';
 export { SelectAllListsOwnedBy } from './select-all-lists-owned-by';
-export { GetOneArticleReadyToBeListed, ArticleWithSubjectArea } from './get-one-article-ready-to-be-listed';
 export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { IsFollowing } from './is-following';
@@ -54,7 +52,6 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
   selectListContainingArticle: SelectListContainingArticle,
   isFollowing: IsFollowing,
   logger: Logger,

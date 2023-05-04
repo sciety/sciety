@@ -1,13 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  AddArticleToList, GetOneArticleReadyToBeListed, Logger,
+  AddArticleToList, Logger,
 } from '../shared-ports';
+import { Queries } from '../shared-read-models';
 
-type Ports = {
+type Ports = Pick<Queries, 'getOneArticleReadyToBeListed'> & {
   logger: Logger,
   addArticleToList: AddArticleToList,
-  getOneArticleReadyToBeListed: GetOneArticleReadyToBeListed,
 };
 
 export const addArticleToElifeSubjectAreaList = async (adapters: Ports): Promise<void> => {

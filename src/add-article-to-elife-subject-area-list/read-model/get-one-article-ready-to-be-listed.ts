@@ -4,10 +4,14 @@ import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { getCorrespondingListId } from './get-corresponding-list-id';
 import { isStateWithSubjectArea, ReadModel } from './handle-event';
-import { ArticleWithSubjectArea } from '../../shared-ports';
-import { fromString as doiFromString } from '../../types/doi';
+import { Doi, fromString as doiFromString } from '../../types/doi';
+import { ListId } from '../../types/list-id';
 
-export const getOneArticleReadyToBeListed = (readModel: ReadModel) => (): O.Option<ArticleWithSubjectArea> => pipe(
+type ArticleWithSubjectArea = { articleId: Doi, listId: ListId };
+
+export type GetOneArticleReadyToBeListed = () => O.Option<ArticleWithSubjectArea>;
+
+export const getOneArticleReadyToBeListed = (readModel: ReadModel): GetOneArticleReadyToBeListed => () => pipe(
   readModel,
   R.filter(isStateWithSubjectArea),
   R.toEntries,
