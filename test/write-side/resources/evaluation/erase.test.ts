@@ -88,6 +88,39 @@ describe('erase', () => {
   });
 
   describe('when the evaluation has been recorded, erased and recorded again', () => {
-    it.todo('raises one IncorrectlyRecordedEvaluationErased event');
+    const evaluationLocator = arbitraryReviewId();
+    let eventsRaised: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      eventsRaised = pipe(
+        [
+          evaluationRecorded(
+            arbitraryGroupId(),
+            arbitraryDoi(),
+            evaluationLocator,
+            [],
+            new Date(),
+          ),
+          incorrectlyRecordedEvaluationErased(evaluationLocator),
+          evaluationRecorded(
+            arbitraryGroupId(),
+            arbitraryDoi(),
+            evaluationLocator,
+            [],
+            new Date(),
+          ),
+        ],
+        erase({ evaluationLocator }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('raises one IncorrectlyRecordedEvaluationErased event', () => {
+      expect(eventsRaised).toStrictEqual([
+        expect.objectContaining({
+          evaluationLocator,
+        }),
+      ]);
+    });
   });
 });
