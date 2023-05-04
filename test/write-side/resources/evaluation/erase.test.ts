@@ -82,7 +82,7 @@ describe('erase', () => {
       );
     });
 
-    it.failing('raises no event', () => {
+    it('raises no event', () => {
       expect(eventsRaised).toStrictEqual([]);
     });
   });
