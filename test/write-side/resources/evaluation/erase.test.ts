@@ -29,7 +29,7 @@ describe('erase', () => {
         );
       });
 
-      it.failing('raises an IncorrectlyRecordedEvaluationErased event', () => {
+      it('raises an IncorrectlyRecordedEvaluationErased event', () => {
         expect(eventsRaised).toStrictEqual([
           expect.objectContaining({
             evaluationLocator,
