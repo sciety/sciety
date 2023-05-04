@@ -8,7 +8,6 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
-import { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
@@ -26,7 +25,6 @@ export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
-export { GetEvaluatedArticlesListIdForGroup } from './get-evaluated-articles-list-id-for-group';
 export { SearchForArticles } from './search-for-articles';
 export { GetActivityForDoi } from './get-activity-for-doi';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
@@ -45,7 +43,6 @@ export type SharedPorts = {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
-  getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
   searchForArticles: SearchForArticles,
   getActivityForDoi: GetActivityForDoi,
 };
