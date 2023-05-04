@@ -8,20 +8,20 @@ import { renderSaveToListForm } from '../../../write-side/save-article/render-sa
 import { ViewModel } from '../view-model';
 
 const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => `
-  <div>
-    Saved to:
+  <section>
+    <h2 class="article-actions-heading">Saved to</h2>
     <a class="saved-to-list" href="/lists/${listId}">
       <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
       ${listName}
     </a>
-  </div>
+  </section>
 `;
 
 const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
 const renderSaveToListSection = (forms: string) => `
   <section>
-    <h2 class="article-actions-heading">Save to a list:</h2>
+    <h2 class="article-actions-heading">Save to a list</h2>
     ${forms}
   </section>
 `;

@@ -22,7 +22,7 @@ export const renderListedIn = (listedIn: ViewModel['listedIn']) => pipe(
   ),
   (content) => `
       <section>
-        <h2 class="article-actions-heading">Listed in:</h2>
+        <h2 class="article-actions-heading">Listed in</h2>
         ${content}
       </section>
     `,
