@@ -8,10 +8,18 @@ export const hypothesisAnnotation = t.type({
   target: t.array(t.type({
     selector: t.union([
       t.undefined,
-      t.array(t.type({
-        type: t.literal('TextQuoteSelector'),
-        exact: t.string,
-      })),
+      t.array(t.union([
+        t.type({
+          type: t.literal('RangeSelector'),
+        }),
+        t.type({
+          type: t.literal('TextPositionSelector'),
+        }),
+        t.type({
+          type: t.literal('TextQuoteSelector'),
+          exact: t.string,
+        }),
+      ])),
     ]),
   })),
 });
