@@ -2,10 +2,11 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
-import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { fetchHypothesisAnnotation, insertSelectedText } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
+import { HypothesisAnnotation } from '../../src/infrastructure/codecs/HypothesisAnnotation';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
@@ -74,7 +75,27 @@ describe('fetch-hypothesis-annotation', () => {
 
 describe('insertSelectedText', () => {
   describe('when there is a text quote selector', () => {
-    it.todo('returns the text quote in markdown format in addition to the response text');
+    it.failing('returns the text quote in markdown format in addition to the response text', () => {
+      const input: HypothesisAnnotation = {
+        text: 'some text',
+        links: {
+          incontext: '',
+        },
+        target: [{
+          selector: [{
+            type: 'TextQuoteSelector',
+            exact: 'lorem ipsum',
+          }],
+        }],
+      };
+      const result = insertSelectedText(input);
+
+      const expectedResult = `> lorem ipsum
+
+some text`;
+
+      expect(result).toBe(expectedResult);
+    });
   });
 
   describe('when there is a selector with multiple text quotes', () => {

@@ -31,7 +31,8 @@ const logAndTransformToDataError = (logger: Logger, url: string) => (error: unkn
   return DE.unavailable;
 };
 
-const insertSelectedText = (response: HypothesisAnnotation) => response.text;
+// ts-unused-exports:disable-next-line
+export const insertSelectedText = (response: HypothesisAnnotation) => response.text;
 
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const evaluation: Evaluation = {
