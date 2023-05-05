@@ -71,3 +71,17 @@ describe('fetch-hypothesis-annotation', () => {
 
   it.todo('test the 500 response when hypothesis is unreachable');
 });
+
+describe('insertSelectedText', () => {
+  describe('when there is a text quote selector', () => {
+    it.todo('returns the text quote in markdown format in addition to the response text');
+  });
+
+  describe('when there is a selector with multiple text quotes', () => {
+    it.todo('unspecified behaviour');
+  });
+
+  describe('when there is no selector', () => {
+    it.todo('returns the response text');
+  });
+});
