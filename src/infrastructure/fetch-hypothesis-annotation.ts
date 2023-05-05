@@ -4,9 +4,9 @@ import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as PR from 'io-ts/PathReporter';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
@@ -56,8 +56,9 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
     ),
     TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
-      E.mapLeft((error) => {
-        logger('error', 'Invalid response from hypothes.is', { url, errors: PR.failure(error) });
+      E.mapLeft(formatValidationErrors),
+      E.mapLeft((errors) => {
+        logger('error', 'Invalid response from hypothes.is', { url, errors });
         return DE.unavailable;
       }),
     )),
