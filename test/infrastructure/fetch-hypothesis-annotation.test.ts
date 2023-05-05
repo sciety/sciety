@@ -75,7 +75,7 @@ describe('fetch-hypothesis-annotation', () => {
 
 describe('insertSelectedText', () => {
   describe('when there is a text quote selector', () => {
-    it.failing('returns the text quote in markdown format in addition to the response text', () => {
+    it('returns the text quote in markdown format in addition to the response text', () => {
       const input: HypothesisAnnotation = {
         text: 'some text',
         links: {

@@ -7,6 +7,8 @@ import { flow, pipe } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
 import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
@@ -32,7 +34,19 @@ const logAndTransformToDataError = (logger: Logger, url: string) => (error: unkn
 };
 
 // ts-unused-exports:disable-next-line
-export const insertSelectedText = (response: HypothesisAnnotation) => response.text;
+export const insertSelectedText = (response: HypothesisAnnotation) => pipe(
+  response.target,
+  RA.head,
+  O.chain((couldContainSelector) => O.fromNullable(couldContainSelector.selector)),
+  O.map(RA.filter((selector): selector is { type: 'TextQuoteSelector', exact: string } => selector.type === 'TextQuoteSelector')),
+  O.chain(RA.head),
+  O.match(
+    () => response.text,
+    (textQuoteSelector) => `> ${textQuoteSelector.exact}
+
+${response.text}`,
+  ),
+);
 
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const evaluation: Evaluation = {
