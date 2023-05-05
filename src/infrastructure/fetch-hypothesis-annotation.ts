@@ -31,10 +31,12 @@ const logAndTransformToDataError = (logger: Logger, url: string) => (error: unkn
   return DE.unavailable;
 };
 
+const insertSelectedText = (response: HypothesisAnnotation) => response.text;
+
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const evaluation: Evaluation = {
     fullText: pipe(
-      response.text,
+      process.env.EXPERIMENT_ENABLED === 'true' ? insertSelectedText(response) : response.text,
       (text) => converter.render(text),
       toHtmlFragment,
     ),
