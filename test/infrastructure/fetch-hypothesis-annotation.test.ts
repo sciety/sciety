@@ -103,6 +103,21 @@ some text`;
   });
 
   describe('when there is no selector', () => {
-    it.todo('returns the response text');
+    it('returns the response text', () => {
+      const input: HypothesisAnnotation = {
+        text: 'some text',
+        links: {
+          incontext: '',
+        },
+        target: [{
+          selector: [{
+            type: 'TextPositionSelector',
+          }],
+        }],
+      };
+      const result = insertSelectedText(input);
+
+      expect(result).toBe('some text');
+    });
   });
 });
