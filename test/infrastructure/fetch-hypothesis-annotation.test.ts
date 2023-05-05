@@ -15,6 +15,7 @@ describe('fetch-hypothesis-annotation', () => {
     const getJson = async (): Promise<Json> => ({
       created: date,
       text: '<p>Very good</p>',
+      target: [],
       links: {
         incontext: 'https://www.example.com',
       },
@@ -37,6 +38,7 @@ describe('fetch-hypothesis-annotation', () => {
     const getJson = async (): Promise<Json> => ({
       created: date,
       text: input,
+      target: [],
       links: {
         incontext: 'https://www.example.com',
       },
@@ -53,6 +55,7 @@ describe('fetch-hypothesis-annotation', () => {
     const getJson = async (): Promise<Json> => ({
       created: date,
       text: input,
+      target: [],
       links: {
         incontext: 'https://www.example.com',
       },

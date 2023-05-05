@@ -5,6 +5,15 @@ export const hypothesisAnnotation = t.type({
   links: t.type({
     incontext: t.string, // TODO URL
   }),
+  target: t.array(t.type({
+    selector: t.union([
+      t.undefined,
+      t.array(t.type({
+        type: t.literal('TextQuoteSelector'),
+        exact: t.string,
+      })),
+    ]),
+  })),
 });
 
 export type HypothesisAnnotation = t.TypeOf<typeof hypothesisAnnotation>;
