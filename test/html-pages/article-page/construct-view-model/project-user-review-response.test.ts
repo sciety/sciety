@@ -54,7 +54,7 @@ describe('project-user-review-response', () => {
     });
   });
 
-  describe('one helpful response event for a different review from the same user', () => {
+  describe('one helpful response event for a different evaluation from the same user', () => {
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', arbitraryEvaluationLocator(), userId);
       userResponse = await calculateUserResponse(O.some(userId));
@@ -88,17 +88,17 @@ describe('project-user-review-response', () => {
     });
   });
 
-  describe('one revoked helpful response on a different review', () => {
-    const otherReviewId = arbitraryEvaluationLocator();
+  describe('one revoked helpful response on a different evaluation', () => {
+    const otherEvaluationLocator = arbitraryEvaluationLocator();
 
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
-      await framework.commandHelpers.respond('respond-helpful', otherReviewId, userId);
-      await framework.commandHelpers.respond('revoke-response', otherReviewId, userId);
+      await framework.commandHelpers.respond('respond-helpful', otherEvaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', otherEvaluationLocator, userId);
       userResponse = await calculateUserResponse(O.some(userId));
     });
 
-    it('doesn\'t change the state of the current review', () => {
+    it('doesn\'t change the state of the current evaluation', () => {
       expect(userResponse).toStrictEqual(O.some('helpful'));
     });
   });
