@@ -6,9 +6,8 @@ import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
-const reviewId = arbitraryEvaluationLocator();
-
 describe('project-review-response-counts', () => {
+  const evaluationLocator = arbitraryEvaluationLocator();
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -21,7 +20,7 @@ describe('project-review-response-counts', () => {
     beforeEach(async () => {
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
@@ -30,14 +29,14 @@ describe('project-review-response-counts', () => {
     });
   });
 
-  describe('given a user responded to a different review', () => {
+  describe('given a user responded to a different evaluation', () => {
     let projected: ResponseCounts;
 
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', arbitraryEvaluationLocator(), arbitraryUserId());
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
@@ -50,12 +49,12 @@ describe('project-review-response-counts', () => {
     let projected: ResponseCounts;
 
     beforeEach(async () => {
-      await framework.commandHelpers.respond('respond-helpful', reviewId, arbitraryUserId());
-      await framework.commandHelpers.respond('respond-helpful', reviewId, arbitraryUserId());
-      await framework.commandHelpers.respond('respond-helpful', reviewId, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
@@ -69,11 +68,11 @@ describe('project-review-response-counts', () => {
     let projected: ResponseCounts;
 
     beforeEach(async () => {
-      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
-      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
@@ -86,12 +85,12 @@ describe('project-review-response-counts', () => {
     let projected: ResponseCounts;
 
     beforeEach(async () => {
-      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
-      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
-      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
@@ -105,13 +104,13 @@ describe('project-review-response-counts', () => {
     let projected: ResponseCounts;
 
     beforeEach(async () => {
-      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
-      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
-      await framework.commandHelpers.respond('respond-not-helpful', reviewId, userId);
-      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
       projected = await pipe(
         framework.getAllEvents,
-        T.map(projectReviewResponseCounts(reviewId)),
+        T.map(projectReviewResponseCounts(evaluationLocator)),
       )();
     });
 
