@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { groupJoined, userFollowedEditorialCommunity } from '../../../../src/domain-events';
+import { userFollowedEditorialCommunity } from '../../../../src/domain-events';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
 import {
   arbitraryDate, arbitraryString, arbitraryUri,
@@ -10,6 +9,8 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 
 describe('user-followed-a-group-card', () => {
   const userId = arbitraryUserId();
@@ -62,25 +63,18 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the user details cannot be found', () => {
-    const ports = {
-      getAllEvents: T.of([groupJoined(
-        group.id,
-        group.name,
-        group.avatarPath,
-        group.descriptionPath,
-        group.shortDescription,
-        group.homepage,
-        group.slug,
-      )]),
-      getGroup: () => O.some(group),
-      lookupUser: () => O.none,
-    };
+    let framework: TestFramework;
+    let viewModel: ScietyFeedCard;
 
-    const viewModel = pipe(
-      event,
-      userFollowedAGroupCard(ports),
-      O.getOrElseW(shouldNotBeCalled),
-    );
+    beforeEach(async () => {
+      framework = createTestFramework();
+      await framework.commandHelpers.createGroup(group);
+      viewModel = pipe(
+        event,
+        userFollowedAGroupCard(framework.queries),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('replaces handle with "a user"', async () => {
       expect(viewModel.titleText).toMatch(/^A user/);
