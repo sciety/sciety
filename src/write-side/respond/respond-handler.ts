@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { commandCodec, commandHandler, Ports as CommandHandlerPorts } from './command-handler';
 import * as RI from '../../types/evaluation-locator';
@@ -36,7 +36,8 @@ export const respondHandler = (ports: Ports): Middleware => async (context, next
       ({ reviewId, command, userId }) => pipe(
         { reviewId, command, userId },
         commandHandler(ports),
-        T.map(() => reviewId),
+        TE.map(() => reviewId),
+        TE.getOrElse((error) => { throw new Error(error); }),
       ),
     ),
   )();
