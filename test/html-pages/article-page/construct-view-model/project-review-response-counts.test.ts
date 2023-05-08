@@ -89,13 +89,19 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given N different users responded not helpful events', () => {
-    it('returns 0 `helpful` and N `not helpful`', () => {
-      const projected = projectReviewResponseCounts(reviewId)([
-        userFoundReviewNotHelpful(arbitraryUserId(), reviewId),
-        userFoundReviewNotHelpful(arbitraryUserId(), reviewId),
-        userFoundReviewNotHelpful(arbitraryUserId(), reviewId),
-      ]);
+    let projected: ResponseCounts;
 
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
+      await framework.commandHelpers.respond('respond-not-helpful', reviewId, arbitraryUserId());
+      projected = await pipe(
+        framework.getAllEvents,
+        T.map(projectReviewResponseCounts(reviewId)),
+      )();
+    });
+
+    it('returns 0 `helpful` and N `not helpful`', () => {
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 3 });
     });
   });
