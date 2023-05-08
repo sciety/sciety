@@ -11,16 +11,18 @@ describe('project-review-response-counts', () => {
   let framework: TestFramework;
   let result: ResponseCounts;
 
+  const calculateProjection = async () => pipe(
+    framework.getAllEvents,
+    T.map(projectReviewResponseCounts(evaluationLocator)),
+  )();
+
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('given no events', () => {
     beforeEach(async () => {
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns 0 `helpful` and 0 `not helpful`', () => {
@@ -31,10 +33,7 @@ describe('project-review-response-counts', () => {
   describe('given a user responded to a different evaluation', () => {
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', arbitraryEvaluationLocator(), arbitraryUserId());
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns 0 `helpful` and 0 `not helpful`', () => {
@@ -47,10 +46,7 @@ describe('project-review-response-counts', () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns N `helpful` and 0 `not helpful`', () => {
@@ -64,10 +60,7 @@ describe('project-review-response-counts', () => {
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
       await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns 0 `helpful` and 0 `not helpful`', () => {
@@ -80,10 +73,7 @@ describe('project-review-response-counts', () => {
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns 0 `helpful` and N `not helpful`', () => {
@@ -99,10 +89,7 @@ describe('project-review-response-counts', () => {
       await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
       await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
-      result = await pipe(
-        framework.getAllEvents,
-        T.map(projectReviewResponseCounts(evaluationLocator)),
-      )();
+      result = await calculateProjection();
     });
 
     it('returns 0 `helpful` and 0 `not helpful`', () => {
