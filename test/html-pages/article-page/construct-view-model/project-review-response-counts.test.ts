@@ -71,13 +71,19 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given a single user responded helpful and revoked the helpful response', () => {
-    it('returns 0 `helpful` and 0 `not helpful`', () => {
-      const userId = arbitraryUserId();
-      const projected = projectReviewResponseCounts(reviewId)([
-        userFoundReviewHelpful(userId, reviewId),
-        userRevokedFindingReviewHelpful(userId, reviewId),
-      ]);
+    const userId = arbitraryUserId();
+    let projected: ResponseCounts;
 
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
+      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
+      projected = await pipe(
+        framework.getAllEvents,
+        T.map(projectReviewResponseCounts(reviewId)),
+      )();
+    });
+
+    it('returns 0 `helpful` and 0 `not helpful`', () => {
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
   });
