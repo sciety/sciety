@@ -24,10 +24,11 @@ const commands = {
 
 export const commandCodec = t.keyof(commands);
 
-type Command = t.TypeOf<typeof commandCodec>;
+// ts-unused-exports:disable-next-line
+export type RespondAction = t.TypeOf<typeof commandCodec>;
 
 type RespondCommand = {
-  command: Command,
+  command: RespondAction,
   reviewId: EvaluationLocator,
   userId: UserId,
 };

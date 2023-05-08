@@ -13,6 +13,7 @@ import { addArticleToListCommandHandler } from '../../src/write-side/add-article
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 import { recordEvaluationCommandHandler } from '../../src/write-side/record-evaluation';
 import { updateUserDetailsCommandHandler } from '../../src/write-side/command-handlers';
+import { commandHandler as respondCommandHandler } from '../../src/write-side/respond/command-handler';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
@@ -41,6 +42,7 @@ type CommandHandlers = {
   followGroup: ReturnType<typeof followCommandHandler>,
   recordEvaluation: ReturnType<typeof recordEvaluationCommandHandler>,
   removeArticleFromList: ReturnType<typeof removeArticleFromListCommandHandler>,
+  respond: ReturnType<typeof respondCommandHandler>,
   updateUserDetails: ReturnType<typeof updateUserDetailsCommandHandler>,
 };
 
@@ -65,6 +67,7 @@ export const createReadAndWriteSides = (): ReadAndWriteSides => {
     followGroup: followCommandHandler(eventStore),
     recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
     removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
+    respond: respondCommandHandler(eventStore),
     updateUserDetails: updateUserDetailsCommandHandler(eventStore),
   };
   return {
