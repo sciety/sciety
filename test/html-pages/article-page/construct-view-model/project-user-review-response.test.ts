@@ -34,16 +34,18 @@ describe('project-user-review-response', () => {
   });
 
   describe('one helpful response event', () => {
-    it('returns `helpful`', () => {
-      const userId = arbitraryUserId();
-      const reviewId = arbitraryEvaluationLocator();
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(userId, reviewId),
-        ],
-        projectUserReviewResponse(reviewId, O.some(userId)),
-      );
+    const userId = arbitraryUserId();
+    const reviewId = arbitraryEvaluationLocator();
 
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
+      userResponse = await pipe(
+        framework.getAllEvents,
+        T.map(projectUserReviewResponse(reviewId, O.some(userId))),
+      )();
+    });
+
+    it('returns `helpful`', () => {
       expect(userResponse).toStrictEqual(O.some('helpful'));
     });
   });
