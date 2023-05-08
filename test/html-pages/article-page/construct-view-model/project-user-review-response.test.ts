@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
@@ -9,15 +10,26 @@ import {
 import { projectUserReviewResponse } from '../../../../src/html-pages/article-page/construct-view-model/project-user-review-response';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { TestFramework, createTestFramework } from '../../../framework';
 
 describe('project-user-review-response', () => {
-  describe('no response events', () => {
-    it('returns nothing', () => {
-      const userResponse = pipe(
-        [],
-        projectUserReviewResponse(arbitraryEvaluationLocator(), O.some(arbitraryUserId())),
-      );
+  let framework: TestFramework;
 
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
+  describe('no response events', () => {
+    let userResponse: ReturnType<ReturnType<typeof projectUserReviewResponse>>;
+
+    beforeEach(async () => {
+      userResponse = await pipe(
+        framework.getAllEvents,
+        T.map(projectUserReviewResponse(arbitraryEvaluationLocator(), O.some(arbitraryUserId()))),
+      )();
+    });
+
+    it('returns nothing', () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
