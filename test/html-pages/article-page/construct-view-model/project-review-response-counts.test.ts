@@ -9,14 +9,13 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 describe('project-review-response-counts', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
   let framework: TestFramework;
+  let result: ResponseCounts;
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('given no events', () => {
-    let result: ResponseCounts;
-
     beforeEach(async () => {
       result = await pipe(
         framework.getAllEvents,
@@ -30,8 +29,6 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given a user responded to a different evaluation', () => {
-    let result: ResponseCounts;
-
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', arbitraryEvaluationLocator(), arbitraryUserId());
       result = await pipe(
@@ -46,8 +43,6 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given N different users responded helpful events', () => {
-    let result: ResponseCounts;
-
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
@@ -65,7 +60,6 @@ describe('project-review-response-counts', () => {
 
   describe('given a single user responded helpful and revoked the helpful response', () => {
     const userId = arbitraryUserId();
-    let result: ResponseCounts;
 
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
@@ -82,8 +76,6 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given N different users responded not helpful events', () => {
-    let result: ResponseCounts;
-
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
       await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, arbitraryUserId());
@@ -101,7 +93,6 @@ describe('project-review-response-counts', () => {
 
   describe('given a single user responded: helpful, revoke helpful, not helpful, revoke not helpful', () => {
     const userId = arbitraryUserId();
-    let result: ResponseCounts;
 
     beforeEach(async () => {
       await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
