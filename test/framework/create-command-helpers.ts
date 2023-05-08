@@ -10,7 +10,7 @@ import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
-import { CommandResult } from '../../src/types/command-result';
+import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -23,9 +23,7 @@ export type CommandHelpers = {
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
 
-type Outcome = TE.TaskEither<string, CommandResult>;
-
-const invoke = <C>(handler: (a: C) => Outcome, name: string) => (cmd: C) => {
+const invoke = <C extends GenericCommand>(handler: CommandHandler<C>, name: string) => (cmd: C) => {
   if (process.env.TEST_DEBUG === 'true') {
     // eslint-disable-next-line no-console
     console.log(`${name}:`, cmd);
