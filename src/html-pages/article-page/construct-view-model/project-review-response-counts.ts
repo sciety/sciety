@@ -8,6 +8,7 @@ import {
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../../../domain-events';
 import * as ReviewId from '../../../types/evaluation-locator';
+import { ResponseCounts } from '../view-model';
 
 const projectHelpfulCount = (reviewId: ReviewId.EvaluationLocator) => flow(
   RA.filter((event: DomainEvent): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
@@ -37,7 +38,7 @@ const projection = (reviewId: ReviewId.EvaluationLocator) => (events: ReadonlyAr
 type ProjectReviewResponseCounts = (
   reviewId: ReviewId.EvaluationLocator,
 ) => (events: ReadonlyArray<DomainEvent>,
-) => { helpfulCount: number, notHelpfulCount: number };
+) => ResponseCounts;
 
 export const projectReviewResponseCounts: ProjectReviewResponseCounts = (reviewId) => (events) => pipe(
   events,

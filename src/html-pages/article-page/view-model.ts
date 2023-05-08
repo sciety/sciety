@@ -10,8 +10,13 @@ import * as RI from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 
+export type ResponseCounts = {
+  helpfulCount: number,
+  notHelpfulCount: number,
+};
+
 type Responses = {
-  counts: { helpfulCount: number, notHelpfulCount: number },
+  counts: ResponseCounts,
   current: O.Option<'helpful' | 'not-helpful'>,
 };
 

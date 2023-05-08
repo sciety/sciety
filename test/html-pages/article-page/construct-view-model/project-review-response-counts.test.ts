@@ -7,6 +7,7 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../../../src/domain-events';
 import { projectReviewResponseCounts } from '../../../../src/html-pages/article-page/construct-view-model/project-review-response-counts';
+import { ResponseCounts } from '../../../../src/html-pages/article-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
@@ -21,7 +22,7 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given no events', () => {
-    let projected: { helpfulCount: number, notHelpfulCount: number };
+    let projected: ResponseCounts;
 
     beforeEach(async () => {
       projected = await pipe(

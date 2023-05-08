@@ -2,12 +2,11 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/evaluation-locator';
-
-type Counts = { helpfulCount: number, notHelpfulCount: number };
+import { ResponseCounts } from '../view-model';
 
 export const renderReviewResponses = (
   evaluationLocator: RI.EvaluationLocator,
-  counts: Counts,
+  counts: ResponseCounts,
   current: O.Option<'helpful' | 'not-helpful'>,
 ): HtmlFragment => {
   const saidHelpful = pipe(current, O.filter((value) => value === 'helpful'), O.isSome);
