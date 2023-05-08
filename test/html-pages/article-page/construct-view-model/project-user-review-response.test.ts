@@ -1,12 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import {
-  userFoundReviewHelpful,
-  userFoundReviewNotHelpful,
-  userRevokedFindingReviewHelpful,
-  userRevokedFindingReviewNotHelpful,
-} from '../../../../src/domain-events';
 import { projectUserReviewResponse } from '../../../../src/html-pages/article-page/construct-view-model/project-user-review-response';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
@@ -49,98 +43,85 @@ describe('project-user-review-response', () => {
     });
   });
 
-  describe('one helpful response event from another user', () => {
-    it('returns nothing', () => {
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(arbitraryUserId(), evaluationLocator),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(arbitraryUserId())),
-      );
+  describe('one helpful response event from a different user', () => {
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, arbitraryUserId());
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
 
+    it('returns nothing', () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
 
-  describe('one helpful response event for another review from the same user', () => {
-    it('returns nothing', () => {
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(userId, arbitraryEvaluationLocator()),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(userId)),
-      );
+  describe('one helpful response event for a different review from the same user', () => {
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', arbitraryEvaluationLocator(), userId);
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
 
+    it('returns nothing', () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
 
   describe('there is no user', () => {
-    it('return nothing', () => {
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(arbitraryUserId(), evaluationLocator),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.none),
-      );
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      userResponse = await calculateUserResponse(O.none);
+    });
 
+    it('return nothing', () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
 
   describe('one revoked helpful response', () => {
-    it('returns no-response', () => {
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(userId, evaluationLocator),
-          userRevokedFindingReviewHelpful(userId, evaluationLocator),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(userId)),
-      );
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
 
+    it('returns no-response', () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
 
   describe('one revoked helpful response on a different review', () => {
-    it('doesn\'t change the state of the current review', () => {
-      const otherReviewId = arbitraryEvaluationLocator();
-      userResponse = pipe(
-        [
-          userFoundReviewHelpful(userId, evaluationLocator),
-          userFoundReviewHelpful(userId, otherReviewId),
-          userRevokedFindingReviewHelpful(userId, otherReviewId),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(userId)),
-      );
+    const otherReviewId = arbitraryEvaluationLocator();
 
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('respond-helpful', otherReviewId, userId);
+      await framework.commandHelpers.respond('revoke-response', otherReviewId, userId);
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
+
+    it('doesn\'t change the state of the current review', () => {
       expect(userResponse).toStrictEqual(O.some('helpful'));
     });
   });
 
   describe('one not helpful response event', () => {
-    it('returns `not helpful`', () => {
-      userResponse = pipe(
-        [
-          userFoundReviewNotHelpful(userId, evaluationLocator),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(userId)),
-      );
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
 
+    it('returns `not helpful`', () => {
       expect(userResponse).toStrictEqual(O.some('not-helpful'));
     });
   });
 
   describe('one revoked not-helpful response', () => {
-    it('returns nothing', async () => {
-      userResponse = pipe(
-        [
-          userFoundReviewNotHelpful(userId, evaluationLocator),
-          userRevokedFindingReviewNotHelpful(userId, evaluationLocator),
-        ],
-        projectUserReviewResponse(evaluationLocator, O.some(userId)),
-      );
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
+      await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
+      userResponse = await calculateUserResponse(O.some(userId));
+    });
 
+    it('returns nothing', async () => {
       expect(userResponse).toStrictEqual(O.none);
     });
   });
