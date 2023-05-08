@@ -13,6 +13,7 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 
 describe('project-user-review-response', () => {
+  let userResponse: ReturnType<ReturnType<typeof projectUserReviewResponse>>;
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -20,8 +21,6 @@ describe('project-user-review-response', () => {
   });
 
   describe('no response events', () => {
-    let userResponse: ReturnType<ReturnType<typeof projectUserReviewResponse>>;
-
     beforeEach(async () => {
       userResponse = await pipe(
         framework.getAllEvents,
@@ -38,7 +37,7 @@ describe('project-user-review-response', () => {
     it('returns `helpful`', () => {
       const userId = arbitraryUserId();
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(userId, reviewId),
         ],
@@ -52,7 +51,7 @@ describe('project-user-review-response', () => {
   describe('one helpful response event from another user', () => {
     it('returns nothing', () => {
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(arbitraryUserId(), reviewId),
         ],
@@ -66,7 +65,7 @@ describe('project-user-review-response', () => {
   describe('one helpful response event for another review from the same user', () => {
     it('returns nothing', () => {
       const userId = arbitraryUserId();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(userId, arbitraryEvaluationLocator()),
         ],
@@ -80,7 +79,7 @@ describe('project-user-review-response', () => {
   describe('there is no user', () => {
     it('return nothing', () => {
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(arbitraryUserId(), reviewId),
         ],
@@ -95,7 +94,7 @@ describe('project-user-review-response', () => {
     it('returns no-response', () => {
       const userId = arbitraryUserId();
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(userId, reviewId),
           userRevokedFindingReviewHelpful(userId, reviewId),
@@ -112,7 +111,7 @@ describe('project-user-review-response', () => {
       const userId = arbitraryUserId();
       const reviewId = arbitraryEvaluationLocator();
       const otherReviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewHelpful(userId, reviewId),
           userFoundReviewHelpful(userId, otherReviewId),
@@ -129,7 +128,7 @@ describe('project-user-review-response', () => {
     it('returns `not helpful`', () => {
       const userId = arbitraryUserId();
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewNotHelpful(userId, reviewId),
         ],
@@ -144,7 +143,7 @@ describe('project-user-review-response', () => {
     it('returns nothing', async () => {
       const userId = arbitraryUserId();
       const reviewId = arbitraryEvaluationLocator();
-      const userResponse = pipe(
+      userResponse = pipe(
         [
           userFoundReviewNotHelpful(userId, reviewId),
           userRevokedFindingReviewNotHelpful(userId, reviewId),
