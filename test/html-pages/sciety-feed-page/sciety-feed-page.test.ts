@@ -16,11 +16,17 @@ import { TestFramework, createTestFramework } from '../../framework';
 describe('sciety-feed-page', () => {
   const group = arbitraryGroup();
   let framework: TestFramework;
-  let defaultPorts: Ports;
+  let defaultAdapters: Ports;
+
+  const renderPage = async (pageSize: number) => pipe(
+    scietyFeedPage(defaultAdapters)(pageSize)({ page: 1 }),
+    T.map(E.getOrElseW(shouldNotBeCalled)),
+    T.map((page) => page.content),
+  )();
 
   beforeEach(() => {
     framework = createTestFramework();
-    defaultPorts = {
+    defaultAdapters = {
       ...framework.queries,
       logger: dummyLogger,
       getAllEvents: framework.getAllEvents,
@@ -31,11 +37,7 @@ describe('sciety-feed-page', () => {
     const list = arbitraryList();
     await framework.commandHelpers.createList(list);
     await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
-    const renderedPage = await pipe(
-      scietyFeedPage(defaultPorts)(20)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
+    const renderedPage = await renderPage(20);
 
     expect(renderedPage).toContain('added an article to a list');
   });
@@ -43,11 +45,7 @@ describe('sciety-feed-page', () => {
   it('renders a single user followed editorial community as a card', async () => {
     await framework.commandHelpers.createGroup(group);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
-    const renderedPage = await pipe(
-      scietyFeedPage(defaultPorts)(20)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
+    const renderedPage = await renderPage(20);
 
     expect(renderedPage).toContain('followed a group');
   });
@@ -57,16 +55,11 @@ describe('sciety-feed-page', () => {
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
-    const pageSize = 3;
-    const renderedPage = await pipe(
-      scietyFeedPage(defaultPorts)(pageSize)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
+    const renderedPage = await renderPage(3);
     const html = JSDOM.fragment(renderedPage);
     const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
 
-    expect(itemCount).toStrictEqual(pageSize);
+    expect(itemCount).toBe(3);
   });
 
   it('does not render uninteresting events', async () => {
@@ -83,11 +76,7 @@ describe('sciety-feed-page', () => {
     await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
     await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
     await framework.commandHelpers.unfollowGroup(userId, group.id);
-    const renderedPage = await pipe(
-      scietyFeedPage(defaultPorts)(10)({ page: 1 }),
-      T.map(E.getOrElseW(shouldNotBeCalled)),
-      T.map((page) => page.content),
-    )();
+    const renderedPage = await renderPage(10);
     const html = JSDOM.fragment(renderedPage);
     const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
 
