@@ -11,10 +11,18 @@ import { projectUserReviewResponse } from '../../../../src/html-pages/article-pa
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
+import { UserId } from '../../../../src/types/user-id';
 
 describe('project-user-review-response', () => {
+  const evaluationLocator = arbitraryEvaluationLocator();
+  const userId = arbitraryUserId();
   let userResponse: ReturnType<ReturnType<typeof projectUserReviewResponse>>;
   let framework: TestFramework;
+
+  const calculateUserResponse = async (u: O.Option<UserId>) => pipe(
+    framework.getAllEvents,
+    T.map(projectUserReviewResponse(evaluationLocator, u)),
+  )();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -22,10 +30,7 @@ describe('project-user-review-response', () => {
 
   describe('no response events', () => {
     beforeEach(async () => {
-      userResponse = await pipe(
-        framework.getAllEvents,
-        T.map(projectUserReviewResponse(arbitraryEvaluationLocator(), O.some(arbitraryUserId()))),
-      )();
+      userResponse = await calculateUserResponse(O.some(userId));
     });
 
     it('returns nothing', () => {
@@ -34,15 +39,9 @@ describe('project-user-review-response', () => {
   });
 
   describe('one helpful response event', () => {
-    const userId = arbitraryUserId();
-    const reviewId = arbitraryEvaluationLocator();
-
     beforeEach(async () => {
-      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
-      userResponse = await pipe(
-        framework.getAllEvents,
-        T.map(projectUserReviewResponse(reviewId, O.some(userId))),
-      )();
+      await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
+      userResponse = await calculateUserResponse(O.some(userId));
     });
 
     it('returns `helpful`', () => {
@@ -52,12 +51,11 @@ describe('project-user-review-response', () => {
 
   describe('one helpful response event from another user', () => {
     it('returns nothing', () => {
-      const reviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewHelpful(arbitraryUserId(), reviewId),
+          userFoundReviewHelpful(arbitraryUserId(), evaluationLocator),
         ],
-        projectUserReviewResponse(reviewId, O.some(arbitraryUserId())),
+        projectUserReviewResponse(evaluationLocator, O.some(arbitraryUserId())),
       );
 
       expect(userResponse).toStrictEqual(O.none);
@@ -66,12 +64,11 @@ describe('project-user-review-response', () => {
 
   describe('one helpful response event for another review from the same user', () => {
     it('returns nothing', () => {
-      const userId = arbitraryUserId();
       userResponse = pipe(
         [
           userFoundReviewHelpful(userId, arbitraryEvaluationLocator()),
         ],
-        projectUserReviewResponse(arbitraryEvaluationLocator(), O.some(userId)),
+        projectUserReviewResponse(evaluationLocator, O.some(userId)),
       );
 
       expect(userResponse).toStrictEqual(O.none);
@@ -80,12 +77,11 @@ describe('project-user-review-response', () => {
 
   describe('there is no user', () => {
     it('return nothing', () => {
-      const reviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewHelpful(arbitraryUserId(), reviewId),
+          userFoundReviewHelpful(arbitraryUserId(), evaluationLocator),
         ],
-        projectUserReviewResponse(reviewId, O.none),
+        projectUserReviewResponse(evaluationLocator, O.none),
       );
 
       expect(userResponse).toStrictEqual(O.none);
@@ -94,14 +90,12 @@ describe('project-user-review-response', () => {
 
   describe('one revoked helpful response', () => {
     it('returns no-response', () => {
-      const userId = arbitraryUserId();
-      const reviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewHelpful(userId, reviewId),
-          userRevokedFindingReviewHelpful(userId, reviewId),
+          userFoundReviewHelpful(userId, evaluationLocator),
+          userRevokedFindingReviewHelpful(userId, evaluationLocator),
         ],
-        projectUserReviewResponse(arbitraryEvaluationLocator(), O.some(userId)),
+        projectUserReviewResponse(evaluationLocator, O.some(userId)),
       );
 
       expect(userResponse).toStrictEqual(O.none);
@@ -110,16 +104,14 @@ describe('project-user-review-response', () => {
 
   describe('one revoked helpful response on a different review', () => {
     it('doesn\'t change the state of the current review', () => {
-      const userId = arbitraryUserId();
-      const reviewId = arbitraryEvaluationLocator();
       const otherReviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewHelpful(userId, reviewId),
+          userFoundReviewHelpful(userId, evaluationLocator),
           userFoundReviewHelpful(userId, otherReviewId),
           userRevokedFindingReviewHelpful(userId, otherReviewId),
         ],
-        projectUserReviewResponse(reviewId, O.some(userId)),
+        projectUserReviewResponse(evaluationLocator, O.some(userId)),
       );
 
       expect(userResponse).toStrictEqual(O.some('helpful'));
@@ -128,13 +120,11 @@ describe('project-user-review-response', () => {
 
   describe('one not helpful response event', () => {
     it('returns `not helpful`', () => {
-      const userId = arbitraryUserId();
-      const reviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewNotHelpful(userId, reviewId),
+          userFoundReviewNotHelpful(userId, evaluationLocator),
         ],
-        projectUserReviewResponse(reviewId, O.some(userId)),
+        projectUserReviewResponse(evaluationLocator, O.some(userId)),
       );
 
       expect(userResponse).toStrictEqual(O.some('not-helpful'));
@@ -143,14 +133,12 @@ describe('project-user-review-response', () => {
 
   describe('one revoked not-helpful response', () => {
     it('returns nothing', async () => {
-      const userId = arbitraryUserId();
-      const reviewId = arbitraryEvaluationLocator();
       userResponse = pipe(
         [
-          userFoundReviewNotHelpful(userId, reviewId),
-          userRevokedFindingReviewNotHelpful(userId, reviewId),
+          userFoundReviewNotHelpful(userId, evaluationLocator),
+          userRevokedFindingReviewNotHelpful(userId, evaluationLocator),
         ],
-        projectUserReviewResponse(reviewId, O.some(userId)),
+        projectUserReviewResponse(evaluationLocator, O.some(userId)),
       );
 
       expect(userResponse).toStrictEqual(O.none);
