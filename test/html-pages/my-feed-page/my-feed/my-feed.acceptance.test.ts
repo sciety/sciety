@@ -1,10 +1,6 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
-import { evaluationRecorded, userFollowedEditorialCommunity } from '../../../../src/domain-events';
 import { myFeed, Ports } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
@@ -12,15 +8,11 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from '../../../../src/html-pages/my-feed-page/my-feed/static-content';
-import { FindVersionsForArticleDoi } from '../../../../src/shared-ports';
 import * as DE from '../../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../../src/types/doi';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../../helpers';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -80,13 +72,6 @@ describe('my-feed acceptance', () => {
 
     describe('following groups with evaluations', () => {
       const group = arbitraryGroup();
-      const arbitraryVersions = () => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          version: arbitraryNumber(1, 5),
-          publishedAt: new Date(),
-        },
-      ]) as ReturnType<FindVersionsForArticleDoi>;
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group);
@@ -143,6 +128,15 @@ describe('my-feed acceptance', () => {
       describe('when details of an article cannot be fetched', () => {
         it('only displays the successfully fetched articles', async () => {
           const failingDoi = arbitraryDoi();
+          const evaluation1: RecordedEvaluation = {
+            ...arbitraryRecordedEvaluation(),
+            groupId: group.id,
+            articleId: failingDoi,
+          };
+          const evaluation2: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
+          await framework.commandHelpers.followGroup(userDetails.id, group.id);
+          await framework.commandHelpers.recordEvaluation(evaluation1);
+          await framework.commandHelpers.recordEvaluation(evaluation2);
           const adapters = {
             ...defaultAdapters,
             fetchArticle: (doi: Doi) => (
@@ -153,13 +147,6 @@ describe('my-feed acceptance', () => {
                   authors: O.none,
                   server: 'biorxiv' as const,
                 })),
-            findVersionsForArticleDoi: arbitraryVersions,
-            getAllEvents: T.of([
-              userFollowedEditorialCommunity(userDetails.id, group.id),
-              evaluationRecorded(group.id, failingDoi, arbitraryEvaluationLocator(), [], arbitraryDate()),
-              evaluationRecorded(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
-            ]),
-            getGroupsFollowedBy: () => [group.id],
           };
 
           const html = await myFeed(adapters)(userDetails.id, 20, 1)();
@@ -172,14 +159,12 @@ describe('my-feed acceptance', () => {
 
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
+          const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
+          await framework.commandHelpers.followGroup(userDetails.id, group.id);
+          await framework.commandHelpers.recordEvaluation(evaluation);
           const adapters = {
             ...defaultAdapters,
             fetchArticle: () => TE.left(DE.unavailable),
-            getAllEvents: T.of([
-              userFollowedEditorialCommunity(userDetails.id, group.id),
-              evaluationRecorded(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
-            ]),
-            getGroupsFollowedBy: () => [group.id],
           };
           const html = await myFeed(adapters)(userDetails.id, 20, 1)();
 
