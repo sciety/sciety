@@ -24,35 +24,47 @@ import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-
-const defaultAdapters: Ports = {
-  fetchArticle: shouldNotBeCalled,
-  findVersionsForArticleDoi: shouldNotBeCalled,
-  getAllEvents: T.of([]),
-  getGroupsFollowedBy: () => [],
-};
+import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
 
 describe('my-feed acceptance', () => {
+  let framework: TestFramework;
+  let defaultAdapters: Ports;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+    defaultAdapters = {
+      ...framework.queries,
+      fetchArticle: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+      getAllEvents: framework.getAllEvents,
+    };
+  });
+
   it('displays the feed title', async () => {
     const html = await myFeed(defaultAdapters)(arbitraryUserId(), 20, 1)();
 
     expect(html).toContain(feedTitle);
   });
 
-  describe('there is a logged in user', () => {
-    const userId = arbitraryUserId();
+  describe('when there is a logged in user', () => {
+    const userDetails = arbitraryUserDetails();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(userDetails);
+    });
 
     describe('following groups that have no evaluations', () => {
-      const groupId = arbitraryGroupId();
+      const group = arbitraryGroup();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.followGroup(userDetails.id, group.id);
+      });
 
       it('displays the calls to action to follow other groups or return later', async () => {
-        const adapters = {
-          ...defaultAdapters,
-          getAllEvents: T.of([userFollowedEditorialCommunity(userId, groupId)]),
-          getGroupsFollowedBy: () => [groupId],
-        };
-
-        const html = await myFeed(adapters)(userId, 20, 1)();
+        const html = await myFeed(defaultAdapters)(userDetails.id, 20, 1)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -65,7 +77,7 @@ describe('my-feed acceptance', () => {
           ...defaultAdapters,
           getAllEvents: T.of([]),
         };
-        const html = await myFeed(adapters)(userId, 20, 1)();
+        const html = await myFeed(adapters)(userDetails.id, 20, 1)();
 
         expect(html).toContain(followSomething);
       });
@@ -91,12 +103,12 @@ describe('my-feed acceptance', () => {
           }),
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, groupId),
+            userFollowedEditorialCommunity(userDetails.id, groupId),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
-        const html = await myFeed(adapters)(userId, 20, 1)();
+        const html = await myFeed(adapters)(userDetails.id, 20, 1)();
 
         expect(html).toContain('class="article-card"');
       });
@@ -112,7 +124,7 @@ describe('my-feed acceptance', () => {
           }),
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, groupId),
+            userFollowedEditorialCommunity(userDetails.id, groupId),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
@@ -120,7 +132,7 @@ describe('my-feed acceptance', () => {
           getGroupsFollowedBy: () => [groupId],
         };
         const pageSize = 2;
-        const renderedComponent = await myFeed(adapters)(userId, pageSize, 1)();
+        const renderedComponent = await myFeed(adapters)(userDetails.id, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
         const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
 
@@ -144,12 +156,12 @@ describe('my-feed acceptance', () => {
           }),
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, groupId),
+            userFollowedEditorialCommunity(userDetails.id, groupId),
             evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
           ]),
           getGroupsFollowedBy: () => [groupId],
         };
-        const html = await myFeed(adapters)(userId, 20, 1)();
+        const html = await myFeed(adapters)(userDetails.id, 20, 1)();
 
         expect(html).toContain('My article title');
       });
@@ -170,14 +182,14 @@ describe('my-feed acceptance', () => {
                 })),
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
-              userFollowedEditorialCommunity(userId, groupId),
+              userFollowedEditorialCommunity(userDetails.id, groupId),
               evaluationRecorded(groupId, failingDoi, arbitraryEvaluationLocator(), [], arbitraryDate()),
               evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };
 
-          const html = await myFeed(adapters)(userId, 20, 1)();
+          const html = await myFeed(adapters)(userDetails.id, 20, 1)();
           const fragment = JSDOM.fragment(html);
           const cards = Array.from(fragment.querySelectorAll('.article-card'));
 
@@ -192,12 +204,12 @@ describe('my-feed acceptance', () => {
             ...defaultAdapters,
             fetchArticle: () => TE.left(DE.unavailable),
             getAllEvents: T.of([
-              userFollowedEditorialCommunity(userId, groupId),
+              userFollowedEditorialCommunity(userDetails.id, groupId),
               evaluationRecorded(groupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
             ]),
             getGroupsFollowedBy: () => [groupId],
           };
-          const html = await myFeed(adapters)(userId, 20, 1)();
+          const html = await myFeed(adapters)(userDetails.id, 20, 1)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });
