@@ -1,11 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
-import {
-  userFoundReviewHelpful,
-  userFoundReviewNotHelpful,
-  userRevokedFindingReviewHelpful,
-  userRevokedFindingReviewNotHelpful,
-} from '../../../../src/domain-events';
 import { projectReviewResponseCounts } from '../../../../src/html-pages/article-page/construct-view-model/project-review-response-counts';
 import { ResponseCounts } from '../../../../src/html-pages/article-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -107,15 +101,21 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given a single user responded: helpful, revoke helpful, not helpful, revoke not helpful', () => {
-    it('returns 0 `helpful` and 0 `not helpful`', () => {
-      const userId = arbitraryUserId();
-      const projected = projectReviewResponseCounts(reviewId)([
-        userFoundReviewHelpful(userId, reviewId),
-        userRevokedFindingReviewHelpful(userId, reviewId),
-        userFoundReviewNotHelpful(userId, reviewId),
-        userRevokedFindingReviewNotHelpful(userId, reviewId),
-      ]);
+    const userId = arbitraryUserId();
+    let projected: ResponseCounts;
 
+    beforeEach(async () => {
+      await framework.commandHelpers.respond('respond-helpful', reviewId, userId);
+      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
+      await framework.commandHelpers.respond('respond-not-helpful', reviewId, userId);
+      await framework.commandHelpers.respond('revoke-response', reviewId, userId);
+      projected = await pipe(
+        framework.getAllEvents,
+        T.map(projectReviewResponseCounts(reviewId)),
+      )();
+    });
+
+    it('returns 0 `helpful` and 0 `not helpful`', () => {
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
   });
