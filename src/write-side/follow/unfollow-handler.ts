@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { Ports as UnfollowCommandPorts, unfollowCommand } from './unfollow-command';
+import { Ports as UnfollowCommandPorts, unfollowCommandHandler } from './unfollow-command-handler';
 import { Logger } from '../../shared-ports';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 
@@ -35,7 +35,7 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
           },
           async (userDetails) => {
             context.redirect('back');
-            await unfollowCommand(ports)(userDetails.id, groupId)();
+            await unfollowCommandHandler(ports)(userDetails.id, groupId)();
           },
         ),
       ),

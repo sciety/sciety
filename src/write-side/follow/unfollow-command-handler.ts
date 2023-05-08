@@ -13,9 +13,9 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-type UnfollowCommand = (userId: UserId, groupId: GroupId) => T.Task<CommandResult>;
+type UnfollowCommandHandler = (userId: UserId, groupId: GroupId) => T.Task<CommandResult>;
 
-export const unfollowCommand = (ports: Ports): UnfollowCommand => (userId, groupId) => pipe(
+export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => (userId, groupId) => pipe(
   ports.getAllEvents,
   T.map(isFollowing(userId, groupId)),
   T.map(B.fold(
