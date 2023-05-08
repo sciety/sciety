@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import {
   articleAddedToList,
-  groupJoined, listCreated, userFollowedEditorialCommunity,
+  groupJoined, listCreated,
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
@@ -88,25 +88,15 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders at most a page of cards at a time', async () => {
-    const events = [
-      groupJoined(
-        group.id,
-        group.name,
-        group.avatarPath,
-        group.descriptionPath,
-        group.shortDescription,
-        group.homepage,
-        group.slug,
-      ),
-      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
-      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
-      userFollowedEditorialCommunity(arbitraryUserId(), group.id),
-    ];
+    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
+    await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
+    await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     const ports = {
       ...defaultPorts,
-      getAllEvents: T.of(events),
+      getAllEvents: framework.getAllEvents,
     };
-    const pageSize = events.length - 1;
+    const pageSize = 3;
     const renderedPage = await pipe(
       scietyFeedPage(ports)(pageSize)({ page: 1 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
