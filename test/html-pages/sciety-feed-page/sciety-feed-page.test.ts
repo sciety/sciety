@@ -72,20 +72,11 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders a single user followed editorial community as a card', async () => {
+    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     const ports = {
       ...defaultPorts,
-      getAllEvents: T.of([
-        groupJoined(
-          group.id,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
-        userFollowedEditorialCommunity(arbitraryUserId(), group.id),
-      ]),
+      getAllEvents: framework.getAllEvents,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
