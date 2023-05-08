@@ -67,7 +67,10 @@ export const reviewToFeedItem = (
       adapters.getAllEvents,
       T.map(projectReviewResponseCounts(feedEvent.reviewId)),
     ),
-    userReviewResponse: projectUserReviewResponse(adapters.getAllEvents)(feedEvent.reviewId, userId),
+    userReviewResponse: pipe(
+      adapters.getAllEvents,
+      T.map(projectUserReviewResponse(feedEvent.reviewId, userId)),
+    ),
   },
   sequenceS(T.ApplyPar),
   T.map(({
