@@ -17,6 +17,11 @@ describe('user-followed-a-group-card', () => {
   const date = arbitraryDate();
   const group = arbitraryGroup();
   const event = userFollowedEditorialCommunity(userId, group.id, date);
+  let framework: TestFramework;
+
+  beforeEach(async () => {
+    framework = createTestFramework();
+  });
 
   describe('happy path', () => {
     const avatarUrl = arbitraryUri();
@@ -63,11 +68,9 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the user details cannot be found', () => {
-    let framework: TestFramework;
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
-      framework = createTestFramework();
       await framework.commandHelpers.createGroup(group);
       viewModel = pipe(
         event,
@@ -98,20 +101,14 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('when the group cannot be found', () => {
-    const ports: UserFollowedAGroupCardPorts = {
-      getGroup: () => O.none,
-      lookupUser: () => O.some({
-        handle: arbitraryUserHandle(),
-        avatarUrl: arbitraryUri(),
-        id: arbitraryUserId(),
-        displayName: arbitraryString(),
-      }),
-    };
+    let viewModel: O.Option<ScietyFeedCard>;
 
-    const viewModel = pipe(
-      event,
-      userFollowedAGroupCard(ports),
-    );
+    beforeEach(() => {
+      viewModel = pipe(
+        event,
+        userFollowedAGroupCard(framework.queries),
+      );
+    });
 
     it('fails the card', async () => {
       expect(viewModel).toStrictEqual(O.none);
