@@ -25,11 +25,11 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryList } from '../../types/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { Queries } from '../../../src/shared-read-models';
+import { TestFramework, createTestFramework } from '../../framework';
 
 describe('sciety-feed-page', () => {
   const getUser: Queries['lookupUser'] = () => O.some({
@@ -48,15 +48,19 @@ describe('sciety-feed-page', () => {
     logger: dummyLogger,
     getAllEvents: T.of([]),
   };
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
 
   it('renders a single article added to a list as a card', async () => {
-    const listId = arbitraryListId();
+    const list = arbitraryList();
+    await framework.commandHelpers.createList(list);
+    await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
     const ports = {
       ...defaultPorts,
-      getAllEvents: T.of([
-        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
-        articleAddedToList(arbitraryArticleId(), listId),
-      ]),
+      getAllEvents: framework.getAllEvents,
     };
     const renderedPage = await pipe(
       scietyFeedPage(ports)(20)({ page: 1 }),
