@@ -1,22 +1,19 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { userFollowedEditorialCommunity } from '../../../../src/domain-events';
-import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
-import {
-  arbitraryDate, arbitraryString, arbitraryUri,
-} from '../../../helpers';
+import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
+import { arbitraryDate } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
 
 describe('user-followed-a-group-card', () => {
-  const userId = arbitraryUserId();
+  const userDetails = arbitraryUserDetails();
   const date = arbitraryDate();
   const group = arbitraryGroup();
-  const event = userFollowedEditorialCommunity(userId, group.id, date);
+  const event = userFollowedEditorialCommunity(userDetails.id, group.id, date);
   let framework: TestFramework;
 
   beforeEach(async () => {
@@ -24,30 +21,24 @@ describe('user-followed-a-group-card', () => {
   });
 
   describe('happy path', () => {
-    const avatarUrl = arbitraryUri();
-    const handle = arbitraryUserHandle();
-    const ports: UserFollowedAGroupCardPorts = {
-      getGroup: () => O.some(group),
-      lookupUser: () => O.some({
-        handle,
-        avatarUrl,
-        id: arbitraryUserId(),
-        displayName: arbitraryString(),
-      }),
-    };
+    let viewModel: ScietyFeedCard;
 
-    const viewModel = pipe(
-      event,
-      userFollowedAGroupCard(ports),
-      O.getOrElseW(shouldNotBeCalled),
-    );
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.createUserAccount(userDetails);
+      viewModel = pipe(
+        event,
+        userFollowedAGroupCard(framework.queries),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('displays the user\'s avatar', async () => {
-      expect(viewModel.avatarUrl).toStrictEqual(avatarUrl);
+      expect(viewModel.avatarUrl).toStrictEqual(userDetails.avatarUrl);
     });
 
     it('displays the user\'s handle in the title', async () => {
-      expect(viewModel.titleText).toContain(handle);
+      expect(viewModel.titleText).toContain(userDetails.handle);
     });
 
     it('displays the date of the event', async () => {
