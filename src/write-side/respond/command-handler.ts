@@ -10,6 +10,11 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { UserId } from '../../types/user-id';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 
+export type Ports = {
+  commitEvents: CommitEvents,
+  getAllEvents: GetAllEvents,
+};
+
 const commands = {
   'respond-helpful': respondHelpful,
   'respond-not-helpful': respondNotHelpful,
@@ -20,20 +25,19 @@ export const commandCodec = t.keyof(commands);
 
 type Command = t.TypeOf<typeof commandCodec>;
 
-type CommandHandler = (input: { command: Command, reviewId: EvaluationLocator }) => T.Task<CommandResult>;
-
-export const commandHandler = (
-  commitEvents: CommitEvents,
-  getAllEvents: GetAllEvents,
+type RespondCommand = {
+  command: Command,
+  reviewId: EvaluationLocator,
   userId: UserId,
-): CommandHandler => ({
-  command,
-  reviewId,
-}) => pipe(
-  getAllEvents,
+};
+
+type CommandHandler = (input: RespondCommand) => T.Task<CommandResult>;
+
+export const commandHandler = (ports: Ports): CommandHandler => (input) => pipe(
+  ports.getAllEvents,
   T.chain(flow(
-    reviewResponse(userId, reviewId),
-    (currentResponse) => commands[command](currentResponse, userId, reviewId),
-    commitEvents,
+    reviewResponse(input.userId, input.reviewId),
+    (currentResponse) => commands[input.command](currentResponse, input.userId, input.reviewId),
+    ports.commitEvents,
   )),
 );

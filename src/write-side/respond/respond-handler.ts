@@ -3,16 +3,12 @@ import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { commandCodec, commandHandler } from './command-handler';
+import { commandCodec, commandHandler, Ports as CommandHandlerPorts } from './command-handler';
 import * as RI from '../../types/evaluation-locator';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 
 // ts-unused-exports:disable-next-line
-export type Ports = GetLoggedInScietyUserPorts & {
-  commitEvents: CommitEvents,
-  getAllEvents: GetAllEvents,
-};
+export type Ports = GetLoggedInScietyUserPorts & CommandHandlerPorts;
 
 const respondRequestCodec = t.type({
   body: t.type({
@@ -38,8 +34,8 @@ export const respondHandler = (ports: Ports): Middleware => async (context, next
     O.fold(
       () => { throw new Error('respond handler received bad request'); },
       ({ reviewId, command, userId }) => pipe(
-        { reviewId, command },
-        commandHandler(ports.commitEvents, ports.getAllEvents, userId),
+        { reviewId, command, userId },
+        commandHandler(ports),
         T.map(() => reviewId),
       ),
     ),
