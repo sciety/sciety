@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { Dispatcher, dispatcher } from '../../src/shared-read-models/dispatcher';
+import { dispatcher } from '../../src/shared-read-models/dispatcher';
 import { createGroup } from '../../src/write-side/add-group';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
@@ -15,6 +15,7 @@ import { recordEvaluationCommandHandler } from '../../src/write-side/record-eval
 import { updateUserDetailsCommandHandler } from '../../src/write-side/command-handlers';
 import { commandHandler as respondCommandHandler } from '../../src/write-side/respond/command-handler';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
+import { Queries } from '../../src/shared-read-models';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
@@ -35,44 +36,38 @@ const commitEvents = (
   T.of,
 );
 
-type CommandHandlers = {
-  addArticleToList: ReturnType<typeof addArticleToListCommandHandler>,
-  createGroup: ReturnType<typeof createGroup>,
-  createList: ReturnType<typeof createListCommandHandler>,
-  createUserAccount: ReturnType<typeof createUserAccountCommandHandler>,
-  followGroup: ReturnType<typeof followCommandHandler>,
-  recordEvaluation: ReturnType<typeof recordEvaluationCommandHandler>,
-  removeArticleFromList: ReturnType<typeof removeArticleFromListCommandHandler>,
-  respond: ReturnType<typeof respondCommandHandler>,
-  unfollowGroup: ReturnType<typeof unfollowCommandHandler>,
-  updateUserDetails: ReturnType<typeof updateUserDetailsCommandHandler>,
+type EventStore = {
+  getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
 };
 
+const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
+  addArticleToList: addArticleToListCommandHandler(eventStore),
+  createGroup: createGroup(eventStore),
+  createList: createListCommandHandler(eventStore),
+  createUserAccount: createUserAccountCommandHandler(eventStore),
+  followGroup: followCommandHandler(eventStore),
+  recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
+  removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
+  respond: respondCommandHandler(eventStore),
+  unfollowGroup: unfollowCommandHandler(eventStore),
+  updateUserDetails: updateUserDetailsCommandHandler(eventStore),
+});
+
 export type ReadAndWriteSides = {
-  commandHandlers: CommandHandlers,
+  commandHandlers: ReturnType<typeof instantiateCommandHandlers>,
   getAllEvents: GetAllEvents,
-  queries: Dispatcher['queries'],
+  queries: Queries,
 };
 
 export const createReadAndWriteSides = (): ReadAndWriteSides => {
   const allEvents: Array<DomainEvent> = [];
   const { dispatchToAllReadModels, queries } = dispatcher();
-  const eventStore = {
+  const eventStore: EventStore = {
     getAllEvents: T.of(allEvents),
     commitEvents: commitEvents(allEvents, dispatchToAllReadModels),
   };
-  const commandHandlers = {
-    addArticleToList: addArticleToListCommandHandler(eventStore),
-    createGroup: createGroup(eventStore),
-    createList: createListCommandHandler(eventStore),
-    createUserAccount: createUserAccountCommandHandler(eventStore),
-    followGroup: followCommandHandler(eventStore),
-    recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
-    removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
-    respond: respondCommandHandler(eventStore),
-    unfollowGroup: unfollowCommandHandler(eventStore),
-    updateUserDetails: updateUserDetailsCommandHandler(eventStore),
-  };
+  const commandHandlers = instantiateCommandHandlers(eventStore, queries);
   return {
     commandHandlers,
     getAllEvents: eventStore.getAllEvents,
