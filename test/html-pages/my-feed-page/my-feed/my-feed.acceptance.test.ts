@@ -73,11 +73,7 @@ describe('my-feed acceptance', () => {
     // Your feed is empty! Start following some groups to see their most recent evaluations right here.
     describe('not following any groups', () => {
       it('displays call to action to follow groups', async () => {
-        const adapters = {
-          ...defaultAdapters,
-          getAllEvents: T.of([]),
-        };
-        const html = await myFeed(adapters)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultAdapters)(userDetails.id, 20, 1)();
 
         expect(html).toContain(followSomething);
       });
