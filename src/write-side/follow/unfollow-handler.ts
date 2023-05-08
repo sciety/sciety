@@ -35,7 +35,13 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
           },
           async (userDetails) => {
             context.redirect('back');
-            await unfollowCommandHandler(ports)(userDetails.id, groupId)();
+            await pipe(
+              {
+                userId: userDetails.id,
+                groupId,
+              },
+              unfollowCommandHandler(ports),
+            )();
           },
         ),
       ),

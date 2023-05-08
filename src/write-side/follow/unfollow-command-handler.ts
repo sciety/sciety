@@ -1,26 +1,33 @@
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
 import { userUnfollowedEditorialCommunity } from '../../domain-events';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { CommandResult } from '../../types/command-result';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
+import { CommandHandler } from '../../types/command-handler';
 
 export type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
 
-type UnfollowCommandHandler = (userId: UserId, groupId: GroupId) => T.Task<CommandResult>;
+type UnfollowCommand = {
+  userId: UserId,
+  groupId: GroupId,
+};
 
-export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => (userId, groupId) => pipe(
+type UnfollowCommandHandler = CommandHandler<UnfollowCommand>;
+
+export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => (command) => pipe(
   ports.getAllEvents,
-  T.map(isFollowing(userId, groupId)),
+  T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
     () => [],
-    () => [userUnfollowedEditorialCommunity(userId, groupId)],
+    () => [userUnfollowedEditorialCommunity(command.userId, command.groupId)],
   )),
   T.chain(ports.commitEvents),
+  TE.rightTask,
 );
