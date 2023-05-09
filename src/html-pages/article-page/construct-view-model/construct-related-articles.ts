@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as TO from 'fp-ts/TaskOption';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -6,6 +7,7 @@ import { Doi } from '../../../types/doi';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
+import { ArticleViewModel } from '../../../shared-components/article-card';
 
 const semanticScholarRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.type({
@@ -41,7 +43,7 @@ const hardcodedResponse: SemanticScholarRecommendedPapersResponse = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const constructRelatedArticles = (doi: Doi) => pipe(
+export const constructRelatedArticles = (doi: Doi): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
   hardcodedResponse,
   (response) => response.recommendedPapers,
   RA.map((recommendedPaper) => ({
@@ -57,5 +59,5 @@ export const constructRelatedArticles = (doi: Doi) => pipe(
     evaluationCount: 0,
     listMembershipCount: 0,
   })),
-  O.some,
+  TO.some,
 );

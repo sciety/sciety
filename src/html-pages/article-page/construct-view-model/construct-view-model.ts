@@ -1,7 +1,10 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { detect } from 'tinyld';
+import { sequenceS } from 'fp-ts/Apply';
 import { feedSummary } from './feed-summary';
 import {
   getArticleFeedEventsByDateDescending,
@@ -40,11 +43,15 @@ type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.fetchArticle(params.doi),
   TE.chainW((articleDetails) => pipe(
-    getArticleFeedEventsByDateDescending(ports)(
-      params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
-    ),
+    {
+      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(
+        params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
+      ),
+      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi) : TO.none,
+    },
+    sequenceS(T.ApplyPar),
     TE.rightTask,
-    TE.map((feedItemsByDateDescending) => ({
+    TE.map(({ feedItemsByDateDescending, relatedArticles }) => ({
       ...articleDetails,
       titleLanguageCode: detect(articleDetails.title, { only: ['en', 'es', 'pt'] }),
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
@@ -52,7 +59,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
-      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi) : O.none,
+      relatedArticles,
     })),
   )),
 );
