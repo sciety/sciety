@@ -12,6 +12,7 @@ import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
+import { FetchRecommendedPapers } from './fetch-recommended-papers';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -33,6 +34,7 @@ export type SharedPorts = {
   createList: CreateList,
   editListDetails: EditListDetails,
   fetchArticle: FetchArticle,
+  fetchRecommendedPapers: FetchRecommendedPapers,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

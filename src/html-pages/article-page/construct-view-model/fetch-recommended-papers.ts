@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
 import { Logger } from '../../../shared-ports';
-
 import * as DE from '../../../types/data-error';
 
 type Ports = {

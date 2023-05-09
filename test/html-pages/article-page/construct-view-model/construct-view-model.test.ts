@@ -15,6 +15,7 @@ import {
   LoggedInUserListManagement,
 } from '../../../../src/html-pages/article-page/view-model';
 import { dummyLogger } from '../../../dummy-logger';
+import * as DE from '../../../../src/types/data-error';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -28,6 +29,7 @@ describe('construct-view-model', () => {
       ...framework.happyPathThirdParties,
       getAllEvents: framework.getAllEvents,
       logger: dummyLogger,
+      fetchRecommendedPapers: () => TE.left(DE.unavailable),
     };
   });
 

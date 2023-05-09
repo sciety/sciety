@@ -36,6 +36,7 @@ import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxi
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
+import { fetchRecommendedPapers } from '../html-pages/article-page/construct-view-model/fetch-recommended-papers';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -134,6 +135,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
           dependencies.crossrefApiBearerToken,
         ),
+        fetchRecommendedPapers: fetchRecommendedPapers({ logger }),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),
