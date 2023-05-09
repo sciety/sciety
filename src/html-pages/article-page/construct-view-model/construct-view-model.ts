@@ -20,6 +20,7 @@ import { UserId } from '../../../types/user-id';
 import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
 import { constructUserListManagement, Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
+import { fetchRecommendedPapers } from './fetch-recommended-papers';
 
 export type Params = {
   doi: Doi,
@@ -47,7 +48,10 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(
         params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
       ),
-      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi, ports) : TO.none,
+      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi, {
+        ...ports,
+        fetchRecommendedPapers: fetchRecommendedPapers(ports),
+      }) : TO.none,
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,

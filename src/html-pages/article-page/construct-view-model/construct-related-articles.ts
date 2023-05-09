@@ -7,12 +7,16 @@ import { Doi } from '../../../types/doi';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleViewModel } from '../../../shared-components/article-card';
-import { fetchRecommendedPapers, Ports } from './fetch-recommended-papers';
+import { FetchRecommendedPapers } from './fetch-recommended-papers';
+
+type Ports = {
+  fetchRecommendedPapers: FetchRecommendedPapers,
+};
 
 export const constructRelatedArticles = (
   doi: Doi, ports: Ports,
 ): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
-  fetchRecommendedPapers(ports)(doi),
+  ports.fetchRecommendedPapers(doi),
   TE.map((response) => response.recommendedPapers),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.externalIds.DOI,

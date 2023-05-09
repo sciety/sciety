@@ -6,7 +6,9 @@ import { Doi } from '../../../types/doi';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
 import { Logger } from '../../../shared-ports';
 
-export type Ports = {
+import * as DE from '../../../types/data-error';
+
+type Ports = {
   logger: Logger,
 };
 
@@ -22,7 +24,6 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
   })),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SemanticScholarRecommendedPapersResponse = t.TypeOf<typeof semanticScholarRecommendedPapersResponseCodec>;
 
 const hardcodedResponse: unknown = {
@@ -44,8 +45,11 @@ const hardcodedResponse: unknown = {
   ],
 };
 
+export type FetchRecommendedPapers = (doi: Doi)
+=> TE.TaskEither<DE.DataError, SemanticScholarRecommendedPapersResponse>;
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const fetchRecommendedPapers = (ports: Ports) => (doi: Doi) => pipe(
+export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => (doi: Doi) => pipe(
   hardcodedResponse,
   semanticScholarRecommendedPapersResponseCodec.decode,
   TE.fromEither,
@@ -55,6 +59,6 @@ export const fetchRecommendedPapers = (ports: Ports) => (doi: Doi) => pipe(
       'Failed to decode Semantic scholar response',
       { errors: formatValidationErrors(errors) },
     );
-    return errors;
+    return DE.unavailable;
   }),
 );
