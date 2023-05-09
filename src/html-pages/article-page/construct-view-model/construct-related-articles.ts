@@ -13,7 +13,9 @@ const semanticScholarRecommendedPapersCodec = t.type({
       DOI: DoiFromString,
     }),
     title: t.string,
-    authors: t.array(t.string),
+    authors: t.array(t.type({
+      name: t.string,
+    })),
   })),
 });
 
@@ -26,14 +28,14 @@ const hardcodedRelatedArticles: RelatedArticles = {
         DOI: new Doi('10.1101/2023.03.24.534097'),
       },
       title: 'Replication fork plasticity upon replication stress requires rapid nuclear actin polymerization',
-      authors: ['Maria Dilia Palumbieri', 'C. Merigliano'],
+      authors: [{ name: 'Maria Dilia Palumbieri' }, { name: 'C. Merigliano' }],
     },
     {
       externalIds: {
         DOI: new Doi('10.1101/2023.03.21.533689'),
       },
       title: 'An endocytic myosin essential for plasma membrane invagination powers motility against resistance',
-      authors: ['Ross T A Pedersen', 'Aaron Snoberger'],
+      authors: [{ name: 'Ross T A Pedersen' }, { name: 'Aaron Snoberger' }],
     },
   ],
 };
@@ -45,7 +47,11 @@ export const constructRelatedArticles = (doi: Doi) => pipe(
   RA.map((relatedArticle) => ({
     articleId: relatedArticle.externalIds.DOI,
     title: sanitise(toHtmlFragment(relatedArticle.title)),
-    authors: O.some(relatedArticle.authors),
+    authors: pipe(
+      relatedArticle.authors,
+      RA.map((author) => author.name),
+      O.some,
+    ),
     latestVersionDate: O.none,
     latestActivityAt: O.none,
     evaluationCount: 0,
