@@ -44,10 +44,14 @@ const hardcodedResponse: SemanticScholarRecommendedPapersResponse = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const constructRelatedArticles = (doi: Doi): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
+const fetchRecommendedPapers = (doi: Doi) => pipe(
   hardcodedResponse,
   semanticScholarRecommendedPapersResponseCodec.decode,
   TE.fromEither,
+);
+
+export const constructRelatedArticles = (doi: Doi): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
+  fetchRecommendedPapers(doi),
   TE.map((response) => response.recommendedPapers),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.externalIds.DOI,
