@@ -9,7 +9,9 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 export const renderRelatedArticles = (viewmodel: ViewModel) => `
   <div>
     <h3>Related articles</h3>
-    ${renderArticleCard({
+    <ol class="card-list" role="list">
+      <li>
+      ${renderArticleCard({
     articleId: new Doi('10.1101/2023.03.24.534097'),
     title: sanitise(toHtmlFragment('Replication fork plasticity upon replication stress requires rapid nuclear actin polymerization')),
     authors: O.some(['Maria Dilia Palumbieri', 'C. Merigliano']),
@@ -18,5 +20,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel) => `
     evaluationCount: 0,
     listMembershipCount: 0,
   })}
+      </li>
+    </ol>
   </div>
 `;
