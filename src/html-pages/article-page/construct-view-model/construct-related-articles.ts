@@ -57,4 +57,5 @@ export const constructRelatedArticles = (doi: Doi) => pipe(
     evaluationCount: 0,
     listMembershipCount: 0,
   })),
+  O.some,
 );

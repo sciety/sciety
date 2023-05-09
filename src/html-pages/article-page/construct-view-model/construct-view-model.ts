@@ -52,7 +52,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
-      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi) : [],
+      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi) : O.none,
     })),
   )),
 );

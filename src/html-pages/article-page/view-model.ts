@@ -78,5 +78,5 @@ export type ViewModel = {
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
-  relatedArticles: ReadonlyArray<ArticleViewModel>,
+  relatedArticles: O.Option<ReadonlyArray<ArticleViewModel>>,
 };
