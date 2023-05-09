@@ -5,6 +5,7 @@ import { langAttributeFor } from '../../../shared-components/lang-attribute-for'
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
+import { renderRelatedArticles } from './render-related-articles';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
@@ -23,4 +24,5 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="main-content">
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
   </div>
+  ${(process.env.EXPERIMENT_ENABLED === 'true') ? renderRelatedArticles(viewmodel) : ''}
 `);
