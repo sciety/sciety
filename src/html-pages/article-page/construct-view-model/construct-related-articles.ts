@@ -1,3 +1,4 @@
+import { formatValidationErrors } from 'io-ts-reporters';
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -9,6 +10,11 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
 import { ArticleViewModel } from '../../../shared-components/article-card';
+import { Logger } from '../../../shared-ports';
+
+type Ports = {
+  logger: Logger,
+};
 
 const semanticScholarRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.type({
@@ -44,14 +50,24 @@ const hardcodedResponse: SemanticScholarRecommendedPapersResponse = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fetchRecommendedPapers = (doi: Doi) => pipe(
+const fetchRecommendedPapers = (doi: Doi, ports: Ports) => pipe(
   hardcodedResponse,
   semanticScholarRecommendedPapersResponseCodec.decode,
   TE.fromEither,
+  TE.mapLeft((errors) => {
+    ports.logger(
+      'error',
+      'Failed to decode Semantic scholar response',
+      { errors: formatValidationErrors(errors) },
+    );
+    return errors;
+  }),
 );
 
-export const constructRelatedArticles = (doi: Doi): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
-  fetchRecommendedPapers(doi),
+export const constructRelatedArticles = (
+  doi: Doi, ports: Ports,
+): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
+  fetchRecommendedPapers(doi, ports),
   TE.map((response) => response.recommendedPapers),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.externalIds.DOI,

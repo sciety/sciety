@@ -47,7 +47,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(
         params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
       ),
-      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi) : TO.none,
+      relatedArticles: (process.env.EXPERIMENT_ENABLED === 'true') ? constructRelatedArticles(params.doi, ports) : TO.none,
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
