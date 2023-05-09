@@ -7,7 +7,7 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
 
-const semanticScholarRecommendedPapersCodec = t.type({
+const semanticScholarRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.type({
     externalIds: t.type({
       DOI: DoiFromString,
@@ -19,9 +19,9 @@ const semanticScholarRecommendedPapersCodec = t.type({
   })),
 });
 
-type RelatedArticles = t.TypeOf<typeof semanticScholarRecommendedPapersCodec>;
+type SemanticScholarRecommendedPapersResponse = t.TypeOf<typeof semanticScholarRecommendedPapersResponseCodec>;
 
-const hardcodedRelatedArticles: RelatedArticles = {
+const hardcodedResponse: SemanticScholarRecommendedPapersResponse = {
   recommendedPapers: [
     {
       externalIds: {
@@ -42,13 +42,13 @@ const hardcodedRelatedArticles: RelatedArticles = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const constructRelatedArticles = (doi: Doi) => pipe(
-  hardcodedRelatedArticles,
+  hardcodedResponse,
   (response) => response.recommendedPapers,
-  RA.map((relatedArticle) => ({
-    articleId: relatedArticle.externalIds.DOI,
-    title: sanitise(toHtmlFragment(relatedArticle.title)),
+  RA.map((recommendedPaper) => ({
+    articleId: recommendedPaper.externalIds.DOI,
+    title: sanitise(toHtmlFragment(recommendedPaper.title)),
     authors: pipe(
-      relatedArticle.authors,
+      recommendedPaper.authors,
       RA.map((author) => author.name),
       O.some,
     ),
