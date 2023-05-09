@@ -21,6 +21,17 @@ export const renderRelatedArticles = (viewmodel: ViewModel) => `
     listMembershipCount: 0,
   })}
       </li>
+      <li>
+      ${renderArticleCard({
+    articleId: new Doi('10.1101/2023.03.21.533689'),
+    title: sanitise(toHtmlFragment('An endocytic myosin essential for plasma membrane invagination powers motility against resistance')),
+    authors: O.some(['Ross T A Pedersen', 'Aaron Snoberger']),
+    latestVersionDate: O.none,
+    latestActivityAt: O.none,
+    evaluationCount: 0,
+    listMembershipCount: 0,
+  })}
+      </li>
     </ol>
   </div>
 `;
