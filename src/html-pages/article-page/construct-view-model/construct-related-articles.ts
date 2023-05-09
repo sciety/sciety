@@ -18,6 +18,7 @@ export const constructRelatedArticles = (
 ): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
   ports.fetchRecommendedPapers(doi),
   TE.map((response) => response.recommendedPapers),
+  TE.map(RA.takeLeft(3)),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.externalIds.DOI,
     title: sanitise(toHtmlFragment(recommendedPaper.title)),
