@@ -28,20 +28,21 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
   })),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SemanticScholarRecommendedPapersResponse = t.TypeOf<typeof semanticScholarRecommendedPapersResponseCodec>;
 
-const hardcodedResponse: SemanticScholarRecommendedPapersResponse = {
+const hardcodedResponse: unknown = {
   recommendedPapers: [
     {
       externalIds: {
-        DOI: new Doi('10.1101/2023.03.24.534097'),
+        DOI: '10.1101/2023.03.24.534097',
       },
       title: 'Replication fork plasticity upon replication stress requires rapid nuclear actin polymerization',
       authors: [{ name: 'Maria Dilia Palumbieri' }, { name: 'C. Merigliano' }],
     },
     {
       externalIds: {
-        DOI: new Doi('10.1101/2023.03.21.533689'),
+        DOI: '10.1101/2023.03.21.533689',
       },
       title: 'An endocytic myosin essential for plasma membrane invagination powers motility against resistance',
       authors: [{ name: 'Ross T A Pedersen' }, { name: 'Aaron Snoberger' }],
