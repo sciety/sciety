@@ -45,7 +45,7 @@ const hardcodedResponse: unknown = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const fetchRecommendedPapers = (doi: Doi, ports: Ports) => pipe(
+export const fetchRecommendedPapers = (ports: Ports) => (doi: Doi) => pipe(
   hardcodedResponse,
   semanticScholarRecommendedPapersResponseCodec.decode,
   TE.fromEither,

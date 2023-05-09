@@ -12,7 +12,7 @@ import { fetchRecommendedPapers, Ports } from './fetch-recommended-papers';
 export const constructRelatedArticles = (
   doi: Doi, ports: Ports,
 ): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
-  fetchRecommendedPapers(doi, ports),
+  fetchRecommendedPapers(ports)(doi),
   TE.map((response) => response.recommendedPapers),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.externalIds.DOI,
