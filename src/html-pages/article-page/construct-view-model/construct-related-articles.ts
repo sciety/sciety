@@ -7,22 +7,28 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { DoiFromString } from '../../../types/codecs/DoiFromString';
 
-const relatedArticlesCodec = t.array(t.type({
-  articleId: DoiFromString,
+const semanticScholarRecommendedPapersCodec = t.array(t.type({
+  externalIds: t.type({
+    DOI: DoiFromString,
+  }),
   title: t.string,
   authors: t.array(t.string),
 }));
 
-type RelatedArticles = t.TypeOf<typeof relatedArticlesCodec>;
+type RelatedArticles = t.TypeOf<typeof semanticScholarRecommendedPapersCodec>;
 
 const hardcodedRelatedArticles: RelatedArticles = [
   {
-    articleId: new Doi('10.1101/2023.03.24.534097'),
+    externalIds: {
+      DOI: new Doi('10.1101/2023.03.24.534097'),
+    },
     title: 'Replication fork plasticity upon replication stress requires rapid nuclear actin polymerization',
     authors: ['Maria Dilia Palumbieri', 'C. Merigliano'],
   },
   {
-    articleId: new Doi('10.1101/2023.03.21.533689'),
+    externalIds: {
+      DOI: new Doi('10.1101/2023.03.21.533689'),
+    },
     title: 'An endocytic myosin essential for plasma membrane invagination powers motility against resistance',
     authors: ['Ross T A Pedersen', 'Aaron Snoberger'],
   },
@@ -32,7 +38,7 @@ const hardcodedRelatedArticles: RelatedArticles = [
 export const constructRelatedArticles = (doi: Doi) => pipe(
   hardcodedRelatedArticles,
   RA.map((relatedArticle) => ({
-    articleId: relatedArticle.articleId,
+    articleId: relatedArticle.externalIds.DOI,
     title: sanitise(toHtmlFragment(relatedArticle.title)),
     authors: O.some(relatedArticle.authors),
     latestVersionDate: O.none,
