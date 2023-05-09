@@ -9,6 +9,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
+import { ArticleViewModel } from '../../shared-components/article-card';
 
 export type ResponseCounts = {
   helpfulCount: number,
@@ -77,4 +78,5 @@ export type ViewModel = {
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
+  relatedArticles: ReadonlyArray<ArticleViewModel>,
 };
