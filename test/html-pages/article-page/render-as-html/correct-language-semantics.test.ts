@@ -14,7 +14,7 @@ describe('correct-language-semantics', () => {
   describe('in the article page', () => {
     const defaultAdapters: Ports = {
       fetchArticle: () => TE.left(DE.unavailable),
-      fetchRecommendedPapers: () => TE.left(DE.unavailable),
+      fetchRelatedArticles: () => TE.left(DE.unavailable),
       fetchReview: () => TE.left(DE.unavailable),
       findVersionsForArticleDoi: () => TO.none,
       getAllEvents: T.of([]),

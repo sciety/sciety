@@ -5,16 +5,16 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
 import { ArticleViewModel } from '../../../shared-components/article-card';
-import { FetchRecommendedPapers } from '../../../shared-ports';
+import { FetchRelatedArticles } from '../../../shared-ports';
 
-type Ports = {
-  fetchRecommendedPapers: FetchRecommendedPapers,
+export type Ports = {
+  fetchRelatedArticles: FetchRelatedArticles,
 };
 
 export const constructRelatedArticles = (
   doi: Doi, ports: Ports,
 ): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
-  ports.fetchRecommendedPapers(doi),
+  ports.fetchRelatedArticles(doi),
   TE.map(RA.takeLeft(3)),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.articleId,

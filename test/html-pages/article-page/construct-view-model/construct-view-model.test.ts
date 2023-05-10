@@ -29,7 +29,7 @@ describe('construct-view-model', () => {
       ...framework.happyPathThirdParties,
       getAllEvents: framework.getAllEvents,
       logger: dummyLogger,
-      fetchRecommendedPapers: () => TE.left(DE.unavailable),
+      fetchRelatedArticles: () => TE.left(DE.unavailable),
     };
   });
 

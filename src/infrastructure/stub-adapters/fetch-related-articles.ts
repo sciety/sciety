@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { FetchRecommendedPapers } from '../../shared-ports/fetch-recommended-papers';
+import { FetchRelatedArticles } from '../../shared-ports/fetch-related-articles';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -18,4 +18,4 @@ const hardcodedResponse = [
   },
 ];
 
-export const fetchRecommendedPapers: FetchRecommendedPapers = () => TE.right(hardcodedResponse);
+export const fetchRelatedArticles: FetchRelatedArticles = () => TE.right(hardcodedResponse);

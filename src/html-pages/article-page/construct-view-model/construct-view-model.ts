@@ -19,8 +19,7 @@ import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
 import { constructUserListManagement, Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
-import { constructRelatedArticles } from './construct-related-articles';
-import { FetchRecommendedPapers } from '../../../shared-ports';
+import { constructRelatedArticles, Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
 
 export type Params = {
   doi: Doi,
@@ -35,9 +34,12 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = GetArticleFeedEventsPorts & ConstructListedInPorts & ConstructUserListManagementPorts & {
+export type Ports = GetArticleFeedEventsPorts
+& ConstructListedInPorts
+& ConstructUserListManagementPorts
+& ConstructRelatedArticlesPorts
+& {
   fetchArticle: GetArticleDetails,
-  fetchRecommendedPapers: FetchRecommendedPapers,
 };
 
 type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;

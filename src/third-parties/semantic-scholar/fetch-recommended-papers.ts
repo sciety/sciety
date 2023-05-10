@@ -8,7 +8,7 @@ import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { Logger, FetchRecommendedPapers } from '../../shared-ports';
+import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -30,7 +30,7 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
   })),
 });
 
-export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => (doi: Doi) => pipe(
+export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
   TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
