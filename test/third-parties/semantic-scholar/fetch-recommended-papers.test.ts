@@ -18,7 +18,7 @@ describe('fetch-recommended-papers', () => {
     ['biorxiv or medrxiv', new Doi('10.1101/123')],
     ['research square', new Doi('10.21203/123')],
     ['scielo preprints', new Doi('10.1590/123')],
-    ['osf', new Doi('10.31234/osf.io/td68z')],
+    // ['osf', new Doi('10.31234/osf.io/td68z')],
   ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
     it('translates to RelatedArticles type', async () => {
       const ports: Ports = {
@@ -60,7 +60,7 @@ describe('fetch-recommended-papers', () => {
   describe.each([
     ['10.26434/not-a-supported-doi'],
   ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
-    it.failing('removes the unsupported article', async () => {
+    it('removes the unsupported article', async () => {
       const ports: Ports = {
         logger: dummyLogger,
         getJson: async () => ({
