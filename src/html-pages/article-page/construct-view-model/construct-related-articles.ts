@@ -19,11 +19,7 @@ export const constructRelatedArticles = (
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.articleId,
     title: recommendedPaper.title,
-    authors: pipe(
-      recommendedPaper.authors,
-      RA.map((author) => author.name),
-      O.some,
-    ),
+    authors: recommendedPaper.authors,
     latestVersionDate: O.none,
     latestActivityAt: O.none,
     evaluationCount: 0,

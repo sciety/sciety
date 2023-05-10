@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { Json } from 'fp-ts/Json';
+import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Logger, FetchRecommendedPapers } from '../../shared-ports';
@@ -46,9 +47,13 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => 
     (response) => pipe(
       response.recommendedPapers,
       RA.map((recommendedPaper) => ({
-        ...recommendedPaper,
         articleId: recommendedPaper.externalIds.DOI,
         title: sanitise(toHtmlFragment(recommendedPaper.title)),
+        authors: pipe(
+          recommendedPaper.authors,
+          RA.map((author) => author.name),
+          O.some,
+        ),
       })),
     ),
   ),
