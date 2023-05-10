@@ -51,8 +51,10 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
-  describe('when a response containing unsuported articles is returned', () => {
-    it.failing('removes the unsupported articles', async () => {
+  describe.each([
+    ['10.26434/not-a-supported-doi'],
+  ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
+    it.failing('removes the unsupported article', async () => {
       const ports: Ports = {
         logger: dummyLogger,
         getJson: async () => ({
@@ -73,7 +75,7 @@ describe('fetch-recommended-papers', () => {
             },
             {
               externalIds: {
-                DOI: '10.26434/not-a-supported-doi',
+                DOI: unsupportedArticleId,
               },
               title: arbitraryString(),
               authors: [
