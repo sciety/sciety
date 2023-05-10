@@ -20,7 +20,7 @@ import { UserId } from '../../../types/user-id';
 import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
 import { constructUserListManagement, Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
-import { FetchRecommendedPapers } from '../../../third-parties/semantic-scholar/fetch-recommended-papers';
+import { FetchRecommendedPapers } from '../../../shared-ports';
 
 export type Params = {
   doi: Doi,

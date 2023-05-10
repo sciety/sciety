@@ -27,6 +27,7 @@ export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { SearchForArticles } from './search-for-articles';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
+export { FetchRecommendedPapers } from './fetch-recommended-papers';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
