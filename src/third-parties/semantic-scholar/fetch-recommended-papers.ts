@@ -9,6 +9,8 @@ import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Logger, FetchRecommendedPapers } from '../../shared-ports';
 import * as DE from '../../types/data-error';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 type Ports = {
   getJson: (uri: string) => Promise<Json>,
@@ -46,6 +48,7 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => 
       RA.map((recommendedPaper) => ({
         ...recommendedPaper,
         articleId: recommendedPaper.externalIds.DOI,
+        title: sanitise(toHtmlFragment(recommendedPaper.title)),
       })),
     ),
   ),

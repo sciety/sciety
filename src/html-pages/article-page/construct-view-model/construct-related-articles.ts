@@ -4,8 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
-import { sanitise } from '../../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { FetchRecommendedPapers } from '../../../shared-ports';
 
@@ -20,7 +18,7 @@ export const constructRelatedArticles = (
   TE.map(RA.takeLeft(3)),
   TE.map(RA.map((recommendedPaper) => ({
     articleId: recommendedPaper.articleId,
-    title: sanitise(toHtmlFragment(recommendedPaper.title)),
+    title: recommendedPaper.title,
     authors: pipe(
       recommendedPaper.authors,
       RA.map((author) => author.name),
