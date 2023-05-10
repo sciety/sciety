@@ -7,21 +7,27 @@ import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '
 import { Ports, fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { Doi } from '../../../src/types/doi';
 
 describe('fetch-recommended-papers', () => {
   const articleId = arbitraryArticleId();
   const articleTitle = arbitrarySanitisedHtmlFragment();
   const articleAuthors = [arbitraryString(), arbitraryString()];
 
-  describe('when a good response is returned', () => {
-    it('translates to RelatedArticles', async () => {
+  describe.each([
+    ['biorxiv or medrxiv', new Doi('10.1101/123')],
+    ['research square', new Doi('10.21203/123')],
+    ['scielo preprints', new Doi('10.1590/123')],
+    ['osf', new Doi('10.31234/osf.io/td68z')],
+  ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
+    it('translates to RelatedArticles type', async () => {
       const ports: Ports = {
         logger: dummyLogger,
         getJson: async () => ({
           recommendedPapers: [
             {
               externalIds: {
-                DOI: articleId.value,
+                DOI: supportedArticleId.value,
               },
               title: articleTitle.toString(),
               authors: [
@@ -42,7 +48,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [{
-        articleId,
+        articleId: supportedArticleId,
         title: articleTitle,
         authors: O.some(articleAuthors),
       }];
