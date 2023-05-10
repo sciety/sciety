@@ -4,10 +4,8 @@ import { Doi } from '../types/doi';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as DE from '../types/data-error';
 
-const semanticScholarRecommendedPapersResponseCodec = t.array(t.type({
-  externalIds: t.type({
-    DOI: DoiFromString,
-  }),
+const semanticScholarRecommendedPapersResponseCodec = t.readonlyArray(t.type({
+  articleId: DoiFromString,
   title: t.string,
   authors: t.array(t.type({
     name: t.string,

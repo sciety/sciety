@@ -2,6 +2,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { Json } from 'fp-ts/Json';
 import { Doi } from '../../types/doi';
@@ -40,6 +41,12 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => 
 
       return DE.unavailable;
     },
-    (response) => response.recommendedPapers,
+    (response) => pipe(
+      response.recommendedPapers,
+      RA.map((recommendedPaper) => ({
+        ...recommendedPaper,
+        articleId: recommendedPaper.externalIds.DOI,
+      })),
+    ),
   ),
 );

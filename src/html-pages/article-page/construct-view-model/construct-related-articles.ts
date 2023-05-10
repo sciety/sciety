@@ -19,7 +19,7 @@ export const constructRelatedArticles = (
   ports.fetchRecommendedPapers(doi),
   TE.map(RA.takeLeft(3)),
   TE.map(RA.map((recommendedPaper) => ({
-    articleId: recommendedPaper.externalIds.DOI,
+    articleId: recommendedPaper.articleId,
     title: sanitise(toHtmlFragment(recommendedPaper.title)),
     authors: pipe(
       recommendedPaper.authors,
