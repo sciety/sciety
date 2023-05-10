@@ -36,7 +36,7 @@ import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxi
 import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
-import { fetchRecommendedPapers } from '../html-pages/article-page/construct-view-model/fetch-recommended-papers';
+import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

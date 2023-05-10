@@ -4,10 +4,10 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { Json } from 'fp-ts/Json';
-import { Doi } from '../../../types/doi';
-import { DoiFromString } from '../../../types/codecs/DoiFromString';
-import { Logger } from '../../../shared-ports';
-import * as DE from '../../../types/data-error';
+import { Doi } from '../../types/doi';
+import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { Logger } from '../../shared-ports';
+import * as DE from '../../types/data-error';
 
 type Ports = {
   getJson: (uri: string) => Promise<Json>,

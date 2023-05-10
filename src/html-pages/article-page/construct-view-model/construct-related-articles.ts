@@ -7,7 +7,7 @@ import { Doi } from '../../../types/doi';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleViewModel } from '../../../shared-components/article-card';
-import { FetchRecommendedPapers } from './fetch-recommended-papers';
+import { FetchRecommendedPapers } from '../../../third-parties/semantic-scholar/fetch-recommended-papers';
 
 type Ports = {
   fetchRecommendedPapers: FetchRecommendedPapers,
