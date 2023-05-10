@@ -32,12 +32,14 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRecommendedPapers => 
     semanticScholarRecommendedPapersResponseCodec.decode,
     E.mapLeft(formatValidationErrors),
   )),
-  TE.mapLeft((errors) => {
-    ports.logger(
-      'error',
-      'Failed to decode Semantic scholar response',
-      { errors },
-    );
-    return DE.unavailable;
-  }),
+  TE.bimap(
+    (errors) => {
+      ports.logger('error', 'Failed to decode Semantic scholar response', {
+        errors,
+      });
+
+      return DE.unavailable;
+    },
+    (response) => response.recommendedPapers,
+  ),
 );

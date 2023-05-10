@@ -4,17 +4,15 @@ import { Doi } from '../types/doi';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as DE from '../types/data-error';
 
-const semanticScholarRecommendedPapersResponseCodec = t.type({
-  recommendedPapers: t.array(t.type({
-    externalIds: t.type({
-      DOI: DoiFromString,
-    }),
-    title: t.string,
-    authors: t.array(t.type({
-      name: t.string,
-    })),
+const semanticScholarRecommendedPapersResponseCodec = t.array(t.type({
+  externalIds: t.type({
+    DOI: DoiFromString,
+  }),
+  title: t.string,
+  authors: t.array(t.type({
+    name: t.string,
   })),
-});
+}));
 
 type SemanticScholarRecommendedPapersResponse = t.TypeOf<typeof semanticScholarRecommendedPapersResponseCodec>;
 

@@ -21,4 +21,4 @@ const hardcodedResponse = {
   ],
 };
 
-export const fetchRecommendedPapers: FetchRecommendedPapers = () => TE.right(hardcodedResponse);
+export const fetchRecommendedPapers: FetchRecommendedPapers = () => TE.right(hardcodedResponse.recommendedPapers);
