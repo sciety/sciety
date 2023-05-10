@@ -11,5 +11,5 @@ export const stubAdapters = {
   searchForArticles: searchEuropePmc,
   findVersionsForArticleDoi,
   fetchReview,
-  fetchRecommendedPapers: fetchRelatedArticles,
+  fetchRelatedArticles,
 };
