@@ -13,7 +13,8 @@ import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 
-type Ports = {
+// ts-unused-exports:disable-next-line
+export type Ports = {
   getJson: (uri: string) => Promise<Json>,
   logger: Logger,
 };
