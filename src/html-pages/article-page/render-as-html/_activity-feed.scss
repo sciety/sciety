@@ -167,3 +167,7 @@ p.activity-feed__item__title {
   height: 14px;
   margin-bottom: -2px;
 }
+
+.related-articles__header {
+  @include layout.page-content-horizontal-margins();
+}

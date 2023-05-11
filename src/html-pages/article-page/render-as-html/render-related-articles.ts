@@ -15,7 +15,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel) => pipe(
       templateListItems,
       (listContent) => `
   <div>
-    <h3>Related articles</h3>
+    <h2 class="related-articles__header">Related articles</h2>
     <ol class="card-list" role="list">
       ${listContent}
     </ol>
