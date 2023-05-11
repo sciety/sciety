@@ -1,31 +1,27 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
-import * as DE from '../../../../src/types/data-error';
 import { articlePage, Ports } from '../../../../src/html-pages/article-page';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { dummyLogger } from '../../../dummy-logger';
+import { createTestFramework, TestFramework } from '../../../framework';
 
 describe('correct-language-semantics', () => {
   describe('in the article page', () => {
-    const defaultAdapters: Ports = {
-      fetchArticle: () => TE.left(DE.unavailable),
-      fetchRelatedArticles: () => TE.left(DE.unavailable),
-      fetchReview: () => TE.left(DE.unavailable),
-      findVersionsForArticleDoi: () => TO.none,
-      getAllEvents: T.of([]),
-      getEvaluationsForDoi: () => [],
-      selectListContainingArticle: () => () => O.none,
-      selectAllListsContainingArticle: () => [],
-      getGroup: () => O.none,
-      lookupUser: () => O.none,
-      selectAllListsOwnedBy: () => [],
-      logger: dummyLogger,
-    };
+    let framework: TestFramework;
+    let defaultAdapters: Ports;
+
+    beforeEach(() => {
+      framework = createTestFramework();
+      defaultAdapters = {
+        ...framework.queries,
+        ...framework.happyPathThirdParties,
+        getAllEvents: framework.getAllEvents,
+        logger: dummyLogger,
+      };
+    });
 
     describe('the article title', () => {
       const createGetArticleDetails = (title: string) => () => (TE.right({
