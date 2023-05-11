@@ -20,10 +20,16 @@ export type ArticleViewModel = {
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
-  evaluationCount === 1,
-  (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
-  wrapInSpan,
+const renderEvaluationCount = (evaluationCount: number) => pipe(
+  evaluationCount === 0,
+  B.fold(
+    () => pipe(
+      evaluationCount === 1,
+      (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
+      wrapInSpan,
+    ),
+    constant(''),
+  ),
 );
 
 const renderListMembershipCount = (listMembershipCount: number) => pipe(
