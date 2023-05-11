@@ -245,7 +245,7 @@ describe('render-article-card', () => {
           (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
         );
 
-        expect(evaluationsSpan?.textContent).toBe('0 evaluations');
+        expect(evaluationsSpan?.textContent).toBe('This article has no evaluations');
       });
     });
   });
