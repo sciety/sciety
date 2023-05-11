@@ -10,7 +10,6 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { Doi } from '../../../src/types/doi';
 
 describe('fetch-recommended-papers', () => {
-  const articleId = arbitraryArticleId();
   const articleTitle = arbitrarySanitisedHtmlFragment();
   const articleAuthors = [arbitraryString(), arbitraryString()];
 
@@ -61,11 +60,13 @@ describe('fetch-recommended-papers', () => {
   describe.each([
     ['10.26434/not-a-supported-doi'],
     ['10.1590/2176-9451.19.4.027-029.ebo'],
-    // failing ['10.1101/cshperspect.a041248'],
-    // failing ['10.1101/gad.314351.118'],
-    // failing ['10.1101/gr.277335.122'],
-    // failing ['10.1101/lm.045724.117'],
+    ['10.1101/cshperspect.a041248'],
+    ['10.1101/gad.314351.118'],
+    ['10.1101/gr.277335.122'],
+    ['10.1101/lm.045724.117'],
   ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
+    const supportedBiorxivArticleId = new Doi('10.1101/123');
+
     it('removes the unsupported article', async () => {
       const ports: Ports = {
         logger: dummyLogger,
@@ -73,7 +74,7 @@ describe('fetch-recommended-papers', () => {
           recommendedPapers: [
             {
               externalIds: {
-                DOI: articleId.value,
+                DOI: supportedBiorxivArticleId.value,
               },
               title: articleTitle.toString(),
               authors: [
@@ -105,7 +106,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [expect.objectContaining({
-        articleId,
+        articleId: supportedBiorxivArticleId,
       })];
 
       expect(result).toStrictEqual(expected);

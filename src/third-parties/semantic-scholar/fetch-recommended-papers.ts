@@ -60,7 +60,7 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (d
   ),
   TE.map(RA.filter(
     (relatedArticle) => (
-      relatedArticle.articleId.hasPrefix('10.1101')
+      !!relatedArticle.articleId.value.match(/^10\.1101\/[0-9]{1,}/)
       || relatedArticle.articleId.hasPrefix('10.21203')
       || relatedArticle.articleId.value.startsWith('10.1590/SciELOPreprints')
     ),
