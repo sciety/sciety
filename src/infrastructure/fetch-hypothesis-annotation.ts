@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
-import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
@@ -15,8 +14,7 @@ import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Evaluation } from '../types/evaluation';
-
-type GetJson = (uri: string) => Promise<Json>;
+import { GetJson } from '../shared-ports';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 

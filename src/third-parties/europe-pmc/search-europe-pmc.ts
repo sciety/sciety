@@ -1,6 +1,5 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
-import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -16,9 +15,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { SearchForArticles } from '../../shared-ports';
-
-type GetJson = (uri: string) => Promise<Json>;
+import { GetJson, SearchForArticles } from '../../shared-ports';
 
 type Dependencies = {
   getJson: GetJson,
