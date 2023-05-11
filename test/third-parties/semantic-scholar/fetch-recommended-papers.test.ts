@@ -60,7 +60,7 @@ describe('fetch-recommended-papers', () => {
 
   describe.each([
     ['10.26434/not-a-supported-doi'],
-    // failing ['10.1590/2176-9451.19.4.027-029.ebo'],
+    ['10.1590/2176-9451.19.4.027-029.ebo'],
   ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
     it('removes the unsupported article', async () => {
       const ports: Ports = {

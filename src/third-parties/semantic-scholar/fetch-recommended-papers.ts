@@ -62,7 +62,7 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (d
     (relatedArticle) => (
       relatedArticle.articleId.hasPrefix('10.1101')
       || relatedArticle.articleId.hasPrefix('10.21203')
-      || relatedArticle.articleId.hasPrefix('10.1590')
+      || relatedArticle.articleId.value.startsWith('10.1590/SciELOPreprints')
     ),
   )),
 );
