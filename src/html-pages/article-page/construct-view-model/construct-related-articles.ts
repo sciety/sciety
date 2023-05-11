@@ -1,11 +1,12 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
-import { ArticleViewModel } from '../../../shared-components/article-card';
 import { FetchRelatedArticles } from '../../../shared-ports';
+import { ViewModel } from '../view-model';
 
 export type Ports = {
   fetchRelatedArticles: FetchRelatedArticles,
@@ -13,7 +14,7 @@ export type Ports = {
 
 export const constructRelatedArticles = (
   doi: Doi, ports: Ports,
-): TO.TaskOption<ReadonlyArray<ArticleViewModel>> => pipe(
+): T.Task<ViewModel['relatedArticles']> => pipe(
   ports.fetchRelatedArticles(doi),
   TE.map(RA.takeLeft(3)),
   TE.map(RA.map((recommendedPaper) => ({
