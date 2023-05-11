@@ -4,15 +4,19 @@ import * as TO from 'fp-ts/TaskOption';
 import * as O from 'fp-ts/Option';
 import { SearchForArticles } from '../../src/shared-ports/search-for-articles';
 import {
-  FetchArticle, FetchReview, FetchStaticFile, FindVersionsForArticleDoi,
+  FetchArticle, FetchRelatedArticles, FetchReview, FetchStaticFile, FindVersionsForArticleDoi,
 } from '../../src/shared-ports';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
+import {
+  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
+} from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 export type HappyPathThirdPartyAdapters = {
   fetchArticle: FetchArticle,
+  fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
@@ -27,6 +31,13 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: sanitise(toHtmlFragment(arbitraryString())),
     server: 'biorxiv' as ArticleServer,
   }),
+  fetchRelatedArticles: () => TE.right([
+    {
+      articleId: arbitraryArticleId(),
+      title: arbitrarySanitisedHtmlFragment(),
+      authors: O.some([arbitraryString()]),
+    },
+  ]),
   fetchReview: () => TE.right({
     fullText: toHtmlFragment(arbitraryString()),
     url: new URL(arbitraryUri()),

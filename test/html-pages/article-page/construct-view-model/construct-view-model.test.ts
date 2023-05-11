@@ -15,7 +15,6 @@ import {
   LoggedInUserListManagement,
 } from '../../../../src/html-pages/article-page/view-model';
 import { dummyLogger } from '../../../dummy-logger';
-import * as DE from '../../../../src/types/data-error';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -29,7 +28,6 @@ describe('construct-view-model', () => {
       ...framework.happyPathThirdParties,
       getAllEvents: framework.getAllEvents,
       logger: dummyLogger,
-      fetchRelatedArticles: () => TE.left(DE.unavailable),
     };
   });
 
@@ -186,7 +184,7 @@ describe('construct-view-model', () => {
         ['es', 'Título arbitrario en español'],
         ['pt', 'Título arbitrário em português'],
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ])('is correctly inferred as %s', async (code, title) => {
+      ])('is correctly inferred as %s', async () => {
       });
     });
 
@@ -197,7 +195,7 @@ describe('construct-view-model', () => {
         ['es', 'Este texto representa el resumen de este artículo en español.'],
         ['pt', 'Este texto representa o resumo deste artigo em português.'],
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ])('is correctly inferred as %s', async (code, articleAbstract) => {
+      ])('is correctly inferred as %s', async () => {
       });
     });
   });
