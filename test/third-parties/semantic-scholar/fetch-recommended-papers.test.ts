@@ -17,7 +17,7 @@ describe('fetch-recommended-papers', () => {
   describe.each([
     ['biorxiv or medrxiv', new Doi('10.1101/123')],
     ['research square', new Doi('10.21203/123')],
-    ['scielo preprints', new Doi('10.1590/123')],
+    ['scielo preprints', new Doi('10.1590/SciELOPreprints.3429')],
     // ['osf', new Doi('10.31234/osf.io/td68z')],
   ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
     it('translates to RelatedArticles type', async () => {
