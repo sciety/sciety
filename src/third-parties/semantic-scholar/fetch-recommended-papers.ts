@@ -4,18 +4,17 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { Logger, FetchRelatedArticles } from '../../shared-ports';
+import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
-  getJson: (uri: string) => Promise<Json>,
+  getJson: GetJson,
   logger: Logger,
 };
 
