@@ -15,7 +15,8 @@ describe('fetch-recommended-papers', () => {
   const articleAuthors = [arbitraryString(), arbitraryString()];
 
   describe.each([
-    ['biorxiv or medrxiv', new Doi('10.1101/123')],
+    ['biorxiv or medrxiv', new Doi('10.1101/2023.01.15.524119')],
+    ['biorxiv or medrxiv', new Doi('10.1101/452326')],
     ['research square', new Doi('10.21203/123')],
     ['scielo preprints', new Doi('10.1590/SciELOPreprints.3429')],
     // ['osf', new Doi('10.31234/osf.io/td68z')],
