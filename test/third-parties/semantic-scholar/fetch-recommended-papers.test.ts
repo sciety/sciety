@@ -62,6 +62,9 @@ describe('fetch-recommended-papers', () => {
     ['10.26434/not-a-supported-doi'],
     ['10.1590/2176-9451.19.4.027-029.ebo'],
     // failing ['10.1101/cshperspect.a041248'],
+    // failing ['10.1101/gad.314351.118'],
+    // failing ['10.1101/gr.277335.122'],
+    // failing ['10.1101/lm.045724.117'],
   ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
     it('removes the unsupported article', async () => {
       const ports: Ports = {
