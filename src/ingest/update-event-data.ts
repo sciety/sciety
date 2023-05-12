@@ -24,7 +24,7 @@ void (async (): Promise<unknown> => pipe(
         {
           id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
           name: 'Arcadia Science',
-          fetchFeed: fetchReviewsFromHypothesisGroup('ApM1XL6A', 60),
+          fetchFeed: fetchReviewsFromHypothesisGroup('ApM1XL6A', new Date('2023-04-15')),
         },
       ];
     }
