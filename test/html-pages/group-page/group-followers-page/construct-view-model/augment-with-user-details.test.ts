@@ -1,18 +1,20 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { augmentWithUserDetails, Ports } from '../../../../../src/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
-import { UserId } from '../../../../../src/types/user-id';
+import { augmentWithUserDetails } from '../../../../../src/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
 import { arbitraryNumber } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryUserDetails } from '../../../../types/user-details.helper';
+import { TestFramework, createTestFramework } from '../../../../framework';
 
 describe('augment-with-user-details', () => {
-  describe('not all user details are returned from the port', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
+  describe('when a following user does not exist', () => {
     it('returns a shorter array of user card view models', () => {
-      const ports: Ports = {
-        lookupUser: () => O.none,
-      };
       const followers = [
         {
           userId: arbitraryUserId(),
@@ -22,44 +24,45 @@ describe('augment-with-user-details', () => {
       ];
       const results = pipe(
         followers,
-        augmentWithUserDetails(ports),
+        augmentWithUserDetails(framework.queries),
       );
 
       expect(results).toHaveLength(0);
     });
   });
 
-  it('returns the user card view models in the same order as the input followers', () => {
-    const userId1 = arbitraryUserId();
-    const userId2 = arbitraryUserId();
-    const usersReadmodel = {
-      [userId1]: { ...arbitraryUserDetails(), id: userId1 },
-      [userId2]: { ...arbitraryUserDetails(), id: userId2 },
-    };
-    const ports = {
-      lookupUser: (userId: UserId) => O.some(usersReadmodel[userId]),
-    };
-    const followers = [
-      {
-        userId: userId1,
-        listCount: arbitraryNumber(0, 10),
-        followedGroupCount: arbitraryNumber(0, 10),
-      },
-      {
-        userId: userId2,
-        listCount: arbitraryNumber(0, 10),
-        followedGroupCount: arbitraryNumber(0, 10),
-      },
-    ];
-    const handles = pipe(
-      followers,
-      augmentWithUserDetails(ports),
-      RA.map((user) => user.handle),
-    );
+  describe('when the following users do exist', () => {
+    const user1 = arbitraryUserDetails();
+    const user2 = arbitraryUserDetails();
 
-    expect(handles).toStrictEqual([
-      usersReadmodel[userId1].handle,
-      usersReadmodel[userId2].handle,
-    ]);
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(user2);
+      await framework.commandHelpers.createUserAccount(user1);
+    });
+
+    it('returns the user card view models in the same order as the input followers', () => {
+      const followers = [
+        {
+          userId: user1.id,
+          listCount: arbitraryNumber(0, 10),
+          followedGroupCount: arbitraryNumber(0, 10),
+        },
+        {
+          userId: user2.id,
+          listCount: arbitraryNumber(0, 10),
+          followedGroupCount: arbitraryNumber(0, 10),
+        },
+      ];
+      const handles = pipe(
+        followers,
+        augmentWithUserDetails(framework.queries),
+        RA.map((user) => user.handle),
+      );
+
+      expect(handles).toStrictEqual([
+        user1.handle,
+        user2.handle,
+      ]);
+    });
   });
 });
