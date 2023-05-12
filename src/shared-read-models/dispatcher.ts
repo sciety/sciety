@@ -10,12 +10,14 @@ import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists'
 import * as lists from './lists';
 import * as users from './users';
 import * as articleActivity from './article-activity';
+import * as articleDetails from './article-details';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 export type Queries = addArticleToElifeSubjectAreaList.Queries
 & annotations.Queries
 & articleActivity.Queries
+& articleDetails.Queries
 & evaluations.Queries
 & followings.Queries
 & groupActivity.Queries
@@ -35,6 +37,7 @@ export const dispatcher = (): Dispatcher => {
     addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
     annotationsReadModel: annotations.initialState(),
     articleActivityReadModel: articleActivity.initialState(),
+    articleDetailsReadModel: articleDetails.initialState(),
     evaluationsReadModel: evaluations.initialState(),
     followingsReadModel: followings.initialState(),
     groupActivityReadModel: groupActivity.initialState(),
@@ -56,6 +59,10 @@ export const dispatcher = (): Dispatcher => {
     readModels.articleActivityReadModel = RA.reduce(
       readModels.articleActivityReadModel,
       articleActivity.handleEvent,
+    )(events);
+    readModels.articleDetailsReadModel = RA.reduce(
+      readModels.articleDetailsReadModel,
+      articleDetails.handleEvent,
     )(events);
     readModels.evaluationsReadModel = RA.reduce(
       readModels.evaluationsReadModel,
@@ -91,6 +98,7 @@ export const dispatcher = (): Dispatcher => {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
     ...articleActivity.queries(readModels.articleActivityReadModel),
+    ...articleDetails.queries(readModels.articleDetailsReadModel),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groupActivity.queries(readModels.groupActivityReadModel),
