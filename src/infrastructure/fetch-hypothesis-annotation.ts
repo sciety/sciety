@@ -49,7 +49,7 @@ ${response.text}`,
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const evaluation: Evaluation = {
     fullText: pipe(
-      process.env.EXPERIMENT_ENABLED === 'true' ? insertSelectedText(response) : response.text,
+      insertSelectedText(response),
       (text) => converter.render(text),
       toHtmlFragment,
     ),
