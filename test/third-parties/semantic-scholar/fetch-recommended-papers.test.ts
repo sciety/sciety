@@ -77,20 +77,7 @@ describe('fetch-recommended-papers', () => {
         logger: dummyLogger,
         getJson: async () => ({
           recommendedPapers: [
-            {
-              externalIds: {
-                DOI: supportedBiorxivArticleId.value,
-              },
-              title: articleTitle.toString(),
-              authors: [
-                {
-                  name: articleAuthors[0],
-                },
-                {
-                  name: articleAuthors[1],
-                },
-              ],
-            },
+            arbitraryRecommendedPaper(supportedBiorxivArticleId),
             {
               externalIds: {
                 DOI: unsupportedArticleId,
