@@ -21,7 +21,7 @@ export type Ports = {
 const semanticScholarRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.type({
     externalIds: t.type({
-      DOI: DoiFromString,
+      DOI: t.union([DoiFromString, t.undefined]),
     }),
     title: t.string,
     authors: t.array(t.type({
@@ -29,6 +29,18 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
     })),
   })),
 });
+
+const paperWithDoi = t.type({
+  externalIds: t.type({
+    DOI: DoiFromString,
+  }),
+  title: t.string,
+  authors: t.array(t.type({
+    name: t.string,
+  })),
+});
+
+type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
   TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
@@ -41,11 +53,11 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (d
       ports.logger('error', 'Failed to decode Semantic scholar response', {
         errors,
       });
-
       return DE.unavailable;
     },
     (response) => pipe(
       response.recommendedPapers,
+      RA.filter((recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined),
       RA.map((recommendedPaper) => ({
         articleId: recommendedPaper.externalIds.DOI,
         title: sanitise(toHtmlFragment(recommendedPaper.title)),

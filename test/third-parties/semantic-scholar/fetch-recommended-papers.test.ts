@@ -147,7 +147,7 @@ describe('fetch-recommended-papers', () => {
       getJson: async () => (response),
     };
 
-    it.failing('ignores such articles', async () => {
+    it('ignores such articles', async () => {
       const result = await pipe(
         arbitraryArticleId(),
         fetchRecommendedPapers(ports),
