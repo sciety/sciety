@@ -120,4 +120,8 @@ describe('fetch-recommended-papers', () => {
   describe('when we cannot decode the response', () => {
     it.todo('returns a left');
   });
+
+  describe('when the response contains an article with no DOI', () => {
+    it.todo('ignores such articles');
+  });
 });
