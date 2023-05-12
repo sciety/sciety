@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { RelatedArticles } from '../../../src/shared-ports/fetch-related-articles';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import {
   Ports,
   fetchRecommendedPapers,
@@ -15,9 +15,9 @@ import { Doi } from '../../../src/types/doi';
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
 
-const arbitraryRecommendedPaper = (articleId: Doi) => ({
+const arbitraryRecommendedPaper = (articleId: string) => ({
   externalIds: {
-    DOI: articleId.value,
+    DOI: articleId,
   },
   title: articleTitle.toString(),
   authors: [
@@ -32,11 +32,11 @@ const arbitraryRecommendedPaper = (articleId: Doi) => ({
 
 describe('fetch-recommended-papers', () => {
   describe.each([
-    ['biorxiv or medrxiv', new Doi('10.1101/2023.01.15.524119')],
-    ['biorxiv or medrxiv', new Doi('10.1101/452326')],
-    ['research square', new Doi('10.21203/rs.3.rs-2200020/v3')],
-    ['scielo preprints', new Doi('10.1590/SciELOPreprints.3429')],
-    // ['osf', new Doi('10.31234/osf.io/td68z')],
+    ['biorxiv or medrxiv', '10.1101/2023.01.15.524119'],
+    ['biorxiv or medrxiv', '10.1101/452326'],
+    ['research square', '10.21203/rs.3.rs-2200020/v3'],
+    ['scielo preprints', '10.1590/SciELOPreprints.3429'],
+    // ['osf', '10.31234/osf.io/td68z'],
   ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
     it('translates to RelatedArticles type', async () => {
       const ports: Ports = {
@@ -53,7 +53,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [{
-        articleId: supportedArticleId,
+        articleId: new Doi(supportedArticleId),
         title: articleTitle,
         authors: O.some(articleAuthors),
       }];
@@ -70,7 +70,7 @@ describe('fetch-recommended-papers', () => {
     ['10.1101/gr.277335.122'],
     ['10.1101/lm.045724.117'],
   ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
-    const supportedBiorxivArticleId = new Doi('10.1101/123');
+    const supportedBiorxivArticleId = '10.1101/123';
 
     it('removes the unsupported article', async () => {
       const ports: Ports = {
@@ -78,17 +78,7 @@ describe('fetch-recommended-papers', () => {
         getJson: async () => ({
           recommendedPapers: [
             arbitraryRecommendedPaper(supportedBiorxivArticleId),
-            {
-              externalIds: {
-                DOI: unsupportedArticleId,
-              },
-              title: arbitraryString(),
-              authors: [
-                {
-                  name: arbitraryWord(),
-                },
-              ],
-            },
+            arbitraryRecommendedPaper(unsupportedArticleId),
           ],
         }),
       };
@@ -98,7 +88,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [expect.objectContaining({
-        articleId: supportedBiorxivArticleId,
+        articleId: new Doi(supportedBiorxivArticleId),
       })];
 
       expect(result).toStrictEqual(expected);
