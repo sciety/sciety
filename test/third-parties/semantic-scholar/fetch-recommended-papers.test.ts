@@ -12,10 +12,25 @@ import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { Doi } from '../../../src/types/doi';
 
-describe('fetch-recommended-papers', () => {
-  const articleTitle = arbitrarySanitisedHtmlFragment();
-  const articleAuthors = [arbitraryString(), arbitraryString()];
+const articleTitle = arbitrarySanitisedHtmlFragment();
+const articleAuthors = [arbitraryString(), arbitraryString()];
 
+const arbitraryRecommendedPaper = (articleId: Doi) => ({
+  externalIds: {
+    DOI: articleId.value,
+  },
+  title: articleTitle.toString(),
+  authors: [
+    {
+      name: articleAuthors[0],
+    },
+    {
+      name: articleAuthors[1],
+    },
+  ],
+});
+
+describe('fetch-recommended-papers', () => {
   describe.each([
     ['biorxiv or medrxiv', new Doi('10.1101/2023.01.15.524119')],
     ['biorxiv or medrxiv', new Doi('10.1101/452326')],
@@ -28,20 +43,7 @@ describe('fetch-recommended-papers', () => {
         logger: dummyLogger,
         getJson: async () => ({
           recommendedPapers: [
-            {
-              externalIds: {
-                DOI: supportedArticleId.value,
-              },
-              title: articleTitle.toString(),
-              authors: [
-                {
-                  name: articleAuthors[0],
-                },
-                {
-                  name: articleAuthors[1],
-                },
-              ],
-            },
+            arbitraryRecommendedPaper(supportedArticleId),
           ],
         }),
       };
