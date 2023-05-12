@@ -1,4 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { RelatedArticles } from '../../../src/shared-ports/fetch-related-articles';
@@ -96,7 +97,20 @@ describe('fetch-recommended-papers', () => {
   });
 
   describe('when we cannot access Semantic Scholar', () => {
-    it.todo('returns a left');
+    it('returns a left', async () => {
+      const ports: Ports = {
+        logger: dummyLogger,
+        getJson: async () => {
+          throw new Error('Failed to get response from Semantic Scholar');
+        },
+      };
+      const result = await pipe(
+        arbitraryArticleId(),
+        fetchRecommendedPapers(ports),
+      )();
+
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 
   describe('when we cannot decode the response', () => {
