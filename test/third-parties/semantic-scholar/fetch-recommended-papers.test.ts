@@ -114,7 +114,18 @@ describe('fetch-recommended-papers', () => {
   });
 
   describe('when we cannot decode the response', () => {
-    it.todo('returns a left');
+    it('returns a left', async () => {
+      const ports: Ports = {
+        logger: dummyLogger,
+        getJson: async () => arbitraryString(),
+      };
+      const result = await pipe(
+        arbitraryArticleId(),
+        fetchRecommendedPapers(ports),
+      )();
+
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 
   describe('when the response contains an article with no DOI', () => {
