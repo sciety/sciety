@@ -11,6 +11,7 @@ import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { isSupportedArticle } from '../../types/article-server';
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
@@ -80,11 +81,5 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (d
       })),
     ),
   ),
-  TE.map(RA.filter(
-    (relatedArticle) => (
-      !!relatedArticle.articleId.value.match(/^10\.1101\/[0-9]{1,}/)
-      || relatedArticle.articleId.hasPrefix('10.21203')
-      || relatedArticle.articleId.value.startsWith('10.1590/SciELOPreprints')
-    ),
-  )),
+  TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
 );
