@@ -8,7 +8,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import axiosRetry, { exponentialDelay } from 'axios-retry';
-import { batchTaskTraverse } from './batch-traverse';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
@@ -106,8 +105,6 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
   (count) => R.upsertAt(errorMessage, count)(accumulator),
 );
 
-const ingestionCommandsBatchSize = 1;
-
 const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (feedData: FeedData) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
@@ -117,7 +114,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
     publishedAt: evaluation.date,
     authors: evaluation.authors,
   })),
-  batchTaskTraverse(send, ingestionCommandsBatchSize),
+  T.traverseSeqArray(send),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
