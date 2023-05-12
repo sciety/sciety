@@ -18,16 +18,10 @@ export type Ports = {
   logger: Logger,
 };
 
-const semanticScholarRecommendedPapersResponseCodec = t.type({
-  recommendedPapers: t.array(t.type({
-    externalIds: t.type({
-      DOI: t.union([DoiFromString, t.undefined]),
-    }),
-    title: t.string,
-    authors: t.array(t.type({
-      name: t.string,
-    })),
-  })),
+const paperWithoutDoi = t.type({
+  externalIds: t.type({
+    DOI: t.undefined,
+  }),
 });
 
 const paperWithDoi = t.type({
@@ -38,6 +32,10 @@ const paperWithDoi = t.type({
   authors: t.array(t.type({
     name: t.string,
   })),
+});
+
+const semanticScholarRecommendedPapersResponseCodec = t.type({
+  recommendedPapers: t.array(t.union([paperWithDoi, paperWithoutDoi])),
 });
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
