@@ -44,17 +44,29 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
   TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
-  TE.chainEitherKW(flow(
-    semanticScholarRecommendedPapersResponseCodec.decode,
-    E.mapLeft(formatValidationErrors),
-  )),
-  TE.bimap(
+  TE.mapLeft(
     (errors) => {
-      ports.logger('error', 'Failed to decode Semantic scholar response', {
+      ports.logger('error', 'Request to Semantic Scholar failed', {
         errors,
+        doi: doi.value,
       });
       return DE.unavailable;
     },
+  ),
+  TE.chainEitherKW(flow(
+    semanticScholarRecommendedPapersResponseCodec.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft(
+      (errors) => {
+        ports.logger('error', 'Failed to decode Semantic scholar response', {
+          errors,
+          doi: doi.value,
+        });
+        return DE.unavailable;
+      },
+    ),
+  )),
+  TE.map(
     (response) => pipe(
       response.recommendedPapers,
       RA.filter((recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined),
