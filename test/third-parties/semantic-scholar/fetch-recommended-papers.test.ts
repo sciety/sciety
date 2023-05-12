@@ -4,7 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { RelatedArticles } from '../../../src/shared-ports/fetch-related-articles';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../helpers';
-import { Ports, fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
+import {
+  Ports,
+  fetchRecommendedPapers,
+} from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { Doi } from '../../../src/types/doi';
@@ -122,6 +125,36 @@ describe('fetch-recommended-papers', () => {
   });
 
   describe('when the response contains an article with no DOI', () => {
-    it.todo('ignores such articles');
+    const response = {
+      recommendedPapers: [
+        {
+          externalIds: {},
+          title: articleTitle.toString(),
+          authors: [
+            {
+              name: articleAuthors[0],
+            },
+            {
+              name: articleAuthors[1],
+            },
+          ],
+        },
+      ],
+    };
+
+    const ports: Ports = {
+      logger: dummyLogger,
+      getJson: async () => (response),
+    };
+
+    it.failing('ignores such articles', async () => {
+      const result = await pipe(
+        arbitraryArticleId(),
+        fetchRecommendedPapers(ports),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+
+      expect(result).toStrictEqual([]);
+    });
   });
 });
