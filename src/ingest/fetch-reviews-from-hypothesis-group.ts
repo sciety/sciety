@@ -12,6 +12,12 @@ import * as Hyp from '../third-parties/hypothesis';
 export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
   row.uri,
   supportedArticleIdFromLink,
+  E.chain((supportedArticleId) => {
+    if (row.text.length === 0) {
+      return E.left('empty text property');
+    }
+    return E.right(supportedArticleId);
+  }),
   E.bimap(
     (reason) => ({ item: row.uri, reason }),
     (articleDoi) => ({

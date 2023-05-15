@@ -5,7 +5,7 @@ import { arbitraryDate, arbitraryWord } from '../helpers';
 describe('fetch-reviews-from-hypothesis-group', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
 
-  describe('when the url can be parsed to a doi', () => {
+  describe('when the url can be parsed to a doi and the annotation contains text', () => {
     const result = toEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
@@ -39,7 +39,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
       text: '',
     });
 
-    it.failing('returns on the left', () => {
+    it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
