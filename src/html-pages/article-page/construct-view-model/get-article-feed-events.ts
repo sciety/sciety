@@ -17,12 +17,9 @@ export type Ports = GetFeedEventsContentPorts & {
   getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
 };
 
-type GetArticleFeedEventsByDateDescending = (
-  adapters: Ports
-) => (
-  doi: Doi,
-  server: ArticleServer,
-) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
+type GetArticleFeedEventsByDateDescending = (adapters: Ports)
+=> (doi: Doi, server: ArticleServer)
+=> T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   adapters,
