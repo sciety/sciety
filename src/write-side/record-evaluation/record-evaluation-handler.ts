@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { RecordEvaluationCommand } from '../commands';
-import { Ports, recordEvaluationCommandHandler } from './record-evaluation-command-handler';
+import { Ports, recordEvaluationCommandHandler } from '../command-handlers/record-evaluation-command-handler';
 import { CommandHandler } from '../../types/command-handler';
 
 type RecordEvaluationHandler = (

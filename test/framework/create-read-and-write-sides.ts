@@ -11,8 +11,7 @@ import { followCommandHandler } from '../../src/write-side/follow/follow-command
 import { createListCommandHandler } from '../../src/write-side/create-list';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
-import { recordEvaluationCommandHandler } from '../../src/write-side/record-evaluation';
-import { updateUserDetailsCommandHandler } from '../../src/write-side/command-handlers';
+import { updateUserDetailsCommandHandler, recordEvaluationCommandHandler } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { Queries } from '../../src/shared-read-models';
 
