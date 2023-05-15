@@ -3,11 +3,13 @@ import { toEvaluation } from '../../src/ingest/fetch-reviews-from-hypothesis-gro
 import { arbitraryDate, arbitraryWord } from '../helpers';
 
 describe('fetch-reviews-from-hypothesis-group', () => {
+  const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
+
   describe('when the url can be parsed to a doi', () => {
     const result = toEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
-      uri: 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1',
+      uri: supportedPreprintUri,
       text: arbitraryWord(),
     });
 
@@ -30,6 +32,15 @@ describe('fetch-reviews-from-hypothesis-group', () => {
   });
 
   describe('when the evaluation relates to an highlight-only annotation', () => {
-    it.todo('returns on the left');
+    const result = toEvaluation({
+      id: arbitraryWord(),
+      created: arbitraryDate().toISOString(),
+      uri: supportedPreprintUri,
+      text: '',
+    });
+
+    it.failing('returns on the left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
