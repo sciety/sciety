@@ -71,34 +71,6 @@ export {
 } from './user-followed-editorial-community-event';
 
 export {
-  isUserFoundReviewHelpfulEvent,
-  UserFoundReviewHelpfulEvent,
-  userFoundReviewHelpful,
-  userFoundReviewHelpfulEventCodec,
-} from './user-found-review-helpful-event';
-
-export {
-  isUserFoundReviewNotHelpfulEvent,
-  UserFoundReviewNotHelpfulEvent,
-  userFoundReviewNotHelpful,
-  userFoundReviewNotHelpfulEventCodec,
-} from './user-found-review-not-helpful-event';
-
-export {
-  isUserRevokedFindingReviewHelpfulEvent,
-  UserRevokedFindingReviewHelpfulEvent,
-  userRevokedFindingReviewHelpful,
-  userRevokedFindingReviewHelpfulEventCodec,
-} from './user-revoked-finding-review-helpful-event';
-
-export {
-  isUserRevokedFindingReviewNotHelpfulEvent,
-  userRevokedFindingReviewNotHelpful,
-  userRevokedFindingReviewNotHelpfulEventCodec,
-  UserRevokedFindingReviewNotHelpfulEvent,
-} from './user-revoked-finding-review-not-helpful-event';
-
-export {
   isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
   userSavedArticleEventCodec,
 } from './user-saved-article-event';

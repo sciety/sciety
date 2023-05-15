@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { userIdCodec, UserId } from '../types/user-id';
-import { generate } from '../types/event-id';
-import { EvaluationLocator, evaluationLocatorCodec } from '../types/evaluation-locator';
+import { userIdCodec } from '../types/user-id';
+import { evaluationLocatorCodec } from '../types/evaluation-locator';
 
 export const userRevokedFindingReviewNotHelpfulEventCodec = t.type({
   id: EventIdFromString,
@@ -11,20 +10,4 @@ export const userRevokedFindingReviewNotHelpfulEventCodec = t.type({
   date: tt.DateFromISOString,
   userId: userIdCodec,
   reviewId: evaluationLocatorCodec,
-});
-
-export type UserRevokedFindingReviewNotHelpfulEvent = t.TypeOf<typeof userRevokedFindingReviewNotHelpfulEventCodec>;
-
-export const isUserRevokedFindingReviewNotHelpfulEvent = (event: { type: string }):
-  event is UserRevokedFindingReviewNotHelpfulEvent => event.type === 'UserRevokedFindingReviewNotHelpful';
-
-export const userRevokedFindingReviewNotHelpful = (
-  userId: UserId,
-  reviewId: EvaluationLocator,
-): UserRevokedFindingReviewNotHelpfulEvent => ({
-  id: generate(),
-  type: 'UserRevokedFindingReviewNotHelpful',
-  date: new Date(),
-  userId,
-  reviewId,
 });
