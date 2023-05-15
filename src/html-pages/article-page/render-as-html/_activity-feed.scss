@@ -136,38 +136,6 @@ p.activity-feed__item__title {
   }
 }
 
-.responses__question {
-  padding-right: functions.px-to-rem(8px);
-}
-
-.responses__actions {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.responses__action {
-  display: flex;
-  margin-right: 4px;
-  align-items: center;
-}
-
-.responses__button {
-  @include button.basics();
-  min-width: functions.px-to-rem(52px);
-  padding: functions.px-to-rem(5px);
-  border: settings.$border-width solid settings.$colour-brand;
-  border-radius: settings.$border-radius;
-  background-color: settings.$colour-brand;
-  color: settings.$colour-white;
-}
-
-.responses__button__icon {
-  margin-left: 0.25rem;
-  width: 15px;
-  height: 14px;
-  margin-bottom: -2px;
-}
-
 .related-articles__header {
   @include layout.page-content-horizontal-margins();
 }

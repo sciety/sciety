@@ -2,7 +2,6 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
-import { renderReviewResponses } from './render-review-responses';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
 import { langAttributeFor } from '../../../shared-components/lang-attribute-for';
@@ -39,7 +38,7 @@ const appendSourceLink = flow(
   )),
 );
 
-const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
+const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
     <div${langAttributeFor(fullText)}>${fullText}</div>
@@ -73,7 +72,6 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
       </header>
       ${feedItemBody}
     </article>
-    ${responses}
   `;
 };
 
@@ -83,33 +81,23 @@ const renderSourceLinkWhenFulltextMissing = (review: ReviewFeedItem) => pipe(
   O.getOrElse(constant(missingFullTextAndSourceLink)),
 );
 
-const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment) => pipe(
-  review.fullText,
+export const renderReviewFeedItem = (feedItem: ReviewFeedItem, teaserChars: number): HtmlFragment => pipe(
+  feedItem.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(review.id)}">
+      <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(feedItem.id)}">
         <header class="activity-feed__item__header">
-          ${avatar(review)}
-          ${eventMetadata(review)}
+          ${avatar(feedItem)}
+          ${eventMetadata(feedItem)}
         </header>
         <div class="activity-feed__item__body">
           <div>
-            ${renderSourceLinkWhenFulltextMissing(review)}
+            ${renderSourceLinkWhenFulltextMissing(feedItem)}
           </div>
         </div>
       </article>
-      ${responses}
     `,
-    (fullText) => renderWithText(teaserChars, review, fullText)(responses),
+    (fullText) => renderWithText(teaserChars, feedItem, fullText),
   ),
-);
-
-export const renderReviewFeedItem = (feedItem: ReviewFeedItem, teaserChars: number): HtmlFragment => pipe(
-  feedItem.responses,
-  O.match(
-    () => toHtmlFragment(''),
-    (responses) => renderReviewResponses(feedItem.id, responses.counts, responses.current),
-  ),
-  render(teaserChars, feedItem),
   toHtmlFragment,
 );
