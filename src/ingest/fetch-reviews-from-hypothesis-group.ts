@@ -9,19 +9,21 @@ import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
 import * as Hyp from '../third-parties/hypothesis';
 
-export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
-  row.uri,
+const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
+
+export const toEvaluation = (annotation: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => pipe(
+  annotation.uri,
   supportedArticleIdFromLink,
   E.filterOrElse(
-    () => row.text.length > 0,
+    () => annotationContainsText(annotation),
     () => 'annotation text field is empty',
   ),
   E.bimap(
-    (reason) => ({ item: row.uri, reason }),
+    (reason) => ({ item: annotation.uri, reason }),
     (articleDoi) => ({
-      date: new Date(row.created),
+      date: new Date(annotation.created),
       articleDoi,
-      evaluationLocator: `hypothesis:${row.id}`,
+      evaluationLocator: `hypothesis:${annotation.id}`,
       authors: [],
     }),
   ),
