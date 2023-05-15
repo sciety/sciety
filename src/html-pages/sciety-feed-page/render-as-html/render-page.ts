@@ -4,7 +4,7 @@ import { templateListItems } from '../../../shared-components/list-items';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { supplementaryCard } from '../../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderScietyFeedCard } from './render-sciety-feed-card';
 
@@ -19,7 +19,7 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderPage = (viewModel: ViewModel) => pipe(
+export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.cards,
   RA.map(renderScietyFeedCard),
   (cards) => `

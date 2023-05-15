@@ -1,7 +1,7 @@
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { templateListItems } from '../../../shared-components/list-items';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 const renderList = (listContent: string) => `
@@ -10,7 +10,7 @@ const renderList = (listContent: string) => `
   </ul>
 `;
 
-export const renderListedIn = (listedIn: ViewModel['listedIn']) => pipe(
+export const renderListedIn = (listedIn: ViewModel['listedIn']): HtmlFragment => pipe(
   listedIn,
   RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${item.listName}</a> (${item.listOwnerName})`)),
   RA.match(

@@ -17,7 +17,7 @@ const passportUserCodec = t.type({
 
 export const authenticateWithUserId = (
   done: (error: unknown, user?: Record<string, unknown>) => void,
-) => (userId: E.Either<unknown, UserId>) => {
+) => (userId: E.Either<unknown, UserId>): ReturnType<typeof done> => {
   pipe(
     userId,
     E.match(

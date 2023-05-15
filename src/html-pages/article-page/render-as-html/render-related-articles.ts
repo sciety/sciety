@@ -4,8 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { templateListItems } from '../../../shared-components/list-items';
 import { renderArticleCard } from '../../../shared-components/article-card/render-article-card';
 import { ViewModel } from '../view-model';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-export const renderRelatedArticles = (viewmodel: ViewModel) => pipe(
+export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.relatedArticles,
   O.match(
     () => '',
@@ -23,4 +24,5 @@ export const renderRelatedArticles = (viewmodel: ViewModel) => pipe(
 `,
     ),
   ),
+  toHtmlFragment,
 );

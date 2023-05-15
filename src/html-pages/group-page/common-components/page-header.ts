@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { Group } from '../../../types/group';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderFollowToggle } from '../../../write-side/follow/render-follow-toggle';
 
 export type PageHeaderViewModel = {
@@ -8,7 +8,7 @@ export type PageHeaderViewModel = {
   isFollowing: boolean,
 };
 
-export const renderPageHeader = (viewmodel: PageHeaderViewModel) => toHtmlFragment(`
+export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--group">
     <div class="page-header__identity">
       <img src="${viewmodel.group.avatarPath}" alt="" class="page-header__avatar">

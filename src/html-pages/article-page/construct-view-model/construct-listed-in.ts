@@ -5,6 +5,7 @@ import { Doi } from '../../../types/doi';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Logger } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
+import { ViewModel } from '../view-model';
 
 export type Ports = Pick<Queries, 'getGroup' | 'lookupUser' | 'selectAllListsContainingArticle'> & {
   logger: Logger,
@@ -40,7 +41,7 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
   }
 };
 
-export const constructListedIn = (ports: Ports) => (articleId: Doi) => pipe(
+export const constructListedIn = (ports: Ports) => (articleId: Doi): ViewModel['listedIn'] => pipe(
   articleId,
   ports.selectAllListsContainingArticle,
   RA.map((list) => ({

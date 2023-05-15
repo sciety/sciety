@@ -29,7 +29,7 @@ export const saveAuthenticationDestination = (
   await next();
 };
 
-export const redirectToAuthenticationDestination = (context: ParameterizedContext) => {
+export const redirectToAuthenticationDestination = (context: ParameterizedContext): void => {
   const target = pipe(
     context,
     getAuthenticationDestination,

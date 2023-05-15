@@ -7,10 +7,11 @@ import { UserId } from '../../../types/user-id';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Queries } from '../../../shared-read-models';
+import { ViewModel } from '../view-model';
 
 export type Ports = Pick<Queries, 'selectListContainingArticle' | 'selectAllListsOwnedBy'>;
 
-export const constructUserListManagement = (user: O.Option<{ id: UserId }>, ports: Ports, articleId: Doi) => pipe(
+export const constructUserListManagement = (user: O.Option<{ id: UserId }>, ports: Ports, articleId: Doi): ViewModel['userListManagement'] => pipe(
   user,
   O.map(
     ({ id }) => pipe(

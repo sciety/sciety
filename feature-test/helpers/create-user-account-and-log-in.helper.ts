@@ -11,7 +11,7 @@ export const createUserAccountAndLogIn = async (
   userId: UserId,
   handle: UserHandle = arbitraryUserHandle(),
   avatarUrl: string = arbitraryUri(),
-) => {
+): Promise<void> => {
   await callApi('api/create-user', {
     userId,
     handle,

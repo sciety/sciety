@@ -9,7 +9,7 @@ const byDate: Ord.Ord<List> = pipe(
   Ord.contramap((listState) => listState.updatedAt),
 );
 
-export const sortByDefaultListOrdering = (lists: ReadonlyArray<List>) => pipe(
+export const sortByDefaultListOrdering = (lists: ReadonlyArray<List>): ReadonlyArray<List> => pipe(
   lists,
   RA.sort(byDate),
   RA.reverse,
