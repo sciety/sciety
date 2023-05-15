@@ -21,6 +21,7 @@ export type ReviewFeedItem = {
   groupHref: string,
   groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
+  fullTextLanguageCode: O.Option<LanguageCode>,
 };
 
 export type ArticleVersionFeedItem = {

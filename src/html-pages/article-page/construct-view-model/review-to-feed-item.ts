@@ -10,6 +10,7 @@ import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { FetchReview } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 import { ReviewFeedItem } from '../view-model';
+import { detectLanguage } from './detect-language';
 
 export type Ports = {
   fetchReview: FetchReview,
@@ -51,11 +52,13 @@ export const reviewToFeedItem = (
         () => ({
           url: RI.inferredSourceUrl(feedEvent.reviewId),
           fullText: O.none,
+          fullTextLanguageCode: O.none,
         }),
         (review) => ({
           ...review,
           url: O.some(review.url),
           fullText: O.some(review.fullText),
+          fullTextLanguageCode: detectLanguage(review.fullText),
         }),
       ),
     ),
@@ -70,5 +73,6 @@ export const reviewToFeedItem = (
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
+    fullTextLanguageCode: review.fullTextLanguageCode,
   })),
 );

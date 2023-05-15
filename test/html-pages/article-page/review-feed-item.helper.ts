@@ -16,6 +16,7 @@ export const arbitrary = (): ReviewFeedItem => ({
   groupName: 'group 1',
   groupAvatar: '/avatar',
   fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
+  fullTextLanguageCode: O.none,
 });
 
 export const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
