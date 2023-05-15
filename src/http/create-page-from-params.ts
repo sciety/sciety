@@ -7,6 +7,7 @@ import { Page } from '../types/page';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toNotFound = () => ({
   type: DE.notFound,
   message: toHtmlFragment('Page not found'),
@@ -14,6 +15,7 @@ export const toNotFound = () => ({
 
 type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
   codec.decode,
   E.mapLeft(toNotFound),

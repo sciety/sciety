@@ -27,6 +27,7 @@ const areInputCharactersSafe = (
 
 const isInputShortEnough = (config: Config, input: string) => input.length <= config.maxInputLength;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const userGeneratedInputCodec = (config: Config) => t.brand(
   t.string,
   (input): input is t.Branded<string, UserGeneratedInputBrand> => (

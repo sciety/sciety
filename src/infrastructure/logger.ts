@@ -100,7 +100,7 @@ export type Config = {
   logLevel: string, // TODO: Make this a level name
 };
 
-export const createLogger = (dependencies: Config) => pipe(
+export const createLogger = (dependencies: Config): Logger => pipe(
   dependencies.prettyLog,
   jsonSerializer,
   (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),

@@ -7,7 +7,7 @@ import { UserDetails } from '../../types/user-details';
 
 export type LookupUser = (userId: UserId) => O.Option<UserDetails>;
 
-export const lookupUser = (readModel: ReadModel) => (userId: UserId) => pipe(
+export const lookupUser = (readModel: ReadModel): LookupUser => (userId) => pipe(
   readModel,
   R.lookup(userId),
 );

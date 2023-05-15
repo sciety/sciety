@@ -9,6 +9,8 @@ import { Logger } from '../shared-ports';
 
 import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
+import { ErrorMessage, toErrorMessage } from '../types/error-message';
+import { AddArticleToListCommand } from '../write-side/commands';
 
 type GetEvaluatedArticlesListIdForGroup = (groupId: GroupId) => O.Option<ListId>;
 
@@ -20,14 +22,14 @@ export type Ports = AddArticleToListPorts & {
 // ts-unused-exports:disable-next-line
 export const constructCommand = (
   ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
-) => (event: EvaluationRecordedEvent) => pipe(
+) => (event: EvaluationRecordedEvent): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(
   event.groupId,
   ports.getEvaluatedArticlesListIdForGroup,
   E.fromOption(() => undefined),
   E.bimap(
     () => {
       ports.logger('error', 'Unknown group id supplied to policy', { event });
-      return 'unknown-group-id' as const;
+      return toErrorMessage('unknown-group-id');
     },
     (listId) => ({
       articleId: event.articleId,

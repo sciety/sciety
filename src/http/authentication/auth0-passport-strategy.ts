@@ -16,4 +16,4 @@ const callback: Auth0Strategy.VerifyFunction = async (accessToken, refreshToken,
   authenticateWithUserId(done),
 );
 
-export const auth0PassportStrategy = () => new Auth0Strategy(auth0Config, callback);
+export const auth0PassportStrategy = (): Auth0Strategy => new Auth0Strategy(auth0Config, callback);

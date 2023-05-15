@@ -35,7 +35,7 @@ const evaluatedArticlesListIdsByGroupId = {
 
 export const initialState = (): ReadModel => ({ ...evaluatedArticlesListIdsByGroupId });
 
-export const handleEvent = (state: ReadModel, event: DomainEvent) => {
+export const handleEvent = (state: ReadModel, event: DomainEvent): ReadModel => {
   if (isEvaluatedArticlesListSpecified(event)) {
     state[event.groupId] = event.listId;
   }

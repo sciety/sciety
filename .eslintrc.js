@@ -28,6 +28,7 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    // '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/member-delimiter-style': ['error', {
       multiline: {
         delimiter: 'comma',

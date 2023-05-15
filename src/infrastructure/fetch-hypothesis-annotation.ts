@@ -32,7 +32,7 @@ const logAndTransformToDataError = (logger: Logger, url: string) => (error: unkn
 };
 
 // ts-unused-exports:disable-next-line
-export const insertSelectedText = (response: HypothesisAnnotation) => pipe(
+export const insertSelectedText = (response: HypothesisAnnotation): string => pipe(
   response.target,
   RA.head,
   O.chain((couldContainSelector) => O.fromNullable(couldContainSelector.selector)),

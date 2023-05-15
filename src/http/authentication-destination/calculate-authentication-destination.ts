@@ -5,7 +5,9 @@ import * as O from 'fp-ts/Option';
 // ts-unused-exports:disable-next-line
 export const defaultDestination = '/';
 
-export const calculateAuthenticationDestination = (referer: string | undefined, applicationHostname: string) => pipe(
+export const calculateAuthenticationDestination = (
+  referer: string | undefined, applicationHostname: string,
+): string => pipe(
   referer,
   O.fromNullable,
   O.map((url) => new URL(url)),

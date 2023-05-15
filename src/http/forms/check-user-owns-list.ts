@@ -9,6 +9,7 @@ export type Ports = {
   lookupList: Queries['lookupList'],
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
   listId,
   adapters.lookupList,

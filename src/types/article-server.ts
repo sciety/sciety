@@ -57,7 +57,7 @@ export type ArticleServer = 'biorxiv'
 | 'scielopreprints'
 | 'osf';
 
-export const isSupportedArticle = (articleId: Doi) => (
+export const isSupportedArticle = (articleId: Doi): boolean => (
   !!articleId.value.match(/^10\.1101\/[0-9]{1,}/)
   || articleId.hasPrefix('10.21203')
   || articleId.value.startsWith('10.1590/SciELOPreprints')
