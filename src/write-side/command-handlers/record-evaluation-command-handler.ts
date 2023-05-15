@@ -6,7 +6,7 @@ import { executeCommand } from '../record-evaluation/execute-command';
 import { RecordEvaluationCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 
-export type Ports = {
+type Ports = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
