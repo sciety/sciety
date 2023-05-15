@@ -55,6 +55,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.map(({ feedItemsByDateDescending, relatedArticles }) => ({
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
+      abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,

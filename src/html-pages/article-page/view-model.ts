@@ -62,6 +62,7 @@ export type ViewModel = {
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,
+  abstractLanguageCode: O.Option<LanguageCode>,
   evaluationCount: number,
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,
