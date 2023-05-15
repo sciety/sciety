@@ -1,14 +1,14 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ReviewFeedItem } from '../../../src/html-pages/article-page/view-model';
+import { EvaluationFeedItem } from '../../../src/html-pages/article-page/view-model';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
-export const arbitrary = (): ReviewFeedItem => ({
-  type: 'review',
+export const arbitrary = (): EvaluationFeedItem => ({
+  type: 'evaluation',
   id: arbitraryEvaluationLocator(),
   source: O.some(new URL(arbitraryUri())),
   publishedAt: new Date(),
@@ -19,27 +19,27 @@ export const arbitrary = (): ReviewFeedItem => ({
   fullTextLanguageCode: O.none,
 });
 
-export const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withFullText = (fullText: string) => (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
   fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
 });
 
-export const withNoFullText = (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withNoFullText = (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
   fullText: O.none,
 });
 
-export const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withSource = (uri: string) => (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
   source: O.some(new URL(uri)),
 });
 
-export const withNoSource = (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withNoSource = (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
   source: O.none,
 });
 
-export const withDate = (publishedAt: Date) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+export const withDate = (publishedAt: Date) => (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
   publishedAt,
 });

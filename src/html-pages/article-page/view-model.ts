@@ -12,8 +12,8 @@ import { ListId } from '../../types/list-id';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 
-export type ReviewFeedItem = {
-  type: 'review',
+export type EvaluationFeedItem = {
+  type: 'evaluation',
   id: RI.EvaluationLocator,
   source: O.Option<URL>,
   publishedAt: Date,
@@ -38,7 +38,7 @@ type ArticleVersionErrorFeedItem = {
 };
 
 export type FeedItem =
-  | ReviewFeedItem
+  | EvaluationFeedItem
   | ArticleVersionFeedItem
   | ArticleVersionErrorFeedItem;
 

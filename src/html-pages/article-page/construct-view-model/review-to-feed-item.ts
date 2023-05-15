@@ -9,7 +9,7 @@ import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { FetchReview } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
-import { ReviewFeedItem } from '../view-model';
+import { EvaluationFeedItem } from '../view-model';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 
 export type Ports = {
@@ -27,7 +27,7 @@ export type ReviewEvent = {
 export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
-): T.Task<ReviewFeedItem> => pipe(
+): T.Task<EvaluationFeedItem> => pipe(
   {
     groupDetails: pipe(
       adapters.getGroup(feedEvent.groupId),
@@ -67,7 +67,7 @@ export const reviewToFeedItem = (
   T.map(({
     groupDetails, review,
   }) => ({
-    type: 'review' as const,
+    type: 'evaluation' as const,
     id: feedEvent.reviewId,
     source: review.url,
     publishedAt: feedEvent.publishedAt,

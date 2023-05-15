@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleVersionFeedItem, FeedItem, ReviewFeedItem } from '../view-model';
+import { ArticleVersionFeedItem, FeedItem, EvaluationFeedItem } from '../view-model';
 
 type FeedSummary = {
   evaluationCount: number,
@@ -10,7 +10,7 @@ type FeedSummary = {
 };
 
 export const feedSummary = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => ({
-  evaluationCount: feedItems.filter((item) => item.type === 'review').length,
+  evaluationCount: feedItems.filter((item) => item.type === 'evaluation').length,
   latestVersion: pipe(
     feedItems,
     RA.filter((item): item is ArticleVersionFeedItem => item.type === 'article-version'),
@@ -19,7 +19,7 @@ export const feedSummary = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => 
   ),
   latestActivity: pipe(
     feedItems,
-    RA.filter((item): item is ReviewFeedItem => item.type === 'review'),
+    RA.filter((item): item is EvaluationFeedItem => item.type === 'evaluation'),
     RA.lookup(0),
     O.map((reviewFeedItem) => reviewFeedItem.publishedAt),
   ),

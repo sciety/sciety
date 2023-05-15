@@ -6,14 +6,14 @@ import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/evaluation-locator';
-import { ReviewFeedItem } from '../view-model';
+import { EvaluationFeedItem } from '../view-model';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
-const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
+const avatar = (review: EvaluationFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
 `);
 
-const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
+const eventMetadata = (review: EvaluationFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
       <a href="${review.groupHref}">
@@ -25,7 +25,7 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
 `);
 
 const appendSourceLink = flow(
-  (review: ReviewFeedItem) => review.source,
+  (review: EvaluationFeedItem) => review.source,
   O.map(flow(
     (source) => `
       <div data-read-original-source>
@@ -38,7 +38,7 @@ const appendSourceLink = flow(
   )),
 );
 
-const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => {
+const renderWithText = (teaserChars: number, review: EvaluationFeedItem, fullText: string) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
     <div${renderLangAttribute(review.fullTextLanguageCode)}>${fullText}</div>
@@ -75,13 +75,13 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   `;
 };
 
-const renderSourceLinkWhenFulltextMissing = (review: ReviewFeedItem) => pipe(
+const renderSourceLinkWhenFulltextMissing = (review: EvaluationFeedItem) => pipe(
   review,
   appendSourceLink,
   O.getOrElse(constant(missingFullTextAndSourceLink)),
 );
 
-export const renderReviewFeedItem = (feedItem: ReviewFeedItem, teaserChars: number): HtmlFragment => pipe(
+export const renderReviewFeedItem = (feedItem: EvaluationFeedItem, teaserChars: number): HtmlFragment => pipe(
   feedItem.fullText,
   O.fold(
     () => `
