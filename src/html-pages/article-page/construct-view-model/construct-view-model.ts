@@ -47,9 +47,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
   ports.fetchArticle(params.doi),
   TE.chainW((articleDetails) => pipe(
     {
-      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(
-        params.doi, articleDetails.server, pipe(params.user, O.map(({ id }) => id)),
-      ),
+      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server),
       relatedArticles: constructRelatedArticles(params.doi, ports),
     },
     sequenceS(T.ApplyPar),

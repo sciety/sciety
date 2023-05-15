@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -10,7 +9,6 @@ import { mergeFeeds } from './merge-feeds';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
-import { UserId } from '../../../types/user-id';
 import { FindVersionsForArticleDoi } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 
@@ -24,13 +22,12 @@ type GetArticleFeedEventsByDateDescending = (
 ) => (
   doi: Doi,
   server: ArticleServer,
-  userId: O.Option<UserId>,
 ) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   adapters,
 ) => (
-  doi, server, userId,
+  doi, server,
 ) => pipe(
   [
     pipe(
@@ -47,6 +44,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     ),
   ] as const,
   mergeFeeds,
-  T.chain(getFeedEventsContent(adapters, server, userId)),
+  T.chain(getFeedEventsContent(adapters, server)),
   T.map(handleArticleVersionErrors(server)),
 );

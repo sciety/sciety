@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
-import { UserId } from '../../../types/user-id';
 import * as RI from '../../../types/evaluation-locator';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
@@ -28,8 +27,6 @@ export type ReviewEvent = {
 export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  userId: O.Option<UserId>,
 ): T.Task<ReviewFeedItem> => pipe(
   {
     groupDetails: pipe(

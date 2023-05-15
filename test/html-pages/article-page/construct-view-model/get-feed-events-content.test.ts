@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import {
   FeedEvent,
   getFeedEventsContent,
@@ -37,7 +36,7 @@ describe('get-feed-events-content', () => {
         ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
       };
-      const viewModel = await getFeedEventsContent(ports, 'biorxiv', O.none)(feedEvents)();
+      const viewModel = await getFeedEventsContent(ports, 'biorxiv')(feedEvents)();
 
       expect(viewModel).toHaveLength(2);
     });
