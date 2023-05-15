@@ -11,16 +11,20 @@ const arbitraryAnnotation = () => ({
   text: arbitraryWord(),
 });
 
+const populatedPage = TE.right({
+  rows: [arbitraryAnnotation(), arbitraryAnnotation()],
+});
+
+const emptyPage = TE.right({
+  rows: [],
+});
+
 describe('process-server', () => {
   describe('when there is one page of annotations', () => {
     it('returns the annotations from that page', async () => {
       const fetchData = jest.fn()
-        .mockReturnValueOnce(TE.right({
-          rows: [arbitraryAnnotation(), arbitraryAnnotation()],
-        }))
-        .mockReturnValueOnce(TE.right({
-          rows: [],
-        }));
+        .mockReturnValueOnce(populatedPage)
+        .mockReturnValueOnce(emptyPage);
       const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(pipe(
@@ -33,9 +37,7 @@ describe('process-server', () => {
   describe('when there are no annotations', () => {
     it('returns an empty array', async () => {
       const fetchData = jest.fn()
-        .mockReturnValueOnce(TE.right({
-          rows: [],
-        }));
+        .mockReturnValueOnce(emptyPage);
       const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(result).toStrictEqual(E.right([]));
@@ -55,9 +57,7 @@ describe('process-server', () => {
   describe('when the second page of annotations cannot be fetched', () => {
     it('returns an error', async () => {
       const fetchData = jest.fn()
-        .mockReturnValueOnce(TE.right({
-          rows: [arbitraryAnnotation(), arbitraryAnnotation()],
-        }))
+        .mockReturnValueOnce(populatedPage)
         .mockReturnValueOnce(TE.left('bad thing occurred'));
       const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
 
