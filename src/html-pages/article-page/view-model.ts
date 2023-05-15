@@ -10,6 +10,7 @@ import * as RI from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleViewModel } from '../../shared-components/article-card';
+import { LanguageCode } from './construct-view-model/detect-language';
 
 export type ReviewFeedItem = {
   type: 'review',
@@ -57,7 +58,7 @@ export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSa
 export type ViewModel = {
   doi: Doi,
   title: string,
-  titleLanguageCode: O.Option<string>,
+  titleLanguageCode: O.Option<LanguageCode>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,
