@@ -9,7 +9,6 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryList } from '../../types/list-helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 
@@ -66,15 +65,10 @@ describe('sciety-feed-page', () => {
     const articleId = arbitraryArticleId();
     const list = arbitraryList();
     const userId = arbitraryUserId();
-    const evaluationLocator = arbitraryEvaluationLocator();
     await framework.commandHelpers.createGroup(group);
     await framework.commandHelpers.createList(list);
     await framework.commandHelpers.addArticleToList(articleId, list.id);
     await framework.commandHelpers.removeArticleFromList(articleId, list.id);
-    await framework.commandHelpers.respond('respond-helpful', evaluationLocator, userId);
-    await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
-    await framework.commandHelpers.respond('respond-not-helpful', evaluationLocator, userId);
-    await framework.commandHelpers.respond('revoke-response', evaluationLocator, userId);
     await framework.commandHelpers.unfollowGroup(userId, group.id);
     const renderedPage = await renderPage(10);
     const html = JSDOM.fragment(renderedPage);

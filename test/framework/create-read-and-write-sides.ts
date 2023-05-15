@@ -13,7 +13,6 @@ import { addArticleToListCommandHandler } from '../../src/write-side/add-article
 import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 import { recordEvaluationCommandHandler } from '../../src/write-side/record-evaluation';
 import { updateUserDetailsCommandHandler } from '../../src/write-side/command-handlers';
-import { commandHandler as respondCommandHandler } from '../../src/write-side/respond/command-handler';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { Queries } from '../../src/shared-read-models';
 
@@ -49,7 +48,6 @@ const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) =>
   followGroup: followCommandHandler(eventStore),
   recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
-  respond: respondCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
   updateUserDetails: updateUserDetailsCommandHandler(eventStore),
 });
