@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { detect } from 'tinyld';
 import { sequenceS } from 'fp-ts/Apply';
 import { feedSummary } from './feed-summary';
 import {
@@ -19,6 +18,7 @@ import { UserId } from '../../../types/user-id';
 import { constructListedIn, Ports as ConstructListedInPorts } from './construct-listed-in';
 import { constructUserListManagement, Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 import { constructRelatedArticles, Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
+import { detectLanguage } from './detect-language';
 
 export type Params = {
   doi: Doi,
@@ -54,7 +54,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.rightTask,
     TE.map(({ feedItemsByDateDescending, relatedArticles }) => ({
       ...articleDetails,
-      titleLanguageCode: detect(articleDetails.title, { only: ['en', 'es', 'pt'] }),
+      titleLanguageCode: detectLanguage(articleDetails.title),
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
