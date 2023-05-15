@@ -35,7 +35,6 @@
   padding: 1rem functions.px-to-rem(16px) 0;
   margin-bottom: 1.5rem;
   @include breakpoints.not-narrow {
-    grid-column: 1 / 9;
     padding: 1.5rem functions.px-to-rem(24px) 0;
   }
 }
