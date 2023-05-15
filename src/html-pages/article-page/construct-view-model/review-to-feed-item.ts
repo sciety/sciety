@@ -7,13 +7,12 @@ import * as RI from '../../../types/evaluation-locator';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { FetchReview, GetAllEvents } from '../../../shared-ports';
+import { FetchReview } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 import { ReviewFeedItem } from '../view-model';
 
 export type Ports = {
   fetchReview: FetchReview,
-  getAllEvents: GetAllEvents,
   getGroup: Queries['getGroup'],
 };
 

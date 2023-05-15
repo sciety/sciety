@@ -26,7 +26,6 @@ describe('construct-view-model', () => {
     adapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
-      getAllEvents: framework.getAllEvents,
       logger: dummyLogger,
     };
   });

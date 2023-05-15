@@ -18,7 +18,6 @@ describe('correct-language-semantics', () => {
       defaultAdapters = {
         ...framework.queries,
         ...framework.happyPathThirdParties,
-        getAllEvents: framework.getAllEvents,
         logger: dummyLogger,
       };
     });
