@@ -7,7 +7,7 @@ import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/evaluation-locator';
 import { ReviewFeedItem } from '../view-model';
-import { renderLangAttribute } from './render-lang-attribute';
+import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">

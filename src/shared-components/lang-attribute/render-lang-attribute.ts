@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { LanguageCode } from '../construct-view-model/detect-language';
+import { LanguageCode } from './detect-language';
 
 export const renderLangAttribute = (code: O.Option<LanguageCode>) => pipe(
   code,

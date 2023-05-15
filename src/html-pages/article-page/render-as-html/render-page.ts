@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
-import { renderLangAttribute } from './render-lang-attribute';
+import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">

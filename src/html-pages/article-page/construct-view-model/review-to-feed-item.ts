@@ -10,7 +10,7 @@ import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { FetchReview } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 import { ReviewFeedItem } from '../view-model';
-import { detectLanguage } from './detect-language';
+import { detectLanguage } from '../../../shared-components/lang-attribute';
 
 export type Ports = {
   fetchReview: FetchReview,
