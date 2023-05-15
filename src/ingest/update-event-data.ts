@@ -17,19 +17,14 @@ const shouldUpdate = (group: GroupIngestionConfiguration) => {
 
 void (async (): Promise<unknown> => pipe(
   groupIngestionConfigurations,
-  (groupConfigs) => {
-    if (process.env.EXPERIMENT_ENABLED === 'true') {
-      return [
-        ...groupConfigs,
-        {
-          id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
-          name: 'Arcadia Science',
-          fetchFeed: fetchReviewsFromHypothesisGroup('ApM1XL6A', new Date('2023-04-15')),
-        },
-      ];
-    }
-    return groupConfigs;
-  },
+  (groupConfigs) => [
+    ...groupConfigs,
+    {
+      id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
+      name: 'Arcadia Science',
+      fetchFeed: fetchReviewsFromHypothesisGroup('ApM1XL6A', new Date('2023-04-15')),
+    },
+  ],
   RA.filter(shouldUpdate),
   updateAll,
   TE.match(
