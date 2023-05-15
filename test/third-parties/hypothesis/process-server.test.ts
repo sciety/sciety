@@ -8,6 +8,7 @@ const arbitraryAnnotation = () => ({
   id: arbitraryWord(),
   created: arbitraryWord(),
   uri: arbitraryWord(),
+  text: arbitraryWord(),
 });
 
 describe('process-server', () => {

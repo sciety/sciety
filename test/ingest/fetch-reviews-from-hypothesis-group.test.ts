@@ -8,6 +8,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1',
+      text: arbitraryWord(),
     });
 
     it('returns on the right', () => {
@@ -20,6 +21,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: 'http://example.com',
+      text: arbitraryWord(),
     });
 
     it('returns on the left', () => {
