@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
-import { toEvaluation } from '../../src/ingest/fetch-reviews-from-hypothesis-group';
+import { convertHypothesisAnnotationToEvaluation } from '../../src/ingest/convert-hypothesis-annotation-to-evaluation';
 import { arbitraryDate, arbitraryWord } from '../helpers';
 
-describe('fetch-reviews-from-hypothesis-group', () => {
+describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
-    const result = toEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
@@ -19,7 +19,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
   });
 
   describe('when the url can not be parsed to a doi', () => {
-    const result = toEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: 'http://example.com',
@@ -34,7 +34,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
   });
 
   describe('when the evaluation relates to an highlight-only annotation', () => {
-    const result = toEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
