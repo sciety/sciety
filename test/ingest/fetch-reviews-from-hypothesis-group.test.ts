@@ -26,4 +26,8 @@ describe('fetch-reviews-from-hypothesis-group', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
+
+  describe('when the evaluation relates to an highlight-only annotation', () => {
+    it.todo('returns on the left');
+  });
 });
