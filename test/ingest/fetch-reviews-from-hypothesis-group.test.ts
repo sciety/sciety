@@ -40,7 +40,9 @@ describe('fetch-reviews-from-hypothesis-group', () => {
     });
 
     it('returns on the left', () => {
-      expect(E.isLeft(result)).toBe(true);
+      expect(result).toStrictEqual(E.left(expect.objectContaining({
+        reason: 'annotation text field is empty',
+      })));
     });
   });
 });

@@ -14,7 +14,7 @@ export const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluat
   supportedArticleIdFromLink,
   E.chain((supportedArticleId) => {
     if (row.text.length === 0) {
-      return E.left('empty text property');
+      return E.left('annotation text field is empty');
     }
     return E.right(supportedArticleId);
   }),
