@@ -57,7 +57,7 @@ export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSa
 export type ViewModel = {
   doi: Doi,
   title: string,
-  titleLanguageCode: string,
+  titleLanguageCode: O.Option<string>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
   abstract: HtmlFragment,
