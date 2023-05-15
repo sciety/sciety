@@ -12,6 +12,7 @@ import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { FetchReview, GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
+import { ReviewFeedItem } from '../view-model';
 
 export type Ports = {
   fetchReview: FetchReview,
@@ -30,7 +31,7 @@ export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
-) => pipe(
+): T.Task<ReviewFeedItem> => pipe(
   {
     groupDetails: pipe(
       adapters.getGroup(feedEvent.groupId),
