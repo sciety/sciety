@@ -2,38 +2,31 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { articleAddedToList } from '../../../../src/domain-events';
-import { articleAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
+import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { Queries } from '../../../../src/shared-read-models';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { List } from '../../../../src/types/list';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('article-added-to-list-card', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
   describe('when a group owns the list', () => {
     it.todo('write tests');
   });
 
   describe('when a user owns the list', () => {
-    let framework: TestFramework;
     const user = arbitraryUserDetails();
     const date = new Date('2021-09-15');
-    const listId = arbitraryListId();
-    const event = articleAddedToList(arbitraryArticleId(), listId, date);
-    const lookupList: Queries['lookupList'] = () => O.some({
-      ...arbitraryList(LOID.fromUserId(user.id)),
-      id: listId,
-    });
-
-    beforeEach(() => {
-      framework = createTestFramework();
-    });
 
     describe('when user details are available', () => {
       let userList: List;
@@ -69,18 +62,17 @@ describe('article-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
-      const ports: Ports = {
-        lookupList,
-        lookupUser: () => O.none,
-        getGroup: () => O.some(arbitraryGroup()),
-        logger: dummyLogger,
-      };
+      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      let viewModel: ScietyFeedCard;
 
-      const viewModel = pipe(
-        event,
-        articleAddedToListCard(ports),
-        O.getOrElseW(shouldNotBeCalled),
-      );
+      beforeEach(async () => {
+        await framework.commandHelpers.createList(list);
+        viewModel = pipe(
+          articleAddedToList(arbitraryArticleId(), list.id, date),
+          articleAddedToListCard({ ...framework.queries, logger: dummyLogger }),
+          O.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('replaces handle with "a user"', async () => {
         expect(viewModel.titleText).toMatch(/^A user/);
@@ -95,7 +87,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the link to the generic list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${listId}`);
+        expect(viewModel.linkUrl).toBe(`/lists/${list.id}`);
       });
     });
   });
