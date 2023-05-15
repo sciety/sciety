@@ -17,16 +17,16 @@ export type Ports = {
   getGroup: Queries['getGroup'],
 };
 
-export type ReviewEvent = {
-  type: 'review',
+export type EvaluationEvent = {
+  type: 'evaluation',
   groupId: GroupId,
-  reviewId: EvaluationLocator,
+  evaluationLocator: EvaluationLocator,
   publishedAt: Date,
 };
 
-export const reviewToFeedItem = (
+export const evaluationToFeedItem = (
   adapters: Ports,
-  feedEvent: ReviewEvent,
+  feedEvent: EvaluationEvent,
 ): T.Task<EvaluationFeedItem> => pipe(
   {
     groupDetails: pipe(
@@ -46,11 +46,11 @@ export const reviewToFeedItem = (
       T.of,
     ),
     review: pipe(
-      feedEvent.reviewId,
+      feedEvent.evaluationLocator,
       adapters.fetchReview,
       TE.match(
         () => ({
-          url: RI.inferredSourceUrl(feedEvent.reviewId),
+          url: RI.inferredSourceUrl(feedEvent.evaluationLocator),
           fullText: O.none,
           fullTextLanguageCode: O.none,
         }),
@@ -68,7 +68,7 @@ export const reviewToFeedItem = (
     groupDetails, review,
   }) => ({
     type: 'evaluation' as const,
-    id: feedEvent.reviewId,
+    id: feedEvent.evaluationLocator,
     source: review.url,
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,

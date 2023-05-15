@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderReviewFeedItem } from '../../../../src/html-pages/article-page/render-as-html/render-review-feed-item';
+import { renderEvaluationFeedItem } from '../../../../src/html-pages/article-page/render-as-html/render-evaluation-feed-item';
 import { missingFullTextAndSourceLink } from '../../../../src/html-pages/article-page/render-as-html/static-messages';
 import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../../../helpers';
-import * as RFI from '../review-feed-item.helper';
+import * as RFI from '../evaluation-feed-item.helper';
 
-describe('render-review-feed-item', () => {
+describe('render-evaluation-feed-item', () => {
   const fullText = arbitraryWord(100);
 
   describe('when the evaluation has long full text', () => {
@@ -16,7 +16,7 @@ describe('render-review-feed-item', () => {
       RFI.withFullText(fullText),
     );
     const rendered: DocumentFragment = pipe(
-      renderReviewFeedItem(item, teaserLength),
+      renderEvaluationFeedItem(item, teaserLength),
       JSDOM.fragment,
     );
     const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -43,7 +43,7 @@ describe('render-review-feed-item', () => {
       RFI.withSource(source),
     );
     const rendered: DocumentFragment = pipe(
-      renderReviewFeedItem(item, 200),
+      renderEvaluationFeedItem(item, 200),
       JSDOM.fragment,
     );
     const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
@@ -76,7 +76,7 @@ describe('render-review-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          renderReviewFeedItem(item, 6),
+          renderEvaluationFeedItem(item, 6),
           JSDOM.fragment,
         );
       });
@@ -104,7 +104,7 @@ describe('render-review-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          renderReviewFeedItem(item, arbitraryNumber(6, 10)),
+          renderEvaluationFeedItem(item, arbitraryNumber(6, 10)),
           JSDOM.fragment,
         );
       });

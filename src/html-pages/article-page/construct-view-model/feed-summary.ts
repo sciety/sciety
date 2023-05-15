@@ -21,6 +21,6 @@ export const feedSummary = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => 
     feedItems,
     RA.filter((item): item is EvaluationFeedItem => item.type === 'evaluation'),
     RA.lookup(0),
-    O.map((reviewFeedItem) => reviewFeedItem.publishedAt),
+    O.map((evaluationFeedItem) => evaluationFeedItem.publishedAt),
   ),
 });

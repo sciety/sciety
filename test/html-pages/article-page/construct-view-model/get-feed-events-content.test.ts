@@ -17,15 +17,15 @@ describe('get-feed-events-content', () => {
     const groupId = arbitraryGroupId();
     const feedEvents: ReadonlyArray<FeedEvent> = [
       {
-        type: 'review',
+        type: 'evaluation',
         groupId,
-        reviewId: arbitraryEvaluationLocator(),
+        evaluationLocator: arbitraryEvaluationLocator(),
         publishedAt: new Date(),
       },
       {
-        type: 'review',
+        type: 'evaluation',
         groupId,
-        reviewId: arbitraryEvaluationLocator(),
+        evaluationLocator: arbitraryEvaluationLocator(),
         publishedAt: new Date(),
       },
     ];

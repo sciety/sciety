@@ -3,9 +3,9 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
-import { ReviewEvent, Ports, reviewToFeedItem } from './review-to-feed-item';
+import { EvaluationEvent, Ports, evaluationToFeedItem } from './evaluation-to-feed-item';
 
-export { Ports } from './review-to-feed-item';
+export { Ports } from './evaluation-to-feed-item';
 
 type ArticleVersionEvent = {
   type: 'article-version',
@@ -14,7 +14,7 @@ type ArticleVersionEvent = {
   version: number,
 };
 
-export type FeedEvent = ReviewEvent | ArticleVersionEvent;
+export type FeedEvent = EvaluationEvent | ArticleVersionEvent;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
@@ -32,8 +32,8 @@ export const getFeedEventsContent: GetFeedEventsContent = (adapters, server) => 
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
-      case 'review':
-        return reviewToFeedItem(adapters, feedEvent);
+      case 'evaluation':
+        return evaluationToFeedItem(adapters, feedEvent);
     }
   };
   return pipe(

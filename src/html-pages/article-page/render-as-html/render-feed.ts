@@ -2,7 +2,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { renderReviewFeedItem } from './render-review-feed-item';
+import { renderEvaluationFeedItem } from './render-evaluation-feed-item';
 import { templateListItems } from '../../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FeedItem } from '../view-model';
@@ -14,7 +14,7 @@ const renderFeedItem = (feedItem: FeedItem) => {
     case 'article-version-error':
       return renderVersionErrorFeedItem(feedItem.server);
     default:
-      return renderReviewFeedItem(feedItem, 850);
+      return renderEvaluationFeedItem(feedItem, 850);
   }
 };
 
