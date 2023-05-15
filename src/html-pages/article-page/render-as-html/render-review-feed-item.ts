@@ -4,10 +4,10 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
-import { langAttributeFor } from '../../../shared-components/lang-attribute-for';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as RI from '../../../types/evaluation-locator';
 import { ReviewFeedItem } from '../view-model';
+import { renderLangAttribute } from './render-lang-attribute';
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
@@ -41,12 +41,12 @@ const appendSourceLink = flow(
 const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
-    <div${langAttributeFor(fullText)}>${fullText}</div>
+    <div${renderLangAttribute(review.fullTextLanguageCode)}>${fullText}</div>
     ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-      <div class="hidden" data-teaser${langAttributeFor(fullText)}>
+      <div class="hidden" data-teaser${renderLangAttribute(review.fullTextLanguageCode)}>
         ${teaserText}
       </div>
       <div data-full-text>

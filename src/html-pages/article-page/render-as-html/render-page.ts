@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
@@ -7,15 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
-import { LanguageCode } from '../construct-view-model/detect-language';
-
-const renderLangAttribute = (code: O.Option<LanguageCode>) => pipe(
-  code,
-  O.match(
-    () => '',
-    (lc) => ` lang="${lc}"`,
-  ),
-);
+import { renderLangAttribute } from './render-lang-attribute';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
