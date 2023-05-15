@@ -11,11 +11,6 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleViewModel } from '../../shared-components/article-card';
 
-export type ResponseCounts = {
-  helpfulCount: number,
-  notHelpfulCount: number,
-};
-
 export type ReviewFeedItem = {
   type: 'review',
   id: RI.EvaluationLocator,

@@ -5,8 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { UserId } from '../../../types/user-id';
 import * as RI from '../../../types/evaluation-locator';
-import { projectReviewResponseCounts } from './project-review-response-counts';
-import { projectUserReviewResponse } from './project-user-review-response';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
@@ -30,6 +28,7 @@ export type ReviewEvent = {
 export const reviewToFeedItem = (
   adapters: Ports,
   feedEvent: ReviewEvent,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userId: O.Option<UserId>,
 ): T.Task<ReviewFeedItem> => pipe(
   {
@@ -64,18 +63,10 @@ export const reviewToFeedItem = (
         }),
       ),
     ),
-    reviewResponses: pipe(
-      adapters.getAllEvents,
-      T.map(projectReviewResponseCounts(feedEvent.reviewId)),
-    ),
-    userReviewResponse: pipe(
-      adapters.getAllEvents,
-      T.map(projectUserReviewResponse(feedEvent.reviewId, userId)),
-    ),
   },
   sequenceS(T.ApplyPar),
   T.map(({
-    groupDetails, review, reviewResponses, userReviewResponse,
+    groupDetails, review,
   }) => ({
     type: 'review' as const,
     id: feedEvent.reviewId,
@@ -83,12 +74,5 @@ export const reviewToFeedItem = (
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
-    responses: pipe(
-      userId,
-      O.map(() => ({
-        counts: reviewResponses,
-        current: userReviewResponse,
-      })),
-    ),
   })),
 );
