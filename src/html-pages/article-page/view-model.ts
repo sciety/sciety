@@ -16,11 +16,6 @@ export type ResponseCounts = {
   notHelpfulCount: number,
 };
 
-type Responses = {
-  counts: ResponseCounts,
-  current: O.Option<'helpful' | 'not-helpful'>,
-};
-
 export type ReviewFeedItem = {
   type: 'review',
   id: RI.EvaluationLocator,
@@ -30,7 +25,6 @@ export type ReviewFeedItem = {
   groupHref: string,
   groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
-  responses: O.Option<Responses>,
 };
 
 export type ArticleVersionFeedItem = {
