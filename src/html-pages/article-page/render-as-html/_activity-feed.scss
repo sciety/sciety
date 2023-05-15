@@ -24,8 +24,6 @@
   @include card.basics();
   @include card.list-item();
 
-  // TODO: needed due to .responses background color
-  // being incompatible with padding coming from card.basics()
   padding: unset;
 
   @include breakpoints.not-narrow {
@@ -108,20 +106,6 @@ p.activity-feed__item__title {
   blockquote {
     margin-left: 1rem;
     margin-right: 1rem;
-  }
-}
-
-.responses {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem functions.px-to-rem(16px);
-  background-color: settings.$colour-component-background;
-  border-top: settings.$border-width solid settings.$colour-furniture;
-  @include breakpoints.not-narrow {
-    padding-left: functions.px-to-rem(24px);
-    padding-right: functions.px-to-rem(24px);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
   }
 }
 
