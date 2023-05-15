@@ -23,20 +23,10 @@
 .activity-feed__item {
   @include card.basics();
   @include card.list-item();
-
-  padding: unset;
-
-  @include breakpoints.not-narrow {
-    padding: unset;
-  }
 }
 
 .activity-feed__item__contents {
-  padding: 1rem functions.px-to-rem(16px) 0;
   margin-bottom: 1.5rem;
-  @include breakpoints.not-narrow {
-    padding: 1.5rem functions.px-to-rem(24px) 0;
-  }
 }
 
 .activity-feed__item__header {
