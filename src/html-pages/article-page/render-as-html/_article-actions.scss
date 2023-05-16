@@ -28,6 +28,10 @@
 .full-article-button {
   @include button.button-link();
   margin-bottom: 2rem;
+}
+
+.see-related-articles-button {
+  @include button.button-link-teal();
 
   @include breakpoints.two-column-display {
     margin-bottom: 5rem;

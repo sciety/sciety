@@ -2,7 +2,6 @@
 @use 'card';
 @use 'states';
 @use 'button';
-@use 'settings';
 
 .supplementary-info {
   @include layout.column-two();
@@ -26,12 +25,4 @@
 
 .supplementary-card__button_link {
   @include button.button-link();
-}
-
-.supplementary-card--related-articles {
-  background-color: settings.$colour-container-background;
-  
-  .supplementary-card__title {
-    font-weight: 400;
-  }
 }
