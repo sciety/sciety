@@ -15,7 +15,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pip
       RA.map(renderArticleCard),
       templateListItems,
       (listContent) => `
-  <div>
+  <div id="relatedArticles">
     <h2 class="related-articles__header">Related articles</h2>
     <ol class="card-list" role="list">
       ${listContent}
