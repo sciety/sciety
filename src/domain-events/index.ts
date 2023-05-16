@@ -1,8 +1,8 @@
-export { DomainEvent, domainEventCodec } from './domain-event';
+export {
+  DomainEvent, domainEventCodec, isEventOfType, EventOfType,
+} from './domain-event';
 
 export {
-  isAnnotationCreatedEvent,
-  AnnotationCreatedEvent,
   annotationCreated,
   annotationCreatedEventCodec,
 } from './annotation-created-event';
