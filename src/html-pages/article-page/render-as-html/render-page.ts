@@ -12,12 +12,14 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
     ${renderAuthors(viewmodel.authors)}
   </header>
-  <div class="article-actions">
+  <section class="article-actions">
     <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
     <a href="#relatedArticles" class="see-related-articles-button">See related articles</a>
-    ${renderListedIn(viewmodel.listedIn)}
-    ${renderSaveArticle(viewmodel)}
-  </div>
+    <div class="listed-in">
+      ${renderListedIn(viewmodel.listedIn)}
+      ${renderSaveArticle(viewmodel)}
+    </div>
+  </section>
   <section role="doc-abstract" class="article-abstract">
     <h2>Abstract</h2>
     <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
