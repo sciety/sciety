@@ -4,11 +4,12 @@ import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
-import { FetchArticle, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { ExternalQueries } from '../external-queries';
 
 type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
@@ -16,7 +17,7 @@ export const fetchCrossrefArticle = (
   getXml: GetXml,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): FetchArticle => {
+): ExternalQueries['fetchArticle'] => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;

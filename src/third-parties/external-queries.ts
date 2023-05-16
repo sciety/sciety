@@ -34,7 +34,6 @@ type SearchForArticles = (
   pageSize: number,
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
-// ts-unused-exports:disable-next-line
 export type ExternalQueries = {
   fetchArticle: FetchArticle,
   fetchRelatedArticles: FetchRelatedArticles,

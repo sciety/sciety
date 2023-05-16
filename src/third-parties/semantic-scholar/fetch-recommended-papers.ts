@@ -7,11 +7,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
+import { Logger, GetJson } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
+import { ExternalQueries } from '../external-queries';
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
@@ -41,7 +42,7 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
-export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
+export const fetchRecommendedPapers = (ports: Ports): ExternalQueries['fetchRelatedArticles'] => (doi: Doi) => pipe(
   TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
   TE.mapLeft(
     (errors) => {

@@ -15,7 +15,8 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { GetJson, SearchForArticles } from '../../shared-ports';
+import { GetJson } from '../../shared-ports';
+import { ExternalQueries } from '../external-queries';
 
 type Dependencies = {
   getJson: GetJson,
@@ -148,7 +149,7 @@ const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: stri
   )),
 );
 
-type SearchEuropePmc = (dependencies: Dependencies) => SearchForArticles;
+type SearchEuropePmc = (dependencies: Dependencies) => ExternalQueries['searchForArticles'];
 
 export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (
   query,

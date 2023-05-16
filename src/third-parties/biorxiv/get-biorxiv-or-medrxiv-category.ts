@@ -9,8 +9,8 @@ import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
-import { GetArticleSubjectArea } from '../../shared-ports';
 import * as DE from '../../types/data-error';
+import { ExternalQueries } from '../external-queries';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 
@@ -31,7 +31,7 @@ const mapResponse = flow(
   ({ category, server }) => ({ value: category, server }),
 );
 
-export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(
+export const getBiorxivOrMedrxivCategory = (ports: Ports): ExternalQueries['getArticleSubjectArea'] => (articleId) => pipe(
   [
     'biorxiv' as const,
     'medrxiv' as const,
