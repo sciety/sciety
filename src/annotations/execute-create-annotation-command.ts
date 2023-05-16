@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { AnnotationTarget, eqAnnotationTarget } from '../types/annotation-target';
 import { HtmlFragment } from '../types/html-fragment';
 import {
-  DomainEvent, EventOfType, isEventOfType, annotationCreated,
+  DomainEvent, EventOfType, isEventOfType, constructEvent,
 } from '../domain-events';
 
 export type CreateAnnotationCommand = {
@@ -20,7 +20,7 @@ export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = (c
   RA.filter(isEventOfType('AnnotationCreated')),
   RA.filter((event) => eqAnnotationTarget.equals(event.target, command.target)),
   RA.match(
-    () => [annotationCreated(command.target, command.content)],
+    () => [constructEvent('AnnotationCreated')({ target: command.target, content: command.content })],
     () => [],
   ),
 );
