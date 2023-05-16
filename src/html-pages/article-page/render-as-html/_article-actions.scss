@@ -75,7 +75,7 @@
   margin-right: functions.px-to-rem(3px);
 }
 
-.listed-in {
+.list-management {
   @include card.basics();
 
   background-color: settings.$colour-container-background;
