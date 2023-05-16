@@ -15,6 +15,7 @@ export const annotationCreatedEventCodec = t.type({
 
 type AnnotationCreatedEvent = t.TypeOf<typeof annotationCreatedEventCodec>;
 
+// ts-unused-exports:disable-next-line
 export const annotationCreated = (
   target: AnnotationTarget,
   content: HtmlFragment,

@@ -1,10 +1,9 @@
 export {
-  DomainEvent, domainEventCodec, isEventOfType, EventOfType,
+  DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent,
 } from './domain-event';
 
-export {
-  annotationCreated,
-} from './annotation-created-event';
+// ts-unused-exports:disable-next-line
+export { annotationCreated } from './annotation-created-event';
 
 export {
   isArticleAddedToListEvent,
