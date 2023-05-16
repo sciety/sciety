@@ -14,7 +14,7 @@ export const subjectAreaRecordedEventCodec = t.type({
   subjectArea: subjectAreaCodec,
 });
 
-export type SubjectAreaRecordedEvent = t.TypeOf<typeof subjectAreaRecordedEventCodec>;
+type SubjectAreaRecordedEvent = t.TypeOf<typeof subjectAreaRecordedEventCodec>;
 
 export const isSubjectAreaRecordedEvent = (event: { type: string }):
   event is SubjectAreaRecordedEvent => event.type === 'SubjectAreaRecorded';

@@ -4,13 +4,11 @@ import { pipe } from 'fp-ts/function';
 import {
   articleAddedToList, articleRemovedFromList, evaluationRecorded, incorrectlyRecordedEvaluationErased,
 } from '../../../src/domain-events';
-import { userSavedArticle } from '../../../src/domain-events/user-saved-article-event';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
@@ -195,20 +193,6 @@ describe('get-activity-for-doi', () => {
           articleAddedToList(articleId, listAId),
           articleRemovedFromList(articleId, listAId),
           articleAddedToList(articleId, listBId),
-        ],
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      it('has a listMemberShipCount of 1', () => {
-        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
-      });
-    });
-
-    describe('and the article was saved by a user with a legacy command', () => {
-      const readmodel = pipe(
-        [
-          userSavedArticle(arbitraryUserId(), articleId),
-          articleAddedToList(articleId, arbitraryListId()),
         ],
         RA.reduce(initialState(), handleEvent),
       );

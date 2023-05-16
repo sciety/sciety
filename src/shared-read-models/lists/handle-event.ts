@@ -5,8 +5,8 @@ import {
   isArticleRemovedFromListEvent,
   isListDescriptionEditedEvent,
   isListNameEditedEvent,
+  isListCreatedEvent,
 } from '../../domain-events';
-import { isListCreatedEvent } from '../../domain-events/list-created-event';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
