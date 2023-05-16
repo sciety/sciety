@@ -21,7 +21,7 @@ export const renderListedIn = (listedIn: ViewModel['listedIn']): HtmlFragment =>
     ),
   ),
   (content) => `
-      <section>
+      <section class="list-management__listed-in">
         <h2 class="article-actions-heading">Listed in</h2>
         ${content}
       </section>
