@@ -1,5 +1,6 @@
 @use '../../../sass/breakpoints';
 @use '../../../sass/button';
+@use '../../../sass/card';
 @use '../../../sass/functions';
 @use '../../../sass/layout';
 @use '../../../sass/list';
@@ -72,6 +73,12 @@
 
 .saved-to-list__icon {
   margin-right: functions.px-to-rem(3px);
+}
+
+.listed-in {
+  @include card.basics();
+
+  background-color: settings.$colour-container-background;
 }
 
 .listed-in-list {
