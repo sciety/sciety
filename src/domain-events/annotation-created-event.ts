@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { AnnotationTarget, annotationTargetCodec } from '../types/annotation-target';
+import { annotationTargetCodec } from '../types/annotation-target';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { generate } from '../types/event-id';
-import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
+import { htmlFragmentCodec } from '../types/html-fragment';
 
 export const annotationCreatedEventCodec = t.type({
   id: EventIdFromString,
@@ -11,19 +10,4 @@ export const annotationCreatedEventCodec = t.type({
   date: tt.DateFromISOString,
   content: htmlFragmentCodec,
   target: annotationTargetCodec,
-});
-
-type AnnotationCreatedEvent = t.TypeOf<typeof annotationCreatedEventCodec>;
-
-// ts-unused-exports:disable-next-line
-export const annotationCreated = (
-  target: AnnotationTarget,
-  content: HtmlFragment,
-  date = new Date(),
-): AnnotationCreatedEvent => ({
-  id: generate(),
-  type: 'AnnotationCreated',
-  date,
-  target,
-  content,
 });
