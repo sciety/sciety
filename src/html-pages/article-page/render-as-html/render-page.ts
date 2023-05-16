@@ -15,8 +15,8 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
   <div class="article-actions">
     <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
     <a href="#relatedArticles" class="see-related-articles-button">See related articles</a>
-    ${renderSaveArticle(viewmodel)}
     ${renderListedIn(viewmodel.listedIn)}
+    ${renderSaveArticle(viewmodel)}
   </div>
   <section role="doc-abstract" class="article-abstract">
     <h2>Abstract</h2>
