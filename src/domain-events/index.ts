@@ -59,7 +59,7 @@ export {
 } from './user-unfollowed-editorial-community-event';
 
 // ts-unused-exports:disable-next-line
-export { listNameEdited, ListNameEditedEvent } from './list-name-edited-event';
+export { listNameEdited } from './list-name-edited-event';
 
 export {
   isListDescriptionEditedEvent,
