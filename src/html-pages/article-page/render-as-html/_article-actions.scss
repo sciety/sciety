@@ -81,8 +81,14 @@
   background-color: settings.$colour-container-background;
 }
 
+.list-management__listed-in {
+  margin-bottom: 2rem;
+}
+
 .listed-in-list {
   @include list.basics();
+
+  margin-bottom: 0;
 
   li {
     margin-bottom: 0.5rem;
