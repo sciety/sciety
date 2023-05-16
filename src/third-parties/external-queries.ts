@@ -1,30 +1,21 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import { ArticleAuthors } from '../types/article-authors';
+import { ArticleDetails } from '../types/article-details';
 import { ArticleServer } from '../types/article-server';
+import { ArticleVersion } from '../types/article-version';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { RelatedArticle } from '../types/related-article';
+import { SearchResults } from '../types/search-results';
 import { SubjectArea } from '../types/subject-area';
 
-type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
-  abstract: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-  doi: Doi,
-  title: SanitisedHtmlFragment,
-  server: ArticleServer,
-}>;
+type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
-type RelatedArticles = ReadonlyArray<{
-  articleId: Doi,
-  title: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-}>;
+type RelatedArticles = ReadonlyArray<RelatedArticle>;
 
 type FetchRelatedArticles = (doi: Doi) => TE.TaskEither<DE.DataError, RelatedArticles>;
 
@@ -35,26 +26,9 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
-  source: URL,
-  publishedAt: Date,
-  version: number,
-}>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 type GetArticleSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
-
-type SearchResult = {
-  articleId: Doi,
-  server: ArticleServer,
-  title: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-};
-
-type SearchResults = {
-  items: ReadonlyArray<SearchResult>,
-  total: number,
-  nextCursor: O.Option<string>,
-};
 
 type SearchForArticles = (
   pageSize: number,
