@@ -13,10 +13,7 @@ export const annotationCreatedEventCodec = t.type({
   target: annotationTargetCodec,
 });
 
-export type AnnotationCreatedEvent = t.TypeOf<typeof annotationCreatedEventCodec>;
-
-export const isAnnotationCreatedEvent = (event: { type: string }):
-  event is AnnotationCreatedEvent => event.type === 'AnnotationCreated';
+type AnnotationCreatedEvent = t.TypeOf<typeof annotationCreatedEventCodec>;
 
 export const annotationCreated = (
   target: AnnotationTarget,

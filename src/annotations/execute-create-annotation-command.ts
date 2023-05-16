@@ -11,11 +11,11 @@ export type CreateAnnotationCommand = {
 
 type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent.DomainEvent>)
-=> ReadonlyArray<DomainEvent.AnnotationCreatedEvent>;
+=> ReadonlyArray<DomainEvent.EventOfType<'AnnotationCreated'>>;
 
 export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = (command) => (events) => pipe(
   events,
-  RA.filter(DomainEvent.isAnnotationCreatedEvent),
+  RA.filter(DomainEvent.isEventOfType('AnnotationCreated')),
   RA.filter((event) => eqAnnotationTarget.equals(event.target, command.target)),
   RA.match(
     () => [DomainEvent.annotationCreated(command.target, command.content)],
