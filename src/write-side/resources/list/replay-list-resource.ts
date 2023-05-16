@@ -1,10 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { isEventOfType } from '../../../domain-events/domain-event';
 import { ListResource } from './list-resource';
 import {
   ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent, isArticleAddedToListEvent,
-  isArticleRemovedFromListEvent, isListCreatedEvent, isListDescriptionEditedEvent, isListNameEditedEvent,
+  isArticleRemovedFromListEvent, isListCreatedEvent, isListDescriptionEditedEvent,
   ListCreatedEvent, ListDescriptionEditedEvent, ListNameEditedEvent,
 } from '../../../domain-events';
 import { eqDoi } from '../../../types/doi';
@@ -26,7 +27,7 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
   isListCreatedEvent(event)
   || isArticleAddedToListEvent(event)
   || isArticleRemovedFromListEvent(event)
-  || isListNameEditedEvent(event)
+  || isEventOfType('ListNameEdited')(event)
   || isListDescriptionEditedEvent(event)
 );
 

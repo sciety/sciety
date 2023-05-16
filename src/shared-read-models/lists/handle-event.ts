@@ -1,10 +1,10 @@
+import { isEventOfType } from '../../domain-events/domain-event';
 /* eslint-disable no-param-reassign */
 import {
   DomainEvent,
   isArticleAddedToListEvent,
   isArticleRemovedFromListEvent,
   isListDescriptionEditedEvent,
-  isListNameEditedEvent,
   isListCreatedEvent,
 } from '../../domain-events';
 import { ListId } from '../../types/list-id';
@@ -40,7 +40,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       (id) => id !== event.articleId.value,
     );
     readmodel[event.listId].updatedAt = event.date;
-  } else if (isListNameEditedEvent(event)) {
+  } else if (isEventOfType('ListNameEdited')(event)) {
     readmodel[event.listId].name = event.name;
     readmodel[event.listId].updatedAt = event.date;
   } else if (isListDescriptionEditedEvent(event)) {

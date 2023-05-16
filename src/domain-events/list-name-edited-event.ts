@@ -15,10 +15,6 @@ export const listNameEditedEventCodec = t.type({
 // ts-unused-exports:disable-next-line
 export type ListNameEditedEvent = t.TypeOf<typeof listNameEditedEventCodec>;
 
-// ts-unused-exports:disable-next-line
-export const isListNameEditedEvent = (event: { type: string }):
-  event is ListNameEditedEvent => event.type === 'ListNameEdited';
-
 export const listNameEdited = (
   listId: ListId,
   name: string,
