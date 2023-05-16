@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { annotationCreated } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryString } from '../../helpers';
 import { handleEvent, initialState } from '../../../src/shared-read-models/annotations';
@@ -12,25 +12,25 @@ import { getAnnotationContent } from '../../../src/shared-read-models/annotation
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
-  const annotationContent = toHtmlFragment(arbitraryString());
+  const content = toHtmlFragment(arbitraryString());
 
   describe('when the article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        annotationCreated({ listId, articleId }, annotationContent),
+        constructEvent('AnnotationCreated')({ target: { listId, articleId }, content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns the annotation content as HTML', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(annotationContent));
+      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(content));
     });
   });
 
   describe('when the article has been annotated in a different list', () => {
     const readmodel = pipe(
       [
-        annotationCreated({ listId: arbitraryListId(), articleId }, annotationContent),
+        constructEvent('AnnotationCreated')({ target: { listId: arbitraryListId(), articleId }, content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -43,7 +43,7 @@ describe('get-annotation-content', () => {
   describe('when a different article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        annotationCreated({ listId, articleId: arbitraryArticleId() }, annotationContent),
+        constructEvent('AnnotationCreated')({ target: { listId, articleId: arbitraryArticleId() }, content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

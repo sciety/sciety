@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import { executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
-import { annotationCreated } from '../../src/domain-events/annotation-created-event';
 import { arbitraryHtmlFragment } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
+import { constructEvent } from '../../src/domain-events';
 
 describe('execute-create-annotation-command', () => {
   const target = {
@@ -33,7 +33,7 @@ describe('execute-create-annotation-command', () => {
   describe('given the target already has an annotation, when the command is executed', () => {
     const result = pipe(
       [
-        annotationCreated(target, arbitraryHtmlFragment()),
+        constructEvent('AnnotationCreated')({ target, content: arbitraryHtmlFragment() }),
       ],
       executeCreateAnnotationCommand(command),
     );
