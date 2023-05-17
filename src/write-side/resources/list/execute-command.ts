@@ -1,6 +1,5 @@
 import { EditListDetailsCommand } from '../../commands';
 import { DomainEvent, constructEvent } from '../../../domain-events';
-import { listNameEdited } from '../../../domain-events/list-name-edited-event';
 import { ListResource } from './list-resource';
 
 type ExecuteCommand = (command: EditListDetailsCommand)
@@ -10,7 +9,7 @@ type ExecuteCommand = (command: EditListDetailsCommand)
 const handleEditingOfName = (listResource: ListResource, command: EditListDetailsCommand) => (
   (listResource.name === command.name)
     ? []
-    : [listNameEdited(command.listId, command.name)]
+    : [constructEvent('ListNameEdited')({ listId: command.listId, name: command.name })]
 );
 
 const handleEditingOfDescription = (listResource: ListResource, command: EditListDetailsCommand) => (
