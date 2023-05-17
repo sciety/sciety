@@ -62,7 +62,6 @@ export {
 export { listNameEdited } from './list-name-edited-event';
 
 export {
-  listDescriptionEdited,
   ListDescriptionEditedEvent,
 } from './list-description-edited-event';
 
