@@ -11,10 +11,11 @@ describe('update', () => {
   describe('when the group has joined', () => {
     describe('and they have never updated their details', () => {
       const groupId = arbitraryGroupId();
+      const name = arbitraryString();
       const existingEvents = [
         groupJoined(
           groupId,
-          arbitraryString(),
+          name,
           arbitraryString(),
           arbitraryDescriptionPath(),
           arbitraryString(),
@@ -49,7 +50,22 @@ describe('update', () => {
       });
 
       describe('when passed the group\'s existing name', () => {
-        it.todo('raises no events');
+        const command = {
+          groupId,
+          name,
+        };
+        let events: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          events = pipe(
+            update(command)(existingEvents),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
+
+        it.failing('raises no events', () => {
+          expect(events).toStrictEqual([]);
+        });
       });
     });
 
