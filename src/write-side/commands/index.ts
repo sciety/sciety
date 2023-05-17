@@ -9,3 +9,4 @@ export { CreateUserAccountCommand } from './create-user-account';
 export { FollowCommand } from './follow';
 export { updateUserDetailsCommandCodec, UpdateUserDetailsCommand } from './update-user-details';
 export { eraseEvaluationCommandCodec, EraseEvaluationCommand } from './erase-evaluation';
+export { updateGroupDetailsCommandCodec, UpdateGroupDetailsCommand } from './update-group-details';

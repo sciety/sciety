@@ -34,7 +34,7 @@ import {
   removeArticleFromListCommandCodec,
   recordEvaluationCommandCodec,
   addGroupCommandCodec,
-  eraseEvaluationCommandCodec,
+  eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec,
 } from '../write-side/commands';
 import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
@@ -77,7 +77,12 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
-import { eraseEvaluationCommandHandler, recordEvaluationCommandHandler, updateUserDetailsCommandHandler } from '../write-side/command-handlers';
+import {
+  eraseEvaluationCommandHandler,
+  recordEvaluationCommandHandler,
+  updateGroupDetailsCommandHandler,
+  updateUserDetailsCommandHandler,
+} from '../write-side/command-handlers';
 import { listsPage } from '../html-pages/lists-page';
 
 const createApiRouteForCommand = <C extends GenericCommand>(
@@ -378,6 +383,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
 
   router.post('/api/add-group', createApiRouteForCommand(adapters, addGroupCommandCodec, addGroupCommandHandler(adapters)));
+
+  router.post('/api/update-group-details', createApiRouteForCommand(adapters, updateGroupDetailsCommandCodec, updateGroupDetailsCommandHandler(adapters)));
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 
