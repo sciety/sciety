@@ -28,11 +28,6 @@ describe('update', () => {
         const command = {
           groupId,
           name: newName,
-          shortDescription: undefined,
-          homepage: undefined,
-          avatarPath: undefined,
-          descriptionPath: undefined,
-          slug: undefined,
         };
         let events: ReadonlyArray<DomainEvent>;
 
