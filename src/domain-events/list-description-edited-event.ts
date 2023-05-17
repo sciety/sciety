@@ -10,5 +10,3 @@ export const listDescriptionEditedEventCodec = t.type({
   listId: listIdCodec,
   description: t.string,
 });
-
-export type ListDescriptionEditedEvent = t.TypeOf<typeof listDescriptionEditedEventCodec>;

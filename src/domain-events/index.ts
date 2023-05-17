@@ -58,10 +58,6 @@ export {
   userUnfollowedEditorialCommunity,
 } from './user-unfollowed-editorial-community-event';
 
-export {
-  ListDescriptionEditedEvent,
-} from './list-description-edited-event';
-
 export { evaluatedArticlesListSpecified } from './evaluated-articles-list-specified-event';
 
 export {

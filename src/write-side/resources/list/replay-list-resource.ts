@@ -5,7 +5,7 @@ import { EventOfType, isEventOfType } from '../../../domain-events/domain-event'
 import { ListResource } from './list-resource';
 import {
   ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent,
-  ListCreatedEvent, ListDescriptionEditedEvent,
+  ListCreatedEvent,
 } from '../../../domain-events';
 import { eqDoi } from '../../../types/doi';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
@@ -20,7 +20,7 @@ type RelevantEvent =
 | ArticleAddedToListEvent
 | ArticleRemovedFromListEvent
 | EventOfType<'ListNameEdited'>
-| ListDescriptionEditedEvent;
+| EventOfType<'ListDescriptionEdited'>;
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('ListCreated')(event)
