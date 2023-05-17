@@ -23,7 +23,7 @@ describe('update', () => {
         ),
       ];
 
-      describe.skip('when passed a new name for the group', () => {
+      describe('when passed a new name for the group', () => {
         const newName = arbitraryString();
         const command = {
           groupId,
