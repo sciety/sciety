@@ -14,9 +14,6 @@ export const listDescriptionEditedEventCodec = t.type({
 
 export type ListDescriptionEditedEvent = t.TypeOf<typeof listDescriptionEditedEventCodec>;
 
-export const isListDescriptionEditedEvent = (event: { type: string }):
-  event is ListDescriptionEditedEvent => event.type === 'ListDescriptionEdited';
-
 export const listDescriptionEdited = (
   listId: ListId,
   description: string,

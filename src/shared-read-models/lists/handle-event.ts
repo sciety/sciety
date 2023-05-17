@@ -4,7 +4,6 @@ import {
   DomainEvent,
   isArticleAddedToListEvent,
   isArticleRemovedFromListEvent,
-  isListDescriptionEditedEvent,
   isListCreatedEvent,
 } from '../../domain-events';
 import { ListId } from '../../types/list-id';
@@ -43,7 +42,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ListNameEdited')(event)) {
     readmodel[event.listId].name = event.name;
     readmodel[event.listId].updatedAt = event.date;
-  } else if (isListDescriptionEditedEvent(event)) {
+  } else if (isEventOfType('ListDescriptionEdited')(event)) {
     readmodel[event.listId].description = event.description;
     readmodel[event.listId].updatedAt = event.date;
   }
