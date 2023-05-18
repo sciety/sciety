@@ -67,6 +67,10 @@ describe('update', () => {
           expect(events).toStrictEqual([]);
         });
       });
+
+      describe('when passed the name of a different existing group', () => {
+        it.todo('returns an error');
+      });
     });
 
     describe('and they have previously updated their details', () => {
@@ -76,6 +80,10 @@ describe('update', () => {
 
       describe('when passed the group\'s existing name', () => {
         it.todo('raises no events');
+      });
+
+      describe('when passed the name of a different existing group', () => {
+        it.todo('returns an error');
       });
     });
   });
