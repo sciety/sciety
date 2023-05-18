@@ -63,7 +63,7 @@ describe('update', () => {
           );
         });
 
-        it.failing('raises no events', () => {
+        it('raises no events', () => {
           expect(events).toStrictEqual([]);
         });
       });

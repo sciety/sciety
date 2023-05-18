@@ -15,7 +15,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
   RA.head,
   E.fromOption(() => toErrorMessage('not implemented')),
   E.map(
-    () => [constructEvent('GroupDetailsUpdated')({
+    (group) => ((group.name === command.name) ? [] : [constructEvent('GroupDetailsUpdated')({
       groupId: command.groupId,
       name: command.name,
       shortDescription: undefined,
@@ -23,6 +23,6 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
       avatarPath: undefined,
       descriptionPath: undefined,
       slug: undefined,
-    })],
+    })]),
   ),
 );
