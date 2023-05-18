@@ -11,14 +11,6 @@ const renderSearchForm = () => `
   </form>
 `;
 
-const renderVideoCallToAction = () => `
-  <div class="home-page-hero__video_call_to_action">
-    <div class="home-page-hero__video_cta_text_wrapper">
-      <p class="home-page-hero__video_cta_copy">Learn about Sciety.</p>
-      <a class="home-page-hero__video_cta_link" href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
-    </div>
-`;
-
 export const hero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero">
     <div class="home-page-hero__left_wrapper">
@@ -47,10 +39,6 @@ export const hero: HtmlFragment = toHtmlFragment(`
         <p class="home-page-hero__above_button">Create an account to start sharing preprints with your community.</p>
         <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
       </section>
-    </div>
-
-    <div class="home-page-hero__right_wrapper">
-      ${renderVideoCallToAction()}
     </div>
   </section>
 `);
