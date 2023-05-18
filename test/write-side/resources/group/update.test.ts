@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import { update } from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
+import { constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -50,14 +50,10 @@ describe('update', () => {
           groupId,
           name: newName,
         };
-        let events: ReadonlyArray<DomainEvent>;
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
+        const events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
 
         it('raises an event to update the group name', () => {
           expect(events).toStrictEqual([
@@ -79,14 +75,10 @@ describe('update', () => {
           groupId,
           name,
         };
-        let events: ReadonlyArray<DomainEvent>;
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
+        const events = pipe(
+          update(command)(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
 
         it('raises no events', () => {
           expect(events).toStrictEqual([]);
