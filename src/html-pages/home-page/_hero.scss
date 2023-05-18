@@ -62,7 +62,8 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 
   @include breakpoints.not-narrow() {
-    @include typography.sizing(36px, 42px);
+    @include typography.sizing(54px, 62px);
+    font-weight: bold;
     margin-bottom: 0.75rem;
   }
 }
@@ -89,7 +90,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-top: 1.25rem;
-  max-width: functions.px-to-rem(800px);
+  max-width: functions.px-to-rem(1200px);
   margin-left: auto;
   margin-right: auto;
 
