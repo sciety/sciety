@@ -101,17 +101,4 @@ $_arbitrary-large-amount-of-px: 9000px;
     grid-column: 1 / -1;
     padding-top: 3.75rem;
   }
-
-}
-
-.home-page-hero__groups_link {
-  font-weight: bold;
-}
-
-.home-page-hero__above_button {
-  margin-bottom: 0.5rem;
-}
-
-.home-page-hero__sign_up_button {
-  @include button.button-link();
 }
