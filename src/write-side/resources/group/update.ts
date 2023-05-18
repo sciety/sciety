@@ -9,6 +9,7 @@ import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
 
 type ReadModel = {
+  disallowedNames: ReadonlyArray<string>,
   groupToUpdate: O.Option<{
     name: string,
     slug: string,
@@ -16,6 +17,7 @@ type ReadModel = {
 };
 
 const initialState: ReadModel = {
+  disallowedNames: [],
   groupToUpdate: O.none,
 };
 
@@ -37,10 +39,17 @@ const handleEvent = (idOfGroupToUpdate: GroupId) => (readmodel: ReadModel, event
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   RA.reduce(initialState, handleEvent(command.groupId)),
-  (readModel) => readModel.groupToUpdate,
-  E.fromOption(() => toErrorMessage('not implemented')),
+  E.right,
+  E.filterOrElse(
+    (readmodel) => O.isSome(readmodel.groupToUpdate),
+    () => toErrorMessage('group not found'),
+  ),
+  E.chain((readModel) => pipe(
+    readModel.groupToUpdate,
+    E.fromOption(() => toErrorMessage('group not found')),
+  )),
   E.map(
-    (group) => ((group.name === command.name) ? [] : [constructEvent('GroupDetailsUpdated')({
+    (groupToUpdate) => ((command.name === groupToUpdate.name) ? [] : [constructEvent('GroupDetailsUpdated')({
       groupId: command.groupId,
       name: command.name,
       shortDescription: undefined,
