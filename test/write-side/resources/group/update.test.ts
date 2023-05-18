@@ -9,10 +9,10 @@ import { arbitraryDescriptionPath } from '../../../types/description-path.helper
 import { arbitraryGroup } from '../../../types/group.helper';
 import { GroupId } from '../../../../src/types/group-id';
 
-const arbitraryGroupJoinedEvent = (groupId: GroupId) => pipe(
+const arbitraryGroupJoinedEvent = (groupId: GroupId, name = arbitraryString()) => pipe(
   {
     groupId,
-    name: arbitraryString(),
+    name,
     avatarPath: arbitraryUri(),
     descriptionPath: arbitraryDescriptionPath(),
     shortDescription: arbitraryString(),
@@ -30,15 +30,7 @@ describe('update', () => {
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const existingEvents = [
-          constructEvent('GroupJoined')({
-            groupId,
-            name,
-            avatarPath: arbitraryUri(),
-            descriptionPath: arbitraryDescriptionPath(),
-            shortDescription: arbitraryString(),
-            homepage: arbitraryString(),
-            slug: arbitraryString(),
-          }),
+          arbitraryGroupJoinedEvent(groupId, name),
         ];
         const newName = arbitraryString();
         const command = {
@@ -67,15 +59,7 @@ describe('update', () => {
       describe('when passed the group\'s existing name', () => {
         const name = arbitraryString();
         const existingEvents = [
-          constructEvent('GroupJoined')({
-            groupId,
-            name,
-            avatarPath: arbitraryUri(),
-            descriptionPath: arbitraryDescriptionPath(),
-            shortDescription: arbitraryString(),
-            homepage: arbitraryString(),
-            slug: arbitraryString(),
-          }),
+          arbitraryGroupJoinedEvent(groupId, name),
         ];
 
         const command = {
@@ -100,24 +84,8 @@ describe('update', () => {
         const groupToUpdate = arbitraryGroup();
         const preExistingGroup = arbitraryGroup();
         const existingEvents = [
-          constructEvent('GroupJoined')({
-            groupId: groupToUpdate.id,
-            name: groupToUpdate.name,
-            avatarPath: arbitraryUri(),
-            descriptionPath: arbitraryDescriptionPath(),
-            shortDescription: arbitraryString(),
-            homepage: arbitraryString(),
-            slug: arbitraryString(),
-          }),
-          constructEvent('GroupJoined')({
-            groupId: preExistingGroup.id,
-            name: preExistingGroup.name,
-            avatarPath: arbitraryUri(),
-            descriptionPath: arbitraryDescriptionPath(),
-            shortDescription: arbitraryString(),
-            homepage: arbitraryString(),
-            slug: arbitraryString(),
-          }),
+          arbitraryGroupJoinedEvent(groupToUpdate.id, groupToUpdate.name),
+          arbitraryGroupJoinedEvent(preExistingGroup.id, preExistingGroup.name),
         ];
         const command = {
           groupId: groupToUpdate.id,
