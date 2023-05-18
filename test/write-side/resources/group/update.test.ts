@@ -22,6 +22,19 @@ const arbitraryGroupJoinedEvent = (groupId: GroupId, name = arbitraryString()) =
   constructEvent('GroupJoined'),
 );
 
+const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name: string) => pipe(
+  {
+    groupId,
+    name,
+    avatarPath: undefined,
+    descriptionPath: undefined,
+    shortDescription: undefined,
+    homepage: undefined,
+    slug: undefined,
+  },
+  constructEvent('GroupDetailsUpdated'),
+);
+
 describe('update', () => {
   describe('when the group has joined', () => {
     describe('and they have never updated their details', () => {
@@ -105,15 +118,7 @@ describe('update', () => {
         const name = arbitraryString();
         const existingEvents = [
           arbitraryGroupJoinedEvent(groupId),
-          constructEvent('GroupDetailsUpdated')({
-            groupId,
-            name,
-            avatarPath: undefined,
-            descriptionPath: undefined,
-            shortDescription: undefined,
-            homepage: undefined,
-            slug: undefined,
-          }),
+          arbitraryGroupDetailsUpdatedEvent(groupId, name),
         ];
         const events = pipe(
           update({ groupId, name })(existingEvents),
