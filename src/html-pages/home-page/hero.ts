@@ -15,14 +15,13 @@ export const hero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero">
     <div class="home-page-hero__left_wrapper">
       <h1 class="home-page-hero__content_title">
-        The home of public preprint evaluation
+        The home of preprint evaluation
       </h1>
       <p class="home-page-hero__content_byline">
-        Explore and curate evaluated preprints.
+        Find preprints reviewed and recommended by trusted groups of researchers.
       </p>
 
       <section class="home-page-hero__section">
-        <h2 class="home-page-hero__subheading">Find evaluated preprints</h2>
         ${renderSearchForm()}
       </section>
     </div>
