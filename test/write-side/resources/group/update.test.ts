@@ -96,20 +96,22 @@ describe('update', () => {
     });
 
     describe('and they have previously updated their details', () => {
+      const moreEventsRelatedToOurGroup = [
+        arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
+      ];
+
       describe('when passed the group\'s existing name', () => {
-        const groupId = arbitraryGroupId();
-        const name = arbitraryString();
-        const existingEvents = [
-          arbitraryGroupJoinedEvent(groupId),
-          arbitraryGroupDetailsUpdatedEvent(groupId, name),
-        ];
-        const events = pipe(
-          groupResource.update({ groupId, name })(existingEvents),
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatedToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name: moreEventsRelatedToOurGroup[0].name }),
           E.getOrElseW(shouldNotBeCalled),
         );
 
         it.failing('raises no events', () => {
-          expect(events).toStrictEqual([]);
+          expect(eventsRaised).toStrictEqual([]);
         });
       });
 
