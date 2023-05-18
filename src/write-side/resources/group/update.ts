@@ -32,6 +32,10 @@ const handleEvent = (idOfGroupToUpdate: GroupId) => (readmodel: ReadModel, event
         }),
       };
     }
+    return {
+      ...readmodel,
+      disallowedNames: readmodel.disallowedNames.concat([event.name]),
+    };
   }
   return readmodel;
 };
