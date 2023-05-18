@@ -96,7 +96,7 @@ describe('update', () => {
     });
 
     describe('and they have previously updated their details', () => {
-      const moreEventsRelatedToOurGroup = [
+      const moreEventsRelatingToOurGroup = [
         arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
       ];
 
@@ -104,9 +104,9 @@ describe('update', () => {
         const eventsRaised = pipe(
           [
             groupJoined,
-            ...moreEventsRelatedToOurGroup,
+            ...moreEventsRelatingToOurGroup,
           ],
-          groupResource.update({ groupId: groupJoined.groupId, name: moreEventsRelatedToOurGroup[0].name }),
+          groupResource.update({ groupId: groupJoined.groupId, name: moreEventsRelatingToOurGroup[0].name }),
           E.getOrElseW(shouldNotBeCalled),
         );
 
@@ -115,8 +115,20 @@ describe('update', () => {
         });
       });
 
-      describe('when passed the name of a different existing group', () => {
-        it.todo('returns an error');
+      describe('when passed the name of another existing group', () => {
+        const otherGroupJoined = arbitraryGroupJoinedEvent();
+        const result = pipe(
+          [
+            groupJoined,
+            otherGroupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name: otherGroupJoined.name }),
+        );
+
+        it('returns an error', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
   });
