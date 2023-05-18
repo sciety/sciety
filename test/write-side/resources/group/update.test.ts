@@ -7,6 +7,20 @@ import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
+import { GroupId } from '../../../../src/types/group-id';
+
+const arbitraryGroupJoinedEvent = (groupId: GroupId) => pipe(
+  {
+    groupId,
+    name: arbitraryString(),
+    avatarPath: arbitraryUri(),
+    descriptionPath: arbitraryDescriptionPath(),
+    shortDescription: arbitraryString(),
+    homepage: arbitraryString(),
+    slug: arbitraryString(),
+  },
+  constructEvent('GroupJoined'),
+);
 
 describe('update', () => {
   describe('when the group has joined', () => {
@@ -122,15 +136,7 @@ describe('update', () => {
         const groupId = arbitraryGroupId();
         const name = arbitraryString();
         const existingEvents = [
-          constructEvent('GroupJoined')({
-            groupId,
-            name: arbitraryString(),
-            avatarPath: arbitraryUri(),
-            descriptionPath: arbitraryDescriptionPath(),
-            shortDescription: arbitraryString(),
-            homepage: arbitraryString(),
-            slug: arbitraryString(),
-          }),
+          arbitraryGroupJoinedEvent(groupId),
           constructEvent('GroupDetailsUpdated')({
             groupId,
             name,
