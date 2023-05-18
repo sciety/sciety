@@ -15,27 +15,28 @@ type ReadModel = {
   }>,
 };
 
-const buildReadModel = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>): ReadModel => pipe(
-  events,
-  RA.filter(isEventOfType('GroupJoined')),
-  RA.filter((event) => event.groupId === groupId),
-  RA.head,
-  O.match(
-    () => ({
-      groupToUpdate: O.none,
-    }),
-    (groupToUpdate) => ({
-      groupToUpdate: O.some({
-        name: groupToUpdate.name,
-        slug: groupToUpdate.slug,
-      }),
-    }),
-  ),
-);
+const initialState: ReadModel = {
+  groupToUpdate: O.none,
+};
+
+const handleEvent = (idOfGroupToUpdate: GroupId) => (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+  if (isEventOfType('GroupJoined')(event)) {
+    if (event.groupId === idOfGroupToUpdate) {
+      return {
+        ...readmodel,
+        groupToUpdate: O.some({
+          name: event.name,
+          slug: event.slug,
+        }),
+      };
+    }
+  }
+  return readmodel;
+};
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
-  buildReadModel(command.groupId),
+  RA.reduce(initialState, handleEvent(command.groupId)),
   (readModel) => readModel.groupToUpdate,
   E.fromOption(() => toErrorMessage('not implemented')),
   E.map(
