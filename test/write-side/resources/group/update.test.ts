@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { update } from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryString } from '../../../helpers';
-import { DomainEvent, constructEvent, groupJoined } from '../../../../src/domain-events';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -16,15 +16,15 @@ describe('update', () => {
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const existingEvents = [
-          groupJoined(
+          constructEvent('GroupJoined')({
             groupId,
             name,
-            arbitraryString(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryString(),
-          ),
+            avatarPath: arbitraryUri(),
+            descriptionPath: arbitraryDescriptionPath(),
+            shortDescription: arbitraryString(),
+            homepage: arbitraryString(),
+            slug: arbitraryString(),
+          }),
         ];
         const newName = arbitraryString();
         const command = {
@@ -53,15 +53,15 @@ describe('update', () => {
       describe('when passed the group\'s existing name', () => {
         const name = arbitraryString();
         const existingEvents = [
-          groupJoined(
+          constructEvent('GroupJoined')({
             groupId,
             name,
-            arbitraryString(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryString(),
-          ),
+            avatarPath: arbitraryUri(),
+            descriptionPath: arbitraryDescriptionPath(),
+            shortDescription: arbitraryString(),
+            homepage: arbitraryString(),
+            slug: arbitraryString(),
+          }),
         ];
 
         const command = {
@@ -86,24 +86,24 @@ describe('update', () => {
         const groupToUpdate = arbitraryGroup();
         const preExistingGroup = arbitraryGroup();
         const existingEvents = [
-          groupJoined(
-            groupToUpdate.id,
-            groupToUpdate.name,
-            arbitraryString(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryString(),
-          ),
-          groupJoined(
-            preExistingGroup.id,
-            preExistingGroup.name,
-            arbitraryString(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryString(),
-          ),
+          constructEvent('GroupJoined')({
+            groupId: groupToUpdate.id,
+            name: groupToUpdate.name,
+            avatarPath: arbitraryUri(),
+            descriptionPath: arbitraryDescriptionPath(),
+            shortDescription: arbitraryString(),
+            homepage: arbitraryString(),
+            slug: arbitraryString(),
+          }),
+          constructEvent('GroupJoined')({
+            groupId: preExistingGroup.id,
+            name: preExistingGroup.name,
+            avatarPath: arbitraryUri(),
+            descriptionPath: arbitraryDescriptionPath(),
+            shortDescription: arbitraryString(),
+            homepage: arbitraryString(),
+            slug: arbitraryString(),
+          }),
         ];
         const command = {
           groupId: groupToUpdate.id,
@@ -122,15 +122,15 @@ describe('update', () => {
         const groupId = arbitraryGroupId();
         const name = arbitraryString();
         const existingEvents = [
-          groupJoined(
+          constructEvent('GroupJoined')({
             groupId,
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryDescriptionPath(),
-            arbitraryString(),
-            arbitraryString(),
-            arbitraryString(),
-          ),
+            name: arbitraryString(),
+            avatarPath: arbitraryUri(),
+            descriptionPath: arbitraryDescriptionPath(),
+            shortDescription: arbitraryString(),
+            homepage: arbitraryString(),
+            slug: arbitraryString(),
+          }),
           constructEvent('GroupDetailsUpdated')({
             groupId,
             name,
