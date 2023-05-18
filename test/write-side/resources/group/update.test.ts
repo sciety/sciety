@@ -11,20 +11,20 @@ describe('update', () => {
   describe('when the group has joined', () => {
     describe('and they have never updated their details', () => {
       const groupId = arbitraryGroupId();
-      const name = arbitraryString();
-      const existingEvents = [
-        groupJoined(
-          groupId,
-          name,
-          arbitraryString(),
-          arbitraryDescriptionPath(),
-          arbitraryString(),
-          arbitraryString(),
-          arbitraryString(),
-        ),
-      ];
 
       describe('when passed a new name for the group', () => {
+        const name = arbitraryString();
+        const existingEvents = [
+          groupJoined(
+            groupId,
+            name,
+            arbitraryString(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryString(),
+          ),
+        ];
         const newName = arbitraryString();
         const command = {
           groupId,
@@ -50,6 +50,19 @@ describe('update', () => {
       });
 
       describe('when passed the group\'s existing name', () => {
+        const name = arbitraryString();
+        const existingEvents = [
+          groupJoined(
+            groupId,
+            name,
+            arbitraryString(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryString(),
+          ),
+        ];
+
         const command = {
           groupId,
           name,
