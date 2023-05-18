@@ -6,6 +6,7 @@ import { arbitraryString } from '../../../helpers';
 import { DomainEvent, groupJoined } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
+import { arbitraryGroup } from '../../../types/group.helper';
 
 describe('update', () => {
   describe('when the group has joined', () => {
@@ -82,7 +83,37 @@ describe('update', () => {
       });
 
       describe('when passed the name of a different existing group', () => {
-        it.todo('returns an error');
+        const groupToUpdate = arbitraryGroup();
+        const preExistingGroup = arbitraryGroup();
+        const existingEvents = [
+          groupJoined(
+            groupToUpdate.id,
+            groupToUpdate.name,
+            arbitraryString(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryString(),
+          ),
+          groupJoined(
+            preExistingGroup.id,
+            preExistingGroup.name,
+            arbitraryString(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryString(),
+          ),
+        ];
+        const command = {
+          groupId: groupToUpdate.id,
+          name: preExistingGroup.name,
+        };
+        const result = update(command)(existingEvents);
+
+        it.failing('returns an error', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
 
