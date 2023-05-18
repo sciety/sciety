@@ -60,6 +60,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 
+
   @include breakpoints.not-narrow() {
     @include typography.sizing(36px, 42px);
     margin-bottom: 0.75rem;
@@ -92,9 +93,12 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-top: 1.25rem;
+  max-width: functions.px-to-rem(800px);
+  margin-left: auto;
+  margin-right: auto;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
-    grid-column: 1 / 8;
+    grid-column: 1 / -1;
     padding-top: 3.75rem;
   }
 
