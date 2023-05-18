@@ -8,7 +8,7 @@ import { UpdateGroupDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
 
-type ReadModel = {
+type WriteModel = {
   disallowedNames: ReadonlyArray<string>,
   groupToUpdate: O.Option<{
     name: string,
@@ -16,16 +16,16 @@ type ReadModel = {
   }>,
 };
 
-const initialState: ReadModel = {
+const initialState: WriteModel = {
   disallowedNames: [],
   groupToUpdate: O.none,
 };
 
-const handleEvent = (idOfGroupToUpdate: GroupId) => (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+const handleEvent = (idOfGroupToUpdate: GroupId) => (writeModel: WriteModel, event: DomainEvent): WriteModel => {
   if (isEventOfType('GroupJoined')(event)) {
     if (event.groupId === idOfGroupToUpdate) {
       return {
-        ...readmodel,
+        ...writeModel,
         groupToUpdate: O.some({
           name: event.name,
           slug: event.slug,
@@ -33,15 +33,15 @@ const handleEvent = (idOfGroupToUpdate: GroupId) => (readmodel: ReadModel, event
       };
     }
     return {
-      ...readmodel,
-      disallowedNames: readmodel.disallowedNames.concat([event.name]),
+      ...writeModel,
+      disallowedNames: writeModel.disallowedNames.concat([event.name]),
     };
   }
-  return readmodel;
+  return writeModel;
 };
 
-const nameNotInUse = (readmodel: ReadModel, name: string) => (
-  !readmodel.disallowedNames.includes(name)
+const nameNotInUse = (writeModel: WriteModel, name: string) => (
+  !writeModel.disallowedNames.includes(name)
 );
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
@@ -49,15 +49,15 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
   RA.reduce(initialState, handleEvent(command.groupId)),
   E.right,
   E.filterOrElse(
-    (readmodel) => O.isSome(readmodel.groupToUpdate),
+    (writeModel) => O.isSome(writeModel.groupToUpdate),
     () => toErrorMessage('group not found'),
   ),
   E.filterOrElse(
-    (readmodel) => (command.name === undefined || nameNotInUse(readmodel, command.name)),
+    (writeModel) => (command.name === undefined || nameNotInUse(writeModel, command.name)),
     () => toErrorMessage('group name already in use'),
   ),
-  E.chain((readModel) => pipe(
-    readModel.groupToUpdate,
+  E.chain((writeModel) => pipe(
+    writeModel.groupToUpdate,
     E.fromOption(() => toErrorMessage('group not found')),
   )),
   E.map(
