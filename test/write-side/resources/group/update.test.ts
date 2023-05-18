@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import { update } from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString } from '../../../helpers';
-import { DomainEvent, groupJoined } from '../../../../src/domain-events';
+import { DomainEvent, constructEvent, groupJoined } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -118,12 +118,37 @@ describe('update', () => {
     });
 
     describe('and they have previously updated their details', () => {
-      describe('when passed a new name for the group', () => {
-        it.todo('raises an event to update the group name');
-      });
-
       describe('when passed the group\'s existing name', () => {
-        it.todo('raises no events');
+        const groupId = arbitraryGroupId();
+        const name = arbitraryString();
+        const existingEvents = [
+          groupJoined(
+            groupId,
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryDescriptionPath(),
+            arbitraryString(),
+            arbitraryString(),
+            arbitraryString(),
+          ),
+          constructEvent('GroupDetailsUpdated')({
+            groupId,
+            name,
+            avatarPath: undefined,
+            descriptionPath: undefined,
+            shortDescription: undefined,
+            homepage: undefined,
+            slug: undefined,
+          }),
+        ];
+        const events = pipe(
+          update({ groupId, name })(existingEvents),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        it.failing('raises no events', () => {
+          expect(events).toStrictEqual([]);
+        });
       });
 
       describe('when passed the name of a different existing group', () => {
