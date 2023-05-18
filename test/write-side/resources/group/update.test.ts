@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { update } from '../../../../src/write-side/resources/group';
+import * as groupResource from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { constructEvent } from '../../../../src/domain-events';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { GroupId } from '../../../../src/types/group-id';
 
-const arbitraryGroupJoinedEvent = (groupId: GroupId, name = arbitraryString()) => pipe(
+const arbitraryGroupJoinedEvent = (groupId = arbitraryGroupId(), name = arbitraryString()) => pipe(
   {
     groupId,
     name,
@@ -37,35 +37,35 @@ const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name: string) => pi
 
 describe('update', () => {
   describe('when the group has joined', () => {
+    const groupJoined = arbitraryGroupJoinedEvent();
+
     describe('and they have never updated their details', () => {
-      const groupId = arbitraryGroupId();
+      const otherEvents: ReadonlyArray<DomainEvent> = [];
 
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
-        const existingEvents = [
-          arbitraryGroupJoinedEvent(groupId, name),
-        ];
-        const newName = arbitraryString();
-        const command = {
-          groupId,
-          name: newName,
-        };
-        const events = pipe(
-          update(command)(existingEvents),
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...otherEvents,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name }),
           E.getOrElseW(shouldNotBeCalled),
         );
 
         it('raises an event to update the group name', () => {
-          expect(events).toStrictEqual([
+          expect(eventsRaised).toStrictEqual([
             expect.objectContaining({
-              groupId,
-              name: newName,
+              type: 'GroupDetailsUpdated',
+              groupId: groupJoined.groupId,
+              name,
             }),
           ]);
         });
       });
 
       describe('when passed the group\'s existing name', () => {
+        const groupId = arbitraryGroupId();
         const name = arbitraryString();
         const existingEvents = [
           arbitraryGroupJoinedEvent(groupId, name),
@@ -76,7 +76,7 @@ describe('update', () => {
           name,
         };
         const events = pipe(
-          update(command)(existingEvents),
+          groupResource.update(command)(existingEvents),
           E.getOrElseW(shouldNotBeCalled),
         );
 
@@ -96,7 +96,7 @@ describe('update', () => {
           groupId: groupToUpdate.id,
           name: preExistingGroup.name,
         };
-        const result = update(command)(existingEvents);
+        const result = groupResource.update(command)(existingEvents);
 
         it('returns an error', () => {
           expect(E.isLeft(result)).toBe(true);
@@ -113,7 +113,7 @@ describe('update', () => {
           arbitraryGroupDetailsUpdatedEvent(groupId, name),
         ];
         const events = pipe(
-          update({ groupId, name })(existingEvents),
+          groupResource.update({ groupId, name })(existingEvents),
           E.getOrElseW(shouldNotBeCalled),
         );
 
