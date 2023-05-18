@@ -6,7 +6,6 @@ import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { GroupId } from '../../../../src/types/group-id';
 
 const arbitraryGroupJoinedEvent = (groupId = arbitraryGroupId(), name = arbitraryString()) => pipe(
@@ -40,14 +39,14 @@ describe('update', () => {
     const groupJoined = arbitraryGroupJoinedEvent();
 
     describe('and they have never updated their details', () => {
-      const otherEvents: ReadonlyArray<DomainEvent> = [];
+      const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
 
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const eventsRaised = pipe(
           [
             groupJoined,
-            ...otherEvents,
+            ...moreEventsRelatingToOurGroup,
           ],
           groupResource.update({ groupId: groupJoined.groupId, name }),
           E.getOrElseW(shouldNotBeCalled),
@@ -68,7 +67,7 @@ describe('update', () => {
         const eventsRaised = pipe(
           [
             groupJoined,
-            ...otherEvents,
+            ...moreEventsRelatingToOurGroup,
           ],
           groupResource.update({ groupId: groupJoined.groupId, name: groupJoined.name }),
           E.getOrElseW(shouldNotBeCalled),
@@ -79,18 +78,16 @@ describe('update', () => {
         });
       });
 
-      describe('when passed the name of a different existing group', () => {
-        const groupToUpdate = arbitraryGroup();
-        const preExistingGroup = arbitraryGroup();
-        const existingEvents = [
-          arbitraryGroupJoinedEvent(groupToUpdate.id, groupToUpdate.name),
-          arbitraryGroupJoinedEvent(preExistingGroup.id, preExistingGroup.name),
-        ];
-        const command = {
-          groupId: groupToUpdate.id,
-          name: preExistingGroup.name,
-        };
-        const result = groupResource.update(command)(existingEvents);
+      describe('when passed the name of another existing group', () => {
+        const otherGroupJoined = arbitraryGroupJoinedEvent();
+        const result = pipe(
+          [
+            groupJoined,
+            otherGroupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name: otherGroupJoined.name }),
+        );
 
         it('returns an error', () => {
           expect(E.isLeft(result)).toBe(true);
