@@ -72,6 +72,11 @@ const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => p
   RA.reduce(initialState, handleEvent(groupId)),
 );
 
+const enforceUniqueness = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  command: UpdateGroupDetailsCommand, events: ReadonlyArray<DomainEvent>,
+) => (writeModel: WriteModel) => (command.name === undefined || nameNotInUse(writeModel, command.name));
+
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroup(command.groupId),
@@ -81,7 +86,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => toErrorMessage('group not found'),
   ),
   E.filterOrElse(
-    (writeModel) => (command.name === undefined || nameNotInUse(writeModel, command.name)),
+    enforceUniqueness(command, events),
     () => toErrorMessage('group name already in use'),
   ),
   E.chain((writeModel) => pipe(
