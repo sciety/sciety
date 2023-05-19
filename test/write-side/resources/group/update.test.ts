@@ -100,7 +100,7 @@ describe('update', () => {
         arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
       ];
 
-      describe('when passed the group\'s existing name', () => {
+      describe('when passed the group\'s current name', () => {
         const eventsRaised = pipe(
           [
             groupJoined,
@@ -110,7 +110,7 @@ describe('update', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        it.failing('raises no events', () => {
+        it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
         });
       });

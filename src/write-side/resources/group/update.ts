@@ -37,6 +37,23 @@ const handleEvent = (idOfGroupToUpdate: GroupId) => (writeModel: WriteModel, eve
       disallowedNames: writeModel.disallowedNames.concat([event.name]),
     };
   }
+  if (isEventOfType('GroupDetailsUpdated')(event)) {
+    if (event.groupId === idOfGroupToUpdate) {
+      return {
+        ...writeModel,
+        groupToUpdate: pipe(
+          writeModel.groupToUpdate,
+          O.match(
+            () => { throw new Error('Database corruption'); },
+            (groupToUpdate) => O.some({
+              ...groupToUpdate,
+              name: event.name ?? groupToUpdate.name,
+            }),
+          ),
+        ),
+      };
+    }
+  }
   return writeModel;
 };
 
