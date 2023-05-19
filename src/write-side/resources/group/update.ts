@@ -3,7 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { toErrorMessage } from '../../../types/error-message';
-import { isEventOfType, constructEvent, DomainEvent } from '../../../domain-events';
+import {
+  isEventOfType, constructEvent, DomainEvent, EventOfType,
+} from '../../../domain-events';
 import { UpdateGroupDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
@@ -61,9 +63,18 @@ const nameNotInUse = (writeModel: WriteModel, name: string) => (
   !writeModel.disallowedNames.includes(name)
 );
 
+const isRelevantEvent = (event: DomainEvent): event is EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'> => isEventOfType('GroupJoined')(event) || isEventOfType('GroupDetailsUpdated')(event);
+
+const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter(isRelevantEvent),
+  // RA.filter((event) => event.groupId === groupId),
+  RA.reduce(initialState, handleEvent(groupId)),
+);
+
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
-  RA.reduce(initialState, handleEvent(command.groupId)),
+  getGroup(command.groupId),
   E.right,
   E.filterOrElse(
     (writeModel) => O.isSome(writeModel.groupToUpdate),
