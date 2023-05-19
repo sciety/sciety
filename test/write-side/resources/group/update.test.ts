@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-commented-out-tests */
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as groupResource from '../../../../src/write-side/resources/group';
@@ -138,4 +139,18 @@ describe('update', () => {
       it.todo('fails');
     });
   });
+
+  // describe('when a GroupDetailsUpdated event exists without a previous GroupJoined event', () => {
+  // const groupId = arbitraryGroupId();
+  // const result = pipe(
+  // [
+  // arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
+  // ],
+  // groupResource.update({ groupId }),
+  // );
+
+  // it('returns an error', () => {
+  // expect(E.isLeft(result)).toBe(true);
+  // });
+  // });
 });
