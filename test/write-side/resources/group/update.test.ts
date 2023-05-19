@@ -79,6 +79,29 @@ describe('update', () => {
         });
       });
 
+      describe('when passed a new name and existing shortDescription', () => {
+        const name = arbitraryString();
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name, shortDescription: groupJoined.shortDescription }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        it.failing('raises an event to only update the group name', () => {
+          expect(eventsRaised).toStrictEqual([
+            expect.objectContaining({
+              type: 'GroupDetailsUpdated',
+              groupId: groupJoined.groupId,
+              name,
+              shortDescription: undefined,
+            }),
+          ]);
+        });
+      });
+
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const eventsRaised = pipe(
