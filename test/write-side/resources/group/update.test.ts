@@ -42,6 +42,28 @@ describe('update', () => {
     describe('and they have never updated their details', () => {
       const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
 
+      describe('when passed a new shortDescription for the group', () => {
+        const shortDescription = arbitraryString();
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, shortDescription }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        it.failing('raises an event to update the group name', () => {
+          expect(eventsRaised).toStrictEqual([
+            expect.objectContaining({
+              type: 'GroupDetailsUpdated',
+              groupId: groupJoined.groupId,
+              shortDescription,
+            }),
+          ]);
+        });
+      });
+
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const eventsRaised = pipe(
