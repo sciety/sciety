@@ -68,12 +68,23 @@ const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => p
   RA.reduce(initialState, handleEvent(groupId)),
 );
 
+const buildDisallowedNames = (disallowedNames: ReadonlyArray<string>, event: DomainEvent): ReadonlyArray<string> => {
+  if (isEventOfType('GroupJoined')(event)) {
+    return disallowedNames.concat([event.name]);
+  }
+  if (isEventOfType('GroupDetailsUpdated')(event)) {
+    if (event.name !== undefined) {
+      return disallowedNames.concat([event.name]);
+    }
+  }
+  return disallowedNames;
+};
+
 const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.groupId !== command.groupId),
-  RA.reduce(initialState, handleEvent(command.groupId)),
-  (writeModel) => writeModel.disallowedNames,
+  RA.reduce([], buildDisallowedNames),
   (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
