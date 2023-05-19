@@ -68,6 +68,11 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
   (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
+const atLeastOneFieldNeedsToBeUpdated = (
+  command: UpdateGroupDetailsCommand,
+  groupState: GroupState,
+) => command.name !== groupState.name;
+
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroupState(command.groupId),
@@ -76,14 +81,16 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => toErrorMessage('group name already in use'),
   ),
   E.map(
-    (groupState) => ((command.name === groupState.name) ? [] : [constructEvent('GroupDetailsUpdated')({
-      groupId: command.groupId,
-      name: command.name,
-      shortDescription: undefined,
-      homepage: undefined,
-      avatarPath: undefined,
-      descriptionPath: undefined,
-      slug: undefined,
-    })]),
+    (groupState) => (atLeastOneFieldNeedsToBeUpdated(command, groupState)
+      ? [constructEvent('GroupDetailsUpdated')({
+        groupId: command.groupId,
+        name: command.name,
+        shortDescription: undefined,
+        homepage: undefined,
+        avatarPath: undefined,
+        descriptionPath: undefined,
+        slug: undefined,
+      })]
+      : []),
   ),
 );
