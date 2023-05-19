@@ -11,8 +11,6 @@ import { dispatcher } from '../shared-read-models/dispatcher';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
-import { fetchReview } from './fetch-review';
-import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './fetch-zenodo-record';
 import { fetchData } from './fetchers';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
@@ -31,12 +29,7 @@ import { createListCommandHandler } from '../write-side/create-list';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
-import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
-import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchCrossrefArticle } from '../third-parties/crossref';
-import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
-import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
 import * as externalQueries from '../third-parties';
 
 type Dependencies = LoggerConfig & {
@@ -63,11 +56,6 @@ const createGetJson = (logger: Logger) => async (uri: string) => {
   return response.data;
 };
 
-const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
-  const response = await fetchData(logger, timeout)<Json>(uri);
-  return response.data;
-};
-
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
@@ -90,10 +78,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   )),
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
-    getArticleSubjectArea: getBiorxivOrMedrxivCategory({
-      getJson: createGetJsonWithTimeout(lowLevelAdapters.logger, 10000),
-      logger: lowLevelAdapters.logger,
-    }),
   })),
   TE.chain((partialAdapters) => TE.tryCatch(
     async () => {
@@ -139,20 +123,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const collectedAdapters = {
         ...queries,
         ...externalQueries.instantiate(eqdeps),
-        fetchArticle: fetchCrossrefArticle(
-          getCachedAxiosRequest(logger),
-          logger,
-          dependencies.crossrefApiBearerToken,
-        ),
-        fetchRelatedArticles: fetchRecommendedPapers({ getJson, logger }),
-        fetchReview: fetchReview(fetchers),
-        fetchStaticFile: fetchStaticFile(logger),
-        searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedAxiosRequest(logger),
-          logger,
-        }),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
