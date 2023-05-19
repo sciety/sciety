@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { Json } from 'fp-ts/Json';
-import { EvaluationFetcher, fetchReview } from '../infrastructure/fetch-review';
+import { fetchReview } from '../infrastructure/fetch-review';
 import { fetchStaticFile } from '../infrastructure/fetch-static-file';
 import { getCachedAxiosRequest } from '../infrastructure/get-cached-axios-request';
 import { Logger } from '../infrastructure/logger';
@@ -11,6 +11,12 @@ import { ExternalQueries } from './external-queries';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchData } from '../infrastructure/fetchers';
+import { fetchHypothesisAnnotation } from '../infrastructure/fetch-hypothesis-annotation';
+import { fetchNcrcReview } from '../infrastructure/fetch-ncrc-review';
+import { fetchRapidReview } from '../infrastructure/fetch-rapid-review';
+import { fetchZenodoRecord } from '../infrastructure/fetch-zenodo-record';
+import { getHtml } from '../infrastructure/get-html';
+import { fetchPrelightsHighlight } from './prelights';
 
 const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
   const response = await fetchData(logger, timeout)<Json>(uri);
@@ -20,7 +26,6 @@ const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri
 type Dependencies = {
   getJson: (uri: string) => Promise<Json>,
   logger: Logger,
-  fetchers: Record<string, EvaluationFetcher>,
   crossrefApiBearerToken: O.Option<string>,
 };
 
@@ -31,7 +36,13 @@ export const instantiate = (deps: Dependencies): ExternalQueries => ({
     deps.crossrefApiBearerToken,
   ),
   fetchRelatedArticles: fetchRecommendedPapers(deps),
-  fetchReview: fetchReview(deps.fetchers),
+  fetchReview: fetchReview({
+    doi: fetchZenodoRecord(deps.getJson, deps.logger),
+    hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(deps.logger, 5 * 60 * 1000), deps.logger),
+    ncrc: fetchNcrcReview(deps.logger),
+    prelights: fetchPrelightsHighlight(getHtml(deps.logger)),
+    rapidreviews: fetchRapidReview(deps.logger, getHtml(deps.logger)),
+  }),
   fetchStaticFile: fetchStaticFile(deps.logger),
   findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
     getJson: getCachedAxiosRequest(deps.logger),

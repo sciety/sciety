@@ -8,14 +8,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models/dispatcher';
-import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
-import { fetchNcrcReview } from './fetch-ncrc-review';
-import { fetchRapidReview } from './fetch-rapid-review';
-import { fetchZenodoRecord } from './fetch-zenodo-record';
 import { fetchData } from './fetchers';
-import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
-import { getHtml } from './get-html';
 import {
   createLogger, Logger, Config as LoggerConfig,
 } from './logger';
@@ -29,7 +23,6 @@ import { createListCommandHandler } from '../write-side/create-list';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
-import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import * as externalQueries from '../third-parties';
 
 type Dependencies = LoggerConfig & {
@@ -83,13 +76,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       } = partialAdapters;
 
       const getAllEvents = T.of(events);
-      const fetchers = {
-        doi: fetchZenodoRecord(getJson, logger),
-        hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(logger, 5 * 60 * 1000), logger),
-        ncrc: fetchNcrcReview(logger),
-        prelights: fetchPrelightsHighlight(getHtml(logger)),
-        rapidreviews: fetchRapidReview(logger, getHtml(logger)),
-      };
 
       const {
         dispatchToAllReadModels,
@@ -111,7 +97,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const eqdeps = {
-        fetchers,
         getJson,
         logger,
         crossrefApiBearerToken: dependencies.crossrefApiBearerToken,
