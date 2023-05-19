@@ -153,4 +153,19 @@ describe('update', () => {
       expect(result).toStrictEqual(E.left('bad-data'));
     });
   });
+
+  describe('when a GroupDetailsUpdated event is followed by a GroupJoined event', () => {
+    const groupId = arbitraryGroupId();
+    const result = pipe(
+      [
+        arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
+        arbitraryGroupJoinedEvent(groupId),
+      ],
+      groupResource.update({ groupId }),
+    );
+
+    it.failing('returns an error', () => {
+      expect(result).toStrictEqual(E.left('bad-data'));
+    });
+  });
 });
