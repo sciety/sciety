@@ -13,7 +13,7 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import {
   createLogger, Logger, Config as LoggerConfig,
 } from './logger';
-import { stubAdapters } from './stub-adapters';
+import { stubAdapters } from '../third-parties/stubs';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
 import {
   DomainEvent, sort as sortEvents,
