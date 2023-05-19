@@ -13,7 +13,6 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import {
   createLogger, Logger, Config as LoggerConfig,
 } from './logger';
-import { stubAdapters } from '../third-parties/stubs';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
 import {
   DomainEvent, sort as sortEvents,
@@ -137,12 +136,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
       };
 
-      if (process.env.USE_STUB_ADAPTERS === 'true') {
-        return {
-          ...allAdapters,
-          ...stubAdapters,
-        };
-      }
       return allAdapters;
     },
     identity,

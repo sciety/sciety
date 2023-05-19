@@ -16,6 +16,7 @@ import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getHtml } from '../infrastructure/get-html';
 import { fetchPrelightsHighlight } from './prelights';
+import { stubAdapters } from './stubs';
 
 const getJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
   const response = await fetchData(logger, timeout)<Json>(uri);
@@ -28,7 +29,7 @@ type Dependencies = {
   crossrefApiBearerToken: O.Option<string>,
 };
 
-export const instantiate = (deps: Dependencies): ExternalQueries => ({
+const realAdapters = (deps: Dependencies): ExternalQueries => ({
   fetchArticle: fetchCrossrefArticle(
     getCachedAxiosRequest(deps.logger),
     deps.logger,
@@ -53,3 +54,9 @@ export const instantiate = (deps: Dependencies): ExternalQueries => ({
   }),
   searchForArticles: searchEuropePmc(deps),
 });
+
+export const instantiate = (deps: Dependencies): ExternalQueries => (
+  (process.env.USE_STUB_ADAPTERS === 'true')
+    ? stubAdapters
+    : realAdapters(deps)
+);
