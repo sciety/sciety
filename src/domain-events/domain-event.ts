@@ -26,6 +26,7 @@ import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
 import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { EventId, generate } from '../types/event-id';
+import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -45,6 +46,7 @@ export const domainEventCodec = t.union([
   articleRemovedFromListEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationRecordedEventCodec,
+  groupDetailsUpdatedEventCodec,
   groupJoinedEventCodec,
   incorrectlyRecordedEvaluationErasedEventCodec,
   listCreatedEventCodec,

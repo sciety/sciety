@@ -11,46 +11,19 @@ const renderSearchForm = () => `
   </form>
 `;
 
-const renderVideoCallToAction = () => `
-  <div class="home-page-hero__video_call_to_action">
-    <div class="home-page-hero__video_cta_text_wrapper">
-      <p class="home-page-hero__video_cta_copy">Learn about Sciety.</p>
-      <a class="home-page-hero__video_cta_link" href="/learn-about">Play video<img src="/static/images/play-button.svg" alt=""/></a></div>
-    </div>
-`;
-
 export const hero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero">
     <div class="home-page-hero__left_wrapper">
       <h1 class="home-page-hero__content_title">
-        The home of public preprint evaluation
+        The home of preprint evaluation
       </h1>
       <p class="home-page-hero__content_byline">
-        Explore and curate evaluated preprints.
+        Find preprints reviewed and recommended by trusted groups of researchers.
       </p>
 
       <section class="home-page-hero__section">
-        <h2 class="home-page-hero__subheading">Find evaluated preprints</h2>
         ${renderSearchForm()}
       </section>
-
-      <section class="home-page-hero__section">
-        <h2 class="home-page-hero__subheading">Follow peer review groups</h2>
-        <p>
-          Researchers reviewing and curating the latest preprints.<br>
-          <a href="/groups" class="home-page-hero__groups_link">Explore their work</a>
-        </p>
-      </section>
-
-      <section class="home-page-hero__section">
-        <h2 class="home-page-hero__subheading">Organise &amp; share with peers</h2>
-        <p class="home-page-hero__above_button">Create an account to start sharing preprints with your community.</p>
-        <a href="/sign-up" class="home-page-hero__sign_up_button">Sign Up</a>
-      </section>
-    </div>
-
-    <div class="home-page-hero__right_wrapper">
-      ${renderVideoCallToAction()}
     </div>
   </section>
 `);

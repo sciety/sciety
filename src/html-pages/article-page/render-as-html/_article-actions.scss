@@ -34,6 +34,8 @@
 .see-related-articles-button {
   @include button.button-link-teal();
 
+  margin-bottom: 2rem;
+
   @include breakpoints.two-column-display {
     margin-bottom: 5rem;
   }

@@ -2,3 +2,4 @@ export { updateUserDetailsCommandHandler } from './update-user-details-command-h
 export { editListDetailsCommandHandler } from './edit-list-details-command-handler';
 export { eraseEvaluationCommandHandler } from './erase-evaluation-command-handler';
 export { recordEvaluationCommandHandler } from './record-evaluation-command-handler';
+export { updateGroupDetailsCommandHandler } from './update-group-details-command-handler';

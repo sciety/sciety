@@ -1,19 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
-import { RedisStore, setupCache } from 'axios-cache-adapter';
-import redis from 'redis';
+import { setupCache } from 'axios-cache-adapter';
 import { Logger } from './logger';
 
 const createCacheAdapter = (maxAge: number) => {
-  let store;
-  if (process.env.APP_CACHE === 'redis') {
-    const client = redis.createClient({
-      host: 'sciety_cache',
-    });
-    store = new RedisStore(client);
-  }
   const cache = setupCache({
     maxAge,
-    store,
   });
   return cache.adapter;
 };

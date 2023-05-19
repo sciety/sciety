@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, listCreated, listNameEdited,
+  articleAddedToList, articleRemovedFromList, listCreated, constructEvent,
 } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/select-all-lists-owned-by';
@@ -95,7 +95,7 @@ describe('select-all-lists-owned-by', () => {
     const readmodel = pipe(
       [
         listCreated(listId, arbitraryString(), listDescription, ownerId),
-        listNameEdited(listId, listName, dateOfLastEvent),
+        constructEvent('ListNameEdited')({ listId, name: listName, date: dateOfLastEvent }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
