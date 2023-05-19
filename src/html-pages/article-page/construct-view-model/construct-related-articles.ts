@@ -5,12 +5,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
-import { FetchRelatedArticles } from '../../../shared-ports';
 import { ViewModel } from '../view-model';
+import { ExternalQueries } from '../../../types/external-queries';
 
-export type Ports = {
-  fetchRelatedArticles: FetchRelatedArticles,
-};
+export type Ports = ExternalQueries;
 
 export const constructRelatedArticles = (
   doi: Doi, ports: Ports,

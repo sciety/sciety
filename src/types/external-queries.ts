@@ -15,9 +15,7 @@ import { SubjectArea } from './subject-area';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
-type RelatedArticles = ReadonlyArray<RelatedArticle>;
-
-type FetchRelatedArticles = (doi: Doi) => TE.TaskEither<DE.DataError, RelatedArticles>;
+type FetchRelatedArticles = (doi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<RelatedArticle>>;
 
 type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 

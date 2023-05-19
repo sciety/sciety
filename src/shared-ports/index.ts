@@ -11,7 +11,6 @@ import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
-import { FetchRelatedArticles } from './fetch-related-articles';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
@@ -26,7 +25,6 @@ export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
 export { RecordSubjectArea } from './record-subject-area';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
-export { FetchRelatedArticles } from './fetch-related-articles';
 
 export type SharedPorts = {
   addArticleToList: AddArticleToList,
@@ -34,7 +32,6 @@ export type SharedPorts = {
   createList: CreateList,
   editListDetails: EditListDetails,
   fetchArticle: FetchArticle,
-  fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
