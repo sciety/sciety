@@ -37,6 +37,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
+import * as externalQueries from '../third-parties';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -128,8 +129,16 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
+      const eqdeps = {
+        fetchers,
+        getJson,
+        logger,
+        crossrefApiBearerToken: dependencies.crossrefApiBearerToken,
+      };
+
       const collectedAdapters = {
         ...queries,
+        ...externalQueries.instantiate(eqdeps),
         fetchArticle: fetchCrossrefArticle(
           getCachedAxiosRequest(logger),
           logger,
