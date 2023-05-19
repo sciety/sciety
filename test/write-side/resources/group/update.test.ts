@@ -135,8 +135,17 @@ describe('update', () => {
   });
 
   describe('when the group has not joined', () => {
+    const events: ReadonlyArray<DomainEvent> = [];
+
     describe('when passed any command', () => {
-      it.todo('fails');
+      const result = pipe(
+        events,
+        groupResource.update({ groupId: arbitraryGroupId() }),
+      );
+
+      it('returns an error', () => {
+        expect(result).toStrictEqual(E.left('no-such-group'));
+      });
     });
   });
 
