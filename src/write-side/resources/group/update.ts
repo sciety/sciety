@@ -11,7 +11,6 @@ import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
 
 type WriteModel = {
-  disallowedNames: ReadonlyArray<string>,
   groupToUpdate: O.Option<{
     name: string,
     slug: string,
@@ -19,42 +18,33 @@ type WriteModel = {
 };
 
 const initialState: WriteModel = {
-  disallowedNames: [],
   groupToUpdate: O.none,
 };
 
-const handleEvent = (idOfGroupToUpdate: GroupId) => (writeModel: WriteModel, event: DomainEvent): WriteModel => {
+const buildGroup = (writeModel: WriteModel, event: DomainEvent): WriteModel => {
   if (isEventOfType('GroupJoined')(event)) {
-    if (event.groupId === idOfGroupToUpdate) {
-      return {
-        ...writeModel,
-        groupToUpdate: O.some({
-          name: event.name,
-          slug: event.slug,
-        }),
-      };
-    }
     return {
       ...writeModel,
-      disallowedNames: writeModel.disallowedNames.concat([event.name]),
+      groupToUpdate: O.some({
+        name: event.name,
+        slug: event.slug,
+      }),
     };
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
-    if (event.groupId === idOfGroupToUpdate) {
-      return {
-        ...writeModel,
-        groupToUpdate: pipe(
-          writeModel.groupToUpdate,
-          O.match(
-            () => { throw new Error('Database corruption'); },
-            (groupToUpdate) => O.some({
-              ...groupToUpdate,
-              name: event.name ?? groupToUpdate.name,
-            }),
-          ),
+    return {
+      ...writeModel,
+      groupToUpdate: pipe(
+        writeModel.groupToUpdate,
+        O.match(
+          () => { throw new Error('Database corruption'); },
+          (groupToUpdate) => O.some({
+            ...groupToUpdate,
+            name: event.name ?? groupToUpdate.name,
+          }),
         ),
-      };
-    }
+      ),
+    };
   }
   return writeModel;
 };
@@ -64,8 +54,8 @@ const isRelevantEvent = (event: DomainEvent): event is EventOfType<'GroupJoined'
 const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isRelevantEvent),
-  // RA.filter((event) => event.groupId === groupId),
-  RA.reduce(initialState, handleEvent(groupId)),
+  RA.filter((event) => event.groupId === groupId),
+  RA.reduce(initialState, buildGroup),
 );
 
 const buildDisallowedNames = (disallowedNames: ReadonlyArray<string>, event: DomainEvent): ReadonlyArray<string> => {
