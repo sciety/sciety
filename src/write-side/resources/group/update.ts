@@ -2,64 +2,82 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { toErrorMessage } from '../../../types/error-message';
-import { isEventOfType, constructEvent, DomainEvent } from '../../../domain-events';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+import {
+  isEventOfType, constructEvent, DomainEvent, EventOfType,
+} from '../../../domain-events';
 import { UpdateGroupDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
 
-type WriteModel = {
-  disallowedNames: ReadonlyArray<string>,
-  groupToUpdate: O.Option<{
-    name: string,
-    slug: string,
-  }>,
-};
+type WriteModel = O.Option<{
+  name: string,
+  slug: string,
+}>;
 
-const initialState: WriteModel = {
-  disallowedNames: [],
-  groupToUpdate: O.none,
-};
-
-const handleEvent = (idOfGroupToUpdate: GroupId) => (writeModel: WriteModel, event: DomainEvent): WriteModel => {
+const buildGroup = (writeModel: WriteModel, event: DomainEvent): WriteModel => {
   if (isEventOfType('GroupJoined')(event)) {
-    if (event.groupId === idOfGroupToUpdate) {
-      return {
-        ...writeModel,
-        groupToUpdate: O.some({
-          name: event.name,
-          slug: event.slug,
+    return O.some({
+      name: event.name,
+      slug: event.slug,
+    });
+  }
+  if (isEventOfType('GroupDetailsUpdated')(event)) {
+    return pipe(
+      writeModel,
+      O.match(
+        () => { throw new Error('Database corruption'); },
+        (groupToUpdate) => O.some({
+          ...groupToUpdate,
+          name: event.name ?? groupToUpdate.name,
         }),
-      };
-    }
-    return {
-      ...writeModel,
-      disallowedNames: writeModel.disallowedNames.concat([event.name]),
-    };
+      ),
+    );
   }
   return writeModel;
 };
 
-const nameNotInUse = (writeModel: WriteModel, name: string) => (
-  !writeModel.disallowedNames.includes(name)
+const isRelevantEvent = (event: DomainEvent): event is EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'> => isEventOfType('GroupJoined')(event) || isEventOfType('GroupDetailsUpdated')(event);
+
+type GroupState = {
+  name: string,
+};
+
+const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, GroupState> => pipe(
+  events,
+  RA.filter(isRelevantEvent),
+  RA.filter((event) => event.groupId === groupId),
+  RA.reduce(O.none, buildGroup),
+  E.fromOption(() => toErrorMessage('group not found')),
+);
+
+const buildDisallowedNames = (disallowedNames: ReadonlyArray<string>, event: DomainEvent): ReadonlyArray<string> => {
+  if (isEventOfType('GroupJoined')(event)) {
+    return disallowedNames.concat([event.name]);
+  }
+  if (isEventOfType('GroupDetailsUpdated')(event)) {
+    if (event.name !== undefined) {
+      return disallowedNames.concat([event.name]);
+    }
+  }
+  return disallowedNames;
+};
+
+const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter(isRelevantEvent),
+  RA.filter((event) => event.groupId !== command.groupId),
+  RA.reduce([], buildDisallowedNames),
+  (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
-  RA.reduce(initialState, handleEvent(command.groupId)),
-  E.right,
+  getGroup(command.groupId),
   E.filterOrElse(
-    (writeModel) => O.isSome(writeModel.groupToUpdate),
-    () => toErrorMessage('group not found'),
-  ),
-  E.filterOrElse(
-    (writeModel) => (command.name === undefined || nameNotInUse(writeModel, command.name)),
+    () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.chain((writeModel) => pipe(
-    writeModel.groupToUpdate,
-    E.fromOption(() => toErrorMessage('group not found')),
-  )),
   E.map(
     (groupToUpdate) => ((command.name === groupToUpdate.name) ? [] : [constructEvent('GroupDetailsUpdated')({
       groupId: command.groupId,
