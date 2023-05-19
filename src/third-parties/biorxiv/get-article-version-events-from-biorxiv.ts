@@ -10,7 +10,7 @@ import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { ExternalQueries } from '../external-queries';
+import { ExternalQueries } from '../../types/external-queries';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 

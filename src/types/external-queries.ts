@@ -2,16 +2,16 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as O from 'fp-ts/Option';
-import { ArticleDetails } from '../types/article-details';
-import { ArticleServer } from '../types/article-server';
-import { ArticleVersion } from '../types/article-version';
-import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
-import { Evaluation } from '../types/evaluation';
-import { EvaluationLocator } from '../types/evaluation-locator';
-import { RelatedArticle } from '../types/related-article';
-import { SearchResults } from '../types/search-results';
-import { SubjectArea } from '../types/subject-area';
+import { ArticleDetails } from './article-details';
+import { ArticleServer } from './article-server';
+import { ArticleVersion } from './article-version';
+import * as DE from './data-error';
+import { Doi } from './doi';
+import { Evaluation } from './evaluation';
+import { EvaluationLocator } from './evaluation-locator';
+import { RelatedArticle } from './related-article';
+import { SearchResults } from './search-results';
+import { SubjectArea } from './subject-area';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, ArticleDetails>;
 

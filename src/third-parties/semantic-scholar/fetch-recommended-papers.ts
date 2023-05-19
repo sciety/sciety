@@ -12,7 +12,7 @@ import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
-import { ExternalQueries } from '../external-queries';
+import { ExternalQueries } from '../../types/external-queries';
 
 // ts-unused-exports:disable-next-line
 export type Ports = {

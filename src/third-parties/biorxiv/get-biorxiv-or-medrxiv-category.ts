@@ -10,7 +10,7 @@ import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDe
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
-import { ExternalQueries } from '../external-queries';
+import { ExternalQueries } from '../../types/external-queries';
 
 type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 

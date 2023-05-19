@@ -7,7 +7,7 @@ import { Logger } from '../infrastructure/logger';
 import { getArticleVersionEventsFromBiorxiv, getBiorxivOrMedrxivCategory } from './biorxiv';
 import { fetchCrossrefArticle } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
-import { ExternalQueries } from './external-queries';
+import { ExternalQueries } from '../types/external-queries';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { fetchData } from '../infrastructure/fetchers';
 import { fetchHypothesisAnnotation } from './hypothesis';

@@ -16,7 +16,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { GetJson } from '../../shared-ports';
-import { ExternalQueries } from '../external-queries';
+import { ExternalQueries } from '../../types/external-queries';
 
 type Dependencies = {
   getJson: GetJson,

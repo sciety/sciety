@@ -9,7 +9,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { ExternalQueries } from '../external-queries';
+import { ExternalQueries } from '../../types/external-queries';
 
 type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
