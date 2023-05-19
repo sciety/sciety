@@ -1,15 +1,18 @@
+import { fetchRelatedArticles } from './fetch-related-articles';
+import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
+import { findVersionsForArticleDoi } from './find-versions-for-article-doi';
+import { getArticleSubjectArea } from './get-article-subject-area';
 import { localFetchArticleAdapter } from './local-fetch-article-adapter';
 import { searchEuropePmc } from './search-europe-pmc';
-import { findVersionsForArticleDoi } from './find-versions-for-article-doi';
-import { fetchReview } from './fetch-review';
-import { fetchRelatedArticles } from './fetch-related-articles';
+import { ExternalQueries } from '../../types/external-queries';
 
-export const stubAdapters = {
+export const stubAdapters: ExternalQueries = {
   fetchArticle: localFetchArticleAdapter,
-  fetchStaticFile,
-  searchForArticles: searchEuropePmc,
-  findVersionsForArticleDoi,
-  fetchReview,
   fetchRelatedArticles,
+  fetchReview,
+  fetchStaticFile,
+  findVersionsForArticleDoi,
+  getArticleSubjectArea,
+  searchForArticles: searchEuropePmc,
 };
