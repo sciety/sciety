@@ -64,6 +64,21 @@ describe('update', () => {
         });
       });
 
+      describe('when passed the group\'s existing shortDescription', () => {
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, shortDescription: groupJoined.shortDescription }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        it.failing('raises no events', () => {
+          expect(eventsRaised).toStrictEqual([]);
+        });
+      });
+
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
         const eventsRaised = pipe(
