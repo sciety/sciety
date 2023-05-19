@@ -15,8 +15,6 @@ type WriteModel = O.Option<{
   slug: string,
 }>;
 
-const initialState: WriteModel = O.none;
-
 const buildGroup = (writeModel: WriteModel, event: DomainEvent): WriteModel => {
   if (isEventOfType('GroupJoined')(event)) {
     return O.some({
@@ -45,7 +43,7 @@ const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => p
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.groupId === groupId),
-  RA.reduce(initialState, buildGroup),
+  RA.reduce(O.none, buildGroup),
 );
 
 const buildDisallowedNames = (disallowedNames: ReadonlyArray<string>, event: DomainEvent): ReadonlyArray<string> => {
@@ -71,19 +69,11 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroup(command.groupId),
-  E.right,
-  E.filterOrElse(
-    (writeModel) => O.isSome(writeModel),
-    () => toErrorMessage('group not found'),
-  ),
+  E.fromOption(() => toErrorMessage('group not found')),
   E.filterOrElse(
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.chain((writeModel) => pipe(
-    writeModel,
-    E.fromOption(() => toErrorMessage('group not found')),
-  )),
   E.map(
     (groupToUpdate) => ((command.name === groupToUpdate.name) ? [] : [constructEvent('GroupDetailsUpdated')({
       groupId: command.groupId,
