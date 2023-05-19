@@ -85,7 +85,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
       ? [constructEvent('GroupDetailsUpdated')({
         groupId: command.groupId,
         name: command.name,
-        shortDescription: undefined,
+        shortDescription: command.shortDescription,
         homepage: undefined,
         avatarPath: undefined,
         descriptionPath: undefined,
