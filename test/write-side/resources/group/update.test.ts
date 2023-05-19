@@ -74,7 +74,7 @@ describe('update', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        it.failing('raises no events', () => {
+        it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
         });
       });

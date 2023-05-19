@@ -11,6 +11,7 @@ import { GroupId } from '../../../types/group-id';
 
 type GroupState = {
   name: string,
+  shortDescription: string,
 };
 
 type ReplayedGroupState = E.Either<'no-such-group' | 'bad-data', GroupState>;
@@ -20,14 +21,20 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
     return state;
   }
   if (isEventOfType('GroupJoined')(event)) {
-    return E.right({ name: event.name });
+    return E.right({
+      name: event.name,
+      shortDescription: event.shortDescription,
+    });
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
     return pipe(
       state,
       E.match(
         () => E.left('bad-data'),
-        (groupState) => E.right({ name: event.name ?? groupState.name }),
+        (groupState) => E.right({
+          name: event.name ?? groupState.name,
+          shortDescription: event.shortDescription ?? groupState.shortDescription,
+        }),
       ),
     );
   }
@@ -71,7 +78,8 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
 const atLeastOneFieldNeedsToBeUpdated = (
   command: UpdateGroupDetailsCommand,
   groupState: GroupState,
-) => command.name !== groupState.name;
+) => (command.name !== undefined && command.name !== groupState.name)
+|| (command.shortDescription !== undefined && command.shortDescription !== groupState.shortDescription);
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
