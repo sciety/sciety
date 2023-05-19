@@ -164,7 +164,7 @@ describe('update', () => {
       groupResource.update({ groupId }),
     );
 
-    it.failing('returns an error', () => {
+    it('returns an error', () => {
       expect(result).toStrictEqual(E.left('bad-data'));
     });
   });

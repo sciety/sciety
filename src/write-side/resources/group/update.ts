@@ -16,6 +16,9 @@ type GroupState = {
 type ReplayedGroupState = E.Either<'no-such-group' | 'bad-data', GroupState>;
 
 const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGroupState => {
+  if (E.isLeft(state) && state.left === 'bad-data') {
+    return state;
+  }
   if (isEventOfType('GroupJoined')(event)) {
     return E.right({ name: event.name });
   }
