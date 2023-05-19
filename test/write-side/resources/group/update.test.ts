@@ -140,17 +140,17 @@ describe('update', () => {
     });
   });
 
-  // describe('when a GroupDetailsUpdated event exists without a previous GroupJoined event', () => {
-  // const groupId = arbitraryGroupId();
-  // const result = pipe(
-  // [
-  // arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
-  // ],
-  // groupResource.update({ groupId }),
-  // );
+  describe('when a GroupDetailsUpdated event exists without a previous GroupJoined event', () => {
+    const groupId = arbitraryGroupId();
+    const result = pipe(
+      [
+        arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
+      ],
+      groupResource.update({ groupId }),
+    );
 
-  // it('returns an error', () => {
-  // expect(E.isLeft(result)).toBe(true);
-  // });
-  // });
+    it('returns an error', () => {
+      expect(result).toStrictEqual(E.left('bad-data'));
+    });
+  });
 });

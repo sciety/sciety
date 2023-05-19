@@ -23,7 +23,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
     return pipe(
       state,
       E.match(
-        () => { throw new Error('Database corruption'); },
+        () => E.left('bad-data'),
         (groupState) => E.right({ name: event.name ?? groupState.name }),
       ),
     );
