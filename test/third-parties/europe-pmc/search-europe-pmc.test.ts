@@ -6,7 +6,7 @@ import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
-import { SearchResults } from '../../../src/shared-ports/search-for-articles';
+import { SearchResults } from '../../../src/types/search-results';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {

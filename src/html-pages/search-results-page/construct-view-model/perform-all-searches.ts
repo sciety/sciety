@@ -6,14 +6,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { SearchForArticles } from '../../../shared-ports';
 import { findGroups, Ports as FindGroupsPorts } from './find-groups';
 import { Matches } from './select-subset-to-display';
 import * as DE from '../../../types/data-error';
+import { ExternalQueries } from '../../../types/external-queries';
 
-export type Ports = FindGroupsPorts & {
-  searchForArticles: SearchForArticles,
-};
+export type Ports = FindGroupsPorts & ExternalQueries;
 
 export const paramsCodec = t.type({
   query: t.string,
