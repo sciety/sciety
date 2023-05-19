@@ -22,6 +22,7 @@ export { GetJson } from './get-json';
 export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
+// ts-unused-exports:disable-next-line
 export { FetchArticle } from './fetch-article';
 export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';

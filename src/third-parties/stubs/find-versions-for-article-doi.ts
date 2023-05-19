@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { FindVersionsForArticleDoi } from '../../shared-ports';
+import { ExternalQueries } from '../../types/external-queries';
 
 type ArticleVersionInformation = {
   source: URL,
@@ -10,7 +10,7 @@ type ArticleVersionInformation = {
   version: number,
 };
 
-export const findVersionsForArticleDoi: FindVersionsForArticleDoi = () => T.of(O.some([
+export const findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'] = () => T.of(O.some([
   {
     source: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v1'),
     publishedAt: new Date('1970'),

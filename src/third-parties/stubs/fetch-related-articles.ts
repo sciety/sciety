@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { FetchRelatedArticles } from '../../shared-ports/fetch-related-articles';
 import { Doi } from '../../types/doi';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { ExternalQueries } from '../../types/external-queries';
 
 const hardcodedResponse = [
   {
@@ -18,4 +18,4 @@ const hardcodedResponse = [
   },
 ];
 
-export const fetchRelatedArticles: FetchRelatedArticles = () => TE.right(hardcodedResponse);
+export const fetchRelatedArticles: ExternalQueries['fetchRelatedArticles'] = () => TE.right(hardcodedResponse);

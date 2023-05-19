@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
-import { FetchReview } from '../../shared-ports';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { ExternalQueries } from '../../types/external-queries';
 
 const htmlFullText = `
 <h1>Stubbed evaluation content</h1>
@@ -89,7 +89,7 @@ please follow <a href="https://scicrunch.org/ASWG/about/References">this link</a
 </div>
 `;
 
-export const fetchReview: FetchReview = () => TE.right({
+export const fetchReview: ExternalQueries['fetchReview'] = () => TE.right({
   url: new URL('http://example.com'),
   fullText: toHtmlFragment(htmlFullText),
 });
