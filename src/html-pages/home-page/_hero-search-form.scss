@@ -33,7 +33,7 @@ $_search-icon-size: functions.px-to-rem(24px);
   @include breakpoints.not-narrow() {
     flex-direction: row;
     flex-grow: 0;
-    max-width: functions.px-to-rem($_input-width-on-wide-screens);
+    max-width: functions.px-to-rem(415px);
   }
 }
 
