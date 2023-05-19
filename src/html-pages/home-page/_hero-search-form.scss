@@ -11,6 +11,9 @@ $_search-icon-size: functions.px-to-rem(24px);
 
 .home-page-hero-search-form {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &::before{
     content: '';
@@ -26,8 +29,7 @@ $_search-icon-size: functions.px-to-rem(24px);
   }
 
   @include breakpoints.not-narrow() {
-    display: flex;
-    align-items: center;
+    flex-direction: row;
   }
 }
 
@@ -53,6 +55,7 @@ $_search-icon-size: functions.px-to-rem(24px);
 .home-page-hero-search-form__button {
   @include button.button();
   cursor: pointer;
+  max-width: functions.px-to-rem(76px);
 
   @include breakpoints.not-narrow() {
     height: functions.px-to-rem($_input-height - 2px);
