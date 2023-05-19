@@ -6,10 +6,10 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
-import { EvaluationFetcher } from './fetch-review';
-import { Logger } from './logger';
-import { sheetId } from '../third-parties/ncrc/sheet-id';
-import * as DE from '../types/data-error';
+import { EvaluationFetcher } from '../fetch-review';
+import { Logger } from '../../infrastructure/logger';
+import { sheetId } from './sheet-id';
+import * as DE from '../../types/data-error';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
 
 // https://github.com/gcanti/io-ts/issues/431

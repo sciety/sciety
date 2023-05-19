@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { Json } from 'fp-ts/Json';
-import { fetchReview } from '../infrastructure/fetch-review';
-import { fetchStaticFile } from '../infrastructure/fetch-static-file';
+import { fetchReview } from './fetch-review';
+import { fetchStaticFile } from './fetch-static-file';
 import { getCachedAxiosRequest } from '../infrastructure/get-cached-axios-request';
 import { Logger } from '../infrastructure/logger';
 import { getArticleVersionEventsFromBiorxiv, getBiorxivOrMedrxivCategory } from './biorxiv';
@@ -11,9 +11,9 @@ import { ExternalQueries } from './external-queries';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { fetchData } from '../infrastructure/fetchers';
 import { fetchHypothesisAnnotation } from './hypothesis';
-import { fetchNcrcReview } from '../infrastructure/fetch-ncrc-review';
-import { fetchRapidReview } from '../infrastructure/fetch-rapid-review';
-import { fetchZenodoRecord } from '../infrastructure/fetch-zenodo-record';
+import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
+import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
+import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getHtml } from '../infrastructure/get-html';
 import { fetchPrelightsHighlight } from './prelights';
 

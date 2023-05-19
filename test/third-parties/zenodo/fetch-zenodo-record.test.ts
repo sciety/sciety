@@ -2,10 +2,10 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
-import { fetchZenodoRecord } from '../../src/infrastructure/fetch-zenodo-record';
-import * as DE from '../../src/types/data-error';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryHtmlFragment } from '../helpers';
+import { fetchZenodoRecord } from '../../../src/third-parties/zenodo/fetch-zenodo-record';
+import * as DE from '../../../src/types/data-error';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryHtmlFragment } from '../../helpers';
 
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';

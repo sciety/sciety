@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { EvaluationFetcher } from '../../infrastructure/fetch-review';
+import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 

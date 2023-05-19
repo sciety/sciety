@@ -5,10 +5,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as DE from '../types/data-error';
-import { htmlFragmentCodec } from '../types/html-fragment';
-import { Evaluation } from '../types/evaluation';
-import { GetJson } from '../shared-ports';
+import * as DE from '../../types/data-error';
+import { htmlFragmentCodec } from '../../types/html-fragment';
+import { Evaluation } from '../../types/evaluation';
+import { GetJson } from '../../shared-ports';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 

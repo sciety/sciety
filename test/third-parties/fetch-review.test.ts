@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchReview } from '../../src/infrastructure/fetch-review';
+import { fetchReview } from '../../src/third-parties/fetch-review';
 import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/evaluation-locator';
 import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';

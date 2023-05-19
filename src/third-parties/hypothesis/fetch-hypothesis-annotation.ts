@@ -9,7 +9,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { hypothesisAnnotation, HypothesisAnnotation } from '../../infrastructure/codecs/HypothesisAnnotation';
-import { EvaluationFetcher } from '../../infrastructure/fetch-review';
+import { EvaluationFetcher } from '../fetch-review';
 import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';

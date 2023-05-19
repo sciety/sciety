@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type NcrcReview = {
   title: string,
