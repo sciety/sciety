@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { toErrorMessage } from '../../../types/error-message';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import {
   isEventOfType, constructEvent, DomainEvent, EventOfType,
 } from '../../../domain-events';
@@ -39,11 +39,16 @@ const buildGroup = (writeModel: WriteModel, event: DomainEvent): WriteModel => {
 
 const isRelevantEvent = (event: DomainEvent): event is EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'> => isEventOfType('GroupJoined')(event) || isEventOfType('GroupDetailsUpdated')(event);
 
-const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type GroupState = {
+  name: string,
+};
+
+const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, GroupState> => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.groupId === groupId),
   RA.reduce(O.none, buildGroup),
+  E.fromOption(() => toErrorMessage('group not found')),
 );
 
 const buildDisallowedNames = (disallowedNames: ReadonlyArray<string>, event: DomainEvent): ReadonlyArray<string> => {
@@ -69,7 +74,6 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroup(command.groupId),
-  E.fromOption(() => toErrorMessage('group not found')),
   E.filterOrElse(
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
