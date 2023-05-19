@@ -23,7 +23,7 @@ import { createListCommandHandler } from '../write-side/create-list';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
-import * as externalQueries from '../third-parties';
+import * as external from '../third-parties';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -96,15 +96,15 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
-      const eqdeps = {
+      const externalQueries = external.instantiate({
         getJson,
         logger,
         crossrefApiBearerToken: dependencies.crossrefApiBearerToken,
-      };
+      });
 
       const collectedAdapters = {
         ...queries,
-        ...externalQueries.instantiate(eqdeps),
+        ...externalQueries,
         getAllEvents,
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
@@ -116,10 +116,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const policiesAdapters = {
         ...queries,
+        ...externalQueries,
         commitEvents: commitEventsWithoutListeners,
         getAllEvents: collectedAdapters.getAllEvents,
         logger: collectedAdapters.logger,
-        getArticleSubjectArea: collectedAdapters.getArticleSubjectArea,
         addArticleToList: collectedAdapters.addArticleToList,
         removeArticleFromList: collectedAdapters.removeArticleFromList,
         createList: collectedAdapters.createList,

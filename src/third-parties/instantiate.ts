@@ -18,7 +18,7 @@ import { fetchZenodoRecord } from '../infrastructure/fetch-zenodo-record';
 import { getHtml } from '../infrastructure/get-html';
 import { fetchPrelightsHighlight } from './prelights';
 
-const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
+const getJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
   const response = await fetchData(logger, timeout)<Json>(uri);
   return response.data;
 };
@@ -49,7 +49,7 @@ export const instantiate = (deps: Dependencies): ExternalQueries => ({
     logger: deps.logger,
   }),
   getArticleSubjectArea: getBiorxivOrMedrxivCategory({
-    getJson: createGetJsonWithTimeout(deps.logger, 10000),
+    getJson: getJsonWithTimeout(deps.logger, 10000),
     logger: deps.logger,
   }),
   searchForArticles: searchEuropePmc(deps),
