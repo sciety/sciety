@@ -59,10 +59,6 @@ const handleEvent = (idOfGroupToUpdate: GroupId) => (writeModel: WriteModel, eve
   return writeModel;
 };
 
-const nameNotInUse = (writeModel: WriteModel, name: string) => (
-  !writeModel.disallowedNames.includes(name)
-);
-
 const isRelevantEvent = (event: DomainEvent): event is EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'> => isEventOfType('GroupJoined')(event) || isEventOfType('GroupDetailsUpdated')(event);
 
 const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => pipe(
@@ -72,10 +68,13 @@ const getGroup = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => p
   RA.reduce(initialState, handleEvent(groupId)),
 );
 
-const enforceUniqueness = (command: UpdateGroupDetailsCommand, events: ReadonlyArray<DomainEvent>) => pipe(
+const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyArray<DomainEvent>) => pipe(
   events,
+  RA.filter(isRelevantEvent),
+  RA.filter((event) => event.groupId !== command.groupId),
   RA.reduce(initialState, handleEvent(command.groupId)),
-  (writeModel) => (command.name === undefined || nameNotInUse(writeModel, command.name)),
+  (writeModel) => writeModel.disallowedNames,
+  (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
@@ -87,7 +86,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => toErrorMessage('group not found'),
   ),
   E.filterOrElse(
-    () => enforceUniqueness(command, events),
+    () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
   E.chain((writeModel) => pipe(
