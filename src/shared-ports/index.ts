@@ -6,7 +6,6 @@ import { FetchArticle } from './fetch-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
-import { GetArticleSubjectArea } from './get-article-subject-area';
 import { GetJson } from './get-json';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
@@ -25,7 +24,6 @@ export { CreateList } from './create-list';
 export { FetchArticle } from './fetch-article';
 export { FetchReview } from './fetch-review';
 export { FetchStaticFile } from './fetch-static-file';
-export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 export { FetchRelatedArticles } from './fetch-related-articles';
@@ -41,7 +39,6 @@ export type SharedPorts = {
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
-  getArticleSubjectArea: GetArticleSubjectArea,
   getJson: GetJson,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,

@@ -1,16 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import {
-  GetArticleSubjectArea,
-  Logger, RecordSubjectArea,
-} from '../shared-ports';
+import { Logger, RecordSubjectArea } from '../shared-ports';
 import { Doi } from '../types/doi';
 import { Queries } from '../shared-read-models';
+import { ExternalQueries } from '../types/external-queries';
 
-type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
+type Ports = Queries & ExternalQueries & {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
-  getArticleSubjectArea: GetArticleSubjectArea,
 };
 
 const buildRecordSubjectAreaCommand = (adapters: Ports) => (articleId: Doi) => pipe(

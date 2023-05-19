@@ -7,8 +7,15 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryErrorMessage } from '../types/error-message.helper';
 import { arbitrarySubjectArea } from '../types/subject-area.helper';
+import { TestFramework, createTestFramework } from '../framework';
 
 describe('discover-elife-article-subject-area', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
   describe('when there is work to do', () => {
     const articleId = arbitraryArticleId();
 
@@ -23,8 +30,12 @@ describe('discover-elife-article-subject-area', () => {
           logger: dummyLogger,
         };
 
-        beforeAll(async () => {
-          await discoverElifeArticleSubjectArea(adapters);
+        beforeEach(async () => {
+          await discoverElifeArticleSubjectArea({
+            ...framework.queries,
+            ...framework.happyPathThirdParties,
+            ...adapters,
+          });
         });
 
         it('records the subject area via a command', () => {
@@ -40,8 +51,12 @@ describe('discover-elife-article-subject-area', () => {
           logger: jest.fn(dummyLogger),
         };
 
-        beforeAll(async () => {
-          await discoverElifeArticleSubjectArea(adapters);
+        beforeEach(async () => {
+          await discoverElifeArticleSubjectArea({
+            ...framework.queries,
+            ...framework.happyPathThirdParties,
+            ...adapters,
+          });
         });
 
         it('logs an error', () => {
@@ -60,8 +75,12 @@ describe('discover-elife-article-subject-area', () => {
         logger: jest.fn(dummyLogger),
       };
 
-      beforeAll(async () => {
-        await discoverElifeArticleSubjectArea(adapters);
+      beforeEach(async () => {
+        await discoverElifeArticleSubjectArea({
+          ...framework.queries,
+          ...framework.happyPathThirdParties,
+          ...adapters,
+        });
       });
 
       it('does not invoke a command', () => {
@@ -84,8 +103,12 @@ describe('discover-elife-article-subject-area', () => {
       logger: dummyLogger,
     };
 
-    beforeAll(async () => {
-      await discoverElifeArticleSubjectArea(adapters);
+    beforeEach(async () => {
+      await discoverElifeArticleSubjectArea({
+        ...framework.queries,
+        ...framework.happyPathThirdParties,
+        ...adapters,
+      });
     });
 
     it('does not invoke a command', () => {
