@@ -10,41 +10,31 @@ import { UpdateGroupDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { GroupId } from '../../../types/group-id';
 
-type WriteModel = {
-  groupToUpdate: O.Option<{
-    name: string,
-    slug: string,
-  }>,
-};
+type WriteModel = O.Option<{
+  name: string,
+  slug: string,
+}>;
 
-const initialState: WriteModel = {
-  groupToUpdate: O.none,
-};
+const initialState: WriteModel = O.none;
 
 const buildGroup = (writeModel: WriteModel, event: DomainEvent): WriteModel => {
   if (isEventOfType('GroupJoined')(event)) {
-    return {
-      ...writeModel,
-      groupToUpdate: O.some({
-        name: event.name,
-        slug: event.slug,
-      }),
-    };
+    return O.some({
+      name: event.name,
+      slug: event.slug,
+    });
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
-    return {
-      ...writeModel,
-      groupToUpdate: pipe(
-        writeModel.groupToUpdate,
-        O.match(
-          () => { throw new Error('Database corruption'); },
-          (groupToUpdate) => O.some({
-            ...groupToUpdate,
-            name: event.name ?? groupToUpdate.name,
-          }),
-        ),
+    return pipe(
+      writeModel,
+      O.match(
+        () => { throw new Error('Database corruption'); },
+        (groupToUpdate) => O.some({
+          ...groupToUpdate,
+          name: event.name ?? groupToUpdate.name,
+        }),
       ),
-    };
+    );
   }
   return writeModel;
 };
@@ -83,7 +73,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
   getGroup(command.groupId),
   E.right,
   E.filterOrElse(
-    (writeModel) => O.isSome(writeModel.groupToUpdate),
+    (writeModel) => O.isSome(writeModel),
     () => toErrorMessage('group not found'),
   ),
   E.filterOrElse(
@@ -91,7 +81,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => toErrorMessage('group name already in use'),
   ),
   E.chain((writeModel) => pipe(
-    writeModel.groupToUpdate,
+    writeModel,
     E.fromOption(() => toErrorMessage('group not found')),
   )),
   E.map(
