@@ -65,6 +65,7 @@ $_arbitrary-large-amount-of-px: 9000px;
     @include typography.sizing(54px, 62px);
     font-weight: bold;
     margin-bottom: functions.px-to-rem(40px);
+    margin-top: 0;
   }
 }
 
@@ -99,6 +100,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     grid-column: 1 / -1;
-    padding-top: 3.75rem;
+    padding-top: functions.px-to-rem(193px);
+    padding-bottom: functions.px-to-rem(235px);
   }
 }
