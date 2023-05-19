@@ -76,9 +76,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       }
     )),
   )),
-  TE.map((lowLevelAdapters) => ({
-    ...lowLevelAdapters,
-  })),
   TE.chain((partialAdapters) => TE.tryCatch(
     async () => {
       const {
