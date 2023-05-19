@@ -79,6 +79,8 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .home-page-hero__section {
   @include vertical-spacing-in-left-wrapper();
+  display: flex;
+  justify-content: center;
 
   &:last-child {
     margin-bottom: 0;
