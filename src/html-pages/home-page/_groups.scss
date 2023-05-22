@@ -3,6 +3,7 @@
 @use '../../sass/layout';
 @use '../../sass/breakpoints';
 @use '../../sass/list';
+@use '../../sass/typography';
 @use './common';
 
 .home-page-groups {
@@ -11,6 +12,11 @@
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   margin: 0 auto;
   max-width: functions.px-to-rem(settings.$max-site-width);
+}
+
+.home-page-groups__title {
+  @include typography.section();
+  margin-bottom: 1.25rem;
 }
 
 .home-page-groups-list {
@@ -26,10 +32,11 @@
 .home-page-groups-list__link {
   background-repeat: no-repeat;
   background-size: contain;
+  background-position-y: center;
   width: 200px;
   height: 70px;
   display: block;
-	margin-bottom: functions.px-to-rem(16px);
+	margin-bottom: functions.px-to-rem(24px);
 }
 
 .home-page-groups-list__link--biophysics-colab {
@@ -38,4 +45,8 @@
 
 .home-page-groups-list__link--elife {
   background-image: url('/static/images/home-page/elife.svg');
+}
+
+.home-page-groups-list__link--prelights {
+  background-image: url('/static/images/home-page/prelights.svg');
 }
