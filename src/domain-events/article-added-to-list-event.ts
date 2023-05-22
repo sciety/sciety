@@ -14,7 +14,7 @@ export const articleAddedToListEventCodec = t.type({
   listId: listIdCodec,
 });
 
-export type ArticleAddedToListEvent = t.TypeOf<typeof articleAddedToListEventCodec>;
+type ArticleAddedToListEvent = t.TypeOf<typeof articleAddedToListEventCodec>;
 
 export const articleAddedToList = (
   articleId: Doi,

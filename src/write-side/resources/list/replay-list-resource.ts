@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { EventOfType, isEventOfType } from '../../../domain-events/domain-event';
 import { ListResource } from './list-resource';
 import {
-  ArticleAddedToListEvent, ArticleRemovedFromListEvent, DomainEvent,
+  ArticleRemovedFromListEvent, DomainEvent,
   ListCreatedEvent,
 } from '../../../domain-events';
 import { eqDoi } from '../../../types/doi';
@@ -17,7 +17,7 @@ type ReplayListResource = (listId: ListId)
 
 type RelevantEvent =
 | ListCreatedEvent
-| ArticleAddedToListEvent
+| EventOfType<'ArticleAddedToList'>
 | ArticleRemovedFromListEvent
 | EventOfType<'ListNameEdited'>
 | EventOfType<'ListDescriptionEdited'>;

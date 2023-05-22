@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
 import { ScietyFeedCard } from '../view-model';
-import { ArticleAddedToListEvent } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { Queries } from '../../../shared-read-models';
+import { EventOfType } from '../../../domain-events';
 
 export type Ports = AddListOwnershipInformationPorts & {
   lookupList: Queries['lookupList'],
@@ -12,7 +12,7 @@ export type Ports = AddListOwnershipInformationPorts & {
 
 type ArticleAddedToListCard = (
   ports: Ports,
-) => (event: ArticleAddedToListEvent) => O.Option<ScietyFeedCard>;
+) => (event: EventOfType<'ArticleAddedToList'>) => O.Option<ScietyFeedCard>;
 
 export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event) => pipe(
   event.listId,
