@@ -9,6 +9,20 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { GroupId } from '../../../../src/types/group-id';
 
+const expectEvent = (fields: Record<string, unknown>) => ({
+  id: expect.any(String),
+  date: expect.any(Date),
+  type: 'GroupDetailsUpdated',
+  groupId: undefined,
+  name: undefined,
+  shortDescription: undefined,
+  avatarPath: undefined,
+  descriptionPath: undefined,
+  homepage: undefined,
+  slug: undefined,
+  ...fields,
+});
+
 const arbitraryGroupJoinedEvent = (groupId = arbitraryGroupId(), name = arbitraryString()) => pipe(
   {
     groupId,
@@ -55,18 +69,7 @@ describe('update', () => {
 
         it('raises an event to update the group shortDescription', () => {
           expect(eventsRaised).toStrictEqual([
-            {
-              id: expect.any(String),
-              date: expect.any(Date),
-              type: 'GroupDetailsUpdated',
-              groupId: groupJoined.groupId,
-              name: undefined,
-              shortDescription,
-              avatarPath: undefined,
-              descriptionPath: undefined,
-              homepage: undefined,
-              slug: undefined,
-            },
+            expectEvent({ groupId: groupJoined.groupId, shortDescription }),
           ]);
         });
       });
