@@ -9,7 +9,7 @@
 
 $_arbitrary-large-amount-of-px: 9000px;
 
-@mixin vertical-spacing-in-left-wrapper() {
+@mixin _vertical-spacing-in-hero() {
   margin-bottom: 1.25rem;
 
   @include breakpoints.not-narrow() {
@@ -18,7 +18,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 }
 
-.home-page-hero {
+.home-page-hero-wrapper {
   max-width: settings.$max-site-width;
   margin: 0 auto;
   background-color: settings.$colour-page-background;
@@ -52,6 +52,19 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 }
 
+.home-page-hero {
+  padding-bottom: 3rem;
+  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-top: 1.25rem;
+  max-width: fit-content;
+
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    padding-top: functions.px-to-rem(193px);
+    padding-bottom: functions.px-to-rem(235px);
+  }
+}
+
 .home-page-hero__content_title {
   @include typography.sizing(32px, 38px);
   font-weight: normal;
@@ -69,7 +82,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero__content_byline {
-  @include vertical-spacing-in-left-wrapper();
+  @include _vertical-spacing-in-hero();
   @include typography.sizing(20px, 22px);
   text-align: center;
 
@@ -80,24 +93,11 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero__section {
-  @include vertical-spacing-in-left-wrapper();
+  @include _vertical-spacing-in-hero();
   display: flex;
   justify-content: center;
 
   &:last-child {
     margin-bottom: 0;
-  }
-}
-
-.home-page-hero__left_wrapper {
-  padding-bottom: 3rem;
-  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
-  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-  padding-top: 1.25rem;
-  max-width: fit-content;
-
-  @media screen and (min-width: common.$home-page-breakpoint) {
-    padding-top: functions.px-to-rem(193px);
-    padding-bottom: functions.px-to-rem(235px);
   }
 }
