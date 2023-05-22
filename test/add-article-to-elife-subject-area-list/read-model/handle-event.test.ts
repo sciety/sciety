@@ -6,7 +6,8 @@ import { handleEvent, initialState, ReadModel } from '../../../src/add-article-t
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 import { ArticleState, ArticleStateName } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import {
-  articleAddedToList, DomainEvent, subjectAreaRecorded,
+  constructEvent,
+  DomainEvent, subjectAreaRecorded,
 } from '../../../src/domain-events';
 import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import * as LID from '../../../src/types/list-id';
@@ -68,7 +69,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          articleAddedToList(articleId, elifeListId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -97,7 +98,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          articleAddedToList(articleId, elifeListId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -126,7 +127,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          articleAddedToList(articleId, elifeListId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -156,7 +157,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          articleAddedToList(articleId, elifeListId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -167,7 +168,7 @@ describe('handle-event', () => {
         currentState = pipe(
           [
             evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
-            articleAddedToList(articleId, elifeListId),
+            constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -183,7 +184,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          articleAddedToList(articleId, anotherElifeListId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: anotherElifeListId }),
           'listed' as const,
         ],
         [

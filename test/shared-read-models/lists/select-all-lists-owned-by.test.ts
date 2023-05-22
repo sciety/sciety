@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, listCreated, constructEvent,
+  articleRemovedFromList, listCreated, constructEvent,
 } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/select-all-lists-owned-by';
@@ -63,8 +63,8 @@ describe('select-all-lists-owned-by', () => {
     const readmodel = pipe(
       [
         listCreated(listId, listName, listDescription, ownerId),
-        articleAddedToList(arbitraryArticleId(), listId),
-        articleAddedToList(arbitraryArticleId(), listId, dateOfLastEvent),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: dateOfLastEvent }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -127,8 +127,8 @@ describe('select-all-lists-owned-by', () => {
     const readmodel = pipe(
       [
         listCreated(listId, listName, listDescription, ownerId),
-        articleAddedToList(arbitraryArticleId(), listId),
-        articleAddedToList(removedArticleId, listId),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
+        constructEvent('ArticleAddedToList')({ articleId: removedArticleId, listId }),
         articleRemovedFromList(removedArticleId, listId, dateOfLastEvent),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -158,7 +158,7 @@ describe('select-all-lists-owned-by', () => {
     const readmodel = pipe(
       [
         listCreated(anotherListId, arbitraryString(), arbitraryString(), anotherOwnerId),
-        articleAddedToList(arbitraryArticleId(), anotherListId),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: anotherListId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

@@ -1,9 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import {
-  articleAddedToList, DomainEvent,
-} from '../../domain-events';
+import { constructEvent, DomainEvent } from '../../domain-events';
 import { ListResource } from '../resources/list/list-resource';
 import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
@@ -17,7 +15,7 @@ const createAppropriateEvents = (command: Command) => (listResource: ListResourc
   listResource.articleIds,
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
-    () => [articleAddedToList(command.articleId, command.listId)],
+    () => [constructEvent('ArticleAddedToList')({ articleId: command.articleId, listId: command.listId })],
     () => [],
   ),
 );

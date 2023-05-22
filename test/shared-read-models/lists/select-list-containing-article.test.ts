@@ -1,9 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleRemovedFromList } from '../../../src/domain-events';
-import { articleAddedToList } from '../../../src/domain-events/article-added-to-list-event';
-import { listCreated } from '../../../src/domain-events/list-created-event';
+import { articleRemovedFromList, constructEvent, listCreated } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectListContainingArticle } from '../../../src/shared-read-models/lists/select-list-containing-article';
 import * as LOID from '../../../src/types/list-owner-id';
@@ -21,7 +19,7 @@ describe('select-list-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
-        articleAddedToList(articleId, listId),
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -37,7 +35,7 @@ describe('select-list-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
-        articleAddedToList(articleId, listId),
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
         articleRemovedFromList(articleId, listId),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -54,9 +52,9 @@ describe('select-list-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
-        articleAddedToList(articleId, listId),
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
         listCreated(listId2, arbitraryString(), arbitraryString(), LOID.fromUserId(userId2)),
-        articleAddedToList(articleId, listId2),
+        constructEvent('ArticleAddedToList')({ articleId, listId: listId2 }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

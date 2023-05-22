@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryList } from '../../types/list-helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { constructEvent, listCreated } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { selectAllListsContainingArticle } from '../../../src/shared-read-models/lists/select-all-lists-containing-article';
@@ -24,7 +24,7 @@ describe('select-all-lists-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(list.id, list.name, list.description, list.ownerId),
-        articleAddedToList(articleId, list.id),
+        constructEvent('ArticleAddedToList')({ articleId, listId: list.id }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -43,9 +43,9 @@ describe('select-all-lists-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(userList.id, userList.name, userList.description, userList.ownerId),
-        articleAddedToList(articleId, userList.id),
+        constructEvent('ArticleAddedToList')({ articleId, listId: userList.id }),
         listCreated(groupList.id, groupList.name, groupList.description, groupList.ownerId),
-        articleAddedToList(articleId, groupList.id),
+        constructEvent('ArticleAddedToList')({ articleId, listId: groupList.id }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -66,7 +66,7 @@ describe('select-all-lists-containing-article', () => {
     const readModel = pipe(
       [
         listCreated(list.id, list.name, list.description, list.ownerId),
-        articleAddedToList(anotherArticleId, list.id),
+        constructEvent('ArticleAddedToList')({ articleId: anotherArticleId, listId: list.id }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

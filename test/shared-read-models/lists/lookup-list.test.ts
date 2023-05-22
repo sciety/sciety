@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, listCreated, constructEvent,
+  listCreated, constructEvent,
 } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { lookupList } from '../../../src/shared-read-models/lists/lookup-list';
@@ -23,8 +23,8 @@ describe('lookup-list', () => {
       const readModel = pipe(
         [
           listCreated(listId, name, description, arbitraryListOwnerId()),
-          articleAddedToList(articleId1, listId, new Date('2019')),
-          articleAddedToList(articleId2, listId, new Date('2021')),
+          constructEvent('ArticleAddedToList')({ articleId: articleId1, listId, date: new Date('2019') }),
+          constructEvent('ArticleAddedToList')({ articleId: articleId2, listId, date: new Date('2021') }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

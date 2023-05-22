@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { articleAddedToList } from '../../../../src/domain-events';
 import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -12,6 +11,7 @@ import { createTestFramework, TestFramework } from '../../../framework';
 import { List } from '../../../../src/types/list';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { constructEvent } from '../../../../src/domain-events';
 
 describe('article-added-to-list-card', () => {
   let framework: TestFramework;
@@ -38,7 +38,7 @@ describe('article-added-to-list-card', () => {
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userList.id);
 
         viewModel = pipe(
-          articleAddedToList(arbitraryArticleId(), userList.id, date),
+          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList.id, date }),
           articleAddedToListCard({ ...framework.queries, logger: dummyLogger }),
           O.getOrElseW(shouldNotBeCalled),
         );
@@ -68,7 +68,7 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createList(list);
         viewModel = pipe(
-          articleAddedToList(arbitraryArticleId(), list.id, date),
+          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: list.id, date }),
           articleAddedToListCard({ ...framework.queries, logger: dummyLogger }),
           O.getOrElseW(shouldNotBeCalled),
         );

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, evaluationRecorded, incorrectlyRecordedEvaluationErased,
+  articleRemovedFromList, constructEvent, evaluationRecorded, incorrectlyRecordedEvaluationErased,
 } from '../../../src/domain-events';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -37,7 +37,7 @@ describe('get-activity-for-doi', () => {
       const listId = arbitraryListId();
       const readmodel = pipe(
         [
-          articleAddedToList(articleId, listId),
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
           articleRemovedFromList(articleId, listId),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -175,7 +175,7 @@ describe('get-activity-for-doi', () => {
     describe('and the article has been added to a single list and not removed', () => {
       const readmodel = pipe(
         [
-          articleAddedToList(articleId, arbitraryListId()),
+          constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -190,9 +190,9 @@ describe('get-activity-for-doi', () => {
       const listBId = arbitraryListId();
       const readmodel = pipe(
         [
-          articleAddedToList(articleId, listAId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: listAId }),
           articleRemovedFromList(articleId, listAId),
-          articleAddedToList(articleId, listBId),
+          constructEvent('ArticleAddedToList')({ articleId, listId: listBId }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -206,7 +206,7 @@ describe('get-activity-for-doi', () => {
       const readmodel = pipe(
         [
           evaluationRecorded(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
-          articleAddedToList(articleId, arbitraryListId()),
+          constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -225,8 +225,8 @@ describe('get-activity-for-doi', () => {
     describe('in two different lists', () => {
       const readmodel = pipe(
         [
-          articleAddedToList(articleId, arbitraryListId()),
-          articleAddedToList(articleId, arbitraryListId()),
+          constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
+          constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

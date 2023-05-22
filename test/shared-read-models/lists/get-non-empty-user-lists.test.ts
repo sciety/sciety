@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { getNonEmptyUserLists } from '../../../src/shared-read-models/lists/get-non-empty-user-lists';
 import { arbitraryList } from '../../types/list-helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
-import { articleAddedToList, listCreated } from '../../../src/domain-events';
+import { constructEvent, listCreated } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -17,8 +17,8 @@ describe('get-non-empty-user-lists', () => {
       [
         listCreated(userList1.id, userList1.name, userList1.description, userList1.ownerId),
         listCreated(userList2.id, userList2.name, userList2.description, userList2.ownerId),
-        articleAddedToList(arbitraryArticleId(), userList1.id),
-        articleAddedToList(arbitraryArticleId(), userList2.id),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList1.id }),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList2.id }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -52,7 +52,7 @@ describe('get-non-empty-user-lists', () => {
     const readModel = pipe(
       [
         listCreated(groupList.id, groupList.name, groupList.description, groupList.ownerId),
-        articleAddedToList(arbitraryArticleId(), groupList.id),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: groupList.id }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

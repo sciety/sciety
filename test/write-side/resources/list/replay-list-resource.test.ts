@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import {
-  articleAddedToList, articleRemovedFromList, constructEvent, listCreated,
+  articleRemovedFromList, constructEvent, listCreated,
 } from '../../../../src/domain-events';
 import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../../helpers';
@@ -21,7 +21,7 @@ describe('replay-list-resource', () => {
       const result = pipe(
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
-          articleAddedToList(articleId, listId),
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
         ],
         replayListResource(listId),
       );
@@ -64,7 +64,7 @@ describe('replay-list-resource', () => {
       const result = pipe(
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
-          articleAddedToList(articleId, listId),
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
           articleRemovedFromList(articleId, listId),
         ],
         replayListResource(listId),
