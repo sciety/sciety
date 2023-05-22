@@ -53,7 +53,7 @@ describe('update', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        it('raises an event to update the group name', () => {
+        it('raises an event to update the group shortDescription', () => {
           expect(eventsRaised).toStrictEqual([
             expect.objectContaining({
               type: 'GroupDetailsUpdated',
