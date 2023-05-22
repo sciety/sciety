@@ -161,6 +161,35 @@ describe('update', () => {
         arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
       ];
 
+      describe('when passed a new name', () => {
+        const name = arbitraryString();
+        const eventsRaised = pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update({ groupId: groupJoined.groupId, name }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        it('raises an event to update the group name', () => {
+          expect(eventsRaised).toStrictEqual([
+            {
+              id: expect.any(String),
+              date: expect.any(Date),
+              type: 'GroupDetailsUpdated',
+              groupId: groupJoined.groupId,
+              name,
+              shortDescription: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              homepage: undefined,
+              slug: undefined,
+            },
+          ]);
+        });
+      });
+
       describe('when passed the group\'s current name', () => {
         const eventsRaised = pipe(
           [
