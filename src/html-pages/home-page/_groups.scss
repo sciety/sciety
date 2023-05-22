@@ -16,13 +16,26 @@
 .home-page-groups-list {
   @include list.basics();
   margin-bottom: functions.px-to-rem(32px);
+
+	@include breakpoints.not-narrow {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+	};
 }
 
 .home-page-groups-list__link {
-  background-image: url('/static/images/home-page/biophysics-collab.png');
   background-repeat: no-repeat;
   background-size: contain;
   width: 200px;
   height: 70px;
   display: block;
+	margin-bottom: functions.px-to-rem(16px);
+}
+
+.home-page-groups-list__link--biophysics-colab {
+  background-image: url('/static/images/home-page/biophysics-collab.png');
+}
+
+.home-page-groups-list__link--elife {
+  background-image: url('/static/images/home-page/elife.svg');
 }
