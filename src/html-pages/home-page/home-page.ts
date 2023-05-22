@@ -3,9 +3,11 @@ import { cards, Ports as CardsPorts } from './cards';
 import { hero } from './hero';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
+import { groups } from './groups';
 
 type Components = {
   hero: HtmlFragment,
+  groups: HtmlFragment,
   cards: HtmlFragment,
 };
 
@@ -14,6 +16,7 @@ type Ports = CardsPorts;
 const renderContent = (components: Components) => toHtmlFragment(`
   <div class="home-page">
     ${components.hero}
+    ${components.groups}
     ${components.cards}
   </div>
 `);
@@ -21,6 +24,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
 export const homePage = (ports: Ports): Page => pipe(
   {
     hero,
+    groups,
     cards: cards(ports),
   },
   renderContent,

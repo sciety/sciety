@@ -1,0 +1,15 @@
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/breakpoints';
+@use './common';
+
+.home-page-groups {
+  padding-top: common.$section-padding;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+	margin: 0 auto;
+
+  @include breakpoints.not-narrow {
+    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  }
+}
