@@ -6,8 +6,10 @@
 @use '../../sass/button';
 
 $_input-height: 48px;
-$_input-width-on-wide-screens: 390px;
 $_search-icon-size: functions.px-to-rem(24px);
+$_search-input-width: 320px;
+$_search-button-width: 76px;
+$_search-form-width-on-wide-screens: $_search-input-width + settings.$sciety-default-form-element-separation + $_search-button-width;
 
 .home-page-hero-search-form {
   position: relative;
@@ -15,7 +17,7 @@ $_search-icon-size: functions.px-to-rem(24px);
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
-  max-width: functions.px-to-rem(320px);
+  max-width: functions.px-to-rem($_search-input-width);
 
   &::before{
     content: '';
@@ -33,7 +35,7 @@ $_search-icon-size: functions.px-to-rem(24px);
   @include breakpoints.not-narrow() {
     flex-direction: row;
     flex-grow: 0;
-    max-width: functions.px-to-rem(415px);
+    max-width: functions.px-to-rem($_search-form-width-on-wide-screens);
   }
 }
 
@@ -47,11 +49,9 @@ $_search-icon-size: functions.px-to-rem(24px);
   padding-right: functions.px-to-rem(settings.$sciety-default-form-gutter);
   color: settings.$colour-text-primary;
   margin-bottom: functions.px-to-rem(10px);
-  width: 100%;
-  max-width: functions.px-to-rem($_input-width-on-wide-screens);
-  
+  width: functions.px-to-rem($_search-input-width);
+
   @include breakpoints.not-narrow() {
-    width: functions.px-to-rem($_input-width-on-wide-screens);
     margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
     margin-bottom: 0;
   }
@@ -60,9 +60,9 @@ $_search-icon-size: functions.px-to-rem(24px);
 .home-page-hero-search-form__button {
   @include button.button();
   cursor: pointer;
-  max-width: functions.px-to-rem(76px);
+  max-width: functions.px-to-rem($_search-button-width);
 
   @include breakpoints.not-narrow() {
-    height: functions.px-to-rem($_input-height - 2px);
+    height: functions.px-to-rem($_input-height - (2 * settings.$border-width));
   }
 }
