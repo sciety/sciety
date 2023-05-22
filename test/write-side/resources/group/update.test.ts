@@ -56,6 +56,7 @@ describe('update', () => {
 
     describe.each([
       ['shortDescription'],
+      ['name'],
     ])('when passed a new %s for the group', (attributeToBeChanged) => {
       const newValue = arbitraryString();
 
@@ -182,17 +183,6 @@ describe('update', () => {
         });
       });
 
-      describe('when passed a new name for the group', () => {
-        const name = arbitraryString();
-        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name });
-
-        it('raises an event to update the group name', () => {
-          expect(eventsRaised).toStrictEqual([
-            expectEvent({ groupId: groupJoined.groupId, name }),
-          ]);
-        });
-      });
-
       describe('when passed the group\'s existing name', () => {
         const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name: groupJoined.name });
 
@@ -231,17 +221,6 @@ describe('update', () => {
         groupResource.update(command),
         E.getOrElseW(shouldNotBeCalled),
       );
-
-      describe('when passed a new name', () => {
-        const name = arbitraryString();
-        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name });
-
-        it('raises an event to update the group name', () => {
-          expect(eventsRaised).toStrictEqual([
-            expectEvent({ groupId: groupJoined.groupId, name }),
-          ]);
-        });
-      });
 
       describe('when passed the group\'s current name', () => {
         const eventsRaised = executeUpdateAction({
