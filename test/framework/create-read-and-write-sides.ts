@@ -55,6 +55,7 @@ export type ReadAndWriteSides = {
   commandHandlers: ReturnType<typeof instantiateCommandHandlers>,
   getAllEvents: GetAllEvents,
   queries: Queries,
+  eventStore: EventStore,
 };
 
 export const createReadAndWriteSides = (): ReadAndWriteSides => {
@@ -69,5 +70,6 @@ export const createReadAndWriteSides = (): ReadAndWriteSides => {
     commandHandlers,
     getAllEvents: eventStore.getAllEvents,
     queries,
+    eventStore,
   };
 };

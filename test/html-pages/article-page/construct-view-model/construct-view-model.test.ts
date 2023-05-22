@@ -15,6 +15,7 @@ import {
   LoggedInUserListManagement,
 } from '../../../../src/html-pages/article-page/view-model';
 import { dummyLogger } from '../../../dummy-logger';
+import { recordArticleDetailsCommandHandler } from '../../../../src/write-side/command-handlers/record-article-details-command-handler';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -26,6 +27,10 @@ describe('construct-view-model', () => {
     adapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
+      recordArticleDetails: recordArticleDetailsCommandHandler({
+        ...framework.eventStore,
+        fetchArticle: framework.happyPathThirdParties.fetchArticle,
+      }),
       logger: dummyLogger,
     };
   });
