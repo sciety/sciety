@@ -1,15 +1,28 @@
 @use '../../sass/settings';
 @use '../../sass/functions';
+@use '../../sass/layout';
 @use '../../sass/breakpoints';
+@use '../../sass/list';
 @use './common';
 
 .home-page-groups {
   padding-top: common.$section-padding;
+  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  margin: 0 auto;
   max-width: functions.px-to-rem(settings.$max-site-width);
-	margin: 0 auto;
+}
 
-  @include breakpoints.not-narrow {
-    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
-  }
+.home-page-groups-list {
+  @include list.basics();
+  margin-bottom: functions.px-to-rem(32px);
+}
+
+.home-page-groups-list__link {
+  background-image: url('/static/images/home-page/biophysics-collab.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 200px;
+  height: 70px;
+  display: block;
 }
