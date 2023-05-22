@@ -73,7 +73,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the new name is returned', () => {
+    it('the new name is returned', () => {
       expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
         name: newName,
       })));

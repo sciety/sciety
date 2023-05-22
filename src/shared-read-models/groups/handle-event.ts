@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, GroupJoinedEvent, isGroupJoinedEvent } from '../../domain-events';
+import {
+  DomainEvent, GroupJoinedEvent, isEventOfType, isGroupJoinedEvent,
+} from '../../domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
@@ -20,6 +22,11 @@ const toGroup = (event: GroupJoinedEvent) => ({
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isGroupJoinedEvent(event)) {
     readmodel[event.groupId] = toGroup(event);
+  }
+  if (isEventOfType('GroupDetailsUpdated')(event)) {
+    if (event.name) {
+      readmodel[event.groupId].name = event.name;
+    }
   }
   return readmodel;
 };
