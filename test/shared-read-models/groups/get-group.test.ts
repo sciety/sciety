@@ -2,10 +2,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { groupJoined } from '../../../src/domain-events';
+import { constructEvent, groupJoined } from '../../../src/domain-events';
 import { getGroup, handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryString } from '../../helpers';
 
 const group = arbitraryGroup();
 
@@ -47,6 +48,35 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its name', () => {
-    it.todo('the new name is returned');
+    const newName = arbitraryString();
+    const readModel = pipe(
+      [
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
+        constructEvent('GroupDetailsUpdated')({
+          groupId: group.id,
+          name: newName,
+          avatarPath: undefined,
+          shortDescription: undefined,
+          descriptionPath: undefined,
+          homepage: undefined,
+          slug: undefined,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('the new name is returned', () => {
+      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+        name: newName,
+      })));
+    });
   });
 });
