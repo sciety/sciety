@@ -37,6 +37,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
+import { recordArticleDetailsCommandHandler } from '../write-side/command-handlers/record-article-details-command-handler';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -173,6 +174,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             T.traverseArray(executePolicies(policiesAdapters)),
           )),
         ),
+        recordArticleDetails: recordArticleDetailsCommandHandler({
+          commitEvents: commitEventsWithoutListeners,
+          getAllEvents: collectedAdapters.getAllEvents,
+          fetchArticle: collectedAdapters.fetchArticle,
+        }),
       };
 
       if (process.env.USE_STUB_ADAPTERS === 'true') {

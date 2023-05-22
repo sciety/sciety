@@ -10,3 +10,4 @@ export { FollowCommand } from './follow';
 export { updateUserDetailsCommandCodec, UpdateUserDetailsCommand } from './update-user-details';
 export { eraseEvaluationCommandCodec, EraseEvaluationCommand } from './erase-evaluation';
 export { updateGroupDetailsCommandCodec, UpdateGroupDetailsCommand } from './update-group-details';
+export { RecordArticleDetailsCommand } from './record-article-details';
