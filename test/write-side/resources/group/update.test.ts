@@ -143,16 +143,18 @@ describe('update', () => {
         arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
       ];
 
+      const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+        [
+          groupJoined,
+          ...moreEventsRelatingToOurGroup,
+        ],
+        groupResource.update(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
       describe('when passed a new name', () => {
         const name = arbitraryString();
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name });
 
         it('raises an event to update the group name', () => {
           expect(eventsRaised).toStrictEqual([
@@ -162,14 +164,10 @@ describe('update', () => {
       });
 
       describe('when passed the group\'s current name', () => {
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name: moreEventsRelatingToOurGroup[0].name }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({
+          groupId: groupJoined.groupId,
+          name: moreEventsRelatingToOurGroup[0].name,
+        });
 
         it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
