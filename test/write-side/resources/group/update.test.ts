@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-commented-out-tests */
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { UpdateGroupDetailsCommand } from '../../../../src/write-side/commands/update-group-details';
 import * as groupResource from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
@@ -55,17 +56,18 @@ describe('update', () => {
 
     describe('and they have never updated their details', () => {
       const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
+      const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+        [
+          groupJoined,
+          ...moreEventsRelatingToOurGroup,
+        ],
+        groupResource.update(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
 
       describe('when passed a new shortDescription for the group', () => {
         const shortDescription = arbitraryString();
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, shortDescription }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, shortDescription });
 
         it('raises an event to update the group shortDescription', () => {
           expect(eventsRaised).toStrictEqual([
@@ -75,14 +77,10 @@ describe('update', () => {
       });
 
       describe('when passed the group\'s existing shortDescription', () => {
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, shortDescription: groupJoined.shortDescription }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({
+          groupId: groupJoined.groupId,
+          shortDescription: groupJoined.shortDescription,
+        });
 
         it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
@@ -91,14 +89,11 @@ describe('update', () => {
 
       describe('when passed a new name and existing shortDescription', () => {
         const name = arbitraryString();
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name, shortDescription: groupJoined.shortDescription }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({
+          groupId: groupJoined.groupId,
+          name,
+          shortDescription: groupJoined.shortDescription,
+        });
 
         it('raises an event to only update the group name', () => {
           expect(eventsRaised).toStrictEqual([
@@ -109,14 +104,7 @@ describe('update', () => {
 
       describe('when passed a new name for the group', () => {
         const name = arbitraryString();
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name });
 
         it('raises an event to update the group name', () => {
           expect(eventsRaised).toStrictEqual([
@@ -126,14 +114,7 @@ describe('update', () => {
       });
 
       describe('when passed the group\'s existing name', () => {
-        const eventsRaised = pipe(
-          [
-            groupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name: groupJoined.name }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name: groupJoined.name });
 
         it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
