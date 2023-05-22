@@ -39,8 +39,11 @@ describe('lookup-article-details', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the details', () => {
-      expect(lookupArticleDetails(readmodel)(articleId)).toStrictEqual(details);
+    it('returns the details', () => {
+      expect(lookupArticleDetails(readmodel)(articleId)).toStrictEqual(O.some({
+        ...details,
+        authors: O.some(details.authors),
+      }));
     });
   });
 
@@ -55,8 +58,11 @@ describe('lookup-article-details', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the details', () => {
-      expect(lookupArticleDetails(readmodel)(articleId)).toStrictEqual(newDetails);
+    it('returns the newer details', () => {
+      expect(lookupArticleDetails(readmodel)(articleId)).toStrictEqual(O.some({
+        ...newDetails,
+        authors: O.some(newDetails.authors),
+      }));
     });
   });
 });
