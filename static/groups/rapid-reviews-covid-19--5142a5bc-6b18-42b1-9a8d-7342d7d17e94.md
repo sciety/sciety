@@ -1,6 +1,6 @@
-## Summary
+## Who we are
 
-One of the missions of RR:C19 is to accelerate peer review of COVID-19-related research across a wide range of disciplines and deliver almost-real-time, dependable scientific information that policymakers, scholars, and health leaders can use. We do this by soliciting rapid peer reviews of time-sensitive and interesting preprints, which are then published online and linked to the preprint servers that host the manuscripts. An underlying value of RR:C19 is transparency and reliability. Each review is published online and assigned a DOI, making the work fully citable and claimable on reviewers’ ORCID and Publons accounts. Our standard practice is to publish the reviewers’ full names and affiliations, although we will allow reviewers to publish their review anonymously, upon request. RR:C19 assesses manuscripts with the same level of rigour as found for top journals. Assessments include how well the paper’s conclusions are substantiated by the research, graded on the RR:C19 Strength of Evidence Scale, with supporting comments.
+RR\ID (Rapid Reviews\Infectious Diseases) is an open-access overlay journal that accelerates peer review of important infectious disease-related research preprints. We are an evolution of [Rapid Reviews: COVID-19 (RR\C19)](https://rrid.mitpress.mit.edu/rrc19), which won the 2022 [PROSE Award for Innovation in Journal Publishing](https://rapidreviewscovid19.mitpress.mit.edu/pub/bwdope09) for introducing a new peer review model facilitating rapid publishing of COVID-19-related research preprints. RR\ID expands beyond COVID-19 to advance our understanding of infectious diseases, leaning on a similar “curate, review, publish” model. RR\ID aims to prevent the dissemination of false/misleading scientific information and accelerate the validation and diffusion of robust findings. RR\ID aims to increase the application of science for the common good, responding to infectious disease challenges throughout the world.
 
 ## Evaluation model
 
@@ -16,8 +16,7 @@ One of the missions of RR:C19 is to accelerate peer review of COVID-19-related r
 
 ## PReF
 
-Sciety uses the PReF (preprint review features) descriptors to describe key elements of each Group's evaluation activities, helping readers to interpret and compare their evaluations.
-[Learn more](https://osf.io/8zj9w/).
+The Preprint Review Features [(PReF)](https://osf.io/8zj9w/) describes key elements of each group’s evaluation activities.
 
 <dl class="group-page-pref">
     <dt>Review requested by</dt>
@@ -38,11 +37,11 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dd>Checked</dd>
 </dl>
 
-## People
+## Our team
 
 We are prototyping a new type of peer curation network consisting of graduate students and field specialists. This cohort identifies relevant pre-print content for peer review, assisted by a new Natural Language Processing tool developed by COVIDScholar, an initiative of UC Berkeley and Lawrence Berkeley National Lab.
 
-Read more about [Rapid Reviews COVID-19](https://rapidreviewscovid19.mitpress.mit.edu/guidelines).
+Read more about [RR\ID](https://rrid.mitpress.mit.edu/).
 
 ## Content license
 Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.
