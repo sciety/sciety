@@ -45,4 +45,8 @@ describe('getGroup', () => {
       expect(getGroup(readModel)(arbitraryGroupId())).toStrictEqual(O.none);
     });
   });
+
+  describe('when the group has changed its name', () => {
+    it.todo('the new name is returned');
+  });
 });
