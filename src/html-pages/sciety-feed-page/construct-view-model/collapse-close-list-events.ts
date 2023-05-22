@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { FeedItem, isCollapsedArticlesAddedToList } from './feed-item';
+import { FeedItem, isArticleAddedToListEvent, isCollapsedArticlesAddedToList } from './feed-item';
 import {
-  ArticleAddedToListEvent, DomainEvent, isArticleAddedToListEvent,
+  ArticleAddedToListEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
 
 const collapsesIntoPreviousEvent = (
@@ -45,7 +45,7 @@ const replaceWithCollapseEvent = (
 const processEvent = (
   state: Array<FeedItem>, event: DomainEvent,
 ) => {
-  if (isArticleAddedToListEvent(event)) {
+  if (isEventOfType('ArticleAddedToList')(event)) {
     if (collapsesIntoPreviousEvent(state, event)) {
       replaceWithCollapseEvent(state, event);
     } else {

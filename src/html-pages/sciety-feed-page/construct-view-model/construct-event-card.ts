@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import {
-  CollapsedArticlesAddedToList,
+  CollapsedArticlesAddedToList, isArticleAddedToListEvent,
   isCollapsedArticlesAddedToList,
 } from './feed-item';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isUserFollowedEditorialCommunityEvent,
+  isUserFollowedEditorialCommunityEvent,
 } from '../../../domain-events';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';

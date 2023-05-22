@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
 import {
   DomainEvent,
-  isArticleAddedToListEvent, isArticleRemovedFromListEvent,
-  isEvaluationRecordedEvent,
+  isArticleRemovedFromListEvent,
+  isEvaluationRecordedEvent, isEventOfType,
   isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../domain-events';
 import { Doi } from '../../types/doi';
@@ -32,7 +32,7 @@ export type ReadModel = Map<string, ArticleState>;
 export const initialState = (): ReadModel => new Map();
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isArticleAddedToListEvent(event)) {
+  if (isEventOfType('ArticleAddedToList')(event)) {
     pipe(
       readmodel.get(event.articleId.value),
       O.fromNullable,

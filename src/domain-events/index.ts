@@ -3,7 +3,6 @@ export {
 } from './domain-event';
 
 export {
-  isArticleAddedToListEvent,
   ArticleAddedToListEvent,
   articleAddedToList,
 } from './article-added-to-list-event';

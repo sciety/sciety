@@ -16,9 +16,6 @@ export const articleAddedToListEventCodec = t.type({
 
 export type ArticleAddedToListEvent = t.TypeOf<typeof articleAddedToListEventCodec>;
 
-export const isArticleAddedToListEvent = (event: { type: string }):
-  event is ArticleAddedToListEvent => event.type === 'ArticleAddedToList';
-
 export const articleAddedToList = (
   articleId: Doi,
   listId: ListId,

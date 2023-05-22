@@ -1,4 +1,4 @@
-import { DomainEvent } from '../../../domain-events';
+import { ArticleAddedToListEvent, DomainEvent } from '../../../domain-events';
 import { ListId } from '../../../types/list-id';
 
 export type CollapsedArticlesAddedToList = {
@@ -13,3 +13,6 @@ export const isCollapsedArticlesAddedToList = (
 ): entry is CollapsedArticlesAddedToList => entry.type === 'CollapsedArticlesAddedToList';
 
 export type FeedItem = DomainEvent | CollapsedArticlesAddedToList;
+
+export const isArticleAddedToListEvent = (event: { type: string }):
+  event is ArticleAddedToListEvent => event.type === 'ArticleAddedToList';
