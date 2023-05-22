@@ -27,6 +27,7 @@ import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { EventId, generate } from '../types/event-id';
 import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
+import { articleDetailsRecordedEventCodec } from './article-details-recorded';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -43,6 +44,7 @@ export const sort = A.sortBy([byDate, byUuid]);
 export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
+  articleDetailsRecordedEventCodec,
   articleRemovedFromListEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationRecordedEventCodec,
