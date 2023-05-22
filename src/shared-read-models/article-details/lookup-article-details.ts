@@ -7,7 +7,7 @@ import { Doi } from '../../types/doi';
 
 export type LookupArticleDetails = (articleId: Doi) => O.Option<ArticleDetails>;
 
-export const lookupArticleDetails = (readmodel: ReadModel) => (articleId: Doi) => pipe(
+export const lookupArticleDetails = (readmodel: ReadModel): LookupArticleDetails => (articleId: Doi) => pipe(
   readmodel,
   RM.lookup(S.Eq)(articleId.value),
 );
