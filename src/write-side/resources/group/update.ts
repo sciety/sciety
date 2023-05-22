@@ -92,8 +92,12 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     (groupState) => (atLeastOneFieldNeedsToBeUpdated(command, groupState)
       ? [constructEvent('GroupDetailsUpdated')({
         groupId: command.groupId,
-        name: command.name,
-        shortDescription: command.shortDescription,
+        name: (command.name !== undefined && command.name !== groupState.name) ? command.name : undefined,
+        shortDescription: (
+          command.shortDescription !== undefined && command.shortDescription !== groupState.shortDescription
+        )
+          ? command.shortDescription
+          : undefined,
         homepage: undefined,
         avatarPath: undefined,
         descriptionPath: undefined,
