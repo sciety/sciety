@@ -102,18 +102,7 @@ describe('update', () => {
 
         it('raises an event to only update the group name', () => {
           expect(eventsRaised).toStrictEqual([
-            {
-              id: expect.any(String),
-              date: expect.any(Date),
-              type: 'GroupDetailsUpdated',
-              groupId: groupJoined.groupId,
-              name,
-              shortDescription: undefined,
-              avatarPath: undefined,
-              descriptionPath: undefined,
-              homepage: undefined,
-              slug: undefined,
-            },
+            expectEvent({ groupId: groupJoined.groupId, name }),
           ]);
         });
       });
@@ -131,18 +120,7 @@ describe('update', () => {
 
         it('raises an event to update the group name', () => {
           expect(eventsRaised).toStrictEqual([
-            {
-              id: expect.any(String),
-              date: expect.any(Date),
-              type: 'GroupDetailsUpdated',
-              groupId: groupJoined.groupId,
-              name,
-              shortDescription: undefined,
-              avatarPath: undefined,
-              descriptionPath: undefined,
-              homepage: undefined,
-              slug: undefined,
-            },
+            expectEvent({ groupId: groupJoined.groupId, name }),
           ]);
         });
       });
@@ -197,18 +175,7 @@ describe('update', () => {
 
         it('raises an event to update the group name', () => {
           expect(eventsRaised).toStrictEqual([
-            {
-              id: expect.any(String),
-              date: expect.any(Date),
-              type: 'GroupDetailsUpdated',
-              groupId: groupJoined.groupId,
-              name,
-              shortDescription: undefined,
-              avatarPath: undefined,
-              descriptionPath: undefined,
-              homepage: undefined,
-              slug: undefined,
-            },
+            expectEvent({ groupId: groupJoined.groupId, name }),
           ]);
         });
       });
