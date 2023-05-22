@@ -54,6 +54,50 @@ describe('update', () => {
   describe('when the group has joined', () => {
     const groupJoined = arbitraryGroupJoinedEvent();
 
+    describe('when passed a new shortDescription for the group', () => {
+      const shortDescription = arbitraryString();
+
+      describe('and they have never updated their details', () => {
+        const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
+        const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, shortDescription });
+
+        it('raises an event to update the group shortDescription', () => {
+          expect(eventsRaised).toStrictEqual([
+            expectEvent({ groupId: groupJoined.groupId, shortDescription }),
+          ]);
+        });
+      });
+
+      describe('and they have previously updated their details', () => {
+        const moreEventsRelatingToOurGroup = [
+          arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
+        ];
+        const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, shortDescription });
+
+        it('raises an event to update the group shortDescription', () => {
+          expect(eventsRaised).toStrictEqual([
+            expectEvent({ groupId: groupJoined.groupId, shortDescription }),
+          ]);
+        });
+      });
+    });
+
     describe.each([
       ['name' as const, 'shortDescription' as const],
     ])('when passed a new %s and existing %s', (newParameter, existingParameter) => {
@@ -121,17 +165,6 @@ describe('update', () => {
         groupResource.update(command),
         E.getOrElseW(shouldNotBeCalled),
       );
-
-      describe('when passed a new shortDescription for the group', () => {
-        const shortDescription = arbitraryString();
-        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, shortDescription });
-
-        it('raises an event to update the group shortDescription', () => {
-          expect(eventsRaised).toStrictEqual([
-            expectEvent({ groupId: groupJoined.groupId, shortDescription }),
-          ]);
-        });
-      });
 
       describe('when passed the group\'s existing shortDescription', () => {
         const eventsRaised = executeUpdateAction({
