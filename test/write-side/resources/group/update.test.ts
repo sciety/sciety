@@ -106,6 +106,7 @@ describe('update', () => {
 
     describe.each([
       ['name' as const, 'shortDescription' as const],
+      ['shortDescription' as const, 'name' as const],
     ])('when passed a new %s and existing %s', (attributeToBeChanged, unchangedAttribute) => {
       const newValue = arbitraryString();
 
@@ -161,35 +162,33 @@ describe('update', () => {
       });
     });
 
-    describe('and they have never updated their details', () => {
-      const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
-      const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
-        [
-          groupJoined,
-          ...moreEventsRelatingToOurGroup,
-        ],
-        groupResource.update(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
-      describe('when passed the group\'s existing shortDescription', () => {
+    describe.each([
+      ['shortDescription' as const],
+      ['name' as const],
+    ])('when passed the group\'s existing %s', (attributeToBeChanged) => {
+      describe('and they have never updated their details', () => {
+        const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
+        const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
         const eventsRaised = executeUpdateAction({
           groupId: groupJoined.groupId,
-          shortDescription: groupJoined.shortDescription,
+          [attributeToBeChanged]: groupJoined[attributeToBeChanged],
         });
 
         it('raises no events', () => {
           expect(eventsRaised).toStrictEqual([]);
         });
       });
+    });
 
-      describe('when passed the group\'s existing name', () => {
-        const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, name: groupJoined.name });
-
-        it('raises no events', () => {
-          expect(eventsRaised).toStrictEqual([]);
-        });
-      });
+    describe('and they have never updated their details', () => {
+      const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
 
       describe('when passed the name of another existing group', () => {
         const otherGroupJoined = arbitraryGroupJoinedEvent();
