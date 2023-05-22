@@ -79,4 +79,37 @@ describe('getGroup', () => {
       })));
     });
   });
+
+  describe('when the group has changed its short description', () => {
+    const newShortDescription = arbitraryString();
+    const readModel = pipe(
+      [
+        groupJoined(
+          group.id,
+          group.name,
+          group.avatarPath,
+          group.descriptionPath,
+          group.shortDescription,
+          group.homepage,
+          group.slug,
+        ),
+        constructEvent('GroupDetailsUpdated')({
+          groupId: group.id,
+          name: undefined,
+          avatarPath: undefined,
+          shortDescription: newShortDescription,
+          descriptionPath: undefined,
+          homepage: undefined,
+          slug: undefined,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('the new short description is returned', () => {
+      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+        shortDescription: newShortDescription,
+      })));
+    });
+  });
 });
