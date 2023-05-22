@@ -16,27 +16,26 @@
 
 .home-page-groups__title {
   @include typography.section();
-  margin-bottom: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .home-page-groups-list {
   @include list.basics();
   margin-bottom: functions.px-to-rem(32px);
 
-	@include breakpoints.not-narrow {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-	};
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		gap: functions.px-to-rem(56px) functions.px-to-rem(32px);
 }
 
 .home-page-groups-list__link {
   background-repeat: no-repeat;
   background-size: contain;
-  background-position-y: center;
+  background-position: center;
   width: 200px;
   height: 70px;
   display: block;
-	margin-bottom: functions.px-to-rem(24px);
 }
 
 .home-page-groups-list__link--biophysics-colab {
@@ -49,4 +48,24 @@
 
 .home-page-groups-list__link--prelights {
   background-image: url('/static/images/home-page/prelights.svg');
+}
+
+.home-page-groups-list__link--review-commons {
+  background-image: url('/static/images/home-page/review-commons.png');
+}
+
+.home-page-groups-list__link--asapbio {
+  background-image: url('/static/images/home-page/asapbio.png');
+}
+
+.home-page-groups-list__link--rrid {
+  background-image: url('/static/images/home-page/rrid.png');
+}
+
+.home-page-groups-list__link--arcadia-science {
+  background-image: url('/static/images/home-page/arcadia-science.svg');
+}
+
+.home-page-groups-list__link--prereview {
+  background-image: url('/static/images/home-page/prereview.svg');
 }
