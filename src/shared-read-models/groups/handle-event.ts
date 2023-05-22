@@ -24,8 +24,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.groupId] = toGroup(event);
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
-    if (event.name) {
+    if (event.name !== undefined) {
       readmodel[event.groupId].name = event.name;
+    }
+    if (event.shortDescription !== undefined) {
+      readmodel[event.groupId].shortDescription = event.shortDescription;
     }
   }
   return readmodel;

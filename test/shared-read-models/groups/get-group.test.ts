@@ -111,7 +111,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the new short description is returned', () => {
+    it('the new short description is returned', () => {
       expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
         name: group.name,
         avatarPath: group.avatarPath,
