@@ -9,9 +9,10 @@ $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);
 $_search-input-width: 320px;
 $_search-button-width: 76px;
-$_search-form-width-on-wide-screens: $_search-input-width + settings.$sciety-default-form-element-separation + $_search-button-width;
+$_search-button-width-with-separation: $_search-button-width + settings.$sciety-default-form-element-separation;
+$_search-form-width-on-wide-screens: $_search-input-width + $_search-button-width-with-separation;
 
-.home-page-hero-search-form {
+.home-page-hero-search-form__visible_interactive_elements {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -36,6 +37,17 @@ $_search-form-width-on-wide-screens: $_search-input-width + settings.$sciety-def
     flex-direction: row;
     flex-grow: 0;
     max-width: functions.px-to-rem($_search-form-width-on-wide-screens);
+  }
+}
+
+.home-page-hero-search-form__label {
+  display: block;
+  font-size: functions.px-to-rem(14px);
+  text-align: center;
+  margin-bottom: functions.px-to-rem(2px);
+
+  @include breakpoints.not-narrow() {
+    padding-right: functions.px-to-rem($_search-button-width-with-separation);
   }
 }
 
