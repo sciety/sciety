@@ -76,6 +76,11 @@ describe('getGroup', () => {
     it('the new name is returned', () => {
       expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
         name: newName,
+        avatarPath: group.avatarPath,
+        descriptionPath: group.descriptionPath,
+        shortDescription: group.shortDescription,
+        homepage: group.homepage,
+        slug: group.slug,
       })));
     });
   });
@@ -108,7 +113,12 @@ describe('getGroup', () => {
 
     it.failing('the new short description is returned', () => {
       expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+        name: group.name,
+        avatarPath: group.avatarPath,
+        descriptionPath: group.descriptionPath,
         shortDescription: newShortDescription,
+        homepage: group.homepage,
+        slug: group.slug,
       })));
     });
   });
