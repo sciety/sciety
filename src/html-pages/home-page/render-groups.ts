@@ -11,7 +11,7 @@ type GroupLinkViewModel = {
 
 const renderGroup = (groupLink: GroupLinkViewModel) => `<a href="${groupLink.link}" class="home-page-groups-list__link" style="background-image: url('${groupLink.logoPath}');"><span class="visually-hidden">${groupLink.name}</span></a>`;
 
-type GroupsViewModel = ReadonlyArray<GroupLinkViewModel>;
+export type GroupsViewModel = ReadonlyArray<GroupLinkViewModel>;
 
 export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   viewModel,
