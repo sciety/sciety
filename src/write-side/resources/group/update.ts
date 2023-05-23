@@ -86,6 +86,11 @@ const calculateAttributesToUpdate = (
     : undefined,
 });
 
+const hasAnyValues = (attributes: Record<string, string | undefined>): boolean => (
+  (attributes.name !== undefined)
+  || (attributes.shortDescription !== undefined)
+);
+
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroupState(command.groupId),
@@ -94,12 +99,12 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => toErrorMessage('group name already in use'),
   ),
   E.map((groupState) => calculateAttributesToUpdate(command, groupState)),
-  E.map((attributesToUpdate) => [constructEvent('GroupDetailsUpdated')({
+  E.map((attributesToUpdate) => (hasAnyValues(attributesToUpdate) ? [constructEvent('GroupDetailsUpdated')({
     groupId: command.groupId,
     homepage: undefined,
     avatarPath: undefined,
     descriptionPath: undefined,
     slug: undefined,
     ...attributesToUpdate,
-  })]),
+  })] : [])),
 );
