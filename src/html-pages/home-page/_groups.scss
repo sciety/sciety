@@ -2,6 +2,7 @@
 @use '../../sass/functions';
 @use '../../sass/layout';
 @use '../../sass/breakpoints';
+@use '../../sass/button';
 @use '../../sass/list';
 @use '../../sass/typography';
 @use './common';
@@ -68,4 +69,14 @@
 
 .home-page-groups-list__link--prereview {
   background-image: url('/static/images/home-page/prereview.svg');
+}
+
+.home-page-groups__button_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.home-page-groups__button {
+  @include button.button-link-teal();
+  margin: 0 auto;
 }

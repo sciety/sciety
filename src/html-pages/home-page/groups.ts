@@ -13,6 +13,8 @@ export const groups = toHtmlFragment(`
     <li><a href="/groups/arcadia-science" class="home-page-groups-list__link home-page-groups-list__link--arcadia-science"><span class="visually-hidden">Arcadia Science</span></a></li>
     <li><a href="/groups/prereview" class="home-page-groups-list__link home-page-groups-list__link--prereview"><span class="visually-hidden">PREreview</span></a></li>
   </ul>
-  <a href="/groups">See all evaluating groups</a>
+  <div class="home-page-groups__button_wrapper">
+    <a href="/groups" class="home-page-groups__button">See all evaluating groups</a>
+  </div>
 </section>
 `);
