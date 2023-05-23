@@ -243,27 +243,27 @@ describe('update', () => {
             expect(E.isLeft(result)).toBe(true);
           });
         });
-      });
-    });
 
-    describe('and they have previously updated their details', () => {
-      const moreEventsRelatingToOurGroup = [
-        arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
-      ];
+        describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+          const moreEventsRelatingToOurGroup = [
+            arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
+          ];
+          const otherGroupJoined = arbitraryGroupJoinedEvent();
+          const result = pipe(
+            [
+              groupJoined,
+              otherGroupJoined,
+              ...moreEventsRelatingToOurGroup,
+            ],
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: otherGroupJoined[attributeToBeChanged],
+            }),
+          );
 
-      describe('when passed the name of another existing group', () => {
-        const otherGroupJoined = arbitraryGroupJoinedEvent();
-        const result = pipe(
-          [
-            groupJoined,
-            otherGroupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name: otherGroupJoined.name }),
-        );
-
-        it('returns an error', () => {
-          expect(E.isLeft(result)).toBe(true);
+          it('returns an error', () => {
+            expect(E.isLeft(result)).toBe(true);
+          });
         });
       });
     });
