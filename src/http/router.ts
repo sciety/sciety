@@ -11,7 +11,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
-import { handleScietyApiCommand } from './api/handle-sciety-api-command';
 import { editListDetailsHandler } from './forms/edit-list-details-handler';
 import { removeArticleFromListHandler } from './forms/remove-article-from-list-handler';
 import { loadStaticFile } from './load-static-file';
@@ -36,7 +35,6 @@ import {
   addGroupCommandCodec,
   eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec,
 } from '../write-side/commands';
-import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
@@ -65,7 +63,6 @@ import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { userIdCodec } from '../types/user-id';
-import { CommandHandler, GenericCommand } from '../types/command-handler';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
@@ -83,16 +80,7 @@ import {
   updateUserDetailsCommandHandler,
 } from '../write-side/command-handlers';
 import { listsPage } from '../html-pages/lists-page';
-
-const createApiRouteForCommand = <C extends GenericCommand>(
-  adapters: CollectedPorts,
-  codec: t.Decoder<unknown, C>,
-  commandHandler: CommandHandler<C>,
-) => handleScietyApiCommand(adapters, flow(
-    validateInputShape(codec),
-    TE.fromEither,
-    TE.chain(commandHandler),
-  ));
+import { createApiRouteForCommand } from './create-api-route-for-command';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
