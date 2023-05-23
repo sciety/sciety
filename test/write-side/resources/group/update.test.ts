@@ -185,6 +185,31 @@ describe('update', () => {
           expect(eventsRaised).toStrictEqual([]);
         });
       });
+
+      describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+        const moreEventsRelatingToOurGroup = [
+          {
+            ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
+            [attributeToBeChanged]: arbitraryString(),
+          },
+        ];
+        const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          [
+            groupJoined,
+            ...moreEventsRelatingToOurGroup,
+          ],
+          groupResource.update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+        const eventsRaised = executeUpdateAction({
+          groupId: groupJoined.groupId,
+          [attributeToBeChanged]: moreEventsRelatingToOurGroup[0][attributeToBeChanged],
+        });
+
+        it('raises no events', () => {
+          expect(eventsRaised).toStrictEqual([]);
+        });
+      });
     });
 
     describe('and they have never updated their details', () => {
