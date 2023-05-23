@@ -9,7 +9,7 @@ type GroupLinkViewModel = {
   name: string,
 };
 
-const renderGroup = (groupLink: GroupLinkViewModel) => `<a href="${groupLink.link}" class="home-page-groups-list__link" style="background-image: url('${groupLink.logoPath}');"><span class="visually-hidden">${groupLink.name}</span></a>`;
+const renderGroup = (groupLink: GroupLinkViewModel) => `<a href="${groupLink.link}" class="home-page-groups-list__link"><img src="${groupLink.logoPath}" alt="${groupLink.name}"></a>`;
 
 export type GroupsViewModel = ReadonlyArray<GroupLinkViewModel>;
 
