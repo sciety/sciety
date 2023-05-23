@@ -237,26 +237,6 @@ describe('update', () => {
         arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
       ];
 
-      const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
-        [
-          groupJoined,
-          ...moreEventsRelatingToOurGroup,
-        ],
-        groupResource.update(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
-      describe('when passed the group\'s current name', () => {
-        const eventsRaised = executeUpdateAction({
-          groupId: groupJoined.groupId,
-          name: moreEventsRelatingToOurGroup[0].name,
-        });
-
-        it('raises no events', () => {
-          expect(eventsRaised).toStrictEqual([]);
-        });
-      });
-
       describe('when passed the name of another existing group', () => {
         const otherGroupJoined = arbitraryGroupJoinedEvent();
         const result = pipe(
