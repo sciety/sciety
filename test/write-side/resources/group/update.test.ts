@@ -61,7 +61,7 @@ describe('update', () => {
       ])('%s', (attributeToBeChanged) => {
         const newValue = arbitraryString();
 
-        describe('and they have never updated their details', () => {
+        describe('and this group\'s details have never been updated', () => {
           const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
           const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
             [
@@ -80,7 +80,7 @@ describe('update', () => {
           });
         });
 
-        describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+        describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
             {
               ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
@@ -113,7 +113,7 @@ describe('update', () => {
       ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
         const newValue = arbitraryString();
 
-        describe('and they have never updated their details', () => {
+        describe('and this group\'s details have never been updated', () => {
           const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
           const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
             [
@@ -136,7 +136,7 @@ describe('update', () => {
           });
         });
 
-        describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+        describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
             {
               ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
@@ -171,7 +171,7 @@ describe('update', () => {
         ['shortDescription' as const],
         ['name' as const],
       ])('%s', (attributeToBeChanged) => {
-        describe('and they have never updated their details', () => {
+        describe('and this group\'s details have never been updated', () => {
           const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
           const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
             [
@@ -191,7 +191,7 @@ describe('update', () => {
           });
         });
 
-        describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+        describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
             {
               ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
@@ -222,7 +222,7 @@ describe('update', () => {
       describe.each([
         ['name' as const],
       ])('%s', (attributeToBeChanged) => {
-        describe('and they have never updated their details', () => {
+        describe('and neither group\'s details have ever been updated', () => {
           const otherGroupJoined = arbitraryGroupJoinedEvent();
           const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
           const result = pipe(
@@ -244,7 +244,7 @@ describe('update', () => {
           });
         });
 
-        describe(`and they have previously updated their ${attributeToBeChanged}`, () => {
+        describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
             arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
           ];
@@ -264,6 +264,10 @@ describe('update', () => {
           it('returns an error', () => {
             expect(E.isLeft(result)).toBe(true);
           });
+        });
+
+        describe(`and the other group's ${attributeToBeChanged} has previously been updated`, () => {
+          it.todo('returns an error');
         });
       });
     });
