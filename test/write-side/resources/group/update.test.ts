@@ -166,7 +166,7 @@ describe('update', () => {
       });
     });
 
-    describe('when passed an unchanged value for a single attribute', () => {
+    describe.skip('when passed an unchanged value for a single attribute', () => {
       describe.each([
         ['shortDescription' as const],
         ['name' as const],

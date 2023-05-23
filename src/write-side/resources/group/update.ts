@@ -75,11 +75,16 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
   (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
-const atLeastOneFieldNeedsToBeUpdated = (
+const calculateAttributesToUpdate = (
   command: UpdateGroupDetailsCommand,
   groupState: GroupState,
-) => (command.name !== undefined && command.name !== groupState.name)
-|| (command.shortDescription !== undefined && command.shortDescription !== groupState.shortDescription);
+) => ({
+  name: (command.name !== undefined && command.name !== groupState.name) ? command.name : undefined,
+  shortDescription: (command.shortDescription !== undefined
+    && command.shortDescription !== groupState.shortDescription)
+    ? command.shortDescription
+    : undefined,
+});
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
@@ -88,21 +93,13 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.map(
-    (groupState) => (atLeastOneFieldNeedsToBeUpdated(command, groupState)
-      ? [constructEvent('GroupDetailsUpdated')({
-        groupId: command.groupId,
-        name: (command.name !== undefined && command.name !== groupState.name) ? command.name : undefined,
-        shortDescription: (
-          command.shortDescription !== undefined && command.shortDescription !== groupState.shortDescription
-        )
-          ? command.shortDescription
-          : undefined,
-        homepage: undefined,
-        avatarPath: undefined,
-        descriptionPath: undefined,
-        slug: undefined,
-      })]
-      : []),
-  ),
+  E.map((groupState) => calculateAttributesToUpdate(command, groupState)),
+  E.map((attributesToUpdate) => [constructEvent('GroupDetailsUpdated')({
+    groupId: command.groupId,
+    homepage: undefined,
+    avatarPath: undefined,
+    descriptionPath: undefined,
+    slug: undefined,
+    ...attributesToUpdate,
+  })]),
 );
