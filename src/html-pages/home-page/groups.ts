@@ -19,16 +19,16 @@ const groupLinks = [
 
 const renderGroup = (groupLink: GroupLinkViewModel) => `<a href="${groupLink.link}" class="home-page-groups-list__link" style="background-image: url('${groupLink.logoPath}');"><span class="visually-hidden">${groupLink.name}</span></a>`;
 
-export const groups = toHtmlFragment(`
+export const groups = pipe(
+  groupLinks,
+  RA.map(renderGroup),
+  RA.map(toHtmlFragment),
+  templateListItems,
+  (listContent) => `
 <section class="home-page-groups">
   <h2 class="home-page-groups__title">Groups evaluating preprints on Sciety</h2>
   <ul class="home-page-groups-list">
-    ${pipe(
-    groupLinks,
-    RA.map(renderGroup),
-    RA.map(toHtmlFragment),
-    templateListItems,
-  )}
+  ${listContent}
     <li><a href="/groups/elife" class="home-page-groups-list__link home-page-groups-list__link--elife"><span class="visually-hidden">eLife</span></a></li>
     <li><a href="/groups/prelights" class="home-page-groups-list__link home-page-groups-list__link--prelights"><span class="visually-hidden">preLights</span></a></li>
     <li><a href="/groups/review-commons" class="home-page-groups-list__link home-page-groups-list__link--review-commons"><span class="visually-hidden">Review Commons</span></a></li>
@@ -41,4 +41,6 @@ export const groups = toHtmlFragment(`
     <a href="/groups" class="home-page-groups__button">See all evaluating groups</a>
   </div>
 </section>
-`);
+`,
+  toHtmlFragment,
+);
