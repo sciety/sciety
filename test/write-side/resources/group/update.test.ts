@@ -267,7 +267,26 @@ describe('update', () => {
         });
 
         describe(`and the other group's ${attributeToBeChanged} has previously been updated`, () => {
-          it.todo('returns an error');
+          const otherGroupJoined = arbitraryGroupJoinedEvent();
+          const valueTakenByOtherGroup = arbitraryString();
+          const moreEventsRelatingToOurGroup = [
+            arbitraryGroupDetailsUpdatedEvent(otherGroupJoined.groupId, valueTakenByOtherGroup),
+          ];
+          const result = pipe(
+            [
+              groupJoined,
+              otherGroupJoined,
+              ...moreEventsRelatingToOurGroup,
+            ],
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: valueTakenByOtherGroup,
+            }),
+          );
+
+          it('returns an error', () => {
+            expect(E.isLeft(result)).toBe(true);
+          });
         });
       });
     });
