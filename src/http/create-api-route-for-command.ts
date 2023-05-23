@@ -11,30 +11,37 @@ import { validateInputShape } from '../write-side/commands/validate-input-shape'
 import { logRequestBody } from './api/log-request-body';
 import { requireBearerToken } from './api/require-bearer-token';
 
+const executeAndRespond = <C extends GenericCommand>(
+  codec: t.Decoder<unknown, C>,
+  commandHandler: CommandHandler<C>,
+): Middleware => async (context) => {
+    await pipe(
+      context.request.body,
+      validateInputShape(codec),
+      TE.fromEither,
+      TE.chain(commandHandler),
+      TE.match(
+        (error) => {
+          context.response.status = StatusCodes.BAD_REQUEST;
+          context.response.body = error;
+        },
+        (eventsCreated) => {
+          context.response.status = eventsCreated === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
+          context.response.body = '';
+        },
+      ),
+    )();
+  };
+
 export const createApiRouteForCommand = <C extends GenericCommand>(
   ports: CollectedPorts,
   codec: t.Decoder<unknown, C>,
   commandHandler: CommandHandler<C>,
-): Middleware => compose([
-    bodyParser({ enableTypes: ['json'] }),
-    logRequestBody(ports.logger),
-    requireBearerToken,
-    async (context) => {
-      await pipe(
-        context.request.body,
-        validateInputShape(codec),
-        TE.fromEither,
-        TE.chain(commandHandler),
-        TE.match(
-          (error) => {
-            context.response.status = StatusCodes.BAD_REQUEST;
-            context.response.body = error;
-          },
-          (eventsCreated) => {
-            context.response.status = eventsCreated === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
-            context.response.body = '';
-          },
-        ),
-      )();
-    },
-  ]);
+): Middleware => compose(
+    [
+      bodyParser({ enableTypes: ['json'] }),
+      logRequestBody(ports.logger),
+      requireBearerToken,
+      executeAndRespond(codec, commandHandler),
+    ],
+  );
