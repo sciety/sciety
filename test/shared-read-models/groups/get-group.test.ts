@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { constructEvent, groupJoined } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { getGroup, handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -14,17 +13,10 @@ describe('getGroup', () => {
   describe('when the group has joined', () => {
     const readModel = pipe(
       [
-        ...arbitraryUninterestingEvents,
-        groupJoined(
-          group.id,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
-        ...arbitraryUninterestingEvents,
+        constructEvent('GroupJoined')({
+          groupId: group.id,
+          ...group,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -36,9 +28,7 @@ describe('getGroup', () => {
 
   describe('when the group has not joined', () => {
     const readModel = pipe(
-      [
-        ...arbitraryUninterestingEvents,
-      ],
+      [],
       RA.reduce(initialState(), handleEvent),
     );
 
@@ -51,15 +41,10 @@ describe('getGroup', () => {
     const newName = arbitraryString();
     const readModel = pipe(
       [
-        groupJoined(
-          group.id,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
+        constructEvent('GroupJoined')({
+          groupId: group.id,
+          ...group,
+        }),
         constructEvent('GroupDetailsUpdated')({
           groupId: group.id,
           name: newName,
@@ -89,15 +74,10 @@ describe('getGroup', () => {
     const newShortDescription = arbitraryString();
     const readModel = pipe(
       [
-        groupJoined(
-          group.id,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
+        constructEvent('GroupJoined')({
+          groupId: group.id,
+          ...group,
+        }),
         constructEvent('GroupDetailsUpdated')({
           groupId: group.id,
           name: undefined,
