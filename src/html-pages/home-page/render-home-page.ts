@@ -2,7 +2,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { GroupsViewModel, renderGroups } from './render-groups';
 import { hero } from './hero';
 
-type ViewModel = {
+export type ViewModel = {
   groups: GroupsViewModel,
   cards: HtmlFragment,
 };
