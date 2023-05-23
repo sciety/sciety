@@ -36,7 +36,7 @@ describe('construct-view-model', () => {
 
       it.todo('returns the groups in the specified order');
 
-      it.failing('returns the links to their group pages', () => {
+      it('returns the links to their group pages', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
           expect.objectContaining({ link: `/groups/${group1.slug}` }),
           expect.objectContaining({ link: `/groups/${group2.slug}` }),

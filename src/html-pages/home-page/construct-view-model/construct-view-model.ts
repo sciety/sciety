@@ -1,4 +1,6 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../render-home-page';
 import { cards, Ports as CardsPorts } from '../cards';
 import { GroupId } from '../../../types/group-id';
@@ -10,8 +12,17 @@ export type GroupsToHighlight = ReadonlyArray<{
 
 export type Ports = CardsPorts;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const constructViewModel = (ports: Ports, groupsToHighlight: GroupsToHighlight): ViewModel => ({
-  groups: O.none,
-  cards: cards(ports),
-});
+export const constructViewModel = (ports: Ports, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
+  groupsToHighlight,
+  O.traverseArray((groupToHighlight) => ports.getGroup(groupToHighlight.groupId)),
+  O.map(RA.map((group) => `/groups/${group.slug}`)),
+  O.map(RA.map((link) => ({
+    link,
+    logoPath: '',
+    name: '',
+  }))),
+  (groups) => ({
+    groups,
+    cards: cards(ports),
+  }),
+);
