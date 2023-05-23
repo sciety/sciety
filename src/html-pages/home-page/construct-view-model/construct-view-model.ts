@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { ViewModel } from '../render-home-page';
 import { cards, Ports as CardsPorts } from '../cards';
 
@@ -47,6 +48,6 @@ const groups = [
 export type Ports = CardsPorts;
 
 export const constructViewModel = (ports: Ports): ViewModel => ({
-  groups,
+  groups: O.some(groups),
   cards: cards(ports),
 });
