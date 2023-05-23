@@ -76,11 +76,12 @@ import { Config as AuthenticationRoutesConfig } from './authentication/configure
 import {
   eraseEvaluationCommandHandler,
   recordEvaluationCommandHandler,
-  updateGroupDetailsCommandHandler,
   updateUserDetailsCommandHandler,
 } from '../write-side/command-handlers';
 import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForCommand } from './create-api-route-for-command';
+import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
+import * as groupResource from '../write-side/resources/group';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -366,7 +367,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/add-group', createApiRouteForCommand(adapters, addGroupCommandCodec, addGroupCommandHandler(adapters)));
 
-  router.post('/api/update-group-details', createApiRouteForCommand(adapters, updateGroupDetailsCommandCodec, updateGroupDetailsCommandHandler(adapters)));
+  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 

@@ -40,7 +40,6 @@ const executeAndRespond = <C extends GenericCommand>(
     )();
   };
 
-// ts-unused-exports:disable-next-line
 export const createApiRouteForResourceAction = <C extends GenericCommand>(
   ports: CollectedPorts,
   codec: t.Decoder<unknown, C>,
