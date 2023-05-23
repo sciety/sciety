@@ -218,22 +218,30 @@ describe('update', () => {
       });
     });
 
-    describe('and they have never updated their details', () => {
-      const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
+    describe('when passed a value taken by another group', () => {
+      describe.each([
+        ['name' as const],
+      ])('%s', (attributeToBeChanged) => {
+        describe('and they have never updated their details', () => {
+          const otherGroupJoined = arbitraryGroupJoinedEvent();
+          const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
+          const result = pipe(
+            [
+              groupJoined,
+              otherGroupJoined,
+              ...moreEventsRelatingToOurGroup,
+            ],
+            groupResource.update(
+              {
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: otherGroupJoined[attributeToBeChanged],
+              },
+            ),
+          );
 
-      describe('when passed the name of another existing group', () => {
-        const otherGroupJoined = arbitraryGroupJoinedEvent();
-        const result = pipe(
-          [
-            groupJoined,
-            otherGroupJoined,
-            ...moreEventsRelatingToOurGroup,
-          ],
-          groupResource.update({ groupId: groupJoined.groupId, name: otherGroupJoined.name }),
-        );
-
-        it('returns an error', () => {
-          expect(E.isLeft(result)).toBe(true);
+          it('returns an error', () => {
+            expect(E.isLeft(result)).toBe(true);
+          });
         });
       });
     });
