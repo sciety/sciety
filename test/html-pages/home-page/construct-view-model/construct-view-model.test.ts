@@ -43,7 +43,12 @@ describe('construct-view-model', () => {
         ]));
       });
 
-      it.todo('returns their names');
+      it.failing('returns their names', () => {
+        expect(viewModel.groups).toStrictEqual(O.some([
+          expect.objectContaining({ name: group1.name }),
+          expect.objectContaining({ name: group2.name }),
+        ]));
+      });
 
       it.todo('returns their provided logo paths');
     });
