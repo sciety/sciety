@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../render-home-page';
 import { cards, Ports as CardsPorts } from '../cards';
@@ -18,17 +17,13 @@ export const constructViewModel = (ports: Ports, groupsToHighlight: GroupsToHigh
     groupToHighlight.groupId,
     ports.getGroup,
     O.map((group) => ({
-      ...group,
       logoPath: groupToHighlight.logoPath,
+      link: `/groups/${group.slug}`,
+      name: group.name,
     })),
   )),
-  O.map(RA.map((group) => ({
-    link: `/groups/${group.slug}`,
-    logoPath: group.logoPath,
-    name: group.name,
-  }))),
-  (groups) => ({
-    groups,
+  (groupsViewModel) => ({
+    groups: groupsViewModel,
     cards: cards(ports),
   }),
 );
