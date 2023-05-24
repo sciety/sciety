@@ -43,7 +43,7 @@ describe('construct-view-model', () => {
         ]));
       });
 
-      it.failing('returns their names', () => {
+      it('returns their names', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
           expect.objectContaining({ name: group1.name }),
           expect.objectContaining({ name: group2.name }),

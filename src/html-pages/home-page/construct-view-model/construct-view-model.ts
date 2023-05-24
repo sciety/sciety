@@ -15,11 +15,10 @@ export type Ports = CardsPorts;
 export const constructViewModel = (ports: Ports, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
   groupsToHighlight,
   O.traverseArray((groupToHighlight) => ports.getGroup(groupToHighlight.groupId)),
-  O.map(RA.map((group) => `/groups/${group.slug}`)),
-  O.map(RA.map((link) => ({
-    link,
+  O.map(RA.map((group) => ({
+    link: `/groups/${group.slug}`,
     logoPath: '',
-    name: '',
+    name: group.name,
   }))),
   (groups) => ({
     groups,
