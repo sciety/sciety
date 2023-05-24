@@ -11,5 +11,3 @@ export const evaluatedArticlesListSpecifiedEventCodec = t.type({
   listId: listIdCodec,
   groupId: GroupIdFromString,
 });
-
-export type EvaluatedArticlesListSpecifiedEvent = t.TypeOf<typeof evaluatedArticlesListSpecifiedEventCodec>;
