@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../render-home-page';
+import { ViewModel } from '../view-model';
 import { cards, Ports as CardsPorts } from '../cards';
 import { GroupId } from '../../../types/group-id';
 

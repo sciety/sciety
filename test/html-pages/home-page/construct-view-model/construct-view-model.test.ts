@@ -3,7 +3,7 @@ import { dummyLogger } from '../../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { Ports, constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { ViewModel } from '../../../../src/html-pages/home-page/render-home-page';
+import { ViewModel } from '../../../../src/html-pages/home-page/view-model';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 
