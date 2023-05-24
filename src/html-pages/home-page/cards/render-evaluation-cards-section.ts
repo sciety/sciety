@@ -41,7 +41,7 @@ const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
   </ul>
 `);
 
-export const renderCardsSection = (): HtmlFragment => toHtmlFragment(`
+export const renderEvaluationCardsSection = (): HtmlFragment => toHtmlFragment(`
   <section class="home-page-cards">
     ${evaluationCards(card1, card2, card3)}
   </section>
