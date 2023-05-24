@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderCardsSection } from './cards/render-cards-section';
+import { renderCardsSection, renderEvaluationCardsSection } from './cards/render-cards-section';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { renderGroups } from './render-groups';
 import { hero } from './hero';
@@ -16,6 +16,6 @@ export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFrag
       renderGroups,
     ),
   )}
-    ${renderCardsSection()}
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderEvaluationCardsSection() : renderCardsSection()}
   </div>
 `);
