@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { evaluatedArticlesListSpecified } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import {
   handleEvent,
   initialState,
@@ -33,7 +33,7 @@ describe('get-evaluated-articles-list-id-for-group', () => {
     const groupId = arbitraryGroupId();
     const readModel = pipe(
       [
-        evaluatedArticlesListSpecified(listId, groupId),
+        constructEvent('EvaluatedArticlesListSpecified')({ listId, groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

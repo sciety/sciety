@@ -5,7 +5,7 @@ import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { AddGroupCommand } from '../commands';
 import {
-  DomainEvent, evaluatedArticlesListSpecified, groupJoined, listCreated,
+  DomainEvent, constructEvent, groupJoined, listCreated,
 } from '../../domain-events';
 import * as AG from '../resources/all-groups';
 
@@ -33,6 +33,6 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
       `Articles that have been evaluated by ${command.name}`,
       LOID.fromGroupId(command.groupId),
     ),
-    evaluatedArticlesListSpecified(listId, command.groupId),
+    constructEvent('EvaluatedArticlesListSpecified')({ listId, groupId: command.groupId }),
   ]),
 );

@@ -46,8 +46,6 @@ export {
   userUnfollowedEditorialCommunity,
 } from './user-unfollowed-editorial-community-event';
 
-export { evaluatedArticlesListSpecified } from './evaluated-articles-list-specified-event';
-
 export {
   isUserDetailsUpdatedEvent,
   userDetailsUpdated,
