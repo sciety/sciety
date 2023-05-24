@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
 import {
   DomainEvent,
-  isArticleRemovedFromListEvent,
   isEvaluationRecordedEvent, isEventOfType,
   isIncorrectlyRecordedEvaluationErasedEvent,
 } from '../../domain-events';
@@ -85,7 +84,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     });
   }
 
-  if (isArticleRemovedFromListEvent(event)) {
+  if (isEventOfType('ArticleRemovedFromList')(event)) {
     pipe(
       readmodel.get(event.articleId.value),
       O.fromNullable,

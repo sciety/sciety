@@ -13,6 +13,3 @@ export const articleRemovedFromListEventCodec = t.type({
 });
 
 export type ArticleRemovedFromListEvent = t.TypeOf<typeof articleRemovedFromListEventCodec>;
-
-export const isArticleRemovedFromListEvent = (event: { type: string }):
-  event is ArticleRemovedFromListEvent => event.type === 'ArticleRemovedFromList';

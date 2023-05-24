@@ -2,7 +2,6 @@ import { isEventOfType } from '../../domain-events/domain-event';
 /* eslint-disable no-param-reassign */
 import {
   DomainEvent,
-  isArticleRemovedFromListEvent,
   isListCreatedEvent,
 } from '../../domain-events';
 import { ListId } from '../../types/list-id';
@@ -33,7 +32,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     readmodel[event.listId].articleIds.push(event.articleId.value);
     readmodel[event.listId].updatedAt = event.date;
-  } else if (isArticleRemovedFromListEvent(event)) {
+  } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
       (id) => id !== event.articleId.value,
     );
