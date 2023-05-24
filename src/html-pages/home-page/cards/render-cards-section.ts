@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { card1, card2, card3 } from './hardcoded-evaluation-cards';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -28,28 +26,6 @@ const renderEvaluationCard = (card: Card) => `
   </article>
 `;
 
-const userListCards = (userLists: O.Option<Record<string, HtmlFragment>>): HtmlFragment => pipe(
-  userLists,
-  O.fold(
-    () => '', // TODO: log an error in this case, due to bad data
-    (cards) => `
-        <h2 class="home-page-cards__title">Most active lists</h2>
-        <ul class="home-page-cards__cards">
-          <li>
-            ${cards.first}
-          </li>
-          <li>
-            ${cards.second}
-          </li>
-          <li>
-            ${cards.third}
-          </li>
-        </ul>
-      `,
-  ),
-  toHtmlFragment,
-);
-
 const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
   <h2 class="home-page-cards__title">Most recent evaluations</h2>
   <ul class="home-page-cards__cards">
@@ -65,9 +41,8 @@ const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
   </ul>
 `);
 
-export const renderCardsSection = (userLists: O.Option<Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
+export const renderCardsSection = (): HtmlFragment => toHtmlFragment(`
   <section class="home-page-cards">
-    ${userListCards(userLists)}
     ${evaluationCards(card1, card2, card3)}
   </section>
 `);
