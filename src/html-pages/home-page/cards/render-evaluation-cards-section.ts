@@ -1,17 +1,6 @@
-import { card1, card2, card3 } from './hardcoded-evaluation-cards';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-type Card = {
-  articleId: string,
-  articleTitle: string,
-  date: Date,
-  groupSlug: string,
-  groupName: string, // TODO: derive from the groupSlug via the groups readmodel
-  avatarPath: string, // TODO: derive from the groupSlug via the groups readmodel
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const renderEvaluationCard = (card: Card) => `
+const renderEvaluationCard = () => `
   <article class="evaluation-card">
     <figure>
       <blockquote cite="/articles/activity/10.1101/2022.06.22.497259">
@@ -25,23 +14,23 @@ const renderEvaluationCard = (card: Card) => `
   </article>
 `;
 
-const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
+const evaluationCards = () => toHtmlFragment(`
   <h2 class="home-page-cards__title">Most recent evaluations</h2>
   <ul class="home-page-cards__cards">
     <li>
-      ${renderEvaluationCard(c1)}
+      ${renderEvaluationCard()}
     </li>
     <li>
-      ${renderEvaluationCard(c2)}
+      ${renderEvaluationCard()}
     </li>
     <li>
-      ${renderEvaluationCard(c3)}
+      ${renderEvaluationCard()}
     </li>
   </ul>
 `);
 
 export const renderEvaluationCardsSection = (): HtmlFragment => toHtmlFragment(`
   <section class="home-page-cards">
-    ${evaluationCards(card1, card2, card3)}
+    ${evaluationCards()}
   </section>
 `);
