@@ -24,13 +24,15 @@ describe('construct-view-model', () => {
     describe('when all groups can be found', () => {
       const group1 = arbitraryGroup();
       const group2 = arbitraryGroup();
+      const group1LogoPath = arbitraryString();
+      const group2LogoPath = arbitraryString();
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group1);
         await framework.commandHelpers.createGroup(group2);
         viewModel = constructViewModel(adapters, [
-          { groupId: group1.id, logoPath: arbitraryString() },
-          { groupId: group2.id, logoPath: arbitraryString() },
+          { groupId: group1.id, logoPath: group1LogoPath },
+          { groupId: group2.id, logoPath: group2LogoPath },
         ]);
       });
 
@@ -50,7 +52,12 @@ describe('construct-view-model', () => {
         ]));
       });
 
-      it.todo('returns their provided logo paths');
+      it.failing('returns their provided logo paths', () => {
+        expect(viewModel.groups).toStrictEqual(O.some([
+          expect.objectContaining({ logoPath: group1LogoPath }),
+          expect.objectContaining({ logoPath: group2LogoPath }),
+        ]));
+      });
     });
 
     describe('when any of the groups can not be found', () => {
