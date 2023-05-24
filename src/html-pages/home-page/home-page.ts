@@ -8,7 +8,7 @@ import * as GID from '../../types/group-id';
 const groupsToHighlight: GroupsToHighlight = [
   {
     groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
-    logoPath: '/static/images/home-page/biophysics-collab.png',
+    logoPath: '/static/images/home-page/biophysics-colab.png',
   },
   {
     groupId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
@@ -43,7 +43,7 @@ const groupsToHighlight: GroupsToHighlight = [
 const groups = [
   {
     link: '/groups/biophysics-colab',
-    logoPath: '/static/images/home-page/biophysics-collab.png',
+    logoPath: '/static/images/home-page/biophysics-colab.png',
     name: 'Biophysics Colab',
   },
   {
