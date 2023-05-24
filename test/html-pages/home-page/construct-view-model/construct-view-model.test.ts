@@ -52,7 +52,7 @@ describe('construct-view-model', () => {
         ]));
       });
 
-      it.failing('returns their provided logo paths', () => {
+      it('returns their provided logo paths', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
           expect.objectContaining({ logoPath: group1LogoPath }),
           expect.objectContaining({ logoPath: group2LogoPath }),
