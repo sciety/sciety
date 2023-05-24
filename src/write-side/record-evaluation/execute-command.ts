@@ -3,7 +3,7 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { RecordEvaluationCommand } from '../commands';
 import {
-  DomainEvent, evaluationRecorded, isEvaluationRecordedEvent,
+  DomainEvent, constructEvent, isEvaluationRecordedEvent,
 } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
@@ -15,14 +15,16 @@ const hasEvaluationAlreadyBeenRecorded = (
   RA.some((event) => event.evaluationLocator === evaluationLocator),
 );
 
-const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => evaluationRecorded(
-  command.groupId,
-  command.articleId,
-  command.evaluationLocator,
-  command.authors,
-  command.publishedAt,
-  command.issuedAt ? command.issuedAt : new Date(),
-);
+const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => constructEvent(
+  'EvaluationRecorded',
+)({
+  groupId: command.groupId,
+  articleId: command.articleId,
+  evaluationLocator: command.evaluationLocator,
+  authors: command.authors,
+  publishedAt: command.publishedAt,
+  date: command.issuedAt ? command.issuedAt : new Date(),
+});
 
 type ExecuteCommand = (command: RecordEvaluationCommand)
 => (events: ReadonlyArray<DomainEvent>)

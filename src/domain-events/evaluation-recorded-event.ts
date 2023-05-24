@@ -19,11 +19,14 @@ export const evaluationRecordedEventCodec = t.type({
   authors: t.readonlyArray(t.string),
 });
 
+// ts-unused-exports:disable-next-line
 export type EvaluationRecordedEvent = t.TypeOf<typeof evaluationRecordedEventCodec>;
 
+// ts-unused-exports:disable-next-line
 export const isEvaluationRecordedEvent = (event: { type: string }):
   event is EvaluationRecordedEvent => event.type === 'EvaluationRecorded';
 
+// ts-unused-exports:disable-next-line
 export const evaluationRecorded = (
   groupId: GroupId,
   doi: Doi,
