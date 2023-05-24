@@ -1,5 +1,4 @@
 import { card1, card2, card3 } from './hardcoded-evaluation-cards';
-import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 type Card = {
@@ -11,18 +10,18 @@ type Card = {
   avatarPath: string, // TODO: derive from the groupSlug via the groups readmodel
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderEvaluationCard = (card: Card) => `
   <article class="evaluation-card">
-    <h3 class="evaluation-card__title">
-      <a class="evaluation-card__link" href="/articles/activity/${card.articleId}">${card.articleTitle}</a>
-    </h3>
-    <p class="evaluation-card__group">
-      <img class="evaluation-card__avatar" src="${card.avatarPath}" alt="" />
-      <span>Evaluated by <a href="/groups/${card.groupSlug}">${card.groupName}</a></span>
-    </p>
-    <div class="evaluation-card__meta">
-      ${templateDate(card.date)}
-    </div>
+    <figure>
+      <blockquote cite="/articles/activity/10.1101/2022.06.22.497259">
+        The preprint by Yang et al. asks how the shape of the membrane influences the localization of mechanosensitive Piezo channels. The authors use a creative approach involving methods that distort the plasma membrane by generating blebs and artificial filopodia. They convincingly show that curvature of the lipid environment influences Piezo1 localization, such that increased curvature causes channel depletion, and that application of the chemical modulator Yoda1 is sufficient to allow channels to enter filopodia. The study provides support for a provocative “flattening model” of Yoda1 action, and should inspire future studies by researchers interested in mechanosensitive channels and membrane curvature.
+      </blockquote>
+      <figcaption>
+        <p>Curated by Biophysics Colab</p>
+        <cite><a href="/articles/activity/10.1101/2022.06.22.497259">Membrane curvature governs the distribution of Piezo1 in live cells</a></cite>
+      </figcaption>
+    </figure>
   </article>
 `;
 
