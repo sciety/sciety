@@ -1,16 +1,18 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../view-model';
-import { Ports as CardsPorts } from '../cards';
 import { GroupId } from '../../../types/group-id';
 import { renderCardsSection } from '../cards/render-cards-section';
+import { GetGroup } from '../../../shared-read-models/groups/get-group';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GroupId,
   logoPath: string,
 }>;
 
-export type Ports = CardsPorts;
+export type Ports = {
+  getGroup: GetGroup,
+};
 
 export const constructViewModel = (ports: Ports, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
   groupsToHighlight,

@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import { dummyLogger } from '../../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { Ports, constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
 import { arbitraryGroup } from '../../../types/group.helper';
@@ -15,7 +14,6 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
     adapters = {
       ...framework.queries,
-      logger: dummyLogger,
     };
   });
 
