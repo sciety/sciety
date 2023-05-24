@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent } from '../../domain-events';
-import { isEvaluatedArticlesListSpecified } from '../../domain-events/evaluated-articles-list-specified-event';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import * as Gid from '../../types/group-id';
 import * as Lid from '../../types/list-id';
 
@@ -36,7 +35,7 @@ const evaluatedArticlesListIdsByGroupId = {
 export const initialState = (): ReadModel => ({ ...evaluatedArticlesListIdsByGroupId });
 
 export const handleEvent = (state: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEvaluatedArticlesListSpecified(event)) {
+  if (isEventOfType('EvaluatedArticlesListSpecified')(event)) {
     state[event.groupId] = event.listId;
   }
   return state;

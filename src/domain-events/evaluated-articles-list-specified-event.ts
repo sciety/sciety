@@ -13,6 +13,3 @@ export const evaluatedArticlesListSpecifiedEventCodec = t.type({
 });
 
 export type EvaluatedArticlesListSpecifiedEvent = t.TypeOf<typeof evaluatedArticlesListSpecifiedEventCodec>;
-
-export const isEvaluatedArticlesListSpecified = (event: { type: string }):
-  event is EvaluatedArticlesListSpecifiedEvent => event.type === 'EvaluatedArticlesListSpecified';
