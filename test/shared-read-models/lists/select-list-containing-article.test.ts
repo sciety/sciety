@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { articleRemovedFromList, constructEvent, listCreated } from '../../../src/domain-events';
+import { constructEvent, listCreated } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectListContainingArticle } from '../../../src/shared-read-models/lists/select-list-containing-article';
 import * as LOID from '../../../src/types/list-owner-id';
@@ -36,7 +36,7 @@ describe('select-list-containing-article', () => {
       [
         listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        articleRemovedFromList(articleId, listId),
+        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

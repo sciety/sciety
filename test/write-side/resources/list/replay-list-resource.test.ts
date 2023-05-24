@@ -1,8 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import {
-  articleRemovedFromList, constructEvent, listCreated,
-} from '../../../../src/domain-events';
+import { constructEvent, listCreated } from '../../../../src/domain-events';
 import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -65,7 +63,7 @@ describe('replay-list-resource', () => {
         [
           listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
           constructEvent('ArticleAddedToList')({ articleId, listId }),
-          articleRemovedFromList(articleId, listId),
+          constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         ],
         replayListResource(listId),
       );

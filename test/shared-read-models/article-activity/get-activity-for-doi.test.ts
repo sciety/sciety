@@ -1,9 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  articleRemovedFromList, constructEvent, evaluationRecorded, incorrectlyRecordedEvaluationErased,
-} from '../../../src/domain-events';
+import { constructEvent, evaluationRecorded, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -38,7 +36,7 @@ describe('get-activity-for-doi', () => {
       const readmodel = pipe(
         [
           constructEvent('ArticleAddedToList')({ articleId, listId }),
-          articleRemovedFromList(articleId, listId),
+          constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -191,7 +189,7 @@ describe('get-activity-for-doi', () => {
       const readmodel = pipe(
         [
           constructEvent('ArticleAddedToList')({ articleId, listId: listAId }),
-          articleRemovedFromList(articleId, listAId),
+          constructEvent('ArticleRemovedFromList')({ articleId, listId: listAId }),
           constructEvent('ArticleAddedToList')({ articleId, listId: listBId }),
         ],
         RA.reduce(initialState(), handleEvent),

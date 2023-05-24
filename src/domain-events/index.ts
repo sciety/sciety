@@ -5,7 +5,6 @@ export {
 export {
   isArticleRemovedFromListEvent,
   ArticleRemovedFromListEvent,
-  articleRemovedFromList,
 } from './article-removed-from-list-event';
 
 // ts-unused-exports:disable-next-line

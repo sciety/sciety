@@ -1,8 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  articleRemovedFromList, listCreated, constructEvent,
-} from '../../../src/domain-events';
+import { listCreated, constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/select-all-lists-owned-by';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -129,7 +127,7 @@ describe('select-all-lists-owned-by', () => {
         listCreated(listId, listName, listDescription, ownerId),
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
         constructEvent('ArticleAddedToList')({ articleId: removedArticleId, listId }),
-        articleRemovedFromList(removedArticleId, listId, dateOfLastEvent),
+        constructEvent('ArticleRemovedFromList')({ articleId: removedArticleId, listId, date: dateOfLastEvent }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
