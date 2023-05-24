@@ -36,7 +36,12 @@ describe('construct-view-model', () => {
         ]);
       });
 
-      it.todo('returns the groups in the specified order');
+      it('returns the groups in the specified order', () => {
+        expect(viewModel.groups).toStrictEqual(O.some([
+          expect.objectContaining({ name: group1.name }),
+          expect.objectContaining({ name: group2.name }),
+        ]));
+      });
 
       it('returns the links to their group pages', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
