@@ -5,6 +5,7 @@ import { Ports, constructViewModel } from '../../../../src/html-pages/home-page/
 import { arbitraryGroup } from '../../../types/group.helper';
 import { ViewModel } from '../../../../src/html-pages/home-page/render-home-page';
 import { arbitraryString } from '../../../helpers';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -66,7 +67,23 @@ describe('construct-view-model', () => {
     });
 
     describe('when any of the groups can not be found', () => {
-      it.todo('does not include the groups component');
+      const existingGroup = arbitraryGroup();
+      const existingGroupLogoPath = arbitraryString();
+      const notSelectedGroup = arbitraryGroup();
+      const notExistingGroupId = arbitraryGroupId();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createGroup(existingGroup);
+        await framework.commandHelpers.createGroup(notSelectedGroup);
+        viewModel = constructViewModel(adapters, [
+          { groupId: existingGroup.id, logoPath: existingGroupLogoPath },
+          { groupId: notExistingGroupId, logoPath: arbitraryString() },
+        ]);
+      });
+
+      it('does not include the groups component', () => {
+        expect(viewModel.groups).toStrictEqual(O.none);
+      });
     });
   });
 });
