@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { EventOfType, isEventOfType } from '../../../domain-events/domain-event';
-import { ListResource } from './list-resource';
 import {
-  ArticleRemovedFromListEvent, DomainEvent,
+  EventOfType, isEventOfType,
+  DomainEvent,
   ListCreatedEvent,
 } from '../../../domain-events';
+import { ListResource } from './list-resource';
 import { eqDoi } from '../../../types/doi';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
@@ -18,7 +18,7 @@ type ReplayListResource = (listId: ListId)
 type RelevantEvent =
 | ListCreatedEvent
 | EventOfType<'ArticleAddedToList'>
-| ArticleRemovedFromListEvent
+| EventOfType<'ArticleRemovedFromList'>
 | EventOfType<'ListNameEdited'>
 | EventOfType<'ListDescriptionEdited'>;
 

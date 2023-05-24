@@ -11,5 +11,3 @@ export const articleRemovedFromListEventCodec = t.type({
   articleId: DoiFromString,
   listId: listIdCodec,
 });
-
-export type ArticleRemovedFromListEvent = t.TypeOf<typeof articleRemovedFromListEventCodec>;
