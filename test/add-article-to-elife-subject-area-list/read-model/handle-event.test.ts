@@ -9,7 +9,6 @@ import {
   constructEvent,
   DomainEvent, subjectAreaRecorded,
 } from '../../../src/domain-events';
-import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -48,18 +47,24 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded (eLife) -> evaluated',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          constructEvent('EvaluationRecorded')({
+            groupId: elifeGroupId,
+            articleId,
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           'evaluated' as const,
         ],
         [
           'EvaluationRecorded (not eLife) -> unknown',
-          evaluationRecorded(
-            arbitraryGroupId(),
-            arbitraryArticleId(),
-            arbitraryEvaluationLocator(),
-            [],
-            arbitraryDate(),
-          ),
+          constructEvent('EvaluationRecorded')({
+            groupId: arbitraryGroupId(),
+            articleId: arbitraryArticleId(),
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           undefined,
         ],
         [
@@ -93,7 +98,13 @@ describe('handle-event', () => {
         ],
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          constructEvent('EvaluationRecorded')({
+            groupId: elifeGroupId,
+            articleId,
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -108,7 +119,13 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+            constructEvent('EvaluationRecorded')({
+              groupId: elifeGroupId,
+              articleId,
+              evaluationLocator: arbitraryEvaluationLocator(),
+              authors: [],
+              publishedAt: arbitraryDate(),
+            }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -117,7 +134,13 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> evaluated',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          constructEvent('EvaluationRecorded')({
+            groupId: elifeGroupId,
+            articleId,
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           'evaluated' as const,
         ],
         [
@@ -137,7 +160,13 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+            constructEvent('EvaluationRecorded')({
+              groupId: elifeGroupId,
+              articleId,
+              evaluationLocator: arbitraryEvaluationLocator(),
+              authors: [],
+              publishedAt: arbitraryDate(),
+            }),
             subjectAreaRecorded(articleId, subjectArea),
           ],
           RA.reduce(initialState(), handleEvent),
@@ -147,7 +176,13 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          constructEvent('EvaluationRecorded')({
+            groupId: elifeGroupId,
+            articleId,
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -167,7 +202,13 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+            constructEvent('EvaluationRecorded')({
+              groupId: elifeGroupId,
+              articleId,
+              evaluationLocator: arbitraryEvaluationLocator(),
+              authors: [],
+              publishedAt: arbitraryDate(),
+            }),
             constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
           ],
           RA.reduce(initialState(), handleEvent),
@@ -179,7 +220,13 @@ describe('handle-event', () => {
       it.each([
         [
           'EvaluationRecorded -> listed',
-          evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          constructEvent('EvaluationRecorded')({
+            groupId: elifeGroupId,
+            articleId,
+            evaluationLocator: arbitraryEvaluationLocator(),
+            authors: [],
+            publishedAt: arbitraryDate(),
+          }),
           'listed' as const,
         ],
         [
@@ -203,8 +250,20 @@ describe('handle-event', () => {
         const articleId2 = arbitraryArticleId();
         const readModel = pipe(
           [
-            evaluationRecorded(elifeGroupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
-            evaluationRecorded(elifeGroupId, articleId2, arbitraryEvaluationLocator(), [], arbitraryDate()),
+            constructEvent('EvaluationRecorded')({
+              groupId: elifeGroupId,
+              articleId,
+              evaluationLocator: arbitraryEvaluationLocator(),
+              authors: [],
+              publishedAt: arbitraryDate(),
+            }),
+            constructEvent('EvaluationRecorded')({
+              groupId: elifeGroupId,
+              articleId: articleId2,
+              evaluationLocator: arbitraryEvaluationLocator(),
+              authors: [],
+              publishedAt: arbitraryDate(),
+            }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
