@@ -1,15 +1,13 @@
-import Axios, { AxiosInstance } from 'axios';
-// import { setupCache } from 'axios-cache-adapter';
+import Axios from 'axios';
 import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
 import { Logger } from './logger';
 
-const myHeaderInterpreter = (maxAge: number): HeaderInterpreter => () => maxAge;
+const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const createCacheAdapter = (maxAge: number) => {
-  const axiosTtl = setupCache(Axios.create(), { headerInterpreter: myHeaderInterpreter(maxAge) });
-  // return cache.adapter;
-  return axiosTtl;
-};
+const createCacheAdapter = (maxAge: number) => setupCache(
+  Axios.create(),
+  { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
+);
 
 const createGetData = (
   cachedAxios: AxiosCacheInstance,
