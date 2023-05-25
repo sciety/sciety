@@ -1,8 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { dispatcher } from '../../src/shared-read-models/dispatcher';
-import { createGroup } from '../../src/write-side/add-group';
+import * as groupResource from '../../src/write-side/resources/group';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
@@ -14,6 +15,8 @@ import { removeArticleFromListCommandHandler } from '../../src/write-side/remove
 import { updateUserDetailsCommandHandler, recordEvaluationCommandHandler } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { Queries } from '../../src/shared-read-models';
+import { CommandHandler } from '../../src/types/command-handler';
+import { AddGroupCommand } from '../../src/write-side/commands';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
@@ -38,6 +41,14 @@ type EventStore = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
+
+type CreateGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
+
+const createGroup: CreateGroup = (adapters) => (command) => pipe(
+  adapters.getAllEvents,
+  T.map(groupResource.create(command)),
+  TE.chainTaskK(adapters.commitEvents),
+);
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
