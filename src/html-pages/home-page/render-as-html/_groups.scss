@@ -1,11 +1,11 @@
-@use '../../sass/settings';
-@use '../../sass/functions';
-@use '../../sass/layout';
-@use '../../sass/breakpoints';
-@use '../../sass/button';
-@use '../../sass/list';
-@use '../../sass/typography';
-@use './common';
+@use '../../../sass/settings';
+@use '../../../sass/functions';
+@use '../../../sass/layout';
+@use '../../../sass/breakpoints';
+@use '../../../sass/button';
+@use '../../../sass/list';
+@use '../../../sass/typography';
+@use 'common';
 
 .home-page-groups {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);

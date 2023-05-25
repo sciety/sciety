@@ -5,7 +5,7 @@
 @use '../../../sass/typography';
 @use '../../../sass/breakpoints';
 @use '../../../sass/card';
-@use '../common';
+@use 'common';
 
 $_arbitrary-large-amount-of-px: 9000px;
 

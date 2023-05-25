@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { Page } from '../../types/page';
-import { renderHomepage } from './render-home-page';
+import { renderHomepage } from './render-as-html/render-home-page';
 import { constructViewModel, GroupsToHighlight, Ports } from './construct-view-model/construct-view-model';
 import * as GID from '../../types/group-id';
 

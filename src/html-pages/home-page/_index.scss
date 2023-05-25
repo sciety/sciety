@@ -1,6 +1,6 @@
-@use 'common';
-@use 'home-page';
-@use 'home-page-layout';
-@use 'hero';
-@use 'groups';
-@use 'cards';
+@use './render-as-html/common';
+@use './render-as-html/curation-teaser';
+@use './render-as-html/groups';
+@use './render-as-html/hero';
+@use './render-as-html/home-page';
+@use './render-as-html/home-page-layout';

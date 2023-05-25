@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { templateListItems } from '../../shared-components/list-items';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { templateListItems } from '../../../shared-components/list-items';
 
 type GroupLinkViewModel = {
   link: string,
