@@ -78,7 +78,7 @@ describe('create', () => {
           create({ ...addGroupCommand, name }),
         );
 
-        it.failing('fails with no events raised', () => {
+        it('fails with no events raised', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
@@ -109,7 +109,7 @@ describe('create', () => {
           create({ ...addGroupCommand, name }),
         );
 
-        it.failing('fails with no events raised', () => {
+        it('fails with no events raised', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });

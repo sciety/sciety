@@ -1,17 +1,20 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { EventOfType, isEventOfType } from '../../domain-events/domain-event';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import { AddGroupCommand } from '../commands';
 import {
   DomainEvent, GroupJoinedEvent, isGroupJoinedEvent,
 } from '../../domain-events';
 
-type AllGroupsResource = ReadonlyArray<GroupJoinedEvent>;
+type AllGroupsResource = ReadonlyArray<GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'>>;
 
 export const replay = (events: ReadonlyArray<DomainEvent>): AllGroupsResource => pipe(
   events,
-  RA.filter(isGroupJoinedEvent),
+  RA.filter((event): event is GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'> => (
+    isGroupJoinedEvent(event)
+    || isEventOfType('GroupDetailsUpdated')(event))),
 );
 
 export const check = (
@@ -24,6 +27,10 @@ export const check = (
   E.filterOrElse(
     RA.every((event) => event.slug !== command.slug),
     () => toErrorMessage(`Group with slug ${command.slug} already exists`),
+  ),
+  E.filterOrElse(
+    RA.every((event) => event.name !== command.name),
+    () => toErrorMessage(`Group with name ${command.name} already exists`),
   ),
   E.filterOrElse(
     RA.every((event) => event.groupId !== command.groupId),
