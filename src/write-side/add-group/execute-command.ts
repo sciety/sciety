@@ -1,19 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { ErrorMessage } from '../../types/error-message';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { AddGroupCommand } from '../commands';
-import {
-  DomainEvent, constructEvent, groupJoined, listCreated,
-} from '../../domain-events';
+import { constructEvent, groupJoined, listCreated } from '../../domain-events';
 import * as AG from '../resources/all-groups';
+import { ResourceAction } from '../resources/resource-action';
 
-type ExecuteCommand = (command: AddGroupCommand)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
-
-export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
+export const executeCommand: ResourceAction<AddGroupCommand> = (command) => (events) => pipe(
   AG.replay(events),
   AG.check(command),
   E.map(LID.generate),
