@@ -45,7 +45,7 @@ const renderEvaluationCard = (viewModel: EvaluationCardViewModel) => `
 `;
 
 const evaluationCards = () => toHtmlFragment(`
-  <h2 class="home-page-cards__title">Most recent evaluations</h2>
+  <h2 class="home-page-cards__title">Recent curated preprints</h2>
   <ul class="home-page-cards__cards">
     <li>
       ${renderEvaluationCard(evaluationCard1)}
