@@ -74,7 +74,6 @@ import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import {
-  eraseEvaluationCommandHandler,
   recordEvaluationCommandHandler,
   updateUserDetailsCommandHandler,
 } from '../write-side/command-handlers';
@@ -82,6 +81,7 @@ import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
 import * as groupResource from '../write-side/resources/group';
+import * as evaluationResource from '../write-side/resources/evaluation';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -357,7 +357,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/record-evaluation', createApiRouteForCommand(adapters, recordEvaluationCommandCodec, recordEvaluationCommandHandler(adapters)));
 
-  router.post('/api/erase-evaluation', createApiRouteForCommand(adapters, eraseEvaluationCommandCodec, eraseEvaluationCommandHandler(adapters)));
+  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
   router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
 
