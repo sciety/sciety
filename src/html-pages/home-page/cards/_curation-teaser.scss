@@ -1,4 +1,6 @@
 @use '../../../sass/functions';
+@use '../../../sass/list';
+@use '../../../sass/layout';
 @use '../../../sass/settings';
 @use '../../../sass/typography';
 @use '../../../sass/breakpoints';
@@ -8,9 +10,18 @@
 $_arbitrary-large-amount-of-px: 9000px;
 
 .home-page-cards {
-  max-width: settings.$max-site-width;
-  margin: 0 auto;
   background-color: settings.$colour-page-background;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: functions.px-to-rem(192px);
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  padding-bottom: functions.px-to-rem(96px);
+  padding-top: functions.px-to-rem(96px);
+
+  @include breakpoints.not-narrow {
+    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  }
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     position: relative;
@@ -39,16 +50,52 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 }
 
+.home-page-cards__title {
+  @include typography.section();
+  @include layout.page-content-horizontal-margins();
+  margin-bottom: 1.25rem;
+}
+
 .home-page-cards__cards {
+  @include list.basics();
+  margin-bottom: 0;
+
   @media screen and (min-width: common.$home-page-breakpoint) {
     display: flex;
     justify-content: center;
+  }
+
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    @supports (display: flex) {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}
+
+.home-page-cards__cards li {
+  @include card.list-item;
+
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    @supports (display: flex) {
+      flex: 1 0;
+      max-width: 384px; // maximum desired card width
+      margin-bottom: 0;
+      margin-right: functions.px-to-rem(24px);
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 
 .curation-teaser {
   display: flex;
   flex-direction: column;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 1rem;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
@@ -79,15 +126,15 @@ $_arbitrary-large-amount-of-px: 9000px;
   line-height: 1;
   position: absolute;
   right: -24px;
-  bottom: -20px;
+  bottom: 0;
   color: settings.$colour-accent;
 }
 
 /* stylelint-disable value-no-vendor-prefix */
 .curation-teaser__quote {
   border-width: 0;
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0;
+  margin-bottom: 1.5rem;
   padding-left: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
