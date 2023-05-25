@@ -20,7 +20,7 @@
 }
 
 .curation-teaser__quote_wrapper::before {
-  content: '"';
+  content: '\201C';
   font-family: serif;
   font-size: functions.px-to-rem(48px);
   line-height: 1;
@@ -31,12 +31,12 @@
 }
 
 .curation-teaser__quote_wrapper::after {
-  content: '"';
+  content: '\201D';
   font-family: serif;
   font-size: functions.px-to-rem(48px);
   line-height: 1;
   position: absolute;
-  right: -16px;
+  right: -24px;
   bottom: -20px;
   color: settings.$colour-accent;
 }
