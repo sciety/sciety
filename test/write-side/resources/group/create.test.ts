@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { executeCommand } from '../../../src/write-side/add-group/execute-command';
-import { groupJoined, ListCreatedEvent } from '../../../src/domain-events';
-import { arbitraryWord } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryGroup } from '../../types/group.helper';
+import { create } from '../../../../src/write-side/resources/group/create';
+import { groupJoined, ListCreatedEvent } from '../../../../src/domain-events';
+import { arbitraryWord } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { arbitraryGroup } from '../../../types/group.helper';
 
-describe('execute-command', () => {
+describe('create', () => {
   const newGroup = arbitraryGroup();
   const addGroupCommand = {
     groupId: newGroup.id,
@@ -23,7 +23,7 @@ describe('execute-command', () => {
   describe('when the group does not exist', () => {
     const result = pipe(
       [],
-      executeCommand(addGroupCommand),
+      create(addGroupCommand),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -71,7 +71,7 @@ describe('execute-command', () => {
           slug,
         ),
       ],
-      executeCommand({ ...addGroupCommand, slug }),
+      create({ ...addGroupCommand, slug }),
     );
 
     it('fails with no events raised', () => {
@@ -93,7 +93,7 @@ describe('execute-command', () => {
           newGroup.slug,
         ),
       ],
-      executeCommand({ ...arbitraryGroup(), groupId }),
+      create({ ...arbitraryGroup(), groupId }),
     );
 
     it('fails with no events raised', () => {
