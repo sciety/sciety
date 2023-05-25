@@ -1,21 +1,21 @@
-import axios, { AxiosInstance } from 'axios';
-import { setupCache } from 'axios-cache-adapter';
+import Axios from 'axios';
+import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
 import { Logger } from './logger';
 
-const createCacheAdapter = (maxAge: number) => {
-  const cache = setupCache({
-    maxAge,
-  });
-  return cache.adapter;
-};
+const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
+
+const createCacheAdapter = (maxAge: number) => setupCache(
+  Axios.create(),
+  { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
+);
 
 const createGetData = (
-  cachedAxios: AxiosInstance,
+  cachedAxios: AxiosCacheInstance,
   logger: Logger,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
   const response = await cachedAxios.get<U>(url, { headers });
-  if (response.request.fromCache) {
+  if (response.cached) {
     logger('debug', 'Axios cache hit', {
       url,
     });
@@ -37,8 +37,6 @@ export const getCachedAxiosRequest: GetCachedAxiosRequest = (
   logger: Logger,
   maxAge = 24 * 60 * 60 * 1000,
 ) => {
-  const cachedAxios = axios.create({
-    adapter: createCacheAdapter(maxAge),
-  });
+  const cachedAxios = createCacheAdapter(maxAge);
   return createGetData(cachedAxios, logger);
 };
