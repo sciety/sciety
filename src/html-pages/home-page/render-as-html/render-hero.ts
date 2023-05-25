@@ -13,7 +13,7 @@ const renderSearchForm = () => `
   </form>
 `;
 
-export const hero: HtmlFragment = toHtmlFragment(`
+export const renderHero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero-wrapper">
     <div class="home-page-hero">
       <h1 class="home-page-hero__content_title">
