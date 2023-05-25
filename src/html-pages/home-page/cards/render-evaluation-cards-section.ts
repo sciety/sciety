@@ -31,9 +31,11 @@ const evaluationCard3 = {
 const renderEvaluationCard = (viewModel: EvaluationCardViewModel) => `
   <article class="curation-teaser">
     <figure>
-      <blockquote class="curation-teaser__quote" cite="${viewModel.articleLink}">
-        ${viewModel.quote}
-      </blockquote>
+      <div class="curation-teaser__quote_wrapper">
+        <blockquote class="curation-teaser__quote" cite="${viewModel.articleLink}">
+          ${viewModel.quote}
+        </blockquote>
+      </div>
       <figcaption>
         <p class="curation-teaser__strapline">${viewModel.caption}</p>
         <cite><a href="${viewModel.articleLink}">${viewModel.articleTitle}</a></cite>
