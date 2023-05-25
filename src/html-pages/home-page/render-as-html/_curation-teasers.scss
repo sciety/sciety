@@ -13,10 +13,10 @@ $_arbitrary-large-amount-of-px: 9000px;
   background-color: settings.$colour-page-background;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: functions.px-to-rem(192px);
+  margin-bottom: calc(2 * #{common.$section-vertical-separation});
   max-width: functions.px-to-rem(settings.$max-site-width);
-  padding-bottom: functions.px-to-rem(96px);
-  padding-top: functions.px-to-rem(96px);
+  padding-bottom: common.$section-vertical-separation;
+  padding-top: common.$section-vertical-separation;
 
   @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
