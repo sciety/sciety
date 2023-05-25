@@ -1,0 +1,28 @@
+@use '../../../sass/functions';
+@use '../../../sass/typography';
+@use '../../../sass/card';
+@use '../common';
+
+.curation-teaser {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    @supports (display: flex) {
+      height: 100%;
+    }
+  }
+}
+
+/* stylelint-disable value-no-vendor-prefix */
+.curation-teaser__quote {
+  border-width: 0;
+  margin-left: 0;
+  margin-right: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 10;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* stylelint-enable value-no-vendor-prefix */

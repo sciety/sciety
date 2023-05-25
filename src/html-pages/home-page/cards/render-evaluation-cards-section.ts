@@ -15,9 +15,9 @@ const evaluationCard = {
 };
 
 const renderEvaluationCard = (viewModel: EvaluationCardViewModel) => `
-  <article class="evaluation-card">
+  <article class="curation-teaser">
     <figure>
-      <blockquote cite="${viewModel.articleLink}">
+      <blockquote class="curation-teaser__quote" cite="${viewModel.articleLink}">
         ${viewModel.quote}
       </blockquote>
       <figcaption>
