@@ -9,7 +9,7 @@
 
 $_arbitrary-large-amount-of-px: 9000px;
 
-.home-page-cards {
+.curation-teasers {
   background-color: settings.$colour-page-background;
   margin-left: auto;
   margin-right: auto;
@@ -50,13 +50,13 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 }
 
-.home-page-cards__title {
+.curation-teasers__title {
   @include typography.section();
   @include layout.page-content-horizontal-margins();
   margin-bottom: 1.25rem;
 }
 
-.home-page-cards__cards {
+.curation-teasers__teasers {
   @include list.basics();
   margin-bottom: 0;
 
@@ -73,7 +73,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 }
 
-.home-page-cards__cards li {
+.curation-teasers__teasers li {
   @include card.list-item;
 
   @media screen and (min-width: common.$home-page-breakpoint) {

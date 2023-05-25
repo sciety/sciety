@@ -45,9 +45,9 @@ const renderCurationTeaser = (viewModel: CurationTeaser) => `
 `;
 
 export const renderCurationTeasers = (): HtmlFragment => toHtmlFragment(`
-  <section class="home-page-cards">
-    <h2 class="home-page-cards__title">Recent curated preprints</h2>
-    <ul class="home-page-cards__cards">
+  <section class="curation-teasers">
+    <h2 class="curation-teasers__title">Recent curated preprints</h2>
+    <ul class="curation-teasers__teasers">
       <li>
         ${renderCurationTeaser(curationTeaser1)}
       </li>
