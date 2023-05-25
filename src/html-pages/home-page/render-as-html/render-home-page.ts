@@ -4,7 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderGroups } from './render-groups';
 import { renderHero } from './render-hero';
 import { ViewModel } from '../view-model';
-import { renderEvaluationCardsSection } from './render-evaluation-cards-section';
+import { renderCurationTeasers } from './render-curation-teasers';
 
 export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="home-page">
@@ -16,6 +16,6 @@ export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFrag
       renderGroups,
     ),
   )}
-    ${renderEvaluationCardsSection()}
+    ${renderCurationTeasers()}
   </div>
 `);
