@@ -106,28 +106,28 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .curation-teaser__quote_wrapper {
   position: relative;
-}
 
-.curation-teaser__quote_wrapper::before {
-  content: '\201C';
-  font-family: serif;
-  font-size: functions.px-to-rem(48px);
-  line-height: 1;
-  position: absolute;
-  left: -24px;
-  top: -16px;
-  color: settings.$colour-accent;
-}
+  &::before,
+  &::after {
+    color: settings.$colour-accent;
+    font-family: serif;
+    font-size: functions.px-to-rem(48px);
+    line-height: 1;
+    position: absolute;
+  }
 
-.curation-teaser__quote_wrapper::after {
-  content: '\201D';
-  font-family: serif;
-  font-size: functions.px-to-rem(48px);
-  line-height: 1;
-  position: absolute;
-  right: -24px;
-  bottom: 0;
-  color: settings.$colour-accent;
+  &::before {
+    content: '\201C';
+    left: -24px;
+    top: -16px;
+  }
+
+  &::after {
+    content: '\201D';
+    right: -24px;
+    bottom: 0;
+  }
+
 }
 
 /* stylelint-disable value-no-vendor-prefix */
