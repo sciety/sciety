@@ -57,25 +57,31 @@ describe('create', () => {
     });
   });
 
-  describe('when the slug is already in use', () => {
-    const slug = arbitraryWord();
-    const result = pipe(
-      [
-        groupJoined(
-          newGroup.id,
-          newGroup.name,
-          newGroup.avatarPath,
-          newGroup.descriptionPath,
-          newGroup.shortDescription,
-          newGroup.homepage,
-          slug,
-        ),
-      ],
-      create({ ...addGroupCommand, slug }),
-    );
+  describe('when passed a slug taken by another group', () => {
+    describe('and the other group\'s details have never been updated', () => {
+      const slug = arbitraryWord();
+      const result = pipe(
+        [
+          groupJoined(
+            newGroup.id,
+            newGroup.name,
+            newGroup.avatarPath,
+            newGroup.descriptionPath,
+            newGroup.shortDescription,
+            newGroup.homepage,
+            slug,
+          ),
+        ],
+        create({ ...addGroupCommand, slug }),
+      );
 
-    it('fails with no events raised', () => {
-      expect(E.isLeft(result)).toBe(true);
+      it('fails with no events raised', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+
+    describe('and the other group\'s slug has previously been updated', () => {
+      it.todo('fails with no events raised');
     });
   });
 
