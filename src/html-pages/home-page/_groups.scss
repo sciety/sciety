@@ -8,10 +8,11 @@
 @use './common';
 
 .home-page-groups {
-  padding-top: common.$section-padding;
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 96px;
   max-width: functions.px-to-rem(settings.$max-site-width);
 }
 
@@ -23,18 +24,17 @@
 .home-page-groups-list {
   @include list.basics();
   margin-bottom: functions.px-to-rem(32px);
-
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-		gap: functions.px-to-rem(56px) functions.px-to-rem(32px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: functions.px-to-rem(56px) functions.px-to-rem(32px);
 }
 
 .home-page-groups-list__link {
   display: block;
   width: 200px;
   height: 70px;
-  
+
   img {
     width: 100%;
     height: 100%;

@@ -1,8 +1,50 @@
 @use '../../../sass/functions';
 @use '../../../sass/settings';
 @use '../../../sass/typography';
+@use '../../../sass/breakpoints';
 @use '../../../sass/card';
 @use '../common';
+
+$_arbitrary-large-amount-of-px: 9000px;
+
+.home-page-cards {
+  max-width: settings.$max-site-width;
+  margin: 0 auto;
+  background-color: settings.$colour-page-background;
+
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    position: relative;
+
+    &::before {
+      content: '';
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-page-background;
+      position: absolute;
+      bottom: 0;
+      left: calc(#{$_arbitrary-large-amount-of-px} * -1);
+      top: 0;
+      right: 0;
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-page-background;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      top: 0;
+      right: calc(#{$_arbitrary-large-amount-of-px} * -1);
+      z-index: -1;
+    }
+  }
+}
+
+.home-page-cards__cards {
+  @media screen and (min-width: common.$home-page-breakpoint) {
+    display: flex;
+    justify-content: center;
+  }
+}
 
 .curation-teaser {
   display: flex;

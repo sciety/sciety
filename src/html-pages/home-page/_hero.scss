@@ -21,6 +21,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 .home-page-hero-wrapper {
   max-width: settings.$max-site-width;
   margin: 0 auto;
+  margin-bottom: functions.px-to-rem(96px);
   background-color: settings.$colour-page-background;
   display: flex;
   justify-content: center;
