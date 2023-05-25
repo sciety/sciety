@@ -30,6 +30,17 @@
   color: settings.$colour-accent;
 }
 
+.curation-teaser__quote_wrapper::after {
+  content: '"';
+  font-family: serif;
+  font-size: functions.px-to-rem(48px);
+  line-height: 1;
+  position: absolute;
+  right: -16px;
+  bottom: -20px;
+  color: settings.$colour-accent;
+}
+
 /* stylelint-disable value-no-vendor-prefix */
 .curation-teaser__quote {
   border-width: 0;
