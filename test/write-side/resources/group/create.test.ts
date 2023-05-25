@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { create } from '../../../../src/write-side/resources/group/create';
 import { groupJoined, ListCreatedEvent } from '../../../../src/domain-events';
-import { arbitraryWord } from '../../../helpers';
+import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
@@ -57,31 +57,63 @@ describe('create', () => {
     });
   });
 
-  describe('when passed a slug taken by another group', () => {
-    describe('and the other group\'s details have never been updated', () => {
-      const slug = arbitraryWord();
-      const result = pipe(
-        [
-          groupJoined(
-            newGroup.id,
-            newGroup.name,
-            newGroup.avatarPath,
-            newGroup.descriptionPath,
-            newGroup.shortDescription,
-            newGroup.homepage,
-            slug,
-          ),
-        ],
-        create({ ...addGroupCommand, slug }),
-      );
+  describe('when passed a value taken by another group', () => {
+    const otherGroup = arbitraryGroup();
 
-      it('fails with no events raised', () => {
-        expect(E.isLeft(result)).toBe(true);
+    describe('name', () => {
+      describe('and the other group\'s details have never been updated', () => {
+        const name = arbitraryString();
+        const result = pipe(
+          [
+            groupJoined(
+              otherGroup.id,
+              name,
+              otherGroup.avatarPath,
+              otherGroup.descriptionPath,
+              otherGroup.shortDescription,
+              otherGroup.homepage,
+              otherGroup.slug,
+            ),
+          ],
+          create({ ...addGroupCommand, name }),
+        );
+
+        it.failing('fails with no events raised', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
+      });
+
+      describe('and the other group\'s name has previously been updated', () => {
+        it.todo('fails with no events raised');
       });
     });
 
-    describe('and the other group\'s slug has previously been updated', () => {
-      it.todo('fails with no events raised');
+    describe('slug', () => {
+      describe('and the other group\'s details have never been updated', () => {
+        const slug = arbitraryWord();
+        const result = pipe(
+          [
+            groupJoined(
+              otherGroup.id,
+              otherGroup.name,
+              otherGroup.avatarPath,
+              otherGroup.descriptionPath,
+              otherGroup.shortDescription,
+              otherGroup.homepage,
+              slug,
+            ),
+          ],
+          create({ ...addGroupCommand, slug }),
+        );
+
+        it('fails with no events raised', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
+      });
+
+      describe('and the other group\'s slug has previously been updated', () => {
+        it.todo('fails with no events raised');
+      });
     });
   });
 
