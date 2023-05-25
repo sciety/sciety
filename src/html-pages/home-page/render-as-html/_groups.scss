@@ -12,13 +12,13 @@
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 96px;
+  margin-bottom: functions.px-to-rem(96px);
   max-width: functions.px-to-rem(settings.$max-site-width);
 }
 
 .home-page-groups__title {
   @include typography.section();
-  margin-bottom: 2rem;
+  margin-bottom: functions.px-to-rem(32px);
 }
 
 .home-page-groups-list {

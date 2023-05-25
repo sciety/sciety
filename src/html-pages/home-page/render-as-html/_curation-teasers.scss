@@ -53,7 +53,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 .curation-teasers__title {
   @include typography.section();
   @include layout.page-content-horizontal-margins();
-  margin-bottom: 1.25rem;
+  margin-bottom: functions.px-to-rem(20px);
 }
 
 .curation-teasers__teasers {
@@ -79,7 +79,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0;
-      max-width: 384px; // maximum desired card width
+      max-width: functions.px-to-rem(384px); // maximum desired card width
       margin-bottom: 0;
       margin-right: functions.px-to-rem(24px);
 
@@ -95,7 +95,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   flex-direction: column;
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: 1rem;
+  padding-top: functions.px-to-rem(16px);
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
@@ -134,7 +134,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 .curation-teaser__quote {
   border-width: 0;
   margin: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(24px);
   padding-left: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
