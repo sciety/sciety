@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { create } from '../../../../src/write-side/resources/group/create';
-import { groupJoined, ListCreatedEvent } from '../../../../src/domain-events';
+import { constructEvent, groupJoined, ListCreatedEvent } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
@@ -84,7 +84,34 @@ describe('create', () => {
       });
 
       describe('and the other group\'s name has previously been updated', () => {
-        it.todo('fails with no events raised');
+        const name = arbitraryString();
+        const result = pipe(
+          [
+            groupJoined(
+              otherGroup.id,
+              otherGroup.name,
+              otherGroup.avatarPath,
+              otherGroup.descriptionPath,
+              otherGroup.shortDescription,
+              otherGroup.homepage,
+              otherGroup.slug,
+            ),
+            constructEvent('GroupDetailsUpdated')({
+              groupId: otherGroup.id,
+              name,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              shortDescription: undefined,
+              homepage: undefined,
+              slug: undefined,
+            }),
+          ],
+          create({ ...addGroupCommand, name }),
+        );
+
+        it.failing('fails with no events raised', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
 
