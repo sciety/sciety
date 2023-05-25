@@ -22,7 +22,6 @@ import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
-import { addGroupCommandHandler } from '../write-side/add-group';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
@@ -365,7 +364,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
 
-  router.post('/api/add-group', createApiRouteForCommand(adapters, addGroupCommandCodec, addGroupCommandHandler(adapters)));
+  router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
 
   router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
 
