@@ -84,14 +84,18 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teasers__teasers li {
-  @include card.list-item;
+  margin-bottom: functions.px-to-rem(8px);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0;
       margin-bottom: 0;
       margin-right: functions.px-to-rem(24px);
-      max-width: functions.px-to-rem(384px); // maximum desired card width
+      max-width: functions.px-to-rem(384px);
 
       &:last-child {
         margin-right: 0;
