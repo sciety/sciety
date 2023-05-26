@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../../src/domain-events/evaluation-recorded-event';
-import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
+import { evaluationRecorded, subjectAreaRecorded } from '../../../src/domain-events';
 import { executeCommand } from '../../../src/write-side/record-subject-area/execute-command';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';

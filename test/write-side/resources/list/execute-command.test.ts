@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { listCreated } from '../../../../src/domain-events/list-created-event';
+import { listCreated } from '../../../../src/domain-events';
 import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
 import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../../helpers';

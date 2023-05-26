@@ -5,13 +5,12 @@ import {
   elifeGroupId, getCorrespondingListId, handleEvent, initialState,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { getOneArticleReadyToBeListed } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-one-article-ready-to-be-listed';
-import { subjectAreaRecorded } from '../../../src/domain-events/subject-area-recorded-event';
+import { subjectAreaRecorded, constructEvent } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
-import { constructEvent } from '../../../src/domain-events';
 
 describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {

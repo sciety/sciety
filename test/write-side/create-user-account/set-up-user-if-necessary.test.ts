@@ -1,5 +1,4 @@
-import { userCreatedAccount } from '../../../src/domain-events';
-import { listCreated } from '../../../src/domain-events/list-created-event';
+import { userCreatedAccount, listCreated } from '../../../src/domain-events';
 import * as LOID from '../../../src/types/list-owner-id';
 import { setUpUserIfNecessary } from '../../../src/write-side/create-user-account/set-up-user-if-necessary';
 import { CreateUserAccountCommand } from '../../../src/write-side/commands';

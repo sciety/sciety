@@ -3,8 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../commands';
-import { DomainEvent, isEventOfType } from '../../domain-events/domain-event';
-import { subjectAreaRecorded } from '../../domain-events/subject-area-recorded-event';
+import { DomainEvent, isEventOfType, subjectAreaRecorded } from '../../domain-events';
 import { Doi, eqDoi } from '../../types/doi';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 

@@ -2,7 +2,6 @@ export {
   DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent,
 } from './domain-event';
 
-// ts-unused-exports:disable-next-line
 export { subjectAreaRecorded } from './subject-area-recorded-event';
 
 export {

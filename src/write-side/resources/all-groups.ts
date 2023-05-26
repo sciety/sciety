@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { EventOfType, isEventOfType } from '../../domain-events/domain-event';
-import { ErrorMessage, toErrorMessage } from '../../types/error-message';
-import { AddGroupCommand } from '../commands';
 import {
+  EventOfType, isEventOfType,
   DomainEvent, GroupJoinedEvent, isGroupJoinedEvent,
 } from '../../domain-events';
+import { ErrorMessage, toErrorMessage } from '../../types/error-message';
+import { AddGroupCommand } from '../commands';
 
 type AllGroupsResource = ReadonlyArray<GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'>>;
 

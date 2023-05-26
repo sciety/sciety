@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { DomainEvent } from '../../../src/domain-events/domain-event';
-import { userCreatedAccount } from '../../../src/domain-events/user-created-account-event';
+import { DomainEvent, userCreatedAccount } from '../../../src/domain-events';
 import { UserHandle } from '../../../src/types/user-handle';
 import { checkCommand } from '../../../src/write-side/create-user-account/check-command';
 import { CreateUserAccountCommand } from '../../../src/write-side/commands';
