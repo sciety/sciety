@@ -5,10 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState, ReadModel } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 import { ArticleState, ArticleStateName } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
-import {
-  constructEvent,
-  DomainEvent, subjectAreaRecorded,
-} from '../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -69,7 +66,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> subject-area-known',
-          subjectAreaRecorded(articleId, subjectArea),
+          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           { name: 'subject-area-known' as const, subjectArea },
         ],
         [
@@ -84,7 +81,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            subjectAreaRecorded(articleId, subjectArea),
+            constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -93,7 +90,7 @@ describe('handle-event', () => {
       it.each([
         [
           'SubjectAreaRecorded -> subject-area-known',
-          subjectAreaRecorded(articleId, subjectArea),
+          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           { name: 'subject-area-known' as const, subjectArea },
         ],
         [
@@ -145,7 +142,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          subjectAreaRecorded(articleId, subjectArea),
+          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -167,7 +164,7 @@ describe('handle-event', () => {
               authors: [],
               publishedAt: arbitraryDate(),
             }),
-            subjectAreaRecorded(articleId, subjectArea),
+            constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -187,7 +184,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          subjectAreaRecorded(articleId, subjectArea),
+          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
@@ -236,7 +233,7 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> listed',
-          subjectAreaRecorded(articleId, arbitrarySubjectArea()),
+          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);

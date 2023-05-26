@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded, subjectAreaRecorded } from '../../../src/domain-events';
+import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
 import { executeCommand } from '../../../src/write-side/record-subject-area/execute-command';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -19,7 +19,7 @@ describe('execute-command', () => {
 
   describe('given no events for the given article id', () => {
     const result = pipe(
-      [subjectAreaRecorded(arbitraryArticleId(), arbitrarySubjectArea())],
+      [constructEvent('SubjectAreaRecorded')({ articleId: arbitraryArticleId(), subjectArea: arbitrarySubjectArea() })],
       executeCommand(command),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -62,7 +62,7 @@ describe('execute-command', () => {
   describe('the same subject area was recorded', () => {
     const result = pipe(
       [
-        subjectAreaRecorded(articleId, subjectArea),
+        constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
       ],
       executeCommand(command),
       E.getOrElseW(shouldNotBeCalled),
@@ -76,7 +76,7 @@ describe('execute-command', () => {
   describe('a different subject area was recorded for the article', () => {
     const result = pipe(
       [
-        subjectAreaRecorded(articleId, arbitrarySubjectArea()),
+        constructEvent('SubjectAreaRecorded')({ articleId, subjectArea: arbitrarySubjectArea() }),
       ],
       executeCommand(command),
     );

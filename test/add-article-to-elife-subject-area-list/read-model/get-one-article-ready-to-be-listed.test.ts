@@ -5,7 +5,7 @@ import {
   elifeGroupId, getCorrespondingListId, handleEvent, initialState,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { getOneArticleReadyToBeListed } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-one-article-ready-to-be-listed';
-import { subjectAreaRecorded, constructEvent } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -28,7 +28,7 @@ describe('get-one-article-ready-to-be-listed', () => {
           authors: [],
           publishedAt: arbitraryDate(),
         }),
-        subjectAreaRecorded(articleIdA, subjectArea),
+        constructEvent('SubjectAreaRecorded')({ articleId: articleIdA, subjectArea }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

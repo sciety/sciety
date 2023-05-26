@@ -4,7 +4,7 @@ import {
   elifeGroupId, getArticleIdsByState, handleEvent, initialState,
 } from '../../../src/add-article-to-elife-subject-area-list/read-model';
 import { elifeSubjectAreaLists } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
-import { subjectAreaRecorded, constructEvent } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
@@ -27,7 +27,7 @@ describe('get-article-ids-by-state', () => {
           publishedAt: arbitraryDate(),
         }),
         constructEvent('ArticleAddedToList')({ articleId: articleIdB, listId: elifeSubjectAreaLists[0] }),
-        subjectAreaRecorded(articleIdC, arbitrarySubjectArea()),
+        constructEvent('SubjectAreaRecorded')({ articleId: articleIdC, subjectArea: arbitrarySubjectArea() }),
         constructEvent('EvaluationRecorded')({
           groupId: elifeGroupId,
           articleId: articleIdD,
@@ -35,7 +35,7 @@ describe('get-article-ids-by-state', () => {
           authors: [],
           publishedAt: arbitraryDate(),
         }),
-        subjectAreaRecorded(articleIdD, arbitrarySubjectArea()),
+        constructEvent('SubjectAreaRecorded')({ articleId: articleIdD, subjectArea: arbitrarySubjectArea() }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
