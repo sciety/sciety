@@ -20,7 +20,6 @@ export {
 } from './incorrectly-recorded-evaluation-erased-event';
 
 export {
-  isListCreatedEvent,
   listCreated,
   ListCreatedEvent,
 } from './list-created-event';

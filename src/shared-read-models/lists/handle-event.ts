@@ -1,9 +1,5 @@
-import { isEventOfType } from '../../domain-events/domain-event';
 /* eslint-disable no-param-reassign */
-import {
-  DomainEvent,
-  isListCreatedEvent,
-} from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
@@ -20,7 +16,7 @@ export type ReadModel = Record<ListId, ListState>;
 export const initialState = (): ReadModel => ({});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isListCreatedEvent(event)) {
+  if (isEventOfType('ListCreated')(event)) {
     readmodel[event.listId] = {
       id: event.listId,
       ownerId: event.ownerId,

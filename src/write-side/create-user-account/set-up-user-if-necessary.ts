@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { v4 } from 'uuid';
-import { listCreated, isListCreatedEvent } from '../../domain-events/list-created-event';
 import * as LID from '../../types/list-id';
 import { CreateUserAccountCommand } from '../commands/create-user-account';
 import {
   DomainEvent,
   isEventOfType,
+  listCreated,
   userCreatedAccount,
 } from '../../domain-events';
 import * as LOID from '../../types/list-owner-id';
@@ -24,7 +24,7 @@ const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEve
 );
 
 const isListOwnedBy = (userId: UserId) => (event: DomainEvent) => (
-  isListCreatedEvent(event)
+  isEventOfType('ListCreated')(event)
 ) && LOID.eqListOwnerId.equals(event.ownerId, LOID.fromUserId(userId));
 
 const shouldCreateList = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(

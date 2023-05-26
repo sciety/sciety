@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
-import { isListCreatedEvent, listCreated } from '../../src/domain-events/list-created-event';
 import { executeCreateListCommand } from '../../src/write-side/create-list/execute-create-list-command';
 import { replayAllLists } from '../../src/write-side/resources/all-lists';
 import { arbitraryString } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
+import { constructEvent, isEventOfType } from '../../src/domain-events';
 
 describe('execute-create-list-command', () => {
   const listId = arbitraryListId();
@@ -26,7 +26,7 @@ describe('execute-create-list-command', () => {
 
     it('returns a ListCreated event', () => {
       expect(result).toHaveLength(1);
-      expect(isListCreatedEvent(result[0])).toBe(true);
+      expect(isEventOfType('ListCreated')(result[0])).toBe(true);
     });
 
     it('returns a ListCreated event with the specified listId', () => {
@@ -49,7 +49,12 @@ describe('execute-create-list-command', () => {
   describe('when a command is received for an already existing listId', () => {
     const result = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
       ],
       replayAllLists,
       executeCreateListCommand({
