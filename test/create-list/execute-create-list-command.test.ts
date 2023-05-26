@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import { executeCreateListCommand } from '../../src/write-side/create-list/execute-create-list-command';
-import { replayAllLists } from '../../src/write-side/resources/all-lists';
 import { arbitraryString } from '../helpers';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
@@ -15,7 +14,6 @@ describe('execute-create-list-command', () => {
   describe('when a command is received', () => {
     const result = pipe(
       [],
-      replayAllLists,
       executeCreateListCommand({
         listId,
         ownerId,
@@ -56,7 +54,6 @@ describe('execute-create-list-command', () => {
           ownerId: arbitraryListOwnerId(),
         }),
       ],
-      replayAllLists,
       executeCreateListCommand({
         listId,
         ownerId,
