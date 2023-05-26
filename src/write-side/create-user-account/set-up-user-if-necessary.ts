@@ -43,7 +43,12 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
     shouldCreateAccount(command.userId),
     B.fold(
       () => [],
-      () => [constructEvent('UserCreatedAccount')(command)],
+      () => [constructEvent('UserCreatedAccount')({
+        userId: command.userId,
+        handle: command.handle,
+        avatarUrl: command.avatarUrl,
+        displayName: command.displayName,
+      })],
     ),
   ),
   ...pipe(
