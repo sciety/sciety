@@ -27,7 +27,6 @@ export {
 } from './list-created-event';
 
 export {
-  isUserCreatedAccountEvent,
   userCreatedAccount,
   UserCreatedAccountEvent,
 } from './user-created-account-event';

@@ -7,14 +7,14 @@ import * as LID from '../../types/list-id';
 import { CreateUserAccountCommand } from '../commands/create-user-account';
 import {
   DomainEvent,
-  isUserCreatedAccountEvent,
+  isEventOfType,
   userCreatedAccount,
 } from '../../domain-events';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
 const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
-  isUserCreatedAccountEvent(event)
+  isEventOfType('UserCreatedAccount')(event)
 ) && event.userId === userId;
 
 const shouldCreateAccount = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
