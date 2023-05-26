@@ -16,9 +16,6 @@ export const userUnfollowedEditorialCommunityEventCodec = t.type({
 
 type UserUnfollowedEditorialCommunityEvent = t.TypeOf<typeof userUnfollowedEditorialCommunityEventCodec>;
 
-export const isUserUnfollowedEditorialCommunityEvent = (event: { type: string }):
-  event is UserUnfollowedEditorialCommunityEvent => event.type === 'UserUnfollowedEditorialCommunity';
-
 export const userUnfollowedEditorialCommunity = (
   userId: UserId,
   editorialCommunityId: GroupId,
