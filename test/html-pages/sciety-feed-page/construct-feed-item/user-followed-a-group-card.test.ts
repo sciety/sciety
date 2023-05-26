@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { userFollowedEditorialCommunity } from '../../../../src/domain-events';
 import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
 import { arbitraryDate } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -8,12 +7,17 @@ import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
+import { constructEvent } from '../../../../src/domain-events';
 
 describe('user-followed-a-group-card', () => {
   const userDetails = arbitraryUserDetails();
   const date = arbitraryDate();
   const group = arbitraryGroup();
-  const event = userFollowedEditorialCommunity(userDetails.id, group.id, date);
+  const event = constructEvent('UserFollowedEditorialCommunity')({
+    userId: userDetails.id,
+    editorialCommunityId: group.id,
+    date,
+  });
   let framework: TestFramework;
 
   beforeEach(async () => {

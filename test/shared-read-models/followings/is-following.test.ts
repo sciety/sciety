@@ -4,7 +4,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/followings';
 import { isFollowing } from '../../../src/shared-read-models/followings/is-following';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { constructEvent, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 
 describe('is-following', () => {
   const groupId = arbitraryGroupId();
@@ -24,7 +24,7 @@ describe('is-following', () => {
   describe('when the user followed and then unfollowed the group', () => {
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
         constructEvent('UserUnfollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -38,7 +38,7 @@ describe('is-following', () => {
   describe('when the user is following the group', () => {
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/followings';
 import { getFollowers } from '../../../src/shared-read-models/followings/get-followers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -25,7 +25,7 @@ describe('get-users-following', () => {
     const userId = arbitraryUserId();
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -39,7 +39,7 @@ describe('get-users-following', () => {
     const userId = arbitraryUserId();
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
         constructEvent('UserUnfollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -54,8 +54,8 @@ describe('get-users-following', () => {
     const userId = arbitraryUserId();
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId, groupId),
-        userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
+        constructEvent('UserFollowedEditorialCommunity')({ userId, editorialCommunityId: arbitraryGroupId() }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -70,8 +70,8 @@ describe('get-users-following', () => {
     const userId2 = arbitraryUserId(UID.auth0Prefix);
     const readmodel = pipe(
       [
-        userFollowedEditorialCommunity(userId1, groupId),
-        userFollowedEditorialCommunity(userId2, groupId),
+        constructEvent('UserFollowedEditorialCommunity')({ userId: userId1, editorialCommunityId: groupId }),
+        constructEvent('UserFollowedEditorialCommunity')({ userId: userId2, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

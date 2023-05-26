@@ -1,7 +1,4 @@
-import {
-  constructEvent,
-  evaluationRecorded, userFollowedEditorialCommunity,
-} from '../../../src/domain-events';
+import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -21,6 +18,6 @@ export const arbitraryUninterestingEvents = [
     homepage: group.homepage,
     slug: group.slug,
   }),
-  userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
+  constructEvent('UserFollowedEditorialCommunity')({ userId: arbitraryUserId(), editorialCommunityId: arbitraryGroupId() }),
   evaluationRecorded(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
 ];

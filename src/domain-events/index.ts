@@ -20,7 +20,6 @@ export { UserCreatedAccountEvent } from './user-created-account-event';
 
 export {
   isUserFollowedEditorialCommunityEvent,
-  userFollowedEditorialCommunity,
   UserFollowedEditorialCommunityEvent,
 } from './user-followed-editorial-community-event';
 
