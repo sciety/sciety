@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
-import { userUnfollowedEditorialCommunity } from '../../domain-events';
+import { constructEvent } from '../../domain-events';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
@@ -26,7 +26,10 @@ export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => 
   T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
     () => [],
-    () => [userUnfollowedEditorialCommunity(command.userId, command.groupId)],
+    () => [constructEvent('UserUnfollowedEditorialCommunity')({
+      userId: command.userId,
+      editorialCommunityId: command.groupId,
+    })],
   )),
   T.chain(ports.commitEvents),
   TE.rightTask,

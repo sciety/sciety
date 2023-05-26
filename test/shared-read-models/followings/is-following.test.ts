@@ -4,7 +4,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/followings';
 import { isFollowing } from '../../../src/shared-read-models/followings/is-following';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
+import { constructEvent, userFollowedEditorialCommunity } from '../../../src/domain-events';
 
 describe('is-following', () => {
   const groupId = arbitraryGroupId();
@@ -25,7 +25,7 @@ describe('is-following', () => {
     const readmodel = pipe(
       [
         userFollowedEditorialCommunity(userId, groupId),
-        userUnfollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserUnfollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

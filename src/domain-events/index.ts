@@ -33,8 +33,6 @@ export {
   UserFollowedEditorialCommunityEvent,
 } from './user-followed-editorial-community-event';
 
-export { userUnfollowedEditorialCommunity } from './user-unfollowed-editorial-community-event';
-
 export { UserDetailsUpdatedEvent } from './user-details-updated-event';
 
 export { sort } from './domain-event';

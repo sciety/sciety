@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
+import { constructEvent, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/followings';
 import { getGroupsFollowedBy } from '../../../src/shared-read-models/followings/get-groups-followed-by';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -30,7 +30,7 @@ describe('get-group-ids-followed-by', () => {
     const readmodel = pipe(
       [
         userFollowedEditorialCommunity(userId, groupId),
-        userUnfollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserUnfollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -45,7 +45,7 @@ describe('get-group-ids-followed-by', () => {
     const readmodel = pipe(
       [
         userFollowedEditorialCommunity(userId, groupId),
-        userUnfollowedEditorialCommunity(userId, groupId),
+        constructEvent('UserUnfollowedEditorialCommunity')({ userId, editorialCommunityId: groupId }),
         userFollowedEditorialCommunity(userId, groupId),
       ],
       RA.reduce(initialState(), handleEvent),

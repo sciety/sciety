@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
+import { constructEvent, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import { isFollowing } from '../../../src/write-side/follow/is-following';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -11,7 +11,7 @@ const userId2 = arbitraryUserId();
 const unimportantEvents = [
   userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
   userFollowedEditorialCommunity(userId2, groupId1),
-  userUnfollowedEditorialCommunity(userId2, groupId1),
+  constructEvent('UserUnfollowedEditorialCommunity')({ userId: userId2, editorialCommunityId: groupId1 }),
 ];
 
 describe('is-following', () => {
@@ -36,7 +36,7 @@ describe('is-following', () => {
         ...unimportantEvents,
         userFollowedEditorialCommunity(userId1, groupId1),
         ...unimportantEvents,
-        userUnfollowedEditorialCommunity(userId1, groupId1),
+        constructEvent('UserUnfollowedEditorialCommunity')({ userId: userId1, editorialCommunityId: groupId1 }),
         ...unimportantEvents,
       ],
       isFollowing(userId1, groupId1),
