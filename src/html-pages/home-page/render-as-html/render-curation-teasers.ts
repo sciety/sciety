@@ -16,7 +16,7 @@ const curationTeaser1 = {
 
 const curationTeaser2 = {
   articleLink: '/articles/activity/10.21203/rs.3.rs-2407778/v1',
-  quote: toHtmlFragment('a finding consistent with previous work. However, the methods are incomplete in supporting the main conclusion of the manuscript, that is that non time-reversible models should be incorporated in the model selection process for these data sets.'),
+  quote: toHtmlFragment('This valuable study revisits the effects of substitution model selection on phylogenetics by comparing reversible and non-reversible DNA substitution models. The authors provide evidence that 1) non time-reversible models sometimes perform better than general time-reversible models when inferring phylogenetic trees out of simulated viral genome sequence data sets, and that 2) non time-reversible models can fit the real data better than the reversible substitution models commonly used in phylogenetics, a finding consistent with previous work. However, the methods are incomplete in supporting the main conclusion of the manuscript, that is that non time-reversible models should be incorporated in the model selection process for these data sets.'),
   caption: 'Curated by eLife',
   articleTitle: toHtmlFragment('Viral genome sequence datasets display pervasive evidence of strand-specific substitution biases that are best described using non-reversible nucleotide substitution models'),
 };
