@@ -1,11 +1,7 @@
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
 import { elifeGroupId, elifeSubjectAreaLists } from './data';
-import {
-  DomainEvent,
-  isEvaluationRecordedEvent, isEventOfType,
-  isSubjectAreaRecordedEvent,
-} from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
 type ArticleStateWithSubjectArea =
@@ -33,7 +29,7 @@ export const isStateWithSubjectArea = (state: ArticleState):
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEvaluationRecordedEvent(event)) {
+  if (isEventOfType('EvaluationRecorded')(event)) {
     if (event.groupId === elifeGroupId) {
       const key = event.articleId.value;
       const transitions = {
@@ -52,7 +48,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (elifeSubjectAreaLists.includes(event.listId)) {
       readmodel[event.articleId.value] = { name: 'listed' as const };
     }
-  } else if (isSubjectAreaRecordedEvent(event)) {
+  } else if (isEventOfType('SubjectAreaRecorded')(event)) {
     const key = event.articleId.value;
     const transitions = {
       'initial': 'subject-area-known' as const,

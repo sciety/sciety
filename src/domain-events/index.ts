@@ -3,7 +3,7 @@ export {
 } from './domain-event';
 
 // ts-unused-exports:disable-next-line
-export { isSubjectAreaRecordedEvent, subjectAreaRecorded } from './subject-area-recorded-event';
+export { subjectAreaRecorded } from './subject-area-recorded-event';
 
 export {
   isGroupJoinedEvent,
