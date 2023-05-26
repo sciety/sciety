@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { evaluationRecorded } from '../../../src/domain-events';
-import { executeCommand } from '../../../src/write-side/record-evaluation/execute-command';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { evaluationRecorded } from '../../../../src/domain-events';
+import { record } from '../../../../src/write-side/resources/evaluation/record';
+import { arbitraryDate, arbitraryString } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
-describe('create-appropriate-events', () => {
+describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
   const input = {
     groupId: arbitraryGroupId(),
@@ -20,7 +20,7 @@ describe('create-appropriate-events', () => {
   describe('when the evaluation locator has NOT already been recorded', () => {
     const events = pipe(
       [],
-      executeCommand(input),
+      record(input),
     );
 
     it('returns an EvaluationRecorded event', () => {
@@ -40,7 +40,7 @@ describe('create-appropriate-events', () => {
       [
         evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator, [], arbitraryDate()),
       ],
-      executeCommand(input),
+      record(input),
     );
 
     it('returns no events', () => {

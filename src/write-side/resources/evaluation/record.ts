@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { RecordEvaluationCommand } from '../commands';
+import { RecordEvaluationCommand } from '../../commands';
 import {
   DomainEvent, constructEvent, isEvaluationRecordedEvent,
-} from '../../domain-events';
-import { EvaluationLocator } from '../../types/evaluation-locator';
-import { ResourceAction } from '../resources/resource-action';
+} from '../../../domain-events';
+import { EvaluationLocator } from '../../../types/evaluation-locator';
+import { ResourceAction } from '../resource-action';
 
 const hasEvaluationAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
@@ -28,7 +28,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
   date: command.issuedAt ? command.issuedAt : new Date(),
 });
 
-export const executeCommand: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
+export const record: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
   events,
   hasEvaluationAlreadyBeenRecorded(command.evaluationLocator),
   B.fold(
