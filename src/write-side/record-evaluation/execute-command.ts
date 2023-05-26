@@ -7,7 +7,7 @@ import {
   DomainEvent, constructEvent, isEvaluationRecordedEvent,
 } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
-import { ErrorMessage } from '../../types/error-message';
+import { ResourceAction } from '../resources/resource-action';
 
 const hasEvaluationAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
@@ -28,11 +28,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
   date: command.issuedAt ? command.issuedAt : new Date(),
 });
 
-type ExecuteCommand = (command: RecordEvaluationCommand)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
-
-export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
+export const executeCommand: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
   events,
   hasEvaluationAlreadyBeenRecorded(command.evaluationLocator),
   B.fold(
