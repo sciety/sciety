@@ -9,6 +9,16 @@
 
 $_arbitrary-large-amount-of-px: 9000px;
 
+/* stylelint-disable value-no-vendor-prefix */
+@mixin _clamp-to-max-number-of-lines($number-of-lines) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $number-of-lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* stylelint-enable value-no-vendor-prefix */
+
 .curation-teasers {
   margin-left: auto;
   margin-right: auto;
@@ -130,19 +140,14 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 }
 
-/* stylelint-disable value-no-vendor-prefix */
 .curation-teaser__quote {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 10;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include _clamp-to-max-number-of-lines(10);
+  
   margin: 0;
   margin-bottom: functions.px-to-rem(24px);
   padding-left: 0;
   border-width: 0;
 }
-/* stylelint-enable value-no-vendor-prefix */
 
 .curation-teaser__strapline {
   font-weight: bold;
