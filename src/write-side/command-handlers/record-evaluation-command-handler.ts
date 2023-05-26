@@ -22,6 +22,5 @@ export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (
 ) => pipe(
   adapters.getAllEvents,
   T.map(executeCommand(command)),
-  T.chain(adapters.commitEvents),
-  TE.rightTask,
+  TE.chainTaskK(adapters.commitEvents),
 );

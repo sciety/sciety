@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { evaluationRecorded } from '../../../src/domain-events';
 import { executeCommand } from '../../../src/write-side/record-evaluation/execute-command';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -23,14 +24,14 @@ describe('create-appropriate-events', () => {
     );
 
     it('returns an EvaluationRecorded event', () => {
-      expect(events).toStrictEqual([expect.objectContaining({
+      expect(events).toStrictEqual(E.right([expect.objectContaining({
         type: 'EvaluationRecorded',
         groupId: input.groupId,
         articleId: input.articleId,
         evaluationLocator: input.evaluationLocator,
         publishedAt: input.publishedAt,
         authors: input.authors,
-      })]);
+      })]));
     });
   });
 
@@ -43,7 +44,7 @@ describe('create-appropriate-events', () => {
     );
 
     it('returns no events', () => {
-      expect(events).toStrictEqual([]);
+      expect(events).toStrictEqual(E.right([]));
     });
   });
 });

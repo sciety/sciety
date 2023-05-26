@@ -1,11 +1,13 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { RecordEvaluationCommand } from '../commands';
 import {
   DomainEvent, constructEvent, isEvaluationRecordedEvent,
 } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
+import { ErrorMessage } from '../../types/error-message';
 
 const hasEvaluationAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
@@ -28,7 +30,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
 
 type ExecuteCommand = (command: RecordEvaluationCommand)
 => (events: ReadonlyArray<DomainEvent>)
-=> ReadonlyArray<DomainEvent>;
+=> E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
 
 export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
   events,
@@ -37,4 +39,5 @@ export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
     () => [createEvaluationRecordedEvent(command)],
     () => [],
   ),
+  E.right,
 );
