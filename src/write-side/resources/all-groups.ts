@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   EventOfType, isEventOfType,
-  DomainEvent, GroupJoinedEvent, isGroupJoinedEvent,
+  DomainEvent, GroupJoinedEvent,
 } from '../../domain-events';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import { AddGroupCommand } from '../commands';
@@ -13,7 +13,7 @@ type AllGroupsResource = ReadonlyArray<GroupJoinedEvent | EventOfType<'GroupDeta
 export const replay = (events: ReadonlyArray<DomainEvent>): AllGroupsResource => pipe(
   events,
   RA.filter((event): event is GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'> => (
-    isGroupJoinedEvent(event)
+    isEventOfType('GroupJoined')(event)
     || isEventOfType('GroupDetailsUpdated')(event))),
 );
 

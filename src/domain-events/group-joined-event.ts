@@ -21,9 +21,6 @@ export const groupJoinedEventCodec = t.type({
 
 export type GroupJoinedEvent = t.TypeOf<typeof groupJoinedEventCodec>;
 
-export const isGroupJoinedEvent = (event: { type: string }):
-  event is GroupJoinedEvent => event.type === 'GroupJoined';
-
 export const groupJoined = (
   groupId: GroupId,
   name: string,

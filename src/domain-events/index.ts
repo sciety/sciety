@@ -5,7 +5,6 @@ export {
 export { subjectAreaRecorded } from './subject-area-recorded-event';
 
 export {
-  isGroupJoinedEvent,
   GroupJoinedEvent,
   groupJoined,
 } from './group-joined-event';
