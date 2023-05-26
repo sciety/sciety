@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper';
-import { userCreatedAccount } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUserByHandle } from '../../../src/shared-read-models/users/lookup-user-by-handle';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
@@ -13,7 +13,10 @@ describe('lookup-user-by-handle', () => {
   describe('when the user exists', () => {
     const readmodel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        constructEvent('UserCreatedAccount')({
+          ...user,
+          userId: user.id,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

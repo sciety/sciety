@@ -7,7 +7,7 @@ import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.he
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { UserGeneratedInput } from '../../../src/types/user-generated-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { userCreatedAccount } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { dummyLogger } from '../../dummy-logger';
 
@@ -90,7 +90,10 @@ describe('validate-and-execute-command', () => {
     const adapters: Ports = {
       ...defaultAdapters,
       getAllEvents: T.of([
-        userCreatedAccount(existingUser.id, existingUser.handle, existingUser.avatarUrl, existingUser.displayName),
+        constructEvent('UserCreatedAccount')({
+          ...existingUser,
+          userId: existingUser.id,
+        }),
       ]),
     };
     const koaContext = buildKoaContext(formBody, existingUser.id);

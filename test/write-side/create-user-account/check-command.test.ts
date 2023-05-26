@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { DomainEvent, userCreatedAccount } from '../../../src/domain-events';
+import { DomainEvent, constructEvent } from '../../../src/domain-events';
 import { UserHandle } from '../../../src/types/user-handle';
 import { checkCommand } from '../../../src/write-side/create-user-account/check-command';
 import { CreateUserAccountCommand } from '../../../src/write-side/commands';
@@ -32,7 +32,12 @@ describe('check-command', () => {
       avatarUrl: arbitraryUri(),
     };
     const events = [
-      userCreatedAccount(arbitraryUserId(), userHandle, arbitraryUri(), arbitraryString()),
+      constructEvent('UserCreatedAccount')({
+        userId: arbitraryUserId(),
+        handle: userHandle,
+        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
+      }),
     ];
     const result = checkCommand(command)(events);
 

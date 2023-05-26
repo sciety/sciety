@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
-import { userCreatedAccount } from '../../../../src/domain-events';
+import { constructEvent } from '../../../../src/domain-events';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import * as User from '../../../../src/write-side/resources/user/handle-exists';
@@ -13,12 +13,12 @@ describe('handle-exists', () => {
         const handle = arbitraryUserHandle();
         const result = pipe(
           [
-            userCreatedAccount(
-              arbitraryUserId(),
+            constructEvent('UserCreatedAccount')({
+              userId: arbitraryUserId(),
               handle,
-              arbitraryUri(),
-              arbitraryString(),
-            ),
+              avatarUrl: arbitraryUri(),
+              displayName: arbitraryString(),
+            }),
           ],
           User.handleExists(handle),
         );
@@ -31,12 +31,12 @@ describe('handle-exists', () => {
       it('returns true', () => {
         const result = pipe(
           [
-            userCreatedAccount(
-              arbitraryUserId(),
-              'ahandle' as UserHandle,
-              arbitraryUri(),
-              arbitraryString(),
-            ),
+            constructEvent('UserCreatedAccount')({
+              userId: arbitraryUserId(),
+              handle: 'ahandle' as UserHandle,
+              avatarUrl: arbitraryUri(),
+              displayName: arbitraryString(),
+            }),
           ],
           User.handleExists('AHandle' as UserHandle),
         );

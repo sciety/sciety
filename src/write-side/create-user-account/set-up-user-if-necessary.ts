@@ -6,9 +6,9 @@ import * as LID from '../../types/list-id';
 import { CreateUserAccountCommand } from '../commands/create-user-account';
 import {
   DomainEvent,
+  constructEvent,
   isEventOfType,
   listCreated,
-  userCreatedAccount,
 } from '../../domain-events';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
@@ -43,9 +43,7 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
     shouldCreateAccount(command.userId),
     B.fold(
       () => [],
-      () => [
-        userCreatedAccount(command.userId, command.handle, command.avatarUrl, command.displayName),
-      ],
+      () => [constructEvent('UserCreatedAccount')(command)],
     ),
   ),
   ...pipe(

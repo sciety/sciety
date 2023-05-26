@@ -22,10 +22,7 @@ export {
   ListCreatedEvent,
 } from './list-created-event';
 
-export {
-  userCreatedAccount,
-  UserCreatedAccountEvent,
-} from './user-created-account-event';
+export { UserCreatedAccountEvent } from './user-created-account-event';
 
 export {
   isUserFollowedEditorialCommunityEvent,
