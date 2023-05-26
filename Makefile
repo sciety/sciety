@@ -102,10 +102,8 @@ exploratory-test-backstop: node_modules clean-db build
 	${DOCKER_COMPOSE} restart app
 	${DOCKER_COMPOSE} up
 
-backstop-approve: export LATEST_TEST_PNG_FOLDER=$(shell ls -1 backstop_data/bitmaps_test/ | sort | tail -n 1)
 backstop-approve: node_modules
-	cp backstop_data/bitmaps_test/$$LATEST_TEST_PNG_FOLDER/backstop_default*.png backstop_data/bitmaps_reference/
-	git status
+	npx backstop approve
 
 build:
 	$(DOCKER_COMPOSE) build app
