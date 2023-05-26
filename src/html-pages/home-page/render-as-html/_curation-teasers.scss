@@ -10,13 +10,13 @@
 $_arbitrary-large-amount-of-px: 9000px;
 
 .curation-teasers {
-  background-color: settings.$colour-page-background;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: calc(2 * #{common.$section-vertical-separation});
-  max-width: functions.px-to-rem(settings.$max-site-width);
   padding-bottom: common.$section-vertical-separation;
   padding-top: common.$section-vertical-separation;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  background-color: settings.$colour-page-background;
 
   @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
@@ -79,9 +79,9 @@ $_arbitrary-large-amount-of-px: 9000px;
   @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0;
-      max-width: functions.px-to-rem(384px); // maximum desired card width
       margin-bottom: 0;
       margin-right: functions.px-to-rem(24px);
+      max-width: functions.px-to-rem(384px); // maximum desired card width
 
       &:last-child {
         margin-right: 0;
@@ -109,11 +109,11 @@ $_arbitrary-large-amount-of-px: 9000px;
 
   &::before,
   &::after {
+    position: absolute;
     color: settings.$colour-accent;
     font-family: serif;
     font-size: functions.px-to-rem(48px);
     line-height: 1;
-    position: absolute;
   }
 
   &::before {
@@ -132,15 +132,15 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 /* stylelint-disable value-no-vendor-prefix */
 .curation-teaser__quote {
-  border-width: 0;
-  margin: 0;
-  margin-bottom: functions.px-to-rem(24px);
-  padding-left: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 10;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
+  margin-bottom: functions.px-to-rem(24px);
+  padding-left: 0;
+  border-width: 0;
 }
 /* stylelint-enable value-no-vendor-prefix */
 
