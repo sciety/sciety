@@ -4,10 +4,7 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
-import {
-  DomainEvent, EvaluationRecordedEvent,
-  isEvaluationRecordedEvent,
-} from '../../../domain-events';
+import { DomainEvent, EvaluationRecordedEvent, isEventOfType } from '../../../domain-events';
 import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
 import { GroupId } from '../../../types/group-id';
@@ -84,7 +81,7 @@ type FollowedGroupsActivities = (
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
-  RA.filter(isEvaluationRecordedEvent),
+  RA.filter(isEventOfType('EvaluationRecorded')),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => O.some({ articleId: new Doi(key), ...activityDetails }),

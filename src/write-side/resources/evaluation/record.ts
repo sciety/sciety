@@ -3,9 +3,7 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { RecordEvaluationCommand } from '../../commands';
-import {
-  DomainEvent, constructEvent, isEvaluationRecordedEvent,
-} from '../../../domain-events';
+import { DomainEvent, constructEvent, isEventOfType } from '../../../domain-events';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { ResourceAction } from '../resource-action';
 
@@ -13,7 +11,7 @@ const hasEvaluationAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
 ) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter(isEvaluationRecordedEvent),
+  RA.filter(isEventOfType('EvaluationRecorded')),
   RA.some((event) => event.evaluationLocator === evaluationLocator),
 );
 

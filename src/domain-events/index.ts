@@ -10,7 +10,7 @@ export {
 } from './group-joined-event';
 
 // ts-unused-exports:disable-next-line
-export { isEvaluationRecordedEvent, EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
+export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 
 export {
   IncorrectlyRecordedEvaluationErasedEvent,
