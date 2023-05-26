@@ -44,7 +44,6 @@ export {
 } from './user-unfollowed-editorial-community-event';
 
 export {
-  isUserDetailsUpdatedEvent,
   userDetailsUpdated,
   UserDetailsUpdatedEvent,
 } from './user-details-updated-event';

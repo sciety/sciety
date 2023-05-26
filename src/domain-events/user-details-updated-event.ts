@@ -15,9 +15,6 @@ export const userDetailsUpdatedEventCodec = t.type({
 
 export type UserDetailsUpdatedEvent = t.TypeOf<typeof userDetailsUpdatedEventCodec>;
 
-export const isUserDetailsUpdatedEvent = (event: { type: string }):
-  event is UserDetailsUpdatedEvent => event.type === 'UserDetailsUpdated';
-
 export const userDetailsUpdated = (
   userId: UserId,
   avatarUrl?: string,

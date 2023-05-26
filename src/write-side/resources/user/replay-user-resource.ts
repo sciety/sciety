@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import {
   DomainEvent,
-  isUserCreatedAccountEvent, isUserDetailsUpdatedEvent,
+  isEventOfType,
   UserCreatedAccountEvent,
   UserDetailsUpdatedEvent,
 } from '../../../domain-events';
@@ -13,7 +13,7 @@ import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 type RelevantEvent = UserCreatedAccountEvent | UserDetailsUpdatedEvent;
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
-  isUserCreatedAccountEvent(event) || isUserDetailsUpdatedEvent(event)
+  isEventOfType('UserCreatedAccount')(event) || isEventOfType('UserDetailsUpdated')(event)
 );
 
 export type UserResource = {
