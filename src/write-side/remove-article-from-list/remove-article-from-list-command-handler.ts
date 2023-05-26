@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
 import { executeCommand } from './execute-command';
 import { RemoveArticleFromListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
-import { replayListResource } from '../resources/list/replay-list-resource';
 import { CommandHandler } from '../../types/command-handler';
 
 type Ports = {
@@ -12,21 +12,15 @@ type Ports = {
 };
 
 type RemoveArticleFromListCommandHandler = (
-  ports: Ports
+  adapters: Ports
 ) => CommandHandler<RemoveArticleFromListCommand>;
 
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
-  ports,
+  adapters,
 ) => (
-  input,
+  command,
 ) => pipe(
-  input,
-  TE.right,
-  TE.chainW((command) => pipe(
-    ports.getAllEvents,
-    TE.rightTask,
-    TE.chainEitherK(replayListResource(command.listId)),
-    TE.map(executeCommand(command)),
-  )),
-  TE.chainTaskK(ports.commitEvents),
+  adapters.getAllEvents,
+  T.map(executeCommand(command)),
+  TE.chainTaskK(adapters.commitEvents),
 );
