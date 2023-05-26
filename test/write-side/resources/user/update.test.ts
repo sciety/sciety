@@ -1,9 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { userCreatedAccount } from '../../../../src/domain-events/user-created-account-event';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { DomainEvent, userDetailsUpdated } from '../../../../src/domain-events';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
@@ -17,12 +16,12 @@ describe('update', () => {
 
     describe('and they have never updated their details', () => {
       const existingEvents = [
-        userCreatedAccount(
-          originalUserDetails.id,
-          originalUserDetails.handle,
-          originalUserDetails.avatarUrl,
-          originalUserDetails.displayName,
-        ),
+        constructEvent('UserCreatedAccount')({
+          userId: originalUserDetails.id,
+          handle: originalUserDetails.handle,
+          avatarUrl: originalUserDetails.avatarUrl,
+          displayName: originalUserDetails.displayName,
+        }),
       ];
 
       describe('when passed a new avatar url', () => {
@@ -161,17 +160,17 @@ describe('update', () => {
 
     describe('and they have previously updated their details', () => {
       const existingEvents = [
-        userCreatedAccount(
-          originalUserDetails.id,
-          originalUserDetails.handle,
-          originalUserDetails.avatarUrl,
-          originalUserDetails.displayName,
-        ),
-        userDetailsUpdated(
-          originalUserDetails.id,
-          arbitraryUri(),
-          arbitraryString(),
-        ),
+        constructEvent('UserCreatedAccount')({
+          userId: originalUserDetails.id,
+          handle: originalUserDetails.handle,
+          avatarUrl: originalUserDetails.avatarUrl,
+          displayName: originalUserDetails.displayName,
+        }),
+        constructEvent('UserDetailsUpdated')({
+          userId: originalUserDetails.id,
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+        }),
       ];
 
       describe('when passed a new avatar url', () => {
@@ -251,12 +250,12 @@ describe('update', () => {
   describe('when a different user exists', () => {
     const differentUserDetails = arbitraryUserDetails();
     const existingEvents: ReadonlyArray<DomainEvent> = [
-      userCreatedAccount(
-        differentUserDetails.id,
-        differentUserDetails.handle,
-        differentUserDetails.avatarUrl,
-        differentUserDetails.displayName,
-      ),
+      constructEvent('UserCreatedAccount')({
+        userId: differentUserDetails.id,
+        handle: differentUserDetails.handle,
+        avatarUrl: differentUserDetails.avatarUrl,
+        displayName: differentUserDetails.displayName,
+      }),
     ];
 
     describe('when passed any command', () => {

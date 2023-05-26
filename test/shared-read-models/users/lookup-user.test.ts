@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
-import { userCreatedAccount, userDetailsUpdated } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/users';
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 
@@ -13,7 +13,12 @@ describe('lookup-user', () => {
     const user = arbitraryUserDetails();
     const readModel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
+        constructEvent('UserCreatedAccount')({
+          userId: user.id,
+          handle: user.handle,
+          avatarUrl: user.avatarUrl,
+          displayName: user.displayName,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -28,8 +33,17 @@ describe('lookup-user', () => {
     const newAvatarUrl = arbitraryUri();
     const readModel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-        userDetailsUpdated(user.id, newAvatarUrl),
+        constructEvent('UserCreatedAccount')({
+          userId: user.id,
+          handle: user.handle,
+          avatarUrl: user.avatarUrl,
+          displayName: user.displayName,
+        }),
+        constructEvent('UserDetailsUpdated')({
+          userId: user.id,
+          avatarUrl: newAvatarUrl,
+          displayName: undefined,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -47,8 +61,17 @@ describe('lookup-user', () => {
     const newDisplayName = arbitraryString();
     const readModel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-        userDetailsUpdated(user.id, undefined, newDisplayName),
+        constructEvent('UserCreatedAccount')({
+          userId: user.id,
+          handle: user.handle,
+          avatarUrl: user.avatarUrl,
+          displayName: user.displayName,
+        }),
+        constructEvent('UserDetailsUpdated')({
+          userId: user.id,
+          avatarUrl: undefined,
+          displayName: newDisplayName,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -67,8 +90,17 @@ describe('lookup-user', () => {
     const newAvatarUrl = arbitraryUri();
     const readModel = pipe(
       [
-        userCreatedAccount(user.id, user.handle, user.avatarUrl, user.displayName),
-        userDetailsUpdated(user.id, newAvatarUrl, newDisplayName),
+        constructEvent('UserCreatedAccount')({
+          userId: user.id,
+          handle: user.handle,
+          avatarUrl: user.avatarUrl,
+          displayName: user.displayName,
+        }),
+        constructEvent('UserDetailsUpdated')({
+          userId: user.id,
+          avatarUrl: newAvatarUrl,
+          displayName: newDisplayName,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

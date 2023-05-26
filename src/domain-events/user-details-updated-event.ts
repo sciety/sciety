@@ -1,8 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { userIdCodec, UserId } from '../types/user-id';
-import { generate } from '../types/event-id';
+import { userIdCodec } from '../types/user-id';
 
 export const userDetailsUpdatedEventCodec = t.type({
   id: EventIdFromString,
@@ -14,17 +13,3 @@ export const userDetailsUpdatedEventCodec = t.type({
 });
 
 export type UserDetailsUpdatedEvent = t.TypeOf<typeof userDetailsUpdatedEventCodec>;
-
-export const userDetailsUpdated = (
-  userId: UserId,
-  avatarUrl?: string,
-  displayName?: string,
-  date: Date = new Date(),
-): UserDetailsUpdatedEvent => ({
-  id: generate(),
-  type: 'UserDetailsUpdated',
-  date,
-  userId,
-  avatarUrl,
-  displayName,
-});
