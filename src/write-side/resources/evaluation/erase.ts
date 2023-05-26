@@ -3,9 +3,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  incorrectlyRecordedEvaluationErased,
   DomainEvent,
-  EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isEventOfType,
+  EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isEventOfType, constructEvent,
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -24,7 +23,7 @@ export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (event
   O.filter(isEventOfType('EvaluationRecorded')),
   O.match(
     () => [],
-    () => [incorrectlyRecordedEvaluationErased(command.evaluationLocator)],
+    () => [constructEvent('IncorrectlyRecordedEvaluationErased')(command)],
   ),
   E.right,
 );

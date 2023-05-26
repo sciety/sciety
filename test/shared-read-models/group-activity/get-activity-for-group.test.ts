@@ -4,7 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
-import { evaluationRecorded, groupJoined, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
+import {
+  constructEvent, evaluationRecorded, groupJoined,
+} from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
@@ -69,7 +71,7 @@ describe('get-activity-for-group', () => {
               recordedEvaluation.authors,
               recordedEvaluation.publishedAt,
             ),
-            incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
+            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.reviewId }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -275,7 +277,7 @@ describe('get-activity-for-group', () => {
             recordedEvaluation.authors,
             recordedEvaluation.publishedAt,
           ),
-          incorrectlyRecordedEvaluationErased(recordedEvaluation.reviewId),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.reviewId }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -326,7 +328,7 @@ describe('get-activity-for-group', () => {
             badEvaluation.authors,
             badEvaluation.publishedAt,
           ),
-          incorrectlyRecordedEvaluationErased(badEvaluation.reviewId),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: badEvaluation.reviewId }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

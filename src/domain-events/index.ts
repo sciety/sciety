@@ -14,7 +14,6 @@ export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-record
 
 export {
   IncorrectlyRecordedEvaluationErasedEvent,
-  incorrectlyRecordedEvaluationErased,
 } from './incorrectly-recorded-evaluation-erased-event';
 
 export {

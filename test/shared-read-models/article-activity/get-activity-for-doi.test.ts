@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, evaluationRecorded, incorrectlyRecordedEvaluationErased } from '../../../src/domain-events';
+import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -57,7 +57,7 @@ describe('get-activity-for-doi', () => {
             evaluation.authors,
             evaluation.publishedAt,
           ),
-          incorrectlyRecordedEvaluationErased(evaluation.reviewId),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluation.reviewId }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -154,7 +154,7 @@ describe('get-activity-for-doi', () => {
             earlierPublishedDate,
             arbitraryDate(),
           ),
-          incorrectlyRecordedEvaluationErased(evaluationLocator),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

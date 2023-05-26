@@ -6,8 +6,8 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import {
   DomainEvent,
+  constructEvent,
   evaluationRecorded,
-  incorrectlyRecordedEvaluationErased,
 } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
@@ -76,7 +76,7 @@ describe('erase', () => {
             [],
             new Date(),
           ),
-          incorrectlyRecordedEvaluationErased(evaluationLocator),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
         erase({ evaluationLocator }),
         E.getOrElseW(shouldNotBeCalled),
@@ -102,7 +102,7 @@ describe('erase', () => {
             [],
             new Date(),
           ),
-          incorrectlyRecordedEvaluationErased(evaluationLocator),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
           evaluationRecorded(
             arbitraryGroupId(),
             arbitraryDoi(),
