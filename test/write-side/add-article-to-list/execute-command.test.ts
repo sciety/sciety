@@ -1,4 +1,7 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { constructEvent } from '../../../src/domain-events';
 import { executeCommand } from '../../../src/write-side/add-article-to-list/execute-command';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -11,7 +14,12 @@ describe('execute-command', () => {
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
       const result = pipe(
-        { articleIds: [articleId], name: arbitraryString(), description: arbitraryString() },
+        [
+          constructEvent('ListCreated')({
+            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+          }),
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
+        ],
         executeCommand({
           listId,
           articleId,
@@ -19,13 +27,17 @@ describe('execute-command', () => {
       );
 
       it('succeeds with no events raised', () => {
-        expect(result).toStrictEqual([]);
+        expect(result).toStrictEqual(E.right([]));
       });
     });
 
     describe('and the article is not in the list', () => {
       const result = pipe(
-        { articleIds: [], name: arbitraryString(), description: arbitraryString() },
+        [
+          constructEvent('ListCreated')({
+            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+          }),
+        ],
         executeCommand({
           listId,
           articleId,
@@ -33,11 +45,11 @@ describe('execute-command', () => {
       );
 
       it('succeeds and raises an event', () => {
-        expect(result).toStrictEqual([expect.objectContaining({
+        expect(result).toStrictEqual(E.right([expect.objectContaining({
           type: 'ArticleAddedToList',
           articleId,
           listId,
-        })]);
+        })]));
       });
     });
   });
