@@ -1,5 +1,6 @@
 import {
-  evaluationRecorded, groupJoined, userFollowedEditorialCommunity,
+  constructEvent,
+  evaluationRecorded, userFollowedEditorialCommunity,
 } from '../../../src/domain-events';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -11,15 +12,15 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 const group = arbitraryGroup();
 
 export const arbitraryUninterestingEvents = [
-  groupJoined(
-    group.id,
-    group.name,
-    group.avatarPath,
-    group.descriptionPath,
-    group.shortDescription,
-    group.homepage,
-    group.slug,
-  ),
+  constructEvent('GroupJoined')({
+    groupId: group.id,
+    name: group.name,
+    avatarPath: group.avatarPath,
+    descriptionPath: group.descriptionPath,
+    shortDescription: group.shortDescription,
+    homepage: group.homepage,
+    slug: group.slug,
+  }),
   userFollowedEditorialCommunity(arbitraryUserId(), arbitraryGroupId()),
   evaluationRecorded(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
 ];

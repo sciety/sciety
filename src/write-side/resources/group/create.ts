@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as LID from '../../../types/list-id';
 import * as LOID from '../../../types/list-owner-id';
 import { AddGroupCommand } from '../../commands';
-import { constructEvent, groupJoined, listCreated } from '../../../domain-events';
+import { constructEvent } from '../../../domain-events';
 import * as AG from '../all-groups';
 import { ResourceAction } from '../resource-action';
 
@@ -12,21 +12,21 @@ export const create: ResourceAction<AddGroupCommand> = (command) => (events) => 
   AG.check(command),
   E.map(LID.generate),
   E.map((listId) => [
-    groupJoined(
-      command.groupId,
-      command.name,
-      command.avatarPath,
-      command.descriptionPath,
-      command.shortDescription,
-      command.homepage,
-      command.slug,
-    ),
-    listCreated(
+    constructEvent('GroupJoined')({
+      groupId: command.groupId,
+      name: command.name,
+      avatarPath: command.avatarPath,
+      descriptionPath: command.descriptionPath,
+      shortDescription: command.shortDescription,
+      homepage: command.homepage,
+      slug: command.slug,
+    }),
+    constructEvent('ListCreated')({
       listId,
-      'Evaluated articles',
-      `Articles that have been evaluated by ${command.name}`,
-      LOID.fromGroupId(command.groupId),
-    ),
+      name: 'Evaluated articles',
+      description: `Articles that have been evaluated by ${command.name}`,
+      ownerId: LOID.fromGroupId(command.groupId),
+    }),
     constructEvent('EvaluatedArticlesListSpecified')({ listId, groupId: command.groupId }),
   ]),
 );

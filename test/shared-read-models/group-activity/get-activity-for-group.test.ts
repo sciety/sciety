@@ -4,9 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
-import {
-  constructEvent, evaluationRecorded, groupJoined,
-} from '../../../src/domain-events';
+import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
@@ -85,15 +83,15 @@ describe('get-activity-for-group', () => {
   });
 
   describe('when the group has joined', () => {
-    const groupJoinedEvent = groupJoined(
-      group.id,
-      group.name,
-      group.avatarPath,
-      group.descriptionPath,
-      group.shortDescription,
-      group.homepage,
-      group.slug,
-    );
+    const groupJoinedEvent = constructEvent('GroupJoined')({
+      groupId: group.id,
+      name: group.name,
+      avatarPath: group.avatarPath,
+      descriptionPath: group.descriptionPath,
+      shortDescription: group.shortDescription,
+      homepage: group.homepage,
+      slug: group.slug,
+    });
 
     describe('when there are no recorded evaluations', () => {
       const readModel = pipe(

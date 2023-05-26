@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { groupJoined } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/groups';
 import { getGroupBySlug } from '../../../src/shared-read-models/groups/get-group-by-slug';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -14,15 +14,15 @@ describe('getGroupBySlug', () => {
     const readmodel = pipe(
       [
         ...arbitraryUninterestingEvents,
-        groupJoined(
-          group.id,
-          group.name,
-          group.avatarPath,
-          group.descriptionPath,
-          group.shortDescription,
-          group.homepage,
-          group.slug,
-        ),
+        constructEvent('GroupJoined')({
+          groupId: group.id,
+          name: group.name,
+          avatarPath: group.avatarPath,
+          descriptionPath: group.descriptionPath,
+          shortDescription: group.shortDescription,
+          homepage: group.homepage,
+          slug: group.slug,
+        }),
         ...arbitraryUninterestingEvents,
       ],
       RA.reduce(initialState(), handleEvent),

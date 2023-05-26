@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { create } from '../../../../src/write-side/resources/group/create';
-import { constructEvent, groupJoined, ListCreatedEvent } from '../../../../src/domain-events';
+import { constructEvent, ListCreatedEvent } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
@@ -65,15 +65,15 @@ describe('create', () => {
         const name = arbitraryString();
         const result = pipe(
           [
-            groupJoined(
-              otherGroup.id,
+            constructEvent('GroupJoined')({
+              groupId: otherGroup.id,
               name,
-              otherGroup.avatarPath,
-              otherGroup.descriptionPath,
-              otherGroup.shortDescription,
-              otherGroup.homepage,
-              otherGroup.slug,
-            ),
+              avatarPath: otherGroup.avatarPath,
+              descriptionPath: otherGroup.descriptionPath,
+              shortDescription: otherGroup.shortDescription,
+              homepage: otherGroup.homepage,
+              slug: otherGroup.slug,
+            }),
           ],
           create({ ...addGroupCommand, name }),
         );
@@ -87,15 +87,15 @@ describe('create', () => {
         const name = arbitraryString();
         const result = pipe(
           [
-            groupJoined(
-              otherGroup.id,
-              otherGroup.name,
-              otherGroup.avatarPath,
-              otherGroup.descriptionPath,
-              otherGroup.shortDescription,
-              otherGroup.homepage,
-              otherGroup.slug,
-            ),
+            constructEvent('GroupJoined')({
+              groupId: otherGroup.id,
+              name: otherGroup.name,
+              avatarPath: otherGroup.avatarPath,
+              descriptionPath: otherGroup.descriptionPath,
+              shortDescription: otherGroup.shortDescription,
+              homepage: otherGroup.homepage,
+              slug: otherGroup.slug,
+            }),
             constructEvent('GroupDetailsUpdated')({
               groupId: otherGroup.id,
               name,
@@ -120,15 +120,15 @@ describe('create', () => {
         const slug = arbitraryWord();
         const result = pipe(
           [
-            groupJoined(
-              otherGroup.id,
-              otherGroup.name,
-              otherGroup.avatarPath,
-              otherGroup.descriptionPath,
-              otherGroup.shortDescription,
-              otherGroup.homepage,
+            constructEvent('GroupJoined')({
+              groupId: otherGroup.id,
+              name: otherGroup.name,
+              avatarPath: otherGroup.avatarPath,
+              descriptionPath: otherGroup.descriptionPath,
+              shortDescription: otherGroup.shortDescription,
+              homepage: otherGroup.homepage,
               slug,
-            ),
+            }),
           ],
           create({ ...addGroupCommand, slug }),
         );
@@ -148,15 +148,15 @@ describe('create', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        groupJoined(
+        constructEvent('GroupJoined')({
           groupId,
-          newGroup.name,
-          newGroup.avatarPath,
-          newGroup.descriptionPath,
-          newGroup.shortDescription,
-          newGroup.homepage,
-          newGroup.slug,
-        ),
+          name: newGroup.name,
+          avatarPath: newGroup.avatarPath,
+          descriptionPath: newGroup.descriptionPath,
+          shortDescription: newGroup.shortDescription,
+          homepage: newGroup.homepage,
+          slug: newGroup.slug,
+        }),
       ],
       create({ ...arbitraryGroup(), groupId }),
     );

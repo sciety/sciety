@@ -4,10 +4,7 @@ export {
 
 export { subjectAreaRecorded } from './subject-area-recorded-event';
 
-export {
-  GroupJoinedEvent,
-  groupJoined,
-} from './group-joined-event';
+export { GroupJoinedEvent } from './group-joined-event';
 
 // ts-unused-exports:disable-next-line
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';

@@ -2,9 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
-import { DescriptionPath, descriptionPathCodec } from '../types/description-path';
-import { generate } from '../types/event-id';
-import { GroupId } from '../types/group-id';
+import { descriptionPathCodec } from '../types/description-path';
 
 export const groupJoinedEventCodec = t.type({
   id: EventIdFromString,
@@ -20,25 +18,3 @@ export const groupJoinedEventCodec = t.type({
 });
 
 export type GroupJoinedEvent = t.TypeOf<typeof groupJoinedEventCodec>;
-
-export const groupJoined = (
-  groupId: GroupId,
-  name: string,
-  avatarPath: string,
-  descriptionPath: DescriptionPath,
-  shortDescription: string,
-  homepage: string,
-  slug: string,
-  date: Date = new Date(),
-): GroupJoinedEvent => ({
-  id: generate(),
-  type: 'GroupJoined',
-  date,
-  groupId,
-  name,
-  avatarPath,
-  descriptionPath,
-  shortDescription,
-  homepage,
-  slug,
-});
