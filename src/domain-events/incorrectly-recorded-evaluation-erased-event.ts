@@ -15,9 +15,6 @@ export const incorrectlyRecordedEvaluationErasedEventCodec = t.type({
 
 export type IncorrectlyRecordedEvaluationErasedEvent = t.TypeOf<typeof incorrectlyRecordedEvaluationErasedEventCodec>;
 
-export const isIncorrectlyRecordedEvaluationErasedEvent = (event: { type: string }):
-  event is IncorrectlyRecordedEvaluationErasedEvent => event.type === eventType;
-
 export const incorrectlyRecordedEvaluationErased = (
   evaluationLocator: EvaluationLocator,
   date: Date = new Date(),

@@ -5,8 +5,7 @@ import { pipe } from 'fp-ts/function';
 import {
   incorrectlyRecordedEvaluationErased,
   DomainEvent,
-  isEvaluationRecordedEvent,
-  EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
+  EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isEventOfType,
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -14,7 +13,7 @@ import { ResourceAction } from '../resource-action';
 type RelevantEvent = EvaluationRecordedEvent | IncorrectlyRecordedEvaluationErasedEvent;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isEvaluationRecordedEvent(event) || isIncorrectlyRecordedEvaluationErasedEvent(event)
+  isEventOfType('EvaluationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 );
 
 export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (events) => pipe(
@@ -22,7 +21,7 @@ export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (event
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
-  O.filter(isEvaluationRecordedEvent),
+  O.filter(isEventOfType('EvaluationRecorded')),
   O.match(
     () => [],
     () => [incorrectlyRecordedEvaluationErased(command.evaluationLocator)],

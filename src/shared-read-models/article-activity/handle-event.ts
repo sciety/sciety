@@ -2,11 +2,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
-import {
-  DomainEvent,
-  isEvaluationRecordedEvent, isEventOfType,
-  isIncorrectlyRecordedEvaluationErasedEvent,
-} from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { Doi } from '../../types/doi';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
@@ -49,7 +45,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     );
   }
 
-  if (isEvaluationRecordedEvent(event)) {
+  if (isEventOfType('EvaluationRecorded')(event)) {
     pipe(
       readmodel.get(event.articleId.value),
       O.fromNullable,
@@ -73,7 +69,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     );
   }
 
-  if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.forEach((articleState) => {
       const i = articleState.evaluationStates.findIndex(
         (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,

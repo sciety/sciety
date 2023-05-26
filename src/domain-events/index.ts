@@ -15,7 +15,6 @@ export {
 export { isEvaluationRecordedEvent, EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 
 export {
-  isIncorrectlyRecordedEvaluationErasedEvent,
   IncorrectlyRecordedEvaluationErasedEvent,
   incorrectlyRecordedEvaluationErased,
 } from './incorrectly-recorded-evaluation-erased-event';

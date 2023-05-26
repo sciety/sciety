@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, isEvaluationRecordedEvent, isIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type ReadModel = {
@@ -13,7 +13,7 @@ export const initialState = (): ReadModel => ({
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEvaluationRecordedEvent(event)) {
+  if (isEventOfType('EvaluationRecorded')(event)) {
     const recordedEvaluation: RecordedEvaluation = {
       articleId: event.articleId,
       reviewId: event.evaluationLocator,
@@ -29,7 +29,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
     readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
   }
-  if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.byArticleId.forEach((state) => {
       const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
       if (i > -1) {

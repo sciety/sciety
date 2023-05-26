@@ -1,8 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
-import {
-  DomainEvent, isEvaluationRecordedEvent, isGroupJoinedEvent, isIncorrectlyRecordedEvaluationErasedEvent,
-} from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
@@ -16,13 +14,13 @@ export type ReadModel = Map<GroupId, { evaluationStates: Array<EvaluationState>,
 export const initialState = (): ReadModel => (new Map());
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isGroupJoinedEvent(event)) {
+  if (isEventOfType('GroupJoined')(event)) {
     readmodel.set(event.groupId, {
       latestActivityAt: O.none,
       evaluationStates: [],
     });
   }
-  if (isEvaluationRecordedEvent(event)) {
+  if (isEventOfType('EvaluationRecorded')(event)) {
     const state = readmodel.get(event.groupId);
 
     if (state === undefined) {
@@ -30,7 +28,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
     state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
   }
-  if (isIncorrectlyRecordedEvaluationErasedEvent(event)) {
+  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.forEach((state) => {
       const i = state.evaluationStates.findIndex(
         (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
