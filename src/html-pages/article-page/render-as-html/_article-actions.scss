@@ -17,7 +17,7 @@
     @include breakpoints.two-column-display {
       @include layout.page-header-top-space();
       grid-column: 10 / 13;
-      grid-row: 2 / 3;
+      grid-row: 2 / 4;
     }
   }
 }
