@@ -22,7 +22,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   max-width: settings.$max-site-width;
   margin: 0 auto;
   margin-bottom: common.$section-vertical-separation;
-  background-color: settings.$colour-page-background;
+  background-color: settings.$colour-navigation-menu-background;
   display: flex;
   justify-content: center;
 
@@ -31,7 +31,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::before {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-page-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-navigation-menu-background;
       position: absolute;
       bottom: 0;
       left: calc(#{$_arbitrary-large-amount-of-px} * -1);
@@ -42,7 +42,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::after {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-page-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-navigation-menu-background;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -54,6 +54,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero {
+  color: settings.$colour-white;
   padding-bottom: functions.px-to-rem(48px);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
