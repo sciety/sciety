@@ -19,38 +19,10 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .home-page-hero-wrapper {
-  max-width: settings.$max-site-width;
-  margin: 0 auto;
   margin-bottom: common.$section-vertical-separation;
   background-color: settings.$colour-navigation-menu-background;
   display: flex;
   justify-content: center;
-
-  @media screen and (min-width: common.$home-page-breakpoint) {
-    position: relative;
-
-    &::before {
-      content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-navigation-menu-background;
-      position: absolute;
-      bottom: 0;
-      left: calc(#{$_arbitrary-large-amount-of-px} * -1);
-      top: 0;
-      right: 0;
-      z-index: -1;
-    }
-
-    &::after {
-      content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-navigation-menu-background;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      top: 0;
-      right: calc(#{$_arbitrary-large-amount-of-px} * -1);
-      z-index: -1;
-    }
-  }
 }
 
 .home-page-hero {
