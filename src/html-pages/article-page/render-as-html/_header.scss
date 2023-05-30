@@ -6,6 +6,7 @@
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: local-settings.$component-vertical-spacing;
+  grid-column: 1/-1;
 }
 
 .article-author-list {
