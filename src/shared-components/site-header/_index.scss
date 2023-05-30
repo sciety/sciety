@@ -11,19 +11,24 @@
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
 
+.site-header {
+  --colour-furniture: #{settings.$colour-furniture};
+  --colour-text-navigation-link: #{settings.$colour-text-navigation-link};
+}
+
 @mixin site-header-secondary-button-link() {
   @include typography.button();
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
+  border: settings.$border-width solid var(--colour-furniture);
   padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
   &:visited {
-    color: settings.$colour-text-navigation-link;
+    color: var(--colour-text-navigation-link);
 
     @include states.link() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-text-navigation-link;
+      background-color: var(--colour-furniture);
+      color: var(--colour-text-navigation-link);
     }
   }
 }
