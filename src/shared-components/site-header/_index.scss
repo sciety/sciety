@@ -33,12 +33,7 @@ $_white-box-width-not-narrow: 280px;
   grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
   background-color: settings.$colour-site-header-background-darker;
   width: 100%;
-
-  &:not(.site-header--menu) {
-    box-shadow: 0 8px 11px #cfd8dc6b;
-    height: functions.px-to-rem(settings.$site-header-height);
-    z-index: 1;
-  }
+  height: functions.px-to-rem(settings.$site-header-height);
 }
 
 .site-header__white_box_padding {
