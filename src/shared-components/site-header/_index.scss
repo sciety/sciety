@@ -11,7 +11,7 @@
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
 
-.site-header {
+:root {
   --colour-furniture: #{settings.$colour-furniture};
   --colour-text-navigation-link: #{settings.$colour-text-navigation-link};
 }
