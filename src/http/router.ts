@@ -81,6 +81,7 @@ import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
 import * as groupResource from '../write-side/resources/group';
 import * as evaluationResource from '../write-side/resources/evaluation';
+import { articlePageLayout } from '../shared-components/article-page-layout';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -214,7 +215,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       E.mapLeft(toNotFound),
       TE.fromEither,
       TE.chain(articlePage(adapters)),
-    )),
+    ), articlePageLayout),
   );
 
   router.get(
