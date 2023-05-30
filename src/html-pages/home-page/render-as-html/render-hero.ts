@@ -17,10 +17,10 @@ export const renderHero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero-wrapper">
     <div class="home-page-hero">
       <h1 class="home-page-hero__content_title">
-        The home of preprint evaluation
+        The home of preprint curation
       </h1>
       <p class="home-page-hero__content_byline">
-        Find preprints reviewed and recommended by trusted groups of researchers.
+        Find preprints recommended and reviewed by trusted groups of researchers.
       </p>
 
       <section class="home-page-hero__section">
