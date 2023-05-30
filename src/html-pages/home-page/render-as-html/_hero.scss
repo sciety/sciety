@@ -7,7 +7,9 @@
 @use 'common';
 @use 'hero-search-form';
 
-$_arbitrary-large-amount-of-px: 9000px;
+@mixin _enough-space-for-sciety-triangles() {
+  @media screen and (min-width: functions.px-to-em(1700px)) { @content; }
+}
 
 @mixin _vertical-spacing-in-hero() {
   margin-bottom: functions.px-to-rem(20px);
@@ -21,8 +23,35 @@ $_arbitrary-large-amount-of-px: 9000px;
 .home-page-hero-wrapper {
   margin-bottom: common.$section-vertical-separation;
   background-color: settings.$colour-navigation-menu-background;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+
+  &::before {
+    content: '';
+    display: block;
+    background-color: settings.$colour-navigation-menu-background;
+
+    @include _enough-space-for-sciety-triangles {
+      background-image: url('/static/images/home-page/sciety-pattern-left.svg');
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: contain;
+    }
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    background-color: settings.$colour-navigation-menu-background;
+
+    @include _enough-space-for-sciety-triangles {
+      background-image: url('/static/images/home-page/sciety-pattern-right.svg');
+      background-repeat: no-repeat;
+      background-position: 100% 0;
+      background-size: contain;
+    }
+  }
+
 }
 
 .home-page-hero {
@@ -32,6 +61,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-top: functions.px-to-rem(20px);
   max-width: fit-content;
+  justify-self: center;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     padding-top: functions.px-to-rem(193px);
