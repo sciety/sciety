@@ -1,7 +1,15 @@
 @use '../../../sass/card';
+@use '../../../sass/functions';
+@use '../../../sass/settings';
+@use '../../../sass/breakpoints';
 
 .article-abstract {
-  @include card.basics();
-
   margin-bottom: 3rem;
+  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+
+  @include breakpoints.not-narrow {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
