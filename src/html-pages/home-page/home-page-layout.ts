@@ -19,7 +19,7 @@ export const homePageLayout = (user: O.Option<UserDetails>) => (page: Page): str
 <body>
   ${googleTagManagerNoScript()}
   <div class="home-page-container">
-    ${siteHeader(user)}
+    ${siteHeader(user, 'dark')}
 
     <main id="mainContent">
       ${page.content}

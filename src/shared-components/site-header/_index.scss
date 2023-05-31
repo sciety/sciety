@@ -36,6 +36,12 @@ $_white-box-width-not-narrow: 280px;
   height: functions.px-to-rem(settings.$site-header-height);
 }
 
+.site-header--dark {
+  --colour-white: #{settings.$colour-dark-background};
+  --colour-text-primary: #{settings.$colour-white};
+  --colour-text-navigation-link: #{settings.$colour-white};
+}
+
 .site-header__white_box {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
