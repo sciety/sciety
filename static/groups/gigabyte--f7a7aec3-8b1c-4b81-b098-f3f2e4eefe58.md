@@ -1,6 +1,6 @@
-## Summary
+## Who we are
 
-GigaByte (ISSN:2709-4715) aims to promote the most rapid exchange of scientific information in a formal peer-reviewed publishing platform. Modern research is data-driven, iterative, and aims to be FAIR: Findable, Accessible, Interoperable and Reusable. It is also fast moving, with available data and computational tools changing constantly and swiftly evolving fields continuously being tested, updated and modified by the community. Given that, GigaByte is focused on publishing short, focused, data-driven articles using a publishing platform that will allow nearly immediate and continuous online publication on acceptance as well as an ability to update published articles. This drastically reduces writing and reviewing. With that, GigaByte provides scientists a venue to rapidly and easily share and build upon each other’s research outputs.
+[GigaByte](https://gigabytejournal.com/) is an open science journal published by GigaScience Press. It aims to promote the most rapid exchange of scientific information in a formal peer-reviewed publishing platform. It serves as a venue to rapidly and easily share and build upon research outputs such as data and software. The journal publishes short, focused, data-driven articles and mandates transparent review and use of preprints. Using a novel publishing platform that allows online publication in as little as one day.
 
 Follow us on twitter at [@GigaByteJournal](https://twitter.com/GigaByteJournal) and see more at [gigabytejournal.com](https://gigabytejournal.com).
 
@@ -8,7 +8,7 @@ Follow us on twitter at [@GigaByteJournal](https://twitter.com/GigaByteJournal) 
 
 [Facebook](https://www.facebook.com/GigaByteJournal)
 
-## Evaluation model
+## Our evaluation model
 
 Mandated [open, named peer review](https://gigabytejournal.com/reviewer-information) for all papers.
 
@@ -36,7 +36,7 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dd>Checked</dd>
 </dl>
 
-## People
+## Our team
 
 We have a team of in-house Editors who select peer reviewers, alongside an [Editorial Board](https://gigabytejournal.com/editorial-board) on hand to provide advice on difficult decisions and matters relating to thresholds.
 
