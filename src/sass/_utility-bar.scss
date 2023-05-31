@@ -105,6 +105,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar-user-profile__avatar {
   @include avatar.border();
+  background-color: settings.$colour-white;
   width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
   margin-right: functions.px-to-rem($_avatar-right-margin);
