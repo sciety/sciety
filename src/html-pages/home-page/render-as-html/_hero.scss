@@ -85,7 +85,7 @@
 
 .home-page-hero__content_byline {
   @include _vertical-spacing-in-hero();
-  @include typography.sizing(20px, 22px);
+  @include typography.sizing(20px, 26px);
   text-align: center;
 
   @include breakpoints.not-narrow() {
