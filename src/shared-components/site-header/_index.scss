@@ -121,5 +121,6 @@ $_white-box-width-not-narrow: 280px;
 
   @include breakpoints.site-header() {
     @include layout.visually-unhidden();
+    color: settings.$colour-text-navigation-link;
   }
 }
