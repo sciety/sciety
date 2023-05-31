@@ -13,7 +13,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
     <ul class="site-header__white_box_list">
       <li class="site-header__white_box_list_item--logo">
         <a href="/" class="site-header__logo_link">
-          <img src="/static/images/sciety-logo-navigation-link-colour-text.svg " alt="Sciety" class="site-header__logo">
+          <img src="/static/images/${scheme === 'dark' ? 'sciety-logo-white-text.svg' : 'sciety-logo-navigation-link-colour-text.svg'}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
       <li class="site-header__white_box_list_item--menu">
