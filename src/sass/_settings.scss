@@ -41,7 +41,10 @@ $navigation-link-border-distance: 4px;
 $navigation-link-border-width: 2px;
 
 :root {
+    --colour-accent: #{$colour-accent};
+    --colour-accent-hover: #{$colour-accent-hover};
     --colour-furniture: #{$colour-furniture};
+    --colour-text-primary: #{colour-text-primary};
     --colour-text-navigation-link: #{$colour-text-navigation-link};
     --colour-site-header-background-darker: #{$colour-site-header-background-darker};
     --colour-white: #{$colour-white};

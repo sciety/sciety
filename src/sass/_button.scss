@@ -12,28 +12,28 @@
 @mixin button-link {
   @include typography.button();
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
+  border: settings.$border-width solid var(--colour-accent);
   padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
   display: inline-block;
 
   &:link,
   &:visited {
-    background-color: settings.$colour-accent;
-    color: settings.$colour-white;
+    background-color: var(--colour-accent);
+    color: var(--colour-white);
 
     &:active,
     &:hover {
-      border-color: settings.$colour-accent-hover;
-      color: settings.$colour-white;
+      border-color: var(--colour-accent-hover);
+      color: var(--colour-white);
       text-decoration: none;
     }
 
     &:active {
-      background-color: settings.$colour-accent;
+      background-color: var(--colour-accent);
     }
 
     &:hover {
-      background-color: settings.$colour-accent-hover;
+      background-color: var(--colour-accent-hover);
     }
 
     &:focus {

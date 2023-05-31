@@ -66,11 +66,11 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-navigation-link;
+    color: var(--colour-text-navigation-link);
 
     @include states.link() {
-      color: settings.$colour-text-primary;
-      border-color: settings.$colour-text-primary;
+      color: var(--colour-text-primary);
+      border-color: var(--colour-text-primary);
     }
   }
 }
@@ -89,7 +89,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-primary;
+    color: var(--colour-text-primary);
 
     &:hover,
     &:active {
