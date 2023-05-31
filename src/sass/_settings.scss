@@ -39,3 +39,10 @@ $site-header-height: 62px;
 $site-header-click-target-separation: 22px;
 $navigation-link-border-distance: 4px;
 $navigation-link-border-width: 2px;
+
+:root {
+    --colour-furniture: #{$colour-furniture};
+    --colour-text-navigation-link: #{$colour-text-navigation-link};
+    --colour-site-header-background-darker: #{$colour-site-header-background-darker};
+    --colour-white: #{$colour-white};
+  }

@@ -11,13 +11,6 @@
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
 
-:root {
-  --colour-furniture: #{settings.$colour-furniture};
-  --colour-text-navigation-link: #{settings.$colour-text-navigation-link};
-  --colour-site-header-background-darker: #{settings.$colour-site-header-background-darker};
-  --colour-white: #{settings.$colour-white};
-}
-
 @mixin site-header-secondary-button-link() {
   @include typography.button();
   border-radius: settings.$border-radius;
