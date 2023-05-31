@@ -8,7 +8,7 @@ type ColourSchemes = 'light' | 'dark';
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
 <header class="site-header${scheme === 'dark' ? ' site-header--dark' : ' '}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
-  <div class="site-header__white_box_padding"></div>  
+  <div></div>  
   <nav class="site-header__white_box">
     <ul class="site-header__white_box_list">
       <li class="site-header__white_box_list_item--logo">
