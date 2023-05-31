@@ -72,15 +72,12 @@
 
 .home-page-hero__content_title {
   @include typography.sizing(32px, 38px);
-  font-weight: normal;
   margin-top: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(8px);
   text-align: center;
 
-
   @include breakpoints.not-narrow() {
     @include typography.sizing(54px, 62px);
-    font-weight: bold;
     margin-bottom: functions.px-to-rem(40px);
     margin-top: 0;
   }
