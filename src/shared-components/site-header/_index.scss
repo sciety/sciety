@@ -40,11 +40,13 @@ $_white-box-width-not-narrow: 280px;
   --colour-white: #{settings.$colour-dark-background};
   --colour-text-primary: #{settings.$colour-white};
   --colour-text-navigation-link: #{settings.$colour-white};
+  --colour-site-header-border: #{settings.$colour-dark-background};
 }
 
 .site-header__white_box {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  border-bottom: 1px solid var(--colour-site-header-border);
   @include breakpoints.site-header() {
     width: functions.px-to-rem($_white-box-width-not-narrow);
   }
@@ -79,6 +81,7 @@ $_white-box-width-not-narrow: 280px;
 .site-header__grey_box {
   padding-top: 1rem;
   flex-grow: 1;
+  border-bottom: 1px solid var(--colour-site-header-border);
 
   @supports (display: flex) {
     display: flex;
