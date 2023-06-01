@@ -7,6 +7,7 @@
 @use '../../sass/states';
 @use '../../sass/typography';
 @use '../../sass/list';
+@use '../../sass/schemed-header-colours';
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_white-box-width-not-narrow: 280px;
@@ -29,6 +30,7 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header {
+  @include schemed-header-colours.light();
   display: grid;
   grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
   background-color: var(--colour-site-header-background);
@@ -37,10 +39,7 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header--dark {
-  --colour-site-header-background: #{settings.$colour-dark-background};
-  --colour-text-primary: #{settings.$colour-white};
-  --colour-text-navigation-link: #{settings.$colour-white};
-  --colour-site-header-border: #{settings.$colour-dark-background};
+  @include schemed-header-colours.dark();
 }
 
 .site-header__white_box {
