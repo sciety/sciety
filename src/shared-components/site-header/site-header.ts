@@ -9,14 +9,14 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
 <header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <div></div>  
-  <nav class="site-header__white_box">
-    <ul class="site-header__white_box_list">
-      <li class="site-header__white_box_list_item--logo">
+  <nav class="site-header__left_links">
+    <ul class="site-header__left_links_list">
+      <li class="site-header__left_links_list_item--logo">
         <a href="/" class="site-header__logo_link">
           <img src="/static/images/${scheme === 'dark' ? 'sciety-logo-white-text.svg' : 'sciety-logo-navigation-link-colour-text.svg'}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
-      <li class="site-header__white_box_list_item--menu">
+      <li class="site-header__left_links_list_item--menu">
         <a href="/menu" class="site-header__menu_link">
           <img src="/static/images/${scheme === 'dark' ? 'menu-icon-white.svg' : 'menu-icon.svg'}" alt="" />
         </a>

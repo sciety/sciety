@@ -10,7 +10,7 @@
 @use '../../sass/schemed-header-colours';
 
 $_search-icon-size: functions.px-to-rem(24px);
-$_white-box-width-not-narrow: 280px;
+$_left-links-width-not-narrow: 280px;
 
 @mixin site-header-secondary-button-link() {
   @include typography.button();
@@ -32,7 +32,7 @@ $_white-box-width-not-narrow: 280px;
 .site-header {
   @include schemed-header-colours.light();
   display: grid;
-  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
+  grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_left-links-width-not-narrow)) 1fr;
   background-color: var(--colour-site-header-background);
   width: 100%;
   height: functions.px-to-rem(settings.$site-header-height);
@@ -42,16 +42,16 @@ $_white-box-width-not-narrow: 280px;
   @include schemed-header-colours.dark();
 }
 
-.site-header__white_box {
+.site-header__left_links {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   border-bottom: 1px solid var(--colour-site-header-border);
   @include breakpoints.site-header() {
-    width: functions.px-to-rem($_white-box-width-not-narrow);
+    width: functions.px-to-rem($_left-links-width-not-narrow);
   }
 }
 
-.site-header__white_box_list {
+.site-header__left_links_list {
   @include list.basics();
 
   display: flex;
@@ -59,7 +59,7 @@ $_white-box-width-not-narrow: 280px;
   height: 100%;
 }
 
-.site-header__white_box_list_item--logo {
+.site-header__left_links_list_item--logo {
   display: none;
 
   @include breakpoints.site-header() {
@@ -89,7 +89,7 @@ $_white-box-width-not-narrow: 280px;
   }
 }
 
-.site-header__white_box_list_item--menu {
+.site-header__left_links_list_item--menu {
   @include breakpoints.site-header() {
     display: none;
   }
