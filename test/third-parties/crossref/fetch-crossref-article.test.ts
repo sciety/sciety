@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, identity, pipe } from 'fp-ts/function';
+import { AxiosError } from 'axios';
 import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
@@ -24,24 +25,17 @@ describe('fetch-crossref-article', () => {
     );
   });
 
-  describe('the request fails', () => {
-    it.failing('returns an error result', async () => {
+  describe('the request fails with a timeout', () => {
+    it('returns an error result', async () => {
       const getXml = async (): Promise<never> => {
-        throw new Error('HTTP timeout');
+        throw new AxiosError('HTTP timeout');
       };
       const result = await pipe(
         doi,
         fetchCrossrefArticle(getXml, dummyLogger, O.none),
-        T.map(flow(
-          E.matchW(
-            identity,
-            shouldNotBeCalled,
-          ),
-          DE.isNotFound,
-        )),
       )();
 
-      expect(result).toBe(true);
+      expect(result).toStrictEqual(E.left(DE.unavailable));
     });
   });
 
