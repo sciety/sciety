@@ -24,7 +24,8 @@ $_left-links-width-not-narrow: 280px;
 
     @include states.link() {
       background-color: settings.$colour-furniture;
-      color: settings.$colour-dark-background;
+      color: settings.$colour-brand;
+      ;
     }
   }
 }
@@ -136,6 +137,6 @@ $_left-links-width-not-narrow: 280px;
 
   @include breakpoints.site-header() {
     @include layout.visually-unhidden();
-    color: settings.$colour-text-navigation-link;
+    color: settings.$colour-brand;
   }
 }

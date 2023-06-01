@@ -22,7 +22,7 @@
 
 .home-page-hero-wrapper {
   margin-bottom: common.$section-vertical-separation;
-  background-color: settings.$colour-dark-background;
+  background-color: settings.$colour-brand;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
 
@@ -30,7 +30,7 @@
   &::after {
     content: '';
     display: block;
-    background-color: settings.$colour-dark-background;
+    background-color: settings.$colour-brand;
 
     @include _enough-space-for-sciety-triangles {
       background-repeat: no-repeat;
