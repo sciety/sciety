@@ -42,9 +42,9 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
-const logAndTransformToDataError = (logger: Logger, doi: Doi) => (error: unknown) => {
+const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown) => {
   if (axios.isAxiosError(error)) {
-    const logPayload = { error, response: error.response?.data, doi: doi.value };
+    const logPayload = { error, response: error.response?.data };
     if (error.response?.status === 404) {
       logger('warn', 'Preprint not found on Semantic Scholar', logPayload);
       return DE.notFound;
@@ -52,15 +52,18 @@ const logAndTransformToDataError = (logger: Logger, doi: Doi) => (error: unknown
     logger('error', 'Request to Semantic Scholar failed', logPayload);
     return DE.unavailable;
   }
-  logger('error', 'Request to Semantic Scholar failed', { error, doi: doi.value });
+  logger('error', 'Request to Semantic Scholar failed', { error, url });
   return DE.unavailable;
 };
 
+const getJsonAndLog = (ports: Ports) => (url: string) => TE.tryCatch(
+  async () => ports.getJson(url),
+  logAndTransformToDataError(ports.logger, url),
+);
+
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
-  TE.tryCatch(
-    async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`),
-    logAndTransformToDataError(ports.logger, doi),
-  ),
+  `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
+  getJsonAndLog(ports),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
     E.mapLeft(formatValidationErrors),
