@@ -5,6 +5,17 @@ import { utilityBar } from '../utility-bar/utility-bar';
 
 type ColourSchemes = 'light' | 'dark';
 
+const schemedImages = {
+  light: {
+    scietyLogo: 'sciety-logo-navigation-link-colour-text.svg',
+    menuIcon: 'menu-icon.svg',
+  },
+  dark: {
+    scietyLogo: 'sciety-logo-white-text.svg',
+    menuIcon: 'menu-icon-white.svg',
+  },
+};
+
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
 <header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
@@ -12,12 +23,12 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
     <ul class="site-header__left_links_list">
       <li class="site-header__left_links_list_item--logo">
         <a href="/" class="site-header__logo_link">
-          <img src="/static/images/${scheme === 'dark' ? 'sciety-logo-white-text.svg' : 'sciety-logo-navigation-link-colour-text.svg'}" alt="Sciety" class="site-header__logo">
+          <img src="/static/images/${schemedImages[scheme].scietyLogo}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
       <li class="site-header__left_links_list_item--menu">
         <a href="/menu" class="site-header__menu_link">
-          <img src="/static/images/${scheme === 'dark' ? 'menu-icon-white.svg' : 'menu-icon.svg'}" alt="" />
+          <img src="/static/images/${schemedImages[scheme].menuIcon}" alt="" />
         </a>
       </li>
       <li>
