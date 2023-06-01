@@ -8,7 +8,6 @@ type ColourSchemes = 'light' | 'dark';
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
 <header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
-  <div></div>  
   <nav class="site-header__left_links">
     <ul class="site-header__left_links_list">
       <li class="site-header__left_links_list_item--logo">
@@ -31,5 +30,4 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
   <div class="site-header__right_links">
     ${utilityBar(user, scheme)}
   </div>
-  <div></div> 
 </header>`);

@@ -36,6 +36,12 @@ $_left-links-width-not-narrow: 280px;
   background-color: var(--colour-site-header-background);
   width: 100%;
   height: functions.px-to-rem(settings.$site-header-height);
+
+  &::before,
+  &::after {
+    content: '';
+    display: block
+  }
 }
 
 .site-header--dark {
