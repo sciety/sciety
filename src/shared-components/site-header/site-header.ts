@@ -18,7 +18,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
       </li>
       <li class="site-header__white_box_list_item--menu">
         <a href="/menu" class="site-header__menu_link">
-          <img src="/static/images/menu-icon.svg" alt="" />
+          <img src="/static/images/${scheme === 'dark' ? 'menu-icon-white.svg' : 'menu-icon.svg'}" alt="" />
         </a>
       </li>
       <li>
