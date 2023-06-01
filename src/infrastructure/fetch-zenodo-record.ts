@@ -8,7 +8,8 @@ import * as t from 'io-ts';
 import * as DE from '../types/data-error';
 import { htmlFragmentCodec } from '../types/html-fragment';
 import { Evaluation } from '../types/evaluation';
-import { GetJson } from '../shared-ports';
+import { GetJson, Logger } from '../shared-ports';
+import { getJsonAndLog } from '../third-parties/get-json-and-log';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
@@ -24,11 +25,11 @@ const zenodoRecordCodec = t.type({
   }),
 });
 
-type FetchZenodoRecord = (getJson: GetJson, logger: unknown)
+type FetchZenodoRecord = (getJson: GetJson, logger: Logger)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
 
-export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
+export const fetchZenodoRecord: FetchZenodoRecord = (getJson, logger) => (key) => pipe(
   key,
   E.fromPredicate(
     isDoiFromZenodo,
@@ -36,9 +37,9 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson) => (key) => pipe(
   ),
   E.chainOptionK(() => DE.unavailable)(parseZenodoId),
   TE.fromEither,
-  TE.chain((zenodoId) => TE.tryCatch(
-    async () => getJson(`https://zenodo.org/api/records/${zenodoId}`),
-    () => DE.unavailable,
+  TE.chain((zenodoId) => pipe(
+    `https://zenodo.org/api/records/${zenodoId}`,
+    getJsonAndLog({ getJson, logger }),
   )),
   TE.chainEitherKW(zenodoRecordCodec.decode),
   TE.bimap(
