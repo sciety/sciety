@@ -1,6 +1,7 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import axios from 'axios';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
@@ -31,8 +32,8 @@ export const fetchCrossrefArticle = (
     //   transform to our own Domain Model for an Article
     // )
     let response: string;
+    const url = `https://api.crossref.org/works/${doi.value}/transform`;
     try {
-      const url = `https://api.crossref.org/works/${doi.value}/transform`;
       const headers: Record<string, string> = {
         Accept: 'application/vnd.crossref.unixref+xml',
         'User-Agent': 'Sciety (https://sciety.org; mailto:team@sciety.org)',
@@ -45,19 +46,18 @@ export const fetchCrossrefArticle = (
         throw new Error('Empty response from Crossref');
       }
     } catch (error: unknown) {
-      const payload = {
-        doi: doi.value,
-        message: '',
-      };
-      let errorType: DE.DataError = DE.notFound;
-      if (error instanceof Error) {
-        payload.message = error.message;
-        if (error.message === 'Empty response from Crossref') {
-          errorType = DE.unavailable;
+      if (axios.isAxiosError(error)) {
+        const logPayload = { error, response: error.response?.data };
+        if (error.response?.status === 404) {
+          logger('warn', 'Third party data not found', logPayload);
+          return E.left(DE.notFound);
         }
+        logger('error', 'Request to third party failed', logPayload);
+        return E.left(DE.unavailable);
       }
-      logger('error', 'Failed to fetch article from Crossref', payload);
-      return E.left(errorType);
+
+      logger('error', 'Request to third party failed', { error, url });
+      return E.left(DE.unavailable);
     }
 
     let abstract: SanitisedHtmlFragment;
