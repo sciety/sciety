@@ -31,13 +31,13 @@ $_white-box-width-not-narrow: 280px;
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_white-box-width-not-narrow)) 1fr;
-  background-color: var(--colour-white);
+  background-color: var(--colour-site-header-background);
   width: 100%;
   height: functions.px-to-rem(settings.$site-header-height);
 }
 
 .site-header--dark {
-  --colour-white: #{settings.$colour-dark-background};
+  --colour-site-header-background: var(--colour-dark-background);
   --colour-text-primary: #{settings.$colour-white};
   --colour-text-navigation-link: #{settings.$colour-white};
   --colour-site-header-border: #{settings.$colour-dark-background};
