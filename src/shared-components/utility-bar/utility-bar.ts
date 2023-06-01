@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserDetails } from '../types/user-details';
-import { UserHandle } from '../types/user-handle';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { UserDetails } from '../../types/user-details';
+import { UserHandle } from '../../types/user-handle';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">

@@ -1,13 +1,13 @@
-@use 'functions';
-@use 'list';
-@use 'button';
-@use 'settings';
-@use 'states';
-@use 'typography';
-@use 'layout';
-@use 'breakpoints';
-@use 'avatar';
-@use '../shared-components/site-header';
+@use '../../sass/functions';
+@use '../../sass/list';
+@use '../../sass/button';
+@use '../../sass/settings';
+@use '../../sass/states';
+@use '../../sass/typography';
+@use '../../sass/layout';
+@use '../../sass/breakpoints';
+@use '../../sass/avatar';
+@use '../site-header';
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;

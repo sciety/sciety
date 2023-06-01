@@ -4,7 +4,7 @@ import { constant, pipe } from 'fp-ts/function';
 import { siteMenuItems } from './site-menu';
 import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
-import { utilityBar } from '../../shared-components/utility-bar';
+import { utilityBar } from '../../shared-components/utility-bar/utility-bar';
 import { Page } from '../../types/page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
