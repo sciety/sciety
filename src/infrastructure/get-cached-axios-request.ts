@@ -14,7 +14,12 @@ const createGetData = (
   logger: Logger,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
-  const response = await cachedAxios.get<U>(url, { headers });
+  const response = await cachedAxios.get<U>(url, {
+    headers: {
+      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+      ...headers,
+    },
+  });
   if (response.cached) {
     logger('debug', 'Axios cache hit', {
       url,

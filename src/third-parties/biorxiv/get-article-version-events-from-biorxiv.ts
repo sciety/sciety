@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -10,8 +9,7 @@ import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-
-type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
+import { GetJson } from '../../shared-ports';
 
 type Dependencies = {
   getJson: GetJson,

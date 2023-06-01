@@ -36,7 +36,6 @@ export const fetchCrossrefArticle = (
     try {
       const headers: Record<string, string> = {
         Accept: 'application/vnd.crossref.unixref+xml',
-        'User-Agent': 'Sciety (https://sciety.org; mailto:team@sciety.org)',
       };
       if (O.isSome(crossrefApiBearerToken)) {
         headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;

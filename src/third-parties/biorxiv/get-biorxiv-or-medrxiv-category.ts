@@ -1,4 +1,3 @@
-import { Json } from 'fp-ts/Json';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -9,10 +8,8 @@ import * as N from 'fp-ts/number';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
-import { GetArticleSubjectArea } from '../../shared-ports';
+import { GetArticleSubjectArea, GetJson } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-
-type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
 
 type Ports = {
   getJson: GetJson,

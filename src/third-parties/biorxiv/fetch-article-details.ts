@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
@@ -7,16 +6,11 @@ import { biorxivArticleDetails, BiorxivArticleDetails } from './BiorxivArticleDe
 import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-
-type GetJson = (url: string, headers: Record<string, string>) => Promise<Json>;
+import { GetJson } from '../../shared-ports';
 
 type Dependencies = {
   getJson: GetJson,
   logger: Logger,
-};
-
-const headers = {
-  'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
 };
 
 const constructUrl = (doi: Doi, server: ArticleServer) => (
@@ -29,10 +23,7 @@ type FetchArticleDetails = (doi: Doi, server: ArticleServer)
 
 export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
   TE.tryCatch(
-    async () => getJson(
-      constructUrl(doi, server),
-      headers,
-    ),
+    async () => getJson(constructUrl(doi, server)),
     E.toError,
   ),
   TE.chainEitherK(flow(
