@@ -92,8 +92,10 @@ const loggedInMenuItems = (user: UserDetails) => `
   ${logOutMenuItem()}
 `;
 
-export const utilityBar = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`
-  <nav class="utility-bar" aria-describedby="application-utilities">
+type ColourSchemes = 'light' | 'dark';
+
+export const utilityBar = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
+  <nav class="utility-bar${scheme === 'dark' ? ' utility-bar--dark' : ''}" aria-describedby="application-utilities">
     <div id="application-utilities" class="hidden">Sciety application utilities</div>
     <ul class="utility-bar__list" role="list">
       ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}

@@ -6,7 +6,7 @@ import { utilityBar } from '../utility-bar/utility-bar';
 type ColourSchemes = 'light' | 'dark';
 
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
-<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ' '}">
+<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <div></div>  
   <nav class="site-header__white_box">
@@ -29,7 +29,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
     </ul>
   </nav>
   <div class="site-header__grey_box">
-    ${utilityBar(user)}
+    ${utilityBar(user, scheme)}
   </div>
   <div></div> 
 </header>`);
