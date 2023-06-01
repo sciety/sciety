@@ -14,7 +14,7 @@ $_white-box-width-not-narrow: 280px;
 @mixin site-header-secondary-button-link() {
   @include typography.button();
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid var(--colour-furniture);
+  border: settings.$border-width solid settings.$colour-furniture;
   padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
@@ -22,7 +22,7 @@ $_white-box-width-not-narrow: 280px;
     color: var(--colour-text-navigation-link);
 
     @include states.link() {
-      background-color: var(--colour-furniture);
+      background-color: settings.$colour-furniture;
       color: var(--colour-text-navigation-link);
     }
   }
@@ -37,7 +37,7 @@ $_white-box-width-not-narrow: 280px;
 }
 
 .site-header--dark {
-  --colour-site-header-background: var(--colour-dark-background);
+  --colour-site-header-background: #{settings.$colour-dark-background};
   --colour-text-primary: #{settings.$colour-white};
   --colour-text-navigation-link: #{settings.$colour-white};
   --colour-site-header-border: #{settings.$colour-dark-background};

@@ -42,15 +42,8 @@ $navigation-link-border-width: 2px;
 
 .site-header,
 .menu-page-header {
-    --colour-accent: #{$colour-accent};
-    --colour-accent-hover: #{$colour-accent-hover};
-    --colour-furniture: #{$colour-furniture};
+    --colour-site-header-background: #{$colour-white};
     --colour-text-primary: #{colour-text-primary};
     --colour-text-navigation-link: #{$colour-text-navigation-link};
-    --colour-site-header-background-darker: #{$colour-site-header-background-darker};
-    --colour-white: #{$colour-white};
     --colour-site-header-border: #{$colour-furniture};
-    --colour-dark-background: #{$colour-dark-background};
-
-    --colour-site-header-background: var(--colour-white);
   }
