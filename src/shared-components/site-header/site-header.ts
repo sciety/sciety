@@ -28,7 +28,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
       </li>
     </ul>
   </nav>
-  <div class="site-header__grey_box">
+  <div class="site-header__right_links">
     ${utilityBar(user, scheme)}
   </div>
   <div></div> 
