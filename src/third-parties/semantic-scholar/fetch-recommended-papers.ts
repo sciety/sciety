@@ -43,9 +43,14 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 const logAndTransformToDataError = (logger: Logger, doi: Doi) => (error: unknown) => {
-  if (axios.isAxiosError(error) && error.response?.status === 404) {
-    logger('warn', 'Preprint not found on Semantic Scholar', { error, doi: doi.value });
-    return DE.notFound;
+  if (axios.isAxiosError(error)) {
+    const logPayload = { error, response: error.response?.data, doi: doi.value };
+    if (error.response?.status === 404) {
+      logger('warn', 'Preprint not found on Semantic Scholar', logPayload);
+      return DE.notFound;
+    }
+    logger('error', 'Request to Semantic Scholar failed', logPayload);
+    return DE.unavailable;
   }
   logger('error', 'Request to Semantic Scholar failed', { error, doi: doi.value });
   return DE.unavailable;
