@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import axios from 'axios';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
@@ -41,17 +42,19 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
+const logAndTransformToDataError = (logger: Logger, doi: Doi) => (error: unknown) => {
+  if (axios.isAxiosError(error) && error.response?.status === 404) {
+    logger('warn', 'Preprint not found on Semantic Scholar', { error, doi: doi.value });
+    return DE.notFound;
+  }
+  logger('error', 'Request to Semantic Scholar failed', { error, doi: doi.value });
+  return DE.unavailable;
+};
+
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
-  TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
-  TE.mapLeft(
-    (errors) => {
-      const level = errors === 'AxiosError: Request failed with status code 404' ? 'warn' : 'error';
-      ports.logger(level, 'Request to Semantic Scholar failed', {
-        errors,
-        doi: doi.value,
-      });
-      return DE.unavailable;
-    },
+  TE.tryCatch(
+    async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`),
+    logAndTransformToDataError(ports.logger, doi),
   ),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
