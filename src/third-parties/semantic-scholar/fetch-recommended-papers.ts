@@ -45,7 +45,7 @@ export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (d
   TE.tryCatch(async () => ports.getJson(`https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`), String),
   TE.mapLeft(
     (errors) => {
-      const level = errors === 'Error: Request failed with status code 404' ? 'warn' : 'error';
+      const level = errors === 'AxiosError: Request failed with status code 404' ? 'warn' : 'error';
       ports.logger(level, 'Request to Semantic Scholar failed', {
         errors,
         doi: doi.value,
