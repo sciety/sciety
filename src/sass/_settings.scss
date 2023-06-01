@@ -40,7 +40,8 @@ $site-header-click-target-separation: 22px;
 $navigation-link-border-distance: 4px;
 $navigation-link-border-width: 2px;
 
-:root {
+.site-header,
+.menu-page-header {
     --colour-accent: #{$colour-accent};
     --colour-accent-hover: #{$colour-accent-hover};
     --colour-furniture: #{$colour-furniture};
