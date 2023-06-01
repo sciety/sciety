@@ -7,6 +7,7 @@ import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { GetJson } from '../../shared-ports';
+import { getJsonAndLog } from '../get-json-and-log';
 
 type Dependencies = {
   getJson: GetJson,
@@ -22,21 +23,14 @@ type FetchArticleDetails = (doi: Doi, server: ArticleServer)
 => TE.TaskEither<void, BiorxivArticleDetails>;
 
 export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
-  TE.tryCatch(
-    async () => getJson(constructUrl(doi, server)),
-    E.toError,
-  ),
-  TE.chainEitherK(flow(
+  constructUrl(doi, server),
+  getJsonAndLog({ getJson, logger }),
+  TE.chainEitherKW(flow(
     biorxivArticleDetails.decode,
-    E.mapLeft(flow(formatValidationErrors, (errors) => errors.join('\n'), Error)),
+    E.mapLeft((errors) => logger('error', 'Failed to parse biorxiv response', {
+      errors: formatValidationErrors(errors).join('\n'),
+      url: constructUrl(doi, server),
+    })),
   )),
-  TE.mapLeft(
-    (error) => {
-      logger('debug', 'Failed to retrieve article details from bioRxiv API', {
-        url: constructUrl(doi, server),
-        error: error.message,
-      });
-      return undefined;
-    },
-  ),
+  TE.mapLeft(() => undefined),
 );
