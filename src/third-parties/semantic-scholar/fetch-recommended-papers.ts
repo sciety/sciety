@@ -46,13 +46,13 @@ const logAndTransformToDataError = (logger: Logger, url: string) => (error: unkn
   if (axios.isAxiosError(error)) {
     const logPayload = { error, response: error.response?.data };
     if (error.response?.status === 404) {
-      logger('warn', 'Preprint not found on Semantic Scholar', logPayload);
+      logger('warn', 'Third party data not found', logPayload);
       return DE.notFound;
     }
-    logger('error', 'Request to Semantic Scholar failed', logPayload);
+    logger('error', 'Request to third party failed', logPayload);
     return DE.unavailable;
   }
-  logger('error', 'Request to Semantic Scholar failed', { error, url });
+  logger('error', 'Request to third party failed', { error, url });
   return DE.unavailable;
 };
 
