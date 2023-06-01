@@ -5,7 +5,6 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import axios from 'axios';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
@@ -13,6 +12,7 @@ import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
+import { getJsonAndLog } from '../get-json-and-log';
 
 // ts-unused-exports:disable-next-line
 export type Ports = {
@@ -41,25 +41,6 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 });
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
-
-const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown) => {
-  if (axios.isAxiosError(error)) {
-    const logPayload = { error, response: error.response?.data };
-    if (error.response?.status === 404) {
-      logger('warn', 'Third party data not found', logPayload);
-      return DE.notFound;
-    }
-    logger('error', 'Request to third party failed', logPayload);
-    return DE.unavailable;
-  }
-  logger('error', 'Request to third party failed', { error, url });
-  return DE.unavailable;
-};
-
-const getJsonAndLog = (ports: Ports) => (url: string) => TE.tryCatch(
-  async () => ports.getJson(url),
-  logAndTransformToDataError(ports.logger, url),
-);
 
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,

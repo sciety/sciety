@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -15,21 +14,9 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Evaluation } from '../types/evaluation';
 import { GetJson } from '../shared-ports';
+import { getJsonAndLog } from '../third-parties/get-json-and-log';
 
 const converter = new Remarkable({ html: true }).use(linkify);
-
-const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown) => {
-  if (axios.isAxiosError(error) && error.response?.status === 404) {
-    logger('warn', 'Missing hypothesis annotation', { error });
-    return DE.notFound;
-  }
-  if (axios.isAxiosError(error)) {
-    logger('error', 'Failed to fetch hypothesis evaluation', { error });
-  } else {
-    logger('error', 'Failed to fetch hypothesis evaluation', { url, error });
-  }
-  return DE.unavailable;
-};
 
 // ts-unused-exports:disable-next-line
 export const insertSelectedText = (response: HypothesisAnnotation): string => pipe(
@@ -63,10 +50,8 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
   const url = `https://api.hypothes.is/api/annotations/${key}`;
   logger('debug', 'Fetching evaluation from Hypothesis', { url });
   return pipe(
-    TE.tryCatch(
-      async () => getJson(url),
-      logAndTransformToDataError(logger, url),
-    ),
+    url,
+    getJsonAndLog({ getJson, logger }),
     TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
       E.mapLeft(formatValidationErrors),
