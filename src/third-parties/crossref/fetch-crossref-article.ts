@@ -1,7 +1,6 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import axios from 'axios';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
@@ -10,6 +9,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { logAndTransformToDataError } from '../get-json-and-log';
 
 type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
@@ -46,18 +46,7 @@ export const fetchCrossrefArticle = (
         throw new Error('Empty response from Crossref');
       }
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const logPayload = { error, response: error.response?.data };
-        if (error.response?.status === 404) {
-          logger('warn', 'Third party data not found', logPayload);
-          return E.left(DE.notFound);
-        }
-        logger('error', 'Request to third party failed', logPayload);
-        return E.left(DE.unavailable);
-      }
-
-      logger('error', 'Request to third party failed', { error, url });
-      return E.left(DE.unavailable);
+      return E.left(logAndTransformToDataError(logger, url)(error));
     }
 
     let abstract: SanitisedHtmlFragment;

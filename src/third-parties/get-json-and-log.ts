@@ -10,7 +10,7 @@ export type Ports = {
   logger: Logger,
 };
 
-const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown) => {
+export const logAndTransformToDataError = (logger: Logger, url: string) => (error: unknown): DE.DataError => {
   if (axios.isAxiosError(error)) {
     const logPayload = { error, response: error.response?.data };
     if (error.response?.status === 404) {
