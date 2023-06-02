@@ -34,7 +34,7 @@ const mapResponse = (doi: Doi, server: ArticleServerWithVersionInformation) => f
 export const getArticleVersionEventsFromBiorxiv = (
   deps: Dependencies,
 ): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
-  fetchArticleDetails(doi, server)(deps),
+  fetchArticleDetails(deps, doi, server),
   TE.map(mapResponse(doi, server)),
   T.map(O.fromEither),
 );

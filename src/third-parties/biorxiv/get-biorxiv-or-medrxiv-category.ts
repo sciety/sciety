@@ -40,7 +40,7 @@ export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea
     ]),
   ),
   T.of,
-  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(articleId, server)(ports))),
+  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(ports, articleId, server))),
   TE.map(RA.rights),
   TE.chainOptionK(() => DE.unavailable)(RA.head),
   TE.map(mapResponse),

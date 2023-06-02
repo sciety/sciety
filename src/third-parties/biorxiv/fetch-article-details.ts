@@ -18,11 +18,10 @@ const constructUrl = (doi: Doi, server: ArticleServerWithVersionInformation) => 
   `https://api.biorxiv.org/details/${server}/${doi.value}`
 );
 
-type FetchArticleDetails = (doi: Doi, server: ArticleServerWithVersionInformation)
-=> ({ getJson, logger }: Dependencies)
+type FetchArticleDetails = ({ getJson, logger }: Dependencies, doi: Doi, server: ArticleServerWithVersionInformation)
 => TE.TaskEither<void, BiorxivArticleDetails>;
 
-export const fetchArticleDetails: FetchArticleDetails = (doi, server) => ({ getJson, logger }) => pipe(
+export const fetchArticleDetails: FetchArticleDetails = ({ getJson, logger }, doi, server) => pipe(
   constructUrl(doi, server),
   getJsonAndLog({ getJson, logger }),
   TE.chainEitherKW(flow(
