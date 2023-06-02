@@ -13,11 +13,9 @@
   @include layout.page-content-horizontal-margins();
   margin-bottom: local-settings.$component-vertical-spacing;
 
-  @supports (display: grid) {
-    @include breakpoints.two-column-display {
-      grid-column: 10 / 13;
-      grid-row: 2 / 4;
-    }
+  @include breakpoints.two-column-display {
+    grid-column: 10 / 13;
+    grid-row: 2 / 4;
   }
 }
 

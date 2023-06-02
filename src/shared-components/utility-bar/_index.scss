@@ -22,10 +22,6 @@ $_avatar-height-coupled-to-buttons: 34px;
   margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
   flex-grow: 1;
   align-self: center;
-  float: right;
-  @supports (display: flex) {
-    float: none;
-  }
 }
 
 .utility-bar--dark {

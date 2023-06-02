@@ -8,10 +8,6 @@
 }
 
 .page-content {
+  display: flex;
   padding-bottom: 3rem;
-  display: block;
-
-  @supports (display: flex) {
-    display: flex;
-  }
 }

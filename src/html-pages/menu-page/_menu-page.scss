@@ -9,13 +9,11 @@
 $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page-container {
-  flex-grow: 1;
-  height: 100vh;
-  @supports(display: grid) {
-    display: grid;
-  }
+  display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: settings.$site-header-height auto;
+  flex-grow: 1;
+  height: 100vh;
 }
 
 .menu-page__close_nav {
@@ -23,34 +21,26 @@ $_menu-page-upper-inline-spacing: 26px;
 }
 
 .menu-page-header {
-  display: none;
-  @supports(display: grid) {
-    display: flex;
-  }
+  display: flex;
   order: 2;
   align-self: center;
 }
 
 .menu-page-main-content {
-  @supports (display: flex) {
-    display: flex;
-    justify-content: center;
-  }
-
+  display: flex;
+  justify-content: center;
   order: 3;
   grid-column: 1 / -1;
   margin-bottom: 0; // TODO remove when global <main> has no margin-bottom
 }
 
 .navigation-menu {
-  color: settings.$colour-white;
-  background-color: settings.$colour-brand;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding-top: 1rem;
-  @supports(display: flex) {
-    display: flex;
-  }
-  flex-direction: column;
+  color: settings.$colour-white;
+  background-color: settings.$colour-brand;
 }
 
 .navigation-menu__title {
@@ -60,14 +50,12 @@ $_menu-page-upper-inline-spacing: 26px;
 }
 
 .menu-page__close_nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   align-self: center;
   margin-left: functions.px-to-rem(settings.$sciety-default-gutter);
   margin-right: functions.px-to-rem(settings.$site-header-click-target-separation);
-  @supports(display: flex) {
-    display: flex;
-  }
-  align-items: center;
-  justify-content: center;
 
   &::before {
     @include layout.visually-hidden();

@@ -8,7 +8,6 @@
 
 $_inline-spacing: 16px;
 $_link-max-width: 300px;
-$_link-text-font-size: 14px;
 $_link-min-height: 2.5rem;
 $_link-inline-offset-to-align-with-header: 10px;
 
@@ -20,10 +19,7 @@ $_link-inline-offset-to-align-with-header: 10px;
 
 .site-menu__link {
   @include typography.button();
-  display: block;
-  @supports (display: flex) {
-    display: flex;
-  }
+  display: flex;
   align-items: center;
   min-height: $_link-min-height;
   max-width: functions.px-to-rem($_link-max-width);
@@ -45,8 +41,5 @@ $_link-inline-offset-to-align-with-header: 10px;
 
 .site-menu__link_text {
   display: inline-block;
-  padding-top: math.div($_link-min-height - functions.px-to-rem($_link-text-font-size), 2);
-  @supports (display: flex) {
-    padding-top: 0;
-  }
+  padding-top: 0;
 }

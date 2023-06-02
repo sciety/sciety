@@ -46,20 +46,18 @@
   }
 }
 
-@supports (display: grid) {
-  .sciety-grid-two-columns {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-column-gap: functions.px-to-rem(settings.$sciety-default-gutter);
-    grid-auto-rows: min-content;
-    grid-auto-flow: column;
+.sciety-grid-two-columns {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-column-gap: functions.px-to-rem(settings.$sciety-default-gutter);
+  grid-auto-rows: min-content;
+  grid-auto-flow: column;
 
-    > * {
-      grid-column: 1 / -1;
+  > * {
+    grid-column: 1 / -1;
 
-      @include breakpoints.two-column-display {
-        grid-column: 1 / 9;
-      }
+    @include breakpoints.two-column-display {
+      grid-column: 1 / 9;
     }
   }
 }
