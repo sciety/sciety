@@ -8,6 +8,7 @@ import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
+import { Doi } from '../../../src/types/doi';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
@@ -174,6 +175,28 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     it('returns a left', () => {
       expect(E.isLeft(result)).toBe(true);
+    });
+  });
+
+  describe('when the article doi has a prefix that is not supported', () => {
+    const researchSquareArticleDoi = new Doi('10.21203/rs.3.rs-2197876/v1');
+    const logger = jest.fn(dummyLogger);
+    const ports = {
+      getJson: shouldNotBeCalled,
+      logger,
+    };
+    let result: E.Either<DE.DataError, SubjectArea>;
+
+    beforeEach(async () => {
+      result = await getBiorxivOrMedrxivCategory(ports)(researchSquareArticleDoi)();
+    });
+
+    it('returns a left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
+
+    it.failing('no error logs are produced', () => {
+      expect(logger).toHaveBeenCalledTimes(0);
     });
   });
 });
