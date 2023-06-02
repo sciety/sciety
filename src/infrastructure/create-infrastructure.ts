@@ -70,6 +70,16 @@ const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri
   return response.data;
 };
 
+const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: Doi, server: ArticleServer) => {
+  if (server === 'biorxiv' || server === 'medrxiv') {
+    return getArticleVersionEventsFromBiorxiv({
+      getJson: getCachedAxiosRequest(logger),
+      logger,
+    })(doi, server);
+  }
+  return TO.none;
+};
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
@@ -131,16 +141,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
-      const findVersionsForArticleDoiFromSupportedServers = (doi: Doi, server: ArticleServer) => {
-        if (server === 'biorxiv' || server === 'medrxiv') {
-          return getArticleVersionEventsFromBiorxiv({
-            getJson: getCachedAxiosRequest(logger),
-            logger,
-          })(doi, server);
-        }
-        return TO.none;
-      };
-
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
@@ -153,7 +153,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers,
+        findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
