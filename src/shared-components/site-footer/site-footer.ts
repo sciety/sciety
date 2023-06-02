@@ -4,7 +4,7 @@ export const siteFooter: HtmlFragment = toHtmlFragment(`
   <footer>
     <div class="pre-footer">
       <div class="pre-footer__slogan">Stay updated. Get involved.</div>
-      <a href="/subscribe-to-mailing-list" class="pre-footer__call_to_action">Subscribe to Mailing List</a>
+      <a href="/subscribe-to-mailing-list" class="pre-footer__call_to_action">Subscribe to our newsletter</a>
     </div>
     <div class="main-footer">
       <ul class="main-footer__navigation">

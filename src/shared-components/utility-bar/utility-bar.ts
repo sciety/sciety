@@ -61,15 +61,15 @@ const myUsernameMenuItem = (handle: UserHandle, avatarUrl: string) => `
   </li>
 `;
 
-const scietyFeedMenuItem = () => `
+const newsletterMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/sciety-feed" class="utility-bar__list_nav_link">Sciety Feed</a>
+    <a href="/subscribe-to-mailing-list" class="utility-bar__list_nav_link">Newsletter</a>
   </li>
 `;
 
 const aboutScietyMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/about" class="utility-bar__list_nav_link">About Sciety</a>
+    <a href="/about" class="utility-bar__list_nav_link">About</a>
   </li>
 `;
 
@@ -77,7 +77,7 @@ const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
   ${listsMenuItem()}
-  ${scietyFeedMenuItem()}
+  ${newsletterMenuItem()}
   ${aboutScietyMenuItem()}
   ${logInMenuItem()}
   ${signUpMenuItem()}
