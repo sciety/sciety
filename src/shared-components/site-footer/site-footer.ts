@@ -9,11 +9,14 @@ export const siteFooter: HtmlFragment = toHtmlFragment(`
     <div class="main-footer">
       <ul class="main-footer__navigation">
         <li class="main-footer__navigation_item">
+          <a href="/sciety-feed" class="main-footer__link">Feed</a>
+        </li>
+        <li class="main-footer__navigation_item">
           <a href="/blog" class="main-footer__link">Blog</a>
         </li>
         <li class="main-footer__navigation_item">
           <a href="/about" class="main-footer__link">About Sciety</a>
-        </li>   
+        </li>
         <li class="main-footer__navigation_item">
           <a href="/contact-us" class="main-footer__link">Contact</a>
         </li>
@@ -22,7 +25,7 @@ export const siteFooter: HtmlFragment = toHtmlFragment(`
         </li>
         <li class="main-footer__navigation_item">
           <a href="https://www.facebook.com/ScietyHQ/"><img src="/static/images/facebook-white.svg" alt="Follow us on Facebook"/></a>
-        </li>  
+        </li>
       </ul>
       <small class="main-footer__small_print">
         © 2022 eLife Sciences Publications Ltd.
