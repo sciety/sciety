@@ -20,24 +20,26 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
   ),
 );
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
-  <header class="page-header page-header--article">
-    <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
-    ${renderAuthors(viewmodel.authors)}
-  </header>
-  <section class="article-actions">
-    <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
-    ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
-    <div class="list-management">
-      ${renderListedIn(viewmodel.listedIn)}
-      ${renderSaveArticle(viewmodel)}
-    </div>
-  </section>
-  <section>
-    <section role="doc-abstract" class="article-abstract">
-      <h2>Abstract</h2>
-      <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
+  <div class="sciety-grid-two-columns">
+    <header class="page-header page-header--article">
+      <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
+      ${renderAuthors(viewmodel.authors)}
+    </header>
+    <section class="article-actions">
+      <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
+      ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
+      <div class="list-management">
+        ${renderListedIn(viewmodel.listedIn)}
+        ${renderSaveArticle(viewmodel)}
+      </div>
     </section>
-    ${renderFeed(viewmodel.feedItemsByDateDescending)}
-    ${renderRelatedArticles(viewmodel)}
-  </section>
+    <section>
+      <section role="doc-abstract" class="article-abstract">
+        <h2>Abstract</h2>
+        <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
+      </section>
+      ${renderFeed(viewmodel.feedItemsByDateDescending)}
+      ${renderRelatedArticles(viewmodel)}
+    </section>
+  </div>
 `);

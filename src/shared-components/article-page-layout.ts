@@ -23,9 +23,7 @@ export const articlePageLayout = (user: O.Option<UserDetails>) => (page: Page): 
     ${siteHeader(user)}
 
     <main class="page-content" id="mainContent">
-      <div class="sciety-grid-two-columns">
-        ${page.content}
-      </div>
+      ${page.content}
     </main>
 
     ${siteFooter}
