@@ -5,6 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TO from 'fp-ts/TaskOption';
+import { ArticleServer } from '../types/article-server';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models/dispatcher';
@@ -37,6 +39,7 @@ import { fetchCrossrefArticle } from '../third-parties/crossref';
 import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
+import { Doi } from '../types/doi';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -140,10 +143,15 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        findVersionsForArticleDoi: getArticleVersionEventsFromBiorxiv({
-          getJson: getCachedAxiosRequest(logger),
-          logger,
-        }),
+        findVersionsForArticleDoi: (doi: Doi, server: ArticleServer) => {
+          if (server === 'biorxiv' || server === 'medrxiv') {
+            return getArticleVersionEventsFromBiorxiv({
+              getJson: getCachedAxiosRequest(logger),
+              logger,
+            })(doi, server);
+          }
+          return TO.none;
+        },
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),

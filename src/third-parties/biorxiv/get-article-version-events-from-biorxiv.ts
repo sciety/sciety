@@ -4,10 +4,10 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { ArticleServerWithVersionInformation } from '../../types/article-server-with-version-information';
 import { BiorxivArticleDetails } from './BiorxivArticleDetails';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
-import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { GetJson } from '../../shared-ports';
 
@@ -22,12 +22,12 @@ type ArticleVersion = {
   version: number,
 };
 
-export type GetArticleVersionEventsFromBiorxiv = (
+type GetArticleVersionEventsFromBiorxiv = (
   doi: Doi,
-  server: ArticleServer,
+  server: ArticleServerWithVersionInformation,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
-const mapResponse = (doi: Doi, server: ArticleServer) => flow(
+const mapResponse = (doi: Doi, server: ArticleServerWithVersionInformation) => flow(
   (response: BiorxivArticleDetails) => response.collection,
   RNEA.map(({ version, date }) => ({
     source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
