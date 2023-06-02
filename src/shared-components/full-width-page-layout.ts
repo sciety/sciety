@@ -8,7 +8,7 @@ import { Page } from '../types/page';
 import { UserDetails } from '../types/user-details';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const articlePageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
+export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(
     pipe(
