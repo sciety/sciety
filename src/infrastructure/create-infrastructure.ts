@@ -131,6 +131,16 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
+      const findVersionsForArticleDoiFromSupportedServers = (doi: Doi, server: ArticleServer) => {
+        if (server === 'biorxiv' || server === 'medrxiv') {
+          return getArticleVersionEventsFromBiorxiv({
+            getJson: getCachedAxiosRequest(logger),
+            logger,
+          })(doi, server);
+        }
+        return TO.none;
+      };
+
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
@@ -143,15 +153,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),
         getAllEvents,
-        findVersionsForArticleDoi: (doi: Doi, server: ArticleServer) => {
-          if (server === 'biorxiv' || server === 'medrxiv') {
-            return getArticleVersionEventsFromBiorxiv({
-              getJson: getCachedAxiosRequest(logger),
-              logger,
-            })(doi, server);
-          }
-          return TO.none;
-        },
+        findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers,
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
