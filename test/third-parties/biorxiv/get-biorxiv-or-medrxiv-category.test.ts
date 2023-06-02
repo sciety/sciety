@@ -195,7 +195,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
       expect(E.isLeft(result)).toBe(true);
     });
 
-    it.failing('no error logs are produced', () => {
+    it('no error logs are produced', () => {
       expect(logger).toHaveBeenCalledTimes(0);
     });
   });

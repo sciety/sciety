@@ -1,4 +1,6 @@
 import * as Ord from 'fp-ts/Ord';
+import * as B from 'fp-ts/boolean';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -29,13 +31,17 @@ const mapResponse = flow(
 );
 
 export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(
-  [
-    'biorxiv' as const,
-    'medrxiv' as const,
-  ],
-  T.traverseArray((server) => fetchArticleDetails(articleId, server)(ports)),
-  T.map(RA.rights),
-  T.map(RA.head),
-  TE.fromTaskOption(() => DE.unavailable),
+  articleId.hasPrefix('10.1101'),
+  B.match(
+    () => E.left(DE.unavailable),
+    () => E.right([
+      'biorxiv' as const,
+      'medrxiv' as const,
+    ]),
+  ),
+  T.of,
+  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(articleId, server)(ports))),
+  TE.map(RA.rights),
+  TE.chainOptionK(() => DE.unavailable)(RA.head),
   TE.map(mapResponse),
 );
