@@ -3,13 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  DomainEvent,
-  EvaluationRecordedEvent, IncorrectlyRecordedEvaluationErasedEvent, isEventOfType, constructEvent,
+  DomainEvent, isEventOfType, constructEvent, EventOfType,
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-type RelevantEvent = EvaluationRecordedEvent | IncorrectlyRecordedEvaluationErasedEvent;
+type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('EvaluationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)

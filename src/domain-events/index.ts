@@ -6,10 +6,6 @@ export {
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 
 export {
-  IncorrectlyRecordedEvaluationErasedEvent,
-} from './incorrectly-recorded-evaluation-erased-event';
-
-export {
   listCreated,
   ListCreatedEvent,
 } from './list-created-event';

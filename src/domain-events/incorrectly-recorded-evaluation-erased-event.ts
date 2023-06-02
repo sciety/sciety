@@ -11,5 +11,3 @@ export const incorrectlyRecordedEvaluationErasedEventCodec = t.type({
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
 });
-
-export type IncorrectlyRecordedEvaluationErasedEvent = t.TypeOf<typeof incorrectlyRecordedEvaluationErasedEventCodec>;
