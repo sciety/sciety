@@ -48,7 +48,7 @@ describe('get-one-article-id-in-evaluated-state', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns no articles in the evaluated state', () => {
+    it('returns no articles in the evaluated state', () => {
       expect(getOneArticleIdInEvaluatedState(readModel)()).toStrictEqual(O.none);
     });
   });

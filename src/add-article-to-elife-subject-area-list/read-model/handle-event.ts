@@ -30,18 +30,20 @@ export const isStateWithSubjectArea = (state: ArticleState):
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
-    if (event.groupId === elifeGroupId) {
-      const key = event.articleId.value;
-      const transitions = {
-        'initial': 'evaluated' as const,
-        'evaluated': 'evaluated' as const,
-        'listed': 'listed' as const,
-      };
-      const currentState = readmodel[key];
-      if (isStateWithSubjectArea(currentState)) {
-        readmodel[key] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
-      } else {
-        readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
+    if (event.articleId.hasPrefix('10.1101')) {
+      if (event.groupId === elifeGroupId) {
+        const key = event.articleId.value;
+        const transitions = {
+          'initial': 'evaluated' as const,
+          'evaluated': 'evaluated' as const,
+          'listed': 'listed' as const,
+        };
+        const currentState = readmodel[key];
+        if (isStateWithSubjectArea(currentState)) {
+          readmodel[key] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
+        } else {
+          readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
+        }
       }
     }
   } else if (isEventOfType('ArticleAddedToList')(event)) {
