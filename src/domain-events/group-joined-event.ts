@@ -16,5 +16,3 @@ export const groupJoinedEventCodec = t.type({
   homepage: t.string,
   slug: t.string,
 });
-
-export type GroupJoinedEvent = t.TypeOf<typeof groupJoinedEventCodec>;

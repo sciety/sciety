@@ -2,8 +2,6 @@ export {
   DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent,
 } from './domain-event';
 
-export { GroupJoinedEvent } from './group-joined-event';
-
 // ts-unused-exports:disable-next-line
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 

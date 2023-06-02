@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, GroupJoinedEvent, isEventOfType } from '../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 
@@ -7,7 +7,7 @@ export type ReadModel = Record<GroupId, Group>;
 
 export const initialState = (): ReadModel => ({});
 
-const toGroup = (event: GroupJoinedEvent) => ({
+const toGroup = (event: EventOfType<'GroupJoined'>) => ({
   id: event.groupId,
   name: event.name,
   avatarPath: event.avatarPath,

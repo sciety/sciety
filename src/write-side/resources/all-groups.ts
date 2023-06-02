@@ -1,18 +1,15 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  EventOfType, isEventOfType,
-  DomainEvent, GroupJoinedEvent,
-} from '../../domain-events';
+import { EventOfType, isEventOfType, DomainEvent } from '../../domain-events';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import { AddGroupCommand } from '../commands';
 
-type AllGroupsResource = ReadonlyArray<GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'>>;
+type AllGroupsResource = ReadonlyArray<EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'>>;
 
 export const replay = (events: ReadonlyArray<DomainEvent>): AllGroupsResource => pipe(
   events,
-  RA.filter((event): event is GroupJoinedEvent | EventOfType<'GroupDetailsUpdated'> => (
+  RA.filter((event): event is EventOfType<'GroupJoined'> | EventOfType<'GroupDetailsUpdated'> => (
     isEventOfType('GroupJoined')(event)
     || isEventOfType('GroupDetailsUpdated')(event))),
 );
