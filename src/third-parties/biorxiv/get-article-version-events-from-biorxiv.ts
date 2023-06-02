@@ -10,16 +10,11 @@ import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
 import { GetJson } from '../../shared-ports';
+import { ArticleVersion } from '../../types/article-version';
 
 type Dependencies = {
   getJson: GetJson,
   logger: Logger,
-};
-
-type ArticleVersion = {
-  source: URL,
-  publishedAt: Date,
-  version: number,
 };
 
 type GetArticleVersionEventsFromBiorxiv = (

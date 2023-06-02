@@ -3,12 +3,7 @@ import * as O from 'fp-ts/Option';
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { FindVersionsForArticleDoi } from '../../shared-ports';
-
-type ArticleVersionInformation = {
-  source: URL,
-  publishedAt: Date,
-  version: number,
-};
+import { ArticleVersion } from '../../types/article-version';
 
 export const findVersionsForArticleDoi: FindVersionsForArticleDoi = () => T.of(O.some([
   {
@@ -21,4 +16,4 @@ export const findVersionsForArticleDoi: FindVersionsForArticleDoi = () => T.of(O
     publishedAt: new Date('1980'),
     version: 2,
   },
-] as RNEA.ReadonlyNonEmptyArray<ArticleVersionInformation>));
+] as RNEA.ReadonlyNonEmptyArray<ArticleVersion>));
