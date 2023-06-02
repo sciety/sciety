@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleViewModel } from '../../../shared-components/article-card/render-article-card';
+import { ArticleViewModel } from '../../../shared-components/article-card';
 import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
@@ -32,12 +32,12 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
       ${renderSaveArticle(viewmodel)}
     </div>
   </section>
-  <section role="doc-abstract" class="article-abstract">
-    <h2>Abstract</h2>
-    <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
-  </section>
-  <div class="main-content">
+  <section>
+    <section role="doc-abstract" class="article-abstract">
+      <h2>Abstract</h2>
+      <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
+    </section>
     ${renderFeed(viewmodel.feedItemsByDateDescending)}
-  </div>
-  ${renderRelatedArticles(viewmodel)}
+    ${renderRelatedArticles(viewmodel)}
+  </section>
 `);
