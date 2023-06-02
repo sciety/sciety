@@ -28,7 +28,7 @@ export const siteFooter: HtmlFragment = toHtmlFragment(`
         </li>
       </ul>
       <small class="main-footer__small_print">
-        © 2022 eLife Sciences Publications Ltd.
+        © eLife Sciences Publications Ltd.
         <a href="/legal">Legal&nbsp;information</a>
       </small>
     </div>
