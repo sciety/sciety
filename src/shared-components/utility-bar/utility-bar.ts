@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { UserHandle } from '../../types/user-handle';
+import { ColourSchemes } from '../colour-schemes';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">
@@ -91,8 +92,6 @@ const loggedInMenuItems = (user: UserDetails) => `
   ${myUsernameMenuItem(user.handle, user.avatarUrl)}
   ${logOutMenuItem()}
 `;
-
-type ColourSchemes = 'light' | 'dark';
 
 export const utilityBar = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
   <nav class="utility-bar${scheme === 'dark' ? ' utility-bar--dark' : ''}" aria-describedby="application-utilities">

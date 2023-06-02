@@ -2,8 +2,7 @@ import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { utilityBar } from '../utility-bar/utility-bar';
-
-type ColourSchemes = 'light' | 'dark';
+import { ColourSchemes } from '../colour-schemes';
 
 const schemedImages = {
   light: {
