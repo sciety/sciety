@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
-import { elifeGroupId, elifeSubjectAreaLists } from './data';
+import { biorxivAndMedrxivPublisherDoiPrefix, elifeGroupId, elifeSubjectAreaLists } from './data';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 
@@ -30,7 +30,7 @@ export const isStateWithSubjectArea = (state: ArticleState):
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
-    if (event.articleId.hasPrefix('10.1101')) {
+    if (event.articleId.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)) {
       if (event.groupId === elifeGroupId) {
         const key = event.articleId.value;
         const transitions = {

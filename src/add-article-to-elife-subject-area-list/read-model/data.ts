@@ -5,6 +5,8 @@ import * as LID from '../../types/list-id';
 
 export const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
+export const biorxivAndMedrxivPublisherDoiPrefix = '10.1101';
+
 // ts-unused-exports:disable-next-line
 export const elifeSubjectAreaListIds = {
   biochemistryAndChemicalBiologyListId: '3792ee73-6a7d-4c54-b6ee-0abc18cb8bc4',
