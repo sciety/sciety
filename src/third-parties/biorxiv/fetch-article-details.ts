@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { ArticleServerWithVersionInformation } from '../../types/article-server-with-version-information';
+import { SupportedArticleServer } from './article-server-with-version-information';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './BiorxivArticleDetails';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
@@ -14,11 +14,11 @@ type Dependencies = {
   logger: Logger,
 };
 
-const constructUrl = (doi: Doi, server: ArticleServerWithVersionInformation) => (
+const constructUrl = (doi: Doi, server: SupportedArticleServer) => (
   `https://api.biorxiv.org/details/${server}/${doi.value}`
 );
 
-type FetchArticleDetails = ({ getJson, logger }: Dependencies, doi: Doi, server: ArticleServerWithVersionInformation)
+type FetchArticleDetails = ({ getJson, logger }: Dependencies, doi: Doi, server: SupportedArticleServer)
 => TE.TaskEither<void, BiorxivArticleDetails>;
 
 export const fetchArticleDetails: FetchArticleDetails = ({ getJson, logger }, doi, server) => pipe(
