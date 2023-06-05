@@ -20,14 +20,14 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <nav class="site-header__left_links">
     <ul class="site-header__left_links_list">
-      <li class="site-header__left_links_list_item--logo">
-        <a href="/" class="site-header__logo_link">
-          <img src="/static/images/${schemedImages[scheme].scietyLogo}" alt="Sciety" class="site-header__logo">
-        </a>
-      </li>
       <li class="site-header__left_links_list_item--menu">
         <a href="/menu" class="site-header__menu_link">
           <img src="/static/images/${schemedImages[scheme].menuIcon}" alt="" />
+        </a>
+      </li>
+      <li class="site-header__left_links_list_item--logo">
+        <a href="/" class="site-header__logo_link">
+          <img src="/static/images/${schemedImages[scheme].scietyLogo}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
       <li>
