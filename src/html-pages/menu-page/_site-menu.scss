@@ -5,6 +5,7 @@
 @use '../../sass/button';
 @use '../../sass/typography';
 @use '../../sass/list';
+@use '../../sass/states';
 
 $_inline-spacing: 16px;
 $_link-max-width: 300px;
@@ -18,7 +19,7 @@ $_link-inline-offset-to-align-with-header: 10px;
 
 .site-menu__link {
   @include typography.button();
-  display: flex;
+  display: inline-block;
   align-items: center;
   max-width: functions.px-to-rem($_link-max-width);
   padding-left: functions.px-to-rem($_link-inline-offset-to-align-with-header);
@@ -40,4 +41,26 @@ $_link-inline-offset-to-align-with-header: 10px;
 .site-menu__link_text {
   display: inline-block;
   padding-top: 0;
+}
+
+.site-menu__link_login_button {
+  @include button.button-link();
+}
+
+.site-menu__link_sign_up_button {
+  @include typography.button();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+
+  &:link,
+  &:visited {
+    color: var(--colour-text-navigation-link);
+
+    @include states.link() {
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-brand;
+      ;
+    }
+  }
 }
