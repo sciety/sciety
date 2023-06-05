@@ -30,34 +30,9 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dd>Not included</dd>
 </dl>
 
-## People
+## Our team
 
-- **Prachee Avasthi**
-- Adair Borges
-- Atanas Radkov
-- Austin Patton
-- Behnom Farboud
-- Brae Bigge
-- Cameron Macquarrie
-- Dave Matus
-- Dave Mets
-- Dennis Sun
-- Elizabeth McDaniel
-- Emily Weiss
-- Galo Garcia
-- Januka Athukoralage
-- Jase Gehring
-- Jean Davidson
-- Kira Poskanzer
-- Manon Morin
-- Maryclare Rollins
-- Megan Hochstrasser
-- Mert Celebi
-- Peter Thuyboun
-- Rachel Dutton
-- Ryan York
-- Seemay Chou
-- Taylor Reiter
+View the [Arcadia Science team](https://www.arcadiascience.com/team)
 
 ## Content license
 
