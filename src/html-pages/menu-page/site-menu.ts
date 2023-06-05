@@ -10,7 +10,7 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
       <li><a href="/subscribe-to-mailing-list" class="site-menu__link"><span class="site-menu__link_text">Newsletter</span></a></li>
       <li><a href="/about" class="site-menu__link"><span class="site-menu__link_text">About</span></a></li>
       <li>
-        <a href="/log-in" class="site-menu__link site-menu__link_login_button">Log In</a>
+        <a href="/log-in" class="site-menu__link site-menu__link_primary_button">Log In</a>
       </li>
       <li>
         <a href="/sign-up" class="site-menu__link site-menu__link_sign_up_button">Sign Up</a>
@@ -19,6 +19,9 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
     (loggedInUser) => `
       <li><a href="/my-feed" class="site-menu__link"><span class="site-menu__link_text">My Feed</span></a></li>
       <li><a href="/users/${loggedInUser.handle}" class="site-menu__link"><span class="site-menu__link_text">My Lists</span></a></li>
+      <li>
+        <a href="/log-out" class="site-menu__link site-menu__link_primary_button">Log Out</a>
+      </li>
     `,
   ),
   (userMenu) => `
