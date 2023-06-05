@@ -25,7 +25,7 @@ export const homePageLayout = (user: O.Option<UserDetails>) => (page: Page): str
       ${page.content}
     </main>
 
-    ${siteFooter}
+    ${siteFooter(user)}
   </div>
 
   <script src="/static/behaviour.js"></script>

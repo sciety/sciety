@@ -25,7 +25,7 @@ export const createUserAccountFormPageLayout = (user: O.Option<UserDetails>) => 
       ${page.content}
     </main>
 
-    ${siteFooter}
+    ${siteFooter(user)}
   </div>
 
   <script src="/static/behaviour.js"></script>
