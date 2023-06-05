@@ -9,6 +9,9 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
     () => `
       <li><a href="/subscribe-to-mailing-list" class="site-menu__link"><span class="site-menu__link_text">Newsletter</span></a></li>
       <li><a href="/about" class="site-menu__link"><span class="site-menu__link_text">About</span></a></li>
+      <li class="utility-bar__list_item">
+        <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
+      </li>
     `,
     (loggedInUser) => `
       <li><a href="/my-feed" class="site-menu__link"><span class="site-menu__link_text">My Feed</span></a></li>
