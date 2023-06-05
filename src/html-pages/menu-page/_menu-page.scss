@@ -46,7 +46,7 @@ $_menu-page-upper-inline-spacing: 26px;
 .navigation-menu__title {
   @include typography.page-label();
   padding-left: functions.px-to-rem($_menu-page-upper-inline-spacing);
-  margin-bottom: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .menu-page__close_nav {

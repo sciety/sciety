@@ -8,7 +8,6 @@
 
 $_inline-spacing: 16px;
 $_link-max-width: 300px;
-$_link-min-height: 2.5rem;
 $_link-inline-offset-to-align-with-header: 10px;
 
 .site-menu__links {
@@ -21,10 +20,10 @@ $_link-inline-offset-to-align-with-header: 10px;
   @include typography.button();
   display: flex;
   align-items: center;
-  min-height: $_link-min-height;
   max-width: functions.px-to-rem($_link-max-width);
   padding-left: functions.px-to-rem($_link-inline-offset-to-align-with-header);
   border-radius: settings.$border-radius;
+  margin-bottom: 2rem;
   font-weight: bold;
 
   &:link,
