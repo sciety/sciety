@@ -11,6 +11,10 @@ $_inline-spacing: 16px;
 $_link-max-width: 300px;
 $_link-inline-offset-to-align-with-header: 10px;
 
+.mobile-menu {
+  display: none;
+}
+
 .site-menu__links {
   @include list.basics();
   margin-right: functions.px-to-rem($_inline-spacing);

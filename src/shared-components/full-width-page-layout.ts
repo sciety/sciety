@@ -6,6 +6,7 @@ import { siteFooter } from './site-footer';
 import { siteHeader } from './site-header';
 import { Page } from '../types/page';
 import { UserDetails } from '../types/user-details';
+import { siteMenuItems } from '../html-pages/menu-page/site-menu';
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
@@ -25,7 +26,9 @@ export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page)
     <main class="page-content" id="mainContent">
       ${page.content}
     </main>
-
+    <div class="mobile-menu">
+      ${siteMenuItems(user)}
+    </div>
     ${siteFooter}
   </div>
 
