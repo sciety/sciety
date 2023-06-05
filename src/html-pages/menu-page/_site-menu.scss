@@ -37,7 +37,7 @@ $_link-inline-offset-to-align-with-header: 10px;
 
     &:hover,
     &:active {
-      color: inherit;
+      color: settings.$colour-accent-hover-on-dark-background;
     }
   }
 }
