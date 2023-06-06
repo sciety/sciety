@@ -21,7 +21,10 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
 );
 
 const renderCurationStatements = (viewmodel: ViewModel) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true' && viewmodel.doi.value === '10.1101/2022.02.23.481615') {
+  if (process.env.EXPERIMENT_ENABLED !== 'true') {
+    return '';
+  }
+  if (viewmodel.doi.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
   return '';
