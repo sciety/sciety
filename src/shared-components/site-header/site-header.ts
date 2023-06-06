@@ -16,7 +16,7 @@ const schemedImages = {
 };
 
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
-<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
+<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}" id="siteHeader">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <nav class="site-header__left_links">
     <ul class="site-header__left_links_list">

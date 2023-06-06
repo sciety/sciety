@@ -30,6 +30,7 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
       <li><a href="/groups" class="site-menu__link"><span class="site-menu__link_text">Groups</span></a></li>
       <li><a href="/lists" class="site-menu__link"><span class="site-menu__link_text">Lists</span></a></li>
       ${userMenu}
+      <li><a href="#siteHeader" class="site-menu__link"><span class="site-menu__link_text"></span>Back to the top</a></li>
     </ul>
 `,
   toHtmlFragment,
