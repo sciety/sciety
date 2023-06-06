@@ -1,4 +1,5 @@
 @use '../../../sass/breakpoints';
+@use '../../../sass/settings';
 @use '../../../sass/list';
 
 @use 'local-settings';
@@ -31,4 +32,24 @@
   @include list.author-separator-terminator();
   float: left;
   font-weight: bold;
+}
+
+.curation-statements {
+  @include list.basics();
+  margin-top: 3rem;
+}
+
+.curation-statement {
+  border-top: 1px solid settings.$colour-furniture;
+  padding-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.curation-statement-header {
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    max-height: 2rem;
+  }
 }

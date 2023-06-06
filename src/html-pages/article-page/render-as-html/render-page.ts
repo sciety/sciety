@@ -29,8 +29,10 @@ type CurationStatement = {
 };
 
 const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
-  <h2>Curated by ${curationStatement.groupName}</h2>
-  <img src="${curationStatement.groupLargeLogo}">
+  <div class="curation-statement-header">
+    <h2>Curated by ${curationStatement.groupName}</h2>
+    <img src="${curationStatement.groupLargeLogo}">
+  </div>
   ${curationStatement.statement}
 `);
 
@@ -68,8 +70,8 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
   return pipe(
     curationStatements,
     RA.map(renderCurationStatement),
-    templateListItems,
-    (listItems) => `<ul>${listItems}</ul>`,
+    (listItems) => templateListItems(listItems, 'curation-statement'),
+    (listItems) => `<ul class="curation-statements">${listItems}</ul>`,
   );
 };
 
