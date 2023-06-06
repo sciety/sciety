@@ -13,6 +13,11 @@
   margin-bottom: local-settings.$component-vertical-spacing;
 }
 
+.article-page-header-wrapper--with-curation-statements {
+  background-color: settings.$colour-component-background;
+  padding-bottom: local-settings.$component-vertical-spacing;
+}
+
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: local-settings.$component-vertical-spacing;
@@ -52,12 +57,17 @@
 .curation-statements {
   @include list.basics();
   margin-top: 3rem;
+  margin-bottom: 0;
 }
 
 .curation-statement {
   border-top: 1px solid settings.$colour-furniture;
   padding-top: 3rem;
   margin-bottom: 3rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .curation-statement-header {

@@ -52,7 +52,6 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
       `,
     },
     {
-
       groupName: 'Biophysics Colab',
       groupLargeLogo: '/static/images/home-page/biophysics-colab.png',
       statement: `
@@ -74,7 +73,7 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">
-    <div class="article-page-header-wrapper">
+    <div class="article-page-header-wrapper ${(viewmodel.doi.value === '10.1101/2022.02.23.481615') ? 'article-page-header-wrapper--with-curation-statements' : ''}">
       <header class="page-header page-header--article">
         <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
         ${renderAuthors(viewmodel.authors)}
