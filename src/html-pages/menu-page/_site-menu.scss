@@ -15,7 +15,7 @@ $_link-inline-offset-to-align-with-header: 10px;
 .mobile-menu {
   padding-top: functions.px-to-rem(24px);
   height: 100vh;
-  
+
   @include breakpoints.site-header() {
     display: none;
   }
@@ -51,6 +51,10 @@ $_link-inline-offset-to-align-with-header: 10px;
 .site-menu__link_text {
   display: inline-block;
   padding-top: 0;
+}
+
+.site-menu__back_link::after {
+  content: '\A0\2190';
 }
 
 .site-menu__link_primary_button {
