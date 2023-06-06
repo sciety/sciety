@@ -31,7 +31,7 @@ const renderCurationStatement = (curationStatement: CurationStatement) => toHtml
 `);
 
 const renderCurationStatements = (viewmodel: ViewModel) => {
-  if (viewmodel.doi.value !== '10.1101/2022.02.23.481615') {
+  if (viewmodel.curationStatements.length === 0) {
     return '';
   }
   return pipe(
@@ -44,7 +44,7 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">
-    <div class="article-page-header-wrapper ${(viewmodel.doi.value === '10.1101/2022.02.23.481615') ? 'article-page-header-wrapper--with-curation-statements' : ''}">
+    <div class="article-page-header-wrapper ${(viewmodel.curationStatements.length > 0) ? 'article-page-header-wrapper--with-curation-statements' : ''}">
       <header class="page-header page-header--article">
         <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
         ${renderAuthors(viewmodel.authors)}
