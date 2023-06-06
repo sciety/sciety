@@ -4,7 +4,7 @@ import { ArticleViewModel } from '../../../shared-components/article-card';
 import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, html } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
@@ -14,12 +14,11 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
   relatedArticles,
   O.match(
     () => '',
-    () => `
-      <a href="#relatedArticles" class="see-related-articles-button">See related articles</a>
-    `,
+    () => html`<a href="#relatedArticles" class="see-related-articles-button">See related articles</a>`,
   ),
 );
-export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
+
+export const renderPage = (viewmodel: ViewModel): HtmlFragment => html`
   <div class="sciety-grid-two-columns">
     <header class="page-header page-header--article">
       <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
@@ -42,4 +41,4 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
       ${renderRelatedArticles(viewmodel)}
     </section>
   </div>
-`);
+`;

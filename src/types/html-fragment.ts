@@ -13,3 +13,17 @@ export const htmlFragmentCodec = t.brand(
 );
 
 export type HtmlFragment = t.TypeOf<typeof htmlFragmentCodec>;
+
+export const html = (
+  literals: TemplateStringsArray,
+  ...substitutions: ReadonlyArray<string | number>
+): HtmlFragment => {
+  let result = '';
+  // eslint-disable-next-line no-loops/no-loops, no-plusplus
+  for (let index = 0; index < substitutions.length; index++) {
+    result += literals[index];
+    result += substitutions[index];
+  }
+  result += literals[substitutions.length + 1];
+  return result as HtmlFragment;
+};
