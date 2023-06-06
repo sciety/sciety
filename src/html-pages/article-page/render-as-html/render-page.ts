@@ -6,7 +6,7 @@ import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { CurationStatement, ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
@@ -21,12 +21,6 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
     `,
   ),
 );
-
-type CurationStatement = {
-  groupName: string,
-  groupLargeLogo: string,
-  statement: string,
-};
 
 const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
   <div class="curation-statement-header">

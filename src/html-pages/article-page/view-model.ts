@@ -53,6 +53,12 @@ type ArticleNotInAnyList = {
 
 type ArticleSavedToThisList = ListSummary;
 
+export type CurationStatement = {
+  groupName: string,
+  groupLargeLogo: string,
+  statement: string,
+};
+
 // ts-unused-exports:disable-next-line
 export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
 
@@ -71,4 +77,5 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleViewModel>>,
+  curationStatements: ReadonlyArray<CurationStatement>,
 };
