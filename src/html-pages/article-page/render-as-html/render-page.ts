@@ -37,9 +37,6 @@ const renderCurationStatement = (curationStatement: CurationStatement) => toHtml
 `);
 
 const renderCurationStatements = (viewmodel: ViewModel) => {
-  if (process.env.EXPERIMENT_ENABLED !== 'true') {
-    return '';
-  }
   if (viewmodel.doi.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
