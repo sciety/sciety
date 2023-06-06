@@ -19,9 +19,13 @@ $_avatar-height-coupled-to-buttons: 34px;
 .utility-bar {
   @include schemed-header-colours.light();
   display: flex;
-  margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  margin-right: 0;
   flex-grow: 1;
   align-self: center;
+
+  @include breakpoints.site-header() {
+    margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  }
 }
 
 .utility-bar--dark {
@@ -110,11 +114,12 @@ $_avatar-height-coupled-to-buttons: 34px;
   background-color: settings.$colour-white;
   width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
-  margin-right: functions.px-to-rem($_avatar-right-margin);
+  margin-right: 20px;
   display: inline-block;
 
   @include breakpoints.site-header() {
     width: functions.px-to-rem(avatar.$size--in-site-header);
+    margin-right: functions.px-to-rem($_avatar-right-margin);
   }
 }
 
