@@ -31,6 +31,8 @@ describe('ensure-evaluations-are-listed', () => {
   });
 
   describe('when there are listed evaluations', () => {
-    it.todo('adds exactly one missing article to the appropriate list');
+    it.todo('adds exactly one missing article to the appropriate list -- VIA MOCKS');
+
+    it.todo('adds the article to the appropriate list -- ROUND TRIP');
   });
 });
