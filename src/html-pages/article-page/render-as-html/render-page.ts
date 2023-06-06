@@ -19,11 +19,20 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
     `,
   ),
 );
+
+const renderCurationStatements = (viewmodel: ViewModel) => {
+  if (process.env.EXPERIMENT_ENABLED === 'true' && viewmodel.doi.value === '10.1101/2022.02.23.481615') {
+    return '';
+  }
+  return '';
+};
+
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="sciety-grid-two-columns">
     <header class="page-header page-header--article">
       <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
       ${renderAuthors(viewmodel.authors)}
+      ${renderCurationStatements(viewmodel)}
     </header>
     <section class="article-actions">
       <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
