@@ -10,7 +10,7 @@ export const siteFooter = (user: O.Option<UserDetails>): HtmlFragment => toHtmlF
       <a href="/subscribe-to-mailing-list" class="pre-footer__call_to_action">Subscribe to our newsletter</a>
     </div>
     <div class="main-footer">
-      <div class="mobile-menu">
+      <div class="mobile-menu" id="mobileNavigation">
         ${siteMenuItems(user)}
       </div>
       <ul class="main-footer__navigation">

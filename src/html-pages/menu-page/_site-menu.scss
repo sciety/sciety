@@ -13,6 +13,9 @@ $_link-max-width: 300px;
 $_link-inline-offset-to-align-with-header: 10px;
 
 .mobile-menu {
+  padding-top: functions.px-to-rem(24px);
+  height: 100vh;
+  
   @include breakpoints.site-header() {
     display: none;
   }
