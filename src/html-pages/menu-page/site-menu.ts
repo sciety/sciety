@@ -25,7 +25,7 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
     `,
   ),
   (userMenu) => `
-    <ul role="list" class="site-menu__links">
+    <ul role="list" class="site-menu__links" id="mobileNavigation">
       <li><a href="/" class="site-menu__link"><span class="site-menu__link_text">Home</span></a></li>
       <li><a href="/groups" class="site-menu__link"><span class="site-menu__link_text">Groups</span></a></li>
       <li><a href="/lists" class="site-menu__link"><span class="site-menu__link_text">Lists</span></a></li>
