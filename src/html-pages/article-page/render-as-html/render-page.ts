@@ -73,27 +73,31 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
 };
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
-  <div class="sciety-grid-two-columns">
-    <header class="page-header page-header--article">
-      <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
-      ${renderAuthors(viewmodel.authors)}
-      ${renderCurationStatements(viewmodel)}
-    </header>
-    <section class="article-actions">
-      <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
-      ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
-      <div class="list-management">
-        ${renderListedIn(viewmodel.listedIn)}
-        ${renderSaveArticle(viewmodel)}
-      </div>
-    </section>
-    <section>
-      <section role="doc-abstract" class="article-abstract">
-        <h2>Abstract</h2>
-        <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
+  <div class="article-page-wrapper">
+    <div class="article-page-header-wrapper">
+      <header class="page-header page-header--article">
+        <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
+        ${renderAuthors(viewmodel.authors)}
+        ${renderCurationStatements(viewmodel)}
+      </header>
+    </div>
+    <div class="sciety-grid-two-columns">
+      <section class="article-actions">
+        <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
+        ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
+        <div class="list-management">
+          ${renderListedIn(viewmodel.listedIn)}
+          ${renderSaveArticle(viewmodel)}
+        </div>
       </section>
-      ${renderFeed(viewmodel.feedItemsByDateDescending)}
-      ${renderRelatedArticles(viewmodel)}
-    </section>
+      <section>
+        <section role="doc-abstract" class="article-abstract">
+          <h2>Abstract</h2>
+          <div${renderLangAttribute(viewmodel.abstractLanguageCode)}>${viewmodel.abstract}</div>
+        </section>
+        ${renderFeed(viewmodel.feedItemsByDateDescending)}
+        ${renderRelatedArticles(viewmodel)}
+      </section>
+    </div>
   </div>
 `);

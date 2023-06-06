@@ -1,13 +1,28 @@
 @use '../../../sass/breakpoints';
 @use '../../../sass/settings';
+@use '../../../sass/functions';
 @use '../../../sass/list';
 
 @use 'local-settings';
 
+.article-page-wrapper {
+  width: 100%;
+}
+
+.article-page-header-wrapper {
+  margin-bottom: local-settings.$component-vertical-spacing;
+}
+
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: local-settings.$component-vertical-spacing;
-  grid-column: 1/-1;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+
+  @include breakpoints.not-narrow {
+    margin: 0 auto;
+    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  }
 }
 
 .article-author-list {
