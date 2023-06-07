@@ -10,7 +10,7 @@ const renderCurationStatement = (curationStatement: CurationStatement) => toHtml
     <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
     <img src="${curationStatement.groupLargeLogo}" alt="${curationStatement.groupName} logo">
   </div>
-  <div${renderLangAttribute(curationStatement.statementLanguageCode)}>
+  <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-text">
     ${curationStatement.statement}
   </div>
 `);

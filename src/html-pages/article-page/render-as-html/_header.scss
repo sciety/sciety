@@ -78,3 +78,30 @@
     max-height: 2rem;
   }
 }
+
+.curation-statement-text {
+  position: relative;
+  padding-left: functions.px-to-rem(32px);
+  padding-right: functions.px-to-rem(32px);
+
+  &::before,
+  &::after {
+    position: absolute;
+    color: settings.$colour-accent;
+    font-family: serif;
+    font-size: functions.px-to-rem(48px);
+    line-height: 1;
+  }
+
+  &::before {
+    content: '\201C';
+    left: 0;
+    top: 0;
+  }
+
+  &::after {
+    content: '\201D';
+    right: 0;
+    bottom: functions.px-to-rem(-32px);
+  }
+}
