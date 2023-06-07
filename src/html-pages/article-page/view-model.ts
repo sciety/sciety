@@ -56,7 +56,7 @@ type ArticleSavedToThisList = ListSummary;
 export type CurationStatement = {
   groupName: string,
   groupSlug: string,
-  groupLargeLogo: string,
+  groupLogo: string,
   statement: string,
   statementLanguageCode: O.Option<LanguageCode>,
 };
