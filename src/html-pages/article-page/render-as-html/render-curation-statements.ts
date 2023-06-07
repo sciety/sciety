@@ -7,7 +7,7 @@ import { templateListItems } from '../../../shared-components/list-items';
 const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
   <div class="curation-statement-header">
     <h2>Curated by ${curationStatement.groupName}</h2>
-    <img src="${curationStatement.groupLargeLogo}">
+    <img src="${curationStatement.groupLargeLogo}" alt="${curationStatement.groupName} logo">
   </div>
   ${curationStatement.statement}
 `);
