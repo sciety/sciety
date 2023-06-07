@@ -1,16 +1,15 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '../../../shared-components/article-card';
 import { renderAuthors } from './render-authors';
 import { renderFeed } from './render-feed';
 import { renderSaveArticle } from './render-save-article';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { CurationStatement, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderCurationStatements } from './render-curation-statements';
 
 const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<ArticleViewModel>>) => pipe(
   relatedArticles,
@@ -21,26 +20,6 @@ const renderRelatedArticlesLink = (relatedArticles: O.Option<ReadonlyArray<Artic
     `,
   ),
 );
-
-const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
-  <div class="curation-statement-header">
-    <h2>Curated by ${curationStatement.groupName}</h2>
-    <img src="${curationStatement.groupLargeLogo}">
-  </div>
-  ${curationStatement.statement}
-`);
-
-const renderCurationStatements = (viewmodel: ViewModel) => {
-  if (viewmodel.curationStatements.length === 0) {
-    return '';
-  }
-  return pipe(
-    viewmodel.curationStatements,
-    RA.map(renderCurationStatement),
-    (listItems) => templateListItems(listItems, 'curation-statement'),
-    (listItems) => `<ul class="curation-statements">${listItems}</ul>`,
-  );
-};
 
 const renderHeader = (viewmodel: ViewModel) => `
   <div class="article-page-header-wrapper ${(viewmodel.curationStatements.length > 0) ? 'article-page-header-wrapper--with-curation-statements' : ''}">
