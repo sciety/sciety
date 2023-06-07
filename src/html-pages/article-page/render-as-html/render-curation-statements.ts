@@ -23,7 +23,7 @@ export const renderCurationStatements = (viewmodel: ViewModel): HtmlFragment => 
     viewmodel.curationStatements,
     RA.map(renderCurationStatement),
     (listItems) => templateListItems(listItems, 'curation-statement'),
-    (listItems) => `<ul class="curation-statements">${listItems}</ul>`,
+    (listItems) => `<span class="visually-hidden">Curation statements for this article: </span><ul class="curation-statements" role="list">${listItems}</ul>`,
     toHtmlFragment,
   );
 };
