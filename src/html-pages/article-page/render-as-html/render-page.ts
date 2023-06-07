@@ -42,15 +42,19 @@ const renderCurationStatements = (viewmodel: ViewModel) => {
   );
 };
 
+const renderHeader = (viewmodel: ViewModel) => `
+  <div class="article-page-header-wrapper ${(viewmodel.curationStatements.length > 0) ? 'article-page-header-wrapper--with-curation-statements' : ''}">
+    <header class="page-header page-header--article">
+      <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
+      ${renderAuthors(viewmodel.authors)}
+      ${renderCurationStatements(viewmodel)}
+    </header>
+  </div>
+`;
+
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">
-    <div class="article-page-header-wrapper ${(viewmodel.curationStatements.length > 0) ? 'article-page-header-wrapper--with-curation-statements' : ''}">
-      <header class="page-header page-header--article">
-        <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
-        ${renderAuthors(viewmodel.authors)}
-        ${renderCurationStatements(viewmodel)}
-      </header>
-    </div>
+    ${renderHeader(viewmodel)}
     <div class="sciety-grid-two-columns">
       <section class="article-actions">
         <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
