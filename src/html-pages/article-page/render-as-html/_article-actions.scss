@@ -76,7 +76,7 @@
 .list-management {
   @include card.basics();
 
-  background-color: settings.$colour-container-background;
+  background-color: settings.$colour-highlighted-background;
 }
 
 .list-management__listed-in {

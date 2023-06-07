@@ -48,7 +48,7 @@ $_card-padding: 16px;
   padding: functions.px-to-rem($_card-padding);
   margin-left: functions.px-to-rem($_card-padding);
   margin-right: settings.$border-radius;
-  background-color: settings.$colour-component-background;
+  background-color: settings.$colour-highlighted-background;
   border: settings.$border-width solid settings.$colour-furniture;
   border-top: 0;
   border-bottom-left-radius: settings.$border-radius;
