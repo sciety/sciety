@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { replayAllLists } from '../resources/all-lists';
 import { CreateListCommand } from '../commands';
-import { DomainEvent, listCreated, ListCreatedEvent } from '../../domain-events';
+import { constructEvent, DomainEvent, ListCreatedEvent } from '../../domain-events';
 
 type ExecuteCreateListCommand = (command: CreateListCommand)
 => (events: ReadonlyArray<DomainEvent>)
@@ -12,10 +12,10 @@ export const executeCreateListCommand: ExecuteCreateListCommand = (command) => (
   replayAllLists,
   (resource) => (resource.includes(command.listId)
     ? []
-    : [listCreated(
-      command.listId,
-      command.name,
-      command.description,
-      command.ownerId,
-    )]),
+    : [constructEvent('ListCreated')({
+      listId: command.listId,
+      name: command.name,
+      description: command.description,
+      ownerId: command.ownerId,
+    })]),
 );

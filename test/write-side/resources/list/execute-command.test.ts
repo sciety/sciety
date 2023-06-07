@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { listCreated } from '../../../../src/domain-events';
+import { constructEvent } from '../../../../src/domain-events';
 import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
 import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../../helpers';
@@ -24,7 +24,12 @@ describe('execute-command', () => {
 
     const raisedEvents = pipe(
       [
-        listCreated(listId, arbitraryString(), listDescription, arbitraryListOwnerId()),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: listDescription,
+          ownerId: arbitraryListOwnerId(),
+        }),
       ],
       replayListResource(listId),
       E.map(executeCommand(command)),
@@ -46,7 +51,12 @@ describe('execute-command', () => {
 
     const raisedEvents = pipe(
       [
-        listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+        constructEvent('ListCreated')({
+          listId,
+          name: listName,
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
       ],
       replayListResource(listId),
       E.map(executeCommand(command)),
@@ -67,7 +77,12 @@ describe('execute-command', () => {
       };
       const eventsToBeRaised = pipe(
         [
-          listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: listName,
+            description: listDescription,
+            ownerId: arbitraryListOwnerId(),
+          }),
         ],
         replayListResource(listId),
         E.map(executeCommand(command)),
@@ -89,7 +104,12 @@ describe('execute-command', () => {
 
     const raisedEvents = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), arbitraryListOwnerId()),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
       ],
       replayListResource(listId),
       E.map(executeCommand(command)),

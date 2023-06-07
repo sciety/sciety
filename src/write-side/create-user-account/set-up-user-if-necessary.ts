@@ -8,7 +8,6 @@ import {
   DomainEvent,
   constructEvent,
   isEventOfType,
-  listCreated,
 } from '../../domain-events';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
@@ -57,12 +56,12 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
     B.fold(
       () => [],
       () => [
-        listCreated(
-          LID.fromValidatedString(v4()),
-          `@${command.handle}'s saved articles`,
-          `Articles that have been saved by @${command.handle}`,
-          LOID.fromUserId(command.userId),
-        ),
+        constructEvent('ListCreated')({
+          listId: LID.fromValidatedString(v4()),
+          name: `@${command.handle}'s saved articles`,
+          description: `Articles that have been saved by @${command.handle}`,
+          ownerId: LOID.fromUserId(command.userId),
+        }),
       ],
     ),
   ),

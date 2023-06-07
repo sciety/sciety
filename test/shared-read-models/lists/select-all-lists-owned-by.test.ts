@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { listCreated, constructEvent } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectAllListsOwnedBy } from '../../../src/shared-read-models/lists/select-all-lists-owned-by';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -30,7 +30,13 @@ describe('select-all-lists-owned-by', () => {
     const listCreationDate = arbitraryDate();
     const readmodel = pipe(
       [
-        listCreated(listId, listName, listDescription, ownerId, listCreationDate),
+        constructEvent('ListCreated')({
+          listId,
+          name: listName,
+          description: listDescription,
+          ownerId,
+          date: listCreationDate,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -60,7 +66,12 @@ describe('select-all-lists-owned-by', () => {
     const dateOfLastEvent = new Date('2021-07-08');
     const readmodel = pipe(
       [
-        listCreated(listId, listName, listDescription, ownerId),
+        constructEvent('ListCreated')({
+          listId,
+          name: listName,
+          description: listDescription,
+          ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: dateOfLastEvent }),
       ],
@@ -92,7 +103,12 @@ describe('select-all-lists-owned-by', () => {
     const dateOfLastEvent = new Date('2021-07-08');
     const readmodel = pipe(
       [
-        listCreated(listId, arbitraryString(), listDescription, ownerId),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: listDescription,
+          ownerId,
+        }),
         constructEvent('ListNameEdited')({ listId, name: listName, date: dateOfLastEvent }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -124,7 +140,18 @@ describe('select-all-lists-owned-by', () => {
     const removedArticleId = arbitraryArticleId();
     const readmodel = pipe(
       [
-        listCreated(listId, listName, listDescription, ownerId),
+        constructEvent('ListCreated')({
+          listId,
+          name: listName,
+          description: listDescription,
+          ownerId,
+        }),
+        constructEvent('ListCreated')({
+          listId,
+          name: listName,
+          description: listDescription,
+          ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
         constructEvent('ArticleAddedToList')({ articleId: removedArticleId, listId }),
         constructEvent('ArticleRemovedFromList')({ articleId: removedArticleId, listId, date: dateOfLastEvent }),
@@ -155,7 +182,12 @@ describe('select-all-lists-owned-by', () => {
     const anotherListId = arbitraryListId();
     const readmodel = pipe(
       [
-        listCreated(anotherListId, arbitraryString(), arbitraryString(), anotherOwnerId),
+        constructEvent('ListCreated')({
+          listId: anotherListId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: anotherOwnerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: anotherListId }),
       ],
       RA.reduce(initialState(), handleEvent),

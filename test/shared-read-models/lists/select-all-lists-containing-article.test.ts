@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryList } from '../../types/list-helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
-import { constructEvent, listCreated } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { selectAllListsContainingArticle } from '../../../src/shared-read-models/lists/select-all-lists-containing-article';
@@ -23,7 +23,12 @@ describe('select-all-lists-containing-article', () => {
     const articleId = arbitraryArticleId();
     const readModel = pipe(
       [
-        listCreated(list.id, list.name, list.description, list.ownerId),
+        constructEvent('ListCreated')({
+          listId: list.id,
+          name: list.name,
+          description: list.description,
+          ownerId: list.ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId: list.id }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -42,9 +47,19 @@ describe('select-all-lists-containing-article', () => {
     const articleId = arbitraryArticleId();
     const readModel = pipe(
       [
-        listCreated(userList.id, userList.name, userList.description, userList.ownerId),
+        constructEvent('ListCreated')({
+          listId: userList.id,
+          name: userList.name,
+          description: userList.description,
+          ownerId: userList.ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId: userList.id }),
-        listCreated(groupList.id, groupList.name, groupList.description, groupList.ownerId),
+        constructEvent('ListCreated')({
+          listId: groupList.id,
+          name: groupList.name,
+          description: groupList.description,
+          ownerId: groupList.ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId: groupList.id }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -65,7 +80,12 @@ describe('select-all-lists-containing-article', () => {
     const anotherArticleId = arbitraryArticleId();
     const readModel = pipe(
       [
-        listCreated(list.id, list.name, list.description, list.ownerId),
+        constructEvent('ListCreated')({
+          listId: list.id,
+          name: list.name,
+          description: list.description,
+          ownerId: list.ownerId,
+        }),
         constructEvent('ArticleAddedToList')({ articleId: anotherArticleId, listId: list.id }),
       ],
       RA.reduce(initialState(), handleEvent),

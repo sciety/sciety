@@ -6,7 +6,6 @@ export {
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 
 export {
-  listCreated,
   ListCreatedEvent,
 } from './list-created-event';
 

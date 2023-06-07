@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, listCreated } from '../../../../src/domain-events';
+import { constructEvent } from '../../../../src/domain-events';
 import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -18,7 +18,12 @@ describe('replay-list-resource', () => {
     describe('and an article has been added to the list', () => {
       const result = pipe(
         [
-          listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: listName,
+            description: listDescription,
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ArticleAddedToList')({ articleId, listId }),
         ],
         replayListResource(listId),
@@ -40,7 +45,12 @@ describe('replay-list-resource', () => {
     describe('and no article has ever been added to the list', () => {
       const result = pipe(
         [
-          listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: listName,
+            description: listDescription,
+            ownerId: arbitraryListOwnerId(),
+          }),
         ],
         replayListResource(listId),
       );
@@ -61,7 +71,12 @@ describe('replay-list-resource', () => {
     describe('and an article used to be on the list and has been removed', () => {
       const result = pipe(
         [
-          listCreated(listId, listName, listDescription, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: listName,
+            description: listDescription,
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ArticleAddedToList')({ articleId, listId }),
           constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         ],
@@ -84,7 +99,12 @@ describe('replay-list-resource', () => {
     describe('and the list has been renamed', () => {
       const result = pipe(
         [
-          listCreated(listId, arbitraryString(), listDescription, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: arbitraryString(),
+            description: listDescription,
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ListNameEdited')({ listId, name: listName }),
         ],
         replayListResource(listId),
@@ -102,7 +122,12 @@ describe('replay-list-resource', () => {
     describe('and the list description has been changed', () => {
       const result = pipe(
         [
-          listCreated(listId, listName, arbitraryString(), arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: listName,
+            description: arbitraryString(),
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ListDescriptionEdited')({ listId, description: listDescription }),
         ],
         replayListResource(listId),

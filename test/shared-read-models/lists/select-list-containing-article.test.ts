@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, listCreated } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { selectListContainingArticle } from '../../../src/shared-read-models/lists/select-list-containing-article';
 import * as LOID from '../../../src/types/list-owner-id';
@@ -18,7 +18,12 @@ describe('select-list-containing-article', () => {
   describe('when the user has added an article to the list', () => {
     const readModel = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: LOID.fromUserId(userId),
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -34,7 +39,12 @@ describe('select-list-containing-article', () => {
   describe('when the user has added and removed an article', () => {
     const readModel = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: LOID.fromUserId(userId),
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
         constructEvent('ArticleRemovedFromList')({ articleId, listId }),
       ],
@@ -51,9 +61,19 @@ describe('select-list-containing-article', () => {
     const listId2 = arbitraryListId();
     const readModel = pipe(
       [
-        listCreated(listId, arbitraryString(), arbitraryString(), LOID.fromUserId(userId)),
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: LOID.fromUserId(userId),
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        listCreated(listId2, arbitraryString(), arbitraryString(), LOID.fromUserId(userId2)),
+        constructEvent('ListCreated')({
+          listId: listId2,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: LOID.fromUserId(userId2),
+        }),
         constructEvent('ArticleAddedToList')({ articleId, listId: listId2 }),
       ],
       RA.reduce(initialState(), handleEvent),

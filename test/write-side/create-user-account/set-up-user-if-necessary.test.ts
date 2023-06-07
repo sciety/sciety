@@ -1,4 +1,4 @@
-import { listCreated, constructEvent } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import * as LOID from '../../../src/types/list-owner-id';
 import { setUpUserIfNecessary } from '../../../src/write-side/create-user-account/set-up-user-if-necessary';
 import { CreateUserAccountCommand } from '../../../src/write-side/commands';
@@ -18,7 +18,12 @@ describe('set-up-user-if-necessary', () => {
   describe('when the user already exists', () => {
     const events = [
       constructEvent('UserCreatedAccount')(command),
-      listCreated(arbitraryListId(), arbitraryString(), arbitraryString(), LOID.fromUserId(command.userId)),
+      constructEvent('ListCreated')({
+        listId: arbitraryListId(),
+        name: arbitraryString(),
+        description: arbitraryString(),
+        ownerId: LOID.fromUserId(command.userId),
+      }),
     ];
 
     const eventsToCommit = setUpUserIfNecessary(command)(events);

@@ -1,9 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  listCreated, constructEvent,
-} from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
 import { lookupList } from '../../../src/shared-read-models/lists/lookup-list';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -22,7 +20,12 @@ describe('lookup-list', () => {
       const articleId2 = arbitraryArticleId();
       const readModel = pipe(
         [
-          listCreated(listId, name, description, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name,
+            description,
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ArticleAddedToList')({ articleId: articleId1, listId, date: new Date('2019') }),
           constructEvent('ArticleAddedToList')({ articleId: articleId2, listId, date: new Date('2021') }),
         ],
@@ -53,7 +56,12 @@ describe('lookup-list', () => {
       const description = arbitraryString();
       const readModel = pipe(
         [
-          listCreated(listId, name, description, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name,
+            description,
+            ownerId: arbitraryListOwnerId(),
+          }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -83,7 +91,12 @@ describe('lookup-list', () => {
       const dateOfLatestEvent = arbitraryDate();
       const readModel = pipe(
         [
-          listCreated(listId, arbitraryString(), description, arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name: arbitraryString(),
+            description,
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ListNameEdited')({ listId, name, date: dateOfLatestEvent }),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -114,7 +127,12 @@ describe('lookup-list', () => {
       const dateOfLatestEvent = arbitraryDate();
       const readModel = pipe(
         [
-          listCreated(listId, name, arbitraryString(), arbitraryListOwnerId()),
+          constructEvent('ListCreated')({
+            listId,
+            name,
+            description: arbitraryString(),
+            ownerId: arbitraryListOwnerId(),
+          }),
           constructEvent('ListDescriptionEdited')({ listId, description, date: dateOfLatestEvent }),
         ],
         RA.reduce(initialState(), handleEvent),
