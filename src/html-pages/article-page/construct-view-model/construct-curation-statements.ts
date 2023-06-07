@@ -5,6 +5,7 @@ import { CurationStatement } from '../view-model';
 const curationStatements: ReadonlyArray<CurationStatement> = [
   {
     groupName: 'eLife',
+    groupSlug: 'elife',
     groupLargeLogo: '/static/images/home-page/elife.svg',
     statement: `
       <p><strong>eLife assessment</strong></p>
@@ -14,6 +15,7 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
   },
   {
     groupName: 'Biophysics Colab',
+    groupSlug: 'biophysics-colab',
     groupLargeLogo: '/static/images/home-page/biophysics-colab.png',
     statement: `
       <p><strong>Endorsement statement (17 November 2022)</strong></p>

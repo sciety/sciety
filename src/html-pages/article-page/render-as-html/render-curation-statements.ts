@@ -7,7 +7,7 @@ import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
   <div class="curation-statement-header">
-    <h2>Curated by ${curationStatement.groupName}</h2>
+    <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
     <img src="${curationStatement.groupLargeLogo}" alt="${curationStatement.groupName} logo">
   </div>
   <div${renderLangAttribute(curationStatement.statementLanguageCode)}>
