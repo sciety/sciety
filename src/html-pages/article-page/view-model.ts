@@ -57,6 +57,7 @@ export type CurationStatement = {
   groupName: string,
   groupLargeLogo: string,
   statement: string,
+  statementLanguageCode: O.Option<LanguageCode>,
 };
 
 // ts-unused-exports:disable-next-line
