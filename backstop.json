@@ -57,6 +57,13 @@
       ]
     },
     {
+      "label": "An article page with curation statements",
+      "url": "http://sciety_app/articles/activity/10.1101/2022.02.23.481615",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Article search",
       "url": "http://sciety_app/search?query=elephant+shark",
       "selectors": [
