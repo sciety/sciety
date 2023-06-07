@@ -13,5 +13,3 @@ export const userCreatedAccountEventCodec = t.type({
   avatarUrl: t.string,
   displayName: t.string,
 });
-
-export type UserCreatedAccountEvent = t.TypeOf<typeof userCreatedAccountEventCodec>;

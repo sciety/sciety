@@ -10,8 +10,6 @@ export {
   ListCreatedEvent,
 } from './list-created-event';
 
-export { UserCreatedAccountEvent } from './user-created-account-event';
-
 export {
   isUserFollowedEditorialCommunityEvent,
   UserFollowedEditorialCommunityEvent,
