@@ -40,7 +40,6 @@ $_left-links-width-not-narrow: 280px;
   @include breakpoints.site-header() {
     display: grid;
     grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_left-links-width-not-narrow)) 1fr;
-    align-content: center;
   }
 
   &::before,
