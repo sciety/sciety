@@ -6,13 +6,15 @@ import { templateListItems } from '../../../shared-components/list-items';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const renderCurationStatement = (curationStatement: CurationStatement) => toHtmlFragment(`
-  <div class="curation-statement-header">
-    <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
-    <img src="${curationStatement.groupLogo}" alt="${curationStatement.groupName} logo">
-  </div>
-  <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-text">
-    ${curationStatement.statement}
-  </div>
+  <section>
+    <header class="curation-statement-header">
+      <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
+      <img src="${curationStatement.groupLogo}" alt="${curationStatement.groupName} logo">
+    </header>
+    <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-text">
+      ${curationStatement.statement}
+    </div>
+  </section>
 `);
 
 export const renderCurationStatements = (viewmodel: ViewModel): HtmlFragment => {
