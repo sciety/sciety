@@ -6,7 +6,7 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
   {
     groupName: 'eLife',
     groupSlug: 'elife',
-    groupLargeLogo: '/static/images/home-page/elife.svg',
+    groupLargeLogo: '/static/images/article-page/elife-logo-sm.svg',
     statement: `
       <p><strong>eLife assessment</strong></p>
       <p>This fundamental study presents solid evidence for T1r (sweet /umami) taste receptors as chloride (Cl-) receptors, based on a combination of state-of-the-art techniques to demonstrate that T1r receptors from Medaka fish bind chloride and that this binding induces a conformational change in the heteromeric receptor. This conformational change leads to low-concentration chloride-specific action potential firing in nerves from neurons containing these receptors in mice, results that represent an important advance in our understanding of the logic of taste perception.</p>
