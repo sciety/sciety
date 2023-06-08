@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ListViewModel, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 
-const renderLists = (lists: ReadonlyArray<ListViewModel>) => pipe(
+const renderLists = (lists: ViewModel['ourLists']['lists']) => pipe(
   lists,
   RA.map((viewModel) => (`
     <tr>

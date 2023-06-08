@@ -3,7 +3,7 @@ import { ListId } from '../../../types/list-id';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
 
-export type ListViewModel = {
+type ListViewModel = {
   listId: ListId,
   articleCount: number,
   updatedAt: Date,
