@@ -11,6 +11,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
+import { GroupId } from '../../types/group-id';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -54,7 +55,7 @@ type ArticleNotInAnyList = {
 type ArticleSavedToThisList = ListSummary;
 
 export type CurationStatement = {
-  groupId: string,
+  groupId: GroupId,
   groupName: string,
   groupSlug: string,
   groupLogo: string,
