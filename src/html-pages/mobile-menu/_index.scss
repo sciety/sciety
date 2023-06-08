@@ -8,9 +8,6 @@
 @use '../../sass/states';
 @use '../../sass/breakpoints';
 
-$_inline-spacing: 16px;
-$_link-max-width: 300px;
-
 .mobile-menu {
   padding-top: functions.px-to-rem(24px);
   height: 100vh;
@@ -22,15 +19,12 @@ $_link-max-width: 300px;
 
 .mobile-menu__links {
   @include list.basics();
-  margin-right: functions.px-to-rem($_inline-spacing);
-  margin-left: functions.px-to-rem($_inline-spacing);
 }
 
 .mobile-menu__link {
   @include typography.button();
   display: inline-block;
   align-items: center;
-  max-width: functions.px-to-rem($_link-max-width);
   border-radius: settings.$border-radius;
   margin-bottom: 2rem;
   font-weight: bold;
