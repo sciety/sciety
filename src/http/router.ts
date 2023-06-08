@@ -53,7 +53,6 @@ import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
 import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
-import { menuPage, menuPageLayout } from '../html-pages/menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
@@ -64,7 +63,6 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { userIdCodec } from '../types/user-id';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
-import { getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
@@ -114,23 +112,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       scietyFeedCodec,
       scietyFeedPage(adapters)(20),
     )),
-  );
-
-  router.get(
-    '/menu',
-    async (context, next) => {
-      context.response.status = StatusCodes.OK;
-      context.response.type = 'html';
-      context.response.body = pipe(
-        context.request.header.referer,
-        O.fromNullable,
-        menuPage(getLoggedInScietyUser(adapters, context)),
-        menuPageLayout(getLoggedInScietyUser(adapters, context)),
-      );
-      context.set('Vary', 'Referer');
-
-      await next();
-    },
   );
 
   router.get(

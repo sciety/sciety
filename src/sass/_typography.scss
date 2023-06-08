@@ -35,10 +35,6 @@
   font-weight: bold;
 }
 
-@mixin page-label () {
-  font-size: functions.px-to-rem(20px);
-}
-
 @mixin subheading () {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
