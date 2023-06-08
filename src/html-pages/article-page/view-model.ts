@@ -54,7 +54,7 @@ type ArticleNotInAnyList = {
 
 type ArticleSavedToThisList = ListSummary;
 
-export type CurationStatement = {
+export type CurationStatementViewmodel = {
   groupId: GroupId,
   groupName: string,
   groupSlug: string,
@@ -81,5 +81,5 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleViewModel>>,
-  curationStatements: ReadonlyArray<CurationStatement>,
+  curationStatements: ReadonlyArray<CurationStatementViewmodel>,
 };
