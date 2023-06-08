@@ -54,7 +54,7 @@ type ArticleNotInAnyList = {
 
 type ArticleSavedToThisList = ListSummary;
 
-export type CurationStatementViewmodel = {
+type CurationStatementViewmodel = {
   groupId: GroupId,
   groupName: string,
   groupSlug: string,
