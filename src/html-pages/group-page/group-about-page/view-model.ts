@@ -10,7 +10,7 @@ export type ListViewModel = {
   title: string,
 };
 
-export type OurListsViewModel = {
+type OurListsViewModel = {
   lists: ReadonlyArray<ListViewModel>,
   allListsUrl: O.Option<string>,
 };

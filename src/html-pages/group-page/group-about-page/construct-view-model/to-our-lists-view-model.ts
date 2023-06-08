@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { List } from '../../../../types/list';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
-import { OurListsViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 
 const maxLists = 3;
 
@@ -14,7 +14,7 @@ const truncatedView = <T>(lists: ReadonlyArray<T>, groupSlug: string) => (
   }
 );
 
-type ToOurListsViewModel = (groupSlug: string) => (lists: ReadonlyArray<List>) => OurListsViewModel;
+type ToOurListsViewModel = (groupSlug: string) => (lists: ReadonlyArray<List>) => ViewModel['ourLists'];
 
 export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) => pipe(
   lists,
