@@ -7,8 +7,8 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   user,
   O.match(
     () => `
-      <li><a href="/subscribe-to-mailing-list" class="mobile-menu__link"><span class="mobile-menu__link_text">Newsletter</span></a></li>
-      <li><a href="/about" class="mobile-menu__link"><span class="mobile-menu__link_text">About</span></a></li>
+      <li><a href="/subscribe-to-mailing-list" class="mobile-menu__link">Newsletter</a></li>
+      <li><a href="/about" class="mobile-menu__link">About</a></li>
       <li>
         <a href="/log-in" class="mobile-menu__link mobile-menu__link_primary_button">Log In</a>
       </li>
@@ -17,8 +17,8 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
       </li>
     `,
     (loggedInUser) => `
-      <li><a href="/my-feed" class="mobile-menu__link"><span class="mobile-menu__link_text">My Feed</span></a></li>
-      <li><a href="/users/${loggedInUser.handle}" class="mobile-menu__link"><span class="mobile-menu__link_text">My Lists</span></a></li>
+      <li><a href="/my-feed" class="mobile-menu__link">My Feed</a></li>
+      <li><a href="/users/${loggedInUser.handle}" class="mobile-menu__link">My Lists</a></li>
       <li>
         <a href="/log-out" class="mobile-menu__link mobile-menu__link_primary_button">Log Out</a>
       </li>
@@ -27,11 +27,11 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   (userMenu) => `
     <div class="mobile-menu" id="mobileNavigation">
       <ul role="list" class="mobile-menu__links">
-        <li><a href="/" class="mobile-menu__link"><span class="mobile-menu__link_text">Home</span></a></li>
-        <li><a href="/groups" class="mobile-menu__link"><span class="mobile-menu__link_text">Groups</span></a></li>
-        <li><a href="/lists" class="mobile-menu__link"><span class="mobile-menu__link_text">Lists</span></a></li>
+        <li><a href="/" class="mobile-menu__link">Home</a></li>
+        <li><a href="/groups" class="mobile-menu__link">Groups</a></li>
+        <li><a href="/lists" class="mobile-menu__link">Lists</a></li>
         ${userMenu}
-        <li><a href="#siteHeader" class="mobile-menu__link"><span class="mobile-menu__link_text mobile-menu__back_link">Back</span></a></li>
+        <li><a href="#siteHeader" class="mobile-menu__link mobile-menu__back_link">Back</a></li>
       </ul>
     </div>
 `,

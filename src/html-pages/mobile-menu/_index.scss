@@ -40,11 +40,6 @@
   }
 }
 
-.mobile-menu__link_text {
-  display: inline-block;
-  padding-top: 0;
-}
-
 .mobile-menu__back_link::after {
   content: '\A0\2190';
 }
