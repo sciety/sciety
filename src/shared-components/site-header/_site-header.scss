@@ -11,6 +11,7 @@
 @use '../../sass/button';
 
 $_search-icon-size: functions.px-to-rem(24px);
+$_menu-icon-size: functions.px-to-rem(26px);
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
@@ -85,6 +86,11 @@ $_left-links-width-not-narrow: 280px;
   @include breakpoints.site-header() {
     display: none;
   }
+}
+
+.site-header__menu_icon {
+  width: $_menu-icon-size;
+  height: $_menu-icon-size;
 }
 
 .site-header__menu_link {

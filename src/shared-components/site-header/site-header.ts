@@ -22,7 +22,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
     <ul class="site-header__left_links_list">
       <li class="site-header__left_links_list_item--menu">
         <a href="#mobileNavigation" class="site-header__menu_link">
-          <img src="/static/images/${schemedImages[scheme].menuIcon}" alt="" />
+          <img src="/static/images/${schemedImages[scheme].menuIcon}" alt="" class="site-header__menu_icon"/>
         </a>
       </li>
       <li class="site-header__left_links_list_item--logo">
