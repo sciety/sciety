@@ -20,9 +20,9 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
     `,
     }),
     (loggedInUser) => ({
-      myProfileLink: `<li class="mobile-menu__link">
-      <a href="/users/${loggedInUser.handle}" >
-        <img src="${loggedInUser.avatarUrl}" alt="">
+      myProfileLink: `<li>
+      <a href="/users/${loggedInUser.handle}" class="mobile-menu__link mobile-menu__link--user-profile">
+        <img src="${loggedInUser.avatarUrl}" alt="" class="mobile-menu__user_avatar">
         <span>${loggedInUser.handle}</span>
       </a>
     </li>`,

@@ -7,6 +7,7 @@
 @use '../../sass/list';
 @use '../../sass/states';
 @use '../../sass/breakpoints';
+@use '../../sass/avatar';
 
 .mobile-menu {
   padding-top: functions.px-to-rem(24px);
@@ -38,6 +39,19 @@
       color: settings.$colour-accent-hover-on-dark-background;
     }
   }
+}
+
+.mobile-menu__link--user-profile {
+  display: inline-flex;
+}
+
+.mobile-menu__user_avatar {
+  @include avatar.border();
+  background-color: settings.$colour-white;
+  width: functions.px-to-rem(avatar.$size--small);
+  height: auto;
+  display: inline-block;
+  margin-right: functions.px-to-rem(12px);
 }
 
 .mobile-menu__back_link::after {
