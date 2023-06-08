@@ -13,5 +13,3 @@ export const listCreatedEventCodec = t.type({
   description: t.string,
   ownerId: LOID.fromStringCodec,
 });
-
-export type ListCreatedEvent = t.TypeOf<typeof listCreatedEventCodec>;

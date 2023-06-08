@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { create } from '../../../../src/write-side/resources/group/create';
-import { constructEvent, ListCreatedEvent } from '../../../../src/domain-events';
+import { constructEvent, EventOfType } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
@@ -52,7 +52,7 @@ describe('create', () => {
       expect(result[2]).toStrictEqual(expect.objectContaining({
         type: 'EvaluatedArticlesListSpecified',
         groupId: newGroup.id,
-        listId: (result[1] as ListCreatedEvent).listId,
+        listId: (result[1] as EventOfType<'ListCreated'>).listId,
       }));
     });
   });

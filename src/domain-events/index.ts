@@ -6,10 +6,6 @@ export {
 export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
 
 export {
-  ListCreatedEvent,
-} from './list-created-event';
-
-export {
   isUserFollowedEditorialCommunityEvent,
   UserFollowedEditorialCommunityEvent,
 } from './user-followed-editorial-community-event';
