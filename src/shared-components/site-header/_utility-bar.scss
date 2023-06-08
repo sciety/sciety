@@ -8,7 +8,6 @@
 @use '../../sass/breakpoints';
 @use '../../sass/avatar';
 @use '../../sass/schemed-header-colours';
-@use '../site-header';
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
@@ -86,7 +85,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_link_sign_up_button {
-  @include site-header.site-header-secondary-button-link();
+  @include button.site-header-secondary-button-link();
 }
 
 .utility-bar-user-profile {
