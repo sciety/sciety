@@ -4,6 +4,7 @@ import { CurationStatement } from '../view-model';
 
 const curationStatements: ReadonlyArray<CurationStatement> = [
   {
+    groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     groupName: 'eLife',
     groupSlug: 'elife',
     groupLogo: '/static/images/article-page/elife-logo-sm.svg',
@@ -14,6 +15,7 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
     statementLanguageCode: O.some('en'),
   },
   {
+    groupId: '4bbf0c12-629b-4bb8-91d6-974f4df8efb2',
     groupName: 'Biophysics Colab',
     groupSlug: 'biophysics-colab',
     groupLogo: '/static/images/home-page/biophysics-colab.png',

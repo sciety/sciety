@@ -54,6 +54,7 @@ type ArticleNotInAnyList = {
 type ArticleSavedToThisList = ListSummary;
 
 export type CurationStatement = {
+  groupId: string,
   groupName: string,
   groupSlug: string,
   groupLogo: string,
