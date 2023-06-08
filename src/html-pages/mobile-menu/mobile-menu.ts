@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 
-export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe(
+export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   user,
   O.match(
     () => `
@@ -25,13 +25,15 @@ export const siteMenuItems = (user: O.Option<UserDetails>): HtmlFragment => pipe
     `,
   ),
   (userMenu) => `
-    <ul role="list" class="site-menu__links">
-      <li><a href="/" class="site-menu__link"><span class="site-menu__link_text">Home</span></a></li>
-      <li><a href="/groups" class="site-menu__link"><span class="site-menu__link_text">Groups</span></a></li>
-      <li><a href="/lists" class="site-menu__link"><span class="site-menu__link_text">Lists</span></a></li>
-      ${userMenu}
-      <li><a href="#siteHeader" class="site-menu__link"><span class="site-menu__link_text site-menu__back_link">Back</span></a></li>
-    </ul>
+    <div class="mobile-menu" id="mobileNavigation">
+      <ul role="list" class="site-menu__links">
+        <li><a href="/" class="site-menu__link"><span class="site-menu__link_text">Home</span></a></li>
+        <li><a href="/groups" class="site-menu__link"><span class="site-menu__link_text">Groups</span></a></li>
+        <li><a href="/lists" class="site-menu__link"><span class="site-menu__link_text">Lists</span></a></li>
+        ${userMenu}
+        <li><a href="#siteHeader" class="site-menu__link"><span class="site-menu__link_text site-menu__back_link">Back</span></a></li>
+      </ul>
+    </div>
 `,
   toHtmlFragment,
 );

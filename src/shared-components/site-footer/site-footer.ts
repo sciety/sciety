@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { siteMenuItems } from '../../html-pages/menu-page/site-menu';
+import { mobileMenu } from '../../html-pages/mobile-menu/mobile-menu';
 import { UserDetails } from '../../types/user-details';
 
 export const siteFooter = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`
@@ -10,9 +10,7 @@ export const siteFooter = (user: O.Option<UserDetails>): HtmlFragment => toHtmlF
       <a href="/subscribe-to-mailing-list" class="pre-footer__call_to_action">Subscribe to our newsletter</a>
     </div>
     <div class="main-footer">
-      <div class="mobile-menu" id="mobileNavigation">
-        ${siteMenuItems(user)}
-      </div>
+      ${mobileMenu(user)}
       <ul class="main-footer__navigation">
         <li class="main-footer__navigation_item">
           <a href="/sciety-feed" class="main-footer__link">Feed</a>
