@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { arbitraryGroupId } from './group-id.helper';
 import { Group } from '../../src/types/group';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
@@ -11,4 +12,5 @@ export const arbitraryGroup = (): Group => ({
   shortDescription: arbitraryString(),
   homepage: arbitraryUri(),
   slug: arbitraryWord(),
+  largeLogoPath: O.none,
 });

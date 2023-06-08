@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { DescriptionPath } from './description-path';
 import { GroupId } from './group-id';
 
@@ -9,4 +10,5 @@ export type Group = {
   shortDescription: string,
   homepage: string,
   slug: string,
+  largeLogoPath: O.Option<string>,
 };

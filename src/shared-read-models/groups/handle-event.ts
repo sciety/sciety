@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import * as O from 'fp-ts/Option';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
@@ -15,6 +16,7 @@ const toGroup = (event: EventOfType<'GroupJoined'>) => ({
   shortDescription: event.shortDescription,
   homepage: event.homepage,
   slug: event.slug,
+  largeLogoPath: O.none,
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
