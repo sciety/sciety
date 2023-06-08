@@ -5,7 +5,7 @@ import { identity, pipe } from 'fp-ts/function';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
 import { LanguageCode } from '../../../shared-components/lang-attribute';
-import { CurationStatementViewmodel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
 type CurationStatement = {
@@ -36,7 +36,7 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
 
 type ConstructCurationStatements = (dependencies: Dependencies)
 => (doi: Doi)
-=> ReadonlyArray<CurationStatementViewmodel>;
+=> ViewModel['curationStatements'];
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (doi) => pipe(
   (doi.value === '10.1101/2022.02.23.481615') ? curationStatements : [],
