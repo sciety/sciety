@@ -17,7 +17,7 @@ type CurationStatement = {
 
 const curationStatements: ReadonlyArray<CurationStatement> = [
   {
-    groupId: GID.fromValidatedString('gordonsalive'),
+    groupId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     groupLogo: '/static/images/article-page/elife-logo-sm.svg',
     statement: `
       <p><strong>eLife assessment</strong></p>
