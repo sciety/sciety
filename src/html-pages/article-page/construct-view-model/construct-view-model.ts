@@ -20,6 +20,7 @@ import { constructUserListManagement, Ports as ConstructUserListManagementPorts 
 import { constructRelatedArticles, Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from './construct-curation-statements';
+import { Queries } from '../../../shared-read-models';
 
 export type Params = {
   doi: Doi,
@@ -34,7 +35,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Ports = GetArticleFeedEventsPorts
+export type Ports = Queries & GetArticleFeedEventsPorts
 & ConstructListedInPorts
 & ConstructUserListManagementPorts
 & ConstructRelatedArticlesPorts
@@ -63,7 +64,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
       relatedArticles,
-      curationStatements: constructCurationStatements(params.doi),
+      curationStatements: constructCurationStatements(ports)(params.doi),
     })),
   )),
 );

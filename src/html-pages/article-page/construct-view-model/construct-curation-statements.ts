@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../../types/doi';
 import { CurationStatement } from '../view-model';
+import { Queries } from '../../../shared-read-models';
 
 const curationStatements: ReadonlyArray<CurationStatement> = [
   {
@@ -28,4 +29,6 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-export const constructCurationStatements = (doi: Doi): ReadonlyArray<CurationStatement> => ((doi.value === '10.1101/2022.02.23.481615') ? curationStatements : []);
+type ConstructCurationStatements = (queries: Queries) => (doi: Doi) => ReadonlyArray<CurationStatement>;
+
+export const constructCurationStatements: ConstructCurationStatements = () => (doi) => ((doi.value === '10.1101/2022.02.23.481615') ? curationStatements : []);
