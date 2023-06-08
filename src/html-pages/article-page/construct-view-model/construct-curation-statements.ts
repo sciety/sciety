@@ -8,6 +8,9 @@ import { LanguageCode } from '../../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
+// ts-unused-exports:disable-next-line
+export const magicArticleId = '10.1101/2022.02.23.481615';
+
 type CurationStatement = {
   groupId: GID.GroupId,
   statement: string,
@@ -34,12 +37,10 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-type ConstructCurationStatements = (dependencies: Dependencies)
-=> (doi: Doi)
-=> ViewModel['curationStatements'];
+type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => ViewModel['curationStatements'];
 
-export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (doi) => pipe(
-  (doi.value === '10.1101/2022.02.23.481615') ? curationStatements : [],
+export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
+  (doi.value === magicArticleId) ? curationStatements : [],
   RA.map((statement) => pipe(
     statement.groupId,
     dependencies.getGroup,

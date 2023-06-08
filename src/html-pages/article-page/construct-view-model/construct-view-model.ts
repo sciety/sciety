@@ -46,7 +46,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
       relatedArticles,
-      curationStatements: constructCurationStatements(ports)(params.doi),
+      curationStatements: constructCurationStatements(ports, params.doi),
     })),
   )),
 );
