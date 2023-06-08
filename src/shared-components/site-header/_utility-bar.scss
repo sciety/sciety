@@ -81,11 +81,39 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_link_button {
-  @include button.button-link();
+  @include typography.button();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+
+  &:link,
+  &:visited {
+    color: var(--colour-text-navigation-link);
+
+    @include states.link() {
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-brand;
+      ;
+    }
+  }
 }
 
 .utility-bar__list_link_sign_up_button {
-  @include button.site-header-secondary-button-link();
+  @include typography.button();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+
+  &:link,
+  &:visited {
+    color: var(--colour-text-navigation-link);
+
+    @include states.link() {
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-brand;
+      ;
+    }
+  }
 }
 
 .utility-bar-user-profile {
