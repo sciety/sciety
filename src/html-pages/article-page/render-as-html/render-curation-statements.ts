@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -5,11 +6,19 @@ import { ViewModel } from '../view-model';
 import { templateListItems } from '../../../shared-components/list-items';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
+const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][number]) => pipe(
+  curationStatement.groupLogo,
+  O.match(
+    () => '',
+    (logoPath) => `<img src="${logoPath}" alt="${curationStatement.groupName} logo">`,
+  ),
+);
+
 const renderCurationStatement = (curationStatement: ViewModel['curationStatements'][number]) => toHtmlFragment(`
   <section>
     <header class="curation-statement-header">
       <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
-      <img src="${curationStatement.groupLogo}" alt="${curationStatement.groupName} logo">
+      ${renderGroupLogo(curationStatement)}
     </header>
     <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-text">
       ${curationStatement.statement}

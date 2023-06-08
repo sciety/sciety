@@ -58,7 +58,7 @@ type CurationStatementViewmodel = {
   groupId: GroupId,
   groupName: string,
   groupSlug: string,
-  groupLogo: string,
+  groupLogo: O.Option<string>,
   statement: string,
   statementLanguageCode: O.Option<LanguageCode>,
 };

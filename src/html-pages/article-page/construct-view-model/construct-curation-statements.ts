@@ -50,13 +50,7 @@ export const constructCurationStatements: ConstructCurationStatements = (depende
       ...statement,
       groupName: group.name,
       groupSlug: group.slug,
-      groupLogo: pipe(
-        group.largeLogoPath,
-        O.match(
-          () => '',
-          identity,
-        ),
-      ),
+      groupLogo: group.largeLogoPath,
     })),
   )),
   RA.rights,
