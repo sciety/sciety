@@ -12,6 +12,8 @@
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_menu-icon-size: functions.px-to-rem(26px);
+$_search-button-padding: functions.px-to-rem(12px - settings.$border-width);
+$_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 2 + functions.px-to-rem(settings.$border-width) * 2;
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
@@ -95,7 +97,8 @@ $_left-links-width-not-narrow: 280px;
 
 .site-header__menu_link {
   display: flex;
-  margin-right: functions.px-to-rem(22px + settings.$site-header-click-target-separation);
+  margin-right: $_search-button-width-on-mobile - $_menu-icon-size + functions.px-to-rem(settings.$site-header-click-target-separation);
+  ;
 
   &::before {
     @include layout.visually-hidden();
