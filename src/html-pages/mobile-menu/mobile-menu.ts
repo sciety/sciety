@@ -7,31 +7,31 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   user,
   O.match(
     () => `
-      <li><a href="/subscribe-to-mailing-list" class="site-menu__link"><span class="site-menu__link_text">Newsletter</span></a></li>
-      <li><a href="/about" class="site-menu__link"><span class="site-menu__link_text">About</span></a></li>
+      <li><a href="/subscribe-to-mailing-list" class="mobile-menu__link"><span class="mobile-menu__link_text">Newsletter</span></a></li>
+      <li><a href="/about" class="mobile-menu__link"><span class="mobile-menu__link_text">About</span></a></li>
       <li>
-        <a href="/log-in" class="site-menu__link site-menu__link_primary_button">Log In</a>
+        <a href="/log-in" class="mobile-menu__link mobile-menu__link_primary_button">Log In</a>
       </li>
       <li>
-        <a href="/sign-up" class="site-menu__link site-menu__link_sign_up_button">Sign Up</a>
+        <a href="/sign-up" class="mobile-menu__link mobile-menu__link_sign_up_button">Sign Up</a>
       </li>
     `,
     (loggedInUser) => `
-      <li><a href="/my-feed" class="site-menu__link"><span class="site-menu__link_text">My Feed</span></a></li>
-      <li><a href="/users/${loggedInUser.handle}" class="site-menu__link"><span class="site-menu__link_text">My Lists</span></a></li>
+      <li><a href="/my-feed" class="mobile-menu__link"><span class="mobile-menu__link_text">My Feed</span></a></li>
+      <li><a href="/users/${loggedInUser.handle}" class="mobile-menu__link"><span class="mobile-menu__link_text">My Lists</span></a></li>
       <li>
-        <a href="/log-out" class="site-menu__link site-menu__link_primary_button">Log Out</a>
+        <a href="/log-out" class="mobile-menu__link mobile-menu__link_primary_button">Log Out</a>
       </li>
     `,
   ),
   (userMenu) => `
     <div class="mobile-menu" id="mobileNavigation">
-      <ul role="list" class="site-menu__links">
-        <li><a href="/" class="site-menu__link"><span class="site-menu__link_text">Home</span></a></li>
-        <li><a href="/groups" class="site-menu__link"><span class="site-menu__link_text">Groups</span></a></li>
-        <li><a href="/lists" class="site-menu__link"><span class="site-menu__link_text">Lists</span></a></li>
+      <ul role="list" class="mobile-menu__links">
+        <li><a href="/" class="mobile-menu__link"><span class="mobile-menu__link_text">Home</span></a></li>
+        <li><a href="/groups" class="mobile-menu__link"><span class="mobile-menu__link_text">Groups</span></a></li>
+        <li><a href="/lists" class="mobile-menu__link"><span class="mobile-menu__link_text">Lists</span></a></li>
         ${userMenu}
-        <li><a href="#siteHeader" class="site-menu__link"><span class="site-menu__link_text site-menu__back_link">Back</span></a></li>
+        <li><a href="#siteHeader" class="mobile-menu__link"><span class="mobile-menu__link_text mobile-menu__back_link">Back</span></a></li>
       </ul>
     </div>
 `,

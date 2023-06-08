@@ -21,13 +21,13 @@ $_link-inline-offset-to-align-with-header: 10px;
   }
 }
 
-.site-menu__links {
+.mobile-menu__links {
   @include list.basics();
   margin-right: functions.px-to-rem($_inline-spacing);
   margin-left: functions.px-to-rem($_inline-spacing);
 }
 
-.site-menu__link {
+.mobile-menu__link {
   @include typography.button();
   display: inline-block;
   align-items: center;
@@ -48,20 +48,20 @@ $_link-inline-offset-to-align-with-header: 10px;
   }
 }
 
-.site-menu__link_text {
+.mobile-menu__link_text {
   display: inline-block;
   padding-top: 0;
 }
 
-.site-menu__back_link::after {
+.mobile-menu__back_link::after {
   content: '\A0\2190';
 }
 
-.site-menu__link_primary_button {
+.mobile-menu__link_primary_button {
   @include button.button-link();
 }
 
-.site-menu__link_sign_up_button {
+.mobile-menu__link_sign_up_button {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
