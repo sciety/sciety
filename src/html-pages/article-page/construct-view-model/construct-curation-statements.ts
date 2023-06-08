@@ -1,11 +1,12 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
-import { Queries } from '../../../shared-read-models';
 import { LanguageCode } from '../../../shared-components/lang-attribute';
 import { CurationStatementViewmodel } from '../view-model';
+import { Dependencies } from './dependencies';
 
 type CurationStatement = {
   groupId: GID.GroupId,
@@ -16,7 +17,7 @@ type CurationStatement = {
 
 const curationStatements: ReadonlyArray<CurationStatement> = [
   {
-    groupId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    groupId: GID.fromValidatedString('gordonsalive'),
     groupLogo: '/static/images/article-page/elife-logo-sm.svg',
     statement: `
       <p><strong>eLife assessment</strong></p>
@@ -36,18 +37,23 @@ const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-type ConstructCurationStatements = (queries: Queries) => (doi: Doi) => ReadonlyArray<CurationStatementViewmodel>;
+type ConstructCurationStatements = (dependencies: Dependencies)
+=> (doi: Doi)
+=> ReadonlyArray<CurationStatementViewmodel>;
 
-export const constructCurationStatements: ConstructCurationStatements = (queries) => (doi) => pipe(
+export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (doi) => pipe(
   (doi.value === '10.1101/2022.02.23.481615') ? curationStatements : [],
   RA.map((statement) => pipe(
     statement.groupId,
-    queries.getGroup,
-    O.map((group) => ({
+    dependencies.getGroup,
+    E.fromOption(() => {
+      dependencies.logger('error', 'Group not found in read model', { statement });
+    }),
+    E.map((group) => ({
       ...statement,
       groupName: group.name,
       groupSlug: group.slug,
     })),
   )),
-  RA.compact,
+  RA.rights,
 );
