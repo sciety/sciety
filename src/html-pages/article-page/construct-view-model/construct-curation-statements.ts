@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
 import { LanguageCode } from '../../../shared-components/lang-attribute';
