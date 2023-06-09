@@ -1,7 +1,7 @@
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
 import {
-  constructCurationStatements, magicArticleId,
+  constructCurationStatements, curationStatements, magicArticleId,
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-curation-statements';
 import { dummyLogger } from '../../../dummy-logger';
 import { Doi } from '../../../../src/types/doi';
@@ -14,7 +14,10 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when the group exists', () => {
-    const group = arbitraryGroup();
+    const group = {
+      ...arbitraryGroup(),
+      id: curationStatements[0].groupId,
+    };
     let result: ReturnType<typeof constructCurationStatements>;
 
     beforeEach(async () => {
@@ -26,7 +29,7 @@ describe('construct-curation-statements', () => {
       }, new Doi(magicArticleId));
     });
 
-    it.failing('the curation statement is returned', () => {
+    it('the curation statement is returned', () => {
       expect(result).toStrictEqual([expect.objectContaining({ groupName: group.name })]);
     });
   });
