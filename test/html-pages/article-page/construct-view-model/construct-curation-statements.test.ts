@@ -1,3 +1,4 @@
+import * as TE from 'fp-ts/TaskEither';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
 import {
@@ -5,6 +6,7 @@ import {
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-curation-statements';
 import { dummyLogger } from '../../../dummy-logger';
 import { Doi } from '../../../../src/types/doi';
+import * as DE from '../../../../src/types/data-error';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -39,6 +41,24 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when a curation statement cannot be retrieved', () => {
-    it.todo('that curation statement is skipped');
+    const group = {
+      ...arbitraryGroup(),
+      id: curationStatements[0].groupId,
+    };
+    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group);
+      result = await constructCurationStatements({
+        ...framework.queries,
+        ...framework.happyPathThirdParties,
+        fetchReview: () => TE.left(DE.unavailable),
+        logger: dummyLogger,
+      }, new Doi(magicArticleId))();
+    });
+
+    it.failing('that curation statement is skipped', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
