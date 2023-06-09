@@ -27,7 +27,7 @@ describe('get-curation-statements', () => {
       getCurationStatements(readmodel),
     );
 
-    it.failing('returns them', () => {
+    it('returns them', () => {
       const curationStatement = { articleId, evaluationLocator, groupId };
 
       expect(result).toStrictEqual([curationStatement]);

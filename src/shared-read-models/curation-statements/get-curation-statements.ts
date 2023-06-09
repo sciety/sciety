@@ -1,16 +1,13 @@
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import * as GID from '../../types/group-id';
-import { EvaluationLocator, toEvaluationLocator } from '../../types/evaluation-locator';
-import { ReadModel } from './handle-event';
+import { toEvaluationLocator } from '../../types/evaluation-locator';
+import { CurationStatement, ReadModel } from './handle-event';
 
 // ts-unused-exports:disable-next-line
 export const magicArticleId = '10.1101/2022.02.23.481615';
-
-type CurationStatement = {
-  articleId: Doi,
-  evaluationLocator: EvaluationLocator,
-  groupId: GID.GroupId,
-};
 
 // ts-unused-exports:disable-next-line
 export const curationStatements: ReadonlyArray<CurationStatement> = [
@@ -31,5 +28,9 @@ export const getCurationStatements = (readmodel: ReadModel) => (articleId: Doi):
   if (articleId.value === magicArticleId) {
     return curationStatements;
   }
-  return [];
+  return pipe(
+    readmodel,
+    R.lookup(articleId.value),
+    O.getOrElseW(() => []),
+  );
 };
