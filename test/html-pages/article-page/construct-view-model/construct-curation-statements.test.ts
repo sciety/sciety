@@ -37,4 +37,8 @@ describe('construct-curation-statements', () => {
       expect(result).toHaveLength(1);
     });
   });
+
+  describe('when a curation statement cannot be retrieved', () => {
+    it.todo('that curation statement is skipped');
+  });
 });
