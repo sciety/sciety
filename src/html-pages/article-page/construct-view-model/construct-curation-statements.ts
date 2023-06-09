@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
@@ -30,32 +31,43 @@ export const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
+const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
+  statement.groupId,
+  dependencies.getGroup,
+  E.fromOption(() => {
+    dependencies.logger('error', 'Group not found in read model', { statement });
+  }),
+  E.map((group) => ({
+    ...statement,
+    groupName: group.name,
+    groupSlug: group.slug,
+    groupLogo: group.largeLogoPath,
+  })),
+);
+type Partial = {
+  groupName: string,
+  groupSlug: string,
+  groupLogo: O.Option<string>,
+  evaluationLocator: EvaluationLocator,
+  groupId: GID.GroupId,
+};
+
+const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
+  partial.evaluationLocator,
+  dependencies.fetchReview,
+  TE.map((review) => ({
+    ...partial,
+    statement: review.fullText,
+    statementLanguageCode: detectLanguage(review.fullText),
+  })),
+);
+
 type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.Task<ViewModel['curationStatements']>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   (doi.value === magicArticleId) ? curationStatements : [],
-  RA.map((statement) => pipe(
-    statement.groupId,
-    dependencies.getGroup,
-    E.fromOption(() => {
-      dependencies.logger('error', 'Group not found in read model', { statement });
-    }),
-    E.map((group) => ({
-      ...statement,
-      groupName: group.name,
-      groupSlug: group.slug,
-      groupLogo: group.largeLogoPath,
-    })),
-  )),
+  RA.map(addGroupInformation(dependencies)),
   RA.rights,
-  T.traverseArray((partial) => pipe(
-    partial.evaluationLocator,
-    dependencies.fetchReview,
-    TE.map((review) => ({
-      ...partial,
-      statement: review.fullText,
-      statementLanguageCode: detectLanguage(review.fullText),
-    })),
-  )),
+  T.traverseArray(addEvaluationText(dependencies)),
   T.map(RA.rights),
 );
