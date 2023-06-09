@@ -3,6 +3,7 @@ import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subje
 import { DomainEvent } from '../domain-events';
 import * as annotations from './annotations';
 import * as evaluations from './evaluations';
+import * as curationStatements from './curation-statements';
 import * as followings from './followings';
 import * as groupActivity from './group-activity';
 import * as groups from './groups';
@@ -16,6 +17,7 @@ type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 export type Queries = addArticleToElifeSubjectAreaList.Queries
 & annotations.Queries
 & articleActivity.Queries
+& curationStatements.Queries
 & evaluations.Queries
 & followings.Queries
 & groupActivity.Queries
@@ -91,6 +93,7 @@ export const dispatcher = (): Dispatcher => {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
     ...articleActivity.queries(readModels.articleActivityReadModel),
+    ...curationStatements.queries(''),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groupActivity.queries(readModels.groupActivityReadModel),

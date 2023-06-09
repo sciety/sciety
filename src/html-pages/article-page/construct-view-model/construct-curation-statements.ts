@@ -34,10 +34,6 @@ export const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-const getCurationStatements = (articleId: Doi) => (
-  (articleId.value === magicArticleId) ? curationStatements : []
-);
-
 const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
   statement.groupId,
   dependencies.getGroup,
@@ -74,7 +70,7 @@ type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.T
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
-  getCurationStatements,
+  dependencies.getCurationStatements,
   RA.map(addGroupInformation(dependencies)),
   RA.rights,
   T.traverseArray(addEvaluationText(dependencies)),
