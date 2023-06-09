@@ -15,6 +15,7 @@ import { EvaluationLocator, toEvaluationLocator } from '../../../types/evaluatio
 export const magicArticleId = '10.1101/2022.02.23.481615';
 
 type CurationStatement = {
+  articleId: Doi,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
 };
@@ -22,14 +23,20 @@ type CurationStatement = {
 // ts-unused-exports:disable-next-line
 export const curationStatements: ReadonlyArray<CurationStatement> = [
   {
+    articleId: new Doi(magicArticleId),
     groupId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     evaluationLocator: toEvaluationLocator('hypothesis:YSEnWoeKEe2O2nN67bYvsA'),
   },
   {
+    articleId: new Doi(magicArticleId),
     groupId: GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
     evaluationLocator: toEvaluationLocator('hypothesis:TfCA6maDEe2zm3_n3MyxjA'),
   },
 ];
+
+const getCurationStatements = (articleId: Doi) => (
+  (articleId.value === magicArticleId) ? curationStatements : []
+);
 
 const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
   statement.groupId,
@@ -44,6 +51,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: Curation
     groupLogo: group.largeLogoPath,
   })),
 );
+
 type Partial = {
   groupName: string,
   groupSlug: string,
@@ -65,7 +73,8 @@ const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => 
 type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.Task<ViewModel['curationStatements']>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
-  (doi.value === magicArticleId) ? curationStatements : [],
+  doi,
+  getCurationStatements,
   RA.map(addGroupInformation(dependencies)),
   RA.rights,
   T.traverseArray(addEvaluationText(dependencies)),
