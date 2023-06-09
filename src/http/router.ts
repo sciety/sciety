@@ -79,7 +79,9 @@ import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
 import * as groupResource from '../write-side/resources/group';
 import * as evaluationResource from '../write-side/resources/evaluation';
+import * as curationStatementResource from '../write-side/resources/curation-statement';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
+import { recordCurationStatementCommandCodec } from '../write-side/commands/record-curation-statement';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -334,30 +336,32 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     createListHandler(adapters),
   );
 
-  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
-
-  router.post('/api/record-evaluation', createApiRouteForCommand(adapters, recordEvaluationCommandCodec, recordEvaluationCommandHandler(adapters)));
-
-  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
-
-  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
-
-  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
-
-  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
-
-  router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
-
-  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
-
-  router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
-
-  router.post('/api/update-user-details', createApiRouteForCommand(adapters, updateUserDetailsCommandCodec, updateUserDetailsCommandHandler(adapters)));
-
   router.post(
     '/annotations/create-annotation',
     supplyFormSubmissionTo(adapters, handleCreateAnnotationCommand(adapters)),
   );
+
+  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
+
+  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
+
+  router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
+
+  router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
+
+  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
+
+  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
+
+  router.post('/api/record-curation-statement', createApiRouteForResourceAction(adapters, recordCurationStatementCommandCodec, curationStatementResource.record));
+
+  router.post('/api/record-evaluation', createApiRouteForCommand(adapters, recordEvaluationCommandCodec, recordEvaluationCommandHandler(adapters)));
+
+  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
+
+  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
+
+  router.post('/api/update-user-details', createApiRouteForCommand(adapters, updateUserDetailsCommandCodec, updateUserDetailsCommandHandler(adapters)));
 
   // AUTHENTICATION
 
