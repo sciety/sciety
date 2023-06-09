@@ -20,7 +20,7 @@ const isEvaluationLocator = (candidate: unknown): candidate is EvaluationLocator
   typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
 );
 
-const toEvaluationLocator = (serialization: string): EvaluationLocator => {
+export const toEvaluationLocator = (serialization: string): EvaluationLocator => {
   if (isEvaluationLocator(serialization)) {
     return serialization as unknown as EvaluationLocator;
   }

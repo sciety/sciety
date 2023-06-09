@@ -57,7 +57,7 @@ describe('construct-curation-statements', () => {
       }, new Doi(magicArticleId))();
     });
 
-    it.failing('that curation statement is skipped', () => {
+    it('that curation statement is skipped', () => {
       expect(result).toHaveLength(0);
     });
   });
