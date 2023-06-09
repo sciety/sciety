@@ -13,7 +13,7 @@ describe('construct-curation-statements', () => {
     framework = createTestFramework();
   });
 
-  describe('when the group exists', () => {
+  describe('when there are multiple curation statements but only one of the groups exists', () => {
     const group = {
       ...arbitraryGroup(),
       id: curationStatements[0].groupId,
@@ -29,12 +29,12 @@ describe('construct-curation-statements', () => {
       }, new Doi(magicArticleId));
     });
 
-    it('the curation statement is returned', () => {
+    it('the curation statement by the existing group is returned', () => {
       expect(result).toStrictEqual([expect.objectContaining({ groupName: group.name })]);
     });
-  });
 
-  describe('when the group does not exist', () => {
-    it.todo('the curation statement is skipped');
+    it('the curation statement by the missing group is skipped', () => {
+      expect(result).toHaveLength(1);
+    });
   });
 });
