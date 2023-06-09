@@ -42,7 +42,7 @@ describe('record', () => {
       record(input),
     );
 
-    it.failing('returns no events', () => {
+    it('returns no events', () => {
       expect(events).toStrictEqual(E.right([]));
     });
   });
