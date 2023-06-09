@@ -37,6 +37,7 @@ export const dispatcher = (): Dispatcher => {
     addArticleToElifeSubjectAreaListReadModel: addArticleToElifeSubjectAreaList.initialState(),
     annotationsReadModel: annotations.initialState(),
     articleActivityReadModel: articleActivity.initialState(),
+    curationStatementsReadModel: curationStatements.initialState(),
     evaluationsReadModel: evaluations.initialState(),
     followingsReadModel: followings.initialState(),
     groupActivityReadModel: groupActivity.initialState(),
@@ -58,6 +59,10 @@ export const dispatcher = (): Dispatcher => {
     readModels.articleActivityReadModel = RA.reduce(
       readModels.articleActivityReadModel,
       articleActivity.handleEvent,
+    )(events);
+    readModels.curationStatementsReadModel = RA.reduce(
+      readModels.curationStatementsReadModel,
+      curationStatements.handleEvent,
     )(events);
     readModels.evaluationsReadModel = RA.reduce(
       readModels.evaluationsReadModel,
@@ -93,7 +98,7 @@ export const dispatcher = (): Dispatcher => {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
     ...articleActivity.queries(readModels.articleActivityReadModel),
-    ...curationStatements.queries(''),
+    ...curationStatements.queries(readModels.curationStatementsReadModel),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groupActivity.queries(readModels.groupActivityReadModel),
