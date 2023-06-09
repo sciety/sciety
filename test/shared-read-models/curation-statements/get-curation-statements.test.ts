@@ -11,12 +11,18 @@ describe('get-curation-statements', () => {
   describe('when there are curation statements for the article', () => {
     const articleId = arbitraryArticleId();
     const groupId = arbitraryGroupId();
-    const evaluationLocator = arbitraryEvaluationLocator();
+    const evaluationLocatorA = arbitraryEvaluationLocator();
+    const evaluationLocatorB = arbitraryEvaluationLocator();
     const readmodel = pipe(
       [
         constructEvent('CurationStatementRecorded')({
           articleId,
-          evaluationLocator,
+          evaluationLocator: evaluationLocatorA,
+          groupId,
+        }),
+        constructEvent('CurationStatementRecorded')({
+          articleId,
+          evaluationLocator: evaluationLocatorB,
           groupId,
         }),
       ],
@@ -28,9 +34,8 @@ describe('get-curation-statements', () => {
     );
 
     it('returns them', () => {
-      const curationStatement = { articleId, evaluationLocator, groupId };
-
-      expect(result).toStrictEqual([curationStatement]);
+      expect(result).toContainEqual(expect.objectContaining({ evaluationLocator: evaluationLocatorA }));
+      expect(result).toContainEqual(expect.objectContaining({ evaluationLocator: evaluationLocatorB }));
     });
   });
 
