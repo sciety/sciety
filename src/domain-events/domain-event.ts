@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import * as A from 'fp-ts/Array';
+import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import { annotationCreatedEventCodec } from './annotation-created-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
@@ -44,6 +45,7 @@ export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
   articleRemovedFromListEventCodec,
+  curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationRecordedEventCodec,
   groupDetailsUpdatedEventCodec,
