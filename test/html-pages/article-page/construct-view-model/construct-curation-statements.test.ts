@@ -18,15 +18,15 @@ describe('construct-curation-statements', () => {
       ...arbitraryGroup(),
       id: curationStatements[0].groupId,
     };
-    let result: ReturnType<typeof constructCurationStatements>;
+    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      result = constructCurationStatements({
+      result = await constructCurationStatements({
         ...framework.queries,
         ...framework.happyPathThirdParties,
         logger: dummyLogger,
-      }, new Doi(magicArticleId));
+      }, new Doi(magicArticleId))();
     });
 
     it('the curation statement by the existing group is returned', () => {

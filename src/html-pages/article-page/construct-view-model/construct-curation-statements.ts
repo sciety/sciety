@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
@@ -37,7 +38,7 @@ export const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => ViewModel['curationStatements'];
+type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.Task<ViewModel['curationStatements']>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   (doi.value === magicArticleId) ? curationStatements : [],
@@ -56,4 +57,5 @@ export const constructCurationStatements: ConstructCurationStatements = (depende
     })),
   )),
   RA.rights,
+  T.of,
 );

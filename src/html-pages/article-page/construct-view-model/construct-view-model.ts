@@ -33,10 +33,11 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     {
       feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server),
       relatedArticles: constructRelatedArticles(params.doi, ports),
+      curationStatements: constructCurationStatements(ports, params.doi),
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
-    TE.map(({ feedItemsByDateDescending, relatedArticles }) => ({
+    TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
@@ -46,7 +47,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
       relatedArticles,
-      curationStatements: constructCurationStatements(ports, params.doi),
+      curationStatements,
     })),
   )),
 );
