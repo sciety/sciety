@@ -21,7 +21,7 @@ describe('record', () => {
       record(input),
     );
 
-    it.failing('returns an CurationStatementRecorded event', () => {
+    it('returns an CurationStatementRecorded event', () => {
       expect(eventsToBeRaised).toStrictEqual(E.right([expect.objectContaining({
         type: 'CurationStatementRecorded',
         groupId: input.groupId,

@@ -4,7 +4,7 @@ import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import { RecordCurationStatementCommand } from '../../commands/record-curation-statement';
 import { ResourceAction } from '../resource-action';
-import { DomainEvent, isEventOfType } from '../../../domain-events';
+import { DomainEvent, constructEvent, isEventOfType } from '../../../domain-events';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 
 const hasEvaluationLocatorAlreadyBeenRecordedInCurationStatement = (
@@ -14,12 +14,18 @@ const hasEvaluationLocatorAlreadyBeenRecordedInCurationStatement = (
   RA.filter(isEventOfType('CurationStatementRecorded')),
   RA.some((event) => event.evaluationLocator === evaluationLocator),
 );
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export const record: ResourceAction<RecordCurationStatementCommand> = (command) => (events) => pipe(
   events,
   hasEvaluationLocatorAlreadyBeenRecordedInCurationStatement(command.evaluationLocator),
   B.fold(
-    () => [],
+    () => [
+      constructEvent('CurationStatementRecorded')({
+        articleId: command.articleId,
+        groupId: command.groupId,
+        evaluationLocator: command.evaluationLocator,
+      }),
+    ],
     () => [],
   ),
   E.right,
