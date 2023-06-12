@@ -3,7 +3,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 
-export const recordCurationStatementCommandCodec = t.type({
+export const recordCurationStatementCommandCodec = t.strict({
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,
   articleId: DoiFromString,

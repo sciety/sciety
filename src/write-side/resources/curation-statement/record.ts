@@ -19,11 +19,7 @@ export const record: ResourceAction<RecordCurationStatementCommand> = (command) 
   existingCurationStatementsUsing(command.evaluationLocator),
   RA.match(
     () => [
-      constructEvent('CurationStatementRecorded')({
-        articleId: command.articleId,
-        groupId: command.groupId,
-        evaluationLocator: command.evaluationLocator,
-      }),
+      constructEvent('CurationStatementRecorded')(command),
     ],
     () => [],
   ),
