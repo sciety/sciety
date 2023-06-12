@@ -1,6 +1,9 @@
 @use '../../../sass/functions';
 @use '../../../sass/settings';
+@use '../../../sass/breakpoints';
 @use 'common';
+
+$_value-statements-max-width: functions.px-to-rem(996px);
 
 .home-page-value-statements-wrapper {
   color: settings.$colour-white;
@@ -15,12 +18,22 @@
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   margin-left: auto;
   margin-right: auto;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  max-width: $_value-statements-max-width;
+}
+
+.home-page-value-statement {
+
+  @include breakpoints.not-narrow() {
+    display: flex;
+  }
 }
 
 .home-page-value-statement__image {
   width: 100%;
   max-width: 490px;
   height: auto;
-  outline: 1px solid #fff;
+
+  @include breakpoints.not-narrow() {
+    padding-left: functions.px-to-rem(20px);
+  }
 }
