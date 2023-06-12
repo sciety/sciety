@@ -6,21 +6,19 @@ import { Doi } from '../../../types/doi';
 import { UserId } from '../../../types/user-id';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
-import { Queries } from '../../../shared-read-models';
 import { ViewModel } from '../view-model';
+import { Dependencies } from './dependencies';
 
-export type Ports = Pick<Queries, 'selectListContainingArticle' | 'selectAllListsOwnedBy'>;
-
-export const constructUserListManagement = (user: O.Option<{ id: UserId }>, ports: Ports, articleId: Doi): ViewModel['userListManagement'] => pipe(
+export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, articleId: Doi): ViewModel['userListManagement'] => pipe(
   user,
   O.map(
     ({ id }) => pipe(
-      ports.selectListContainingArticle(id)(articleId),
+      dependencies.selectListContainingArticle(id)(articleId),
       O.foldW(
         () => pipe(
           id,
           LOID.fromUserId,
-          ports.selectAllListsOwnedBy,
+          dependencies.selectAllListsOwnedBy,
           sortByDefaultListOrdering,
           RA.map((list) => ({
             listId: list.id,

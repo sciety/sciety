@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { Queries } from '../../../shared-read-models';
-import { Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 import { Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
 import { Doi } from '../../../types/doi';
 import * as DE from '../../../types/data-error';
@@ -18,7 +17,6 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 }>;
 
 export type Dependencies = Queries
-& ConstructUserListManagementPorts
 & ConstructRelatedArticlesPorts
 & {
   fetchArticle: GetArticleDetails,
