@@ -1,0 +1,12 @@
+@use '../../../sass/functions';
+@use '../../../sass/settings';
+@use 'common';
+
+.home-page-value-statements {
+  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: common.$section-vertical-separation;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+}
