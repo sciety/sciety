@@ -7,15 +7,14 @@ import { linkify } from 'remarkable/linkify';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { hypothesisAnnotation, HypothesisAnnotation } from '../../infrastructure/codecs/HypothesisAnnotation';
-import { EvaluationFetcher } from '../fetch-review';
-import { Logger } from '../../infrastructure/logger';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { Evaluation } from '../../types/evaluation';
-import { GetJson } from '../../shared-ports';
-import { getJsonAndLog } from '../get-json-and-log';
-import { sanitise } from '../../types/sanitised-html-fragment';
+import { Logger, GetJson } from '../shared-ports';
+import { EvaluationFetcher } from '../third-parties/fetch-review';
+import { getJsonAndLog } from '../third-parties/get-json-and-log';
+import { Evaluation } from '../types/evaluation';
+import { toHtmlFragment } from '../types/html-fragment';
+import { sanitise } from '../types/sanitised-html-fragment';
+import { HypothesisAnnotation, hypothesisAnnotation } from './codecs/HypothesisAnnotation';
+import * as DE from '../types/data-error';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
