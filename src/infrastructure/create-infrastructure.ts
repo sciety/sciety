@@ -15,7 +15,7 @@ import { fetchNcrcReview } from '../third-parties/ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from '../third-parties/rapid-reviews/fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
-import { fetchZenodoRecord } from './fetch-zenodo-record';
+import { fetchZenodoRecord } from '../third-parties/zenodo/fetch-zenodo-record';
 import { fetchData } from './fetchers';
 import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';

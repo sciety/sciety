@@ -5,12 +5,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as DE from '../types/data-error';
-import { htmlFragmentCodec } from '../types/html-fragment';
-import { Evaluation } from '../types/evaluation';
-import { GetJson, Logger } from '../shared-ports';
-import { getJsonAndLog } from '../third-parties/get-json-and-log';
-import { sanitise } from '../types/sanitised-html-fragment';
+import * as DE from '../../types/data-error';
+import { htmlFragmentCodec } from '../../types/html-fragment';
+import { Evaluation } from '../../types/evaluation';
+import { GetJson, Logger } from '../../shared-ports';
+import { getJsonAndLog } from '../get-json-and-log';
+import { sanitise } from '../../types/sanitised-html-fragment';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
