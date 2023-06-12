@@ -10,7 +10,7 @@ import { ArticleServer } from '../types/article-server';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models/dispatcher';
-import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
+import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';

@@ -2,11 +2,11 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
-import { fetchHypothesisAnnotation, insertSelectedText } from '../../src/infrastructure/fetch-hypothesis-annotation';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { dummyLogger } from '../dummy-logger';
-import { arbitraryWord } from '../helpers';
-import { HypothesisAnnotation } from '../../src/infrastructure/codecs/HypothesisAnnotation';
+import { fetchHypothesisAnnotation, insertSelectedText } from '../../../src/third-parties/hypothesis/fetch-hypothesis-annotation';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryWord } from '../../helpers';
+import { HypothesisAnnotation } from '../../../src/infrastructure/codecs/HypothesisAnnotation';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
