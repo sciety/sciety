@@ -6,18 +6,12 @@ import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { sequenceS } from 'fp-ts/Apply';
-import { FeedEvent, getFeedEventsContent, Ports as GetFeedEventsContentPorts } from './get-feed-events-content';
+import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { Doi } from '../../../types/doi';
 import { FeedItem } from '../view-model';
-import { FindVersionsForArticleDoi } from '../../../shared-ports';
-import { Queries } from '../../../shared-read-models';
-
-export type Ports = GetFeedEventsContentPorts & {
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  getEvaluationsForDoi: Queries['getEvaluationsForDoi'],
-};
+import { Dependencies } from './dependencies';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -29,7 +23,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
   Ord.reverse,
 );
 
-type GetArticleFeedEventsByDateDescending = (adapters: Ports)
+type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (doi: Doi, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 

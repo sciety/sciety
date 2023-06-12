@@ -5,6 +5,7 @@ import {
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
+import { dummyLogger } from '../../../dummy-logger';
 
 describe('get-feed-events-content', () => {
   let framework: TestFramework;
@@ -31,12 +32,13 @@ describe('get-feed-events-content', () => {
     ];
 
     it('creates a view model for the evaluations', async () => {
-      const ports = {
+      const dependencies = {
         ...framework.queries,
         ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
+        logger: dummyLogger,
       };
-      const viewModel = await getFeedEventsContent(ports, 'biorxiv')(feedEvents)();
+      const viewModel = await getFeedEventsContent(dependencies, 'biorxiv')(feedEvents)();
 
       expect(viewModel).toHaveLength(2);
     });

@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { Queries } from '../../../shared-read-models';
-import { Ports as GetArticleFeedEventsPorts } from './get-article-feed-events';
 import { Ports as ConstructUserListManagementPorts } from './construct-user-list-management';
 import { Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
 import { Doi } from '../../../types/doi';
@@ -8,7 +7,7 @@ import * as DE from '../../../types/data-error';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ArticleServer } from '../../../types/article-server';
 import { ArticleAuthors } from '../../../types/article-authors';
-import { Logger } from '../../../shared-ports';
+import { FetchReview, FindVersionsForArticleDoi, Logger } from '../../../shared-ports';
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
@@ -18,10 +17,12 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Dependencies = Queries & GetArticleFeedEventsPorts
+export type Dependencies = Queries
 & ConstructUserListManagementPorts
 & ConstructRelatedArticlesPorts
 & {
   fetchArticle: GetArticleDetails,
+  fetchReview: FetchReview,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   logger: Logger,
 };

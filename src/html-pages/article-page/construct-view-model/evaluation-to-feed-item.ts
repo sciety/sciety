@@ -7,15 +7,9 @@ import * as RI from '../../../types/evaluation-locator';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { FetchReview } from '../../../shared-ports';
-import { Queries } from '../../../shared-read-models';
 import { EvaluationFeedItem } from '../view-model';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
-
-export type Ports = {
-  fetchReview: FetchReview,
-  getGroup: Queries['getGroup'],
-};
+import { Dependencies } from './dependencies';
 
 export type EvaluationEvent = {
   type: 'evaluation',
@@ -25,12 +19,12 @@ export type EvaluationEvent = {
 };
 
 export const evaluationToFeedItem = (
-  adapters: Ports,
+  dependencies: Dependencies,
   feedEvent: EvaluationEvent,
 ): T.Task<EvaluationFeedItem> => pipe(
   {
     groupDetails: pipe(
-      adapters.getGroup(feedEvent.groupId),
+      dependencies.getGroup(feedEvent.groupId),
       O.match(
         () => ({
           groupName: 'A group',
@@ -47,7 +41,7 @@ export const evaluationToFeedItem = (
     ),
     review: pipe(
       feedEvent.evaluationLocator,
-      adapters.fetchReview,
+      dependencies.fetchReview,
       TE.match(
         () => ({
           url: RI.inferredSourceUrl(feedEvent.evaluationLocator),

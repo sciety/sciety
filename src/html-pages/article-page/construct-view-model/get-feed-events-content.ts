@@ -3,9 +3,8 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
-import { EvaluationEvent, Ports, evaluationToFeedItem } from './evaluation-to-feed-item';
-
-export { Ports } from './evaluation-to-feed-item';
+import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item';
+import { Dependencies } from './dependencies';
 
 type ArticleVersionEvent = {
   type: 'article-version',
@@ -23,7 +22,7 @@ const articleVersionToFeedItem = (
   T.of({ ...feedEvent, server })
 );
 
-type GetFeedEventsContent = (adapters: Ports, server: ArticleServer)
+type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
