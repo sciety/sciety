@@ -43,13 +43,13 @@ const renderUserMenuLinks = (user: O.Option<UserDetails>) => pipe(
 export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   `
     <div class="mobile-menu" id="mobileNavigation">
+      <a href="#siteHeader"><img src="static/images/close-icon.svg" alt="dismiss the menu" class="mobile-menu__close_link"></a>
       <ul role="list" class="mobile-menu__links">
         ${renderProfileLink(user)}
         <li><a href="/" class="mobile-menu__link">Home</a></li>
         <li><a href="/groups" class="mobile-menu__link">Groups</a></li>
         <li><a href="/lists" class="mobile-menu__link">Lists</a></li>
         ${renderUserMenuLinks(user)}
-        <li><a href="#siteHeader" class="mobile-menu__link mobile-menu__back_link">Back</a></li>
       </ul>
     </div>
 `,

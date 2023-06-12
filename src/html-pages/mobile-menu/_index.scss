@@ -9,13 +9,21 @@
 @use '../../sass/breakpoints';
 @use '../../sass/avatar';
 
+$_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
+
 .mobile-menu {
-  padding-top: functions.px-to-rem(24px);
+  padding-top: $_mobile-menu-perimeter-spacing;
   height: 100vh;
 
   @include breakpoints.site-header() {
     display: none;
   }
+}
+
+.mobile-menu__close_link {
+  display: block;
+  text-align: left;
+  padding-left: $_mobile-menu-perimeter-spacing;
 }
 
 .mobile-menu__links {
@@ -52,10 +60,6 @@
   height: auto;
   display: inline-block;
   margin-right: functions.px-to-rem(12px);
-}
-
-.mobile-menu__back_link::after {
-  content: '\A0\2190';
 }
 
 .mobile-menu__link_primary_button {
