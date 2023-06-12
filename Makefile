@@ -234,6 +234,7 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 		--ext .js,.ts \
 		--cache --cache-location $(LINT_CACHE) \
 		--color --max-warnings 0
+	npx madge --circular --extensions ts src test feature-test
 	npx ts-unused-exports tsconfig.json --silent --ignoreTestFiles
 	@touch $@
 
