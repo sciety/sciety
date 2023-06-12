@@ -12,7 +12,7 @@ import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models/dispatcher';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
 import { fetchNcrcReview } from '../third-parties/ncrc/fetch-ncrc-review';
-import { fetchRapidReview } from './fetch-rapid-review';
+import { fetchRapidReview } from '../third-parties/rapid-reviews/fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './fetch-zenodo-record';
