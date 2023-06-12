@@ -1,4 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
+import { URL } from 'url';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
 import {
@@ -9,6 +10,8 @@ import * as DE from '../../../../src/types/data-error';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../../helpers';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -63,6 +66,31 @@ describe('construct-curation-statements', () => {
 
     it('that curation statement is skipped', () => {
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('when one curation statement can be retrieved and one cannot', () => {
+    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+
+    const evaluationLocator1 = arbitraryEvaluationLocator();
+    const evaluationLocator2 = arbitraryEvaluationLocator();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator1);
+      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator2);
+      result = await constructCurationStatements({
+        ...framework.queries,
+        ...framework.happyPathThirdParties,
+        fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1
+          ? TE.left(DE.unavailable)
+          : TE.right({ url: new URL(arbitraryUri()), fullText: arbitrarySanitisedHtmlFragment() })),
+        logger: dummyLogger,
+      }, articleId)();
+    });
+
+    it('that curation statement is skipped', () => {
+      expect(result).toHaveLength(1);
     });
   });
 });
