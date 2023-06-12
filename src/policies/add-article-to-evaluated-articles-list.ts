@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../write-side/add-article-to-list';
-import { DomainEvent, EvaluationRecordedEvent, isEventOfType } from '../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../domain-events';
 import { Logger } from '../shared-ports';
 
 import { GroupId } from '../types/group-id';
@@ -22,7 +22,7 @@ export type Ports = AddArticleToListPorts & {
 // ts-unused-exports:disable-next-line
 export const constructCommand = (
   ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
-) => (event: EvaluationRecordedEvent): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(
+) => (event: EventOfType<'EvaluationRecorded'>): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(
   event.groupId,
   ports.getEvaluatedArticlesListIdForGroup,
   E.fromOption(() => undefined),

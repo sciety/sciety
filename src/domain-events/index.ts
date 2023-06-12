@@ -3,7 +3,7 @@ export {
 } from './domain-event';
 
 // ts-unused-exports:disable-next-line
-export { EvaluationRecordedEvent, evaluationRecorded } from './evaluation-recorded-event';
+export { evaluationRecorded } from './evaluation-recorded-event';
 
 export {
   isUserFollowedEditorialCommunityEvent,
