@@ -11,7 +11,7 @@ import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models/dispatcher';
 import { fetchHypothesisAnnotation } from '../third-parties/hypothesis';
-import { fetchNcrcReview } from './fetch-ncrc-review';
+import { fetchNcrcReview } from '../third-parties/ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
