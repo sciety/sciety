@@ -26,12 +26,12 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
         </a>
       </li>
       <li class="site-header__left_links_list_item--logo">
-        <a href="/" class="site-header__logo_link" id="mobileMenuReturnPoint">
+        <a href="/" class="site-header__logo_link">
           <img src="/static/images/${schemedImages[scheme].scietyLogo}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
       <li>
-        <a href="/search" class="site-header__search_link">
+        <a href="/search" class="site-header__search_link" id="mobileMenuReturnPoint">
           <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>
         </a>
       </li>
