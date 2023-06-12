@@ -17,3 +17,10 @@
   margin-right: auto;
   max-width: functions.px-to-rem(settings.$max-site-width);
 }
+
+.home-page-value-statement__image {
+  width: 100%;
+  max-width: 490px;
+  height: 281px;
+  outline: 1px solid #fff;
+}
