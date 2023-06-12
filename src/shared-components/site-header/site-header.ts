@@ -16,7 +16,7 @@ const schemedImages = {
 };
 
 export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 'light'): HtmlFragment => toHtmlFragment(`
-<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}" id="siteHeader">
+<header class="site-header${scheme === 'dark' ? ' site-header--dark' : ''}">
   <a href="#mainContent" class="visually-hidden">Skip navigation</a>
   <nav class="site-header__left_links">
     <ul class="site-header__left_links_list">
@@ -26,7 +26,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
         </a>
       </li>
       <li class="site-header__left_links_list_item--logo">
-        <a href="/" class="site-header__logo_link">
+        <a href="/" class="site-header__logo_link" id="mobileMenuReturnPoint">
           <img src="/static/images/${schemedImages[scheme].scietyLogo}" alt="Sciety" class="site-header__logo">
         </a>
       </li>
