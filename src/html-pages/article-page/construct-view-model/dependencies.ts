@@ -1,12 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { Queries } from '../../../shared-read-models';
-import { Ports as ConstructRelatedArticlesPorts } from './construct-related-articles';
 import { Doi } from '../../../types/doi';
 import * as DE from '../../../types/data-error';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ArticleServer } from '../../../types/article-server';
 import { ArticleAuthors } from '../../../types/article-authors';
-import { FetchReview, FindVersionsForArticleDoi, Logger } from '../../../shared-ports';
+import {
+  FetchRelatedArticles, FetchReview, FindVersionsForArticleDoi, Logger,
+} from '../../../shared-ports';
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   doi: Doi,
@@ -16,10 +17,9 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   authors: ArticleAuthors,
 }>;
 
-export type Dependencies = Queries
-& ConstructRelatedArticlesPorts
-& {
+export type Dependencies = Queries & {
   fetchArticle: GetArticleDetails,
+  fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   logger: Logger,
