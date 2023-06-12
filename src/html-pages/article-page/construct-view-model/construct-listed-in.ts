@@ -3,23 +3,18 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../../types/doi';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { Logger } from '../../../shared-ports';
-import { Queries } from '../../../shared-read-models';
 import { ViewModel } from '../view-model';
+import { Dependencies } from './dependencies';
 
-export type Ports = Pick<Queries, 'getGroup' | 'lookupUser' | 'selectAllListsContainingArticle'> & {
-  logger: Logger,
-};
-
-const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
+const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) => {
   switch (ownerId.tag) {
     case 'group-id':
       return pipe(
         ownerId.value,
-        ports.getGroup,
+        dependencies.getGroup,
         O.match(
           () => {
-            ports.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
+            dependencies.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
             return 'A group';
           },
           (group) => group.name,
@@ -29,10 +24,10 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
     case 'user-id':
       return pipe(
         ownerId.value,
-        ports.lookupUser,
+        dependencies.lookupUser,
         O.match(
           () => {
-            ports.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
+            dependencies.logger('error', 'Consistency error in article page: Failed to get list owner', { ownerId });
             return 'A user';
           },
           (user) => user.handle,
@@ -41,12 +36,12 @@ const getListOwnerName = (ports: Ports) => (ownerId: ListOwnerId) => {
   }
 };
 
-export const constructListedIn = (ports: Ports) => (articleId: Doi): ViewModel['listedIn'] => pipe(
+export const constructListedIn = (dependencies: Dependencies) => (articleId: Doi): ViewModel['listedIn'] => pipe(
   articleId,
-  ports.selectAllListsContainingArticle,
+  dependencies.selectAllListsContainingArticle,
   RA.map((list) => ({
     listId: list.id,
     listName: list.name,
-    listOwnerName: getListOwnerName(ports)(list.ownerId),
+    listOwnerName: getListOwnerName(dependencies)(list.ownerId),
   })),
 );

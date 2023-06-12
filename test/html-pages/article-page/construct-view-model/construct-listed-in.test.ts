@@ -3,23 +3,25 @@ import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { Ports, constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
+import { constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { List } from '../../../../src/types/list';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
+import { Dependencies } from '../../../../src/html-pages/article-page/construct-view-model/dependencies';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
-  let adapters: Ports;
+  let adapters: Dependencies;
   const articleId = arbitraryArticleId();
 
   beforeEach(() => {
     framework = createTestFramework();
     adapters = {
       ...framework.queries,
+      ...framework.happyPathThirdParties,
       logger: dummyLogger,
     };
   });
