@@ -55,7 +55,9 @@ module.exports = {
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
     'function-paren-newline': ['error', 'consistent'],
+    'import/namespace': 'off',
     'import/no-cycle': 'off',
+    'import/no-relative-packages': 'off',
     'import/prefer-default-export': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
