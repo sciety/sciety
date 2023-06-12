@@ -2,7 +2,8 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderValueStatements = process.env.EXPERIMENT_ENABLED === 'true'
   ? toHtmlFragment(`
-    <section class="home-page-value-statements">
+    <section class="home-page-value-statements-wrapper">
+      <div class="home-page-value-statements">
         <h2>How does Sciety work?</h2>
         <article>
             <div>
@@ -25,6 +26,7 @@ export const renderValueStatements = process.env.EXPERIMENT_ENABLED === 'true'
             </div>
             <img src="#" alt="placeholder image">
         </article>
+        </div>
     </section>
   `)
   : toHtmlFragment('');

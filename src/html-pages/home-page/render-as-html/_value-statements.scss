@@ -2,11 +2,18 @@
 @use '../../../sass/settings';
 @use 'common';
 
+.home-page-value-statements-wrapper {
+  color: settings.$colour-white;
+  background-color: rgb(44,56,61);
+  padding-top: common.$section-vertical-separation;
+  padding-bottom: common.$section-vertical-separation;
+  margin-bottom: common.$section-vertical-separation;
+}
+
 .home-page-value-statements {
   padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
   padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: common.$section-vertical-separation;
   max-width: functions.px-to-rem(settings.$max-site-width);
 }
