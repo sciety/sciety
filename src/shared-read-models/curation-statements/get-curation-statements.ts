@@ -23,7 +23,6 @@ export const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getCurationStatements = (readmodel: ReadModel) => (articleId: Doi): ReadonlyArray<CurationStatement> => {
   if (articleId.value === magicArticleId) {
     return curationStatements;

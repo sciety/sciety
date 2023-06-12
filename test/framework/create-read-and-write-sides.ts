@@ -17,6 +17,8 @@ import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-com
 import { Queries } from '../../src/shared-read-models';
 import { CommandHandler } from '../../src/types/command-handler';
 import { AddGroupCommand } from '../../src/write-side/commands';
+import * as curationStatementResource from '../../src/write-side/resources/curation-statement';
+import { RecordCurationStatementCommand } from '../../src/write-side/commands/record-curation-statement';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
@@ -50,12 +52,21 @@ const createGroup: CreateGroup = (adapters) => (command) => pipe(
   TE.chainTaskK(adapters.commitEvents),
 );
 
+type RecordCurationStatement = (adapters: EventStore) => CommandHandler<RecordCurationStatementCommand>;
+
+const recordCurationStatement: RecordCurationStatement = (adapters) => (command) => pipe(
+  adapters.getAllEvents,
+  T.map(curationStatementResource.record(command)),
+  TE.chainTaskK(adapters.commitEvents),
+);
+
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
   createGroup: createGroup(eventStore),
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
   followGroup: followCommandHandler(eventStore),
+  recordCurationStatement: recordCurationStatement({ ...eventStore }),
   recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
