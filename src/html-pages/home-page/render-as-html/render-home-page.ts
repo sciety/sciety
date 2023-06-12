@@ -5,10 +5,12 @@ import { renderGroups } from './render-groups';
 import { renderHero } from './render-hero';
 import { ViewModel } from '../view-model';
 import { renderCurationTeasers } from './render-curation-teasers';
+import { renderValueStatements } from './render-value-statements';
 
 export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="home-page">
     ${renderHero}
+    ${renderValueStatements}
     ${pipe(
     viewModel.groups,
     O.match(
