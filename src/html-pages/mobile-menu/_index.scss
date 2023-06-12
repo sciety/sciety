@@ -14,6 +14,9 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 .mobile-menu {
   padding-top: $_mobile-menu-perimeter-spacing;
   height: 100vh;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
 
   @include breakpoints.site-header() {
     display: none;

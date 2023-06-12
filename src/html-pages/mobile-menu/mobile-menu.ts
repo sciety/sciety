@@ -11,7 +11,7 @@ const renderProfileLink = (user: O.Option<UserDetails>) => pipe(
       <li>
       <a href="/users/${loggedInUser.handle}" class="mobile-menu__link mobile-menu__link--user-profile">
         <img src="${loggedInUser.avatarUrl}" alt="" class="mobile-menu__user_avatar">
-        <span>${loggedInUser.handle}</span>
+        <span><span class="visually-hidden">Currently logged in as </span>${loggedInUser.handle}</span>
       </a>
     </li>`,
   ),
@@ -42,8 +42,8 @@ const renderUserMenuLinks = (user: O.Option<UserDetails>) => pipe(
 
 export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
   `
-    <div class="mobile-menu" id="mobileNavigation">
-      <a href="#siteHeader"><img src="static/images/close-icon.svg" alt="dismiss the menu" class="mobile-menu__close_link"></a>
+    <nav class="mobile-menu" id="mobileNavigation">
+      <span class="visually-hidden">Site navigation links</span>
       <ul role="list" class="mobile-menu__links">
         ${renderProfileLink(user)}
         <li><a href="/" class="mobile-menu__link">Home</a></li>
@@ -51,7 +51,8 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
         <li><a href="/lists" class="mobile-menu__link">Lists</a></li>
         ${renderUserMenuLinks(user)}
       </ul>
-    </div>
+      <a href="#siteHeader"><img src="static/images/close-icon.svg" alt="dismiss this menu" class="mobile-menu__close_link"></a>
+    </nav>
 `,
   toHtmlFragment,
 );
