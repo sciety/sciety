@@ -11,20 +11,9 @@ import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists'
 import * as lists from './lists';
 import * as users from './users';
 import * as articleActivity from './article-activity';
+import { Queries } from './queries';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
-
-export type Queries = addArticleToElifeSubjectAreaList.Queries
-& annotations.Queries
-& articleActivity.Queries
-& curationStatements.Queries
-& evaluations.Queries
-& followings.Queries
-& groupActivity.Queries
-& groups.Queries
-& idsOfEvaluatedArticlesLists.Queries
-& lists.Queries
-& users.Queries;
 
 // ts-unused-exports:disable-next-line
 export type Dispatcher = {

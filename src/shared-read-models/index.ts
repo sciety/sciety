@@ -1,1 +1,1 @@
-export { Queries } from './dispatcher';
+export { Queries } from './queries';
