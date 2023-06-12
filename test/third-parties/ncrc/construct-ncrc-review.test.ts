@@ -1,4 +1,4 @@
-import { constructNcrcReview } from '../../src/infrastructure/construct-ncrc-review';
+import { constructNcrcReview } from '../../../src/infrastructure/construct-ncrc-review';
 
 describe('fetch-ncrc-review', () => {
   describe('construct-found-review', () => {
