@@ -1,11 +1,7 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { ensureEvaluationsAreListed } from '../../../src/sagas/ensure-evaluations-are-listed/ensure-evaluations-are-listed';
 import { dummyLogger } from '../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import * as LOID from '../../../src/types/list-owner-id';
