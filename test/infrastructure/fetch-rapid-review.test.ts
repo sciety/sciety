@@ -129,7 +129,7 @@ describe('fetch-rapid-review', () => {
           ]),
           toFullText,
         )()).toStrictEqual(E.right(expect.stringContaining(
-          `${ratings[0]} <br> ${ratings[1]} <br> ${ratings[2]}`,
+          `${ratings[0]} <br /> ${ratings[1]} <br /> ${ratings[2]}`,
         )));
       });
     });

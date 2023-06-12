@@ -6,16 +6,17 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/evaluation-locator';
-import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
+import { Evaluation } from '../../src/types/evaluation';
 
 describe('fetch-review', () => {
   describe('when a service is supported', () => {
     it('returns the fetched evaluation', async () => {
       const reviewId = arbitraryEvaluationLocator();
-      const evaluation = {
-        fullText: arbitraryHtmlFragment(),
+      const evaluation: Evaluation = {
+        fullText: arbitrarySanitisedHtmlFragment(),
         url: new URL(arbitraryUri()),
       };
       const fetchers = {

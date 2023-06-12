@@ -1,7 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
+import { pipe } from 'fp-ts/function';
 import { FetchReview } from '../../shared-ports';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise } from '../../types/sanitised-html-fragment';
 
 const htmlFullText = `
 <h1>Stubbed evaluation content</h1>
@@ -91,5 +93,9 @@ please follow <a href="https://scicrunch.org/ASWG/about/References">this link</a
 
 export const fetchReview: FetchReview = () => TE.right({
   url: new URL('http://example.com'),
-  fullText: toHtmlFragment(htmlFullText),
+  fullText: pipe(
+    htmlFullText,
+    toHtmlFragment,
+    sanitise,
+  ),
 });

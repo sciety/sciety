@@ -15,6 +15,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { Evaluation } from '../types/evaluation';
 import { GetJson } from '../shared-ports';
 import { getJsonAndLog } from '../third-parties/get-json-and-log';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -39,6 +40,7 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
       insertSelectedText(response),
       (text) => converter.render(text),
       toHtmlFragment,
+      sanitise,
     ),
     url: new URL(response.links.incontext),
   };

@@ -10,6 +10,7 @@ import { htmlFragmentCodec } from '../types/html-fragment';
 import { Evaluation } from '../types/evaluation';
 import { GetJson, Logger } from '../shared-ports';
 import { getJsonAndLog } from '../third-parties/get-json-and-log';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
@@ -47,7 +48,7 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson, logger) => (key) =
     (data) => data.metadata.description,
   ),
   TE.map((fullText) => ({
-    fullText,
+    fullText: sanitise(fullText),
     url: new URL(`https://doi.org/${key}`),
   })),
 );

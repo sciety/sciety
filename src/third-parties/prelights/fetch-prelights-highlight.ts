@@ -7,6 +7,7 @@ import { JSDOM } from 'jsdom';
 import { EvaluationFetcher } from '../../infrastructure/fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise } from '../../types/sanitised-html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
 
@@ -20,6 +21,7 @@ export const fetchPrelightsHighlight = (getHtml: GetHtml): EvaluationFetcher => 
     E.fromOption(() => DE.unavailable),
     E.map((text) => `<h3>Excerpt</h3><p>${text}</p>`),
     E.map(toHtmlFragment),
+    E.map(sanitise),
   )),
   TE.map((text) => ({
     url: new URL(key),

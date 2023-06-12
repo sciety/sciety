@@ -39,7 +39,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     },
   ]),
   fetchReview: () => TE.right({
-    fullText: toHtmlFragment(arbitraryString()),
+    fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),

@@ -8,6 +8,7 @@ import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
 
@@ -58,6 +59,7 @@ export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFe
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
     E.map(toHtmlFragment),
+    E.map(sanitise),
   )),
   TE.map((fullText) => ({
     fullText,

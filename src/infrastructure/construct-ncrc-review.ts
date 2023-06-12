@@ -1,5 +1,8 @@
 import { URL } from 'url';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { pipe } from 'fp-ts/function';
+import { toHtmlFragment } from '../types/html-fragment';
+import { sanitise } from '../types/sanitised-html-fragment';
+import { Evaluation } from '../types/evaluation';
 
 export type NcrcReview = {
   title: string,
@@ -10,11 +13,6 @@ export type NcrcReview = {
   studyStrength: string,
   limitations: string,
   valueAdded: string,
-};
-
-type FoundReview = {
-  fullText: HtmlFragment,
-  url: URL,
 };
 
 const slugify = (value: string) => value.toLowerCase().replace(/\s/g, '-');
@@ -51,7 +49,11 @@ const constructFullText = (review: NcrcReview) => toHtmlFragment(`
   </p>
 `);
 
-export const constructNcrcReview = (review: NcrcReview): FoundReview => ({
+export const constructNcrcReview = (review: NcrcReview): Evaluation => ({
   url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
-  fullText: constructFullText(review),
+  fullText: pipe(
+    review,
+    constructFullText,
+    sanitise,
+  ),
 });

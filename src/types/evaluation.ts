@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import { HtmlFragment } from './html-fragment';
+import { SanitisedHtmlFragment } from './sanitised-html-fragment';
 
 export type Evaluation = {
-  fullText: HtmlFragment,
+  fullText: SanitisedHtmlFragment,
   url: URL,
 };
