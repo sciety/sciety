@@ -7,23 +7,15 @@ import { constructListedIn } from '../../../../src/html-pages/article-page/const
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { dummyLogger } from '../../../dummy-logger';
 import { List } from '../../../../src/types/list';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
-import { Dependencies } from '../../../../src/html-pages/article-page/construct-view-model/dependencies';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
-  let adapters: Dependencies;
   const articleId = arbitraryArticleId();
 
   beforeEach(() => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
   });
 
   describe('when the article is not in any list', () => {
@@ -32,7 +24,7 @@ describe('construct-listed-in', () => {
     beforeEach(() => {
       listedIn = pipe(
         articleId,
-        constructListedIn(adapters),
+        constructListedIn(framework.dependenciesForViews),
       );
     });
 
@@ -52,7 +44,7 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
         articleId,
-        constructListedIn(adapters),
+        constructListedIn(framework.dependenciesForViews),
       );
     });
 
@@ -84,7 +76,7 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
         articleId,
-        constructListedIn(adapters),
+        constructListedIn(framework.dependenciesForViews),
       );
     });
 
@@ -106,7 +98,7 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
         articleId,
-        constructListedIn(adapters),
+        constructListedIn(framework.dependenciesForViews),
       );
     });
 

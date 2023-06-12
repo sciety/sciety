@@ -5,7 +5,6 @@ import { arbitraryGroup } from '../../../types/group.helper';
 import {
   constructCurationStatements,
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-curation-statements';
-import { dummyLogger } from '../../../dummy-logger';
 import * as DE from '../../../../src/types/data-error';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
@@ -34,11 +33,7 @@ describe('construct-curation-statements', () => {
         arbitraryGroupId(),
         arbitraryEvaluationLocator(),
       );
-      result = await constructCurationStatements({
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-        logger: dummyLogger,
-      }, articleId)();
+      result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
 
     it('the curation statement by the existing group is returned', () => {
@@ -57,10 +52,8 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordCurationStatement(articleId, group.id, arbitraryEvaluationLocator());
       result = await constructCurationStatements({
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
+        ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
-        logger: dummyLogger,
       }, articleId)();
     });
 
@@ -80,12 +73,10 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator1);
       await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator2);
       result = await constructCurationStatements({
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
+        ...framework.dependenciesForViews,
         fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1
           ? TE.left(DE.unavailable)
           : TE.right({ url: new URL(arbitraryUri()), fullText: arbitrarySanitisedHtmlFragment() })),
-        logger: dummyLogger,
       }, articleId)();
     });
 
