@@ -46,6 +46,9 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   width: 100%;
   max-width: 490px;
   height: auto;
+  max-height: 250px;
+  background-color: settings.$colour-brand;
+  padding: 1rem;
 
   @include breakpoints.not-narrow() {
     padding-left: functions.px-to-rem(20px);
