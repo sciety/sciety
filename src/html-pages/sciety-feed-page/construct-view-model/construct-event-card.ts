@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
+import { isEventOfType } from '../../../domain-events/domain-event';
 import {
   CollapsedArticlesAddedToList, isArticleAddedToListEvent,
   isCollapsedArticlesAddedToList,
 } from './feed-item';
 import {
   DomainEvent,
-  isUserFollowedEditorialCommunityEvent,
 } from '../../../domain-events';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
@@ -22,17 +22,14 @@ export const constructEventCard = (
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
 ): O.Option<ScietyFeedCard> => {
-  if (isUserFollowedEditorialCommunityEvent(event)) {
-    return userFollowedAGroupCard(ports)(event);
-  }
-
-  if (isArticleAddedToListEvent(event)) {
-    return articleAddedToListCard(ports)(event);
-  }
-
   if (isCollapsedArticlesAddedToList(event)) {
     return collapsedArticlesAddedToListCard(ports)(event);
   }
-
+  if (isEventOfType('UserFollowedEditorialCommunity')(event)) {
+    return userFollowedAGroupCard(ports)(event);
+  }
+  if (isArticleAddedToListEvent(event)) {
+    return articleAddedToListCard(ports)(event);
+  }
   return O.none;
 };

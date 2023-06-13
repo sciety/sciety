@@ -3,7 +3,6 @@ export {
 } from './domain-event';
 
 export {
-  isUserFollowedEditorialCommunityEvent,
   UserFollowedEditorialCommunityEvent,
 } from './user-followed-editorial-community-event';
 
