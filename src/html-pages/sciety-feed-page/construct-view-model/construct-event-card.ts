@@ -1,16 +1,13 @@
 import * as O from 'fp-ts/Option';
-import { isEventOfType } from '../../../domain-events/domain-event';
 import {
   CollapsedArticlesAddedToList, isArticleAddedToListEvent,
   isCollapsedArticlesAddedToList,
 } from './feed-item';
-import {
-  DomainEvent,
-} from '../../../domain-events';
 import { userFollowedAGroupCard, Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
 import { articleAddedToListCard, Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
 import { collapsedArticlesAddedToListCard, Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
 import { ScietyFeedCard } from '../view-model';
+import { DomainEvent, isEventOfType } from '../../../domain-events';
 
 export type Ports =
   UserFollowedAGroupCardPorts

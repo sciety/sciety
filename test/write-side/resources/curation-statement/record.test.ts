@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../../src/domain-events/domain-event';
+import { constructEvent } from '../../../../src/domain-events';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
