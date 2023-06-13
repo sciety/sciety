@@ -1,4 +1,7 @@
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { templateListItems } from '../../../shared-components/list-items';
 
 type CurationTeaser = {
   articleLink: string,
@@ -28,7 +31,7 @@ const curationTeaser3 = {
   articleTitle: toHtmlFragment('How honey bees make fast and accurate decisions'),
 };
 
-const renderCurationTeaser = (viewModel: CurationTeaser) => `
+const renderCurationTeaser = (viewModel: CurationTeaser) => toHtmlFragment(`
   <article>
     <figure class="curation-teaser">
       <div class="curation-teaser__quote_wrapper">
@@ -42,21 +45,23 @@ const renderCurationTeaser = (viewModel: CurationTeaser) => `
       </figcaption>
     </figure>
   </article>
-`;
-
-export const renderCurationTeasers = (): HtmlFragment => toHtmlFragment(`
-  <section class="curation-teasers">
-    <h2 class="curation-teasers__title">Recent curated preprints</h2>
-    <ul class="curation-teasers__teasers">
-      <li>
-        ${renderCurationTeaser(curationTeaser1)}
-      </li>
-      <li>
-        ${renderCurationTeaser(curationTeaser2)}
-      </li>
-      <li>
-        ${renderCurationTeaser(curationTeaser3)}
-      </li>
-    </ul>
-  </section>
 `);
+
+export const renderCurationTeasers = (): HtmlFragment => pipe(
+  [
+    curationTeaser1,
+    curationTeaser2,
+    curationTeaser3,
+  ],
+  RA.map(renderCurationTeaser),
+  templateListItems,
+  (listItems) => `
+    <section class="curation-teasers">
+      <h2 class="curation-teasers__title">Recent curated preprints</h2>
+      <ul class="curation-teasers__teasers">
+        ${listItems}
+      </ul>
+    </section>
+  `,
+  toHtmlFragment,
+);
