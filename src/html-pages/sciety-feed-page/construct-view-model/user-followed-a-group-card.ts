@@ -1,7 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { UserFollowedEditorialCommunityEvent } from '../../../domain-events';
+import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Queries } from '../../../shared-read-models';
@@ -10,7 +10,7 @@ export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'>;
 
 type UserFollowedAGroupCard = (
   ports: Ports
-) => (event: UserFollowedEditorialCommunityEvent) => O.Option<ScietyFeedCard>;
+) => (event: EventOfType<'UserFollowedEditorialCommunity'>) => O.Option<ScietyFeedCard>;
 
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
   {

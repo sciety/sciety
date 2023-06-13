@@ -11,5 +11,3 @@ export const userFollowedEditorialCommunityEventCodec = t.type({
   userId: userIdCodec,
   editorialCommunityId: GroupIdFromString,
 });
-
-export type UserFollowedEditorialCommunityEvent = t.TypeOf<typeof userFollowedEditorialCommunityEventCodec>;
