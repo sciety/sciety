@@ -5,6 +5,7 @@ import { ViewModel } from '../view-model';
 import * as GID from '../../../types/group-id';
 import { GetGroup } from '../../../shared-read-models/groups/get-group';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { Logger } from '../../../shared-ports';
 
 type HardcodedData = Omit<ViewModel['curationTeasers'][number], 'caption'>;
 
@@ -36,13 +37,17 @@ export type GroupsToHighlight = ReadonlyArray<{
 
 export type Ports = {
   getGroup: GetGroup,
+  logger: Logger,
 };
 
 const constructCurationTeaser = (ports: Ports) => (hardcodedData: HardcodedData) => pipe(
   hardcodedData.groupId,
   ports.getGroup,
   O.match(
-    () => 'Curated by unknown',
+    () => {
+      ports.logger('error', 'Group missing from readmodel', { groupId: hardcodedData.groupId });
+      return 'Curated by unknown';
+    },
     (group) => `Curated by ${group.name}`,
   ),
   (caption) => ({

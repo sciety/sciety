@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { Ports, constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
+import { constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { ViewModel } from '../../../../src/html-pages/home-page/view-model';
 import { arbitraryString } from '../../../helpers';
@@ -8,13 +8,9 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
 
   beforeEach(() => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-    };
   });
 
   describe('groups', () => {
@@ -29,7 +25,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group1);
         await framework.commandHelpers.createGroup(group2);
-        viewModel = constructViewModel(adapters, [
+        viewModel = constructViewModel(framework.dependenciesForViews, [
           { groupId: group1.id, logoPath: group1LogoPath },
           { groupId: group2.id, logoPath: group2LogoPath },
         ]);
@@ -73,7 +69,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(existingGroup);
         await framework.commandHelpers.createGroup(notSelectedGroup);
-        viewModel = constructViewModel(adapters, [
+        viewModel = constructViewModel(framework.dependenciesForViews, [
           { groupId: existingGroup.id, logoPath: existingGroupLogoPath },
           { groupId: notExistingGroupId, logoPath: arbitraryString() },
         ]);
