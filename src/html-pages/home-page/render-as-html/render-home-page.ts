@@ -18,6 +18,6 @@ export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFrag
       renderGroups,
     ),
   )}
-    ${renderCurationTeasers()}
+    ${renderCurationTeasers(viewModel)}
   </div>
 `);
