@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { evaluationRecorded } from '../../../../src/domain-events';
 import { record } from '../../../../src/write-side/resources/evaluation/record';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 
 describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
@@ -38,7 +38,7 @@ describe('record', () => {
   describe('when the evaluation locator has already been recorded', () => {
     const events = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator, [], arbitraryDate()),
+        evaluationRecordedHelper(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator, [], arbitraryDate()),
       ],
       record(input),
     );

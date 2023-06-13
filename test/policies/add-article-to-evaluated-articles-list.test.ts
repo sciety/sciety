@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecorded } from '../../src/domain-events';
+import { evaluationRecordedHelper } from '../types/evaluation-recorded-event.helper';
 import { constructCommand } from '../../src/policies/add-article-to-evaluated-articles-list';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -21,7 +21,7 @@ describe('add-article-to-evaluated-articles-list', () => {
     const groupId = arbitraryGroupId();
 
     const command = pipe(
-      evaluationRecorded(groupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+      evaluationRecordedHelper(groupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.some(listId),
@@ -38,7 +38,13 @@ describe('add-article-to-evaluated-articles-list', () => {
 
   describe('when the group does not have an evaluated articles list', () => {
     const command = pipe(
-      evaluationRecorded(arbitraryGroupId(), arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
+      evaluationRecordedHelper(
+        arbitraryGroupId(),
+        arbitraryArticleId(),
+        arbitraryEvaluationLocator(),
+        [],
+        arbitraryDate(),
+      ),
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.none,

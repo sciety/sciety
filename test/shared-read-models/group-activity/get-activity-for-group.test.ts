@@ -4,9 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
-import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -34,7 +35,7 @@ describe('get-activity-for-group', () => {
       beforeEach(() => {
         const readModel = pipe(
           [
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation.groupId,
               recordedEvaluation.articleId,
               recordedEvaluation.reviewId,
@@ -62,7 +63,7 @@ describe('get-activity-for-group', () => {
       beforeEach(() => {
         const readModel = pipe(
           [
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation.groupId,
               recordedEvaluation.articleId,
               recordedEvaluation.reviewId,
@@ -127,7 +128,7 @@ describe('get-activity-for-group', () => {
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecorded(
+          evaluationRecordedHelper(
             recordedEvaluation.groupId,
             recordedEvaluation.articleId,
             recordedEvaluation.reviewId,
@@ -172,14 +173,14 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             groupJoinedEvent,
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation1.groupId,
               recordedEvaluation1.articleId,
               recordedEvaluation1.reviewId,
               recordedEvaluation1.authors,
               recordedEvaluation1.publishedAt,
             ),
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation2.groupId,
               recordedEvaluation2.articleId,
               recordedEvaluation2.reviewId,
@@ -223,14 +224,14 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             groupJoinedEvent,
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation1.groupId,
               recordedEvaluation1.articleId,
               recordedEvaluation1.reviewId,
               recordedEvaluation1.authors,
               recordedEvaluation1.publishedAt,
             ),
-            evaluationRecorded(
+            evaluationRecordedHelper(
               recordedEvaluation2.groupId,
               recordedEvaluation2.articleId,
               recordedEvaluation2.reviewId,
@@ -268,7 +269,7 @@ describe('get-activity-for-group', () => {
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecorded(
+          evaluationRecordedHelper(
             recordedEvaluation.groupId,
             recordedEvaluation.articleId,
             recordedEvaluation.reviewId,
@@ -312,14 +313,14 @@ describe('get-activity-for-group', () => {
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecorded(
+          evaluationRecordedHelper(
             goodEvaluation.groupId,
             goodEvaluation.articleId,
             goodEvaluation.reviewId,
             goodEvaluation.authors,
             goodEvaluation.publishedAt,
           ),
-          evaluationRecorded(
+          evaluationRecordedHelper(
             badEvaluation.groupId,
             badEvaluation.articleId,
             badEvaluation.reviewId,

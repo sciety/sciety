@@ -7,8 +7,8 @@ import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.he
 import {
   DomainEvent,
   constructEvent,
-  evaluationRecorded,
 } from '../../../../src/domain-events';
+import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
 
@@ -26,7 +26,7 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             arbitraryDoi(),
             evaluationLocator,
@@ -69,7 +69,7 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             arbitraryDoi(),
             evaluationLocator,
@@ -95,7 +95,7 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             arbitraryDoi(),
             evaluationLocator,
@@ -103,7 +103,7 @@ describe('erase', () => {
             new Date(),
           ),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             arbitraryDoi(),
             evaluationLocator,

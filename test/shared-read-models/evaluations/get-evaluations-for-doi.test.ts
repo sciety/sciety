@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
+import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -23,9 +24,9 @@ describe('get-evaluations-for-doi', () => {
   ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
     const readmodel = pipe(
       [
-        evaluationRecorded(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecorded(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
-        evaluationRecorded(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+        evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -41,8 +42,8 @@ describe('get-evaluations-for-doi', () => {
   it('does not return erased evaluations', () => {
     const readmodel = pipe(
       [
-        evaluationRecorded(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecorded(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
         constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
       ],
       RA.reduce(initialState(), handleEvent),

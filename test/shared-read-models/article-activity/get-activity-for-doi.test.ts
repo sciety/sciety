@@ -1,7 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
+import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -50,7 +51,7 @@ describe('get-activity-for-doi', () => {
       const evaluation = arbitraryRecordedEvaluation();
       const readmodel = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             evaluation.groupId,
             evaluation.articleId,
             evaluation.reviewId,
@@ -75,7 +76,7 @@ describe('get-activity-for-doi', () => {
     describe('and the evaluations are recorded in order of publication', () => {
       const readmodel = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             arbitraryEvaluationLocator(),
@@ -83,7 +84,7 @@ describe('get-activity-for-doi', () => {
             earlierPublishedDate,
             arbitraryDate(),
           ),
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             arbitraryEvaluationLocator(),
@@ -106,7 +107,7 @@ describe('get-activity-for-doi', () => {
     describe('and the evaluations are NOT recorded in order of publication', () => {
       const readmodel = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             arbitraryEvaluationLocator(),
@@ -114,7 +115,7 @@ describe('get-activity-for-doi', () => {
             laterPublishedDate,
             arbitraryDate(),
           ),
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             arbitraryEvaluationLocator(),
@@ -138,7 +139,7 @@ describe('get-activity-for-doi', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
       const readmodel = pipe(
         [
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             evaluationLocator,
@@ -146,7 +147,7 @@ describe('get-activity-for-doi', () => {
             laterPublishedDate,
             arbitraryDate(),
           ),
-          evaluationRecorded(
+          evaluationRecordedHelper(
             arbitraryGroupId(),
             articleId,
             arbitraryEvaluationLocator(),
@@ -203,7 +204,7 @@ describe('get-activity-for-doi', () => {
     describe('added to a list, after being evaluated', () => {
       const readmodel = pipe(
         [
-          evaluationRecorded(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+          evaluationRecordedHelper(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
           constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
         ],
         RA.reduce(initialState(), handleEvent),

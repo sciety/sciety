@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, evaluationRecorded } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events';
 import { executeCommand } from '../../../src/write-side/record-subject-area/execute-command';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -8,6 +8,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
+import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();
@@ -46,7 +47,7 @@ describe('execute-command', () => {
   describe('when an evaluation was recorded', () => {
     const result = pipe(
       [
-        evaluationRecorded(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+        evaluationRecordedHelper(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
       ],
       executeCommand(command),
       E.getOrElseW(shouldNotBeCalled),

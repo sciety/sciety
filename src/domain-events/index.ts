@@ -2,9 +2,6 @@ export {
   DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent,
 } from './domain-event';
 
-// ts-unused-exports:disable-next-line
-export { evaluationRecorded } from './evaluation-recorded-event';
-
 export {
   isUserFollowedEditorialCommunityEvent,
   UserFollowedEditorialCommunityEvent,

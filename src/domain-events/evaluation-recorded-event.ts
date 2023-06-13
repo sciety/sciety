@@ -3,10 +3,7 @@ import * as tt from 'io-ts-types';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
-import { Doi } from '../types/doi';
-import { generate } from '../types/event-id';
-import { GroupId } from '../types/group-id';
-import { EvaluationLocator, evaluationLocatorCodec } from '../types/evaluation-locator';
+import { evaluationLocatorCodec } from '../types/evaluation-locator';
 
 export const evaluationRecordedEventCodec = t.type({
   id: EventIdFromString,
@@ -17,25 +14,4 @@ export const evaluationRecordedEventCodec = t.type({
   articleId: DoiFromString,
   publishedAt: tt.DateFromISOString,
   authors: t.readonlyArray(t.string),
-});
-
-type EvaluationRecordedEvent = t.TypeOf<typeof evaluationRecordedEventCodec>;
-
-// ts-unused-exports:disable-next-line
-export const evaluationRecorded = (
-  groupId: GroupId,
-  doi: Doi,
-  evaluationLocator: EvaluationLocator,
-  authors: ReadonlyArray<string>,
-  publishedAt: Date,
-  date: Date = new Date(),
-): EvaluationRecordedEvent => ({
-  id: generate(),
-  type: 'EvaluationRecorded',
-  date,
-  groupId,
-  articleId: doi,
-  evaluationLocator,
-  publishedAt,
-  authors,
 });
