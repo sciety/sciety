@@ -1,18 +1,18 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
-import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { Group } from '../../types/group';
 
 export type GroupCardViewModel = {
-  id: GroupId,
-  name: string,
+  id: Group['id'],
+  name: Group['name'],
+  avatarPath: Group['avatarPath'],
+  slug: Group['slug'],
   description: SanitisedHtmlFragment,
-  avatarPath: string,
-  slug: string,
   listCount: number,
   followerCount: number,
   evaluationCount: number,
