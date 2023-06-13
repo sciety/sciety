@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../src/domain-events';
-import { removeArticle } from '../../../src/write-side/resources/list/remove-article';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { constructEvent } from '../../../../src/domain-events';
+import { removeArticle } from '../../../../src/write-side/resources/list/remove-article';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
-describe('execute-command', () => {
+describe('remove-article', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
 
