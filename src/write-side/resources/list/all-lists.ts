@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { DomainEvent, isEventOfType } from '../../domain-events';
-import { ListId } from '../../types/list-id';
+import { DomainEvent, isEventOfType } from '../../../domain-events';
+import { ListId } from '../../../types/list-id';
 
 type AllListsResource = ReadonlyArray<ListId>;
 

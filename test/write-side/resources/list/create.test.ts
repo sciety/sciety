@@ -1,25 +1,30 @@
 import { pipe } from 'fp-ts/function';
-import { executeCreateListCommand } from '../../src/write-side/create-list/execute-create-list-command';
-import { arbitraryString } from '../helpers';
-import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
-import { constructEvent, isEventOfType } from '../../src/domain-events';
+import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { create } from '../../../../src/write-side/resources/list/create';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
+import { EventOfType, constructEvent, isEventOfType } from '../../../../src/domain-events';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-describe('execute-create-list-command', () => {
+describe('create', () => {
   const listId = arbitraryListId();
   const ownerId = arbitraryListOwnerId();
   const name = arbitraryString();
   const description = arbitraryString();
 
   describe('when a command is received', () => {
-    const result = pipe(
+    const result: ReadonlyArray<EventOfType<'ListCreated'>> = pipe(
       [],
-      executeCreateListCommand({
+      create({
         listId,
         ownerId,
         name,
         description,
       }),
+      E.getOrElseW(shouldNotBeCalled),
+      RA.filter(isEventOfType('ListCreated')),
     );
 
     it('returns a ListCreated event', () => {
@@ -54,12 +59,13 @@ describe('execute-create-list-command', () => {
           ownerId: arbitraryListOwnerId(),
         }),
       ],
-      executeCreateListCommand({
+      create({
         listId,
         ownerId,
         name,
         description,
       }),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('does not return an event', () => {
