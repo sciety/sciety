@@ -5,12 +5,11 @@ import {
   DomainEvent,
   EventOfType,
   isEventOfType,
-  UserDetailsUpdatedEvent,
 } from '../../../domain-events';
 import { UserId } from '../../../types/user-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 
-type RelevantEvent = EventOfType<'UserCreatedAccount'> | UserDetailsUpdatedEvent;
+type RelevantEvent = EventOfType<'UserCreatedAccount'> | EventOfType<'UserDetailsUpdated'>;
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('UserCreatedAccount')(event) || isEventOfType('UserDetailsUpdated')(event)

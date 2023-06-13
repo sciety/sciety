@@ -1,7 +1,3 @@
 export {
-  DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent,
+  DomainEvent, domainEventCodec, isEventOfType, EventOfType, constructEvent, sort,
 } from './domain-event';
-
-export { UserDetailsUpdatedEvent } from './user-details-updated-event';
-
-export { sort } from './domain-event';

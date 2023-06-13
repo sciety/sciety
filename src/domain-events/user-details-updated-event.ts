@@ -11,5 +11,3 @@ export const userDetailsUpdatedEventCodec = t.type({
   avatarUrl: t.union([t.string, t.undefined]),
   displayName: t.union([t.string, t.undefined]),
 });
-
-export type UserDetailsUpdatedEvent = t.TypeOf<typeof userDetailsUpdatedEventCodec>;
