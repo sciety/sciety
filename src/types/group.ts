@@ -4,7 +4,7 @@ import { GroupId } from './group-id';
 
 export type Group = {
   id: GroupId,
-  name: string,
+  name: number,
   avatarPath: string,
   descriptionPath: DescriptionPath,
   shortDescription: string,
