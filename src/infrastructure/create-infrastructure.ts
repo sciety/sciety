@@ -28,8 +28,7 @@ import { addArticleToListCommandHandler } from '../write-side/add-article-to-lis
 import {
   DomainEvent, sort as sortEvents,
 } from '../domain-events';
-import { editListDetailsCommandHandler } from '../write-side/command-handlers';
-import { createListCommandHandler } from '../write-side/create-list';
+import { editListDetailsCommandHandler, createListCommandHandler } from '../write-side/command-handlers';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
