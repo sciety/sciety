@@ -5,8 +5,7 @@ import { ViewModel } from '../view-model';
 import * as GID from '../../../types/group-id';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { Dependencies } from '../dependencies';
-
-type HardcodedData = Omit<ViewModel['curationTeasers'][number], 'caption'>;
+import { HardcodedData, constructCurationTeaser } from './construct-curation-teaser';
 
 const curationTeaser1: HardcodedData = {
   articleLink: '/articles/activity/10.1101/2022.06.22.497259',
@@ -34,27 +33,11 @@ export type GroupsToHighlight = ReadonlyArray<{
   logoPath: string,
 }>;
 
-const constructCurationTeaser = (dependencies: Dependencies) => (hardcodedData: HardcodedData) => pipe(
-  hardcodedData.groupId,
-  dependencies.getGroup,
-  O.match(
-    () => {
-      dependencies.logger('error', 'Group missing from readmodel', { groupId: hardcodedData.groupId });
-      return 'Curated by unknown';
-    },
-    (group) => `Curated by ${group.name}`,
-  ),
-  (caption) => ({
-    ...hardcodedData,
-    caption,
-  }),
-);
-
-export const constructViewModel = (ports: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
+export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
   groupsToHighlight,
   O.traverseArray((groupToHighlight) => pipe(
     groupToHighlight.groupId,
-    ports.getGroup,
+    dependencies.getGroup,
     O.map((group) => ({
       logoPath: groupToHighlight.logoPath,
       link: `/groups/${group.slug}`,
@@ -69,7 +52,7 @@ export const constructViewModel = (ports: Dependencies, groupsToHighlight: Group
         curationTeaser2,
         curationTeaser3,
       ],
-      RA.map(constructCurationTeaser(ports)),
+      RA.map(constructCurationTeaser(dependencies)),
     ),
   }),
 );
