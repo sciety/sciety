@@ -33,6 +33,15 @@ export type GroupsToHighlight = ReadonlyArray<{
   logoPath: string,
 }>;
 
+const constructCurationTeasers = (dependencies: Dependencies): ViewModel['curationTeasers'] => pipe(
+  [
+    curationTeaser1,
+    curationTeaser2,
+    curationTeaser3,
+  ],
+  RA.map(constructCurationTeaser(dependencies)),
+);
+
 export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
   groupsToHighlight,
   O.traverseArray((groupToHighlight) => pipe(
@@ -46,13 +55,6 @@ export const constructViewModel = (dependencies: Dependencies, groupsToHighlight
   )),
   (groupsViewModel) => ({
     groups: groupsViewModel,
-    curationTeasers: pipe(
-      [
-        curationTeaser1,
-        curationTeaser2,
-        curationTeaser3,
-      ],
-      RA.map(constructCurationTeaser(dependencies)),
-    ),
+    curationTeasers: constructCurationTeasers(dependencies),
   }),
 );
