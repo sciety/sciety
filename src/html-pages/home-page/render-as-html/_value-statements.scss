@@ -22,9 +22,14 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement {
-
   @include breakpoints.not-narrow() {
     display: flex;
+  }
+}
+
+.home-page-value-statement__copy {
+  @include breakpoints.not-narrow() {
+    width: 50ch;
   }
 }
 
