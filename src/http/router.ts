@@ -54,7 +54,11 @@ import { page as listPage, paramsCodec as listPageParams } from '../html-pages/l
 import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
-import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
+import {
+  removeArticleFromListCommandHandler,
+  recordEvaluationCommandHandler,
+  updateUserDetailsCommandHandler,
+} from '../write-side/command-handlers';
 import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
@@ -70,10 +74,6 @@ import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams, toNotFound } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
-import {
-  recordEvaluationCommandHandler,
-  updateUserDetailsCommandHandler,
-} from '../write-side/command-handlers';
 import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';

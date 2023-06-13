@@ -7,7 +7,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
-import { removeArticleFromListCommandHandler } from '../../write-side/remove-article-from-list';
+import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import {
   CommitEvents, GetAllEvents, Logger,
 } from '../../shared-ports';

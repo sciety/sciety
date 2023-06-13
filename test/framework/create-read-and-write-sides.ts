@@ -9,9 +9,13 @@ import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { CommandResult } from '../../src/types/command-result';
 import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
 import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
-import { updateUserDetailsCommandHandler, recordEvaluationCommandHandler, createListCommandHandler } from '../../src/write-side/command-handlers';
+import {
+  updateUserDetailsCommandHandler,
+  recordEvaluationCommandHandler,
+  createListCommandHandler,
+  removeArticleFromListCommandHandler,
+} from '../../src/write-side/command-handlers';
 import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
-import { removeArticleFromListCommandHandler } from '../../src/write-side/remove-article-from-list';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { Queries } from '../../src/shared-read-models';
 import { CommandHandler } from '../../src/types/command-handler';

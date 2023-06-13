@@ -28,10 +28,9 @@ import { addArticleToListCommandHandler } from '../write-side/add-article-to-lis
 import {
   DomainEvent, sort as sortEvents,
 } from '../domain-events';
-import { editListDetailsCommandHandler, createListCommandHandler } from '../write-side/command-handlers';
+import { editListDetailsCommandHandler, createListCommandHandler, removeArticleFromListCommandHandler } from '../write-side/command-handlers';
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
-import { removeArticleFromListCommandHandler } from '../write-side/remove-article-from-list';
 import { getArticleVersionEventsFromBiorxiv } from '../third-parties/biorxiv';
 import { getBiorxivOrMedrxivCategory } from '../third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchCrossrefArticle } from '../third-parties/crossref';

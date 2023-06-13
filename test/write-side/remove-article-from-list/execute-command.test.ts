@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { constructEvent } from '../../../src/domain-events';
-import { executeCommand } from '../../../src/write-side/remove-article-from-list/execute-command';
+import { removeArticle } from '../../../src/write-side/resources/list/remove-article';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -19,7 +19,7 @@ describe('execute-command', () => {
         }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
       ],
-      executeCommand({
+      removeArticle({
         listId,
         articleId,
       }),
@@ -41,7 +41,7 @@ describe('execute-command', () => {
           listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
         }),
       ],
-      executeCommand({
+      removeArticle({
         listId,
         articleId,
       }),
