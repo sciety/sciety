@@ -7,7 +7,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 
 .home-page-value-statements-wrapper {
   color: settings.$colour-white;
-  background-color: rgb(44,56,61);
+  background-color: settings.$colour-value-statement-background;
   padding-top: common.$section-vertical-separation;
   padding-bottom: common.$section-vertical-separation;
   margin-bottom: common.$section-vertical-separation;
