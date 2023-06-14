@@ -29,7 +29,7 @@ type Dispatcher = {
 };
 
 export const dispatcher = (): Dispatcher => {
-  const readModelStates = {
+  const oldReadModelStates = {
     addArticleToElifeSubjectAreaList: addArticleToElifeSubjectAreaList.initialState(),
     annotations: annotations.initialState(),
     followings: followings.initialState(),
@@ -38,30 +38,23 @@ export const dispatcher = (): Dispatcher => {
     idsOfEvaluatedArticlesLists: idsOfEvaluatedArticlesLists.initialState(),
     lists: lists.initialState(),
     users: users.initialState(),
-    ...pipe(
-      readModels,
-      R.map((rm) => ({
-        state: rm.initialState(),
-        handleEvent: rm.handleEvent,
-      })),
-      (initialised) => initialised as {
-        [K in keyof typeof readModels]: {
-          state: ReturnType<typeof readModels[K]['initialState']>,
-          handleEvent: typeof readModels[K]['handleEvent'],
-        }
-      },
-    ),
   };
 
+  const readModelStates = pipe(
+    readModels,
+    R.map((rm) => ({
+      state: rm.initialState(),
+      handleEvent: rm.handleEvent,
+    })),
+    (initialised) => initialised as {
+      [K in keyof typeof readModels]: {
+        state: ReturnType<typeof readModels[K]['initialState']>,
+        handleEvent: typeof readModels[K]['handleEvent'],
+      }
+    },
+  );
+
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    readModelStates.addArticleToElifeSubjectAreaList = RA.reduce(
-      readModelStates.addArticleToElifeSubjectAreaList,
-      addArticleToElifeSubjectAreaList.handleEvent,
-    )(events);
-    readModelStates.annotations = RA.reduce(
-      readModelStates.annotations,
-      annotations.handleEvent,
-    )(events);
     readModelStates.articleActivity.state = RA.reduce(
       readModelStates.articleActivity.state,
       readModelStates.articleActivity.handleEvent,
@@ -74,35 +67,42 @@ export const dispatcher = (): Dispatcher => {
       readModelStates.evaluations.state,
       readModelStates.evaluations.handleEvent,
     )(events);
-    readModelStates.followings = RA.reduce(
-      readModelStates.followings,
+
+    oldReadModelStates.addArticleToElifeSubjectAreaList = RA.reduce(
+      oldReadModelStates.addArticleToElifeSubjectAreaList,
+      addArticleToElifeSubjectAreaList.handleEvent,
+    )(events);
+    oldReadModelStates.annotations = RA.reduce(
+      oldReadModelStates.annotations,
+      annotations.handleEvent,
+    )(events);
+    oldReadModelStates.followings = RA.reduce(
+      oldReadModelStates.followings,
       followings.handleEvent,
     )(events);
-    readModelStates.groupActivity = RA.reduce(
-      readModelStates.groupActivity,
+    oldReadModelStates.groupActivity = RA.reduce(
+      oldReadModelStates.groupActivity,
       groupActivity.handleEvent,
     )(events);
-    readModelStates.groups = RA.reduce(
-      readModelStates.groups,
+    oldReadModelStates.groups = RA.reduce(
+      oldReadModelStates.groups,
       groups.handleEvent,
     )(events);
-    readModelStates.idsOfEvaluatedArticlesLists = RA.reduce(
-      readModelStates.idsOfEvaluatedArticlesLists,
+    oldReadModelStates.idsOfEvaluatedArticlesLists = RA.reduce(
+      oldReadModelStates.idsOfEvaluatedArticlesLists,
       idsOfEvaluatedArticlesLists.handleEvent,
     )(events);
-    readModelStates.lists = RA.reduce(
-      readModelStates.lists,
+    oldReadModelStates.lists = RA.reduce(
+      oldReadModelStates.lists,
       lists.handleEvent,
     )(events);
-    readModelStates.users = RA.reduce(
-      readModelStates.users,
+    oldReadModelStates.users = RA.reduce(
+      oldReadModelStates.users,
       users.handleEvent,
     )(events);
   };
 
   const queries = {
-    ...addArticleToElifeSubjectAreaList.queries(readModelStates.addArticleToElifeSubjectAreaList),
-    ...annotations.queries(readModelStates.annotations),
     ...pipe(articleActivity.queries, R.map((builder) => builder(readModelStates.articleActivity.state))),
     ...pipe(
       evaluations.queries,
@@ -112,12 +112,15 @@ export const dispatcher = (): Dispatcher => {
       (foo) => foo as { [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]> },
     ),
     ...pipe(curationStatements.queries, R.map((builder) => builder(readModelStates.curationStatements.state))),
-    ...followings.queries(readModelStates.followings),
-    ...groupActivity.queries(readModelStates.groupActivity),
-    ...groups.queries(readModelStates.groups),
-    ...idsOfEvaluatedArticlesLists.queries(readModelStates.idsOfEvaluatedArticlesLists),
-    ...lists.queries(readModelStates.lists),
-    ...users.queries(readModelStates.users),
+
+    ...addArticleToElifeSubjectAreaList.queries(oldReadModelStates.addArticleToElifeSubjectAreaList),
+    ...annotations.queries(oldReadModelStates.annotations),
+    ...followings.queries(oldReadModelStates.followings),
+    ...groupActivity.queries(oldReadModelStates.groupActivity),
+    ...groups.queries(oldReadModelStates.groups),
+    ...idsOfEvaluatedArticlesLists.queries(oldReadModelStates.idsOfEvaluatedArticlesLists),
+    ...lists.queries(oldReadModelStates.lists),
+    ...users.queries(oldReadModelStates.users),
   };
 
   return {
