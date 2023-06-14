@@ -21,6 +21,16 @@ const readModels = {
   evaluations,
 };
 
+const dispatch = <S>(
+  events: ReadonlyArray<DomainEvent>,
+  rm: {
+    state: S,
+    handleEvent: (state: S, event: DomainEvent) => S,
+  }): void => {
+  // eslint-disable-next-line no-param-reassign
+  rm.state = RA.reduce(rm.state, rm.handleEvent)(events);
+};
+
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
 type Dispatcher = {
@@ -55,18 +65,9 @@ export const dispatcher = (): Dispatcher => {
   );
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
-    readModelStates.articleActivity.state = RA.reduce(
-      readModelStates.articleActivity.state,
-      readModelStates.articleActivity.handleEvent,
-    )(events);
-    readModelStates.curationStatements.state = RA.reduce(
-      readModelStates.curationStatements.state,
-      readModelStates.curationStatements.handleEvent,
-    )(events);
-    readModelStates.evaluations.state = RA.reduce(
-      readModelStates.evaluations.state,
-      readModelStates.evaluations.handleEvent,
-    )(events);
+    dispatch(events, readModelStates.articleActivity);
+    dispatch(events, readModelStates.curationStatements);
+    dispatch(events, readModelStates.evaluations);
 
     oldReadModelStates.addArticleToElifeSubjectAreaList = RA.reduce(
       oldReadModelStates.addArticleToElifeSubjectAreaList,
