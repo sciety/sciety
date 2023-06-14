@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import * as annotations from './annotations';
-import * as evaluations from './evaluations';
 import { curationStatements } from './curation-statements';
 import * as followings from './followings';
 import * as groupActivity from './group-activity';
@@ -14,6 +13,7 @@ import * as lists from './lists';
 import * as users from './users';
 import { articleActivity } from './article-activity';
 import { Queries } from './queries';
+import { evaluations } from './evaluations';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
@@ -88,8 +88,14 @@ export const dispatcher = (): Dispatcher => {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
     ...pipe(articleActivity.queries, R.map((builder) => builder(readModels.articleActivityReadModel))),
+    ...pipe(
+      evaluations.queries,
+      R.map(
+        (builder) => builder(readModels.evaluationsReadModel),
+      ),
+      (foo) => foo as { [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]> },
+    ),
     ...pipe(curationStatements.queries, R.map((builder) => builder(readModels.curationStatementsReadModel))),
-    ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groupActivity.queries(readModels.groupActivityReadModel),
     ...groups.queries(readModels.groupsReadModel),
