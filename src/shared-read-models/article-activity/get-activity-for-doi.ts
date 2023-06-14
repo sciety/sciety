@@ -8,7 +8,7 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { ReadModel } from './handle-event';
 
-export type GetActivityForDoi = (articleId: Doi) => ArticleActivity;
+type GetActivityForDoi = (articleId: Doi) => ArticleActivity;
 
 export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (articleId) => pipe(
   readmodel,

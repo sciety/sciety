@@ -1,10 +1,17 @@
-import { GetActivityForDoi, getActivityForDoi } from './get-activity-for-doi';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
+import { getActivityForDoi } from './get-activity-for-doi';
 import { ReadModel } from './handle-event';
 
-export type Queries = {
-  getActivityForDoi: GetActivityForDoi,
+const queryBuilders = {
+  getActivityForDoi,
 };
 
-export const queries = (instance: ReadModel): Queries => ({
-  getActivityForDoi: getActivityForDoi(instance),
-});
+export type Queries = {
+  [K in keyof typeof queryBuilders]: ReturnType<typeof queryBuilders[K]>
+};
+
+export const queries = (instance: ReadModel): Queries => pipe(
+  queryBuilders,
+  R.map((builder) => builder(instance)),
+);
