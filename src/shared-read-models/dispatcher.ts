@@ -12,7 +12,7 @@ import * as groups from './groups';
 import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists';
 import * as lists from './lists';
 import * as users from './users';
-import * as articleActivity from './article-activity';
+import { articleActivity } from './article-activity';
 import { Queries } from './queries';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
@@ -87,7 +87,7 @@ export const dispatcher = (): Dispatcher => {
   const queries = {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
-    ...articleActivity.queries(readModels.articleActivityReadModel),
+    ...pipe(articleActivity.queries, R.map((builder) => builder(readModels.articleActivityReadModel))),
     ...pipe(curationStatements.queries, R.map((builder) => builder(readModels.curationStatementsReadModel))),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),

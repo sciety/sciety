@@ -7,12 +7,11 @@ import * as groups from './groups';
 import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists';
 import * as lists from './lists';
 import * as users from './users';
-import * as articleActivity from './article-activity';
 import { curationStatements } from './curation-statements';
+import { articleActivity } from './article-activity';
 
 export type Queries = addArticleToElifeSubjectAreaList.Queries
 & annotations.Queries
-& articleActivity.Queries
 & evaluations.Queries
 & followings.Queries
 & groupActivity.Queries
@@ -20,4 +19,5 @@ export type Queries = addArticleToElifeSubjectAreaList.Queries
 & idsOfEvaluatedArticlesLists.Queries
 & lists.Queries
 & users.Queries
+& { [K in keyof typeof articleActivity.queries]: ReturnType<typeof articleActivity.queries[K]> }
 & { [K in keyof typeof curationStatements.queries]: ReturnType<typeof curationStatements.queries[K]> };
