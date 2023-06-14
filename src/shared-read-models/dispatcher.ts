@@ -39,17 +39,6 @@ type Dispatcher = {
 };
 
 export const dispatcher = (): Dispatcher => {
-  const oldReadModelStates = {
-    addArticleToElifeSubjectAreaList: addArticleToElifeSubjectAreaList.initialState(),
-    annotations: annotations.initialState(),
-    followings: followings.initialState(),
-    groupActivity: groupActivity.initialState(),
-    groups: groups.initialState(),
-    idsOfEvaluatedArticlesLists: idsOfEvaluatedArticlesLists.initialState(),
-    lists: lists.initialState(),
-    users: users.initialState(),
-  };
-
   const readModelStates = pipe(
     readModels,
     R.map((rm) => ({
@@ -63,6 +52,17 @@ export const dispatcher = (): Dispatcher => {
       }
     },
   );
+
+  const oldReadModelStates = {
+    addArticleToElifeSubjectAreaList: addArticleToElifeSubjectAreaList.initialState(),
+    annotations: annotations.initialState(),
+    followings: followings.initialState(),
+    groupActivity: groupActivity.initialState(),
+    groups: groups.initialState(),
+    idsOfEvaluatedArticlesLists: idsOfEvaluatedArticlesLists.initialState(),
+    lists: lists.initialState(),
+    users: users.initialState(),
+  };
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
     dispatch(events, readModelStates.articleActivity);
@@ -105,14 +105,14 @@ export const dispatcher = (): Dispatcher => {
 
   const queries = {
     ...pipe(articleActivity.queries, R.map((builder) => builder(readModelStates.articleActivity.state))),
+    ...pipe(curationStatements.queries, R.map((builder) => builder(readModelStates.curationStatements.state))),
     ...pipe(
       evaluations.queries,
-      R.map(
-        (builder) => builder(readModelStates.evaluations.state),
-      ),
-      (foo) => foo as { [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]> },
+      R.map((query) => query(readModelStates.evaluations.state)),
+      (queriesWithAccessToState) => queriesWithAccessToState as {
+        [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]>
+      },
     ),
-    ...pipe(curationStatements.queries, R.map((builder) => builder(readModelStates.curationStatements.state))),
 
     ...addArticleToElifeSubjectAreaList.queries(oldReadModelStates.addArticleToElifeSubjectAreaList),
     ...annotations.queries(oldReadModelStates.annotations),
