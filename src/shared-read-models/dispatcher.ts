@@ -1,9 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import * as addArticleToElifeSubjectAreaList from '../add-article-to-elife-subject-area-list/read-model';
 import { DomainEvent } from '../domain-events';
 import * as annotations from './annotations';
 import * as evaluations from './evaluations';
-import * as curationStatements from './curation-statements';
+import { curationStatements } from './curation-statements';
 import * as followings from './followings';
 import * as groupActivity from './group-activity';
 import * as groups from './groups';
@@ -86,7 +88,7 @@ export const dispatcher = (): Dispatcher => {
     ...addArticleToElifeSubjectAreaList.queries(readModels.addArticleToElifeSubjectAreaListReadModel),
     ...annotations.queries(readModels.annotationsReadModel),
     ...articleActivity.queries(readModels.articleActivityReadModel),
-    ...curationStatements.queries(readModels.curationStatementsReadModel),
+    ...pipe(curationStatements.queries, R.map((builder) => builder(readModels.curationStatementsReadModel))),
     ...evaluations.queries(readModels.evaluationsReadModel),
     ...followings.queries(readModels.followingsReadModel),
     ...groupActivity.queries(readModels.groupActivityReadModel),
