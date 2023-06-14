@@ -10,6 +10,12 @@ import { curationStatements } from './curation-statements';
 import { articleActivity } from './article-activity';
 import { evaluations } from './evaluations';
 
+const queries = {
+  ...articleActivity.queries,
+  ...curationStatements.queries,
+  ...evaluations.queries,
+};
+
 export type Queries = addArticleToElifeSubjectAreaList.Queries
 & annotations.Queries
 & followings.Queries
@@ -18,6 +24,4 @@ export type Queries = addArticleToElifeSubjectAreaList.Queries
 & idsOfEvaluatedArticlesLists.Queries
 & lists.Queries
 & users.Queries
-& { [K in keyof typeof articleActivity.queries]: ReturnType<typeof articleActivity.queries[K]> }
-& { [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]> }
-& { [K in keyof typeof curationStatements.queries]: ReturnType<typeof curationStatements.queries[K]> };
+& { [K in keyof typeof queries]: ReturnType<typeof queries[K]> };
