@@ -40,8 +40,16 @@ export const dispatcher = (): Dispatcher => {
     users: users.initialState(),
     ...pipe(
       readModels,
-      R.map((rm) => rm.initialState()),
-      (initialised) => initialised as { [K in keyof typeof readModels]: ReturnType<typeof readModels[K]['initialState']> },
+      R.map((rm) => ({
+        state: rm.initialState(),
+        handleEvent: rm.handleEvent,
+      })),
+      (initialised) => initialised as {
+        [K in keyof typeof readModels]: {
+          state: ReturnType<typeof readModels[K]['initialState']>,
+          handleEvent: typeof readModels[K]['handleEvent'],
+        }
+      },
     ),
   };
 
@@ -54,17 +62,17 @@ export const dispatcher = (): Dispatcher => {
       readModelStates.annotations,
       annotations.handleEvent,
     )(events);
-    readModelStates.articleActivity = RA.reduce(
-      readModelStates.articleActivity,
-      articleActivity.handleEvent,
+    readModelStates.articleActivity.state = RA.reduce(
+      readModelStates.articleActivity.state,
+      readModelStates.articleActivity.handleEvent,
     )(events);
-    readModelStates.curationStatements = RA.reduce(
-      readModelStates.curationStatements,
-      curationStatements.handleEvent,
+    readModelStates.curationStatements.state = RA.reduce(
+      readModelStates.curationStatements.state,
+      readModelStates.curationStatements.handleEvent,
     )(events);
-    readModelStates.evaluations = RA.reduce(
-      readModelStates.evaluations,
-      evaluations.handleEvent,
+    readModelStates.evaluations.state = RA.reduce(
+      readModelStates.evaluations.state,
+      readModelStates.evaluations.handleEvent,
     )(events);
     readModelStates.followings = RA.reduce(
       readModelStates.followings,
@@ -95,15 +103,15 @@ export const dispatcher = (): Dispatcher => {
   const queries = {
     ...addArticleToElifeSubjectAreaList.queries(readModelStates.addArticleToElifeSubjectAreaList),
     ...annotations.queries(readModelStates.annotations),
-    ...pipe(articleActivity.queries, R.map((builder) => builder(readModelStates.articleActivity))),
+    ...pipe(articleActivity.queries, R.map((builder) => builder(readModelStates.articleActivity.state))),
     ...pipe(
       evaluations.queries,
       R.map(
-        (builder) => builder(readModelStates.evaluations),
+        (builder) => builder(readModelStates.evaluations.state),
       ),
       (foo) => foo as { [K in keyof typeof evaluations.queries]: ReturnType<typeof evaluations.queries[K]> },
     ),
-    ...pipe(curationStatements.queries, R.map((builder) => builder(readModelStates.curationStatements))),
+    ...pipe(curationStatements.queries, R.map((builder) => builder(readModelStates.curationStatements.state))),
     ...followings.queries(readModelStates.followings),
     ...groupActivity.queries(readModelStates.groupActivity),
     ...groups.queries(readModelStates.groups),
