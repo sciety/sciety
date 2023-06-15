@@ -71,10 +71,7 @@ const renderCurationStatement = (articleId: Doi) => {
   }
   return `
       <section>
-        <header class="curation-statement-header">
-          <h4>Curated by <a href="/groups/biophysics-colab">Biophysics Colab</a></h4>
-          <img src="/static/images/home-page/biophysics-colab.png" alt="Biophysics Colab logo">
-        </header>
+        <h4>Curated by <a href="/groups/biophysics-colab">Biophysics Colab</a></h4>
         <div lang="en" class="curation-statement-text">
           <p><strong>Endorsement statement (6 December 2022)</strong></p>
           <p>The preprint by Yang <em>et al</em>. asks how the shape of the membrane influences the localization of mechanosensitive Piezo channels. The authors use a creative approach involving methods that distort the plasma membrane by generating blebs and artificial filopodia. They convincingly show that curvature of the lipid environment influences Piezo1 localization, such that increased curvature causes channel depletion, and that application of the chemical modulator Yoda1 is sufficient to allow channels to enter filopodia. The study provides support for a provocative “flattening model” of Yoda1 action, and should inspire future studies by researchers interested in mechanosensitive channels and membrane curvature.</p>
