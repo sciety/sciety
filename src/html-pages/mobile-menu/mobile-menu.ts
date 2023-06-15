@@ -51,7 +51,7 @@ export const mobileMenu = (user: O.Option<UserDetails>): HtmlFragment => pipe(
         <li><a href="/lists" class="mobile-menu__link">Lists</a></li>
         ${renderUserMenuLinks(user)}
       </ul>
-      <a href="#mobileMenuReturnPoint"><img src="static/images/close-icon.svg" alt="dismiss this menu" class="mobile-menu__close_link"></a>
+      <a href="#mobileMenuReturnPoint"><img src="/static/images/close-icon.svg" alt="dismiss this menu" class="mobile-menu__close_link"></a>
     </nav>
 `,
   toHtmlFragment,
