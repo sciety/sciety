@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { SupportedArticleServer } from './article-server-with-version-information';
-import { BiorxivArticleVersions } from './BiorxivArticleDetails';
+import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
@@ -23,7 +23,7 @@ type GetArticleVersionEventsFromBiorxiv = (
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
 const mapResponse = (doi: Doi, server: SupportedArticleServer) => flow(
-  (response: BiorxivArticleVersions) => response.collection,
+  (response: ResponseWithVersions) => response.collection,
   RNEA.map(({ version, date }) => ({
     source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
     publishedAt: date,

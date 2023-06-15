@@ -7,7 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import { BiorxivArticleVersions, BiorxivArticleVersion } from './BiorxivArticleDetails';
+import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
 import { GetArticleSubjectArea, GetJson } from '../../shared-ports';
@@ -24,7 +24,7 @@ const byVersionAscending: Ord.Ord<BiorxivArticleVersion> = pipe(
 );
 
 const mapResponse = flow(
-  (response: BiorxivArticleVersions) => response.collection,
+  (response: ResponseWithVersions) => response.collection,
   RNEA.sort(byVersionAscending),
   RNEA.last,
   ({ category, server }) => ({ value: category, server }),

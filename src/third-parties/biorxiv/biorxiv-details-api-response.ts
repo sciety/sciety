@@ -12,21 +12,25 @@ const biorxivArticleVersion = t.type({
 
 export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
 
-const happyPathCodec = t.type({
+const responseWithVersions = t.type({
   collection: tt.readonlyNonEmptyArray(biorxivArticleVersion),
 });
 
-const noVersionsCodec = t.type({
+export const isResponseWithVersions = (response: BiorxivDetailsApiResponse): response is ResponseWithVersions => {
+  if (!('messages' in response)) { return true; } return false;
+};
+
+export type ResponseWithVersions = t.TypeOf<typeof responseWithVersions>;
+
+const responseNoVersionsFound = t.type({
   messages: t.readonlyArray(t.type({
     status: t.literal('no posts found'),
   })),
 });
 
-export const biorxivArticleDetails = t.union([
-  happyPathCodec,
-  noVersionsCodec,
+export const biorxivDetailsApiResponse = t.union([
+  responseWithVersions,
+  responseNoVersionsFound,
 ]);
 
-export type BiorxivDetailsApiResponse = t.TypeOf<typeof biorxivArticleDetails>;
-
-export type BiorxivArticleVersions = t.TypeOf<typeof happyPathCodec>;
+type BiorxivDetailsApiResponse = t.TypeOf<typeof biorxivDetailsApiResponse>;
