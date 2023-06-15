@@ -8,7 +8,7 @@ import { UserId } from '../../types/user-id';
 import { Doi } from '../../types/doi';
 import { List } from '../../types/list';
 
-export type SelectListContainingArticle = (userId: UserId) => (articleId: Doi) => O.Option<List>;
+type SelectListContainingArticle = (userId: UserId) => (articleId: Doi) => O.Option<List>;
 
 export const selectListContainingArticle = (
   readModel: ReadModel,

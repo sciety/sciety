@@ -5,7 +5,7 @@ import { ReadModel } from './handle-event';
 import { Doi } from '../../types/doi';
 import { List } from '../../types/list';
 
-export type SelectAllListsContainingArticle = (articleId: Doi) => ReadonlyArray<List>;
+type SelectAllListsContainingArticle = (articleId: Doi) => ReadonlyArray<List>;
 
 export const selectAllListsContainingArticle = (
   readModel: ReadModel,

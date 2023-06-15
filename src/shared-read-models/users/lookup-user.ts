@@ -5,7 +5,7 @@ import { ReadModel } from './handle-event';
 import { UserId } from '../../types/user-id';
 import { UserDetails } from '../../types/user-details';
 
-export type LookupUser = (userId: UserId) => O.Option<UserDetails>;
+type LookupUser = (userId: UserId) => O.Option<UserDetails>;
 
 export const lookupUser = (readModel: ReadModel): LookupUser => (userId) => pipe(
   readModel,

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
+import { handleEvent, initialState } from '../../../src/shared-read-models/lists/handle-event';
 import { selectListContainingArticle } from '../../../src/shared-read-models/lists/select-list-containing-article';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryString } from '../../helpers';

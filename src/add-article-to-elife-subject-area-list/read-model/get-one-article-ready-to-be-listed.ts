@@ -9,7 +9,7 @@ import { ListId } from '../../types/list-id';
 
 type ArticleWithSubjectArea = { articleId: Doi, listId: ListId };
 
-export type GetOneArticleReadyToBeListed = () => O.Option<ArticleWithSubjectArea>;
+type GetOneArticleReadyToBeListed = () => O.Option<ArticleWithSubjectArea>;
 
 export const getOneArticleReadyToBeListed = (readModel: ReadModel): GetOneArticleReadyToBeListed => () => pipe(
   readModel,

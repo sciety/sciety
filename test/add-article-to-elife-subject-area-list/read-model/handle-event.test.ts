@@ -2,9 +2,10 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState, ReadModel } from '../../../src/add-article-to-elife-subject-area-list/read-model';
+import {
+  handleEvent, initialState, ReadModel, ArticleState, ArticleStateName,
+} from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
-import { ArticleState, ArticleStateName } from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import * as LID from '../../../src/types/list-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';

@@ -4,7 +4,7 @@ import { ReadModel } from './handle-event';
 import { isGroupId } from '../../types/list-owner-id';
 import { List } from '../../types/list';
 
-export type GetNonEmptyUserLists = () => ReadonlyArray<List>;
+type GetNonEmptyUserLists = () => ReadonlyArray<List>;
 
 export const getNonEmptyUserLists = (
   readModel: ReadModel,
