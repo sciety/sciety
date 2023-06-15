@@ -12,13 +12,9 @@ const biorxivArticleVersion = t.type({
 
 export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
 
-const responseWithVersions = t.type({
+export const responseWithVersions = t.type({
   collection: tt.readonlyNonEmptyArray(biorxivArticleVersion),
 });
-
-export const isResponseWithVersions = (response: BiorxivDetailsApiResponse): response is ResponseWithVersions => {
-  if (!('messages' in response)) { return true; } return false;
-};
 
 export type ResponseWithVersions = t.TypeOf<typeof responseWithVersions>;
 
@@ -32,5 +28,3 @@ export const biorxivDetailsApiResponse = t.union([
   responseWithVersions,
   responseNoVersionsFound,
 ]);
-
-type BiorxivDetailsApiResponse = t.TypeOf<typeof biorxivDetailsApiResponse>;

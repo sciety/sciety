@@ -3,7 +3,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { SupportedArticleServer } from './article-server-with-version-information';
-import { biorxivDetailsApiResponse, ResponseWithVersions, isResponseWithVersions } from './biorxiv-details-api-response';
+import {
+  biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
+} from './biorxiv-details-api-response';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
 import { GetJson } from '../../shared-ports';
@@ -31,8 +33,8 @@ export const fetchArticleDetails: FetchArticleDetails = ({ getJson, logger }, do
       url: constructUrl(doi, server),
     })),
   )),
-  TE.filterOrElseW(isResponseWithVersions, () => {
-    logger('warn', 'No version found on biorxiv/medrxiv', { doi, server });
+  TE.filterOrElseW(responseWithVersions.is, () => {
+    logger('warn', 'No versions found on biorxiv/medrxiv', { doi, server });
   }),
   TE.mapLeft(() => undefined),
 );
