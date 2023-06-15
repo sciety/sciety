@@ -75,7 +75,9 @@ $_card-padding: 16px;
 
 .card-teasers__teasers {
   @include list.basics();
-  margin-bottom: 0;
+  margin-bottom: 1rem;
+  background-color: settings.$colour-highlighted-background;
+  padding: functions.px-to-rem($_card-padding);
 }
 
 .card-teasers__teasers li {
