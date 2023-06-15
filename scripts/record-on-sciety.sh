@@ -1,6 +1,7 @@
 #! /bin/sh
 
-curl -v localhost:8080/api/record-curation-statement \
+curl localhost:8080/api/record-curation-statement \
+  -w "%{http_code}," \
   -H "Authorization: Bearer secret" \
   -X POST \
   -H "Content-type: application/json" \
