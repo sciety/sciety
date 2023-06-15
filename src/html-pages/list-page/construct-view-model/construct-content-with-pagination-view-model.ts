@@ -9,6 +9,7 @@ import { Doi } from '../../../types/doi';
 import { ContentWithPaginationViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 import { Queries } from '../../../shared-read-models';
+import { updateWith } from '../../../updateWith';
 
 export type Ports = Queries & ToPageOfCardsPorts;
 
@@ -20,7 +21,7 @@ export const constructContentWithPaginationViewModel = (
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
   paginate(20, pageNumber),
-  E.map(populateArticleActivities(ports)),
+  E.map(updateWith(populateArticleActivities(ports))),
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,

@@ -33,7 +33,6 @@ export function updateWithF<F>(FA: Functor<F>):
 
 type UpdateWith = <AS, B>(f: (as: AS) => B) => <A extends AS>(a: A) => A & B;
 
-// ts-unused-exports:disable-next-line
 export const updateWith: UpdateWith = (f) => (a) => {
   const b = f(a);
   return { ...a, ...b };
