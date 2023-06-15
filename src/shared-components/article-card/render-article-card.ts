@@ -70,7 +70,7 @@ const renderCurationStatement = (articleId: Doi) => {
     return '';
   }
   return `
-      <ul>
+      <ul class="card-teasers__teasers">
       <li>
         <h4>Curated by <a href="/groups/biophysics-colab">Biophysics Colab</a></h4>
         <div lang="en" class="curation-teaser__quote curation-teaser__quote_card">

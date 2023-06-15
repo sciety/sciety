@@ -72,3 +72,16 @@ $_card-padding: 16px;
 .curation-teaser__quote_card {
   @include _clamp-to-max-number-of-lines(5);
 }
+
+.card-teasers__teasers {
+  @include list.basics();
+  margin-bottom: 0;
+}
+
+.card-teasers__teasers li {
+  margin-bottom: functions.px-to-rem(8px);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
