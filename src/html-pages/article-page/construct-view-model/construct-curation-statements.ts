@@ -3,13 +3,13 @@ import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as GID from '../../../types/group-id';
 import { Doi } from '../../../types/doi';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import { EvaluationLocator, toEvaluationLocator } from '../../../types/evaluation-locator';
+import { updateWithF } from '../../../updateWith';
 
 // ts-unused-exports:disable-next-line
 export const magicArticleId = '10.1101/2022.02.23.481615';
@@ -34,33 +34,23 @@ export const curationStatements: ReadonlyArray<CurationStatement> = [
   },
 ];
 
-const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
-  statement.groupId,
+const getGroupInformation = (dependencies: Dependencies) => (input: { groupId: GID.GroupId }) => pipe(
+  input.groupId,
   dependencies.getGroup,
   E.fromOption(() => {
-    dependencies.logger('error', 'Group not found in read model', { statement });
+    dependencies.logger('error', 'Group not found in read model', { input });
   }),
   E.map((group) => ({
-    ...statement,
     groupName: group.name,
     groupSlug: group.slug,
     groupLogo: group.largeLogoPath,
   })),
 );
 
-type Partial = {
-  groupName: string,
-  groupSlug: string,
-  groupLogo: O.Option<string>,
-  evaluationLocator: EvaluationLocator,
-  groupId: GID.GroupId,
-};
-
-const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
-  partial.evaluationLocator,
+const getEvaluationText = (dependencies: Dependencies) => (input: { evaluationLocator: EvaluationLocator }) => pipe(
+  input.evaluationLocator,
   dependencies.fetchReview,
   TE.map((review) => ({
-    ...partial,
     statement: review.fullText,
     statementLanguageCode: detectLanguage(review.fullText),
   })),
@@ -71,8 +61,9 @@ type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.T
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
   dependencies.getCurationStatements,
-  RA.map(addGroupInformation(dependencies)),
+  RA.map(updateWithF(E.Apply)(getGroupInformation(dependencies))),
   RA.rights,
-  T.traverseArray(addEvaluationText(dependencies)),
+  RA.map(updateWithF(TE.ApplyPar)(getEvaluationText(dependencies))),
+  T.sequenceArray,
   T.map(RA.rights),
 );
