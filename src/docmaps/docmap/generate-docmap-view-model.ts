@@ -14,6 +14,7 @@ import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../shared-read-models';
+import { updateWithF } from '../../updateWith';
 
 export type DocmapModel = {
   articleId: Doi,
@@ -33,32 +34,22 @@ type GenerateDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
 
-type ReviewForArticle = {
-  reviewId: EvaluationLocator,
-  groupId: GroupId,
-  recordedAt: Date,
-  publishedAt: Date,
-  authors: ReadonlyArray<string>,
-};
-
 export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
 };
 
-const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(
-  review.reviewId,
+const getSourceUrl = (adapters: Ports) => (input: { reviewId: EvaluationLocator }) => pipe(
+  input.reviewId,
   inferredSourceUrl,
   O.fold(
     () => pipe(
-      review.reviewId,
+      input.reviewId,
       adapters.fetchReview,
       TE.map((fetchedReview) => ({
-        ...review,
         sourceUrl: fetchedReview.url,
       })),
     ),
     (sourceUrl) => TE.right({
-      ...review,
       sourceUrl,
     }),
   ),
@@ -71,7 +62,7 @@ export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({
       adapters.getEvaluationsForDoi(articleId),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
-      TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),
+      TE.chain(TE.traverseArray(updateWithF(TE.ApplyPar)(getSourceUrl(adapters)))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
