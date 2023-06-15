@@ -12,8 +12,21 @@ const biorxivArticleVersion = t.type({
 
 export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
 
-export const biorxivArticleDetails = t.type({
+const happyPathCodec = t.type({
   collection: tt.readonlyNonEmptyArray(biorxivArticleVersion),
 });
 
-export type BiorxivArticleDetails = t.TypeOf<typeof biorxivArticleDetails>;
+const noVersionsCodec = t.type({
+  messages: t.readonlyArray(t.type({
+    status: t.literal('no posts found'),
+  })),
+});
+
+export const biorxivArticleDetails = t.union([
+  happyPathCodec,
+  noVersionsCodec,
+]);
+
+export type BiorxivDetailsApiResponse = t.TypeOf<typeof biorxivArticleDetails>;
+
+export type BiorxivArticleVersions = t.TypeOf<typeof happyPathCodec>;
