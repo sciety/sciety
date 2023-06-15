@@ -11,9 +11,6 @@ import { Dependencies } from './dependencies';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { updateWithF } from '../../../updateWith';
 
-// ts-unused-exports:disable-next-line
-export const magicArticleId = '10.1101/2022.02.23.481615';
-
 const getGroupInformation = (dependencies: Dependencies) => (input: { groupId: GID.GroupId }) => pipe(
   input.groupId,
   dependencies.getGroup,
