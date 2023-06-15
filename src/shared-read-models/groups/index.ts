@@ -1,4 +1,14 @@
-export { handleEvent, initialState } from './handle-event';
-export { getGroup } from './get-group';
-export { getAllGroups } from './get-all-groups';
-export { queries, Queries } from './queries';
+import { handleEvent, initialState } from './handle-event';
+import { getAllGroups } from './get-all-groups';
+import { getGroup } from './get-group';
+import { getGroupBySlug } from './get-group-by-slug';
+
+export const groups = {
+  queries: {
+    getAllGroups,
+    getGroupBySlug,
+    getGroup,
+  },
+  initialState,
+  handleEvent,
+};

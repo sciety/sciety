@@ -4,7 +4,7 @@ import { ReadModel } from './handle-event';
 import * as LOID from '../../types/list-owner-id';
 import { List } from '../../types/list';
 
-export type SelectAllListsOwnedBy = (listOwnerId: LOID.ListOwnerId) => ReadonlyArray<List>;
+type SelectAllListsOwnedBy = (listOwnerId: LOID.ListOwnerId) => ReadonlyArray<List>;
 
 export const selectAllListsOwnedBy = (
   readModel: ReadModel,

@@ -1,2 +1,10 @@
-export { initialState, handleEvent } from './handle-event';
-export { queries, Queries } from './queries';
+import { getAnnotationContent } from './get-annotation-content';
+import { handleEvent, initialState } from './handle-event';
+
+export const annotations = {
+  queries: {
+    getAnnotationContent,
+  },
+  initialState,
+  handleEvent,
+};

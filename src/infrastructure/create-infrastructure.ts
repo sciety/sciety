@@ -9,7 +9,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { ArticleServer } from '../types/article-server';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
-import { dispatcher } from '../shared-read-models/dispatcher';
+import { dispatcher } from '../shared-read-models';
 import { fetchNcrcReview } from '../third-parties/ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from '../third-parties/rapid-reviews/fetch-rapid-review';
 import { fetchReview } from '../third-parties/fetch-review';

@@ -6,8 +6,8 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { constructEvent } from '../../../src/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryString } from '../../helpers';
-import { handleEvent, initialState } from '../../../src/shared-read-models/annotations';
 import { getAnnotationContent } from '../../../src/shared-read-models/annotations/get-annotation-content';
+import { handleEvent, initialState } from '../../../src/shared-read-models/annotations/handle-event';
 
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();

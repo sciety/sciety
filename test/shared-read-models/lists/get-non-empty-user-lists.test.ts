@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { getNonEmptyUserLists } from '../../../src/shared-read-models/lists/get-non-empty-user-lists';
 import { arbitraryList } from '../../types/list-helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/lists';
+import { handleEvent, initialState } from '../../../src/shared-read-models/lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';

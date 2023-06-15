@@ -5,7 +5,7 @@ import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations';
+import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
 
 describe('get-evaluations-for-doi', () => {

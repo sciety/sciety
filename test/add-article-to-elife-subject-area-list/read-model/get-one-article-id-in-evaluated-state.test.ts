@@ -2,13 +2,14 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  elifeGroupId, handleEvent, initialState,
-} from '../../../src/add-article-to-elife-subject-area-list/read-model';
+  handleEvent, initialState,
+} from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryDate } from '../../helpers';
 import { getOneArticleIdInEvaluatedState } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-one-article-id-in-evaluated-state';
 import { Doi } from '../../../src/types/doi';
+import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
 
 describe('get-one-article-id-in-evaluated-state', () => {
   describe('given a biorxiv article that has been evaluated by eLife', () => {

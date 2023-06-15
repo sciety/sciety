@@ -11,7 +11,7 @@ type GroupActivity = {
   latestActivityAt: O.Option<Date>,
 };
 
-export type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
+type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
 
 export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup => (groupId) => pipe(
   readModel.get(groupId),

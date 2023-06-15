@@ -8,7 +8,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity';
+import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 

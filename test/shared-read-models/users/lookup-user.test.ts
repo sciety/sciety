@@ -5,7 +5,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/users';
+import { handleEvent, initialState } from '../../../src/shared-read-models/users/handle-event';
 import { lookupUser } from '../../../src/shared-read-models/users/lookup-user';
 
 describe('lookup-user', () => {

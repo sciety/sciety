@@ -1,5 +1,14 @@
-export { elifeGroupId } from './data';
-export { getArticleIdsByState, ArticleIdsByState } from './get-article-ids-by-state';
-export { ReadModel, initialState, handleEvent } from './handle-event';
-export { getCorrespondingListId } from './get-corresponding-list-id';
-export { queries, Queries } from './queries';
+import { handleEvent, initialState } from './handle-event';
+import { getArticleIdsByState } from './get-article-ids-by-state';
+import { getOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluated-state';
+import { getOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
+
+export const addArticleToElifeSubjectAreaList = {
+  queries: {
+    getArticleIdsByState,
+    getOneArticleIdInEvaluatedState,
+    getOneArticleReadyToBeListed,
+  },
+  initialState,
+  handleEvent,
+};
