@@ -15,8 +15,7 @@ import { Queries } from './queries';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
-// ts-unused-exports:disable-next-line
-export type Dispatcher = {
+type Dispatcher = {
   queries: Queries,
   dispatchToAllReadModels: DispatchToAllReadModels,
 };

@@ -11,7 +11,6 @@ import { Ports as DocmapPorts, generateDocmapViewModel } from '../docmap/generat
 import { toDocmap } from '../docmap/to-docmap';
 import { supportedGroups } from '../supported-groups';
 
-// ts-unused-exports:disable-next-line
 export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts;
 
 type DocmapIndexBody = {

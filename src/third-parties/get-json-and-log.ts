@@ -4,8 +4,7 @@ import { Json } from 'fp-ts/Json';
 import { Logger, GetJson } from '../shared-ports';
 import * as DE from '../types/data-error';
 
-// ts-unused-exports:disable-next-line
-export type Ports = {
+type Ports = {
   getJson: GetJson,
   logger: Logger,
 };

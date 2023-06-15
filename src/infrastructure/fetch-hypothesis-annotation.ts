@@ -18,7 +18,6 @@ import * as DE from '../types/data-error';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
-// ts-unused-exports:disable-next-line
 export const insertSelectedText = (response: HypothesisAnnotation): string => pipe(
   response.target,
   RA.head,

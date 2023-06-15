@@ -13,7 +13,6 @@ type SearchResult = {
   authors: ArticleAuthors,
 };
 
-// ts-unused-exports:disable-next-line
 export type SearchResults = {
   items: ReadonlyArray<SearchResult>,
   total: number,

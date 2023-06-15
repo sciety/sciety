@@ -14,7 +14,6 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
 import { getJsonAndLog } from '../get-json-and-log';
 
-// ts-unused-exports:disable-next-line
 export type Ports = {
   getJson: GetJson,
   logger: Logger,

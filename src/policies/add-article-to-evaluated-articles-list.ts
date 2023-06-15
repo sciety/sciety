@@ -19,7 +19,6 @@ export type Ports = AddArticleToListPorts & {
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
 };
 
-// ts-unused-exports:disable-next-line
 export const constructCommand = (
   ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
 ) => (event: EventOfType<'EvaluationRecorded'>): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(

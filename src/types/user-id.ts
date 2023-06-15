@@ -4,10 +4,8 @@ import * as E from 'fp-ts/Either';
 
 export type UserId = string & { readonly UserId: unique symbol };
 
-// ts-unused-exports:disable-next-line
 export const auth0Prefix = 'auth0';
 
-// ts-unused-exports:disable-next-line
 export const twitterPrefix = 'twitter';
 
 const isUserId = (value: unknown): value is UserId => typeof value === 'string' && value !== '';

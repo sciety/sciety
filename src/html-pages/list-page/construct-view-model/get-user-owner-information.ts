@@ -9,8 +9,7 @@ type OwnerInfo = {
   ownerAvatarPath: string,
 };
 
-// ts-unused-exports:disable-next-line
-export type Ports = {
+type Ports = {
   lookupUser: Queries['lookupUser'],
 };
 

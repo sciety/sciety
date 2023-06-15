@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 
-// ts-unused-exports:disable-next-line
 export const defaultDestination = '/';
 
 export const calculateAuthenticationDestination = (

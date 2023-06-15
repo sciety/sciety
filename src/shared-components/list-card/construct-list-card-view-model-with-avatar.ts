@@ -9,7 +9,6 @@ export type Ports = Queries & {
   logger: Logger,
 };
 
-// ts-unused-exports:disable-next-line
 export const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
 
 const getOwnerAvatarUrl = (
