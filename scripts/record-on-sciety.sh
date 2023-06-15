@@ -1,6 +1,6 @@
 #! /bin/sh
 
-curl https://sciety.org/api/record-curation-statement \
+curl https://staging.sciety.org/api/record-curation-statement \
   -w "%{http_code}," \
   -H "Authorization: Bearer $SCIETY_TEAM_API_BEARER_TOKEN" \
   -X POST \
