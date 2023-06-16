@@ -10,7 +10,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
-type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
+type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
@@ -55,6 +55,10 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
 export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
   key,
   getHtml,
+  TE.mapLeft((error) => {
+    logger('error', 'Failed to get HTML', { key, error });
+    return DE.unavailable;
+  }),
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),

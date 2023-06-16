@@ -116,8 +116,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         doi: fetchZenodoRecord(getJson, logger),
         hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(logger, 5 * 60 * 1000), logger),
         ncrc: fetchNcrcReview(logger),
-        prelights: fetchPrelightsHighlight(getHtml(logger)),
-        rapidreviews: fetchRapidReview(logger, getHtml(logger)),
+        prelights: fetchPrelightsHighlight(logger, getHtml),
+        rapidreviews: fetchRapidReview(logger, getHtml),
       };
 
       const {

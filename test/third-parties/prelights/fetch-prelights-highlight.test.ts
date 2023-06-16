@@ -7,6 +7,7 @@ import { fetchPrelightsHighlight } from '../../../src/third-parties/prelights';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { dummyLogger } from '../../dummy-logger';
 
 const makeDoc = (descriptions: Array<string>) => `
   <!doctype html>
@@ -28,7 +29,7 @@ describe('fetch-prelights-highlight', () => {
     const guid = new URL(arbitraryUri());
     const getHtml = () => TE.right(makeDoc([arbitraryString()]));
     const evaluationUrl = await pipe(
-      fetchPrelightsHighlight(getHtml)(guid.toString()),
+      fetchPrelightsHighlight(dummyLogger, getHtml)(guid.toString()),
       TE.map((evaluation) => evaluation.url.toString()),
     )();
 
@@ -45,7 +46,7 @@ describe('fetch-prelights-highlight', () => {
     const guid = new URL(arbitraryUri());
     const getHtml = () => TE.right(makeDoc(descriptions));
     const fullText = await pipe(
-      fetchPrelightsHighlight(getHtml)(guid.toString()),
+      fetchPrelightsHighlight(dummyLogger, getHtml)(guid.toString()),
       TE.map((evaluation) => evaluation.fullText.toString()),
     )();
 
@@ -58,7 +59,7 @@ describe('fetch-prelights-highlight', () => {
       const getHtml = () => TE.right(makeDoc([]));
       const fullText = await pipe(
         guid.toString(),
-        fetchPrelightsHighlight(getHtml),
+        fetchPrelightsHighlight(dummyLogger, getHtml),
         T.map(flow(
           E.matchW(
             identity,

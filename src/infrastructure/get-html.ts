@@ -1,22 +1,17 @@
 import axios from 'axios';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
-import { Logger } from './logger';
-import * as DE from '../types/data-error';
+import { identity, pipe } from 'fp-ts/function';
 
-type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
+type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
-export const getHtml = (logger: Logger): GetHtml => (url) => pipe(
+export const getHtml: GetHtml = (url) => pipe(
   TE.tryCatch(
     async () => axios.get<string>(url, {
       headers: {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
     }),
-    (error) => {
-      logger('error', 'Failed to get HTML', { url, error });
-      return DE.unavailable;
-    },
+    identity,
   ),
   TE.map((response) => response.data),
 );

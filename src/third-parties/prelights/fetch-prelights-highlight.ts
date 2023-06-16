@@ -8,11 +8,16 @@ import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { Logger } from '../../shared-ports';
 
-type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
+type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
-export const fetchPrelightsHighlight = (getHtml: GetHtml): EvaluationFetcher => (key: string) => pipe(
+export const fetchPrelightsHighlight = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key: string) => pipe(
   getHtml(key),
+  TE.mapLeft((error) => {
+    logger('error', 'Failed to get HTML', { key, error });
+    return DE.unavailable;
+  }),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),
