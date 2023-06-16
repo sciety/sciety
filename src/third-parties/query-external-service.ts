@@ -7,7 +7,10 @@ import { getCachedAxiosRequest } from '../infrastructure/get-cached-axios-reques
 
 export type QueryExternalService = (url: string) => TE.TaskEither<DE.DataError, unknown>;
 
-export const queryExternalService = (logger: Logger): QueryExternalService => (url) => pipe(
-  TE.tryCatch(async () => getCachedAxiosRequest(logger, 5 * 60 * 1000)<unknown>(url), identity),
+export const queryExternalService = (
+  logger: Logger,
+  cacheMaxAgeSeconds = 5 * 60,
+): QueryExternalService => (url) => pipe(
+  TE.tryCatch(async () => getCachedAxiosRequest(logger, cacheMaxAgeSeconds * 1000)<unknown>(url), identity),
   TE.mapLeft(logAndTransformToDataError(logger, url)),
 );

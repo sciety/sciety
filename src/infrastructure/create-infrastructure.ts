@@ -64,15 +64,10 @@ const createGetJson = (logger: Logger) => async (uri: string) => {
   return response.data;
 };
 
-const createGetJsonWithTimeout = (logger: Logger, timeout: number) => async (uri: string) => {
-  const response = await fetchData(logger, timeout)<Json>(uri);
-  return response.data;
-};
-
 const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: Doi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({
-      getJson: getCachedAxiosRequest(logger),
+      queryExternalService: queryExternalService(logger, 24 * 60 * 60),
       logger,
     })(doi, server);
   }
@@ -102,7 +97,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   TE.map((lowLevelAdapters) => ({
     ...lowLevelAdapters,
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({
-      getJson: createGetJsonWithTimeout(lowLevelAdapters.logger, 10000),
+      queryExternalService: queryExternalService(lowLevelAdapters.logger, 24 * 60 * 60),
       logger: lowLevelAdapters.logger,
     }),
   })),

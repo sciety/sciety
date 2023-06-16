@@ -8,11 +8,10 @@ import {
 } from './biorxiv-details-api-response';
 import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
-import { GetJson } from '../../shared-ports';
-import { getJsonAndLog } from '../get-json-and-log';
+import { QueryExternalService } from '../query-external-service';
 
 type Dependencies = {
-  getJson: GetJson,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 
@@ -20,12 +19,12 @@ const constructUrl = (doi: Doi, server: SupportedArticleServer) => (
   `https://api.biorxiv.org/details/${server}/${doi.value}`
 );
 
-type FetchArticleDetails = ({ getJson, logger }: Dependencies, doi: Doi, server: SupportedArticleServer)
+type FetchArticleDetails = ({ queryExternalService, logger }: Dependencies, doi: Doi, server: SupportedArticleServer)
 => TE.TaskEither<void, ResponseWithVersions>;
 
-export const fetchArticleDetails: FetchArticleDetails = ({ getJson, logger }, doi, server) => pipe(
+export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService, logger }, doi, server) => pipe(
   constructUrl(doi, server),
-  getJsonAndLog({ getJson, logger }),
+  queryExternalService,
   TE.chainEitherKW(flow(
     biorxivDetailsApiResponse.decode,
     E.mapLeft((errors) => logger('error', 'Failed to parse biorxiv response', {

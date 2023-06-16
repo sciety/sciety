@@ -14,7 +14,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
     const subjectArea = 'cell biology';
     const ports = {
-      getJson: async (url: string) => (url.includes('/biorxiv')
+      queryExternalService: (url: string) => TE.right((url.includes('/biorxiv')
         ? ({
           collection: [{
             category: subjectArea,
@@ -23,7 +23,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             server: 'biorxiv',
           }],
         })
-        : ({ collection: [] })),
+        : ({ collection: [] }))),
       logger: dummyLogger,
     };
     let result: SubjectArea;
@@ -48,7 +48,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on medrxiv', () => {
     const subjectArea = 'addiction medicine';
     const ports = {
-      getJson: async (url: string) => (url.includes('/medrxiv')
+      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [{
             category: subjectArea,
@@ -57,7 +57,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             server: 'medrxiv',
           }],
         })
-        : ({ collection: [] })),
+        : ({ collection: [] }))),
       logger: dummyLogger,
     };
     let result: SubjectArea;
@@ -81,7 +81,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when the subject area is not available on either server', () => {
     const ports = {
-      getJson: async () => ({ collection: [] }),
+      queryExternalService: () => TE.right({ collection: [] }),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, SubjectArea>;
@@ -97,7 +97,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when one article version is returned', () => {
     const ports = {
-      getJson: async (url: string) => (url.includes('/medrxiv')
+      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [{
             category: 'addiction medicine',
@@ -106,7 +106,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             server: 'medrxiv',
           }],
         })
-        : ({ collection: [] })),
+        : ({ collection: [] }))),
       logger: dummyLogger,
     };
 
@@ -127,7 +127,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when there are multiple article versions', () => {
     const ports = {
-      getJson: async (url: string) => (url.includes('/medrxiv')
+      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [
             {
@@ -144,7 +144,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
             },
           ],
         })
-        : ({ collection: [] })),
+        : ({ collection: [] }))),
       logger: dummyLogger,
     };
     let result: SubjectArea;
@@ -164,7 +164,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when no usable response is decoded', () => {
     const ports = {
-      getJson: async () => ({}),
+      queryExternalService: () => TE.right({}),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, SubjectArea>;
@@ -182,7 +182,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     const researchSquareArticleDoi = new Doi('10.21203/rs.3.rs-2197876/v1');
     const logger = jest.fn(dummyLogger);
     const ports = {
-      getJson: shouldNotBeCalled,
+      queryExternalService: shouldNotBeCalled,
       logger,
     };
     let result: E.Either<DE.DataError, SubjectArea>;

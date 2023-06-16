@@ -10,11 +10,12 @@ import * as N from 'fp-ts/number';
 import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../infrastructure/logger';
-import { GetArticleSubjectArea, GetJson } from '../../shared-ports';
+import { GetArticleSubjectArea } from '../../shared-ports';
 import * as DE from '../../types/data-error';
+import { QueryExternalService } from '../query-external-service';
 
 type Ports = {
-  getJson: GetJson,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 

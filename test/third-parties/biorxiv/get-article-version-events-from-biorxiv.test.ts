@@ -1,20 +1,21 @@
 import { URL } from 'url';
+import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
 import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
+import * as DE from '../../../src/types/data-error';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {
     describe('when the server is biorxiv', () => {
       it('returns an article-version event for each article version', async () => {
         const doi = new Doi('10.1101/2020.09.02.278911');
-        const getJson = jest.fn(async () => ({
+        const queryExternalService = jest.fn(() => TE.right({
           collection: [
             {
               date: '2020-01-02',
@@ -32,11 +33,11 @@ describe('get-article-version-events-from-biorxiv', () => {
         }));
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(doi, 'biorxiv'),
+          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(doi, 'biorxiv'),
           T.map(O.getOrElseW(() => [])),
         )();
 
-        expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
+        expect(queryExternalService).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
           source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
@@ -54,7 +55,7 @@ describe('get-article-version-events-from-biorxiv', () => {
     describe('when the server is medrxiv', () => {
       it('returns an article-version event for each article version', async () => {
         const doi = new Doi('10.1101/2020.09.02.278911');
-        const getJson = jest.fn(async () => ({
+        const queryExternalService = jest.fn(() => TE.right({
           collection: [
             {
               date: '2020-01-02',
@@ -72,11 +73,11 @@ describe('get-article-version-events-from-biorxiv', () => {
         }));
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(doi, 'medrxiv'),
+          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(doi, 'medrxiv'),
           T.map(O.getOrElseW(() => [])),
         )();
 
-        expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
+        expect(queryExternalService).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
           source: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v2'),
@@ -94,11 +95,9 @@ describe('get-article-version-events-from-biorxiv', () => {
 
   describe('when biorxiv is unavailable', () => {
     it('returns a none', async () => {
-      const getJson = async (): Promise<never> => {
-        throw new Error('HTTP timeout');
-      };
+      const queryExternalService = () => TE.left(DE.unavailable);
 
-      const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+      const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
       expect(events).toStrictEqual(O.none);
     });
@@ -107,9 +106,9 @@ describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv returns a corrupted response', () => {
     describe('where the fields are missing', () => {
       it('returns a none', async () => {
-        const getJson = async (): Promise<Json> => ({});
+        const queryExternalService = () => TE.right({});
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });
@@ -117,7 +116,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
     describe('where the date is corrupt', () => {
       it('returns a none', async () => {
-        const getJson = async (): Promise<Json> => ({
+        const queryExternalService = () => TE.right({
           collection: [
             {
               date: 'tree',
@@ -128,7 +127,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(arbitraryDoi(), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryDoi(), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });
@@ -136,7 +135,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
     describe('where the version is not a number', () => {
       it('returns a none', async () => {
-        const getJson = async (): Promise<Json> => ({
+        const queryExternalService = () => TE.right({
           collection: [
             {
               date: '2020-01-01',
@@ -147,7 +146,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ getJson, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });
