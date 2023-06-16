@@ -8,7 +8,11 @@ type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
 
 export const getHtml = (logger: Logger): GetHtml => (url) => pipe(
   TE.tryCatch(
-    async () => axios.get<string>(url),
+    async () => axios.get<string>(url, {
+      headers: {
+        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+      },
+    }),
     (error) => {
       logger('error', 'Failed to get HTML', { url, error });
       return DE.unavailable;
