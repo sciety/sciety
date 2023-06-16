@@ -9,15 +9,13 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
+import { logAndTransformToDataError } from '../get-json-and-log';
 
 type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
-export const fetchPrelightsHighlight = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key: string) => pipe(
-  getHtml(key),
-  TE.mapLeft((error) => {
-    logger('error', 'Failed to get HTML', { key, error });
-    return DE.unavailable;
-  }),
+export const fetchPrelightsHighlight = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (url: string) => pipe(
+  getHtml(url),
+  TE.mapLeft(logAndTransformToDataError(logger, url)),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),
@@ -29,7 +27,7 @@ export const fetchPrelightsHighlight = (logger: Logger, getHtml: GetHtml): Evalu
     E.map(sanitise),
   )),
   TE.map((text) => ({
-    url: new URL(key),
+    url: new URL(url),
     fullText: text,
   })),
 );
