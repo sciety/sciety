@@ -71,6 +71,30 @@ $_card-padding: 16px;
 
 .curation-teaser__quote_card {
   @include _clamp-to-max-number-of-lines(5);
+
+  padding-left: functions.px-to-rem($_card-padding);
+  padding-right: functions.px-to-rem($_card-padding);
+  position: relative;
+
+  &::before,
+  &::after {
+    position: absolute;
+    font-size: functions.px-to-rem(32px);
+    line-height: 0.5;
+  }
+
+  &::before {
+    content: '\201C';
+    left: 0;
+    top: 8px;
+  }
+
+  &::after {
+    content: '\201D';
+    right: 0;
+    bottom: 0;
+  }
+
 }
 
 .card-teasers__teasers {
