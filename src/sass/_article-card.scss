@@ -81,6 +81,7 @@ $_card-padding: 16px;
     position: absolute;
     font-size: functions.px-to-rem(32px);
     line-height: 0.5;
+    color: settings.$colour-accent;
   }
 
   &::before {
