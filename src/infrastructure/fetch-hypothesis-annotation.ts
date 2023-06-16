@@ -7,14 +7,14 @@ import { linkify } from 'remarkable/linkify';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { Logger, GetJson } from '../shared-ports';
+import { Logger } from '../shared-ports';
 import { EvaluationFetcher } from '../third-parties/fetch-review';
-import { getJsonAndLog } from '../third-parties/get-json-and-log';
 import { Evaluation } from '../types/evaluation';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise } from '../types/sanitised-html-fragment';
 import { HypothesisAnnotation, hypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import * as DE from '../types/data-error';
+import { QueryExternalService } from '../third-parties/query-external-service';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -46,20 +46,19 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   return evaluation;
 };
 
-export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): EvaluationFetcher => (key) => {
-  const url = `https://api.hypothes.is/api/annotations/${key}`;
-  logger('debug', 'Fetching evaluation from Hypothesis', { url });
-  return pipe(
-    url,
-    getJsonAndLog({ getJson, logger }),
-    TE.chainEitherKW(flow(
-      hypothesisAnnotation.decode,
-      E.mapLeft(formatValidationErrors),
-      E.mapLeft((errors) => {
-        logger('error', 'Invalid response from hypothes.is', { url, errors });
-        return DE.unavailable;
-      }),
-    )),
-    TE.map(toReview(logger)),
-  );
-};
+export const fetchHypothesisAnnotation = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+): EvaluationFetcher => (key) => pipe(
+  `https://api.hypothes.is/api/annotations/${key}`,
+  queryExternalService,
+  TE.chainEitherKW(flow(
+    hypothesisAnnotation.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => {
+      logger('error', 'Invalid response from hypothes.is', { key, errors });
+      return DE.unavailable;
+    }),
+  )),
+  TE.map(toReview(logger)),
+);

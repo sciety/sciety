@@ -1,19 +1,20 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
+import * as TE from 'fp-ts/TaskEither';
 import { fetchHypothesisAnnotation, insertSelectedText } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { HypothesisAnnotation } from '../../src/infrastructure/codecs/HypothesisAnnotation';
+import { QueryExternalService } from '../../src/third-parties/query-external-service';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the evaluation', async () => {
-    const getJson = async (): Promise<Json> => ({
+    const queryExternalService: QueryExternalService = () => TE.right({
       created: date,
       text: '<p>Very good</p>',
       target: [],
@@ -21,7 +22,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
 
     const expected = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
@@ -36,7 +37,7 @@ describe('fetch-hypothesis-annotation', () => {
     ['(linkify) GitHub Flavored Markdown', 'www.example.com', '<a href="http://www.example.com">www.example.com</a>'],
     ['bold italics', '***bold/italics** italics*', '<p><em><strong>bold/italics</strong> italics</em></p>'],
   ])('converts %s to HTML', async (_, input: string, expected: string) => {
-    const getJson = async (): Promise<Json> => ({
+    const queryExternalService: QueryExternalService = () => TE.right({
       created: date,
       text: input,
       target: [],
@@ -44,7 +45,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
 
     expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
       fullText: expect.stringContaining(expected),

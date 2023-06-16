@@ -38,6 +38,7 @@ import { searchEuropePmc } from '../third-parties/europe-pmc';
 import { fetchPrelightsHighlight } from '../third-parties/prelights';
 import { fetchRecommendedPapers } from '../third-parties/semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
+import { queryExternalService } from '../third-parties/query-external-service';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -114,7 +115,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const getAllEvents = T.of(events);
       const fetchers = {
         doi: fetchZenodoRecord(getJson, logger),
-        hypothesis: fetchHypothesisAnnotation(getCachedAxiosRequest(logger, 5 * 60 * 1000), logger),
+        hypothesis: fetchHypothesisAnnotation(queryExternalService(logger), logger),
         ncrc: fetchNcrcReview(logger),
         prelights: fetchPrelightsHighlight(logger, getHtml),
         rapidreviews: fetchRapidReview(logger, getHtml),
