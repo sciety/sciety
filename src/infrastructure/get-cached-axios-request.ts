@@ -19,6 +19,7 @@ const createGetData = (
       'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       ...headers,
     },
+    timeout: 10 * 1000,
   });
   if (response.cached) {
     logger('debug', 'Axios cache hit', {
