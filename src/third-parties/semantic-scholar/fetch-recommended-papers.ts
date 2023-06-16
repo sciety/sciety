@@ -7,15 +7,15 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { Logger, FetchRelatedArticles, GetJson } from '../../shared-ports';
+import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
-import { getJsonAndLog } from '../get-json-and-log';
+import { QueryExternalService } from '../query-external-service';
 
 export type Ports = {
-  getJson: GetJson,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 
@@ -43,7 +43,7 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 export const fetchRecommendedPapers = (ports: Ports): FetchRelatedArticles => (doi: Doi) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
-  getJsonAndLog(ports),
+  ports.queryExternalService,
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
     E.mapLeft(formatValidationErrors),

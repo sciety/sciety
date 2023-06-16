@@ -142,7 +142,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           logger,
           dependencies.crossrefApiBearerToken,
         ),
-        fetchRelatedArticles: fetchRecommendedPapers({ getJson, logger }),
+        fetchRelatedArticles: fetchRecommendedPapers({ queryExternalService: queryExternalService(logger), logger }),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchStaticFile(logger),
         searchForArticles: searchEuropePmc({ getJson, logger }),

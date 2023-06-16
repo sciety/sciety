@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { RelatedArticles } from '../../../src/shared-ports/fetch-related-articles';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
+import * as DE from '../../../src/types/data-error';
 import {
   Ports,
   fetchRecommendedPapers,
@@ -42,7 +43,7 @@ describe('fetch-recommended-papers', () => {
     it('translates to RelatedArticles type', async () => {
       const ports: Ports = {
         logger: dummyLogger,
-        getJson: async () => ({
+        queryExternalService: () => TE.right({
           recommendedPapers: [
             arbitraryRecommendedPaper(supportedArticleId),
           ],
@@ -76,7 +77,7 @@ describe('fetch-recommended-papers', () => {
     it('removes the unsupported article', async () => {
       const ports: Ports = {
         logger: dummyLogger,
-        getJson: async () => ({
+        queryExternalService: () => TE.right({
           recommendedPapers: [
             arbitraryRecommendedPaper(supportedBiorxivArticleId),
             arbitraryRecommendedPaper(unsupportedArticleId),
@@ -100,9 +101,7 @@ describe('fetch-recommended-papers', () => {
     it('returns a left', async () => {
       const ports: Ports = {
         logger: dummyLogger,
-        getJson: async () => {
-          throw new Error('Failed to get response from Semantic Scholar');
-        },
+        queryExternalService: () => TE.left(DE.unavailable),
       };
       const result = await pipe(
         arbitraryArticleId(),
@@ -117,7 +116,7 @@ describe('fetch-recommended-papers', () => {
     it('returns a left', async () => {
       const ports: Ports = {
         logger: dummyLogger,
-        getJson: async () => arbitraryString(),
+        queryExternalService: () => TE.right(arbitraryString()),
       };
       const result = await pipe(
         arbitraryArticleId(),
@@ -148,7 +147,7 @@ describe('fetch-recommended-papers', () => {
 
     const ports: Ports = {
       logger: dummyLogger,
-      getJson: async () => (response),
+      queryExternalService: () => TE.right(response),
     };
 
     it('ignores such articles', async () => {
