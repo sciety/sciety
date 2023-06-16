@@ -11,7 +11,7 @@ enum Level {
   debug,
 }
 
-type LevelName = keyof typeof Level;
+export type LevelName = keyof typeof Level;
 
 export type Payload = Record<string, unknown>;
 

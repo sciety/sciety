@@ -16,6 +16,7 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { GetJson, SearchForArticles } from '../../shared-ports';
+import { logAndTransformToDataError } from '../get-json-and-log';
 
 type Dependencies = {
   getJson: GetJson,
@@ -128,13 +129,7 @@ type GetFromUrl = (dependencies: Dependencies) => (url: string) => TE.TaskEither
 
 const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: string) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
-  TE.mapLeft(
-    (error) => {
-      // TODO recognise not-found somehow
-      logger('error', 'Could not get JSON from Europe PMC', { error, url });
-      return DE.unavailable;
-    },
-  ),
+  TE.mapLeft(logAndTransformToDataError(logger, url, 'error')),
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
     E.mapLeft((errors) => {
