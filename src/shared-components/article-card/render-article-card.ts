@@ -106,7 +106,7 @@ const renderAnnotationContent = (content: O.Option<HtmlFragment>) => pipe(
 
 const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
-  ${renderAuthors(model.authors, `article-card-author-list-${model.articleId.value}`)}
+  ${renderAuthors(model.authors)}
   ${renderCurationStatement(model.articleId)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
