@@ -9,6 +9,7 @@ import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { logAndTransformToDataError } from '../get-json-and-log';
 
 type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
@@ -52,13 +53,10 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
   return review(doc);
 };
 
-export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
-  key,
+export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (url) => pipe(
+  url,
   getHtml,
-  TE.mapLeft((error) => {
-    logger('error', 'Failed to get HTML', { key, error });
-    return DE.unavailable;
-  }),
+  TE.mapLeft(logAndTransformToDataError(logger, url)),
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
@@ -67,6 +65,6 @@ export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFe
   )),
   TE.map((fullText) => ({
     fullText,
-    url: new URL(key),
+    url: new URL(url),
   })),
 );
