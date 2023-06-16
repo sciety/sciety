@@ -70,8 +70,9 @@ const renderCurationStatement = (articleId: Doi) => {
     return '';
   }
   return `
+      <div class="visually-hidden">This article has been curated by two groups:</div>
       <ul class="card-teasers__teasers" role="list">
-      <li role="list-item">
+      <li role="listitem">
         <h4><span style="font-weight: normal">Curated by</span> Biophysics Colab</h4>
         <div lang="en" class="curation-teaser__quote_card">
           <p><strong>Endorsement statement (17 November 2022)</strong></p>
@@ -79,7 +80,7 @@ const renderCurationStatement = (articleId: Doi) => {
           <p><em>(This endorsement by Biophysics Colab refers to version 2 of this preprint, which has been revised in response to peer review of version 1.)</em></p>
         </div>
       </li>
-      <li role="list-item">
+      <li role="listitem">
         <h4><span style="font-weight: normal">Curated by </span>eLife</h4>
         <div lang="en" class="curation-teaser__quote_card">
           <p><strong>eLife assessment</strong></p>
