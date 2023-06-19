@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { Doi } from '../../../src/types/doi';
@@ -10,7 +11,7 @@ describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
     const nextCursor = arbitraryWord();
     const results = await searchEuropePmc({
-      getJson: async () => ({
+      queryExternalService: () => TE.right({
         hitCount: 3,
         nextCursorMark: nextCursor,
         resultList: {
@@ -77,7 +78,7 @@ describe('search-europe-pmc adapter', () => {
 
   it('handles collective name and full name authors', async () => {
     const results = await searchEuropePmc({
-      getJson: async () => ({
+      queryExternalService: () => TE.right({
         hitCount: 1,
         nextCursorMark: arbitraryWord(),
         resultList: {
@@ -120,7 +121,7 @@ describe('search-europe-pmc adapter', () => {
 
     beforeEach(async () => {
       results = await searchEuropePmc({
-        getJson: async () => ({
+        queryExternalService: () => TE.right({
           hitCount: 1,
           nextCursorMark: arbitraryWord(),
           resultList: {
@@ -155,7 +156,7 @@ describe('search-europe-pmc adapter', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
         const results = await searchEuropePmc({
-          getJson: async () => ({
+          queryExternalService: () => TE.right({
             hitCount: arbitraryNumber(0, 100),
             nextCursorMark: nextCursor,
             resultList: {
@@ -174,7 +175,7 @@ describe('search-europe-pmc adapter', () => {
     describe('when there is no next cursor mark', () => {
       it('nextCursor should be none', async () => {
         const results = await searchEuropePmc({
-          getJson: async () => ({
+          queryExternalService: () => TE.right({
             hitCount: arbitraryNumber(0, 100),
             resultList: {
               result: [{
@@ -202,7 +203,7 @@ describe('search-europe-pmc adapter', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
         const results = await searchEuropePmc({
-          getJson: async () => ({
+          queryExternalService: () => TE.right({
             hitCount: arbitraryNumber(0, 100),
             nextCursorMark: nextCursor,
             resultList: {
@@ -231,7 +232,7 @@ describe('search-europe-pmc adapter', () => {
       it('nextCursor should be some', async () => {
         const nextCursor = arbitraryWord();
         const results = await searchEuropePmc({
-          getJson: async () => ({
+          queryExternalService: () => TE.right({
             hitCount: arbitraryNumber(3, 100),
             nextCursorMark: nextCursor,
             resultList: {

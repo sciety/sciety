@@ -12,12 +12,12 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { GetJson, SearchForArticles } from '../../shared-ports';
-import { logAndTransformToDataError } from '../get-json-and-log';
+import { SearchForArticles } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
+import { QueryExternalService } from '../query-external-service';
 
 type Dependencies = {
-  getJson: GetJson,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 
@@ -108,13 +108,13 @@ const constructSearchResults = (logger: Logger, pageSize: number) => (data: Euro
 
 type GetFromUrl = (dependencies: Dependencies) => (url: string) => TE.TaskEither<DE.DataError, EuropePmcResponse>;
 
-const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: string) => pipe(
-  TE.tryCatch(async () => getJson(url), E.toError),
-  TE.mapLeft(logAndTransformToDataError(logger, url, 'error')),
+const getFromUrl: GetFromUrl = (dependencies: Dependencies) => (url: string) => pipe(
+  url,
+  dependencies.queryExternalService,
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
     E.mapLeft((errors) => {
-      logger(
+      dependencies.logger(
         'error',
         'Could not parse response from Europe PMC',
         { errors: PR.failure(errors), url },

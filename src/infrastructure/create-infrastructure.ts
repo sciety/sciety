@@ -145,7 +145,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         fetchRelatedArticles: fetchRecommendedPapers({ queryExternalService: queryExternalService(logger), logger }),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchStaticFile(logger),
-        searchForArticles: searchEuropePmc({ getJson, logger }),
+        searchForArticles: searchEuropePmc({
+          queryExternalService: queryExternalService(logger, 5 * 60, 'error'),
+          logger,
+        }),
         getAllEvents,
         findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
