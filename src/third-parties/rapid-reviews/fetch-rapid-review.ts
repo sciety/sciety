@@ -1,17 +1,17 @@
 import { URL } from 'url';
+import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { EvaluationFetcher } from '../fetch-review';
 import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { logAndTransformToDataError } from '../get-json-and-log';
-
-type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
+import { QueryExternalService } from '../query-external-service';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
@@ -53,10 +53,20 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
   return review(doc);
 };
 
-export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (url) => pipe(
+export const fetchRapidReview = (
+  logger: Logger,
+  queryExternalService: QueryExternalService,
+): EvaluationFetcher => (url) => pipe(
   url,
-  getHtml,
-  TE.mapLeft(logAndTransformToDataError(logger, url)),
+  queryExternalService,
+  TE.chainEitherKW(flow(
+    t.string.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => {
+      logger('error', 'RapidReviews response is not a string', { errors, url });
+      return DE.unavailable;
+    }),
+  )),
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),

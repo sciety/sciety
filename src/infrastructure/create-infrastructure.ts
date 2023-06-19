@@ -100,7 +100,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         hypothesis: fetchHypothesisAnnotation(queryExternalService(partialAdapters.logger), partialAdapters.logger),
         ncrc: fetchNcrcReview(partialAdapters.logger),
         prelights: fetchPrelightsHighlight(partialAdapters.logger, getHtml),
-        rapidreviews: fetchRapidReview(partialAdapters.logger, getHtml),
+        rapidreviews: fetchRapidReview(partialAdapters.logger, queryExternalService(partialAdapters.logger)),
       };
 
       const {
