@@ -1,6 +1,10 @@
 import { DOMParser } from '@xmldom/xmldom';
+import { formatValidationErrors } from 'io-ts-reporters';
+import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import { flow, pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
@@ -9,8 +13,8 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { logAndTransformToDataError } from '../get-json-and-log';
 import { Doi } from '../../types/doi';
+import { QueryExternalService } from '../query-external-service';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: Doi) => {
   const parser = new DOMParser({
@@ -36,7 +40,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
 
     if (O.isNone(server)) {
       logger('warn', 'Unable to find server', { doi, response });
-      return E.left(DE.notFound);
+      return E.left(DE.unavailable);
     }
 
     abstract = getAbstract(doc, doi, logger);
@@ -62,14 +66,11 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   });
 };
 
-type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
-
 export const fetchCrossrefArticle = (
-  getXml: GetXml,
+  queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): FetchArticle => (doi) => async () => {
-  let response: string;
+): FetchArticle => (doi) => {
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
@@ -77,11 +78,16 @@ export const fetchCrossrefArticle = (
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  try {
-    response = await getXml(url, headers);
-  } catch (error: unknown) {
-    return E.left(logAndTransformToDataError(logger, url)(error));
-  }
-
-  return parseResponseAndConstructDomainObject(response, logger, doi);
+  return pipe(
+    queryExternalService(url, headers),
+    TE.chainEitherKW(flow(
+      t.string.decode,
+      E.mapLeft(formatValidationErrors),
+      E.mapLeft((errors) => {
+        logger('error', 'Crossref response is not a string', { errors, doi: doi.value });
+        return DE.unavailable;
+      }),
+    )),
+    TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(response, logger, doi)),
+  );
 };

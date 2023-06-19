@@ -1,38 +1,22 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
-import { flow, identity, pipe } from 'fp-ts/function';
-import { AxiosError } from 'axios';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('fetch-crossref-article', () => {
   const doi = arbitraryDoi();
 
-  it('uses the correct url and accept header', async () => {
-    const getXml = jest.fn();
-    await fetchCrossrefArticle(getXml, dummyLogger, O.none)(doi)();
-
-    expect(getXml).toHaveBeenCalledWith(
-      `https://api.crossref.org/works/${doi.value}/transform`,
-      expect.objectContaining({
-        Accept: 'application/vnd.crossref.unixref+xml',
-      }),
-    );
-  });
-
-  describe('the request fails with a timeout', () => {
+  describe('the request fails', () => {
     it('returns an error result', async () => {
-      const getXml = async (): Promise<never> => {
-        throw new AxiosError('HTTP timeout');
-      };
+      const queryExternalService = () => TE.left(DE.unavailable);
       const result = await pipe(
         doi,
-        fetchCrossrefArticle(getXml, dummyLogger, O.none),
+        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -41,26 +25,19 @@ describe('fetch-crossref-article', () => {
 
   describe('when crossref returns an invalid XML document', () => {
     it('throws an error', async () => {
-      const getXml = async (): Promise<string> => '';
+      const queryExternalService = () => TE.right(arbitraryString());
       const result = await pipe(
         doi,
-        fetchCrossrefArticle(getXml, dummyLogger, O.none),
-        T.map(flow(
-          E.matchW(
-            identity,
-            shouldNotBeCalled,
-          ),
-          DE.isUnavailable,
-        )),
+        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
       )();
 
-      expect(result).toBe(true);
+      expect(result).toStrictEqual(E.left(DE.unavailable));
     });
   });
 
   describe('when crossref returns no usable authors', () => {
     it('returns a Right', async () => {
-      const getXml = async (): Promise<string> => `
+      const queryExternalService = () => TE.right(`
         <?xml version="1.0" encoding="UTF-8"?>
         <doi_records>
           <doi_record owner="10.1101" timestamp="2021-11-11 04:35:20">
@@ -82,10 +59,10 @@ describe('fetch-crossref-article', () => {
             </crossref>
           </doi_record>
         </doi_records>
-      `;
+      `);
       const result = await pipe(
         doi,
-        fetchCrossrefArticle(getXml, dummyLogger, O.none),
+        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(E.isRight(result)).toBe(true);

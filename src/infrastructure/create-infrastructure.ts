@@ -17,7 +17,6 @@ import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from '../third-parties/zenodo/fetch-zenodo-record';
 import { fetchData } from './fetchers';
-import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
@@ -138,7 +137,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
-          getCachedAxiosRequest(logger),
+          queryExternalService(logger),
           logger,
           dependencies.crossrefApiBearerToken,
         ),

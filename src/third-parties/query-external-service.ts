@@ -6,7 +6,8 @@ import { Logger } from '../shared-ports';
 import { getCachedAxiosRequest } from '../infrastructure/get-cached-axios-request';
 import { LevelName } from '../infrastructure/logger';
 
-export type QueryExternalService = (url: string) => TE.TaskEither<DE.DataError, unknown>;
+export type QueryExternalService = (url: string, headers?: Record<string, string>)
+=> TE.TaskEither<DE.DataError, unknown>;
 
 export const queryExternalService = (
   logger: Logger,
