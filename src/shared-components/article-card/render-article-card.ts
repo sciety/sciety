@@ -7,6 +7,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
 export type ArticleViewModel = {
   articleId: Doi,
@@ -26,8 +27,7 @@ const renderEvaluationCount = (evaluationCount: ArticleViewModel['evaluationCoun
   evaluationCount === 0,
   B.fold(
     () => pipe(
-      evaluationCount === 1,
-      (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
+      renderCountWithDescriptor(evaluationCount, 'evaluation', 'evaluations'),
       wrapInSpan,
     ),
     constant(''),
@@ -38,8 +38,7 @@ const renderListMembershipCount = (listMembershipCount: ArticleViewModel['listMe
   listMembershipCount === 0,
   B.fold(
     () => pipe(
-      listMembershipCount === 1,
-      (singular) => `Appears in ${listMembershipCount} ${singular ? 'list' : 'lists'}`,
+      `Appears in ${renderCountWithDescriptor(listMembershipCount, 'list', 'lists')}`,
       wrapInSpan,
     ),
     constant(''),
