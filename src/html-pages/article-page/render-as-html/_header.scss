@@ -5,16 +5,6 @@
 
 @use 'local-settings';
 
-/* stylelint-disable value-no-vendor-prefix */
-@mixin _clamp-to-max-number-of-lines($number-of-lines) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $number-of-lines;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* stylelint-enable value-no-vendor-prefix */
-
 .article-page-wrapper {
   width: 100%;
 }
@@ -71,7 +61,6 @@
 }
 
 .curation-statement {
-  @include _clamp-to-max-number-of-lines(5);
   border-top: 1px solid settings.$colour-furniture;
   padding-top: 3rem;
   margin-bottom: 3rem;
