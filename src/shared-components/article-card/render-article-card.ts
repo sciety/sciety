@@ -18,9 +18,11 @@ export type ArticleViewModel = {
   listMembershipCount: number,
 };
 
+type AnnotationContent = O.Option<HtmlFragment>;
+
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderEvaluationCount = (evaluationCount: number) => pipe(
+const renderEvaluationCount = (evaluationCount: ArticleViewModel['evaluationCount']) => pipe(
   evaluationCount === 0,
   B.fold(
     () => pipe(
@@ -32,7 +34,7 @@ const renderEvaluationCount = (evaluationCount: number) => pipe(
   ),
 );
 
-const renderListMembershipCount = (listMembershipCount: number) => pipe(
+const renderListMembershipCount = (listMembershipCount: ArticleViewModel['listMembershipCount']) => pipe(
   listMembershipCount === 0,
   B.fold(
     () => pipe(
@@ -62,7 +64,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderCurationStatement = (articleId: Doi) => {
+const renderCurationStatement = (articleId: ArticleViewModel['articleId']) => {
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
@@ -91,7 +93,7 @@ const renderCurationStatement = (articleId: Doi) => {
     `;
 };
 
-const renderAnnotationContent = (content: O.Option<HtmlFragment>) => pipe(
+const renderAnnotationContent = (content: AnnotationContent) => pipe(
   content,
   O.match(
     () => '',
@@ -121,7 +123,7 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent: O.Option<HtmlFragment>): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent: AnnotationContent): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}
