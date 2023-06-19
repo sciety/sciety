@@ -66,7 +66,7 @@ $_card-padding: 16px;
   padding: functions.px-to-rem($_card-padding);
 }
 
-.card-teasers li {
+.card-teasers__teaser {
   margin-bottom: functions.px-to-rem(48px);
 
   &:last-child {
