@@ -16,7 +16,6 @@ import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from '../third-parties/zenodo/fetch-zenodo-record';
 import { getEventsFromDatabase } from './get-events-from-database';
-import { getHtml } from './get-html';
 import {
   createLogger, Logger, Config as LoggerConfig,
 } from './logger';
@@ -99,7 +98,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         doi: fetchZenodoRecord(queryExternalService(partialAdapters.logger)),
         hypothesis: fetchHypothesisAnnotation(queryExternalService(partialAdapters.logger), partialAdapters.logger),
         ncrc: fetchNcrcReview(partialAdapters.logger),
-        prelights: fetchPrelightsHighlight(partialAdapters.logger, getHtml),
+        prelights: fetchPrelightsHighlight(partialAdapters.logger, queryExternalService(partialAdapters.logger)),
         rapidreviews: fetchRapidReview(partialAdapters.logger, queryExternalService(partialAdapters.logger)),
       };
 

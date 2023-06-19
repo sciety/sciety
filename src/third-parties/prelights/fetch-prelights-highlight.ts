@@ -4,18 +4,29 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import * as t from 'io-ts';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { logAndTransformToDataError } from '../get-json-and-log';
+import { QueryExternalService } from '../query-external-service';
 
-type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
-
-export const fetchPrelightsHighlight = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (url: string) => pipe(
-  getHtml(url),
-  TE.mapLeft(logAndTransformToDataError(logger, url)),
+export const fetchPrelightsHighlight = (
+  logger: Logger,
+  queryExternalService: QueryExternalService,
+): EvaluationFetcher => (url: string) => pipe(
+  url,
+  queryExternalService,
+  TE.chainEitherKW(flow(
+    t.string.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => {
+      logger('error', 'RapidReviews response is not a string', { errors, url });
+      return DE.unavailable;
+    }),
+  )),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),

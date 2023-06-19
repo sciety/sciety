@@ -4,6 +4,7 @@ import { identity, pipe } from 'fp-ts/function';
 
 type GetHtml = (url: string) => TE.TaskEither<unknown, string>;
 
+// ts-unused-exports:disable-next-line
 export const getHtml: GetHtml = (url) => pipe(
   TE.tryCatch(
     async () => axios.get<string>(url, {
