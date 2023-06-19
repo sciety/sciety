@@ -6,10 +6,7 @@ import { RelatedArticles } from '../../../src/shared-ports/fetch-related-article
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
-import {
-  Ports,
-  fetchRecommendedPapers,
-} from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
+import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { Doi } from '../../../src/types/doi';
@@ -41,17 +38,14 @@ describe('fetch-recommended-papers', () => {
     // ['osf', '10.31234/osf.io/td68z'],
   ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
     it('translates to RelatedArticles type', async () => {
-      const ports: Ports = {
-        logger: dummyLogger,
-        queryExternalService: () => TE.right({
-          recommendedPapers: [
-            arbitraryRecommendedPaper(supportedArticleId),
-          ],
-        }),
-      };
+      const queryExternalService = () => () => TE.right({
+        recommendedPapers: [
+          arbitraryRecommendedPaper(supportedArticleId),
+        ],
+      });
       const result = await pipe(
         arbitraryArticleId(),
-        fetchRecommendedPapers(ports),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [{
@@ -75,18 +69,15 @@ describe('fetch-recommended-papers', () => {
     const supportedBiorxivArticleId = '10.1101/123';
 
     it('removes the unsupported article', async () => {
-      const ports: Ports = {
-        logger: dummyLogger,
-        queryExternalService: () => TE.right({
-          recommendedPapers: [
-            arbitraryRecommendedPaper(supportedBiorxivArticleId),
-            arbitraryRecommendedPaper(unsupportedArticleId),
-          ],
-        }),
-      };
+      const queryExternalService = () => () => TE.right({
+        recommendedPapers: [
+          arbitraryRecommendedPaper(supportedBiorxivArticleId),
+          arbitraryRecommendedPaper(unsupportedArticleId),
+        ],
+      });
       const result = await pipe(
         arbitraryArticleId(),
-        fetchRecommendedPapers(ports),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [expect.objectContaining({
@@ -99,13 +90,10 @@ describe('fetch-recommended-papers', () => {
 
   describe('when we cannot access Semantic Scholar', () => {
     it('returns a left', async () => {
-      const ports: Ports = {
-        logger: dummyLogger,
-        queryExternalService: () => TE.left(DE.unavailable),
-      };
+      const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(
         arbitraryArticleId(),
-        fetchRecommendedPapers(ports),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
 
       expect(E.isLeft(result)).toBe(true);
@@ -114,13 +102,10 @@ describe('fetch-recommended-papers', () => {
 
   describe('when we cannot decode the response', () => {
     it('returns a left', async () => {
-      const ports: Ports = {
-        logger: dummyLogger,
-        queryExternalService: () => TE.right(arbitraryString()),
-      };
+      const queryExternalService = () => () => TE.right(arbitraryString());
       const result = await pipe(
         arbitraryArticleId(),
-        fetchRecommendedPapers(ports),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
 
       expect(E.isLeft(result)).toBe(true);
@@ -144,16 +129,12 @@ describe('fetch-recommended-papers', () => {
         },
       ],
     };
-
-    const ports: Ports = {
-      logger: dummyLogger,
-      queryExternalService: () => TE.right(response),
-    };
+    const queryExternalService = () => () => TE.right(response);
 
     it('ignores such articles', async () => {
       const result = await pipe(
         arbitraryArticleId(),
-        fetchRecommendedPapers(ports),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
 

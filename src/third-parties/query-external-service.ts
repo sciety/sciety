@@ -10,9 +10,9 @@ export type QueryExternalService = (url: string) => TE.TaskEither<DE.DataError, 
 
 export type Foo = (
   logger: Logger,
-  cacheMaxAgeSeconds: number,
-  notFoundLogLevel: LevelName,
-  headers: Record<string, string>
+  cacheMaxAgeSeconds?: number,
+  notFoundLogLevel?: LevelName,
+  headers?: Record<string, string>
 ) => QueryExternalService;
 
 export const queryExternalService = (
