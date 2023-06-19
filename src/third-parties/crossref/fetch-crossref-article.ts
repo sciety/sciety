@@ -23,6 +23,9 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   let server: O.Option<ArticleServer>;
   let title: SanitisedHtmlFragment;
   try {
+    if (response.length === 0) {
+      throw new Error('Empty response from Crossref');
+    }
     const doc = parser.parseFromString(response, 'text/xml');
     authors = getAuthors(doc);
     server = getServer(doc);
@@ -68,17 +71,14 @@ export const fetchCrossrefArticle = (
 ): FetchArticle => (doi) => async () => {
   let response: string;
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.crossref.unixref+xml',
+  };
+  if (O.isSome(crossrefApiBearerToken)) {
+    headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
+  }
   try {
-    const headers: Record<string, string> = {
-      Accept: 'application/vnd.crossref.unixref+xml',
-    };
-    if (O.isSome(crossrefApiBearerToken)) {
-      headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
-    }
     response = await getXml(url, headers);
-    if (response.length === 0) {
-      throw new Error('Empty response from Crossref');
-    }
   } catch (error: unknown) {
     return E.left(logAndTransformToDataError(logger, url)(error));
   }
