@@ -63,9 +63,6 @@ const renderArticleLatestActivityDate = O.fold(
 );
 
 const renderCurationStatement = (articleId: Doi) => {
-  if (process.env.EXPERIMENT_ENABLED !== 'true') {
-    return '';
-  }
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
