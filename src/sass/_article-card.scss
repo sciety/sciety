@@ -10,16 +10,6 @@ $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
-/* stylelint-disable value-no-vendor-prefix */
-@mixin _clamp-to-max-number-of-lines($number-of-lines) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $number-of-lines;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* stylelint-enable value-no-vendor-prefix */
-
 .article-card {
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
@@ -70,8 +60,6 @@ $_card-padding: 16px;
 }
 
 .curation-teaser__quote_card {
-  @include _clamp-to-max-number-of-lines(5);
-
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
   position: relative;
