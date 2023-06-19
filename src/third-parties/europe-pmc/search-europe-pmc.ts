@@ -1,11 +1,8 @@
-import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import {
-  constant, flow, pipe, tupled,
-} from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
@@ -17,6 +14,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { GetJson, SearchForArticles } from '../../shared-ports';
 import { logAndTransformToDataError } from '../get-json-and-log';
+import { constructQueryUrl } from './construct-query-url';
 
 type Dependencies = {
   getJson: GetJson,
@@ -65,23 +63,6 @@ const europePmcResponse = t.type({
 type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
 type EuropePmcPublisher = t.TypeOf<typeof europePmcPublisher>;
-
-const constructQueryParams = (
-  pageSize: number,
-) => (
-  query: string,
-  cursor: O.Option<string>,
-  evaluatedOnly: boolean,
-) => (
-  new URLSearchParams({
-    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints")${evaluatedOnly ? ' (LABS_PUBS:"2112")' : ''} sort_date:y`,
-    format: 'json',
-    pageSize: pageSize.toString(),
-    resultType: 'core',
-    cursorMark: O.getOrElse(constant('*'))(cursor),
-  }));
-
-const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
 const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServer => {
   switch (publisher) {
@@ -150,9 +131,7 @@ export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => 
   cursor,
   evaluatedOnly,
 ) => pipe(
-  [query, cursor, evaluatedOnly],
-  tupled(constructQueryParams(pageSize)),
-  constructSearchUrl,
+  constructQueryUrl(query, cursor, evaluatedOnly, pageSize),
   getFromUrl(dependencies),
   TE.map(constructSearchResults(dependencies.logger, pageSize)),
 );
