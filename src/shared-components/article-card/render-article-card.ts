@@ -63,6 +63,14 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
+const curationStatement = {
+  groupName: 'Biophysics Colab',
+  content: `
+    <p><strong>Endorsement statement (17 November 2022)</strong></p>
+    <p>The preprint by Atsumi <em>et al</em>. describes how chloride binding to sweet- and umami-sensing proteins (T1R taste receptors) can evoke taste sensation. The authors use an elegant combination of structural, biophysical and electrophysiological approaches to locate a chloride binding site in the ligand-binding domain of medaka fish T1r2a/3 receptors. They convincingly show that low mM concentrations of chloride induce conformational changes and, using single fiber recordings, establish that mouse chorda tympani nerves are activated by chloride in a T1R-dependent manner&hellip;</p>
+  `,
+};
+
 const renderCurationStatement = (articleId: ArticleViewModel['articleId']) => {
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
@@ -72,10 +80,9 @@ const renderCurationStatement = (articleId: ArticleViewModel['articleId']) => {
       <ul class="article-card-teasers" role="list">
       <li role="listitem" class="article-card-teasers__teaser">
         <article>
-          <h4 class="article-card-teasers__teaser_heading">Curated by <strong>Biophysics Colab</strong></h4>
+          <h4 class="article-card-teasers__teaser_heading">Curated by <strong>${curationStatement.groupName}</strong></h4>
           <div lang="en" class="article-card-teasers__teaser_quote">
-            <p><strong>Endorsement statement (17 November 2022)</strong></p>
-            <p>The preprint by Atsumi <em>et al</em>. describes how chloride binding to sweet- and umami-sensing proteins (T1R taste receptors) can evoke taste sensation. The authors use an elegant combination of structural, biophysical and electrophysiological approaches to locate a chloride binding site in the ligand-binding domain of medaka fish T1r2a/3 receptors. They convincingly show that low mM concentrations of chloride induce conformational changes and, using single fiber recordings, establish that mouse chorda tympani nerves are activated by chloride in a T1R-dependent manner&hellip;</p>
+            ${curationStatement.content}
           </div>
         </article>
       </li>
