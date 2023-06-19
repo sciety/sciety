@@ -14,7 +14,7 @@ import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Doi } from '../../types/doi';
-import { QueryExternalService } from '../query-external-service';
+import { Foo } from '../query-external-service';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: Doi) => {
   const parser = new DOMParser({
@@ -67,7 +67,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
 };
 
 export const fetchCrossrefArticle = (
-  queryExternalService: QueryExternalService,
+  queryExternalService: Foo,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
 ): FetchArticle => (doi) => {
@@ -79,7 +79,8 @@ export const fetchCrossrefArticle = (
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
   return pipe(
-    queryExternalService(url, headers),
+    url,
+    queryExternalService(logger, 5 * 60, 'warn', headers),
     TE.chainEitherKW(flow(
       t.string.decode,
       E.mapLeft(formatValidationErrors),

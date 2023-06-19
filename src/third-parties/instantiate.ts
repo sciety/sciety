@@ -29,11 +29,7 @@ const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: 
 };
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => ({
-  fetchArticle: fetchCrossrefArticle(
-    queryExternalService(logger),
-    logger,
-    crossrefApiBearerToken,
-  ),
+  fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
   fetchRelatedArticles: fetchRecommendedPapers({
     queryExternalService: queryExternalService(logger),
     logger,

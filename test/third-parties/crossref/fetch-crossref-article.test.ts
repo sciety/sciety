@@ -13,7 +13,7 @@ describe('fetch-crossref-article', () => {
 
   describe('the request fails', () => {
     it('returns an error result', async () => {
-      const queryExternalService = () => TE.left(DE.unavailable);
+      const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(
         doi,
         fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
@@ -25,7 +25,7 @@ describe('fetch-crossref-article', () => {
 
   describe('when crossref returns an invalid XML document', () => {
     it('throws an error', async () => {
-      const queryExternalService = () => TE.right(arbitraryString());
+      const queryExternalService = () => () => TE.right(arbitraryString());
       const result = await pipe(
         doi,
         fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
@@ -37,7 +37,7 @@ describe('fetch-crossref-article', () => {
 
   describe('when crossref returns no usable authors', () => {
     it('returns a Right', async () => {
-      const queryExternalService = () => TE.right(`
+      const queryExternalService = () => () => TE.right(`
         <?xml version="1.0" encoding="UTF-8"?>
         <doi_records>
           <doi_record owner="10.1101" timestamp="2021-11-11 04:35:20">
