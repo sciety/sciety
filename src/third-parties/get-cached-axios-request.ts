@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
-import { Logger } from './logger';
+import { Logger } from '../shared-ports';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 

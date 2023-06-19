@@ -9,8 +9,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { Logger } from '../../infrastructure/logger';
-import { GetArticleSubjectArea } from '../../shared-ports';
+import { GetArticleSubjectArea, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 

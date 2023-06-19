@@ -7,10 +7,10 @@ import { flow, pipe } from 'fp-ts/function';
 import { SupportedArticleServer } from './article-server-with-version-information';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
 import { ArticleVersion } from '../../types/article-version';
 import { QueryExternalService } from '../query-external-service';
+import { Logger } from '../../shared-ports';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

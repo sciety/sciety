@@ -7,11 +7,11 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { EvaluationFetcher } from '../fetch-review';
-import { Logger } from '../../infrastructure/logger';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
+import { Logger } from '../../shared-ports';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),

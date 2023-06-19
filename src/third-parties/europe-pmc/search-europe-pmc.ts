@@ -6,13 +6,12 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { Logger } from '../../infrastructure/logger';
 import { ArticleServer } from '../../types/article-server';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { SearchForArticles } from '../../shared-ports';
+import { Logger, SearchForArticles } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
 import { QueryExternalService } from '../query-external-service';
 

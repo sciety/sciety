@@ -3,7 +3,7 @@ import { identity, pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
 import { logAndTransformToDataError } from './get-json-and-log';
 import { Logger } from '../shared-ports';
-import { getCachedAxiosRequest } from '../infrastructure/get-cached-axios-request';
+import { getCachedAxiosRequest } from './get-cached-axios-request';
 import { LevelName } from '../infrastructure/logger';
 
 export type QueryExternalService = (url: string, headers?: Record<string, string>)

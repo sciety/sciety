@@ -6,9 +6,9 @@ import { SupportedArticleServer } from './article-server-with-version-informatio
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
-import { Logger } from '../../infrastructure/logger';
 import { Doi } from '../../types/doi';
 import { QueryExternalService } from '../query-external-service';
+import { Logger } from '../../shared-ports';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
