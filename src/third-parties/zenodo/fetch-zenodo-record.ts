@@ -8,9 +8,8 @@ import * as t from 'io-ts';
 import * as DE from '../../types/data-error';
 import { htmlFragmentCodec } from '../../types/html-fragment';
 import { Evaluation } from '../../types/evaluation';
-import { GetJson, Logger } from '../../shared-ports';
-import { getJsonAndLog } from '../get-json-and-log';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { QueryExternalService } from '../query-external-service';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
@@ -26,11 +25,11 @@ const zenodoRecordCodec = t.type({
   }),
 });
 
-type FetchZenodoRecord = (getJson: GetJson, logger: Logger)
+type FetchZenodoRecord = (queryExternalService: QueryExternalService)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
 
-export const fetchZenodoRecord: FetchZenodoRecord = (getJson, logger) => (key) => pipe(
+export const fetchZenodoRecord: FetchZenodoRecord = (queryExternalService) => (key) => pipe(
   key,
   E.fromPredicate(
     isDoiFromZenodo,
@@ -40,7 +39,7 @@ export const fetchZenodoRecord: FetchZenodoRecord = (getJson, logger) => (key) =
   TE.fromEither,
   TE.chain((zenodoId) => pipe(
     `https://zenodo.org/api/records/${zenodoId}`,
-    getJsonAndLog({ getJson, logger }),
+    queryExternalService,
   )),
   TE.chainEitherKW(zenodoRecordCodec.decode),
   TE.bimap(

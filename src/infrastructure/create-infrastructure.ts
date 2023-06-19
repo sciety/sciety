@@ -1,4 +1,3 @@
-import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -16,7 +15,6 @@ import { fetchReview } from '../third-parties/fetch-review';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from '../third-parties/zenodo/fetch-zenodo-record';
-import { fetchData } from './fetchers';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import {
@@ -58,11 +56,6 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
   identity,
 );
 
-const createGetJson = (logger: Logger) => async (uri: string) => {
-  const response = await fetchData(logger)<Json>(uri);
-  return response.data;
-};
-
 const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: Doi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({
@@ -89,7 +82,6 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         events,
         pool,
         logger,
-        getJson: createGetJson(logger),
       }
     )),
   )),
@@ -102,17 +94,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
   })),
   TE.chain((partialAdapters) => TE.tryCatch(
     async () => {
-      const {
-        events, logger, pool, getJson,
-      } = partialAdapters;
-
-      const getAllEvents = T.of(events);
+      const getAllEvents = T.of(partialAdapters.events);
       const fetchers = {
-        doi: fetchZenodoRecord(getJson, logger),
-        hypothesis: fetchHypothesisAnnotation(queryExternalService(logger), logger),
-        ncrc: fetchNcrcReview(logger),
-        prelights: fetchPrelightsHighlight(logger, getHtml),
-        rapidreviews: fetchRapidReview(logger, getHtml),
+        doi: fetchZenodoRecord(queryExternalService(partialAdapters.logger)),
+        hypothesis: fetchHypothesisAnnotation(queryExternalService(partialAdapters.logger), partialAdapters.logger),
+        ncrc: fetchNcrcReview(partialAdapters.logger),
+        prelights: fetchPrelightsHighlight(partialAdapters.logger, getHtml),
+        rapidreviews: fetchRapidReview(partialAdapters.logger, getHtml),
       };
 
       const {
@@ -120,13 +108,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         queries,
       } = dispatcher();
 
-      dispatchToAllReadModels(events);
+      dispatchToAllReadModels(partialAdapters.events);
 
       const commitEventsWithoutListeners = commitEvents({
-        inMemoryEvents: events,
+        inMemoryEvents: partialAdapters.events,
         dispatchToAllReadModels,
-        pool,
-        logger,
+        pool: partialAdapters.pool,
+        logger: partialAdapters.logger,
       });
 
       const commandHandlerAdapters = {
@@ -137,19 +125,22 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const collectedAdapters = {
         ...queries,
         fetchArticle: fetchCrossrefArticle(
-          queryExternalService(logger),
-          logger,
+          queryExternalService(partialAdapters.logger),
+          partialAdapters.logger,
           dependencies.crossrefApiBearerToken,
         ),
-        fetchRelatedArticles: fetchRecommendedPapers({ queryExternalService: queryExternalService(logger), logger }),
+        fetchRelatedArticles: fetchRecommendedPapers({
+          queryExternalService: queryExternalService(partialAdapters.logger),
+          logger: partialAdapters.logger,
+        }),
         fetchReview: fetchReview(fetchers),
-        fetchStaticFile: fetchStaticFile(logger),
+        fetchStaticFile: fetchStaticFile(partialAdapters.logger),
         searchForArticles: searchEuropePmc({
-          queryExternalService: queryExternalService(logger, 5 * 60, 'error'),
-          logger,
+          queryExternalService: queryExternalService(partialAdapters.logger, 5 * 60, 'error'),
+          logger: partialAdapters.logger,
         }),
         getAllEvents,
-        findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
+        findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(partialAdapters.logger),
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),

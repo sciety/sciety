@@ -1,62 +1,42 @@
 import { URL } from 'url';
+import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
 import { fetchZenodoRecord } from '../../../src/third-parties/zenodo/fetch-zenodo-record';
 import * as DE from '../../../src/types/data-error';
-import { dummyLogger } from '../../dummy-logger';
 import { arbitraryHtmlFragment } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';
 const unexpectedSuffixZenodoKeyMostComplex = '10.5281/somethingelse.123';
 const doiUrl = 'https://doi.org/10.5281/zenodo.6386692';
-const zenodoApiUrl = 'https://zenodo.org/api/records/6386692';
 
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
     describe('and the DOI suffix has an unexpected format', () => {
-      let getJson: (uri: string) => Promise<Json>;
+      const queryExternalService = shouldNotBeCalled;
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        getJson = jest.fn();
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(unexpectedSuffixZenodoKeyMostComplex)();
+        evaluation = await fetchZenodoRecord(queryExternalService)(unexpectedSuffixZenodoKeyMostComplex)();
       });
 
       it('returns a left', () => {
         expect(evaluation).toStrictEqual(E.left(DE.unavailable));
       });
-
-      it('does not make unnecessary external api calls', () => {
-        expect(getJson).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('on all requests', () => {
-      let getJson: (uri: string) => Promise<Json>;
-
-      beforeEach(async () => {
-        getJson = jest.fn();
-        await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
-      });
-
-      it('calls Zenodo API url', () => {
-        expect(getJson).toHaveBeenCalledTimes(1);
-        expect(getJson).toHaveBeenCalledWith(zenodoApiUrl);
-      });
     });
 
     describe('when the request succeeds', () => {
       const description = arbitraryHtmlFragment();
-      const getJson = async (): Promise<Json> => ({
+      const queryExternalService = () => TE.right({
         metadata: {
           description,
         },
       });
 
       it('returns the metadata description as full text', async () => {
-        const evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+        const evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
 
         expect(
           pipe(
@@ -67,7 +47,7 @@ describe('fetch-zenodo-record', () => {
       });
 
       it('returns the Doi.org url as url', async () => {
-        const evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+        const evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
 
         expect(
           pipe(
@@ -79,11 +59,11 @@ describe('fetch-zenodo-record', () => {
     });
 
     describe('when the request fails', () => {
-      const getJson = async (): Promise<Json> => { throw new Error('500 response'); };
+      const queryExternalService = () => TE.left(DE.unavailable);
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+        evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
       });
 
       it('returns a left', () => {
@@ -93,7 +73,7 @@ describe('fetch-zenodo-record', () => {
 
     describe('when the returned JSON value is unexpected', () => {
       const wrongProperty = arbitraryHtmlFragment();
-      const getJson = async (): Promise<Json> => ({
+      const queryExternalService = () => TE.right({
         metadata: {
           wrongProperty,
         },
@@ -101,7 +81,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(getJson, dummyLogger)(zenodoKey)();
+        evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
       });
 
       it('returns a left', () => {
@@ -112,19 +92,14 @@ describe('fetch-zenodo-record', () => {
 
   describe('when the DOI is not from Zenodo', () => {
     let evaluation: E.Either<unknown, unknown>;
-    let getJson: (uri: string) => Promise<Json>;
+    const queryExternalService = shouldNotBeCalled;
 
     beforeEach(async () => {
-      getJson = jest.fn();
-      evaluation = await fetchZenodoRecord(getJson, dummyLogger)(notZenodoKey)();
+      evaluation = await fetchZenodoRecord(queryExternalService)(notZenodoKey)();
     });
 
     it('returns a left', () => {
       expect(evaluation).toStrictEqual(E.left(DE.unavailable));
-    });
-
-    it('does not make unnecessary external api calls', () => {
-      expect(getJson).not.toHaveBeenCalled();
     });
   });
 });
