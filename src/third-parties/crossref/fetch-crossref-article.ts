@@ -58,6 +58,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     doi,
   });
 };
+
 type GetXml = (url: string, headers: Record<string, string>) => Promise<string>;
 
 export const fetchCrossrefArticle = (

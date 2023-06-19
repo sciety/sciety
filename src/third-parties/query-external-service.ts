@@ -12,7 +12,7 @@ export const queryExternalService = (
   logger: Logger,
   cacheMaxAgeSeconds = 5 * 60,
   notFoundLogLevel: LevelName = 'warn',
-): QueryExternalService => (url) => pipe(
-  TE.tryCatch(async () => getCachedAxiosRequest(logger, cacheMaxAgeSeconds * 1000)<unknown>(url), identity),
+): QueryExternalService => (url, headers = {}) => pipe(
+  TE.tryCatch(async () => getCachedAxiosRequest(logger, cacheMaxAgeSeconds * 1000)<unknown>(url, headers), identity),
   TE.mapLeft(logAndTransformToDataError(logger, url, notFoundLogLevel)),
 );

@@ -16,8 +16,8 @@ const createGetData = (
   const startTime = new Date();
   const response = await cachedAxios.get<U>(url, {
     headers: {
-      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       ...headers,
+      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
     },
     timeout: 10 * 1000,
   });
