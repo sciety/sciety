@@ -1,10 +1,10 @@
-@use 'settings';
-@use 'functions';
-@use 'card';
-@use 'typography';
-@use 'breakpoints';
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/card';
+@use '../../sass/typography';
+@use '../../sass/breakpoints';
 
-@use 'list';
+@use '../../sass/list';
 
 $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;
