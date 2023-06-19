@@ -59,7 +59,26 @@ $_card-padding: 16px;
   }
 }
 
-.curation-teaser__quote_card {
+.card-teasers {
+  @include list.basics();
+  margin-bottom: 1rem;
+  background-color: settings.$colour-highlighted-background;
+  padding: functions.px-to-rem($_card-padding);
+}
+
+.card-teasers li {
+  margin-bottom: functions.px-to-rem(48px);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-teasers__teaser_heading {
+  font-weight: normal;
+}
+
+.card-teasers__teaser_quote {
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
   position: relative;
@@ -83,24 +102,4 @@ $_card-padding: 16px;
     right: 0;
     bottom: 0;
   }
-
-}
-
-.card-teasers__teasers {
-  @include list.basics();
-  margin-bottom: 1rem;
-  background-color: settings.$colour-highlighted-background;
-  padding: functions.px-to-rem($_card-padding);
-}
-
-.card-teasers__teasers li {
-  margin-bottom: functions.px-to-rem(48px);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.card-teaser__heading {
-  font-weight: normal;
 }
