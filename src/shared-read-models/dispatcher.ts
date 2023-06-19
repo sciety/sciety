@@ -8,6 +8,7 @@ import * as groupActivity from './group-activity';
 import * as groups from './groups';
 import * as idsOfEvaluatedArticlesLists from './ids-of-evaluated-articles-lists';
 import * as lists from './lists';
+import * as unlistedArticles from './unlisted-articles';
 import * as users from './users';
 import * as articleActivity from './article-activity';
 
@@ -22,6 +23,7 @@ export type Queries = addArticleToElifeSubjectAreaList.Queries
 & groups.Queries
 & idsOfEvaluatedArticlesLists.Queries
 & lists.Queries
+& unlistedArticles.Queries
 & users.Queries;
 
 // ts-unused-exports:disable-next-line
@@ -41,6 +43,7 @@ export const dispatcher = (): Dispatcher => {
     groupsReadModel: groups.initialState(),
     idsOfEvaluatedArticlesListsReadModel: idsOfEvaluatedArticlesLists.initialState(),
     listsReadModel: lists.initialState(),
+    unlistedArticlesReadModel: unlistedArticles.initialState(),
     usersReadModel: users.initialState(),
   };
 
@@ -81,6 +84,10 @@ export const dispatcher = (): Dispatcher => {
       readModels.listsReadModel,
       lists.handleEvent,
     )(events);
+    readModels.unlistedArticlesReadModel = RA.reduce(
+      readModels.unlistedArticlesReadModel,
+      unlistedArticles.handleEvent,
+    )(events);
     readModels.usersReadModel = RA.reduce(
       readModels.usersReadModel,
       users.handleEvent,
@@ -97,6 +104,7 @@ export const dispatcher = (): Dispatcher => {
     ...groups.queries(readModels.groupsReadModel),
     ...idsOfEvaluatedArticlesLists.queries(readModels.idsOfEvaluatedArticlesListsReadModel),
     ...lists.queries(readModels.listsReadModel),
+    ...unlistedArticles.queries(readModels.unlistedArticlesReadModel),
     ...users.queries(readModels.usersReadModel),
   };
 

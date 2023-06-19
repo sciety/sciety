@@ -10,7 +10,7 @@ type Dependencies = Queries & {
 export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Promise<void> => {
   dependencies.logger('info', 'ensureEvaluationsAreListed starting');
   await pipe(
-    [],
+    dependencies.getUnlistedArticles,
     T.of,
   )();
   dependencies.logger('info', 'ensureEvaluationsAreListed finished');
