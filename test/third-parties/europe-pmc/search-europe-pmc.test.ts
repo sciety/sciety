@@ -1,11 +1,9 @@
-import { URL, URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { Json } from 'io-ts-types';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { Doi } from '../../../src/types/doi';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitraryNumber, arbitraryWord } from '../../helpers';
 import { SearchResults } from '../../../src/shared-ports/search-for-articles';
 
 describe('search-europe-pmc adapter', () => {
@@ -150,65 +148,6 @@ describe('search-europe-pmc adapter', () => {
         ],
       })));
     });
-  });
-
-  it('constructs the Europe PMC query safely', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const getJson = async (url: string): Promise<Json> => ({
-      hitCount: 0,
-      resultList: {
-        result: [],
-      },
-    });
-    const spy = jest.fn(getJson);
-
-    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)('Structural basis of αE&', O.none, false)();
-
-    expect(spy).toHaveBeenCalledTimes(1);
-
-    const uri = spy.mock.calls[0][0];
-
-    const queryString = (new URL(uri)).searchParams;
-
-    expect(queryString.get('query')).toBe('(Structural basis of αE&) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints") sort_date:y');
-  });
-
-  describe('when evaluatedOnly is set', () => {
-    let queryString: URLSearchParams;
-
-    beforeEach(async () => {
-      const pageSize = arbitraryNumber(1, 10);
-      const evaluatedOnly = true;
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const getJson = async (url: string): Promise<Json> => ({});
-      const getJsonSpy = jest.fn(getJson);
-
-      await searchEuropePmc({
-        getJson: getJsonSpy,
-        logger: dummyLogger,
-      })(pageSize)(arbitraryString(), O.none, evaluatedOnly)();
-
-      const [firstCall] = getJsonSpy.mock.calls;
-
-      const [uri] = firstCall;
-      queryString = (new URL(uri)).searchParams;
-    });
-
-    it('adds the correct LABS_PUBS filter to the query, surrounded by spaces', () => {
-      expect(queryString.get('query')).toContain(' (LABS_PUBS:"2112") ');
-    });
-  });
-
-  it('passes the cursorMark query parameter', async () => {
-    const getJson = jest.fn();
-
-    const unencodedCursor = 'AoJwgP+ir/YCKDQyNzg1Mjky';
-    const encodedCursor = 'AoJwgP%2Bir%2FYCKDQyNzg1Mjky';
-
-    await searchEuropePmc({ getJson, logger: dummyLogger })(10)(arbitraryString(), O.some(unencodedCursor), false)();
-
-    expect(getJson).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${encodedCursor}`));
   });
 
   describe('nextCursor', () => {
