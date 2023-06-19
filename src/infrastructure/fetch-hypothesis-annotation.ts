@@ -14,7 +14,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise } from '../types/sanitised-html-fragment';
 import { HypothesisAnnotation, hypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import * as DE from '../types/data-error';
-import { QueryExternalService } from '../third-parties/query-external-service';
+import { Foo } from '../third-parties/query-external-service';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -47,11 +47,11 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
 };
 
 export const fetchHypothesisAnnotation = (
-  queryExternalService: QueryExternalService,
+  queryExternalService: Foo,
   logger: Logger,
 ): EvaluationFetcher => (key) => pipe(
   `https://api.hypothes.is/api/annotations/${key}`,
-  queryExternalService,
+  queryExternalService(logger),
   TE.chainEitherKW(flow(
     hypothesisAnnotation.decode,
     E.mapLeft(formatValidationErrors),

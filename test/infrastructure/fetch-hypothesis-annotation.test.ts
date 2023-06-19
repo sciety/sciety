@@ -7,14 +7,13 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { HypothesisAnnotation } from '../../src/infrastructure/codecs/HypothesisAnnotation';
-import { QueryExternalService } from '../../src/third-parties/query-external-service';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the evaluation', async () => {
-    const queryExternalService: QueryExternalService = () => TE.right({
+    const queryExternalService = () => () => TE.right({
       created: date,
       text: '<p>Very good</p>',
       target: [],
@@ -37,7 +36,7 @@ describe('fetch-hypothesis-annotation', () => {
     ['(linkify) GitHub Flavored Markdown', 'www.example.com', '<a href="http://www.example.com">www.example.com</a>'],
     ['bold italics', '***bold/italics** italics*', '<p><em><strong>bold/italics</strong> italics</em></p>'],
   ])('converts %s to HTML', async (_, input: string, expected: string) => {
-    const queryExternalService: QueryExternalService = () => TE.right({
+    const queryExternalService = () => () => TE.right({
       created: date,
       text: input,
       target: [],
