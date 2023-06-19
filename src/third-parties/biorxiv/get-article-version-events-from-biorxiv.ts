@@ -9,11 +9,11 @@ import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Doi } from '../../types/doi';
 import { ArticleVersion } from '../../types/article-version';
-import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
+import { Foo } from '../query-external-service';
 
 type Dependencies = {
-  queryExternalService: QueryExternalService,
+  queryExternalService: Foo,
   logger: Logger,
 };
 

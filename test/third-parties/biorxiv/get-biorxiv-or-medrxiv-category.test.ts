@@ -14,7 +14,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
     const subjectArea = 'cell biology';
     const ports = {
-      queryExternalService: (url: string) => TE.right((url.includes('/biorxiv')
+      queryExternalService: () => (url: string) => TE.right((url.includes('/biorxiv')
         ? ({
           collection: [{
             category: subjectArea,
@@ -48,7 +48,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on medrxiv', () => {
     const subjectArea = 'addiction medicine';
     const ports = {
-      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
+      queryExternalService: () => (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [{
             category: subjectArea,
@@ -81,7 +81,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when the subject area is not available on either server', () => {
     const ports = {
-      queryExternalService: () => TE.right({ collection: [] }),
+      queryExternalService: () => () => TE.right({ collection: [] }),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, SubjectArea>;
@@ -97,7 +97,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when one article version is returned', () => {
     const ports = {
-      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
+      queryExternalService: () => (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [{
             category: 'addiction medicine',
@@ -127,7 +127,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when there are multiple article versions', () => {
     const ports = {
-      queryExternalService: (url: string) => TE.right((url.includes('/medrxiv')
+      queryExternalService: () => (url: string) => TE.right((url.includes('/medrxiv')
         ? ({
           collection: [
             {
@@ -164,7 +164,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
   describe('when no usable response is decoded', () => {
     const ports = {
-      queryExternalService: () => TE.right({}),
+      queryExternalService: () => () => TE.right({}),
       logger: dummyLogger,
     };
     let result: E.Either<DE.DataError, SubjectArea>;

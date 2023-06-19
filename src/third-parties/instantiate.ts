@@ -20,10 +20,7 @@ import { Logger } from '../shared-ports';
 
 const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: Doi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({
-      queryExternalService: queryExternalService(logger, 24 * 60 * 60),
-      logger,
-    })(doi, server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
   }
   return TO.none;
 };
@@ -41,8 +38,5 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
   fetchStaticFile: fetchStaticFile(logger),
   searchForArticles: searchEuropePmc(queryExternalService, logger),
   findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
-  getArticleSubjectArea: getBiorxivOrMedrxivCategory({
-    queryExternalService: queryExternalService(logger, 24 * 60 * 60),
-    logger,
-  }),
+  getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
 });
