@@ -10,43 +10,44 @@ import { SearchResults } from '../../../src/shared-ports/search-for-articles';
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
     const nextCursor = arbitraryWord();
-    const results = await searchEuropePmc({
-      queryExternalService: () => TE.right({
-        hitCount: 3,
-        nextCursorMark: nextCursor,
-        resultList: {
-          result: [
-            {
-              doi: '10.1111/1234',
-              title: 'Article title',
-              authorList: {
-                author: [
-                  { fullName: 'Author 1' },
-                  { fullName: 'Author 2' },
-                ],
-              },
-              bookOrReportDetails: {
-                publisher: 'bioRxiv',
-              },
+    const queryExternalService = () => () => TE.right({
+      hitCount: 3,
+      nextCursorMark: nextCursor,
+      resultList: {
+        result: [
+          {
+            doi: '10.1111/1234',
+            title: 'Article title',
+            authorList: {
+              author: [
+                { fullName: 'Author 1' },
+                { fullName: 'Author 2' },
+              ],
             },
-            {
-              doi: '10.1111/4321',
-              title: 'Another Article title',
-              authorList: {
-                author: [
-                  { fullName: 'Author 3' },
-                  { fullName: 'Author 4' },
-                ],
-              },
-              bookOrReportDetails: {
-                publisher: 'bioRxiv',
-              },
+            bookOrReportDetails: {
+              publisher: 'bioRxiv',
             },
-          ],
-        },
-      }),
-      logger: dummyLogger,
-    })(2)('some query', O.none, false)();
+          },
+          {
+            doi: '10.1111/4321',
+            title: 'Another Article title',
+            authorList: {
+              author: [
+                { fullName: 'Author 3' },
+                { fullName: 'Author 4' },
+              ],
+            },
+            bookOrReportDetails: {
+              publisher: 'bioRxiv',
+            },
+          },
+        ],
+      },
+    });
+    const results = await searchEuropePmc(
+      queryExternalService,
+      dummyLogger,
+    )(2)('some query', O.none, false)();
 
     const expected = E.right({
       total: 3,
@@ -77,30 +78,31 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('handles collective name and full name authors', async () => {
-    const results = await searchEuropePmc({
-      queryExternalService: () => TE.right({
-        hitCount: 1,
-        nextCursorMark: arbitraryWord(),
-        resultList: {
-          result: [
-            {
-              doi: '10.1111/1234',
-              title: 'Article title',
-              authorList: {
-                author: [
-                  { fullName: 'Full Name' },
-                  { collectiveName: 'Collective Name' },
-                ] as const,
-              },
-              bookOrReportDetails: {
-                publisher: 'bioRxiv',
-              },
+    const queryExternalService = () => () => TE.right({
+      hitCount: 1,
+      nextCursorMark: arbitraryWord(),
+      resultList: {
+        result: [
+          {
+            doi: '10.1111/1234',
+            title: 'Article title',
+            authorList: {
+              author: [
+                { fullName: 'Full Name' },
+                { collectiveName: 'Collective Name' },
+              ] as const,
             },
-          ],
-        },
-      }),
-      logger: dummyLogger,
-    })(10)('some query', O.none, false)();
+            bookOrReportDetails: {
+              publisher: 'bioRxiv',
+            },
+          },
+        ],
+      },
+    });
+    const results = await searchEuropePmc(
+      queryExternalService,
+      dummyLogger,
+    )(10)('some query', O.none, false)();
 
     const expected = E.right(expect.objectContaining({
       items: [
@@ -120,24 +122,25 @@ describe('search-europe-pmc adapter', () => {
     let results: E.Either<unknown, SearchResults>;
 
     beforeEach(async () => {
-      results = await searchEuropePmc({
-        queryExternalService: () => TE.right({
-          hitCount: 1,
-          nextCursorMark: arbitraryWord(),
-          resultList: {
-            result: [
-              {
-                doi: '10.1111/1234',
-                title: 'Article title',
-                bookOrReportDetails: {
-                  publisher: 'bioRxiv',
-                },
+      const queryExternalService = () => () => TE.right({
+        hitCount: 1,
+        nextCursorMark: arbitraryWord(),
+        resultList: {
+          result: [
+            {
+              doi: '10.1111/1234',
+              title: 'Article title',
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
               },
-            ],
-          },
-        }),
-        logger: dummyLogger,
-      })(10)('some query', O.none, false)();
+            },
+          ],
+        },
+      });
+      results = await searchEuropePmc(
+        queryExternalService,
+        dummyLogger,
+      )(10)('some query', O.none, false)();
     });
 
     it('returns a result with None as authors', async () => {
@@ -155,16 +158,17 @@ describe('search-europe-pmc adapter', () => {
     describe('when there are no results', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc({
-          queryExternalService: () => TE.right({
-            hitCount: arbitraryNumber(0, 100),
-            nextCursorMark: nextCursor,
-            resultList: {
-              result: [],
-            },
-          }),
-          logger: dummyLogger,
-        })(10)('some query', O.none, false)();
+        const queryExternalService = () => () => TE.right({
+          hitCount: arbitraryNumber(0, 100),
+          nextCursorMark: nextCursor,
+          resultList: {
+            result: [],
+          },
+        });
+        const results = await searchEuropePmc(
+          queryExternalService,
+          dummyLogger,
+        )(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -174,24 +178,25 @@ describe('search-europe-pmc adapter', () => {
 
     describe('when there is no next cursor mark', () => {
       it('nextCursor should be none', async () => {
-        const results = await searchEuropePmc({
-          queryExternalService: () => TE.right({
-            hitCount: arbitraryNumber(0, 100),
-            resultList: {
-              result: [{
-                doi: '10.1111/1234',
-                title: 'Article title',
-                authorList: {
-                  author: [],
-                },
-                bookOrReportDetails: {
-                  publisher: 'bioRxiv',
-                },
-              }],
-            },
-          }),
-          logger: dummyLogger,
-        })(10)('some query', O.none, false)();
+        const queryExternalService = () => () => TE.right({
+          hitCount: arbitraryNumber(0, 100),
+          resultList: {
+            result: [{
+              doi: '10.1111/1234',
+              title: 'Article title',
+              authorList: {
+                author: [],
+              },
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
+              },
+            }],
+          },
+        });
+        const results = await searchEuropePmc(
+          queryExternalService,
+          dummyLogger,
+        )(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -202,25 +207,26 @@ describe('search-europe-pmc adapter', () => {
     describe('when there are less results than the page size', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc({
-          queryExternalService: () => TE.right({
-            hitCount: arbitraryNumber(0, 100),
-            nextCursorMark: nextCursor,
-            resultList: {
-              result: [{
-                doi: '10.1111/1234',
-                title: 'Article title',
-                authorList: {
-                  author: [],
-                },
-                bookOrReportDetails: {
-                  publisher: 'bioRxiv',
-                },
-              }],
-            },
-          }),
-          logger: dummyLogger,
-        })(10)('some query', O.none, false)();
+        const queryExternalService = () => () => TE.right({
+          hitCount: arbitraryNumber(0, 100),
+          nextCursorMark: nextCursor,
+          resultList: {
+            result: [{
+              doi: '10.1111/1234',
+              title: 'Article title',
+              authorList: {
+                author: [],
+              },
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
+              },
+            }],
+          },
+        });
+        const results = await searchEuropePmc(
+          queryExternalService,
+          dummyLogger,
+        )(10)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -231,43 +237,44 @@ describe('search-europe-pmc adapter', () => {
     describe('when result count equals page size', () => {
       it('nextCursor should be some', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc({
-          queryExternalService: () => TE.right({
-            hitCount: arbitraryNumber(3, 100),
-            nextCursorMark: nextCursor,
-            resultList: {
-              result: [
-                {
-                  doi: '10.1111/1234',
-                  title: 'Article title',
-                  authorList: {
-                    author: [
-                      { fullName: 'Author 1' },
-                      { fullName: 'Author 2' },
-                    ],
-                  },
-                  bookOrReportDetails: {
-                    publisher: 'bioRxiv',
-                  },
+        const queryExternalService = () => () => TE.right({
+          hitCount: arbitraryNumber(3, 100),
+          nextCursorMark: nextCursor,
+          resultList: {
+            result: [
+              {
+                doi: '10.1111/1234',
+                title: 'Article title',
+                authorList: {
+                  author: [
+                    { fullName: 'Author 1' },
+                    { fullName: 'Author 2' },
+                  ],
                 },
-                {
-                  doi: '10.1111/4321',
-                  title: 'Another Article title',
-                  authorList: {
-                    author: [
-                      { fullName: 'Author 3' },
-                      { fullName: 'Author 4' },
-                    ],
-                  },
-                  bookOrReportDetails: {
-                    publisher: 'bioRxiv',
-                  },
+                bookOrReportDetails: {
+                  publisher: 'bioRxiv',
                 },
-              ],
-            },
-          }),
-          logger: dummyLogger,
-        })(2)('some query', O.none, false)();
+              },
+              {
+                doi: '10.1111/4321',
+                title: 'Another Article title',
+                authorList: {
+                  author: [
+                    { fullName: 'Author 3' },
+                    { fullName: 'Author 4' },
+                  ],
+                },
+                bookOrReportDetails: {
+                  publisher: 'bioRxiv',
+                },
+              },
+            ],
+          },
+        });
+        const results = await searchEuropePmc(
+          queryExternalService,
+          dummyLogger,
+        )(2)('some query', O.none, false)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.some(nextCursor),

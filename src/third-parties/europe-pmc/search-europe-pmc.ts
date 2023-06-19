@@ -13,12 +13,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger, SearchForArticles } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
-import { QueryExternalService } from '../query-external-service';
-
-type Dependencies = {
-  queryExternalService: QueryExternalService,
-  logger: Logger,
-};
+import { Foo } from '../query-external-service';
 
 const europePmcPublisher = t.union(
   [
@@ -105,15 +100,13 @@ const constructSearchResults = (logger: Logger, pageSize: number) => (data: Euro
   };
 };
 
-type GetFromUrl = (dependencies: Dependencies) => (url: string) => TE.TaskEither<DE.DataError, EuropePmcResponse>;
-
-const getFromUrl: GetFromUrl = (dependencies: Dependencies) => (url: string) => pipe(
+const getFromUrl = (queryExternalService: Foo, logger: Logger) => (url: string) => pipe(
   url,
-  dependencies.queryExternalService,
+  queryExternalService(logger, 5 * 60, 'error'),
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
     E.mapLeft((errors) => {
-      dependencies.logger(
+      logger(
         'error',
         'Could not parse response from Europe PMC',
         { errors: PR.failure(errors), url },
@@ -123,14 +116,12 @@ const getFromUrl: GetFromUrl = (dependencies: Dependencies) => (url: string) => 
   )),
 );
 
-type SearchEuropePmc = (dependencies: Dependencies) => SearchForArticles;
-
-export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (
+export const searchEuropePmc = (queryExternalService: Foo, logger: Logger): SearchForArticles => (pageSize) => (
   query,
   cursor,
   evaluatedOnly,
 ) => pipe(
   constructQueryUrl(query, cursor, evaluatedOnly, pageSize),
-  getFromUrl(dependencies),
-  TE.map(constructSearchResults(dependencies.logger, pageSize)),
+  getFromUrl(queryExternalService, logger),
+  TE.map(constructSearchResults(logger, pageSize)),
 );
