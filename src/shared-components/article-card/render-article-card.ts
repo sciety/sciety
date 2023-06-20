@@ -10,7 +10,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { renderLangAttribute } from '../lang-attribute';
-import { curationStatements } from './curation-statements';
+import { getCurationStatements } from './get-curation-statements';
 
 export type ArticleCardViewModel = {
   articleId: Doi,
@@ -67,9 +67,7 @@ const renderArticleLatestActivityDate = O.fold(
 );
 
 const renderCurationStatements = (articleId: ArticleCardViewModel['articleId']) => {
-  if (articleId.value !== '10.1101/2022.02.23.481615') {
-    return '';
-  }
+  const curationStatements = getCurationStatements(articleId);
   if (curationStatements.length === 0) {
     return '';
   }
