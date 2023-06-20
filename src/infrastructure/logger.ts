@@ -23,7 +23,7 @@ type Entry = {
   payload: Payload,
 };
 
-type Current = {
+type LogAccumulator = {
   timestamp: Date,
   level: LevelName,
   message: string,
@@ -53,7 +53,7 @@ const filterAxiosGarbageInPayload = (payload: Payload) => {
   return payload;
 };
 
-const jsonSerializer = (prettyPrint = false) => (entry: Current) => (
+const jsonSerializer = (prettyPrint = false) => (entry: LogAccumulator) => (
   JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
 );
 
@@ -62,20 +62,20 @@ export type Config = {
   logLevel: string, // TODO: Make this a level name
 };
 
-type LogFuncs = {
-  logger: Logger,
-  flushLogs: FlushLogs,
-};
-
-const initial: Current = {
+const emptyLog: LogAccumulator = {
   timestamp: new Date(),
   level: 'info',
   message: 'Log start',
   payload: [],
 };
 
+type LogFuncs = {
+  logger: Logger,
+  flushLogs: FlushLogs,
+};
+
 export const createLogger = (dependencies: Config): LogFuncs => {
-  let current = initial;
+  let accumulator = emptyLog;
   return ({
     logger: (level, message, payload = {}, timestamp = new Date()) => {
       const configuredLevel = Level[dependencies.logLevel as LevelName] ?? Level.debug;
@@ -83,26 +83,21 @@ export const createLogger = (dependencies: Config): LogFuncs => {
         return;
       }
       const log = { timestamp, level, message, payload: filterAxiosGarbageInPayload(payload) };
-      if (current.payload.length === 0) {
-        current = {
-          timestamp,
-          level,
-          message,
-          payload: [log],
-        };
+      if (accumulator.payload.length === 0) {
+        accumulator = { timestamp, level, message, payload: [log] };
       } else {
-        if (Level[level] < Level[current.level]) {
-          current.level = level;
-          current.message = message;
+        if (Level[level] < Level[accumulator.level]) {
+          accumulator.level = level;
+          accumulator.message = message;
         }
-        current.payload.push(log);
+        accumulator.payload.push(log);
       }
     },
     flushLogs: () => {
-      if (current.payload.length > 0) {
-        process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(current)}\n`);
+      if (accumulator.payload.length > 0) {
+        process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(accumulator)}\n`);
       }
-      current = initial;
+      accumulator = emptyLog;
     },
   });
 };
