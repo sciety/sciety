@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -63,40 +64,47 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const curationStatement = {
+const curationStatements = [{
   groupName: 'Biophysics Colab',
   content: `
     <p><strong>Endorsement statement (17 November 2022)</strong></p>
     <p>The preprint by Atsumi <em>et al</em>. describes how chloride binding to sweet- and umami-sensing proteins (T1R taste receptors) can evoke taste sensation. The authors use an elegant combination of structural, biophysical and electrophysiological approaches to locate a chloride binding site in the ligand-binding domain of medaka fish T1r2a/3 receptors. They convincingly show that low mM concentrations of chloride induce conformational changes and, using single fiber recordings, establish that mouse chorda tympani nerves are activated by chloride in a T1R-dependent manner&hellip;</p>
   `,
-};
 
-const renderCurationStatement = (articleId: ArticleViewModel['articleId']) => {
+},
+{
+  groupName: 'eLife',
+  content: `
+    <p><strong>eLife assessment</strong></p>
+    <p>This fundamental study presents solid evidence for T1r (sweet /umami) taste receptors as chloride (Cl-) receptors, based on a combination of state-of-the-art techniques to demonstrate that T1r receptors from Medaka fish bind chloride and that this binding induces a conformational change in the heteromeric receptor. This conformational change leads to low-concentration chloride-specific action potential firing in nerves from neurons containing these receptors in mice, results that represent an important advance in our understanding of the logic of taste perception.</p>
+  `,
+},
+];
+
+const renderCurationStatements = (articleId: ArticleViewModel['articleId']) => {
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
-  return `
-      <div class="visually-hidden">This article has been curated by two groups:</div>
-      <ul class="article-card-teasers" role="list">
+  return pipe(
+    curationStatements,
+    RA.map(({ groupName, content }) => `
       <li role="listitem" class="article-card-teasers__teaser">
         <article>
-          <h4 class="article-card-teasers__teaser_heading">Curated by <strong>${curationStatement.groupName}</strong></h4>
+          <h4 class="article-card-teasers__teaser_heading">Curated by <strong>${groupName}</strong></h4>
           <div lang="en" class="article-card-teasers__teaser_quote">
-            ${curationStatement.content}
+            ${content}
           </div>
         </article>
       </li>
-      <li role="listitem" class="article-card-teasers__teaser">
-        <article>
-          <h4 class="article-card-teasers__teaser_heading">Curated by <strong>eLife</strong></h4>
-          <div lang="en" class="article-card-teasers__teaser_quote">
-            <p><strong>eLife assessment</strong></p>
-            <p>This fundamental study presents solid evidence for T1r (sweet /umami) taste receptors as chloride (Cl-) receptors, based on a combination of state-of-the-art techniques to demonstrate that T1r receptors from Medaka fish bind chloride and that this binding induces a conformational change in the heteromeric receptor. This conformational change leads to low-concentration chloride-specific action potential firing in nerves from neurons containing these receptors in mice, results that represent an important advance in our understanding of the logic of taste perception.</p>
-          </div>
-        </article>
-      </li>
-      </ul>
-    `;
+    `),
+    (listItems) => listItems.join(''),
+    (listContent) => `
+    <div class="visually-hidden">This article has been curated by two groups:</div>
+    <ul class="article-card-teasers" role="list">
+      ${listContent}
+    </ul>
+  `,
+  );
 };
 
 const renderAnnotationContent = (content: AnnotationContent) => pipe(
@@ -115,7 +123,7 @@ const renderAnnotationContent = (content: AnnotationContent) => pipe(
 const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
-  ${renderCurationStatement(model.articleId)}
+  ${renderCurationStatements(model.articleId)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
       <span class="visually-hidden">This article has ${model.evaluationCount === 0 ? 'no evaluations' : ''}</span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
