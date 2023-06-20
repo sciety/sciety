@@ -5,7 +5,7 @@ import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
-import { fetchStaticFile } from '../infrastructure/fetch-static-file';
+import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
