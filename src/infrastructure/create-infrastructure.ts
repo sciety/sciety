@@ -20,12 +20,13 @@ import { editListDetailsCommandHandler, createListCommandHandler, removeArticleF
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { instantiate } from '../third-parties/instantiate';
+import { FlushLogs } from '../shared-ports/logger';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
 };
 
-type DatabaseConnectionPoolAndLogger = { pool: Pool, logger: Logger };
+type DatabaseConnectionPoolAndLogger = { pool: Pool, logger: Logger, flushLogs: FlushLogs };
 
 const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryCatch(
   async () => pool.query(`
@@ -43,11 +44,11 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
-    logger: createLogger(dependencies),
+    ...createLogger(dependencies),
   },
   TE.right,
   TE.chainFirst(createEventsTable),
-  TE.chainW(({ pool, logger }) => pipe(
+  TE.chainW(({ pool, logger, flushLogs }) => pipe(
     getEventsFromDatabase(pool, logger),
     TE.map(RA.toArray),
     TE.map(sortEvents),
@@ -56,6 +57,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         events,
         pool,
         logger,
+        flushLogs,
       }
     )),
   )),

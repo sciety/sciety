@@ -13,36 +13,31 @@ import { EnvironmentVariables } from './environment-variables-codec';
 
 export const createApplicationServer = (
   router: Router,
-  ports: CollectedPorts,
+  dependencies: CollectedPorts,
   environmentVariables: EnvironmentVariables,
 ): E.Either<string, Server> => {
   const app = new Koa();
-  const { logger } = ports;
 
   app.use(rTracer.koaMiddleware());
 
   app.use(async ({ request, res }, next) => {
     const logLevel = request.url.startsWith('/static') ? 'debug' : 'info';
-    logger(logLevel, 'Received HTTP request', {
+    dependencies.logger(logLevel, 'Received HTTP request', {
       method: request.method,
       url: request.url,
       referer: request.headers.referer,
     });
 
     res.once('finish', () => {
-      logger(logLevel, 'Sent HTTP response', {
-        status: res.statusCode,
-      });
+      dependencies.logger(logLevel, 'Sent HTTP response', { status: res.statusCode });
+      dependencies.flushLogs();
     });
 
     res.once('close', () => {
-      if (res.writableFinished) {
-        return;
+      if (!res.writableFinished) {
+        dependencies.logger('warn', 'HTTP response may not have been completely sent', { status: res.statusCode });
       }
-
-      logger('warn', 'HTTP response may not have been completely sent', {
-        status: res.statusCode,
-      });
+      dependencies.flushLogs();
     });
 
     await next();
@@ -59,7 +54,7 @@ export const createApplicationServer = (
 
   const missingVariables = requiredEnvironmentVariables.filter((variableName) => !process.env[variableName]);
   if (missingVariables.length) {
-    logger('error', 'Missing environment variables', { missingVariables });
+    dependencies.logger('error', 'Missing environment variables', { missingVariables });
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
   }
 
@@ -100,7 +95,7 @@ export const createApplicationServer = (
   });
 
   app.use(router.middleware());
-  app.use(routeNotFound(ports));
+  app.use(routeNotFound(dependencies));
 
   app.on('error', (error) => {
     const payload = { error };
@@ -110,14 +105,14 @@ export const createApplicationServer = (
         stack: error.stack,
       };
     }
-    logger('error', 'Unhandled Error', payload);
+    dependencies.logger('error', 'Unhandled Error', payload);
   });
 
   const server = createServer(app.callback());
 
   server.on('clientError', (error, socket) => {
     if (!socket.writable) {
-      logger('info', 'Non writable socket, no response sent', {
+      dependencies.logger('info', 'Non writable socket, no response sent', {
         error,
       });
       return;
@@ -125,7 +120,7 @@ export const createApplicationServer = (
 
     socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 
-    logger('info', 'Sent early HTTP response due to client error', {
+    dependencies.logger('info', 'Sent early HTTP response due to client error', {
       status: 400,
       error,
     });

@@ -8,7 +8,7 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { GetAllEvents } from './get-all-events';
 import { GetArticleSubjectArea } from './get-article-subject-area';
-import { Logger } from './logger';
+import { FlushLogs, Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
 import { RemoveArticleFromList } from './remove-article-from-list';
 import { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
@@ -41,6 +41,7 @@ export type SharedPorts = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getArticleSubjectArea: GetArticleSubjectArea,
+  flushLogs: FlushLogs,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
   removeArticleFromList: RemoveArticleFromList,
