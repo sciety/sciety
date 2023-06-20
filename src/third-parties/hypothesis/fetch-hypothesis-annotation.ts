@@ -7,14 +7,14 @@ import { linkify } from 'remarkable/linkify';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { Logger } from '../shared-ports';
-import { EvaluationFetcher } from '../third-parties/fetch-review';
-import { Evaluation } from '../types/evaluation';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise } from '../types/sanitised-html-fragment';
-import { HypothesisAnnotation, hypothesisAnnotation } from './codecs/HypothesisAnnotation';
-import * as DE from '../types/data-error';
-import { QueryExternalService } from '../third-parties/query-external-service';
+import { Logger } from '../../shared-ports';
+import { EvaluationFetcher } from '../fetch-review';
+import { Evaluation } from '../../types/evaluation';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { HypothesisAnnotation, hypothesisAnnotation } from './HypothesisAnnotation';
+import * as DE from '../../types/data-error';
+import { QueryExternalService } from '../query-external-service';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
