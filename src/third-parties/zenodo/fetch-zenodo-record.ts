@@ -9,7 +9,7 @@ import * as DE from '../../types/data-error';
 import { htmlFragmentCodec } from '../../types/html-fragment';
 import { Evaluation } from '../../types/evaluation';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { Foo } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
@@ -26,7 +26,7 @@ const zenodoRecordCodec = t.type({
   }),
 });
 
-type FetchZenodoRecord = (queryExternalService: Foo, logger: Logger)
+type FetchZenodoRecord = (queryExternalService: QueryExternalService, logger: Logger)
 => (key: string)
 => TE.TaskEither<DE.DataError, Evaluation>;
 

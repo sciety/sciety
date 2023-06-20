@@ -10,10 +10,10 @@ import { fetchArticleDetails } from './fetch-article-details';
 import { Doi } from '../../types/doi';
 import { ArticleVersion } from '../../types/article-version';
 import { Logger } from '../../shared-ports';
-import { Foo } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 
 type Dependencies = {
-  queryExternalService: Foo,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 

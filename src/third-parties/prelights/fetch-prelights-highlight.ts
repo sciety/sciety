@@ -11,10 +11,10 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { Foo } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 
 export const fetchPrelightsHighlight = (
-  queryExternalService: Foo,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationFetcher => (url: string) => pipe(
   url,

@@ -11,10 +11,10 @@ import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-a
 import { fetchArticleDetails } from './fetch-article-details';
 import { GetArticleSubjectArea, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { Foo } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 
 type Ports = {
-  queryExternalService: Foo,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 

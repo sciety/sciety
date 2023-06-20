@@ -10,7 +10,7 @@ import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { Foo } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
@@ -54,7 +54,7 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
 };
 
 export const fetchRapidReview = (
-  queryExternalService: Foo,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationFetcher => (url) => pipe(
   url,
