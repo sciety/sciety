@@ -21,10 +21,10 @@ const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
 
 const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => {
   const doiUrl = arbitraryUri();
-  const getHtml = () => TE.right(html);
+  const queryExternalService = () => () => TE.right(html);
   return pipe(
     doiUrl,
-    fetchRapidReview(dummyLogger, getHtml),
+    fetchRapidReview(queryExternalService, dummyLogger),
     TE.map((evaluation) => evaluation.fullText),
   );
 };
@@ -32,7 +32,7 @@ const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => 
 describe('fetch-rapid-review', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const doiUrl = arbitraryUri();
-    const getHtml = () => pipe(
+    const queryExternalService = () => () => pipe(
       rapidReviewResponseWith([
         ['dc.title', `Review ${arbitraryString()}`],
         ['dc.creator', arbitraryString()],
@@ -41,7 +41,7 @@ describe('fetch-rapid-review', () => {
     );
     const evaluationUrl = await pipe(
       doiUrl,
-      fetchRapidReview(dummyLogger, getHtml),
+      fetchRapidReview(queryExternalService, dummyLogger),
       TE.map((evaluation) => evaluation.url.toString()),
     )();
 
@@ -154,13 +154,13 @@ describe('fetch-rapid-review', () => {
     });
   });
 
-  describe('getHtml fails', () => {
+  describe('queryExternalService fails', () => {
     it('return "unavailable"', async () => {
       const guid = new URL(arbitraryUri());
-      const getHtml = () => TE.left(DE.unavailable);
+      const queryExternalService = () => () => TE.left(DE.unavailable);
       const fullText = await pipe(
         guid.toString(),
-        fetchRapidReview(dummyLogger, getHtml),
+        fetchRapidReview(queryExternalService, dummyLogger),
         T.map(flow(
           E.matchW(
             identity,

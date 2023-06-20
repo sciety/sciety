@@ -33,7 +33,7 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
     hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
     ncrc: fetchNcrcReview(logger),
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
-    rapidreviews: fetchRapidReview(logger, queryExternalService(logger)),
+    rapidreviews: fetchRapidReview(queryExternalService, logger),
   }),
   fetchStaticFile: fetchStaticFile(logger),
   searchForArticles: searchEuropePmc(queryExternalService, logger),
