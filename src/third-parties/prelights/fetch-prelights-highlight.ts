@@ -11,14 +11,14 @@ import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { QueryExternalService } from '../query-external-service';
+import { Foo } from '../query-external-service';
 
 export const fetchPrelightsHighlight = (
+  queryExternalService: Foo,
   logger: Logger,
-  queryExternalService: QueryExternalService,
 ): EvaluationFetcher => (url: string) => pipe(
   url,
-  queryExternalService,
+  queryExternalService(logger),
   TE.chainEitherKW(flow(
     t.string.decode,
     E.mapLeft(formatValidationErrors),

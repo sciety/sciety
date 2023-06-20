@@ -27,9 +27,9 @@ const makeDoc = (descriptions: Array<string>) => `
 describe('fetch-prelights-highlight', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const guid = new URL(arbitraryUri());
-    const getHtml = () => TE.right(makeDoc([arbitraryString()]));
+    const queryExternalService = () => () => TE.right(makeDoc([arbitraryString()]));
     const evaluationUrl = await pipe(
-      fetchPrelightsHighlight(dummyLogger, getHtml)(guid.toString()),
+      fetchPrelightsHighlight(queryExternalService, dummyLogger)(guid.toString()),
       TE.map((evaluation) => evaluation.url.toString()),
     )();
 
@@ -44,9 +44,9 @@ describe('fetch-prelights-highlight', () => {
     [[ogDescription, arbitraryString()]],
   ])('returns the summary of the prelight', async (descriptions) => {
     const guid = new URL(arbitraryUri());
-    const getHtml = () => TE.right(makeDoc(descriptions));
+    const queryExternalService = () => () => TE.right(makeDoc(descriptions));
     const fullText = await pipe(
-      fetchPrelightsHighlight(dummyLogger, getHtml)(guid.toString()),
+      fetchPrelightsHighlight(queryExternalService, dummyLogger)(guid.toString()),
       TE.map((evaluation) => evaluation.fullText.toString()),
     )();
 
@@ -56,10 +56,10 @@ describe('fetch-prelights-highlight', () => {
   describe('cant find fullText', () => {
     it('returns unavailable', async () => {
       const guid = new URL(arbitraryUri());
-      const getHtml = () => TE.right(makeDoc([]));
+      const queryExternalService = () => () => TE.right(makeDoc([]));
       const fullText = await pipe(
         guid.toString(),
-        fetchPrelightsHighlight(dummyLogger, getHtml),
+        fetchPrelightsHighlight(queryExternalService, dummyLogger),
         T.map(flow(
           E.matchW(
             identity,
