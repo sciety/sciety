@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { toCardViewModel, Ports as ToCardViewModelPorts } from './to-card-view-model';
-import { ArticleViewModel } from '../../../shared-components/article-card';
+import { ArticleCardViewModel } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
@@ -18,7 +18,7 @@ const toArticleCardWithControlsViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
-) => (articleViewModel: ArticleViewModel) => pipe(
+) => (articleViewModel: ArticleCardViewModel) => pipe(
   {
     articleViewModel,
     annotationContent: ports.getAnnotationContent(listId, articleViewModel.articleId),

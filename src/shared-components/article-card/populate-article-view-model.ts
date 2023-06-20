@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { ArticleViewModel } from '.';
+import { ArticleCardViewModel } from '.';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -27,7 +27,7 @@ export type Ports = Pick<Queries, 'getActivityForDoi'>
 
 export const populateArticleViewModel = (
   ports: Ports,
-) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleViewModel> => pipe(
+) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleCardViewModel> => pipe(
   {
     latestVersionDate: ports.getLatestArticleVersionDate(item.articleId, item.server),
     articleActivity: pipe(

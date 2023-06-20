@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleViewModel } from '../../../shared-components/article-card';
+import { ArticleCardViewModel } from '../../../shared-components/article-card';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
@@ -12,7 +12,7 @@ import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 
-type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
+type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleCardViewModel>;
 
 type FetchArticleDetails = (articleId: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
@@ -44,7 +44,7 @@ type PopulateArticleViewModelsSkippingFailures = (
   fetchArticleDetails: FetchArticleDetails,
 ) => (
   activities: ReadonlyArray<ArticleActivity>
-) => T.Task<ReadonlyArray<ArticleViewModel>>;
+) => T.Task<ReadonlyArray<ArticleCardViewModel>>;
 
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
   fetchArticleDetails,

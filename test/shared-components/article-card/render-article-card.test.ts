@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { ArticleViewModel, renderArticleCard } from '../../../src/shared-components/article-card/render-article-card';
+import { ArticleCardViewModel, renderArticleCard } from '../../../src/shared-components/article-card/render-article-card';
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
@@ -15,7 +15,7 @@ const generateArticleViewModel = ({
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
   listMembershipCount = 0,
-}): ArticleViewModel => ({
+}): ArticleCardViewModel => ({
   articleId,
   title,
   authors,
@@ -25,7 +25,7 @@ const generateArticleViewModel = ({
   listMembershipCount,
 });
 
-const getSpans = (articleViewModel: ArticleViewModel) => pipe(
+const getSpans = (articleViewModel: ArticleCardViewModel) => pipe(
   articleViewModel,
   renderArticleCard,
   JSDOM.fragment,

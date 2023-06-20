@@ -11,7 +11,7 @@ import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { LanguageCode, renderLangAttribute } from '../lang-attribute';
 
-export type ArticleViewModel = {
+export type ArticleCardViewModel = {
   articleId: Doi,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
@@ -25,7 +25,7 @@ type AnnotationContent = O.Option<HtmlFragment>;
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderEvaluationCount = (evaluationCount: ArticleViewModel['evaluationCount']) => pipe(
+const renderEvaluationCount = (evaluationCount: ArticleCardViewModel['evaluationCount']) => pipe(
   evaluationCount === 0,
   B.fold(
     () => pipe(
@@ -36,7 +36,7 @@ const renderEvaluationCount = (evaluationCount: ArticleViewModel['evaluationCoun
   ),
 );
 
-const renderListMembershipCount = (listMembershipCount: ArticleViewModel['listMembershipCount']) => pipe(
+const renderListMembershipCount = (listMembershipCount: ArticleCardViewModel['listMembershipCount']) => pipe(
   listMembershipCount === 0,
   B.fold(
     () => pipe(
@@ -89,7 +89,7 @@ const curationStatements: ReadonlyArray<CurationStatementViewModel> = [{
 },
 ];
 
-const renderCurationStatements = (articleId: ArticleViewModel['articleId']) => {
+const renderCurationStatements = (articleId: ArticleCardViewModel['articleId']) => {
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
@@ -128,7 +128,7 @@ const renderAnnotationContent = (content: AnnotationContent) => pipe(
   ),
 );
 
-const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.articleId)}
@@ -139,13 +139,13 @@ const renderArticleCardContents = (model: ArticleViewModel): HtmlFragment => toH
   </footer>
 `);
 
-export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCard = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <section class="article-card">
     ${renderArticleCardContents(model)}
   </section>
 `);
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleViewModel, controls: HtmlFragment, annotationContent: AnnotationContent): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleCardViewModel, controls: HtmlFragment, annotationContent: AnnotationContent): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(model)}

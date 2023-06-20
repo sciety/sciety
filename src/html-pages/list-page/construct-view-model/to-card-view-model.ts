@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleViewModel, Ports as ArticleCardPorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
+import { ArticleCardViewModel, Ports as ArticleCardPorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
 import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleAuthors } from '../../../types/article-authors';
@@ -31,7 +31,7 @@ export const toCardViewModel = (
   ports: Ports,
 ) => (
   articleActivity: ArticleActivity,
-): TE.TaskEither<ArticleErrorCardViewModel, ArticleViewModel> => pipe(
+): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
   articleActivity.articleId,
   getArticleDetails(ports),
   TE.bimap(

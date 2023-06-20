@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { ArticleViewModel } from '../../shared-components/article-card';
+import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
@@ -9,7 +9,7 @@ import { ArticleErrorCardViewModel } from './render-as-html/render-article-error
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
 export type ArticleCardWithControlsViewModel = {
-  articleViewModel: ArticleViewModel,
+  articleViewModel: ArticleCardViewModel,
   controls: boolean,
   annotationContent: O.Option<HtmlFragment>,
 };
