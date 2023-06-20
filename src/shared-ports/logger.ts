@@ -4,6 +4,7 @@ enum Level {
   info,
   debug,
 }
+
 type LevelName = keyof typeof Level;
 
 type Payload = Record<string, unknown>;

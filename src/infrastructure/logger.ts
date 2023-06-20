@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 import axios from 'axios';
 import { serializeError } from 'serialize-error';
-import { FlushLogs } from '../shared-ports/logger';
+import { FlushLogs, Logger } from '../shared-ports/logger';
 
 enum Level {
   error,
@@ -13,8 +13,6 @@ enum Level {
 export type LevelName = keyof typeof Level;
 
 export type Payload = Record<string, unknown>;
-
-export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
 
 type Entry = {
   timestamp: Date,

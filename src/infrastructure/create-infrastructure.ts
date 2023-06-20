@@ -8,9 +8,7 @@ import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../shared-read-models';
 import { getEventsFromDatabase } from './get-events-from-database';
-import {
-  createLogger, Logger, Config as LoggerConfig,
-} from './logger';
+import { createLogger, Config as LoggerConfig } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
 import {
@@ -20,7 +18,7 @@ import { editListDetailsCommandHandler, createListCommandHandler, removeArticleF
 import { executePolicies } from '../policies/execute-policies';
 import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { instantiate } from '../third-parties/instantiate';
-import { FlushLogs } from '../shared-ports/logger';
+import { FlushLogs, Logger } from '../shared-ports/logger';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

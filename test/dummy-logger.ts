@@ -1,5 +1,5 @@
-import * as L from '../src/infrastructure/logger';
+import { Logger } from '../src/shared-ports';
 
-const loggerStub: L.Logger = () => {};
+const loggerStub: Logger = () => {};
 
 export const dummyLogger = Object.assign(loggerStub, { bindToRequestId: () => loggerStub });

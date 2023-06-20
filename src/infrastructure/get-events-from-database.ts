@@ -6,8 +6,8 @@ import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { domainEventsCodec, EventRow, selectAllEvents } from './events-table';
-import { Logger } from './logger';
 import { DomainEvent } from '../domain-events';
+import { Logger } from '../shared-ports';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');

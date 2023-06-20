@@ -4,8 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
-
-type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
+import { Logger } from '../shared-ports';
 
 export const catchErrors = (logger: Logger, logMessage: string, pageMessage: string): Middleware => (
   async (context, next) => {

@@ -4,9 +4,9 @@ import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { renderErrorPage } from './render-error-page';
-import { Logger } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
+import { Logger } from '../shared-ports';
 
 type KoaSendError = {
   status: number,

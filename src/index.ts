@@ -10,10 +10,9 @@ import { addArticleToElifeSubjectAreaList, discoverElifeArticleSubjectArea } fro
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import {
-  CollectedPorts, createInfrastructure, Logger, replaceError,
-} from './infrastructure';
+import { CollectedPorts, createInfrastructure, replaceError } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
+import { Logger } from './shared-ports';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

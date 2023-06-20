@@ -3,15 +3,15 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import * as L from './logger';
 import { DomainEvent, domainEventCodec } from '../domain-events';
 import { CommandResult } from '../types/command-result';
+import { Logger } from '../shared-ports';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
   pool: Pool,
-  logger: L.Logger,
+  logger: Logger,
 };
 
 const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(

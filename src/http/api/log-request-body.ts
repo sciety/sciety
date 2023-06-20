@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { Logger } from '../../infrastructure';
+import { Logger } from '../../shared-ports';
 
 export const logRequestBody = (logger: Logger): Middleware => async (context, next) => {
   logger(
