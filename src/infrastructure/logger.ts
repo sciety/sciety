@@ -1,7 +1,6 @@
 import axios from 'axios';
-import rTracer from 'cls-rtracer';
-import * as O from 'fp-ts/Option';
-import { constant, flow, pipe } from 'fp-ts/function';
+import * as A from 'fp-ts/Array';
+import { flow, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
 import { FlushLogs } from '../shared-ports/logger';
 
@@ -17,20 +16,6 @@ export type LevelName = keyof typeof Level;
 export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
-
-const rTracerLogger = (logger: Logger): Logger => {
-  const withRequestId = (payload: Payload) => pipe(
-    O.of(rTracer.id()),
-    O.fold(
-      constant(payload),
-      (requestId) => ({ ...payload, requestId }),
-    ),
-  );
-
-  return (level, message, payload = {}) => (
-    logger(level, message, withRequestId(payload))
-  );
-};
 
 type Entry = {
   timestamp: Date,
@@ -75,27 +60,6 @@ const jsonSerializer = (prettyPrint = false): Serializer => flow(
   ),
 );
 
-const streamLogger = (
-  stream: NodeJS.WritableStream,
-  serializer: Serializer,
-  logLevelName: string,
-): Logger => {
-  const configuredLevel = Level[logLevelName as LevelName] ?? Level.debug;
-  return (level, message, payload = {}, date = new Date()) => {
-    if (Level[level] > configuredLevel) {
-      return;
-    }
-    const entry = {
-      timestamp: date,
-      level,
-      message,
-      payload,
-    };
-
-    stream.write(`${serializer(entry)}\n`);
-  };
-};
-
 export type Config = {
   prettyLog: boolean,
   logLevel: string, // TODO: Make this a level name
@@ -106,12 +70,32 @@ type LogFuncs = {
   flushLogs: FlushLogs,
 };
 
-export const createLogger = (dependencies: Config): LogFuncs => ({
-  logger: pipe(
-    dependencies.prettyLog,
-    jsonSerializer,
-    (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
-    rTracerLogger,
-  ),
-  flushLogs: () => {},
-});
+export const createLogger = (dependencies: Config): LogFuncs => {
+  let logs: Array<Entry> = [];
+  return ({
+    logger: (level, message, payload = {}, date = new Date()) => {
+      const configuredLevel = Level[dependencies.logLevel as LevelName] ?? Level.debug;
+      if (Level[level] > configuredLevel) {
+        return;
+      }
+      logs.push({
+        timestamp: date,
+        level,
+        message,
+        payload,
+      });
+    },
+    flushLogs: () => {
+      process.stdout.write('\n');
+      pipe(
+        logs,
+        A.map((entry) => {
+          process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(entry)}\n`);
+          return entry;
+        }),
+      );
+      process.stdout.write('\n');
+      logs = [];
+    },
+  });
+};
