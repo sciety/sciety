@@ -7,6 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../../../types/doi';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
+import { getCurationStatements } from '../../../shared-components/article-card/get-curation-statements';
 
 export const constructRelatedArticles = (
   doi: Doi, dependencies: Dependencies,
@@ -21,6 +22,7 @@ export const constructRelatedArticles = (
     latestActivityAt: O.none,
     evaluationCount: 0,
     listMembershipCount: 0,
+    curationStatements: getCurationStatements(doi),
   }))),
   TO.fromTaskEither,
 );

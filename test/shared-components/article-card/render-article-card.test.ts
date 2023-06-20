@@ -23,6 +23,7 @@ const generateArticleViewModel = ({
   latestVersionDate,
   evaluationCount,
   listMembershipCount,
+  curationStatements: [],
 });
 
 const getSpans = (articleViewModel: ArticleCardViewModel) => pipe(

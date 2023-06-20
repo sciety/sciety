@@ -9,8 +9,13 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
-import { renderLangAttribute } from '../lang-attribute';
-import { getCurationStatements } from './get-curation-statements';
+import { LanguageCode, renderLangAttribute } from '../lang-attribute';
+
+type CurationStatementViewModel = {
+  groupName: string,
+  content: SanitisedHtmlFragment,
+  contentLanguageCode: O.Option<LanguageCode>,
+};
 
 export type ArticleCardViewModel = {
   articleId: Doi,
@@ -20,6 +25,7 @@ export type ArticleCardViewModel = {
   latestActivityAt: O.Option<Date>,
   evaluationCount: number,
   listMembershipCount: number,
+  curationStatements: ReadonlyArray<CurationStatementViewModel>,
 };
 
 type AnnotationContent = O.Option<HtmlFragment>;
@@ -66,8 +72,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-const renderCurationStatements = (articleId: ArticleCardViewModel['articleId']) => {
-  const curationStatements = getCurationStatements(articleId);
+const renderCurationStatements = (curationStatements: ArticleCardViewModel['curationStatements']) => {
   if (curationStatements.length === 0) {
     return '';
   }
@@ -109,7 +114,7 @@ const renderAnnotationContent = (content: AnnotationContent) => pipe(
 const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
-  ${renderCurationStatements(model.articleId)}
+  ${renderCurationStatements(model.curationStatements)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
       <span class="visually-hidden">This article has ${model.evaluationCount === 0 ? 'no evaluations' : ''}</span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}

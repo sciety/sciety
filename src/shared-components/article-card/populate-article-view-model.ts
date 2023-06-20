@@ -10,6 +10,7 @@ import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
+import { getCurationStatements } from './get-curation-statements';
 
 type ArticleItem = {
   articleId: Doi,
@@ -42,6 +43,7 @@ export const populateArticleViewModel = (
     latestActivityAt: articleActivity.latestActivityAt,
     evaluationCount: articleActivity.evaluationCount,
     listMembershipCount: articleActivity.listMembershipCount,
+    curationStatements: getCurationStatements(item.articleId),
   })),
   TE.rightTask,
 );

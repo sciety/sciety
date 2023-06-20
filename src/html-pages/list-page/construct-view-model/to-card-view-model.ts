@@ -9,6 +9,7 @@ import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
+import { getCurationStatements } from '../../../shared-components/article-card/get-curation-statements';
 
 type Article = {
   title: SanitisedHtmlFragment,
@@ -45,6 +46,7 @@ export const toCardViewModel = (
       ...articleDetails,
       authors: articleDetails.authors,
       latestVersionDate: articleDetails.latestVersionDate,
+      curationStatements: getCurationStatements(articleActivity.articleId),
     }),
   ),
 );
