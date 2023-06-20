@@ -79,7 +79,10 @@ void pipe(
     createApplicationServer(router, adapters, config),
     E.map(flow(
       (server) => createTerminus(server, terminusOptions(adapters.logger)),
-      (server) => server.on('listening', () => adapters.logger('info', 'Server running')),
+      (server) => server.on('listening', () => {
+        adapters.logger('info', 'Server running');
+        adapters.flushLogs();
+      }),
     )),
     E.map((server) => ({
       server,
