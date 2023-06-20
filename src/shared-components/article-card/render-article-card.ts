@@ -9,6 +9,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { renderLangAttribute } from '../lang-attribute';
 
 export type ArticleViewModel = {
   articleId: Doi,
@@ -70,7 +71,7 @@ const curationStatements = [{
     <p><strong>Endorsement statement (17 November 2022)</strong></p>
     <p>The preprint by Atsumi <em>et al</em>. describes how chloride binding to sweet- and umami-sensing proteins (T1R taste receptors) can evoke taste sensation. The authors use an elegant combination of structural, biophysical and electrophysiological approaches to locate a chloride binding site in the ligand-binding domain of medaka fish T1r2a/3 receptors. They convincingly show that low mM concentrations of chloride induce conformational changes and, using single fiber recordings, establish that mouse chorda tympani nerves are activated by chloride in a T1R-dependent manner&hellip;</p>
   `,
-
+  contentLanguageCode: O.some('en' as const),
 },
 {
   groupName: 'eLife',
@@ -78,6 +79,7 @@ const curationStatements = [{
     <p><strong>eLife assessment</strong></p>
     <p>This fundamental study presents solid evidence for T1r (sweet /umami) taste receptors as chloride (Cl-) receptors, based on a combination of state-of-the-art techniques to demonstrate that T1r receptors from Medaka fish bind chloride and that this binding induces a conformational change in the heteromeric receptor. This conformational change leads to low-concentration chloride-specific action potential firing in nerves from neurons containing these receptors in mice, results that represent an important advance in our understanding of the logic of taste perception.</p>
   `,
+  contentLanguageCode: O.some('en' as const),
 },
 ];
 
@@ -87,11 +89,11 @@ const renderCurationStatements = (articleId: ArticleViewModel['articleId']) => {
   }
   return pipe(
     curationStatements,
-    RA.map(({ groupName, content }) => `
+    RA.map(({ groupName, content, contentLanguageCode }) => `
       <li role="listitem" class="article-card-teasers__teaser">
         <article>
           <h4 class="article-card-teasers__teaser_heading">Curated by <strong>${groupName}</strong></h4>
-          <div lang="en" class="article-card-teasers__teaser_quote">
+          <div ${renderLangAttribute(contentLanguageCode)}class="article-card-teasers__teaser_quote">
             ${content}
           </div>
         </article>
