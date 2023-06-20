@@ -50,7 +50,6 @@ const filterAxiosGarbageInPayload = (payload: Payload) => {
       },
     });
   }
-
   return payload;
 };
 
@@ -83,7 +82,7 @@ export const createLogger = (dependencies: Config): LogFuncs => {
       if (Level[level] > configuredLevel) {
         return;
       }
-      const log = { timestamp, level, message, payload };
+      const log = { timestamp, level, message, payload: filterAxiosGarbageInPayload(payload) };
       if (current.payload.length === 0) {
         current = {
           timestamp,
@@ -100,7 +99,9 @@ export const createLogger = (dependencies: Config): LogFuncs => {
       }
     },
     flushLogs: () => {
-      process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(current)}\n`);
+      if (current.payload.length > 0) {
+        process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(current)}\n`);
+      }
       current = initial;
     },
   });
