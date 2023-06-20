@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { ArticleAuthors } from '../../types/article-authors';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
-import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { renderLangAttribute } from '../lang-attribute';
 
 export type ArticleViewModel = {
@@ -101,7 +101,7 @@ const renderCurationStatements = (articleId: ArticleViewModel['articleId']) => {
     `),
     (listItems) => listItems.join(''),
     (listContent) => `
-    <div class="visually-hidden">This article has been curated by two groups:</div>
+    <div class="visually-hidden">This article has been curated by ${renderCountWithDescriptor(curationStatements.length, 'group', 'groups')}:</div>
     <ul class="article-card-teasers" role="list">
       ${listContent}
     </ul>
