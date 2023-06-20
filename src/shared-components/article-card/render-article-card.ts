@@ -93,6 +93,9 @@ const renderCurationStatements = (articleId: ArticleCardViewModel['articleId']) 
   if (articleId.value !== '10.1101/2022.02.23.481615') {
     return '';
   }
+  if (curationStatements.length === 0) {
+    return '';
+  }
   return pipe(
     curationStatements,
     RA.map(({ groupName, content, contentLanguageCode }) => `
