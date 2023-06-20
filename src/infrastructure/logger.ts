@@ -1,6 +1,5 @@
+/* eslint-disable object-curly-newline */
 import axios from 'axios';
-import * as A from 'fp-ts/Array';
-import { flow, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
 import { FlushLogs } from '../shared-ports/logger';
 
@@ -24,7 +23,12 @@ type Entry = {
   payload: Payload,
 };
 
-type Serializer = (entry: Entry) => string;
+type Current = {
+  timestamp: Date,
+  level: LevelName,
+  message: string,
+  payload: Array<Entry>,
+};
 
 export const replaceError = (_key: string, value: unknown): unknown => {
   if (_key === 'Authorization' || _key === 'Crossref-Plus-API-Token') {
@@ -50,14 +54,8 @@ const filterAxiosGarbageInPayload = (payload: Payload) => {
   return payload;
 };
 
-const jsonSerializer = (prettyPrint = false): Serializer => flow(
-  (entry) => ({
-    ...entry,
-    payload: filterAxiosGarbageInPayload(entry.payload),
-  }),
-  (entry) => (
-    JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
-  ),
+const jsonSerializer = (prettyPrint = false) => (entry: Current) => (
+  JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
 );
 
 export type Config = {
@@ -70,32 +68,40 @@ type LogFuncs = {
   flushLogs: FlushLogs,
 };
 
+const initial: Current = {
+  timestamp: new Date(),
+  level: 'info',
+  message: 'Log start',
+  payload: [],
+};
+
 export const createLogger = (dependencies: Config): LogFuncs => {
-  let logs: Array<Entry> = [];
+  let current = initial;
   return ({
-    logger: (level, message, payload = {}, date = new Date()) => {
+    logger: (level, message, payload = {}, timestamp = new Date()) => {
       const configuredLevel = Level[dependencies.logLevel as LevelName] ?? Level.debug;
       if (Level[level] > configuredLevel) {
         return;
       }
-      logs.push({
-        timestamp: date,
-        level,
-        message,
-        payload,
-      });
+      const log = { timestamp, level, message, payload };
+      if (current.payload.length === 0) {
+        current = {
+          timestamp,
+          level,
+          message,
+          payload: [log],
+        };
+      } else {
+        if (Level[level] < Level[current.level]) {
+          current.level = level;
+          current.message = message;
+        }
+        current.payload.push(log);
+      }
     },
     flushLogs: () => {
-      process.stdout.write('\n');
-      pipe(
-        logs,
-        A.map((entry) => {
-          process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(entry)}\n`);
-          return entry;
-        }),
-      );
-      process.stdout.write('\n');
-      logs = [];
+      process.stdout.write(`${jsonSerializer(dependencies.prettyLog)(current)}\n`);
+      current = initial;
     },
   });
 };
