@@ -11,6 +11,8 @@ import { Queries } from '../../shared-read-models';
 import { getCurationStatements } from './get-curation-statements';
 import { ArticleErrorCardViewModel } from '../../html-pages/list-page/render-as-html/render-article-error-card';
 import { Ports as GetLatestArticleVersionDatePorts } from './get-latest-article-version-date';
+import { fetchArticleDetails } from './fetch-article-details';
+import { FetchArticle } from '../../shared-ports';
 
 type ArticleItem = {
   articleId: Doi,
@@ -20,26 +22,43 @@ type ArticleItem = {
 };
 
 export type Ports = Pick<Queries, 'getActivityForDoi'>
-& GetLatestArticleVersionDatePorts;
+& GetLatestArticleVersionDatePorts
+& { fetchArticle: FetchArticle };
+
+const getArticleDetails = (ports: Ports) => fetchArticleDetails(
+  getLatestArticleVersionDate(ports),
+  ports.fetchArticle,
+);
 
 export const populateArticleViewModel = (
   ports: Ports,
 ) => (item: ArticleItem): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
-  {
-    latestVersionDate: getLatestArticleVersionDate(ports)(item.articleId, item.server),
-    articleActivity: pipe(
+  item.articleId,
+  getArticleDetails(ports),
+  TE.mapLeft((error) => ({
+    ...pipe(
       ports.getActivityForDoi(item.articleId),
-      T.of,
     ),
-  },
-  sequenceS(T.ApplyPar),
-  T.map(({ latestVersionDate, articleActivity }) => ({
-    ...item,
-    latestVersionDate,
-    latestActivityAt: articleActivity.latestActivityAt,
-    evaluationCount: articleActivity.evaluationCount,
-    listMembershipCount: articleActivity.listMembershipCount,
-    curationStatements: getCurationStatements(item.articleId),
+    href: `/articles/${item.articleId.value}`,
+    error,
   })),
-  TE.rightTask,
+  TE.chainW(() => pipe(
+    {
+      latestVersionDate: getLatestArticleVersionDate(ports)(item.articleId, item.server),
+      articleActivity: pipe(
+        ports.getActivityForDoi(item.articleId),
+        T.of,
+      ),
+    },
+    sequenceS(T.ApplyPar),
+    T.map(({ latestVersionDate, articleActivity }) => ({
+      ...item,
+      latestVersionDate,
+      latestActivityAt: articleActivity.latestActivityAt,
+      evaluationCount: articleActivity.evaluationCount,
+      listMembershipCount: articleActivity.listMembershipCount,
+      curationStatements: getCurationStatements(item.articleId),
+    })),
+    TE.rightTask,
+  )),
 );
