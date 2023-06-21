@@ -14,29 +14,34 @@ describe('construct-article-card-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when all information is fetched successfully', () => {
-    const articleId = arbitraryArticleId();
-    const latestVersionDate = new Date();
-    const laterPublicationDate = new Date('2020');
-    let viewModel: ArticleCardViewModel;
+  describe('when an article has not been evaluated', () => {
+    describe('when all information is fetched successfully', () => {
+      const articleId = arbitraryArticleId();
+      let viewModel: ArticleCardViewModel;
 
-    beforeEach(async () => {
-      viewModel = await pipe(
-        articleId,
-        constructArticleCardViewModel({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-        }),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      beforeEach(async () => {
+        viewModel = await pipe(
+          articleId,
+          constructArticleCardViewModel({
+            ...framework.queries,
+            ...framework.happyPathThirdParties,
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('returns an ArticleCardViewModel', async () => {
+        expect(viewModel).toStrictEqual(expect.objectContaining({
+          evaluationCount: 0,
+          latestActivityAt: O.none,
+        }));
+      });
     });
+  });
 
-    it.skip('returns a correct view model', async () => {
-      expect(viewModel).toStrictEqual(expect.objectContaining({
-        evaluationCount: 2,
-        latestVersionDate: O.some(latestVersionDate),
-        latestActivityAt: O.some(laterPublicationDate),
-      }));
+  describe('when an article has been evaluated', () => {
+    describe('when all information is fetched successfully', () => {
+      it.todo('returns an ArticleCardViewModel');
     });
   });
 
