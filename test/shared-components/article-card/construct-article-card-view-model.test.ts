@@ -1,5 +1,7 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as DE from '../../../src/types/data-error';
 import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
@@ -61,7 +63,20 @@ describe('construct-article-card-view-model', () => {
   });
 
   describe('when fetching the article fails', () => {
-    it.todo('returns an ArticleErrorCardViewModel');
+    beforeEach(async () => {
+      viewModel = await pipe(
+        arbitraryArticleId(),
+        constructArticleCardViewModel({
+          ...framework.queries,
+          ...framework.happyPathThirdParties,
+          fetchArticle: () => TE.left(DE.unavailable),
+        }),
+      )();
+    });
+
+    it('returns an ArticleErrorCardViewModel', () => {
+      expect(E.isLeft(viewModel)).toBe(true);
+    });
   });
 
   describe('when fetching the version information fails', () => {
