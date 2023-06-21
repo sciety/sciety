@@ -5,9 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleCardViewModel } from '../../../shared-components/article-card';
 import {
-  populateArticleViewModel,
-  Ports as PopulateArticleViewModelPorts,
-} from '../../../shared-components/article-card/populate-article-view-model';
+  constructArticleCardViewModel,
+  Ports as ConstructArticleCardViewModelPorts,
+} from '../../../shared-components/article-card/construct-article-card-view-model';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
@@ -15,7 +15,7 @@ import { ArticleErrorCardViewModel } from '../render-as-html/render-article-erro
 import { ListId } from '../../../types/list-id';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = PopulateArticleViewModelPorts & Queries;
+export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
 const toArticleCardWithControlsViewModel = (
   ports: Ports,
@@ -37,7 +37,7 @@ export const toPageOfCards = (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
   pageOfArticles.items,
-  T.traverseArray(({ articleId }) => populateArticleViewModel(ports)(articleId)),
+  T.traverseArray(({ articleId }) => constructArticleCardViewModel(ports)(articleId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(

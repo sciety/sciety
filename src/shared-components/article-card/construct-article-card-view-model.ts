@@ -20,7 +20,7 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   ports.fetchArticle,
 );
 
-export const populateArticleViewModel = (
+export const constructArticleCardViewModel = (
   ports: Ports,
 ) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
   articleId,

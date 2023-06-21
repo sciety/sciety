@@ -5,13 +5,13 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
-import { populateArticleViewModel, Ports } from '../../../src/shared-components/article-card/populate-article-view-model';
+import { constructArticleCardViewModel, Ports } from '../../../src/shared-components/article-card/construct-article-card-view-model';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
-describe('populate-article-view-model', () => {
+describe('construct-article-card-view-model', () => {
   it('returns a correct view model', async () => {
     const articleId = arbitraryArticleId();
     const latestVersionDate = new Date();
@@ -45,7 +45,7 @@ describe('populate-article-view-model', () => {
 
     const viewModel = await pipe(
       article.articleId,
-      populateArticleViewModel(ports),
+      constructArticleCardViewModel(ports),
       TE.getOrElseW(() => T.of(shouldNotBeCalled)),
     )();
 

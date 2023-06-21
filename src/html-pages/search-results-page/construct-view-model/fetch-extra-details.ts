@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
-import { populateArticleViewModel, Ports as PopulateArticleViewModelPorts } from '../../../shared-components/article-card/populate-article-view-model';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
 import { ArticleServer } from '../../../types/article-server';
 import * as DE from '../../../types/data-error';
@@ -13,8 +12,12 @@ import { Doi } from '../../../types/doi';
 import { ItemViewModel, ViewModel } from '../view-model';
 import { Queries } from '../../../shared-read-models';
 import { ArticleErrorCardViewModel } from '../../list-page/render-as-html/render-article-error-card';
+import {
+  constructArticleCardViewModel,
+  Ports as ConstructArticleCardViewModelPorts,
+} from '../../../shared-components/article-card/construct-article-card-view-model';
 
-export type Ports = Queries & PopulateArticleViewModelPorts & {
+export type Ports = Queries & ConstructArticleCardViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
@@ -24,7 +27,7 @@ const fetchItemDetails = (
   ports: Ports,
 ) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
   isArticleItem(item)
-    ? pipe(item.articleId, populateArticleViewModel(ports))
+    ? pipe(item.articleId, constructArticleCardViewModel(ports))
     : pipe(item.id, constructGroupCardViewModel(ports), T.of));
 
 export type LimitedSet = {
