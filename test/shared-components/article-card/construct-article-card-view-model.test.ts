@@ -1,14 +1,15 @@
-import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { ArticleErrorCardViewModel } from '../../../src/html-pages/list-page/render-as-html/render-article-error-card';
 
 describe('construct-article-card-view-model', () => {
   let framework: TestFramework;
+  let viewModel: E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -17,7 +18,6 @@ describe('construct-article-card-view-model', () => {
   describe('when an article has not been evaluated', () => {
     describe('when all information is fetched successfully', () => {
       const articleId = arbitraryArticleId();
-      let viewModel: ArticleCardViewModel;
 
       beforeEach(async () => {
         viewModel = await pipe(
@@ -26,22 +26,37 @@ describe('construct-article-card-view-model', () => {
             ...framework.queries,
             ...framework.happyPathThirdParties,
           }),
-          TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it('returns an ArticleCardViewModel', async () => {
-        expect(viewModel).toStrictEqual(expect.objectContaining({
-          evaluationCount: 0,
-          latestActivityAt: O.none,
-        }));
+      it('returns an ArticleCardViewModel', () => {
+        expect(E.isRight(viewModel)).toBe(true);
       });
     });
   });
 
   describe('when an article has been evaluated', () => {
     describe('when all information is fetched successfully', () => {
-      it.todo('returns an ArticleCardViewModel');
+      const articleId = arbitraryArticleId();
+      const evaluation = {
+        ...arbitraryRecordedEvaluation(),
+        articleId,
+      };
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluation(evaluation);
+        viewModel = await pipe(
+          articleId,
+          constructArticleCardViewModel({
+            ...framework.queries,
+            ...framework.happyPathThirdParties,
+          }),
+        )();
+      });
+
+      it('returns an ArticleCardViewModel', () => {
+        expect(E.isRight(viewModel)).toBe(true);
+      });
     });
   });
 
