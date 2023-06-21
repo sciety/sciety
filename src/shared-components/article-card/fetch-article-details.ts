@@ -21,6 +21,7 @@ type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
   getArticle: GetArticle,
 ) => (doi: Doi) => TE.TaskEither<DE.DataError, {
+  articleId: Doi,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
@@ -37,6 +38,7 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
       authors,
       title,
       server,
+      articleId: doi,
     })),
     TE.rightTask,
   )),
