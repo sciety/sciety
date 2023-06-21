@@ -42,7 +42,7 @@ export const populateArticleViewModel = (
     href: `/articles/${item.articleId.value}`,
     error,
   })),
-  TE.chainW(() => pipe(
+  TE.chainW((articleDetails) => pipe(
     {
       latestVersionDate: getLatestArticleVersionDate(ports)(item.articleId, item.server),
       articleActivity: pipe(
@@ -52,7 +52,9 @@ export const populateArticleViewModel = (
     },
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, articleActivity }) => ({
-      ...item,
+      articleId: articleDetails.articleId,
+      title: articleDetails.title,
+      authors: articleDetails.authors,
       latestVersionDate,
       latestActivityAt: articleActivity.latestActivityAt,
       evaluationCount: articleActivity.evaluationCount,
