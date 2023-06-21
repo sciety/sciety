@@ -24,6 +24,7 @@ type FetchArticleDetails = (
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
+  server: ArticleServer,
 }>;
 
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
