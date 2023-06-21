@@ -12,6 +12,7 @@ import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ItemViewModel, ViewModel } from '../view-model';
 import { Queries } from '../../../shared-read-models';
+import { ArticleErrorCardViewModel } from '../../list-page/render-as-html/render-article-error-card';
 
 export type Ports = Queries & PopulateArticleViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
@@ -21,7 +22,7 @@ type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T
 
 const fetchItemDetails = (
   ports: Ports,
-) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError, ItemViewModel> => (
+) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports))
     : pipe(item.id, constructGroupCardViewModel(ports), T.of));

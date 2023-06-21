@@ -6,11 +6,11 @@ import { pipe } from 'fp-ts/function';
 import { ArticleCardViewModel } from '.';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
-import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 import { getCurationStatements } from './get-curation-statements';
+import { ArticleErrorCardViewModel } from '../../html-pages/list-page/render-as-html/render-article-error-card';
 
 type ArticleItem = {
   articleId: Doi,
@@ -28,7 +28,7 @@ export type Ports = Pick<Queries, 'getActivityForDoi'>
 
 export const populateArticleViewModel = (
   ports: Ports,
-) => (item: ArticleItem): TE.TaskEither<DE.DataError, ArticleCardViewModel> => pipe(
+) => (item: ArticleItem): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
   {
     latestVersionDate: ports.getLatestArticleVersionDate(item.articleId, item.server),
     articleActivity: pipe(
