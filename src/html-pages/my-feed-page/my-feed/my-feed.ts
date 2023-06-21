@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { followedGroupsActivities } from './followed-groups-activities';
-import { GetArticle, populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
+import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
   feedTitle,
   followSomething,
@@ -13,10 +13,8 @@ import {
 } from './static-content';
 import {
   Ports as ArticleCardPorts,
-  getLatestArticleVersionDate,
   renderArticleCard,
 } from '../../../shared-components/article-card';
-import { fetchArticleDetails } from '../../../shared-components/article-card/fetch-article-details';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { GroupId } from '../../../types/group-id';
@@ -24,9 +22,9 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
 import { GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
+import { Ports as ConstructArticleCardViewModelPorts } from '../../../shared-components/article-card/construct-article-card-view-model';
 
-export type Ports = ArticleCardPorts & {
-  fetchArticle: GetArticle,
+export type Ports = ArticleCardPorts & ConstructArticleCardViewModelPorts & {
   getAllEvents: GetAllEvents,
   getGroupsFollowedBy: Queries['getGroupsFollowedBy'],
 };
@@ -55,10 +53,7 @@ const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) 
 
 const constructArticleViewModels = (ports: Ports) => flow(
   populateArticleViewModelsSkippingFailures(
-    fetchArticleDetails(
-      getLatestArticleVersionDate(ports),
-      ports.fetchArticle,
-    ),
+    ports,
   ),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('all-articles-failed'))),
