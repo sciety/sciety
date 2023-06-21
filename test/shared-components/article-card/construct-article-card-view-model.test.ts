@@ -12,47 +12,57 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('construct-article-card-view-model', () => {
-  it('returns a correct view model', async () => {
-    const articleId = arbitraryArticleId();
-    const latestVersionDate = new Date();
-    const laterPublicationDate = new Date('2020');
-    const article = {
-      articleId,
-      server: 'biorxiv' as const,
-      title: pipe('', toHtmlFragment, sanitise),
-      authors: O.none,
-    };
-    const ports: Ports = {
-      fetchArticle: () => TE.right({
-        abstract: arbitrarySanitisedHtmlFragment(),
-        authors: article.authors,
-        doi: articleId,
-        title: article.title,
-        server: article.server,
-      }),
-      findVersionsForArticleDoi: () => TO.some([{
-        source: new URL(arbitraryUri()),
-        publishedAt: latestVersionDate,
-        version: 1,
-      }]),
-      getActivityForDoi: (a) => ({
-        articleId: a,
-        latestActivityAt: O.some(laterPublicationDate),
+  describe('when all information is fetched successfully', () => {
+    it('returns a correct view model', async () => {
+      const articleId = arbitraryArticleId();
+      const latestVersionDate = new Date();
+      const laterPublicationDate = new Date('2020');
+      const article = {
+        articleId,
+        server: 'biorxiv' as const,
+        title: pipe('', toHtmlFragment, sanitise),
+        authors: O.none,
+      };
+      const ports: Ports = {
+        fetchArticle: () => TE.right({
+          abstract: arbitrarySanitisedHtmlFragment(),
+          authors: article.authors,
+          doi: articleId,
+          title: article.title,
+          server: article.server,
+        }),
+        findVersionsForArticleDoi: () => TO.some([{
+          source: new URL(arbitraryUri()),
+          publishedAt: latestVersionDate,
+          version: 1,
+        }]),
+        getActivityForDoi: (a) => ({
+          articleId: a,
+          latestActivityAt: O.some(laterPublicationDate),
+          evaluationCount: 2,
+          listMembershipCount: 0,
+        }),
+      };
+
+      const viewModel = await pipe(
+        article.articleId,
+        constructArticleCardViewModel(ports),
+        TE.getOrElseW(() => T.of(shouldNotBeCalled)),
+      )();
+
+      expect(viewModel).toStrictEqual(expect.objectContaining({
         evaluationCount: 2,
-        listMembershipCount: 0,
-      }),
-    };
+        latestVersionDate: O.some(latestVersionDate),
+        latestActivityAt: O.some(laterPublicationDate),
+      }));
+    });
+  });
 
-    const viewModel = await pipe(
-      article.articleId,
-      constructArticleCardViewModel(ports),
-      TE.getOrElseW(() => T.of(shouldNotBeCalled)),
-    )();
+  describe('when fetching the article fails', () => {
+    it.todo('returns an ArticleErrorCardViewModel');
+  });
 
-    expect(viewModel).toStrictEqual(expect.objectContaining({
-      evaluationCount: 2,
-      latestVersionDate: O.some(latestVersionDate),
-      latestActivityAt: O.some(laterPublicationDate),
-    }));
+  describe('when fetching the version information fails', () => {
+    it.todo('returns an ArticleCardViewModel with the version information omitted');
   });
 });
