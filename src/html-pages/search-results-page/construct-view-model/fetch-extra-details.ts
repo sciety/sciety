@@ -24,7 +24,7 @@ const fetchItemDetails = (
   ports: Ports,
 ) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
   isArticleItem(item)
-    ? pipe(item, populateArticleViewModel(ports))
+    ? pipe(item.articleId, populateArticleViewModel(ports))
     : pipe(item.id, constructGroupCardViewModel(ports), T.of));
 
 export type LimitedSet = {

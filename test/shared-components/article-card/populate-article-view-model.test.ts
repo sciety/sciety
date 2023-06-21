@@ -44,7 +44,7 @@ describe('populate-article-view-model', () => {
     };
 
     const viewModel = await pipe(
-      article,
+      article.articleId,
       populateArticleViewModel(ports),
       TE.getOrElseW(() => T.of(shouldNotBeCalled)),
     )();
