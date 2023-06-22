@@ -57,6 +57,8 @@ const filterAxiosGarbageInPayload = (payload: Payload) => {
       error: {
         url: payload.error.config ? payload.error.config.url : 'url-not-available',
         status: payload.error.response?.status ? payload.error.response?.status : 'status-code-not-available',
+        name: payload.error.name,
+        message: payload.error.message,
       },
     });
   }
