@@ -38,7 +38,7 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
       rapidreviews: fetchRapidReview(queryExternalService, logger),
     }),
     fetchStaticFile: fetchStaticFile(logger),
-    searchForArticles: searchEuropePmc(queryExternalService, logger),
+    searchForArticles: searchEuropePmc(foo, logger),
     findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
   };
