@@ -6,7 +6,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../types/doi';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -22,7 +21,7 @@ const paperWithoutDoi = t.type({
 
 const paperWithDoi = t.type({
   externalIds: t.type({
-    DOI: DoiFromString,
+    DOI: t.string,
   }),
   title: t.string,
   authors: t.array(t.type({
@@ -71,4 +70,8 @@ export const fetchRecommendedPapers = (
     ),
   ),
   TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
+  TE.map(RA.map((item) => ({
+    ...item,
+    articleId: new Doi(item.articleId),
+  }))),
 );

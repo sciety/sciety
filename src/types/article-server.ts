@@ -1,5 +1,4 @@
 import * as t from 'io-ts';
-import { Doi } from './doi';
 
 type ServerInfo = {
   name: string,
@@ -57,8 +56,8 @@ export type ArticleServer = 'biorxiv'
 | 'scielopreprints'
 | 'osf';
 
-export const isSupportedArticle = (articleId: Doi): boolean => (
-  !!articleId.value.match(/^10\.1101\/[0-9]{1,}/)
-  || articleId.hasPrefix('10.21203')
-  || articleId.value.startsWith('10.1590/SciELOPreprints')
+export const isSupportedArticle = (articleId: string): boolean => (
+  !!articleId.match(/^10\.1101\/[0-9]{1,}/)
+  || articleId.startsWith('10.21203/')
+  || articleId.startsWith('10.1590/SciELOPreprints')
 );
