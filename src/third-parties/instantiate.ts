@@ -34,7 +34,7 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
       doi: fetchZenodoRecord(queryExternalService, logger),
       hypothesis: fetchHypothesisAnnotation(foo, logger),
       ncrc: fetchNcrcReview(logger),
-      prelights: fetchPrelightsHighlight(queryExternalService, logger),
+      prelights: fetchPrelightsHighlight(foo, logger),
       rapidreviews: fetchRapidReview(queryExternalService, logger),
     }),
     fetchStaticFile: fetchStaticFile(logger),

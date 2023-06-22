@@ -6,19 +6,19 @@ import { flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { CallXYZ } from '../query-external-service';
 import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { QueryExternalService } from '../query-external-service';
 
 export const fetchPrelightsHighlight = (
-  queryExternalService: QueryExternalService,
+  queryExternalService: CallXYZ,
   logger: Logger,
 ): EvaluationFetcher => (url: string) => pipe(
   url,
-  queryExternalService(logger),
+  queryExternalService(),
   TE.chainEitherKW(flow(
     t.string.decode,
     E.mapLeft(formatValidationErrors),
