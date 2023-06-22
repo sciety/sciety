@@ -26,13 +26,13 @@ const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: 
 };
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
-  const foo = callXYZ(logger, 5 * 60);
+  const foo = callXYZ(logger, 24 * 60 * 60);
   return {
     fetchArticle: fetchCrossrefArticle(foo, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
       doi: fetchZenodoRecord(queryExternalService, logger),
-      hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
+      hypothesis: fetchHypothesisAnnotation(foo, logger),
       ncrc: fetchNcrcReview(logger),
       prelights: fetchPrelightsHighlight(queryExternalService, logger),
       rapidreviews: fetchRapidReview(queryExternalService, logger),
