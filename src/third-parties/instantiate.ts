@@ -14,7 +14,7 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
-import { queryExternalService, callXYZ, CallXYZ } from './query-external-service';
+import { callXYZ, CallXYZ } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 
@@ -38,7 +38,7 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
       hypothesis: fetchHypothesisAnnotation(foo, logger),
       ncrc: fetchNcrcReview(logger),
       prelights: fetchPrelightsHighlight(foo, logger),
-      rapidreviews: fetchRapidReview(queryExternalService, logger),
+      rapidreviews: fetchRapidReview(foo, logger),
     }),
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(foo, logger),

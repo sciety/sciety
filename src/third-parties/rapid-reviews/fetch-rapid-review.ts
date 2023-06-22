@@ -6,11 +6,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { CallXYZ } from '../query-external-service';
 import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
@@ -54,11 +54,11 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
 };
 
 export const fetchRapidReview = (
-  queryExternalService: QueryExternalService,
+  queryExternalService: CallXYZ,
   logger: Logger,
 ): EvaluationFetcher => (url) => pipe(
   url,
-  queryExternalService(logger),
+  queryExternalService(),
   TE.chainEitherKW(flow(
     t.string.decode,
     E.mapLeft(formatValidationErrors),
