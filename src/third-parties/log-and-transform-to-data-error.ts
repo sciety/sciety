@@ -11,7 +11,7 @@ const isANotFoundResponse = (
 
 export const logAndTransformToDataError = (logger: Logger, url: string, notFoundLogLevel: LevelName = 'warn') => (error: unknown): DE.DataError => {
   if (axios.isAxiosError(error)) {
-    const logPayload = { error, response: error.response?.data };
+    const logPayload = { error, responseBody: error.response?.data };
     if (isANotFoundResponse(error.response)) {
       logger(notFoundLogLevel, 'Third party data not found', logPayload);
       return DE.notFound;
