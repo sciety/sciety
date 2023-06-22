@@ -62,7 +62,7 @@ describe('fetch-recommended-papers', () => {
     const corruptDoi = '10.1101/2023.01.15.524119 10.1101/123456';
     const supportedBiorxivArticleId = '10.1101/123';
 
-    it.failing('removes the unsupported article', async () => {
+    it('removes the unsupported article', async () => {
       const queryExternalService = () => () => TE.right({
         recommendedPapers: [
           arbitraryRecommendedPaper(supportedBiorxivArticleId),

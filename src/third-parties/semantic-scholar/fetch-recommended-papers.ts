@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { Doi } from '../../types/doi';
+import { Doi, isValidDoi } from '../../types/doi';
 import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -69,6 +69,7 @@ export const fetchRecommendedPapers = (
       })),
     ),
   ),
+  TE.map(RA.filter((relatedArticle) => isValidDoi(relatedArticle.articleId))),
   TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
   TE.map(RA.map((item) => ({
     ...item,
