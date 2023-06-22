@@ -6,7 +6,7 @@ import { LevelName } from '../infrastructure/logger';
 export const logAndTransformToDataError = (logger: Logger, url: string, notFoundLogLevel: LevelName = 'warn') => (error: unknown): DE.DataError => {
   if (axios.isAxiosError(error)) {
     const logPayload = { error, response: error.response?.data };
-    if (error.response?.status === 404) {
+    if (error.response?.status === 404 || error.response?.status === 410) {
       logger(notFoundLogLevel, 'Third party data not found', logPayload);
       return DE.notFound;
     }
