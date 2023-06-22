@@ -14,7 +14,7 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
-import { queryExternalService } from './query-external-service';
+import { queryExternalService, callXYZ } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 
@@ -25,18 +25,21 @@ const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: 
   return TO.none;
 };
 
-export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => ({
-  fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
-  fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
-  fetchReview: fetchReview({
-    doi: fetchZenodoRecord(queryExternalService, logger),
-    hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
-    ncrc: fetchNcrcReview(logger),
-    prelights: fetchPrelightsHighlight(queryExternalService, logger),
-    rapidreviews: fetchRapidReview(queryExternalService, logger),
-  }),
-  fetchStaticFile: fetchStaticFile(logger),
-  searchForArticles: searchEuropePmc(queryExternalService, logger),
-  findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
-  getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
-});
+export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
+  const foo = callXYZ(logger, 5 * 60);
+  return {
+    fetchArticle: fetchCrossrefArticle(foo, logger, crossrefApiBearerToken),
+    fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
+    fetchReview: fetchReview({
+      doi: fetchZenodoRecord(queryExternalService, logger),
+      hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
+      ncrc: fetchNcrcReview(logger),
+      prelights: fetchPrelightsHighlight(queryExternalService, logger),
+      rapidreviews: fetchRapidReview(queryExternalService, logger),
+    }),
+    fetchStaticFile: fetchStaticFile(logger),
+    searchForArticles: searchEuropePmc(queryExternalService, logger),
+    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
+    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
+  };
+};

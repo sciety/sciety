@@ -22,3 +22,22 @@ export const queryExternalService: QueryExternalService = (
   TE.tryCatch(async () => getCachedAxiosRequest(logger, cacheMaxAgeSeconds * 1000)<unknown>(url, headers), identity),
   TE.mapLeft(logAndTransformToDataError(logger, url, notFoundLogLevel)),
 );
+
+export type CallXYZ = (
+  notFoundLogLevel?: LevelName,
+  headers?: Record<string, string>
+) => (url: string) => TE.TaskEither<DE.DataError, unknown>;
+
+export const callXYZ = (
+  logger: Logger,
+  cacheMaxAgeSeconds = 5 * 60,
+): CallXYZ => {
+  const get = getCachedAxiosRequest(logger, cacheMaxAgeSeconds * 1000);
+  return (
+    notFoundLogLevel: LevelName = 'warn',
+    headers = {},
+  ) => (url: string) => pipe(
+    TE.tryCatch(async () => get<unknown>(url, headers), identity),
+    TE.mapLeft(logAndTransformToDataError(logger, url, notFoundLogLevel)),
+  );
+};
