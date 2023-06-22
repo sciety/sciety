@@ -13,7 +13,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Logger, SearchForArticles } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
-import { CallXYZ } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 
 const europePmcPublisher = t.union(
   [
@@ -100,7 +100,7 @@ const constructSearchResults = (logger: Logger, pageSize: number) => (data: Euro
   };
 };
 
-const getFromUrl = (queryExternalService: CallXYZ, logger: Logger) => (url: string) => pipe(
+const getFromUrl = (queryExternalService: QueryExternalService, logger: Logger) => (url: string) => pipe(
   url,
   queryExternalService('error'),
   TE.chainEitherKW(flow(
@@ -117,7 +117,7 @@ const getFromUrl = (queryExternalService: CallXYZ, logger: Logger) => (url: stri
 );
 
 export const searchEuropePmc = (
-  foo: CallXYZ,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ): SearchForArticles => (pageSize) => (
   query,
@@ -125,6 +125,6 @@ export const searchEuropePmc = (
   evaluatedOnly,
 ) => pipe(
   constructQueryUrl(query, cursor, evaluatedOnly, pageSize),
-  getFromUrl(foo, logger),
+  getFromUrl(queryExternalService, logger),
   TE.map(constructSearchResults(logger, pageSize)),
 );

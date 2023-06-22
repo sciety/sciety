@@ -41,10 +41,12 @@ export type CallXYZ = (
   headers?: Record<string, string>
 ) => (url: string) => TE.TaskEither<DE.DataError, unknown>;
 
+export type QueryExternalService = CallXYZ;
+
 export const callXYZ = (
   logger: Logger,
   cacheMaxAgeSeconds = 5 * 60,
-): CallXYZ => {
+): QueryExternalService => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
   const get = cachedGetter(cachedAxios, logger);
   return (
