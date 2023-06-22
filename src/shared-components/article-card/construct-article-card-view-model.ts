@@ -39,9 +39,10 @@ export const constructArticleCardViewModel = (
         ports.getActivityForDoi(articleId),
         T.of,
       ),
+      curationStatements: getCurationStatements(articleId),
     },
     sequenceS(T.ApplyPar),
-    T.map(({ latestVersionDate, articleActivity }) => ({
+    T.map(({ latestVersionDate, articleActivity, curationStatements }) => ({
       articleId: articleDetails.articleId,
       title: articleDetails.title,
       authors: articleDetails.authors,
@@ -49,7 +50,7 @@ export const constructArticleCardViewModel = (
       latestActivityAt: articleActivity.latestActivityAt,
       evaluationCount: articleActivity.evaluationCount,
       listMembershipCount: articleActivity.listMembershipCount,
-      curationStatements: getCurationStatements(articleId),
+      curationStatements,
     })),
     TE.rightTask,
   )),

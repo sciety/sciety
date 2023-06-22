@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { LanguageCode } from '../lang-attribute';
@@ -10,12 +11,12 @@ type CurationStatementViewModel = {
   contentLanguageCode: O.Option<LanguageCode>,
 };
 
-export const getCurationStatements = (articleId: Doi): ReadonlyArray<CurationStatementViewModel> => {
+export const getCurationStatements = (articleId: Doi): T.Task<ReadonlyArray<CurationStatementViewModel>> => {
   if (articleId.value !== '10.1101/2022.02.23.481615') {
-    return [];
+    return T.of([]);
   }
 
-  return [{
+  return T.of([{
     groupName: 'Biophysics Colab',
     content: sanitise(toHtmlFragment(`
       <p><strong>Endorsement statement (17 November 2022)</strong></p>
@@ -31,5 +32,5 @@ export const getCurationStatements = (articleId: Doi): ReadonlyArray<CurationSta
     `)),
     contentLanguageCode: O.some('en'),
   },
-  ];
+  ]);
 };
