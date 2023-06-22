@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import * as TO from 'fp-ts/TaskOption';
 import * as DE from '../../../src/types/data-error';
 import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -80,6 +82,21 @@ describe('construct-article-card-view-model', () => {
   });
 
   describe('when fetching the version information fails', () => {
-    it.todo('returns an ArticleCardViewModel with the version information omitted');
+    beforeEach(async () => {
+      viewModel = await pipe(
+        arbitraryArticleId(),
+        constructArticleCardViewModel({
+          ...framework.queries,
+          ...framework.happyPathThirdParties,
+          findVersionsForArticleDoi: () => TO.none,
+        }),
+      )();
+    });
+
+    it('returns an ArticleCardViewModel with the version information omitted', () => {
+      expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+        latestVersionDate: O.none,
+      })));
+    });
   });
 });
