@@ -13,6 +13,6 @@ export const logAndTransformToDataError = (logger: Logger, url: string, notFound
     logger('error', 'Request to third party failed', logPayload);
     return DE.unavailable;
   }
-  logger('error', 'Request to third party failed', { error, url });
+  logger('error', 'Unknown failure while attempting a third party request', { error, url });
   return DE.unavailable;
 };
