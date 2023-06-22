@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { JSDOM } from 'jsdom';
+import { dummyLogger } from '../../../dummy-logger';
 import { myFeed, Ports } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
@@ -30,6 +31,7 @@ describe('my-feed acceptance', () => {
       ...framework.queries,
       getAllEvents: framework.getAllEvents,
       ...framework.happyPathThirdParties,
+      logger: dummyLogger,
     };
   });
 

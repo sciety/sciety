@@ -2,18 +2,29 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { constructCurationStatements } from '../../html-pages/article-page/construct-view-model/construct-curation-statements';
 import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../shared-read-models';
-import { getCurationStatements } from './get-curation-statements';
 import { ArticleErrorCardViewModel } from '../../html-pages/list-page/render-as-html/render-article-error-card';
 import { Ports as GetLatestArticleVersionDatePorts } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
-import { FetchArticle } from '../../shared-ports';
+import {
+  FetchArticle, FetchRelatedArticles, FetchReview, FindVersionsForArticleDoi, Logger,
+} from '../../shared-ports';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 
-export type Ports = Pick<Queries, 'getActivityForDoi'>
+export type Ports = Queries
 & GetLatestArticleVersionDatePorts
-& { fetchArticle: FetchArticle };
+& {
+  fetchArticle: FetchArticle,
+  fetchRelatedArticles: FetchRelatedArticles,
+  fetchReview: FetchReview,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  logger: Logger,
+};
 
 const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
@@ -39,7 +50,7 @@ export const constructArticleCardViewModel = (
         ports.getActivityForDoi(articleId),
         T.of,
       ),
-      curationStatements: getCurationStatements(articleId),
+      curationStatements: constructCurationStatements(ports, articleId),
     },
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, articleActivity, curationStatements }) => ({
@@ -50,7 +61,14 @@ export const constructArticleCardViewModel = (
       latestActivityAt: articleActivity.latestActivityAt,
       evaluationCount: articleActivity.evaluationCount,
       listMembershipCount: articleActivity.listMembershipCount,
-      curationStatements,
+      curationStatements: pipe(
+        curationStatements,
+        RA.map((curationStatement) => ({
+          ...curationStatement,
+          content: sanitise(toHtmlFragment(curationStatement.statement)),
+          contentLanguageCode: curationStatement.statementLanguageCode,
+        })),
+      ),
     })),
     TE.rightTask,
   )),

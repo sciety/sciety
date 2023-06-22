@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
+import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
 import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -29,6 +30,7 @@ describe('construct-article-card-view-model', () => {
           constructArticleCardViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
+            logger: dummyLogger,
           }),
         )();
       });
@@ -54,6 +56,7 @@ describe('construct-article-card-view-model', () => {
           constructArticleCardViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
+            logger: dummyLogger,
           }),
         )();
       });
@@ -72,6 +75,7 @@ describe('construct-article-card-view-model', () => {
           ...framework.queries,
           ...framework.happyPathThirdParties,
           fetchArticle: () => TE.left(DE.unavailable),
+          logger: dummyLogger,
         }),
       )();
     });
@@ -89,6 +93,7 @@ describe('construct-article-card-view-model', () => {
           ...framework.queries,
           ...framework.happyPathThirdParties,
           findVersionsForArticleDoi: () => TO.none,
+          logger: dummyLogger,
         }),
       )();
     });

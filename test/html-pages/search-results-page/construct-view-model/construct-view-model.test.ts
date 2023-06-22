@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { dummyLogger } from '../../../dummy-logger';
 import { constructViewModel, Ports } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -20,6 +21,7 @@ describe('construct-view-model', () => {
     defaultAdapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
+      logger: dummyLogger,
     };
   });
 

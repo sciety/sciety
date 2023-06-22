@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { dummyLogger } from '../../../dummy-logger';
 import { UserDetails } from '../../../../src/types/user-details';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -20,6 +21,7 @@ describe('construct-view-model', () => {
     adapters = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
+      logger: dummyLogger,
     };
   });
 
