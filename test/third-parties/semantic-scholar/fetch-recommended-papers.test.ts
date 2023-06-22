@@ -58,6 +58,30 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
+  describe('when a response contains an corrupt DOI', () => {
+    const corruptDoi = '10.1101/2023.01.15.524119 10.1101/123456';
+    const supportedBiorxivArticleId = '10.1101/123';
+
+    it.failing('removes the unsupported article', async () => {
+      const queryExternalService = () => () => TE.right({
+        recommendedPapers: [
+          arbitraryRecommendedPaper(supportedBiorxivArticleId),
+          arbitraryRecommendedPaper(corruptDoi),
+        ],
+      });
+      const result = await pipe(
+        arbitraryArticleId(),
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+      const expected: RelatedArticles = [expect.objectContaining({
+        articleId: new Doi(supportedBiorxivArticleId),
+      })];
+
+      expect(result).toStrictEqual(expected);
+    });
+  });
+
   describe.each([
     ['10.26434/not-a-supported-doi'],
     ['10.1590/2176-9451.19.4.027-029.ebo'],
