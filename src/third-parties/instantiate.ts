@@ -14,13 +14,16 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
-import { queryExternalService, callXYZ } from './query-external-service';
+import { queryExternalService, callXYZ, CallXYZ } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 
-const findVersionsForArticleDoiFromSupportedServers = (logger: Logger) => (doi: Doi, server: ArticleServer) => {
+const findVersionsForArticleDoiFromSupportedServers = (
+  foo: CallXYZ,
+  logger: Logger,
+) => (doi: Doi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService: foo, logger })(doi, server);
   }
   return TO.none;
 };
@@ -39,7 +42,7 @@ export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<str
     }),
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(foo, logger),
-    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(logger),
-    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
+    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(foo, logger),
+    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService: foo, logger }),
   };
 };

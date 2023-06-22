@@ -7,11 +7,11 @@ import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
 import { Doi } from '../../types/doi';
-import { QueryExternalService } from '../query-external-service';
+import { CallXYZ } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
 type Dependencies = {
-  queryExternalService: QueryExternalService,
+  queryExternalService: CallXYZ,
   logger: Logger,
 };
 
@@ -24,7 +24,7 @@ type FetchArticleDetails = ({ queryExternalService, logger }: Dependencies, doi:
 
 export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService, logger }, doi, server) => pipe(
   constructUrl(doi, server),
-  queryExternalService(logger, 24 * 60 * 60),
+  queryExternalService(),
   TE.chainEitherKW(flow(
     biorxivDetailsApiResponse.decode,
     E.mapLeft((errors) => logger('error', 'Failed to parse biorxiv response', {
