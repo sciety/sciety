@@ -46,50 +46,6 @@ describe('render-article-card', () => {
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
   });
 
-  describe('list membership count', () => {
-    describe('when the count is 0', () => {
-      const spans = pipe(
-        { listMembershipCount: 0 },
-        generateArticleViewModel,
-        getSpans,
-        Array.from,
-        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
-      );
-
-      it('displays nothing', () => {
-        expect(spans).not.toContain('Appears in 0 lists');
-      });
-    });
-
-    describe('when the count is 1', () => {
-      const spans = pipe(
-        { listMembershipCount: 1 },
-        generateArticleViewModel,
-        getSpans,
-        Array.from,
-        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
-      );
-
-      it('displays the count', () => {
-        expect(spans).toContain('Appears in 1 list');
-      });
-    });
-
-    describe('when the count is greater than 1', () => {
-      const spans = pipe(
-        { listMembershipCount: 42 },
-        generateArticleViewModel,
-        getSpans,
-        Array.from,
-        (array: Array<HTMLSpanElement>) => array.map((span) => span.textContent),
-      );
-
-      it('displays the count', () => {
-        expect(spans).toContain('Appears in 42 lists');
-      });
-    });
-  });
-
   describe('latest version', () => {
     const isLatestVersionSpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest version');
 

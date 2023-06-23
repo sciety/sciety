@@ -3,6 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
+import { arbitraryList } from '../../types/list-helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
 import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
@@ -65,6 +67,34 @@ describe('construct-article-card-view-model', () => {
         expect(E.isRight(viewModel)).toBe(true);
       });
     });
+  });
+
+  describe('when an article appears in lists', () => {
+    const articleId = arbitraryArticleId();
+    const list = arbitraryList();
+    let successfulViewModel: ArticleCardViewModel;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createList(list);
+      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      successfulViewModel = await pipe(
+        articleId,
+        constructArticleCardViewModel({
+          ...framework.queries,
+          ...framework.happyPathThirdParties,
+          logger: dummyLogger,
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('displays the count', () => {
+      expect(successfulViewModel.listMembershipCount).toStrictEqual(O.some(1));
+    });
+  });
+
+  describe('when an article does not appear in any list', () => {
+    it.todo('displays nothing');
   });
 
   describe('when fetching the article fails', () => {
