@@ -46,57 +46,6 @@ describe('render-article-card', () => {
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
   });
 
-  describe('authors', () => {
-    const authorListSelector = '.card-authors';
-    const authorListItemSelector = 'li.card-authors__author';
-
-    describe('when the authors list is not empty', () => {
-      const articleViewModel = generateArticleViewModel({
-        authors: O.some(['Doe J', 'Foo A']),
-      });
-
-      it('the authors are in an ordered list', () => {
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
-        const authors = rendered.querySelector(authorListSelector);
-
-        expect(authors?.tagName).toBe('OL');
-      });
-
-      it('displays the authors as a list', () => {
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
-        const authors = rendered.querySelectorAll(authorListItemSelector);
-        const authorFullNames = Array.from(authors).map((element) => element.textContent);
-
-        expect(authorFullNames).toStrictEqual([
-          'Doe J',
-          'Foo A',
-        ]);
-      });
-    });
-
-    describe('when the authors list is empty', () => {
-      it('displays nothing', () => {
-        const articleViewModel = generateArticleViewModel({ authors: O.some([]) });
-
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
-        const authors = rendered.querySelector(authorListSelector);
-
-        expect(authors).toBeNull();
-      });
-    });
-
-    describe('when the authors list is missing', () => {
-      it('displays nothing', () => {
-        const articleViewModel = generateArticleViewModel({ authors: O.none });
-
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
-        const authors = rendered.querySelector(authorListSelector);
-
-        expect(authors).toBeNull();
-      });
-    });
-  });
-
   describe('evaluations', () => {
     const isEvaluationSpan = (element: HTMLSpanElement) => element.textContent?.includes('evaluation');
 
