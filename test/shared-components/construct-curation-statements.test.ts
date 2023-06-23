@@ -1,16 +1,16 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { arbitraryGroup } from '../../../types/group.helper';
+import { createTestFramework, TestFramework } from '../framework';
+import { arbitraryGroup } from '../types/group.helper';
 import {
   constructCurationStatements,
-} from '../../../../src/shared-components/construct-curation-statements';
-import * as DE from '../../../../src/types/data-error';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../../helpers';
+} from '../../src/shared-components/construct-curation-statements';
+import * as DE from '../../src/types/data-error';
+import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
+import { EvaluationLocator } from '../../src/types/evaluation-locator';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
