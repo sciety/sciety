@@ -10,6 +10,7 @@ export const renderAsHtml = (viewmodel: ViewModel): Page => ({
   description: renderDescriptionMetaTagContent(viewmodel),
   openGraph: {
     title: striptags(viewmodel.title),
-    description: striptags(viewmodel.abstract),
+    // TODO: how do we express language in an opengraph description for a social media preview card of this page?
+    description: striptags(viewmodel.abstract.content),
   },
 });

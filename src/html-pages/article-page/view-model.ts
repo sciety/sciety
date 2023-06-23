@@ -5,13 +5,13 @@ import * as E from 'fp-ts/Either';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import * as GID from '../../types/group-id';
+import { LanguageAnnotatedHtmlFragment } from '../../types/language-annotated-html-fragment';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -71,8 +71,7 @@ export type ViewModel = {
   titleLanguageCode: O.Option<LanguageCode>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
-  abstract: HtmlFragment,
-  abstractLanguageCode: O.Option<LanguageCode>,
+  abstract: LanguageAnnotatedHtmlFragment,
   evaluationCount: number,
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,
