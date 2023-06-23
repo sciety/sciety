@@ -3,6 +3,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
+import * as B from 'fp-ts/boolean';
 import { CurationStatementWithGroupAndContent, constructCurationStatements } from '../construct-curation-statements';
 import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
@@ -68,7 +70,13 @@ export const constructArticleCardViewModel = (
       latestVersionDate,
       latestActivityAt: articleActivity.latestActivityAt,
       evaluationCount: articleActivity.evaluationCount,
-      listMembershipCount: articleActivity.listMembershipCount,
+      listMembershipCount: pipe(
+        articleActivity.listMembershipCount === 0,
+        B.fold(
+          () => O.some(articleActivity.listMembershipCount),
+          () => O.none,
+        ),
+      ),
       curationStatementsTeasers: pipe(
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),

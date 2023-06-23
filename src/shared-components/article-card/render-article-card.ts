@@ -24,7 +24,7 @@ export type ArticleCardViewModel = {
   latestVersionDate: O.Option<Date>,
   latestActivityAt: O.Option<Date>,
   evaluationCount: number,
-  listMembershipCount: number,
+  listMembershipCount: O.Option<number>,
   curationStatementsTeasers: ReadonlyArray<CurationStatementTeaserViewModel>,
 };
 
@@ -44,13 +44,13 @@ const renderEvaluationCount = (evaluationCount: ArticleCardViewModel['evaluation
 );
 
 const renderListMembershipCount = (listMembershipCount: ArticleCardViewModel['listMembershipCount']) => pipe(
-  listMembershipCount === 0,
-  B.fold(
-    () => pipe(
-      `Appears in ${renderCountWithDescriptor(listMembershipCount, 'list', 'lists')}`,
+  listMembershipCount,
+  O.fold(
+    constant(''),
+    (count) => pipe(
+      `Appears in ${renderCountWithDescriptor(count, 'list', 'lists')}`,
       wrapInSpan,
     ),
-    constant(''),
   ),
 );
 

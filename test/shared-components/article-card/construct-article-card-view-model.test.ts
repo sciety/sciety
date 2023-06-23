@@ -88,7 +88,7 @@ describe('construct-article-card-view-model', () => {
       )();
     });
 
-    it.failing('displays the count', () => {
+    it('displays the count', () => {
       expect(successfulViewModel.listMembershipCount).toStrictEqual(O.some(1));
     });
   });
@@ -109,7 +109,7 @@ describe('construct-article-card-view-model', () => {
       )();
     });
 
-    it.failing('displays nothing', () => {
+    it('displays nothing', () => {
       expect(successfulViewModel.listMembershipCount).toStrictEqual(O.none);
     });
   });

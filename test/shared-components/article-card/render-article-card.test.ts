@@ -14,7 +14,7 @@ const generateArticleViewModel = ({
   latestActivityDate = O.some(new Date()),
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
-  listMembershipCount = 0,
+  listMembershipCount = O.none,
 }): ArticleCardViewModel => ({
   articleId,
   title,
