@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { constructCurationStatements } from '../construct-curation-statements';
+import { CurationStatementViewmodel, constructCurationStatements } from '../construct-curation-statements';
 import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../shared-read-models';
@@ -15,6 +15,7 @@ import {
 } from '../../shared-ports';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { CurationStatementViewModel } from './render-article-card';
 
 export type Ports = Queries
 & GetLatestArticleVersionDatePorts
@@ -30,6 +31,13 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
   ports.fetchArticle,
 );
+const transformIntoCurationStatementViewModel = (
+  curationStatement: CurationStatementViewmodel,
+): CurationStatementViewModel => ({
+  ...curationStatement,
+  content: sanitise(toHtmlFragment(curationStatement.statement)),
+  contentLanguageCode: curationStatement.statementLanguageCode,
+});
 
 export const constructArticleCardViewModel = (
   ports: Ports,
@@ -63,11 +71,7 @@ export const constructArticleCardViewModel = (
       listMembershipCount: articleActivity.listMembershipCount,
       curationStatements: pipe(
         curationStatements,
-        RA.map((curationStatement) => ({
-          ...curationStatement,
-          content: sanitise(toHtmlFragment(curationStatement.statement)),
-          contentLanguageCode: curationStatement.statementLanguageCode,
-        })),
+        RA.map(transformIntoCurationStatementViewModel),
       ),
     })),
     TE.rightTask,

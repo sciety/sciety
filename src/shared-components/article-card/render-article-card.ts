@@ -11,7 +11,7 @@ import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { LanguageCode, renderLangAttribute } from '../lang-attribute';
 
-type CurationStatementViewModel = {
+export type CurationStatementViewModel = {
   groupName: string,
   content: SanitisedHtmlFragment,
   contentLanguageCode: O.Option<LanguageCode>,
