@@ -40,6 +40,12 @@ describe('construct-article-card-view-model', () => {
       it('returns an ArticleCardViewModel', () => {
         expect(E.isRight(viewModel)).toBe(true);
       });
+
+      it('the latest activity date is not available', () => {
+        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+          latestActivityAt: O.none,
+        })));
+      });
     });
   });
 

@@ -62,20 +62,6 @@ describe('render-article-card', () => {
         expect(latestActivitySpan?.textContent).toBe('Latest activity Jan 1, 1971');
       });
     });
-
-    describe('when a latest activity date is not supplied', () => {
-      it('displays nothing', () => {
-        const isLatestActivityPresent = pipe(
-          { latestActivityDate: O.none },
-          generateArticleViewModel,
-          getSpans,
-          Array.from,
-          (array: Array<HTMLSpanElement>) => array.some(isLatestActivitySpan),
-        );
-
-        expect(isLatestActivityPresent).toBeFalsy();
-      });
-    });
   });
 
   describe('authors', () => {
