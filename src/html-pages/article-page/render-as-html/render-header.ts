@@ -9,7 +9,7 @@ export const renderHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragme
     <header class="page-header page-header--article">
       <h1${renderLangAttribute(viewmodel.titleLanguageCode)}>${viewmodel.title}</h1>
       ${renderAuthors(viewmodel.authors)}
-      ${renderCurationStatements(viewmodel)}
+      ${renderCurationStatements(viewmodel.curationStatements)}
     </header>
   </div>
 `);

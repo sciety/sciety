@@ -26,12 +26,12 @@ const renderCurationStatement = (curationStatement: ViewModel['curationStatement
   </section>
 `);
 
-export const renderCurationStatements = (viewmodel: ViewModel): HtmlFragment => {
-  if (viewmodel.curationStatements.length === 0) {
+export const renderCurationStatements = (curationStatements: ViewModel['curationStatements']): HtmlFragment => {
+  if (curationStatements.length === 0) {
     return toHtmlFragment('');
   }
   return pipe(
-    viewmodel.curationStatements,
+    curationStatements,
     RA.map(renderCurationStatement),
     (listItems) => templateListItems(listItems, 'curation-statement'),
     (listItems) => `<span class="visually-hidden">Curation statements for this article: </span><ul class="curation-statements" role="list">${listItems}</ul>`,
