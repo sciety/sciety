@@ -11,7 +11,7 @@ import {
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticleCardWithControlsViewModel, ArticlesViewModel } from '../view-model';
-import { ArticleErrorCardViewModel } from '../render-as-html/render-article-error-card';
+import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/render-article-error-card';
 import { ListId } from '../../../types/list-id';
 import { Queries } from '../../../shared-read-models';
 

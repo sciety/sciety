@@ -4,7 +4,7 @@ import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { PageOfItems } from '../../shared-components/paginate';
 import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { ArticleErrorCardViewModel } from './render-as-html/render-article-error-card';
+import { ArticleErrorCardViewModel } from '../../shared-components/article-card/render-article-error-card';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 

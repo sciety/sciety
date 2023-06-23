@@ -11,7 +11,7 @@ import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ItemViewModel, ViewModel } from '../view-model';
 import { Queries } from '../../../shared-read-models';
-import { ArticleErrorCardViewModel } from '../../list-page/render-as-html/render-article-error-card';
+import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/render-article-error-card';
 import {
   constructArticleCardViewModel,
   Ports as ConstructArticleCardViewModelPorts,

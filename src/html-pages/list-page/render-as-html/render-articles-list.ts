@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel, renderArticleErrorCard } from './render-article-error-card';
+import { ArticleErrorCardViewModel, renderArticleErrorCard } from '../../../shared-components/article-card/render-article-error-card';
 import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../../shared-components/article-card';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';

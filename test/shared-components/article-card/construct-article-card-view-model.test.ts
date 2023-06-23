@@ -10,7 +10,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { ArticleErrorCardViewModel } from '../../../src/html-pages/list-page/render-as-html/render-article-error-card';
+import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card';
 
 describe('construct-article-card-view-model', () => {
   let framework: TestFramework;

@@ -7,7 +7,7 @@ import { CurationStatementWithGroupAndContent, constructCurationStatements } fro
 import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../shared-read-models';
-import { ArticleErrorCardViewModel } from '../../html-pages/list-page/render-as-html/render-article-error-card';
+import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { Ports as GetLatestArticleVersionDatePorts } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
 import {
