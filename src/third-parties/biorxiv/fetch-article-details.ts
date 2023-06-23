@@ -7,11 +7,11 @@ import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
 import { Doi } from '../../types/doi';
-import { CallXYZ } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
 type Dependencies = {
-  queryExternalService: CallXYZ,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 };
 

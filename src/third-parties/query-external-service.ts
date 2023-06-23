@@ -36,12 +36,10 @@ const cachedGetter = (
   return response.data;
 };
 
-export type CallXYZ = (
+export type QueryExternalService = (
   notFoundLogLevel?: LevelName,
   headers?: Record<string, string>
 ) => (url: string) => TE.TaskEither<DE.DataError, unknown>;
-
-export type QueryExternalService = CallXYZ;
 
 export const createCachingFetcher = (
   logger: Logger,

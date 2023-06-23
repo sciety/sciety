@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { CallXYZ } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 import { EvaluationFetcher } from '../fetch-review';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -54,7 +54,7 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
 };
 
 export const fetchRapidReview = (
-  queryExternalService: CallXYZ,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationFetcher => (url) => pipe(
   url,

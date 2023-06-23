@@ -11,7 +11,7 @@ import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
-import { CallXYZ } from '../query-external-service';
+import { QueryExternalService } from '../query-external-service';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({
@@ -36,11 +36,11 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 export const fetchRecommendedPapers = (
-  foo: CallXYZ,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ): FetchRelatedArticles => (doi: Doi) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
-  foo(),
+  queryExternalService(),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
     E.mapLeft(formatValidationErrors),
