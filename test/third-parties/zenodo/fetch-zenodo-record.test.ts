@@ -6,6 +6,7 @@ import { fetchZenodoRecord } from '../../../src/third-parties/zenodo/fetch-zenod
 import * as DE from '../../../src/types/data-error';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { dummyLogger } from '../../dummy-logger';
 
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';
@@ -19,7 +20,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService)(unexpectedSuffixZenodoKeyMostComplex)();
+        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(unexpectedSuffixZenodoKeyMostComplex)();
       });
 
       it('returns a left', () => {
@@ -36,7 +37,7 @@ describe('fetch-zenodo-record', () => {
       });
 
       it('returns the metadata description as full text', async () => {
-        const evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
+        const evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
 
         expect(
           pipe(
@@ -47,7 +48,7 @@ describe('fetch-zenodo-record', () => {
       });
 
       it('returns the Doi.org url as url', async () => {
-        const evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
+        const evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
 
         expect(
           pipe(
@@ -63,7 +64,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
+        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
       });
 
       it('returns a left', () => {
@@ -81,7 +82,7 @@ describe('fetch-zenodo-record', () => {
       let evaluation: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService)(zenodoKey)();
+        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
       });
 
       it('returns a left', () => {
@@ -95,7 +96,7 @@ describe('fetch-zenodo-record', () => {
     const queryExternalService = shouldNotBeCalled;
 
     beforeEach(async () => {
-      evaluation = await fetchZenodoRecord(queryExternalService)(notZenodoKey)();
+      evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(notZenodoKey)();
     });
 
     it('returns a left', () => {
