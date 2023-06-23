@@ -14,35 +14,35 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
-import { callXYZ, CallXYZ } from './query-external-service';
+import { createCachingFetcher, QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 
 const findVersionsForArticleDoiFromSupportedServers = (
-  foo: CallXYZ,
+  queryExternalService: QueryExternalService,
   logger: Logger,
 ) => (doi: Doi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService: foo, logger })(doi, server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
   }
   return TO.none;
 };
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
-  const foo = callXYZ(logger, 24 * 60 * 60);
+  const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
   return {
-    fetchArticle: fetchCrossrefArticle(foo, logger, crossrefApiBearerToken),
-    fetchRelatedArticles: fetchRecommendedPapers(foo, logger),
+    fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
+    fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
-      doi: fetchZenodoRecord(foo),
-      hypothesis: fetchHypothesisAnnotation(foo, logger),
+      doi: fetchZenodoRecord(queryExternalService),
+      hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
       ncrc: fetchNcrcReview(logger),
-      prelights: fetchPrelightsHighlight(foo, logger),
-      rapidreviews: fetchRapidReview(foo, logger),
+      prelights: fetchPrelightsHighlight(queryExternalService, logger),
+      rapidreviews: fetchRapidReview(queryExternalService, logger),
     }),
     fetchStaticFile: fetchStaticFile(logger),
-    searchForArticles: searchEuropePmc(foo, logger),
-    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(foo, logger),
-    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService: foo, logger }),
+    searchForArticles: searchEuropePmc(queryExternalService, logger),
+    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(queryExternalService, logger),
+    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
   };
 };

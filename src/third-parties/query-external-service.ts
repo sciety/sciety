@@ -43,9 +43,9 @@ export type CallXYZ = (
 
 export type QueryExternalService = CallXYZ;
 
-export const callXYZ = (
+export const createCachingFetcher = (
   logger: Logger,
-  cacheMaxAgeSeconds = 5 * 60,
+  cacheMaxAgeSeconds: number,
 ): QueryExternalService => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
   const get = cachedGetter(cachedAxios, logger);
