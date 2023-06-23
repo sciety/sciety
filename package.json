@@ -35,7 +35,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.11.0",
     "remarkable": "^2.0.1",
-    "sanitize-html": "^2.10.0",
+    "sanitize-html": "^2.11.0",
     "serialize-error": "^8.1.0",
     "striptags": "^3.2.0",
     "text-clipper": "^2.2.0",
