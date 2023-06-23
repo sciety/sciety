@@ -14,9 +14,10 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { Doi } from '../types/doi';
-import { createCachingFetcher, QueryExternalService } from './query-external-service';
+import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
+import { createCachingFetcher } from './caching-fetcher-factory';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
