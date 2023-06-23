@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { feedSummary } from './feed-summary';
 import {
   getArticleFeedEventsByDateDescending,
@@ -47,7 +48,14 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(ports)(params.doi),
       relatedArticles,
-      curationStatements,
+      curationStatements: pipe(
+        curationStatements,
+        RA.map((curationStatementWithGroupAndContent) => ({
+          ...curationStatementWithGroupAndContent,
+          fullText: curationStatementWithGroupAndContent.statement,
+          fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
+        })),
+      ),
     })),
   )),
 );

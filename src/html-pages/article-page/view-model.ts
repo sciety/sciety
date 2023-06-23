@@ -11,7 +11,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
-import { CurationStatementWithGroupAndContent } from '../../shared-components/construct-curation-statements';
+import * as GID from '../../types/group-id';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -56,7 +56,14 @@ type ArticleSavedToThisList = ListSummary;
 
 export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
 
-type CurationStatementViewModel = CurationStatementWithGroupAndContent;
+type CurationStatementViewModel = {
+  groupId: GID.GroupId,
+  groupName: string,
+  groupSlug: string,
+  groupLogo: O.Option<string>,
+  fullText: string,
+  fullTextLanguageCode: O.Option<LanguageCode>,
+};
 
 export type ViewModel = {
   doi: Doi,

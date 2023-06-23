@@ -20,8 +20,8 @@ const renderCurationStatement = (curationStatement: ViewModel['curationStatement
       <h2>Curated by <a href="/groups/${curationStatement.groupSlug}">${curationStatement.groupName}</a></h2>
       ${renderGroupLogo(curationStatement)}
     </header>
-    <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-text">
-      ${curationStatement.statement}
+    <div${renderLangAttribute(curationStatement.fullTextLanguageCode)} class="curation-statement-full-text">
+      ${curationStatement.fullText}
     </div>
   </section>
 `);
