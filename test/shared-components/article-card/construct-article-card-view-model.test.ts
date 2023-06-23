@@ -94,7 +94,24 @@ describe('construct-article-card-view-model', () => {
   });
 
   describe('when an article does not appear in any list', () => {
-    it.todo('displays nothing');
+    const articleId = arbitraryArticleId();
+    let successfulViewModel: ArticleCardViewModel;
+
+    beforeEach(async () => {
+      successfulViewModel = await pipe(
+        articleId,
+        constructArticleCardViewModel({
+          ...framework.queries,
+          ...framework.happyPathThirdParties,
+          logger: dummyLogger,
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('displays nothing', () => {
+      expect(successfulViewModel.listMembershipCount).toStrictEqual(O.none);
+    });
   });
 
   describe('when fetching the article fails', () => {
