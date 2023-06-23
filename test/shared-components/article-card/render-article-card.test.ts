@@ -46,38 +46,6 @@ describe('render-article-card', () => {
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
   });
 
-  describe('latest version', () => {
-    const isLatestVersionSpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest version');
-
-    describe('when a latest version date is supplied', () => {
-      it('displays the date', () => {
-        const versionSpan = pipe(
-          { latestVersionDate: O.some(new Date('1971-01-01')) },
-          generateArticleViewModel,
-          getSpans,
-          Array.from,
-          (array: Array<HTMLSpanElement>) => array.find(isLatestVersionSpan),
-        );
-
-        expect(versionSpan?.textContent).toBe('Latest version Jan 1, 1971');
-      });
-    });
-
-    describe('when a latest version date is not supplied', () => {
-      it('displays nothing', () => {
-        const isLatestVersionPresent = pipe(
-          { latestVersionDate: O.none },
-          generateArticleViewModel,
-          getSpans,
-          Array.from,
-          (array: Array<HTMLSpanElement>) => array.some(isLatestVersionSpan),
-        );
-
-        expect(isLatestVersionPresent).toBeFalsy();
-      });
-    });
-  });
-
   describe('latest activity', () => {
     const isLatestActivitySpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest activity');
 
