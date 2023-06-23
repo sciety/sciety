@@ -47,7 +47,7 @@ describe('construct-article-card-view-model', () => {
         })));
       });
 
-      it('the evaluation count is not available', () => {
+      it('the evaluation count is not displayed', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
           evaluationCount: O.none,
         })));
@@ -82,6 +82,12 @@ describe('construct-article-card-view-model', () => {
       it('the latest activity date is displayed', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
           latestActivityAt: O.some(expect.anything()),
+        })));
+      });
+
+      it('the evaluation count is displayed', () => {
+        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+          evaluationCount: O.some(expect.anything()),
         })));
       });
     });
