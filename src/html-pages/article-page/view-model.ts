@@ -11,7 +11,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
-import { CurationStatementViewmodel } from '../../shared-components/construct-curation-statements';
+import { CurationStatementWithGroupAndContent } from '../../shared-components/construct-curation-statements';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -56,6 +56,8 @@ type ArticleSavedToThisList = ListSummary;
 
 export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
 
+type CurationStatementViewModel = CurationStatementWithGroupAndContent;
+
 export type ViewModel = {
   doi: Doi,
   title: string,
@@ -71,5 +73,5 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
-  curationStatements: ReadonlyArray<CurationStatementViewmodel>,
+  curationStatements: ReadonlyArray<CurationStatementViewModel>,
 };

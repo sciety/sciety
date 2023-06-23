@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { CurationStatementViewmodel, constructCurationStatements } from '../construct-curation-statements';
+import { CurationStatementWithGroupAndContent, constructCurationStatements } from '../construct-curation-statements';
 import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../shared-read-models';
@@ -32,7 +32,7 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   ports.fetchArticle,
 );
 const transformIntoCurationStatementViewModel = (
-  curationStatement: CurationStatementViewmodel,
+  curationStatement: CurationStatementWithGroupAndContent,
 ): CurationStatementViewModel => ({
   ...curationStatement,
   content: sanitise(toHtmlFragment(curationStatement.statement)),

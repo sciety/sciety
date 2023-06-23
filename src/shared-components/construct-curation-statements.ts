@@ -22,7 +22,7 @@ type CurationStatement = {
   groupId: GID.GroupId,
 };
 
-export type CurationStatementViewmodel = {
+export type CurationStatementWithGroupAndContent = {
   groupId: GID.GroupId,
   groupName: string,
   groupSlug: string,
@@ -66,7 +66,7 @@ const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => 
 type ConstructCurationStatements = (
   dependencies: Dependencies,
   doi: Doi
-) => T.Task<ReadonlyArray<CurationStatementViewmodel>>;
+) => T.Task<ReadonlyArray<CurationStatementWithGroupAndContent>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
