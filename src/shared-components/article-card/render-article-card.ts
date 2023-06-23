@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
@@ -23,7 +22,7 @@ export type ArticleCardViewModel = {
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
   latestActivityAt: O.Option<Date>,
-  evaluationCount: number,
+  evaluationCount: O.Option<number>,
   listMembershipCount: O.Option<number>,
   curationStatementsTeasers: ReadonlyArray<CurationStatementTeaserViewModel>,
 };
@@ -33,13 +32,14 @@ type AnnotationContent = O.Option<HtmlFragment>;
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
 const renderEvaluationCount = (evaluationCount: ArticleCardViewModel['evaluationCount']) => pipe(
-  evaluationCount === 0,
-  B.fold(
-    () => pipe(
-      renderCountWithDescriptor(evaluationCount, 'evaluation', 'evaluations'),
+  evaluationCount,
+  O.fold(
+    () => '<span class="visually-hidden">This article has no evaluations</span>',
+    (count) => pipe(
+      renderCountWithDescriptor(count, 'evaluation', 'evaluations'),
       wrapInSpan,
+      (content) => `<span class="visually-hidden">This article has </span>${content}`,
     ),
-    constant(''),
   ),
 );
 
@@ -117,7 +117,7 @@ const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment =>
   ${renderCurationStatements(model.curationStatementsTeasers)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
-      <span class="visually-hidden">This article has ${model.evaluationCount === 0 ? 'no evaluations' : ''}</span>${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
+      ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
     </div>
   </footer>
 `);

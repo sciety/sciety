@@ -46,6 +46,12 @@ describe('construct-article-card-view-model', () => {
           latestActivityAt: O.none,
         })));
       });
+
+      it('the evaluation count is not available', () => {
+        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+          evaluationCount: O.none,
+        })));
+      });
     });
   });
 

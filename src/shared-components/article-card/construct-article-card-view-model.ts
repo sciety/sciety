@@ -69,7 +69,13 @@ export const constructArticleCardViewModel = (
       authors: articleDetails.authors,
       latestVersionDate,
       latestActivityAt: articleActivity.latestActivityAt,
-      evaluationCount: articleActivity.evaluationCount,
+      evaluationCount: pipe(
+        articleActivity.evaluationCount === 0,
+        B.fold(
+          () => O.some(articleActivity.evaluationCount),
+          () => O.none,
+        ),
+      ),
       listMembershipCount: pipe(
         articleActivity.listMembershipCount === 0,
         B.fold(
