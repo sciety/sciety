@@ -15,7 +15,7 @@ import {
 } from '../../shared-ports';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { CurationStatementViewModel } from './render-article-card';
+import { CurationStatementTeaserViewModel } from './render-article-card';
 
 export type Ports = Queries
 & GetLatestArticleVersionDatePorts
@@ -33,7 +33,7 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
 );
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementWithGroupAndContent,
-): CurationStatementViewModel => ({
+): CurationStatementTeaserViewModel => ({
   ...curationStatement,
   content: sanitise(toHtmlFragment(curationStatement.statement)),
   contentLanguageCode: curationStatement.statementLanguageCode,
@@ -69,7 +69,7 @@ export const constructArticleCardViewModel = (
       latestActivityAt: articleActivity.latestActivityAt,
       evaluationCount: articleActivity.evaluationCount,
       listMembershipCount: articleActivity.listMembershipCount,
-      curationStatements: pipe(
+      curationStatementsTeasers: pipe(
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
