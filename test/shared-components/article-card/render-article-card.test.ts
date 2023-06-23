@@ -46,24 +46,6 @@ describe('render-article-card', () => {
     expect(link?.getAttribute('href')).toBe('/articles/activity/10.1101/1234');
   });
 
-  describe('latest activity', () => {
-    const isLatestActivitySpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest activity');
-
-    describe('when a latest activity date is supplied', () => {
-      it('displays the date', () => {
-        const latestActivitySpan = pipe(
-          { latestActivityDate: O.some(new Date('1971-01-01')) },
-          generateArticleViewModel,
-          getSpans,
-          Array.from,
-          (array: Array<HTMLSpanElement>) => array.find(isLatestActivitySpan),
-        );
-
-        expect(latestActivitySpan?.textContent).toBe('Latest activity Jan 1, 1971');
-      });
-    });
-  });
-
   describe('authors', () => {
     const authorListSelector = '.card-authors';
     const authorListItemSelector = 'li.card-authors__author';

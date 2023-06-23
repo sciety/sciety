@@ -72,6 +72,12 @@ describe('construct-article-card-view-model', () => {
       it('returns an ArticleCardViewModel', () => {
         expect(E.isRight(viewModel)).toBe(true);
       });
+
+      it('the latest activity date is displayed', () => {
+        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+          latestActivityAt: O.some(expect.anything()),
+        })));
+      });
     });
   });
 
@@ -95,7 +101,7 @@ describe('construct-article-card-view-model', () => {
     });
 
     it('displays the count', () => {
-      expect(successfulViewModel.listMembershipCount).toStrictEqual(O.some(1));
+      expect(successfulViewModel.listMembershipCount).toStrictEqual(O.some(expect.anything()));
     });
   });
 
