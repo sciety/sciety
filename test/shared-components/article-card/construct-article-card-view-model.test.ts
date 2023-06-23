@@ -22,8 +22,8 @@ describe('construct-article-card-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when an article has not been evaluated', () => {
-    describe('when all information is fetched successfully', () => {
+  describe('when all information is fetched successfully', () => {
+    describe('when an article has not been evaluated', () => {
       const articleId = arbitraryArticleId();
 
       beforeEach(async () => {
@@ -52,11 +52,15 @@ describe('construct-article-card-view-model', () => {
           evaluationCount: O.none,
         })));
       });
-    });
-  });
 
-  describe('when an article has been evaluated', () => {
-    describe('when all information is fetched successfully', () => {
+      it.failing('the article card links to the article page', () => {
+        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
+          articleLink: `/articles/activity/${articleId.value}`,
+        })));
+      });
+    });
+
+    describe('when an article has been evaluated', () => {
       const articleId = arbitraryArticleId();
       const evaluation = {
         ...arbitraryRecordedEvaluation(),
