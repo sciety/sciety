@@ -13,8 +13,8 @@ import { LanguageCode, renderLangAttribute } from '../lang-attribute';
 
 export type CurationStatementTeaserViewModel = {
   groupName: string,
-  content: SanitisedHtmlFragment,
-  contentLanguageCode: O.Option<LanguageCode>,
+  quote: SanitisedHtmlFragment,
+  quoteLanguageCode: O.Option<LanguageCode>,
 };
 
 export type ArticleCardViewModel = {
@@ -78,7 +78,7 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   }
   return pipe(
     curationStatementsTeasers,
-    RA.map(({ groupName, content, contentLanguageCode }) => `
+    RA.map(({ groupName, quote: content, quoteLanguageCode: contentLanguageCode }) => `
       <li role="listitem" class="article-card-teasers__teaser">
         <article>
           <h4 class="article-card-teasers__teaser_heading">Curated by <strong>${groupName}</strong></h4>

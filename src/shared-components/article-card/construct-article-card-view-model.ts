@@ -34,9 +34,9 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementWithGroupAndContent,
 ): CurationStatementTeaserViewModel => ({
-  ...curationStatement,
-  content: sanitise(toHtmlFragment(curationStatement.statement)),
-  contentLanguageCode: curationStatement.statementLanguageCode,
+  groupName: curationStatement.groupName,
+  quote: sanitise(toHtmlFragment(curationStatement.statement)),
+  quoteLanguageCode: curationStatement.statementLanguageCode,
 });
 
 export const constructArticleCardViewModel = (
