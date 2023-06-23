@@ -65,6 +65,7 @@ export const constructArticleCardViewModel = (
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, articleActivity, curationStatements }) => ({
       articleId: articleDetails.articleId,
+      articleLink: `/articles/activity/${articleDetails.articleId.value}`,
       title: articleDetails.title,
       authors: articleDetails.authors,
       latestVersionDate,

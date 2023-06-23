@@ -18,6 +18,7 @@ export type CurationStatementTeaserViewModel = {
 
 export type ArticleCardViewModel = {
   articleId: Doi,
+  articleLink: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
@@ -112,7 +113,7 @@ const renderAnnotationContent = (content: AnnotationContent) => pipe(
 );
 
 const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
-  <h3 class="article-card__title"><a class="article-card__link" href="/articles/activity/${model.articleId.value}">${model.title}</a></h3>
+  <h3 class="article-card__title"><a class="article-card__link" href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
   <footer class="article-card__footer">
