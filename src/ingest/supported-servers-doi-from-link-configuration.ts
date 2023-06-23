@@ -24,6 +24,11 @@ export const supportedServersDoiFromLinkConfiguration: DoiFromLinkData = {
     regexToCaptureEndOfDoi: /https:\/\/(.+)\//,
     prefix: '10.31219',
   },
+  psyarxiv: {
+    startOfDoi: '10.31234/osf.io/',
+    regexToCaptureEndOfDoi: /https:\/\/psyarxiv.com\/(.+)/,
+    prefix: '10.31234',
+  },
 };
 
 export type ServerData = {
@@ -32,6 +37,6 @@ export type ServerData = {
   prefix: string,
 };
 
-export type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv' | 'osf';
+export type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv' | 'osf' | 'psyarxiv';
 
 export type DoiFromLinkData = Record<SupportedServerName, ServerData>;
