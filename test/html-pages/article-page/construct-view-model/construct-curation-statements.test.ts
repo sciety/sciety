@@ -4,7 +4,7 @@ import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
 import {
   constructCurationStatements,
-} from '../../../../src/html-pages/article-page/construct-view-model/construct-curation-statements';
+} from '../../../../src/shared-components/construct-curation-statements';
 import * as DE from '../../../../src/types/data-error';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';

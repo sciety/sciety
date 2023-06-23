@@ -4,12 +4,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as GID from '../../../types/group-id';
-import { Doi } from '../../../types/doi';
-import { detectLanguage } from '../../../shared-components/lang-attribute';
-import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
-import { EvaluationLocator } from '../../../types/evaluation-locator';
+import * as GID from '../types/group-id';
+import { Doi } from '../types/doi';
+import { detectLanguage } from './lang-attribute';
+import { ViewModel } from '../html-pages/article-page/view-model';
+import { Dependencies } from '../html-pages/article-page/construct-view-model/dependencies';
+import { EvaluationLocator } from '../types/evaluation-locator';
 
 type CurationStatement = {
   articleId: Doi,

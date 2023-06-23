@@ -15,7 +15,7 @@ import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
-import { constructCurationStatements } from './construct-curation-statements';
+import { constructCurationStatements } from '../../../shared-components/construct-curation-statements';
 import { Dependencies } from './dependencies';
 
 export type Params = {
