@@ -18,6 +18,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/construct-curation-statements';
 import { Dependencies } from './dependencies';
+import { annotateWithLanguage } from '../../../types/language-annotated-html-fragment';
 
 export type Params = {
   doi: Doi,
@@ -41,10 +42,7 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
     TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
-      abstract: {
-        content: articleDetails.abstract,
-        languageCode: detectLanguage(articleDetails.abstract),
-      },
+      abstract: annotateWithLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, ports, params.doi),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
