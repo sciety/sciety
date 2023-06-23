@@ -11,15 +11,15 @@ const keyFromEnv = pipe(
   E.fromNullable('No preLights feed key provided'),
 );
 
-type Ports = {
+type Dependencies = {
   fetchData: FetchData,
 };
 
-export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+export const fetchPrelightsEvaluations = (): FetchEvaluations => (dependencies: Dependencies) => pipe(
   keyFromEnv,
   TE.fromEither,
   TE.map((key) => `https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
-  TE.chain((url) => ports.fetchData<string>(url)),
+  TE.chain((url) => dependencies.fetchData<string>(url)),
   TE.chainEitherK(identifyCandidates),
   TE.map(extractPrelights),
 );

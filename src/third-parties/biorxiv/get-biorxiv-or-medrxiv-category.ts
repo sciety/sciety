@@ -13,7 +13,7 @@ import { GetArticleSubjectArea, Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 
-type Ports = {
+type Dependencies = {
   queryExternalService: QueryExternalService,
   logger: Logger,
 };
@@ -30,7 +30,7 @@ const mapResponse = flow(
   ({ category, server }) => ({ value: category, server }),
 );
 
-export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea => (articleId) => pipe(
+export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): GetArticleSubjectArea => (articleId) => pipe(
   articleId.hasPrefix('10.1101'),
   B.match(
     () => E.left(DE.unavailable),
@@ -40,7 +40,7 @@ export const getBiorxivOrMedrxivCategory = (ports: Ports): GetArticleSubjectArea
     ]),
   ),
   T.of,
-  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(ports, articleId, server))),
+  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(dependencies, articleId, server))),
   TE.map(RA.rights),
   TE.chainOptionK(() => DE.unavailable)(RA.head),
   TE.map(mapResponse),
