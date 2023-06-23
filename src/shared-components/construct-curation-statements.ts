@@ -7,8 +7,14 @@ import * as O from 'fp-ts/Option';
 import * as GID from '../types/group-id';
 import { Doi } from '../types/doi';
 import { LanguageCode, detectLanguage } from './lang-attribute';
-import { Dependencies } from '../html-pages/article-page/construct-view-model/dependencies';
 import { EvaluationLocator } from '../types/evaluation-locator';
+import { Queries } from '../shared-read-models';
+import { FetchReview, Logger } from '../shared-ports';
+
+export type Dependencies = Queries & {
+  fetchReview: FetchReview,
+  logger: Logger,
+};
 
 type CurationStatement = {
   articleId: Doi,
