@@ -6,8 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as GID from '../types/group-id';
 import { Doi } from '../types/doi';
-import { detectLanguage } from './lang-attribute';
-import { ViewModel } from '../html-pages/article-page/view-model';
+import { LanguageCode, detectLanguage } from './lang-attribute';
 import { Dependencies } from '../html-pages/article-page/construct-view-model/dependencies';
 import { EvaluationLocator } from '../types/evaluation-locator';
 
@@ -15,6 +14,15 @@ type CurationStatement = {
   articleId: Doi,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
+};
+
+export type CurationStatementViewmodel = {
+  groupId: GID.GroupId,
+  groupName: string,
+  groupSlug: string,
+  groupLogo: O.Option<string>,
+  statement: string,
+  statementLanguageCode: O.Option<LanguageCode>,
 };
 
 const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
@@ -49,7 +57,10 @@ const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => 
   })),
 );
 
-type ConstructCurationStatements = (dependencies: Dependencies, doi: Doi) => T.Task<ViewModel['curationStatements']>;
+type ConstructCurationStatements = (
+  dependencies: Dependencies,
+  doi: Doi
+) => T.Task<ReadonlyArray<CurationStatementViewmodel>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
