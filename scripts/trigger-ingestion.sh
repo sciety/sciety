@@ -25,6 +25,9 @@ ingestion_target_app=$(env_var "INGESTION_TARGET_APP")
 prelights_feed_key=$(env_var "PRELIGHTS_FEED_KEY")
 experiment_enabled=$(env_var "EXPERIMENT_ENABLED")
 
+existing_job=$(kubectl get jobs | grep ingestion-backfill | cut -f1 -d' ')
+[ "x$existing_job" = "x" ] || { kubectl delete job $existing_job; }
+
 kubectl apply -f - <<EOF
 apiVersion: batch/v1
 kind: Job
