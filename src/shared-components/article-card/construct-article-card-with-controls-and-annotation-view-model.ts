@@ -8,7 +8,7 @@ import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-
 import { ArticleCardViewModel } from './render-article-card';
 import { Queries } from '../../shared-read-models';
 
-type Ports = ConstructArticleCardViewModelPorts & Queries;
+export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
 const toArticleCardWithControlsAndAnnotationViewModel = (
   ports: Ports,
