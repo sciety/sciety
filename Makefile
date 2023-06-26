@@ -127,8 +127,8 @@ clean-db: stop
 stop:
 	$(DOCKER_COMPOSE) down
 
-ingest-evaluations: export TARGET = dev
-ingest-evaluations: build
+ingest-locally: export TARGET = dev
+ingest-locally: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
 	-e INGEST_DEBUG=${INGEST_DEBUG} \
 	-e INGEST_ONLY=${INGEST_ONLY} \
@@ -136,7 +136,8 @@ ingest-evaluations: build
 	app \
 	npx ts-node src/ingest/update-event-data
 
-update-event-data: ingest-evaluations backstop-test
+trigger-ingestion:
+	scripts/trigger-ingestion.sh
 
 dev-sql: export TARGET = dev
 dev-sql:
