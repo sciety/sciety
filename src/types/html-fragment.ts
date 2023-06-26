@@ -24,6 +24,6 @@ export const html = (
     result += literals[index];
     result += substitutions[index];
   }
-  result += literals[substitutions.length + 1];
+  result += literals[substitutions.length];
   return result as HtmlFragment;
 };

@@ -3,7 +3,7 @@ import { html } from '../../src/types/html-fragment';
 describe('html', () => {
   const eggs = 'eggs';
 
-  it.failing('concatenates literals and substitutions', () => {
+  it('concatenates literals and substitutions', () => {
     expect(html`spam`).toBe('spam');
     expect(html`${eggs}`).toBe('eggs');
     expect(html`spam${eggs}`).toBe('spameggs');
