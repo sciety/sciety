@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
@@ -15,6 +16,7 @@ const fetchPaginatedData = (
   fetchData: FetchData,
   baseUrl: string,
   offset: string,
+  pageNumber: number,
 ): TE.TaskEither<string, ReadonlyArray<Annotation>> => pipe(
   fetchData<unknown>(`${baseUrl}${offset}`),
   TE.chainEitherK(flow(
@@ -25,7 +27,10 @@ const fetchPaginatedData = (
   TE.chain(RA.match(
     () => TE.right([]),
     (items) => pipe(
-      fetchPaginatedData(fetchData, baseUrl, latestDateOf(items)),
+      T.of(''),
+      T.delay(50 * pageNumber),
+      TE.rightTask,
+      TE.chain(() => fetchPaginatedData(fetchData, baseUrl, latestDateOf(items), pageNumber + 1)),
       TE.map((next) => [...items, ...next]),
     ),
   )),
@@ -38,5 +43,5 @@ export const processServer = (
 ): TE.TaskEither<string, ReadonlyArray<Annotation>> => {
   const latestDate = encodeURIComponent(startDate.toISOString());
   const baseUrl = `https://api.hypothes.is/api/search?${owner}&limit=200&sort=created&order=asc&search_after=`;
-  return fetchPaginatedData(fetchData, baseUrl, latestDate);
+  return fetchPaginatedData(fetchData, baseUrl, latestDate, 0);
 };
