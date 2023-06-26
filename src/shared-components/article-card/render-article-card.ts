@@ -9,6 +9,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { LanguageCode, renderLangAttribute } from '../lang-attribute';
+import { ListId } from '../../types/list-id';
 
 export type CurationStatementTeaserViewModel = {
   groupName: string,
@@ -128,6 +129,13 @@ export const renderArticleCard = (model: ArticleCardViewModel): HtmlFragment => 
     ${renderArticleCardContents(model)}
   </section>
 `);
+
+export type ArticleCardWithControlsViewModel = {
+  articleCard: ArticleCardViewModel,
+  hasControls: boolean,
+  annotationContent: O.Option<HtmlFragment>,
+  listId: ListId,
+};
 
 export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleCardViewModel, controls: HtmlFragment, annotationContent: AnnotationContent): HtmlFragment => toHtmlFragment(`
   <article>

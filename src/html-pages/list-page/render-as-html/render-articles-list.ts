@@ -7,7 +7,7 @@ import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../../sha
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { ArticleCardWithControlsViewModel } from '../view-model';
+import { ArticleCardWithControlsViewModel } from '../../../shared-components/article-card/render-article-card';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>,
