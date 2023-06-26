@@ -57,6 +57,10 @@ spec:
             value: "$experiment_enabled"
           - name: INGEST_DAYS
             value: "${INGEST_DAYS:-5}"
+          - name: INGEST_DEBUG
+            value: "true"
+          - name: INGEST_ONLY
+            value: "$INGEST_ONLY"
         volumeMounts:
           - name: gcp-ncrc-key
             mountPath: "/var/run/secrets/app"
