@@ -7,11 +7,11 @@ import {
   ArticleCardWithControlsAndAnnotationViewModel,
   ConstructArticleCardWithControlsAndAnnotationViewModelPorts,
   constructArticleCardWithControlsAndAnnotationViewModel,
+  ArticleErrorCardViewModel,
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticlesViewModel } from '../view-model';
-import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/render-article-error-card';
 import { ListId } from '../../../types/list-id';
 
 export type Ports = ConstructArticleCardWithControlsAndAnnotationViewModelPorts;

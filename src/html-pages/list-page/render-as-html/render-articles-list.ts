@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel, renderArticleErrorCard } from '../../../shared-components/article-card/render-article-error-card';
 import {
+  ArticleErrorCardViewModel, renderArticleErrorCard,
   ArticleCardWithControlsAndAnnotationViewModel,
   renderArticleCardWithControlsAndAnnotation,
 } from '../../../shared-components/article-card';

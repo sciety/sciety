@@ -3,3 +3,4 @@ export { Ports as ConstructArticleCardViewModelPorts, constructArticleCardViewMo
 export { renderArticleCardWithControlsAndAnnotation, ArticleCardWithControlsAndAnnotationViewModel } from './render-article-card-with-controls-and-annotation';
 export { Ports, getLatestArticleVersionDate } from './get-latest-article-version-date';
 export { Ports as ConstructArticleCardWithControlsAndAnnotationViewModelPorts, constructArticleCardWithControlsAndAnnotationViewModel } from './construct-article-card-with-controls-and-annotation-view-model';
+export { renderArticleErrorCard, ArticleErrorCardViewModel } from './render-article-error-card';
