@@ -127,8 +127,8 @@ clean-db: stop
 stop:
 	$(DOCKER_COMPOSE) down
 
-ingest-locally: export TARGET = dev
-ingest-locally: build
+ingest-evaluations: export TARGET = dev
+ingest-evaluations: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
 	-e INGEST_DEBUG=${INGEST_DEBUG} \
 	-e INGEST_ONLY=${INGEST_ONLY} \
