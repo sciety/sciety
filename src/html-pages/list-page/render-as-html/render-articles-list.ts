@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel, renderArticleErrorCard } from '../../../shared-components/article-card/render-article-error-card';
 import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../../shared-components/article-card';
 import { Doi } from '../../../types/doi';
@@ -33,18 +33,21 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
+const renderControls = (viewModel: ArticleCardWithControlsViewModel, listId: ListId) => pipe(
+  viewModel.hasControls,
+  B.fold(
+    () => toHtmlFragment(''),
+    () => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId),
+  ),
+);
+
+export const renderArticlesList = (listId: ListId): RenderArticlesList => (articles) => pipe(
+  articles,
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
       viewModel.articleViewModel,
-      pipe(
-        viewModel.hasControls,
-        B.fold(
-          () => toHtmlFragment(''),
-          () => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId),
-        ),
-      ),
+      renderControls(viewModel, listId),
       viewModel.annotationContent,
     ),
   )),
