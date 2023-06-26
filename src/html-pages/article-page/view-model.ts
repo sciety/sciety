@@ -11,7 +11,8 @@ import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import * as GID from '../../types/group-id';
-import { LanguageAnnotatedHtmlFragment } from '../../types/language-annotated-html-fragment';
+import { LanguageAnnotated } from '../../types/language-annotated';
+import { HtmlFragment } from '../../types/html-fragment';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -71,7 +72,7 @@ export type ViewModel = {
   titleLanguageCode: O.Option<LanguageCode>,
   authors: ArticleAuthors,
   fullArticleUrl: string,
-  abstract: LanguageAnnotatedHtmlFragment,
+  abstract: LanguageAnnotated<HtmlFragment>,
   evaluationCount: number,
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,

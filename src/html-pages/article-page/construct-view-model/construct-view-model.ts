@@ -18,7 +18,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/construct-curation-statements';
 import { Dependencies } from './dependencies';
-import { annotateWithLanguage } from '../../../types/language-annotated-html-fragment';
+import { annotateWithLanguage } from '../../../types/language-annotated';
 
 export type Params = {
   doi: Doi,
