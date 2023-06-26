@@ -6,7 +6,7 @@ import { renderListedIn } from './render-listed-in';
 import { renderRelatedArticles } from './render-related-articles';
 import { renderHeader } from './render-header';
 import { renderRelatedArticlesLink } from './render-related-articles-link';
-import { renderContentWithLanguage } from '../../../shared-components/render-content-with-language';
+import { renderContentWithLanguageAsBlockElement } from '../../../shared-components/render-content-with-language-as-block-element';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">
@@ -23,7 +23,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
       <section>
         <section role="doc-abstract" class="article-abstract">
           <h2>Abstract</h2>
-          ${renderContentWithLanguage(viewmodel.abstract)}
+          ${renderContentWithLanguageAsBlockElement(viewmodel.abstract)}
         </section>
         ${renderFeed(viewmodel.feedItemsByDateDescending)}
         ${renderRelatedArticles(viewmodel)}
