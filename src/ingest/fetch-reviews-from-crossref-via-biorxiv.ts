@@ -63,7 +63,7 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(baseUrl, 0),
-    TE.chain(TE.traverseArray(getReviews(reviewDoiPrefix))),
+    TE.chain(TE.traverseSeqArray(getReviews(reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
 };
