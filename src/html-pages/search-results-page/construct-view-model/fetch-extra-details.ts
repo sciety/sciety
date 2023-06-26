@@ -14,8 +14,8 @@ import { Queries } from '../../../shared-read-models';
 import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/render-article-error-card';
 import {
   constructArticleCardViewModel,
-  Ports as ConstructArticleCardViewModelPorts,
-} from '../../../shared-components/article-card/construct-article-card-view-model';
+  ConstructArticleCardViewModelPorts,
+} from '../../../shared-components/article-card';
 
 export type Ports = Queries & ConstructArticleCardViewModelPorts & {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,

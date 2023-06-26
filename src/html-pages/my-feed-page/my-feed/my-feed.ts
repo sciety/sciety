@@ -14,6 +14,7 @@ import {
 import {
   Ports as ArticleCardPorts,
   renderArticleCard,
+  ConstructArticleCardViewModelPorts,
 } from '../../../shared-components/article-card';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
@@ -22,7 +23,6 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
 import { GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
-import { Ports as ConstructArticleCardViewModelPorts } from '../../../shared-components/article-card/construct-article-card-view-model';
 
 export type Ports = ArticleCardPorts & ConstructArticleCardViewModelPorts & {
   getAllEvents: GetAllEvents,

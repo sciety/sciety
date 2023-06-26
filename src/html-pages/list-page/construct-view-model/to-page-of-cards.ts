@@ -4,14 +4,15 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  ArticleCardWithControlsAndAnnotationViewModel, ConstructArticleCardWithControlsAndAnnotationViewModelPorts,
+  ArticleCardWithControlsAndAnnotationViewModel,
+  ConstructArticleCardWithControlsAndAnnotationViewModelPorts,
+  constructArticleCardWithControlsAndAnnotationViewModel,
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ArticlesViewModel } from '../view-model';
 import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/render-article-error-card';
 import { ListId } from '../../../types/list-id';
-import { constructArticleCardWithControlsAndAnnotationViewModel } from '../../../shared-components/article-card/construct-article-card-with-controls-and-annotation-view-model';
 
 export type Ports = ConstructArticleCardWithControlsAndAnnotationViewModelPorts;
 
