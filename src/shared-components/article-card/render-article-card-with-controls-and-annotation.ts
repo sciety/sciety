@@ -13,6 +13,7 @@ export type ArticleCardWithControlsAndAnnotationViewModel = {
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
   listId: ListId,
+  articleId: Doi,
 };
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
@@ -39,7 +40,7 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),
-    () => renderRemoveArticleForm(viewModel.articleCard.articleId, viewModel.listId),
+    () => renderRemoveArticleForm(viewModel.articleId, viewModel.listId),
   ),
 );
 

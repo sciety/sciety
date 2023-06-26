@@ -14,12 +14,14 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
-) => (articleCard: ArticleCardViewModel) => pipe(
+  articleId: Doi,
+) => (articleCard: ArticleCardViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
   {
     articleCard,
-    annotationContent: ports.getAnnotationContent(listId, articleCard.articleId),
+    annotationContent: ports.getAnnotationContent(listId, articleId),
     hasControls: editCapability,
     listId,
+    articleId,
   },
 );
 
@@ -32,5 +34,5 @@ export const constructArticleCardWithControlsAndAnnotationViewModel = (
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   articleId,
   constructArticleCardViewModel(ports),
-  TE.map(toArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId)),
+  TE.map(toArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId, articleId)),
 );

@@ -3,7 +3,6 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { ArticleAuthors } from '../../types/article-authors';
-import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
@@ -17,7 +16,6 @@ export type CurationStatementTeaserViewModel = {
 };
 
 export type ArticleCardViewModel = {
-  articleId: Doi,
   articleLink: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
