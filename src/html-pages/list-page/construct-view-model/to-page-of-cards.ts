@@ -25,7 +25,7 @@ const toArticleCardWithControlsViewModel = (
   {
     articleViewModel,
     annotationContent: ports.getAnnotationContent(listId, articleViewModel.articleId),
-    controls: editCapability,
+    hasControls: editCapability,
   },
 );
 

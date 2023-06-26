@@ -39,7 +39,7 @@ export const renderArticlesList = (listId: ListId): RenderArticlesList => flow(
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
       viewModel.articleViewModel,
       pipe(
-        viewModel.controls,
+        viewModel.hasControls,
         B.fold(
           () => toHtmlFragment(''),
           () => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId),

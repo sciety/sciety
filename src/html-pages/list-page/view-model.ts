@@ -10,7 +10,7 @@ type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
 export type ArticleCardWithControlsViewModel = {
   articleViewModel: ArticleCardViewModel,
-  controls: boolean,
+  hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
 };
 
