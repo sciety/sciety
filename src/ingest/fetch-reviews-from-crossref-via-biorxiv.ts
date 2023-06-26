@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import * as CR from '../third-parties/crossref';
+import { daysAgo } from './time';
 
 type BiorxivItem = {
   biorxiv_doi: string,
@@ -57,7 +58,7 @@ const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<stri
 );
 
 const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
-  const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+  const startDate = daysAgo(60).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
