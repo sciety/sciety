@@ -37,7 +37,7 @@ const renderControls = (viewModel: ArticleCardWithControlsViewModel, listId: Lis
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),
-    () => renderRemoveArticleForm(viewModel.articleViewModel.articleId, listId),
+    () => renderRemoveArticleForm(viewModel.articleCard.articleId, listId),
   ),
 );
 
@@ -46,7 +46,7 @@ export const renderArticlesList = (listId: ListId): RenderArticlesList => (artic
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
-      viewModel.articleViewModel,
+      viewModel.articleCard,
       renderControls(viewModel, listId),
       viewModel.annotationContent,
     ),

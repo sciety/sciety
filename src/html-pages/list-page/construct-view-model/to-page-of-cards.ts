@@ -21,10 +21,10 @@ const toArticleCardWithControlsViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
-) => (articleViewModel: ArticleCardViewModel) => pipe(
+) => (articleCard: ArticleCardViewModel) => pipe(
   {
-    articleViewModel,
-    annotationContent: ports.getAnnotationContent(listId, articleViewModel.articleId),
+    articleCard,
+    annotationContent: ports.getAnnotationContent(listId, articleCard.articleId),
     hasControls: editCapability,
   },
 );

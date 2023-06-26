@@ -51,7 +51,7 @@ describe('construct-view-model', () => {
       expect(viewModel.contentViewModel).toStrictEqual(expect.objectContaining({
         articles: [
           E.right(expect.objectContaining({
-            articleViewModel: expect.objectContaining({
+            articleCard: expect.objectContaining({
               articleId,
             }),
           })),

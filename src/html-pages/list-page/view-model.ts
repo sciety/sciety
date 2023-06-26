@@ -9,7 +9,7 @@ import { ArticleErrorCardViewModel } from '../../shared-components/article-card/
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
 export type ArticleCardWithControlsViewModel = {
-  articleViewModel: ArticleCardViewModel,
+  articleCard: ArticleCardViewModel,
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
 };
