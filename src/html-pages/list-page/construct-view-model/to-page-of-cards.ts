@@ -18,6 +18,7 @@ import { ArticleErrorCardViewModel } from '../../../shared-components/article-ca
 import { ListId } from '../../../types/list-id';
 
 import { Queries } from '../../../shared-read-models';
+import { Doi } from '../../../types/doi';
 
 export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
@@ -34,6 +35,11 @@ const toArticleCardWithControlsViewModel = (
   },
 );
 
+const constructArticleCardWithControlsAndOptionalAnnotationViewModel = (ports: Ports) => (articleId: Doi) => pipe(
+  articleId,
+  constructArticleCardViewModel(ports),
+);
+
 export const toPageOfCards = (
   ports: Ports,
   editCapability: boolean,
@@ -42,7 +48,7 @@ export const toPageOfCards = (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
   pageOfArticles.items,
-  T.traverseArray(({ articleId }) => constructArticleCardViewModel(ports)(articleId)),
+  T.traverseArray(({ articleId }) => constructArticleCardWithControlsAndOptionalAnnotationViewModel(ports)(articleId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(
