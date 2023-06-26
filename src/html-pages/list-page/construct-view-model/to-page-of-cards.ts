@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   ArticleCardViewModel,
-  ArticleCardWithControlsAndOptionalAnnotationViewModel,
+  ArticleCardWithControlsAndAnnotationViewModel,
 } from '../../../shared-components/article-card';
 import {
   constructArticleCardViewModel,
@@ -22,7 +22,7 @@ import { Doi } from '../../../types/doi';
 
 export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
-const toArticleCardWithControlsViewModel = (
+const toArticleCardWithControlsAndAnnotationViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
@@ -35,16 +35,16 @@ const toArticleCardWithControlsViewModel = (
   },
 );
 
-const constructArticleCardWithControlsAndOptionalAnnotationViewModel = (
+const constructArticleCardWithControlsAndAnnotationViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,
 ) => (
   articleId: Doi,
-): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel> => pipe(
+): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   articleId,
   constructArticleCardViewModel(ports),
-  TE.map(toArticleCardWithControlsViewModel(ports, editCapability, listId)),
+  TE.map(toArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId)),
 );
 
 export const toPageOfCards = (
@@ -56,12 +56,12 @@ export const toPageOfCards = (
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
   pageOfArticles.items,
   RA.map((item) => item.articleId),
-  T.traverseArray(constructArticleCardWithControlsAndOptionalAnnotationViewModel(ports, editCapability, listId)),
+  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(
       TE.left,
-      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel>,
+      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
     ),
   )),
 );

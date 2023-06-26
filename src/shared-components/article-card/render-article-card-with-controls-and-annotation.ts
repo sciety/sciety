@@ -8,7 +8,7 @@ import { Doi } from '../../types/doi';
 
 type AnnotationContent = O.Option<HtmlFragment>;
 
-export type ArticleCardWithControlsAndOptionalAnnotationViewModel = {
+export type ArticleCardWithControlsAndAnnotationViewModel = {
   articleCard: ArticleCardViewModel,
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
@@ -35,7 +35,7 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderControls = (viewModel: ArticleCardWithControlsAndOptionalAnnotationViewModel) => pipe(
+const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),
@@ -56,7 +56,7 @@ const renderAnnotationContent = (content: AnnotationContent) => pipe(
   ),
 );
 
-export const renderArticleCardWithControlsAndOptionalAnnotation = (viewModel: ArticleCardWithControlsAndOptionalAnnotationViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(viewModel.articleCard)}

@@ -3,15 +3,15 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel, renderArticleErrorCard } from '../../../shared-components/article-card/render-article-error-card';
 import {
-  ArticleCardWithControlsAndOptionalAnnotationViewModel,
-  renderArticleCardWithControlsAndOptionalAnnotation,
+  ArticleCardWithControlsAndAnnotationViewModel,
+  renderArticleCardWithControlsAndAnnotation,
 } from '../../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<
   ArticleErrorCardViewModel,
-  ArticleCardWithControlsAndOptionalAnnotationViewModel
+  ArticleCardWithControlsAndAnnotationViewModel
   >>,
 ) => HtmlFragment;
 
@@ -19,7 +19,7 @@ export const renderArticlesList: RenderArticlesList = (articles) => pipe(
   articles,
   RA.map(E.fold(
     renderArticleErrorCard,
-    renderArticleCardWithControlsAndOptionalAnnotation,
+    renderArticleCardWithControlsAndAnnotation,
   )),
   RA.map((activity) => `<li>${activity}</li>`),
   (renderedActivities) => `
