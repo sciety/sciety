@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import {
   ArticleCardViewModel,
   ArticleCardWithControlsAndOptionalAnnotationViewModel,
@@ -35,9 +35,16 @@ const toArticleCardWithControlsViewModel = (
   },
 );
 
-const constructArticleCardWithControlsAndOptionalAnnotationViewModel = (ports: Ports) => (articleId: Doi) => pipe(
+const constructArticleCardWithControlsAndOptionalAnnotationViewModel = (
+  ports: Ports,
+  editCapability: boolean,
+  listId: ListId,
+) => (
+  articleId: Doi,
+): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel> => pipe(
   articleId,
   constructArticleCardViewModel(ports),
+  TE.map(toArticleCardWithControlsViewModel(ports, editCapability, listId)),
 );
 
 export const toPageOfCards = (
@@ -48,15 +55,13 @@ export const toPageOfCards = (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
   pageOfArticles.items,
-  T.traverseArray(({ articleId }) => constructArticleCardWithControlsAndOptionalAnnotationViewModel(ports)(articleId)),
+  RA.map((item) => item.articleId),
+  T.traverseArray(constructArticleCardWithControlsAndOptionalAnnotationViewModel(ports, editCapability, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(
       TE.left,
-      flow(
-        toArticleCardWithControlsViewModel(ports, editCapability, listId),
-        (card) => TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel>(card),
-      ),
+      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel>,
     ),
   )),
 );
