@@ -5,9 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { GroupCardViewModel } from './render-group-card';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
-import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
-import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
 export const constructGroupCardViewModel = (
@@ -24,7 +22,7 @@ export const constructGroupCardViewModel = (
       ...group,
       ...meta,
       followerCount: queries.getFollowers(group.id).length,
-      description: pipe(group.shortDescription, toHtmlFragment, sanitise),
+      description: group.shortDescription,
     })),
   )),
   E.map((partial) => pipe(
