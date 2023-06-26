@@ -42,7 +42,11 @@ describe('construct-group-card-view-model', () => {
     });
 
     it('contains the group description', () => {
-      expect(viewModel.description).toStrictEqual(group.shortDescription);
+      expect(viewModel.description.content).toStrictEqual(group.shortDescription);
+    });
+
+    it('contains a language for the group description', () => {
+      expect(O.isSome(viewModel.description.languageCode)).toBe(true);
     });
 
     it('contains the group avatar path', () => {

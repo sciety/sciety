@@ -7,6 +7,7 @@ import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import * as LOID from '../../types/list-owner-id';
 import { Queries } from '../../shared-read-models';
+import { annotateWithLanguage } from '../../types/language-annotated';
 
 export const constructGroupCardViewModel = (
   queries: Queries,
@@ -22,7 +23,7 @@ export const constructGroupCardViewModel = (
       ...group,
       ...meta,
       followerCount: queries.getFollowers(group.id).length,
-      description: group.shortDescription,
+      description: annotateWithLanguage(group.shortDescription),
     })),
   )),
   E.map((partial) => pipe(

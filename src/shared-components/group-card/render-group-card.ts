@@ -5,11 +5,13 @@ import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { templateDate } from '../date';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { LanguageAnnotated } from '../../types/language-annotated';
+import { renderContentWithLanguageAsBlockElement } from '../render-content-with-language-as-block-element';
 
 export type GroupCardViewModel = {
   id: GroupId,
   name: string,
-  description: string,
+  description: LanguageAnnotated<string>,
   avatarPath: string,
   slug: string,
   listCount: number,
@@ -55,7 +57,7 @@ export const renderGroupCard = flow(
             <a class="group-card__link" href="/groups/${viewModel.slug}">${htmlEscape(viewModel.name)}</a>
           </h3>
           <div class="group-card__description">
-            ${viewModel.description}
+            ${renderContentWithLanguageAsBlockElement(viewModel.description)}
           </div>
           <span class="group-card__meta">
             <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
