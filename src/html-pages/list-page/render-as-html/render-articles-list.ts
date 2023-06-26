@@ -3,11 +3,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel, renderArticleErrorCard } from '../../../shared-components/article-card/render-article-error-card';
-import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../../shared-components/article-card';
+import {
+  ArticleCardWithControlsAndOptionalAnnotationViewModel,
+  renderArticleCardWithControlsAndOptionalAnnotation,
+} from '../../../shared-components/article-card';
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { ArticleCardWithControlsAndOptionalAnnotationViewModel } from '../../../shared-components/article-card/render-article-card';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<

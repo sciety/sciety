@@ -9,7 +9,6 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { LanguageCode, renderLangAttribute } from '../lang-attribute';
-import { ListId } from '../../types/list-id';
 
 export type CurationStatementTeaserViewModel = {
   groupName: string,
@@ -28,8 +27,6 @@ export type ArticleCardViewModel = {
   listMembershipCount: O.Option<number>,
   curationStatementsTeasers: ReadonlyArray<CurationStatementTeaserViewModel>,
 };
-
-type AnnotationContent = O.Option<HtmlFragment>;
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
@@ -100,20 +97,7 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   );
 };
 
-const renderAnnotationContent = (content: AnnotationContent) => pipe(
-  content,
-  O.match(
-    () => '',
-    (annotation) => `
-      <section class="article-card-annotation">
-        <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
-        <p>${annotation}</p>
-      </section>
-    `,
-  ),
-);
-
-const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a class="article-card__link" href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
@@ -128,21 +112,4 @@ export const renderArticleCard = (model: ArticleCardViewModel): HtmlFragment => 
   <section class="article-card">
     ${renderArticleCardContents(model)}
   </section>
-`);
-
-export type ArticleCardWithControlsAndOptionalAnnotationViewModel = {
-  articleCard: ArticleCardViewModel,
-  hasControls: boolean,
-  annotationContent: O.Option<HtmlFragment>,
-  listId: ListId,
-};
-
-export const renderArticleCardWithControlsAndOptionalAnnotation = (model: ArticleCardViewModel, controls: HtmlFragment, annotationContent: AnnotationContent): HtmlFragment => toHtmlFragment(`
-  <article>
-    <section class="article-card">
-      ${renderArticleCardContents(model)}
-      ${controls}
-    </section>
-    ${renderAnnotationContent(annotationContent)}
-  </article>
 `);

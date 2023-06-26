@@ -3,7 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleCardViewModel } from '../../../shared-components/article-card';
+import {
+  ArticleCardViewModel,
+  ArticleCardWithControlsAndOptionalAnnotationViewModel,
+} from '../../../shared-components/article-card';
 import {
   constructArticleCardViewModel,
   Ports as ConstructArticleCardViewModelPorts,
@@ -15,7 +18,6 @@ import { ArticleErrorCardViewModel } from '../../../shared-components/article-ca
 import { ListId } from '../../../types/list-id';
 
 import { Queries } from '../../../shared-read-models';
-import { ArticleCardWithControlsAndOptionalAnnotationViewModel } from '../../../shared-components/article-card/render-article-card';
 
 export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
