@@ -15,7 +15,7 @@ import { ArticleErrorCardViewModel } from '../../../shared-components/article-ca
 import { ListId } from '../../../types/list-id';
 
 import { Queries } from '../../../shared-read-models';
-import { ArticleCardWithControlsViewModel } from '../../../shared-components/article-card/render-article-card';
+import { ArticleCardWithControlsAndOptionalAnnotationViewModel } from '../../../shared-components/article-card/render-article-card';
 
 export type Ports = ConstructArticleCardViewModelPorts & Queries;
 
@@ -47,7 +47,7 @@ export const toPageOfCards = (
       TE.left,
       flow(
         toArticleCardWithControlsViewModel(ports, editCapability, listId),
-        (card) => TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>(card),
+        (card) => TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndOptionalAnnotationViewModel>(card),
       ),
     ),
   )),

@@ -7,10 +7,13 @@ import { renderArticleCardWithControlsAndOptionalAnnotation } from '../../../sha
 import { Doi } from '../../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { ArticleCardWithControlsViewModel } from '../../../shared-components/article-card/render-article-card';
+import { ArticleCardWithControlsAndOptionalAnnotationViewModel } from '../../../shared-components/article-card/render-article-card';
 
 type RenderArticlesList = (
-  articleViewModels: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>,
+  articleViewModels: ReadonlyArray<E.Either<
+  ArticleErrorCardViewModel,
+  ArticleCardWithControlsAndOptionalAnnotationViewModel
+  >>,
 ) => HtmlFragment;
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
@@ -33,7 +36,7 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderControls = (viewModel: ArticleCardWithControlsViewModel) => pipe(
+const renderControls = (viewModel: ArticleCardWithControlsAndOptionalAnnotationViewModel) => pipe(
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),

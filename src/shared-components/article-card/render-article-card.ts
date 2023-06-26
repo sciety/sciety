@@ -130,7 +130,7 @@ export const renderArticleCard = (model: ArticleCardViewModel): HtmlFragment => 
   </section>
 `);
 
-export type ArticleCardWithControlsViewModel = {
+export type ArticleCardWithControlsAndOptionalAnnotationViewModel = {
   articleCard: ArticleCardViewModel,
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
