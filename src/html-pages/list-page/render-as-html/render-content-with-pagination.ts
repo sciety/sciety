@@ -3,7 +3,6 @@ import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ListId } from '../../../types/list-id';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
@@ -27,10 +26,9 @@ const renderPageNumbers = (page: number, articleCount: number, numberOfPages: nu
 export const renderContentWithPagination = (
   basePath: string,
   viewModel: ContentWithPaginationViewModel,
-  listId: ListId,
 ): HtmlFragment => pipe(
   viewModel.articles,
-  renderArticlesList(listId),
+  renderArticlesList,
   addPaginationControls(viewModel.pagination.nextPage, basePath),
   (content) => `
       ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}

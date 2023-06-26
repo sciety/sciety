@@ -12,6 +12,7 @@ export type ArticleCardWithControlsViewModel = {
   articleCard: ArticleCardViewModel,
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
+  listId: ListId,
 };
 
 export type ArticlesViewModel = ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardWithControlsViewModel>>;

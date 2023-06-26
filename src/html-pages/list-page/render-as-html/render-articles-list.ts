@@ -33,21 +33,21 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderControls = (viewModel: ArticleCardWithControlsViewModel, listId: ListId) => pipe(
+const renderControls = (viewModel: ArticleCardWithControlsViewModel) => pipe(
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),
-    () => renderRemoveArticleForm(viewModel.articleCard.articleId, listId),
+    () => renderRemoveArticleForm(viewModel.articleCard.articleId, viewModel.listId),
   ),
 );
 
-export const renderArticlesList = (listId: ListId): RenderArticlesList => (articles) => pipe(
+export const renderArticlesList: RenderArticlesList = (articles) => pipe(
   articles,
   RA.map(E.fold(
     renderArticleErrorCard,
     (viewModel) => renderArticleCardWithControlsAndOptionalAnnotation(
       viewModel.articleCard,
-      renderControls(viewModel, listId),
+      renderControls(viewModel),
       viewModel.annotationContent,
     ),
   )),
