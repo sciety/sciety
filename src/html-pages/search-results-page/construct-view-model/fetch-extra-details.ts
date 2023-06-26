@@ -2,13 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
-import { ArticleServer } from '../../../types/article-server';
 import * as DE from '../../../types/data-error';
-import { Doi } from '../../../types/doi';
 import { ItemViewModel, ViewModel } from '../view-model';
 import { Queries } from '../../../shared-read-models';
 import {
@@ -17,11 +14,7 @@ import {
   ConstructArticleCardViewModelPorts,
 } from '../../../shared-components/article-card';
 
-export type Ports = Queries & ConstructArticleCardViewModelPorts & {
-  getLatestArticleVersionDate: GetLatestArticleVersionDate,
-};
-
-type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
+export type Ports = Queries & ConstructArticleCardViewModelPorts;
 
 const fetchItemDetails = (
   ports: Ports,

@@ -6,18 +6,17 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { CurationStatementWithGroupAndContent, constructCurationStatements } from '../construct-curation-statements';
-import { ArticleCardViewModel, getLatestArticleVersionDate } from '.';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../shared-read-models';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { Ports as GetLatestArticleVersionDatePorts } from './get-latest-article-version-date';
+import { Ports as GetLatestArticleVersionDatePorts, getLatestArticleVersionDate } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
 import {
   FetchArticle, FetchRelatedArticles, FetchReview, FindVersionsForArticleDoi, Logger,
 } from '../../shared-ports';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { CurationStatementTeaserViewModel } from './render-article-card';
+import { CurationStatementTeaserViewModel, ArticleCardViewModel } from './render-article-card';
 
 export type Ports = Queries
 & GetLatestArticleVersionDatePorts

@@ -7,13 +7,11 @@ import {
 } from './fetch-extra-details';
 import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './perform-all-searches';
 import { selectSubsetToDisplay } from './select-subset-to-display';
-import { Ports as GetArticleVersionDatePorts, getLatestArticleVersionDate } from '../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
 
 export type Ports = PerformAllSearchesPorts
 // The next two lines are necessary as getLatestVersionDate is not in CollectedPorts and is constructed locally
-& Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>
-& GetArticleVersionDatePorts;
+& Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>;
 
 export const constructViewModel = (
   ports: Ports,
@@ -24,6 +22,5 @@ export const constructViewModel = (
   TE.map(selectSubsetToDisplay),
   TE.chainTaskK(fetchExtraDetails({
     ...ports,
-    getLatestArticleVersionDate: getLatestArticleVersionDate(ports),
   })),
 );
