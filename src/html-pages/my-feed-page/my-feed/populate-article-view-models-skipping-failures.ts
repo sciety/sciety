@@ -5,8 +5,10 @@ import { pipe } from 'fp-ts/function';
 import { ArticleCardViewModel, constructArticleCardViewModel, ConstructArticleCardViewModelPorts } from '../../../shared-components/article-card';
 import { ArticleActivity } from '../../../types/article-activity';
 
+export type Ports = ConstructArticleCardViewModelPorts;
+
 type PopulateArticleViewModelsSkippingFailures = (
-  ports: ConstructArticleCardViewModelPorts,
+  ports: Ports,
 ) => (
   activities: ReadonlyArray<ArticleActivity>
 ) => T.Task<ReadonlyArray<ArticleCardViewModel>>;

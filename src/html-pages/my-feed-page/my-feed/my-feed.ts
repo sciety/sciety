@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { followedGroupsActivities } from './followed-groups-activities';
-import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
+import { populateArticleViewModelsSkippingFailures, Ports as PopulateArticleViewModelsSkippingFailuresPorts } from './populate-article-view-models-skipping-failures';
 import {
   feedTitle,
   followSomething,
@@ -12,9 +12,7 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import {
-  Ports as ArticleCardPorts,
   renderArticleCard,
-  ConstructArticleCardViewModelPorts,
 } from '../../../shared-components/article-card';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
@@ -24,7 +22,7 @@ import { UserId } from '../../../types/user-id';
 import { GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = ArticleCardPorts & ConstructArticleCardViewModelPorts & {
+export type Ports = PopulateArticleViewModelsSkippingFailuresPorts & {
   getAllEvents: GetAllEvents,
   getGroupsFollowedBy: Queries['getGroupsFollowedBy'],
 };
