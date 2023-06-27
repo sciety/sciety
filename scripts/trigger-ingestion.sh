@@ -59,6 +59,8 @@ spec:
             value: "${INGEST_DAYS:-5}"
           - name: INGEST_DEBUG
             value: "true"
+          - name: INGEST_EXCEPT
+            value: "$INGEST_EXCEPT"
           - name: INGEST_ONLY
             value: "$INGEST_ONLY"
         volumeMounts:

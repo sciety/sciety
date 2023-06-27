@@ -14,9 +14,19 @@ const shouldUpdate = (group: GroupIngestionConfiguration) => {
   return true;
 };
 
+const shouldNotExclude = (group: GroupIngestionConfiguration) => {
+  const pattern = process.env.INGEST_EXCEPT;
+  if (pattern) {
+    return !(group.name.toLowerCase().includes(pattern.toLowerCase())
+      || group.id.toLowerCase().includes(pattern.toLowerCase()));
+  }
+  return true;
+};
+
 void (async (): Promise<unknown> => pipe(
   groupIngestionConfigurations,
   RA.filter(shouldUpdate),
+  RA.filter(shouldNotExclude),
   updateAll,
   TE.match(
     () => 1,

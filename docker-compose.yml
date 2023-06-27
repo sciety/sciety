@@ -18,6 +18,7 @@ services:
       SCIETY_API: "http://app"
       SCIETY_TEAM_API_BEARER_TOKEN: "secret"
       INGEST_DEBUG:
+      INGEST_EXCEPT:
       INGEST_ONLY:
       INGEST_DAYS:
       LOG_LEVEL:
