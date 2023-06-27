@@ -79,20 +79,23 @@ axiosRetry(axios, {
   },
 });
 
-const send = (evaluationCommand: EvaluationCommand) => TE.tryCatch(
-  async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation`, JSON.stringify(evaluationCommand), {
-    headers: {
-      Authorization: `Bearer ${process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret'}`,
-      'Content-Type': 'application/json',
+const send = (evaluationCommand: EvaluationCommand) => pipe(
+  TE.tryCatch(
+    async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation`, JSON.stringify(evaluationCommand), {
+      headers: {
+        Authorization: `Bearer ${process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret'}`,
+        'Content-Type': 'application/json',
+      },
+      timeout: 10000,
+    }),
+    (error) => {
+      if (axios.isAxiosError(error)) {
+        return `Failed to post evaluation command: ${String(error)}. Response data is: "${String(error.response?.data)}"`;
+      }
+      return `Failed to post evaluation command: ${String(error)}`;
     },
-    timeout: 10000,
-  }),
-  (error) => {
-    if (axios.isAxiosError(error)) {
-      return `Failed to post evaluation command: ${String(error)}. Response data is: "${String(error.response?.data)}"`;
-    }
-    return `Failed to post evaluation command: ${String(error)}`;
-  },
+  ),
+  T.delay(50),
 );
 
 const countUniques = (accumulator: Record<string, number>, errorMessage: string) => pipe(
