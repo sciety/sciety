@@ -201,9 +201,9 @@ download-exploratory-test-from-staging:
 		-- \
 		bash -c 'yum install --assumeyes --quiet postgresql \
 			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/events.csv" \
+			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/staging-events.csv" \
 		'
-	aws s3 cp "s3://sciety-data-extractions/events.csv" "./data/exploratory-test-from-staging.csv"
+	aws s3 cp "s3://sciety-data-extractions/staging-events.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
