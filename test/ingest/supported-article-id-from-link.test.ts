@@ -17,6 +17,7 @@ describe('supported-article-id-from-link', () => {
       ['research square DOI link', 'https://doi.org/10.21203/rs.3.rs-885194/v1', '10.21203/rs.3.rs-885194/v1'],
       ['SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/download/4639/8936/9328', '10.1590/SciELOPreprints.4639'],
       ['OSF link', 'https://osf.io/vrmpf/', '10.31219/osf.io/vrmpf'],
+      ['PsyArXiv link', 'https://psyarxiv.com/mgn32', '10.31234/osf.io/mgn32'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
         const result = supportedArticleIdFromLink(input);
