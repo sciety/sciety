@@ -11,7 +11,7 @@
     "@xmldom/xmldom": "^0.8.8",
     "axios": "^1.4.0",
     "axios-cache-interceptor": "^1.2.0",
-    "axios-retry": "3.5.0",
+    "axios-retry": "3.5.1",
     "clownface": "^1.5.1",
     "cls-rtracer": "^2.6.3",
     "escape-goat": "^3.0.0",
