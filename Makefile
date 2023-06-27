@@ -138,7 +138,7 @@ ingest-evaluations: build
 	npx ts-node src/ingest/update-event-data
 
 trigger-ingestion:
-	scripts/trigger-ingestion.sh
+	INGEST_EXCEPT=arcadia scripts/trigger-ingestion.sh
 
 dev-sql: export TARGET = dev
 dev-sql:
